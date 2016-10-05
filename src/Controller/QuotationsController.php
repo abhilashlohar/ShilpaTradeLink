@@ -31,7 +31,8 @@ class QuotationsController extends AppController
 		$product=$this->request->query('product');
 		$From=$this->request->query('From');
 		$To=$this->request->query('To');
-		$this->set(compact('ref_no','customer','salesman','product','From','To'));
+		$page=$this->request->query('page');
+		$this->set(compact('ref_no','customer','salesman','product','From','To','page'));
 		if(!empty($ref_no)){
 			$ref_no_arr=explode('/',$ref_no);
 			if(!empty($ref_no_arr[0])){
