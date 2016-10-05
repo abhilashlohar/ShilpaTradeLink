@@ -93,10 +93,6 @@ class SalesOrdersTable extends Table
         $validator
             ->requirePresence('customer_address', 'create')
             ->notEmpty('customer_address');
-
-        $validator
-            ->requirePresence('terms_conditions', 'create')
-            ->notEmpty('terms_conditions');
 			
 		$validator
             ->requirePresence('customer_po_no', 'create')

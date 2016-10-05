@@ -317,7 +317,6 @@ $(document).ready(function() {
 						error1.hide();
 						form[0].submit(); // submit the form
 					}
-                    
                 }
             });
 		

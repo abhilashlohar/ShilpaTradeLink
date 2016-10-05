@@ -40,9 +40,6 @@ class SalesOrdersController extends AppController
 				->order(['SalesOrders.id' => 'DESC'])
 			);
 		
-       
-
-		
         $this->set(compact('salesOrders','status'));
         $this->set('_serialize', ['salesOrders']);
     }
@@ -154,6 +151,7 @@ class SalesOrdersController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $salesOrder = $this->SalesOrders->get($id, [
             'contain' => []
         ]);
@@ -168,9 +166,14 @@ class SalesOrdersController extends AppController
             }
         }
         $customers = $this->SalesOrders->Customers->find('list', ['limit' => 200]);
-        $companies = $this->SalesOrders->Companies->find('list', ['limit' => 200]);
-        $quotations = $this->SalesOrders->Quotations->find('list', ['limit' => 200]);
-        $this->set(compact('salesOrder', 'customers', 'companies', 'quotations'));
+        $companies = $this->SalesOrders->Companies->find('all', ['limit' => 200]);
+		$quotationlists = $this->SalesOrders->Quotations->find()->where(['status'=>'Pending'])->order(['Quotations.id' => 'DESC']);
+		$items = $this->SalesOrders->Items->find('list',['limit' => 200]);
+		$transporters = $this->SalesOrders->Carrier->find('list', ['limit' => 200]);
+		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200]);
+		$termsConditions = $this->SalesOrders->TermsConditions->find('all',['limit' => 200]);
+		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all');
+        $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes'));
         $this->set('_serialize', ['salesOrder']);
     }
 
