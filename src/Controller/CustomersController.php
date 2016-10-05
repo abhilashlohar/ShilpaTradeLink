@@ -166,6 +166,7 @@ class CustomersController extends AppController
 			echo ''; exit;
 		}
 		$defaultContact = $this->Customers->CustomerContacts->find('all')->where(['customer_id' => $id,'default_contact' => 1])->first();
-		echo $defaultContact->mobile;
+		$result=json_encode(array('contact_person'=>$defaultContact->contact_person,'mobile'=>$defaultContact->mobile));
+		die($result);
     }
 }

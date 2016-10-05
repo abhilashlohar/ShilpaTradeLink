@@ -350,8 +350,11 @@ $(document).ready(function() {
 		url=url+'/'+customer_id,
 		$.ajax({
 			url: url,
+			type: 'GET',
+			dataType: 'json'
 		}).done(function(response) {
-			$('input[name="customer_contact"]').val(response);
+			$('input[name="customer_for_attention"]').val(response.contact_person);
+			$('input[name="customer_contact"]').val(response.mobile);
 		});
 		
 		$("#qt3_div").html('Loading...');
