@@ -27,7 +27,47 @@
 						); ?>
 					</div>
 				</div>
-				asd
+				<table class="table table-condensed table-hover">
+					<thead>
+						<tr>
+							<th>
+								 #
+							</th>
+							<th>
+								 First Name
+							</th>
+							<th>
+								 Last Name
+							</th>
+							<th>
+								 Username
+							</th>
+							<th>
+								 Status
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								 1
+							</td>
+							<td>
+								 Mark
+							</td>
+							<td>
+								 Otto
+							</td>
+							<td>
+								 makr124
+							</td>
+							<td>
+								<span class="label label-sm label-success">
+								Approved </span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
