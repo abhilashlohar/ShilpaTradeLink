@@ -6,7 +6,7 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
-		<?= $this->Form->create($quotation) ?>
+		<?= $this->Form->create($quotation,['id'=>'quotation_entry']) ?>
 		<div class="form-body">
 			<div class="row">
 				<div class="col-md-6">
@@ -398,7 +398,138 @@ $(document).ready(function() {
 		return false;
 	  }
 	});
+	
+	
+//--------- FORM VALIDATION
+		var form2 = $('#quotation_entry');
+		var error2 = $('.alert-danger', form2);
+		var success2 = $('.alert-success', form2);
+
+		jQuery.validator.addMethod("noHTML", function(value, element) {
+				return this.optional(element) || /^([a-zA-Z0-9\s\.,\-]+)$/.test(value);
+			}, "No HTML tags are allowed!");
+			
+		$.validator.addMethod("alpha", function(value, element) {
+			return this.optional(element) || value == value.match(/^[a-zA-Z\s]+$/);
+		 }, "No numbers are allowed !");
+			
+        form2.validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block help-block-error', // default input error message class
+                focusInvalid: false, // do not focus the last invalid input
+                ignore: "",  // validate all fields including form hidden input
+                rules: {
+					company_id:{
+						required: true,
+					},
+ 					date : {
+						  required: true,
+                    },
+					customer_id : {
+						  required: true,
+                    },
+					customer_address : {
+						  required: true,
+                    },
+					
+					employee_id:{
+						required: true
+					},
+					category_id:{
+						required: true,
+					},
+					
+					finalisation_date:{
+						required: true,
+					},
+ 					customer_for_attention : {
+						  required: true,
+                    },
+					enquiry_no  : {
+						  required: true,
+                    },
+					customer_contact: {
+						  required: true,
+                    },
+					subject:{
+						required: true,	
+					},
+					
+					
+					
+					text:{
+						required: true,	
+					},
+					total:{
+						required: true,	
+					},
+					additional_note:{
+						required: true,	
+					},
+					terms_conditions:{
+						required: true,	
+					},
+					item_id:{
+						required: true,	
+					},
+					"quantity[]":{
+						required: true,	
+					},
+					"rate[]":{
+						required: true,	
+					},
+					"amount[]":{
+						required: true,	
+					},
+					description:{
+						required: true,	
+					},
+			},
+                invalidHandler: function (event, validator) { //display error alert on form submit              
+                    success2.hide();
+                    error2.show();
+                    Metronic.scrollTo(error2, -200);
+                },
+                errorPlacement: function (error, element) { // render error placement for each input type
+                    var icon = $(element).parent('.input-icon').children('i');
+                    icon.removeClass('fa-check').addClass("fa-warning");  
+                    icon.attr("data-original-title", error.text()).tooltip({'container': 'body'});
+					if (element.attr("name") == "counter_id[]") { // for uniform checkboxes, insert the after the given container
+                        error.insertAfter("#form_payment_error");
+					}
+                },
+
+                highlight: function (element) { // hightlight error inputs
+                    $(element)
+                        .closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
+                },
+                unhighlight: function (element) { // revert the change done by hightlight
+                },
+                success: function (label, element) {
+                    var icon = $(element).parent('.input-icon').children('i');
+                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                    icon.removeClass("fa-warning").addClass("fa-check");
+					 if (label.attr("for") == "gender" || label.attr("for") == "counter_id[]") { // for checkboxes and radio buttons, no need to show OK icon
+                        label
+                            .closest('.form-group').removeClass('has-error').addClass('has-success');
+                        label.remove(); // remove error label here
+                    } else { // display success icon for other inputs
+                        label
+                            .addClass('valid') // mark the current input as valid and display OK icon
+                        .closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                    }
+                },
+                submitHandler: function (form) {
+                    success2.show();
+                    error2.hide();
+                    form[0].submit(); // submit the form
+                }
+            });
+//--	 END OF VALIDATION
+	
+	
 });
+
 </script>
 	 
 <div id="myModal1" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
