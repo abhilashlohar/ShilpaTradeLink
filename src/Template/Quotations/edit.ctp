@@ -74,7 +74,7 @@
 					<div class="form-group">
 						<label class="col-md-4 control-label">Finalisation Date</label>
 						<div class="col-md-8">
-							<?php echo $this->Form->input('finalisation_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d','placeholder' => 'Finalisation Date']); ?>
+							<?php echo $this->Form->input('finalisation_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d','placeholder' => 'Finalisation Date','value'=>date("d-m-Y",strtotime($quotation->finalisation_date))]); ?>
 						</div>
 					</div>
 					<br/>
@@ -148,7 +148,30 @@
 					</tr>
 				</thead>
 				<tbody>
-					
+					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_row): ?>
+						<tr class="tr1">
+							<td rowspan="2" width="10">
+								<?php echo ++$q; --$q; ?><?php echo $this->Form->input('quotation_rows.'.$q.'.id'); ?>
+							</td>
+							<td>
+								<?php echo $this->Form->input('quotation_rows['.$q.'][item_id]', ['options' => $items,'label' => false,'class' => 'form-control input-sm','value' => $quotation_row->item_id]); ?>
+							</td>
+							<td width="100">
+								<?php echo $this->Form->input('quotation_rows['.$q.'][quantity]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity','value' => $quotation_row->quantity]); ?>
+							</td>
+							<td width="130">
+								<?php echo $this->Form->input('quotation_rows['.$q.'][rate]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','value' => $quotation_row->rate]); ?>
+							</td>
+							<td width="130">
+								<?php echo $this->Form->input('quotation_rows['.$q.'][amount]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value' => $quotation_row->amount]); ?>
+							</td>
+							<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+						</tr>
+						<tr class="tr2">
+							<td colspan="4"></td>
+							<td></td>
+						</tr>
+					<?php $q++; endforeach; ?>
 				</tbody>
 				<tfoot>
 					<tr>
@@ -162,7 +185,7 @@
 			<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control wysihtml5']); ?>
 			<br/>
 			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a>
-			<?php echo $this->Form->input('terms_conditions', ['label' => false,'class' => 'form-control wysihtml5']); ?>
+			<?php echo $this->Form->input('terms_conditions', ['label' => false,'class' => 'form-control']); ?>
 			<br/>
 			
 		</div>
@@ -205,15 +228,135 @@
 <div id="terms_conditions" style="display:none;"></div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
-
 $(document).ready(function() {
-	add_row();
+	//--------- FORM VALIDATION
+		var form2 = $('#quotation_entry');
+		var error2 = $('.alert-danger', form2);
+		var success2 = $('.alert-success', form2);
+
+		jQuery.validator.addMethod("noHTML", function(value, element) {
+				return this.optional(element) || /^([a-zA-Z0-9\s\.,\-]+)$/.test(value);
+			}, "No HTML tags are allowed!");
+			
+		$.validator.addMethod("alpha", function(value, element) {
+			return this.optional(element) || value == value.match(/^[a-zA-Z\s]+$/);
+		 }, "No numbers are allowed !");
+			
+        form2.validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block help-block-error', // default input error message class
+                focusInvalid: false, // do not focus the last invalid input
+                ignore: "",  // validate all fields including form hidden input
+                rules: {
+					company_id:{
+						required: true,
+					},
+ 					date : {
+						  required: true,
+                    },
+					customer_id : {
+						  required: true,
+                    },
+					customer_address : {
+						  required: true,
+                    },
+					
+					employee_id:{
+						required: true
+					},
+					category_id:{
+						required: true,
+					},
+					
+					finalisation_date:{
+						required: true,
+					},
+ 					customer_for_attention : {
+						  required: true,
+                    },
+					enquiry_no  : {
+						  required: true,
+                    },
+					customer_contact: {
+						  required: true,
+                    },
+					subject:{
+						required: true,	
+					},
+					text:{
+						required: true,	
+					},
+					total:{
+						required: true,	
+					},
+					additional_note:{
+						required: true,	
+					},
+					terms_conditions:{
+						required: true,	
+					},
+					item_id:{
+						required: true,	
+					},
+					"quantity[]":{
+						required: true,	
+					},
+					"rate[]":{
+						required: true,	
+					},
+					"amount[]":{
+						required: true,	
+					},
+					description:{
+						required: true,	
+					},
+			},
+                invalidHandler: function (event, validator) { //display error alert on form submit              
+                    success2.hide();
+                    error2.show();
+                    Metronic.scrollTo(error2, -200);
+                },
+                errorPlacement: function (error, element) { // render error placement for each input type
+                    var icon = $(element).parent('.input-icon').children('i');
+                    icon.removeClass('fa-check').addClass("fa-warning");  
+                    icon.attr("data-original-title", error.text()).tooltip({'container': 'body'});
+					if (element.attr("name") == "counter_id[]") { // for uniform checkboxes, insert the after the given container
+                        error.insertAfter("#form_payment_error");
+					}
+                },
+
+                highlight: function (element) { // hightlight error inputs
+                    $(element)
+                        .closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
+                },
+                unhighlight: function (element) { // revert the change done by hightlight
+                },
+                success: function (label, element) {
+                    var icon = $(element).parent('.input-icon').children('i');
+                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                    icon.removeClass("fa-warning").addClass("fa-check");
+					 if (label.attr("for") == "gender" || label.attr("for") == "counter_id[]") { // for checkboxes and radio buttons, no need to show OK icon
+                        label
+                            .closest('.form-group').removeClass('has-error').addClass('has-success');
+                        label.remove(); // remove error label here
+                    } else { // display success icon for other inputs
+                        label
+                            .addClass('valid') // mark the current input as valid and display OK icon
+                        .closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                    }
+                },
+                submitHandler: function (form) {
+                    success2.show();
+                    error2.hide();
+                    form[0].submit(); // submit the form
+                }
+            });
+//--	 END OF VALIDATION
+
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
 	
-	var terms_conditions=$("#terms_conditions").text();
-	$('textarea[name="terms_conditions"]').val(terms_conditions);
 	
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
@@ -405,132 +548,7 @@ $(document).ready(function() {
 	});
 	
 	
-//--------- FORM VALIDATION
-		var form2 = $('#quotation_entry');
-		var error2 = $('.alert-danger', form2);
-		var success2 = $('.alert-success', form2);
 
-		jQuery.validator.addMethod("noHTML", function(value, element) {
-				return this.optional(element) || /^([a-zA-Z0-9\s\.,\-]+)$/.test(value);
-			}, "No HTML tags are allowed!");
-			
-		$.validator.addMethod("alpha", function(value, element) {
-			return this.optional(element) || value == value.match(/^[a-zA-Z\s]+$/);
-		 }, "No numbers are allowed !");
-			
-        form2.validate({
-                errorElement: 'span', //default input error message container
-                errorClass: 'help-block help-block-error', // default input error message class
-                focusInvalid: false, // do not focus the last invalid input
-                ignore: "",  // validate all fields including form hidden input
-                rules: {
-					company_id:{
-						required: true,
-					},
- 					date : {
-						  required: true,
-                    },
-					customer_id : {
-						  required: true,
-                    },
-					customer_address : {
-						  required: true,
-                    },
-					
-					employee_id:{
-						required: true
-					},
-					category_id:{
-						required: true,
-					},
-					
-					finalisation_date:{
-						required: true,
-					},
- 					customer_for_attention : {
-						  required: true,
-                    },
-					enquiry_no  : {
-						  required: true,
-                    },
-					customer_contact: {
-						  required: true,
-                    },
-					subject:{
-						required: true,	
-					},
-					
-					
-					
-					text:{
-						required: true,	
-					},
-					total:{
-						required: true,	
-					},
-					additional_note:{
-						required: true,	
-					},
-					terms_conditions:{
-						required: true,	
-					},
-					item_id:{
-						required: true,	
-					},
-					"quantity[]":{
-						required: true,	
-					},
-					"rate[]":{
-						required: true,	
-					},
-					"amount[]":{
-						required: true,	
-					},
-					description:{
-						required: true,	
-					},
-			},
-                invalidHandler: function (event, validator) { //display error alert on form submit              
-                    success2.hide();
-                    error2.show();
-                    Metronic.scrollTo(error2, -200);
-                },
-                errorPlacement: function (error, element) { // render error placement for each input type
-                    var icon = $(element).parent('.input-icon').children('i');
-                    icon.removeClass('fa-check').addClass("fa-warning");  
-                    icon.attr("data-original-title", error.text()).tooltip({'container': 'body'});
-					if (element.attr("name") == "counter_id[]") { // for uniform checkboxes, insert the after the given container
-                        error.insertAfter("#form_payment_error");
-					}
-                },
-
-                highlight: function (element) { // hightlight error inputs
-                    $(element)
-                        .closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
-                },
-                unhighlight: function (element) { // revert the change done by hightlight
-                },
-                success: function (label, element) {
-                    var icon = $(element).parent('.input-icon').children('i');
-                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
-                    icon.removeClass("fa-warning").addClass("fa-check");
-					 if (label.attr("for") == "gender" || label.attr("for") == "counter_id[]") { // for checkboxes and radio buttons, no need to show OK icon
-                        label
-                            .closest('.form-group').removeClass('has-error').addClass('has-success');
-                        label.remove(); // remove error label here
-                    } else { // display success icon for other inputs
-                        label
-                            .addClass('valid') // mark the current input as valid and display OK icon
-                        .closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
-                    }
-                },
-                submitHandler: function (form) {
-                    success2.show();
-                    error2.hide();
-                    form[0].submit(); // submit the form
-                }
-            });
-//--	 END OF VALIDATION
 	
 	
 });

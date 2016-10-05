@@ -126,9 +126,6 @@ class ItemsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['item_category_id'], 'ItemCategories'));
-        $rules->add($rules->existsIn(['item_group_id'], 'ItemGroups'));
-        $rules->add($rules->existsIn(['item_sub_group_id'], 'ItemSubGroups'));
         $rules->add($rules->existsIn(['unit_id'], 'Units'));
 
         return $rules;

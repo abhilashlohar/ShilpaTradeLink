@@ -190,10 +190,14 @@ class QuotationsController extends AppController
                 $this->Flash->error(__('The quotation could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Quotations->Customers->find('list', ['limit' => 200]);
-        $companies = $this->Quotations->Companies->find('all',['limit' => 200]);
+        $customers = $this->Quotations->Customers->find('all');
+		$companies = $this->Quotations->Companies->find('all',['limit' => 200]);
 		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
-        $this->set(compact('quotation', 'customers','companies','employees'));
+		$Categories = $this->Quotations->Categories->find('treeList',['limit' => 200]);
+		$items = $this->Quotations->Items->find('list',['limit' => 200]);
+		$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);
+		
+        $this->set(compact('quotation', 'customers','companies','employees','Categories','items','termsConditions'));
         $this->set('_serialize', ['quotation']);
     }
 
