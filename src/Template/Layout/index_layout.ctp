@@ -487,8 +487,10 @@ function touppercase(str){
 
 $(".nospace").live("keypress",function(e){
 	 if(e.which === 32) 
-        return false;
+     return false;
  })
+
+$('input').attr('autocomplete','off');
 </script>         
 
  
