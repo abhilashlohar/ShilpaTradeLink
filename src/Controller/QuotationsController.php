@@ -24,14 +24,53 @@ class QuotationsController extends AppController
     public function index($status=null)
     {
 		$this->viewBuilder()->layout('index_layout');
+		$where=[];
+		$ref_no=$this->request->query('ref_no');
+		$customer=$this->request->query('customer');
+		$salesman=$this->request->query('salesman');
+		$product=$this->request->query('product');
+		$From=$this->request->query('From');
+		$To=$this->request->query('To');
+		$this->set(compact('ref_no','customer','salesman','product','From','To'));
+		if(!empty($ref_no)){
+			$ref_no_arr=explode('/',$ref_no);
+			if(!empty($ref_no_arr[0])){
+				$where['qt1 LIKE']='%'.$ref_no_arr[0].'%';
+			}
+			if(!empty($ref_no_arr[2])){
+				$where['qt3 LIKE']='%'.$ref_no_arr[2].'%';
+			}
+			if(!empty($ref_no_arr[3])){
+				$where['qt4 LIKE']='%'.$ref_no_arr[3].'%';
+			}
+			
+		}
+		if(!empty($customer)){
+			$where['customers.customer_name LIKE']='%'.$customer.'%';
+		}
+		if(!empty($salesman)){
+			$where['employees.name LIKE']='%'.$salesman.'%';
+		}
+		if(!empty($product)){
+			$where['categories.name LIKE']='%'.$product.'%';
+		}
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['finalisation_date >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['finalisation_date <=']=$To;
+		}
         $this->paginate = [
             'contain' => ['Customers','Employees','Categories']
         ];
 		if($status==null or $status=='Pending'){
-			$where=['status'=>'Pending'];
+			$where['status']='Pending';
 		}elseif($status=='Converted Into Sales Order'){
-			$where=['status'=>'Converted Into Sales Order'];
+			$where['status']='Converted Into Sales Order';
 		}
+		//pr($where); exit;
         $quotations = $this->paginate($this->Quotations->find()->where($where)->order(['Quotations.id' => 'DESC']));
 
         $this->set(compact('quotations','status'));
@@ -137,6 +176,7 @@ class QuotationsController extends AppController
         $quotation = $this->Quotations->get($id, [
             'contain' => ['QuotationRows']
         ]);
+		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
 			$quotation->finalisation_date=date("Y-m-d",strtotime($quotation->finalisation_date));

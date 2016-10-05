@@ -27,47 +27,37 @@
 						); ?>
 					</div>
 				</div>
-				<table class="table table-condensed table-hover">
+				<form method="GET" >
+				<table class="table table-condensed">
 					<thead>
 						<tr>
-							<th>
-								 #
-							</th>
-							<th>
-								 First Name
-							</th>
-							<th>
-								 Last Name
-							</th>
-							<th>
-								 Username
-							</th>
-							<th>
-								 Status
-							</th>
+							<th>Ref. No</th>
+							<th>Customer</th>
+							<th>Salesman</th>
+							<th>Product</th>
+							<th>Finalisation Date</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
+							<td><input type="text" name="ref_no" class="form-control input-sm" placeholder="Ref. No" value="<?php echo @$ref_no; ?>"></td>
+							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
+							<td><input type="text" name="salesman" class="form-control input-sm" placeholder="Salesman" value="<?php echo @$salesman; ?>"></td>
+							<td><input type="text" name="product" class="form-control input-sm" placeholder="Product" value="<?php echo @$product; ?>"></td>
 							<td>
-								 1
+							<table>
+								<tr>
+									<td><input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>" style="width: 100px;" data-date-format="dd-mm-yyyy" ></td>
+									<td><input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>" style="width: 100px;" data-date-format="dd-mm-yyyy" ></td>
+								</tr>
+							</table>
 							</td>
-							<td>
-								 Mark
-							</td>
-							<td>
-								 Otto
-							</td>
-							<td>
-								 makr124
-							</td>
-							<td>
-								<span class="label label-sm label-success">
-								Approved </span>
-							</td>
+							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
 						</tr>
 					</tbody>
 				</table>
+				</form>
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
