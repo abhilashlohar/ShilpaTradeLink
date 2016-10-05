@@ -1,0 +1,122 @@
+<?php
+namespace App\Model\Table;
+
+use Cake\ORM\Query;
+use Cake\ORM\RulesChecker;
+use Cake\ORM\Table;
+use Cake\Validation\Validator;
+
+/**
+ * PurchaseOrders Model
+ *
+ * @property \Cake\ORM\Association\BelongsTo $Companies
+ * @property \Cake\ORM\Association\BelongsTo $Vendors
+ * @property \Cake\ORM\Association\HasMany $Grns
+ * @property \Cake\ORM\Association\HasMany $PurchaseOrderRows
+ *
+ * @method \App\Model\Entity\PurchaseOrder get($primaryKey, $options = [])
+ * @method \App\Model\Entity\PurchaseOrder newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\PurchaseOrder[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\PurchaseOrder|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\PurchaseOrder patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\PurchaseOrder[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\PurchaseOrder findOrCreate($search, callable $callback = null)
+ */
+class PurchaseOrdersTable extends Table
+{
+
+    /**
+     * Initialize method
+     *
+     * @param array $config The configuration for the Table.
+     * @return void
+     */
+    public function initialize(array $config)
+    {
+        parent::initialize($config);
+
+        $this->table('purchase_orders');
+        $this->displayField('id');
+        $this->primaryKey('id');
+
+        $this->belongsTo('Companies', [
+            'foreignKey' => 'company_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Vendors', [
+            'foreignKey' => 'vendor_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->hasMany('Grns', [
+            'foreignKey' => 'purchase_order_id'
+        ]);
+        $this->hasMany('PurchaseOrderRows', [
+            'foreignKey' => 'purchase_order_id'
+        ]);
+    }
+
+    /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationDefault(Validator $validator)
+    {
+        $validator
+            ->integer('id')
+            ->allowEmpty('id', 'create');
+
+        $validator
+            ->requirePresence('shipping_method', 'create')
+            ->notEmpty('shipping_method');
+
+        $validator
+            ->integer('shipping_terms')
+            ->requirePresence('shipping_terms', 'create')
+            ->notEmpty('shipping_terms');
+
+        $validator
+            ->date('delivery_date')
+            ->requirePresence('delivery_date', 'create')
+            ->notEmpty('delivery_date');
+
+        $validator
+            ->decimal('total')
+            ->requirePresence('total', 'create')
+            ->notEmpty('total');
+
+        $validator
+            ->requirePresence('terms_conditions', 'create')
+            ->notEmpty('terms_conditions');
+
+        $validator
+            ->requirePresence('po1', 'create')
+            ->notEmpty('po1');
+
+        $validator
+            ->requirePresence('po3', 'create')
+            ->notEmpty('po3');
+
+        $validator
+            ->requirePresence('po4', 'create')
+            ->notEmpty('po4');
+
+        return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['company_id'], 'Companies'));
+        $rules->add($rules->existsIn(['vendor_id'], 'Vendors'));
+
+        return $rules;
+    }
+}
