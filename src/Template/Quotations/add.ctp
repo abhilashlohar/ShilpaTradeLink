@@ -172,7 +172,11 @@
 			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a>
 			<?php echo $this->Form->input('terms_conditions', ['label' => false,'class' => 'form-control wysihtml5']); ?>
 			<br/>
-			
+			<div id="columns">
+			  <div class="column" draggable="true"><header>A</header></div>
+			  <div class="column" draggable="true"><header>B</header></div>
+			  <div class="column" draggable="true"><header>C</header></div>
+			</div>
 		</div>
 		<div class="form-actions">
 			<div class="row">

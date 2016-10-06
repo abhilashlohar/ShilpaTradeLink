@@ -132,9 +132,10 @@
 							<td>
 							<?php $options=[];
 							foreach($SaleTaxes as $SaleTaxe){
-								$options[(string)$SaleTaxe->tax_figure]=$SaleTaxe->tax_figure;
+								$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 							}
-							echo $this->Form->input('so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?>
+							echo $this->Form->input('sales_order_rows.'.$q.'.so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
+							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_description', ['type'=>'hidden','label' => false]); ?>
 							</td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
@@ -259,9 +260,10 @@
 			<td>
 			<?php $options=[];
 			foreach($SaleTaxes as $SaleTaxe){
-				$options[(string)$SaleTaxe->tax_figure]=$SaleTaxe->tax_figure;
+				$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 			}
-			echo $this->Form->input('so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?>
+			echo $this->Form->input('so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
+			echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false]); ?>
 			</td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
@@ -391,11 +393,24 @@ $(document).ready(function() {
             });
 		
 //--	 END OF VALIDATION
-	<?php if($process_status=="New"){ ?> add_row(); <?php } ?>
+	<?php if($process_status=="New"){ ?> add_row(); 
+	$("#main_tb tbody tr.tr1").each(function(){
+		var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
+		$(this).find('input').val(description);
+	});
+	<?php } ?>
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
 	
+	$('.change_des').die().live("change",function() { 
+		var description=$(this).find('option:selected').attr("description");
+		$(this).closest("td").find('input').val(description);
+    });
+	$("#main_tb tbody tr.tr1").each(function(){
+		var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
+		$(this).find("td:nth-child(7) input").val(description);
+	});
 	
 	<?php if($process_status=="New"){ ?> 
 	var terms_conditions=$("#terms_conditions").text();
@@ -423,6 +438,9 @@ $(document).ready(function() {
 					$(this).find("td:nth-child(5) input").attr("name","sales_order_rows["+i+"][amount]");
 					$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
 					$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][so_sale_tax]");
+					$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_description]");
+					var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
+					$(this).find("td:nth-child(7) input").val(description);
 				});
 				var i=0;
 				$("#main_tb tbody tr.tr2").each(function(){
@@ -457,6 +475,9 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(5) input").attr("name","sales_order_rows["+i+"][amount]");
 			$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
 			$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][so_sale_tax]");
+			$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_description]");
+			var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
+			$(this).find("td:nth-child(7) input").val(description);
 		});
 		var i=0;
 		
