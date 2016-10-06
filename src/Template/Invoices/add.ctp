@@ -129,6 +129,7 @@
 							<td>
 								<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$sales_order_rows->id]); ?></label>
 								<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','value' => @$sales_order_rows->so_sale_tax]); ?>
+								<?php echo $this->Form->input('sale_tax_description', ['label' => false,'type' => 'text','value' => @$sales_order_rows->sale_tax_description]); ?>
 							</td>
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
@@ -164,19 +165,28 @@
 				</tr>
 				<tr>
 					<td  align="right">
-						<b>Sale Tax Description</b>
-						<div class="input-group col-md-2">
 						<?php if($process_status!="New"){ ?>
+							<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" />
+							<div class="input-group col-md-2">
+							<div class="input-group">
 							<input type="text" name="sale_tax_per" class="form-control input-sm" readonly><span class="input-group-addon">%</span>
+							</div>
+							</div>
 						
-						<?php }else{ 
+						<?php }else{ ?>
+						<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" />
+						<div class="input-group col-md-2">
+							<div class="input-group">
+						<?php						
 							$options=[];
 							foreach($SaleTaxes as $SaleTaxe){
-								$options[(string)$SaleTaxe->tax_figure]=$SaleTaxe->tax_figure.'%';
+								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 							}
 							echo $this->Form->input('sale_tax_per', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); 
 						} ?>
+							</div>
 						</div>
+						
 					</td>
 					<td><?php echo $this->Form->input('sale_tax_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01]); ?></td>
 				</tr>
@@ -404,9 +414,11 @@ $(document).ready(function() {
 				var Amount=qty*Rate;
 				$(this).find("td:nth-child(5) input").val(Amount);
 				total=total+Amount;
-				var sale_tax=parseFloat($(this).find("td:nth-child(6) input[type=text]").val());
+				var sale_tax=parseFloat($(this).find("td:nth-child(6) input[type=text]:first").val());
 				if(isNaN(sale_tax)) { var sale_tax = 0; }
 				$('input[name="sale_tax_per"]').val(sale_tax);
+				var sale_tax_description=$(this).find("td:nth-child(6) input[type=text]").eq(1).val();
+				$('input[name="sale_tax_description"]').val(sale_tax_description);
 			}
 		});
 		var exceise_duty=parseFloat($('input[name="exceise_duty"]').val());
@@ -553,6 +565,9 @@ $(document).ready(function() {
 			if(isNaN(sale_tax)) { var sale_tax = 0; }
 			$('input[name="sale_tax_amount"]').val(sale_tax.toFixed(2));
 			
+			var sale_tax_description=$('select[name="sale_tax_per"] option:selected').attr("description");
+			$('input[name="sale_tax_description"]').val(sale_tax_description);
+			
 			var fright_amount=parseFloat($('input[name="fright_amount"]').val());
 			if(isNaN(fright_amount)) { var fright_amount = 0; }
 			
@@ -630,13 +645,7 @@ $(document).ready(function() {
 		$("#myModal12").hide();
     });
 	
-	$('form').on('keyup keypress', function(e) {
-	  var keyCode = e.keyCode || e.which;
-	  if (keyCode === 13) { 
-		e.preventDefault();
-		return false;
-	  }
-	});
+	
 });
 </script>
 	 
