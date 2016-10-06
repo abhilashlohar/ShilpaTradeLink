@@ -61,6 +61,13 @@ class InvoicesController extends AppController
         $this->set('invoice', $invoice);
         $this->set('_serialize', ['invoice']);
     }
+	
+	public function confirm($id = null)
+    {
+		$this->viewBuilder()->layout('pdf_layout');
+		
+        $this->set('id', $id);
+    }
 
     /**
      * Add method
@@ -148,6 +155,8 @@ class InvoicesController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		
         $invoice = $this->Invoices->get($id, [
             'contain' => []
         ]);
@@ -161,10 +170,24 @@ class InvoicesController extends AppController
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Invoices->Customers->find('list', ['limit' => 200]);
-        $companies = $this->Invoices->Companies->find('list', ['limit' => 200]);
-        $salesOrders = $this->Invoices->SalesOrders->find('list', ['limit' => 200]);
-        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders'));
+       $customers = $this->Invoices->Customers->find('list', ['limit' => 200]);
+        $companies = $this->Invoices->Companies->find('all', ['limit' => 200]);
+		
+		$salesOrders = $this->Invoices->SalesOrders->find()->select(['total_rows' => 
+				$this->Invoices->SalesOrders->find()->func()->count('SalesOrderRows.id')])
+				->leftJoinWith('SalesOrderRows', function ($q) {
+					return $q->where(['SalesOrderRows.quantity > SalesOrderRows.processed_quantity']);
+				})
+				->group(['SalesOrders.id'])
+				->autoFields(true)
+				->having(['total_rows >' => 0]);
+				
+		$items = $this->Invoices->Items->find('list',['limit' => 200]);
+		$transporters = $this->Invoices->Transporters->find('list', ['limit' => 200]);
+		$termsConditions = $this->Invoices->TermsConditions->find('all',['limit' => 200]);
+		$SaleTaxes = $this->Invoices->SaleTaxes->find('all');
+		$employees = $this->Invoices->Employees->find('list', ['limit' => 200]);
+        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees'));
         $this->set('_serialize', ['invoice']);
     }
 

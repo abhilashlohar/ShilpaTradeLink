@@ -2,7 +2,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Generate Quotation</span>
+			<span class="caption-subject font-blue-steel uppercase">Edit Quotation</span>
 		</div>
 	</div>
 	<div class="portlet-body form">
@@ -74,7 +74,7 @@
 					<div class="form-group">
 						<label class="col-md-4 control-label">Finalisation Date</label>
 						<div class="col-md-8">
-							<?php echo $this->Form->input('finalisation_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d','placeholder' => 'Finalisation Date','value'=>date("d-m-Y",strtotime($quotation->finalisation_date))]); ?>
+							<?php echo $this->Form->input('finalisation_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d','placeholder' => 'Finalisation Date']); ?>
 						</div>
 					</div>
 					<br/>
@@ -95,8 +95,6 @@
 			</div>
 			<br/>
 			<div class="row">
-
-
 				<div class="col-md-6">
 					<div class="form-group">
 						<label class="col-md-3 control-label">Kind attention</label>
@@ -122,20 +120,30 @@
 				</div>
 			</div>
 			<br/>
-			<div class="form-group">
-				<label class="col-md-1 control-label">Subject</label>
-				<div class="col-md-11">
-					<?php echo $this->Form->input('subject', ['label' => false,'class' => 'form-control input-sm']); ?>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="col-md-1 control-label">Subject</label>
+						<div class="col-md-11">
+							<?php echo $this->Form->input('subject', ['label' => false,'class' => 'form-control input-sm']); ?>
+						</div>
+					</div>
+				</div>
+			</div><br/>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="col-md-1 control-label">Dear Sir</label>
+						<div class="col-md-11">
+							<?php echo $this->Form->input('text', ['label' => false,'class' => 'form-control','value' => 'With reference to above enquiry we are pleased to submit our quote as follows :-']); ?>
+						</div>
+					</div>
 				</div>
 			</div>
-			<br/><br/>
-			<div class="form-group">
-				<label class="col-md-1 control-label">Dear Sir</label>
-				<div class="col-md-11">
-					<?php echo $this->Form->input('text', ['label' => false,'class' => 'form-control','value' => 'With reference to above enquiry we are pleased to submit our quote as follows :-']); ?>
-				</div>
+			<br/>
+			<div class="alert alert-danger" id="row_error" style="display:none;">
+				Fill Quantity and Rate.
 			</div>
-			
 			<table class="table tableitm" id="main_tb">
 				<thead>
 					<tr>
@@ -148,30 +156,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_row): ?>
-						<tr class="tr1">
-							<td rowspan="2" width="10">
-								<?php echo ++$q; --$q; ?><?php echo $this->Form->input('quotation_rows.'.$q.'.id'); ?>
-							</td>
-							<td>
-								<?php echo $this->Form->input('quotation_rows['.$q.'][item_id]', ['options' => $items,'label' => false,'class' => 'form-control input-sm','value' => $quotation_row->item_id]); ?>
-							</td>
-							<td width="100">
-								<?php echo $this->Form->input('quotation_rows['.$q.'][quantity]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity','value' => $quotation_row->quantity]); ?>
-							</td>
-							<td width="130">
-								<?php echo $this->Form->input('quotation_rows['.$q.'][rate]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','value' => $quotation_row->rate]); ?>
-							</td>
-							<td width="130">
-								<?php echo $this->Form->input('quotation_rows['.$q.'][amount]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value' => $quotation_row->amount]); ?>
-							</td>
-							<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
-						</tr>
-						<tr class="tr2">
-							<td colspan="4"></td>
-							<td></td>
-						</tr>
-					<?php $q++; endforeach; ?>
+					
 				</tbody>
 				<tfoot>
 					<tr>
@@ -184,15 +169,21 @@
 			<label class="control-label">Additional Note (Optional): </label>
 			<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control wysihtml5']); ?>
 			<br/>
-			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a>
-			<?php echo $this->Form->input('terms_conditions', ['label' => false,'class' => 'form-control']); ?>
-			<br/>
+			<div class="alert alert-danger" id="terms_conditions_error" style="display:none;">
+				Select Commercial Terms & Conditions.
+			</div>
 			
+			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a>
+			<?php echo $this->Form->input('terms_conditions', ['type' => 'hidden','class' => 'form-control','onmousehover'=>'copy_term_condition_to_textarea()']); ?>
+			<br/>
+			<ol id="sortable">
+			  
+			</ol>
 		</div>
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
-					<button type="submit" class="btn btn-primary">GENERATE QUOTATION</button>
+					<button type="submit" class="btn btn-primary" >UPDATE QUOTATION</button>
 				</div>
 			</div>
 		</div>
@@ -213,7 +204,7 @@
 		<tr class="tr1">
 			<td rowspan="2" width="10">0</td>
 			<td><?php echo $this->Form->input('item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen','placeholder' => 'Item']); ?></td>
-			<td width="100"><?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Unit']); ?></td>
+			<td width="100"><?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity']); ?></td>
 			<td width="130"><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate']); ?></td>
 			<td width="130"><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
@@ -227,28 +218,42 @@
 
 <div id="terms_conditions" style="display:none;"></div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<style>
+#sortable li{
+	cursor: -webkit-grab;
+}
+</style>
+<?php echo $this->Html->css('/drag_drop/jquery-ui.css'); ?>
+<?php echo $this->Html->script('/drag_drop/jquery-1.12.4.js'); ?>
+<?php echo $this->Html->script('/drag_drop/jquery-ui.js'); ?>
+<script>
+$( function() {
+$( "#sortable" ).sortable();
+$( "#sortable" ).disableSelection();
+} );
+</script>
 <script>
 $(document).ready(function() {
+	
 	//--------- FORM VALIDATION
-		var form2 = $('#quotation_entry');
-		var error2 = $('.alert-danger', form2);
-		var success2 = $('.alert-success', form2);
 
-		jQuery.validator.addMethod("noHTML", function(value, element) {
-				return this.optional(element) || /^([a-zA-Z0-9\s\.,\-]+)$/.test(value);
-			}, "No HTML tags are allowed!");
-			
-		$.validator.addMethod("alpha", function(value, element) {
-			return this.optional(element) || value == value.match(/^[a-zA-Z\s]+$/);
-		 }, "No numbers are allowed !");
-			
-        form2.validate({
+			var form1 = $('#quotation_entry');
+            var error1 = $('.alert-danger', form1);
+            var success1 = $('.alert-success', form1);
+
+            form1.validate({
                 errorElement: 'span', //default input error message container
                 errorClass: 'help-block help-block-error', // default input error message class
                 focusInvalid: false, // do not focus the last invalid input
                 ignore: "",  // validate all fields including form hidden input
+                messages: {
+                    select_multi: {
+                        maxlength: jQuery.validator.format("Max {0} items allowed for selection"),
+                        minlength: jQuery.validator.format("At least {0} items must be selected")
+                    }
+                },
                 rules: {
-					company_id:{
+                    company_id:{
 						required: true,
 					},
  					date : {
@@ -283,80 +288,76 @@ $(document).ready(function() {
 					subject:{
 						required: true,	
 					},
-					text:{
+					qt1:{
 						required: true,	
 					},
-					total:{
+					qt3:{
 						required: true,	
 					},
-					additional_note:{
+					qt4:{
 						required: true,	
-					},
-					terms_conditions:{
-						required: true,	
-					},
-					item_id:{
-						required: true,	
-					},
-					"quantity[]":{
-						required: true,	
-					},
-					"rate[]":{
-						required: true,	
-					},
-					"amount[]":{
-						required: true,	
-					},
-					description:{
-						required: true,	
-					},
-			},
-                invalidHandler: function (event, validator) { //display error alert on form submit              
-                    success2.hide();
-                    error2.show();
-                    Metronic.scrollTo(error2, -200);
-                },
-                errorPlacement: function (error, element) { // render error placement for each input type
-                    var icon = $(element).parent('.input-icon').children('i');
-                    icon.removeClass('fa-check').addClass("fa-warning");  
-                    icon.attr("data-original-title", error.text()).tooltip({'container': 'body'});
-					if (element.attr("name") == "counter_id[]") { // for uniform checkboxes, insert the after the given container
-                        error.insertAfter("#form_payment_error");
 					}
                 },
 
+                invalidHandler: function (event, validator) { //display error alert on form submit              
+                    success1.hide();
+                    error1.show();
+                    Metronic.scrollTo(error1, -200);
+                },
+
                 highlight: function (element) { // hightlight error inputs
-                    $(element)
-                        .closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
+                    $(element).closest('.form-group').addClass('has-error'); // set error class to the control group
                 },
+
                 unhighlight: function (element) { // revert the change done by hightlight
+                    $(element)
+                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
                 },
-                success: function (label, element) {
-                    var icon = $(element).parent('.input-icon').children('i');
-                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
-                    icon.removeClass("fa-warning").addClass("fa-check");
-					 if (label.attr("for") == "gender" || label.attr("for") == "counter_id[]") { // for checkboxes and radio buttons, no need to show OK icon
-                        label
-                            .closest('.form-group').removeClass('has-error').addClass('has-success');
-                        label.remove(); // remove error label here
-                    } else { // display success icon for other inputs
-                        label
-                            .addClass('valid') // mark the current input as valid and display OK icon
-                        .closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
-                    }
+
+                success: function (label) {
+                    label
+                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
                 },
+
                 submitHandler: function (form) {
-                    success2.show();
-                    error2.hide();
-                    form[0].submit(); // submit the form
+					q="ok";
+					$("#main_tb tbody tr.tr1").each(function(){
+						var w=$(this).find("td:nth-child(3) input").val();
+						var r=$(this).find("td:nth-child(4) input").val();
+						if(w=="" || r==""){
+							q="e";
+						}
+					});
+					if(q=="e"){
+						$("#row_error").show();
+						return false;
+					}else{
+						$("#row_error").hide();
+						var terms_conditions=copy_term_condition_to_textarea();
+						if(terms_conditions==""){
+							$("#terms_conditions_error").show();
+							return false;
+						}else{
+							$("#terms_conditions_error").hide();
+							$('input[name="terms_conditions"]').val(terms_conditions);
+						}
+						
+						success1.show();
+						error1.hide();
+						form[0].submit(); // submit the form
+					}
                 }
             });
+		
 //--	 END OF VALIDATION
 
+	add_row();
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
 	
+	var terms_conditions=$("#terms_conditions").text();
+	$('textarea[name="terms_conditions"]').val(terms_conditions);
 	
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
@@ -525,20 +526,34 @@ $(document).ready(function() {
     });
 	
 	$('.insert_tc').die().live("click",function() {
-		$('#terms_conditions').html("");
-		var inc=0;
+		$('#sortable').html("");
+		
 		$(".tabl_tc tbody tr").each(function(){
 			var v=$(this).find('td:nth-child(1) input[type="checkbox"]:checked').val();
 			if(v){
-				++inc;
 				var tc=$(this).find('td:nth-child(2)').text();
-				$('#terms_conditions').append(inc+". "+tc+"&#13;&#10;");
+				$('#sortable').append('<li class="ui-state-default">'+tc+'</li>');
 			}
 		});
 		var terms_conditions=$("#terms_conditions").text();
 		$('textarea[name="terms_conditions"]').val(terms_conditions);
 		$("#myModal2").hide();
     });
+	
+	function copy_term_condition_to_textarea(){
+		$('#terms_conditions').html("");
+		var inc=0;
+		$("#sortable li").each(function(){
+			var tc=$(this).text();
+			++inc;
+			$('#terms_conditions').append(inc+". "+tc+"&#13;&#10;");
+		});
+		var terms_conditions=$("#terms_conditions").text();
+		return terms_conditions;
+	}
+	
+	
+	
 	$('form').on('keyup keypress', function(e) {
 	  var keyCode = e.keyCode || e.which;
 	  if (keyCode === 13) { 
@@ -546,11 +561,6 @@ $(document).ready(function() {
 		return false;
 	  }
 	});
-	
-	
-
-	
-	
 });
 
 </script>
