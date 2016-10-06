@@ -169,8 +169,12 @@
 			<label class="control-label">Additional Note (Optional): </label>
 			<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control wysihtml5']); ?>
 			<br/>
+			<div class="alert alert-danger" id="terms_conditions_error" style="display:none;">
+				Select Commercial Terms & Conditions.
+			</div>
+			
 			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a>
-			<?php echo $this->Form->input('terms_conditions', ['type'=>'hidden','label' => false,'class' => 'form-control']); ?>
+			<?php echo $this->Form->input('terms_conditions', ['type' => 'hidden','class' => 'form-control','onmousehover'=>'copy_term_condition_to_textarea()']); ?>
 			<br/>
 			<ol id="sortable">
 			  
@@ -179,7 +183,7 @@
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
-					<button type="submit" class="btn btn-primary">GENERATE QUOTATION</button>
+					<button type="submit" class="btn btn-primary" >GENERATE QUOTATION</button>
 				</div>
 			</div>
 		</div>
@@ -328,6 +332,16 @@ $(document).ready(function() {
 						$("#row_error").show();
 						return false;
 					}else{
+						$("#row_error").hide();
+						var terms_conditions=copy_term_condition_to_textarea();
+						if(terms_conditions==""){
+							$("#terms_conditions_error").show();
+							return false;
+						}else{
+							$("#terms_conditions_error").hide();
+							$('input[name="terms_conditions"]').val(terms_conditions);
+						}
+						
 						success1.show();
 						error1.hide();
 						form[0].submit(); // submit the form
@@ -518,13 +532,28 @@ $(document).ready(function() {
 			var v=$(this).find('td:nth-child(1) input[type="checkbox"]:checked').val();
 			if(v){
 				var tc=$(this).find('td:nth-child(2)').text();
-				$('#sortable').append('<li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>'+tc+'</li>');
+				$('#sortable').append('<li class="ui-state-default">'+tc+'</li>');
 			}
 		});
 		var terms_conditions=$("#terms_conditions").text();
 		$('textarea[name="terms_conditions"]').val(terms_conditions);
 		$("#myModal2").hide();
     });
+	
+	function copy_term_condition_to_textarea(){
+		$('#terms_conditions').html("");
+		var inc=0;
+		$("#sortable li").each(function(){
+			var tc=$(this).text();
+			++inc;
+			$('#terms_conditions').append(inc+". "+tc+"&#13;&#10;");
+		});
+		var terms_conditions=$("#terms_conditions").text();
+		return terms_conditions;
+	}
+	
+	
+	
 	$('form').on('keyup keypress', function(e) {
 	  var keyCode = e.keyCode || e.which;
 	  if (keyCode === 13) { 

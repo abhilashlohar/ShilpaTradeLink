@@ -347,7 +347,8 @@ $(document).ready(function() {
 						required: true,	
 					},
 					dispatch_email:{
-						required: true,	
+						required: true,
+						email: true,
 					}
                 },
 
