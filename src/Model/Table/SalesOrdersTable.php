@@ -102,6 +102,10 @@ class SalesOrdersTable extends Table
             ->decimal('total')
             ->requirePresence('total', 'create')
             ->notEmpty('total');
+			
+		 $validator
+            ->requirePresence('road_permit_required', 'create')
+            ->notEmpty('road_permit_required');
 
 
         return $validator;

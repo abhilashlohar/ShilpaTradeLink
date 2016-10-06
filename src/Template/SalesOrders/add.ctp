@@ -9,7 +9,7 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
-		<?= $this->Form->create($salesOrder,['id'=>'quotation_entry']) ?>
+		<?= $this->Form->create($salesOrder,['id'=>'form_sample_3']) ?>
 		<div class="form-body">
 			<div class="row">
 				<div class="col-md-6">
@@ -155,7 +155,7 @@
 					</tr>
 					<tr>
 						<td colspan="3">
-						<label class="control-label">Additional Note <span class="required" aria-required="true">*</span></label>
+						<label class="control-label">Additional Note </label>
 						<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional Note']); ?></td>
 					</tr>
 				</tbody>
@@ -209,16 +209,23 @@
 				</div>
 			</div>
 			<div class="row">
+				
 				<div class="col-md-4">
 					<div class="form-group">
+						<div class="radio-list" data-error-container="#road_permit_required_error">
 						<label class="control-label">Road Permit Required <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->radio('road_permit_required',[['value' => 'Yes', 'text' => 'Yes'],['value' => 'No', 'text' => 'No']]); ?>
+						</div>
+						<div id="road_permit_required_error"></div>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="form-group">
+						<div class="radio-list" data-error-container="#form49_error">
 						<label class="control-label">Form-49 Required <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->radio('form49',[['value' => 'Yes', 'text' => 'Yes'],['value' => 'No', 'text' => 'No']]); ?>
+						</div>
+						<div id="form49_error"></div>
 					</div>
 				</div>
 			</div>
@@ -281,22 +288,14 @@
 $(document).ready(function() {
 	
 	//--------- FORM VALIDATION
-
-			var form1 = $('#quotation_entry');
-            var error1 = $('.alert-danger', form1);
-            var success1 = $('.alert-success', form1);
-
-            form1.validate({
+			
+			var form3 = $('#form_sample_3');
+            var error3 = $('.alert-danger', form3);
+            var success3 = $('.alert-success', form3);
+			form3.validate({
                 errorElement: 'span', //default input error message container
                 errorClass: 'help-block help-block-error', // default input error message class
-                focusInvalid: false, // do not focus the last invalid input
-                ignore: "",  // validate all fields including form hidden input
-                messages: {
-                    select_multi: {
-                        maxlength: jQuery.validator.format("Max {0} items allowed for selection"),
-                        minlength: jQuery.validator.format("At least {0} items must be selected")
-                    }
-                },
+                focusInvalid: true, // do not focus the last invalid input
                 rules: {
                     company_id:{
 						required: true,
@@ -349,17 +348,52 @@ $(document).ready(function() {
 					dispatch_email:{
 						required: true,
 						email: true,
+					},
+					road_permit_required:{
+						required: true,
+					},
+					form49:{
+						required: true,
 					}
                 },
 
-                invalidHandler: function (event, validator) { //display error alert on form submit              
-                    success1.hide();
-                    error1.show();
-                    Metronic.scrollTo(error1, -200);
+                messages: { // custom messages for radio buttons and checkboxes
+                    membership: {
+                        required: "Please select a Membership type"
+                    },
+                    service: {
+                        required: "Please select  at least 2 types of Service",
+                        minlength: jQuery.validator.format("Please select  at least {0} types of Service")
+                    }
+                },
+
+                errorPlacement: function (error, element) { // render error placement for each input type
+                    if (element.parent(".input-group").size() > 0) {
+                        error.insertAfter(element.parent(".input-group"));
+                    } else if (element.attr("data-error-container")) { 
+                        error.appendTo(element.attr("data-error-container"));
+                    } else if (element.parents('.radio-list').size() > 0) { 
+                        error.appendTo(element.parents('.radio-list').attr("data-error-container"));
+                    } else if (element.parents('.radio-inline').size() > 0) { 
+                        error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
+                    } else if (element.parents('.checkbox-list').size() > 0) {
+                        error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
+                    } else if (element.parents('.checkbox-inline').size() > 0) { 
+                        error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
+                    } else {
+                        error.insertAfter(element); // for other inputs, just perform default behavior
+                    }
+                },
+
+                invalidHandler: function (event, validator) { //display error alert on form submit   
+                    success3.hide();
+                    error3.show();
+                    Metronic.scrollTo(error3, -200);
                 },
 
                 highlight: function (element) { // hightlight error inputs
-                    $(element).closest('.form-group').addClass('has-error'); // set error class to the control group
+                   $(element)
+                        .closest('.form-group').addClass('has-error'); // set error class to the control group
                 },
 
                 unhighlight: function (element) { // revert the change done by hightlight
@@ -373,7 +407,7 @@ $(document).ready(function() {
                 },
 
                 submitHandler: function (form) {
-					q="ok";
+                    q="ok";
 					$("#main_tb tbody tr.tr1").each(function(){
 						var w=$(this).find("td:nth-child(3) input").val();
 						var r=$(this).find("td:nth-child(4) input").val();
@@ -385,19 +419,21 @@ $(document).ready(function() {
 						$("#row_error").show();
 						return false;
 					}else{
-						success1.show();
-						error1.hide();
+						success3.show();
+						error3.hide();
 						form[0].submit(); // submit the form
 					}
-                    
                 }
+
             });
+			
+			
 		
 //--	 END OF VALIDATION
 	<?php if($process_status=="New"){ ?> add_row(); 
 	$("#main_tb tbody tr.tr1").each(function(){
 		var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
-		$(this).find('input').val(description);
+		$(this).closest("td").find('input').val(description);
 	});
 	<?php } ?>
     $('.addrow').die().live("click",function() { 
