@@ -173,8 +173,8 @@
 				Select Commercial Terms & Conditions.
 			</div>
 			
-			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a>
-			<?php echo $this->Form->input('terms_conditions', ['type' => 'hidden','class' => 'form-control','onmousehover'=>'copy_term_condition_to_textarea()']); ?>
+			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a> <a  role="button" class="btn btn-xs btn-primary updatetc" >Update </a>
+			<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control','onmousehover'=>'copy_term_condition_to_textarea()']); ?>
 			<br/>
 			<ol id="sortable">
 			  
@@ -333,15 +333,6 @@ $(document).ready(function() {
 						return false;
 					}else{
 						$("#row_error").hide();
-						var terms_conditions=copy_term_condition_to_textarea();
-						if(terms_conditions==""){
-							$("#terms_conditions_error").show();
-							return false;
-						}else{
-							$("#terms_conditions_error").hide();
-							$('input[name="terms_conditions"]').val(terms_conditions);
-						}
-						
 						success1.show();
 						error1.hide();
 						form[0].submit(); // submit the form
@@ -549,18 +540,14 @@ $(document).ready(function() {
 			$('#terms_conditions').append(inc+". "+tc+"&#13;&#10;");
 		});
 		var terms_conditions=$("#terms_conditions").text();
-		return terms_conditions;
+		$('textarea[name="terms_conditions"]').val(terms_conditions);
 	}
 	
+	$(".updatetc").die().on("click",function(){
+		copy_term_condition_to_textarea();
+	})
 	
 	
-	$('form').on('keyup keypress', function(e) {
-	  var keyCode = e.keyCode || e.which;
-	  if (keyCode === 13) { 
-		e.preventDefault();
-		return false;
-	  }
-	});
 });
 
 </script>

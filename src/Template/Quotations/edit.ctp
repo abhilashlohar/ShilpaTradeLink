@@ -74,7 +74,7 @@
 					<div class="form-group">
 						<label class="col-md-4 control-label">Finalisation Date</label>
 						<div class="col-md-8">
-							<?php echo $this->Form->input('finalisation_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d','placeholder' => 'Finalisation Date']); ?>
+							<?php echo $this->Form->input('finalisation_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d','placeholder' => 'Finalisation Date','value'=>date("d-m-Y",strtotime($quotation->finalisation_date))]); ?>
 						</div>
 					</div>
 					<br/>
@@ -156,7 +156,30 @@
 					</tr>
 				</thead>
 				<tbody>
-					
+					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_row): ?>
+						<tr class="tr1">
+							<td rowspan="2" width="10">
+								<?php echo ++$q; --$q; ?><?php echo $this->Form->input('quotation_rows.'.$q.'.id'); ?>
+							</td>
+							<td>
+								<?php echo $this->Form->input('quotation_rows['.$q.'][item_id]', ['options' => $items,'label' => false,'class' => 'form-control input-sm','value' => $quotation_row->item_id]); ?>
+							</td>
+							<td width="100">
+								<?php echo $this->Form->input('quotation_rows['.$q.'][quantity]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity','value' => $quotation_row->quantity]); ?>
+							</td>
+							<td width="130">
+								<?php echo $this->Form->input('quotation_rows['.$q.'][rate]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','value' => $quotation_row->rate]); ?>
+							</td>
+							<td width="130">
+								<?php echo $this->Form->input('quotation_rows['.$q.'][amount]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value' => $quotation_row->amount]); ?>
+							</td>
+							<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+						</tr>
+						<tr class="tr2">
+							<td colspan="4"><?php echo $this->Form->textarea('quotation_rows['.$q.'][description]', ['type' => 'textarea','label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value' => $quotation_row->description]); ?></td>
+							<td></td>
+						</tr>
+					<?php $q++; endforeach; ?>
 				</tbody>
 				<tfoot>
 					<tr>
@@ -173,8 +196,8 @@
 				Select Commercial Terms & Conditions.
 			</div>
 			
-			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a>
-			<?php echo $this->Form->input('terms_conditions', ['type' => 'hidden','class' => 'form-control','onmousehover'=>'copy_term_condition_to_textarea()']); ?>
+			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a><a  role="button" class="btn btn-xs btn-primary updatetc" >Update </a>
+			<?php echo $this->Form->input('terms_conditions', ['label' => false,'class' => 'form-control','onmousehover'=>'copy_term_condition_to_textarea()']); ?>
 			<br/>
 			<ol id="sortable">
 			  
@@ -333,14 +356,6 @@ $(document).ready(function() {
 						return false;
 					}else{
 						$("#row_error").hide();
-						var terms_conditions=copy_term_condition_to_textarea();
-						if(terms_conditions==""){
-							$("#terms_conditions_error").show();
-							return false;
-						}else{
-							$("#terms_conditions_error").hide();
-							$('input[name="terms_conditions"]').val(terms_conditions);
-						}
 						
 						success1.show();
 						error1.hide();
@@ -351,13 +366,10 @@ $(document).ready(function() {
 		
 //--	 END OF VALIDATION
 
-	add_row();
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
 	
-	var terms_conditions=$("#terms_conditions").text();
-	$('textarea[name="terms_conditions"]').val(terms_conditions);
 	
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
@@ -549,18 +561,14 @@ $(document).ready(function() {
 			$('#terms_conditions').append(inc+". "+tc+"&#13;&#10;");
 		});
 		var terms_conditions=$("#terms_conditions").text();
-		return terms_conditions;
+		$('textarea[name="terms_conditions"]').val(terms_conditions);
 	}
 	
+	$(".updatetc").die().on("click",function(){
+		copy_term_condition_to_textarea();
+	})
 	
 	
-	$('form').on('keyup keypress', function(e) {
-	  var keyCode = e.keyCode || e.which;
-	  if (keyCode === 13) { 
-		e.preventDefault();
-		return false;
-	  }
-	});
 });
 
 </script>
