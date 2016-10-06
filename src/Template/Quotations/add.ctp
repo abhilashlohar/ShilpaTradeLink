@@ -170,13 +170,11 @@
 			<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control wysihtml5']); ?>
 			<br/>
 			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a>
-			<?php echo $this->Form->input('terms_conditions', ['label' => false,'class' => 'form-control wysihtml5']); ?>
+			<?php echo $this->Form->input('terms_conditions', ['type'=>'hidden','label' => false,'class' => 'form-control']); ?>
 			<br/>
-			<div id="columns">
-			  <div class="column" draggable="true"><header>A</header></div>
-			  <div class="column" draggable="true"><header>B</header></div>
-			  <div class="column" draggable="true"><header>C</header></div>
-			</div>
+			<ol id="sortable">
+			  
+			</ol>
 		</div>
 		<div class="form-actions">
 			<div class="row">
@@ -216,8 +214,21 @@
 
 <div id="terms_conditions" style="display:none;"></div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<style>
+#sortable li{
+	cursor: -webkit-grab;
+}
+</style>
+<?php echo $this->Html->css('/drag_drop/jquery-ui.css'); ?>
+<?php echo $this->Html->script('/drag_drop/jquery-1.12.4.js'); ?>
+<?php echo $this->Html->script('/drag_drop/jquery-ui.js'); ?>
 <script>
-
+$( function() {
+$( "#sortable" ).sortable();
+$( "#sortable" ).disableSelection();
+} );
+</script>
+<script>
 $(document).ready(function() {
 	
 	//--------- FORM VALIDATION
@@ -501,14 +512,13 @@ $(document).ready(function() {
     });
 	
 	$('.insert_tc').die().live("click",function() {
-		$('#terms_conditions').html("");
-		var inc=0;
+		$('#sortable').html("");
+		
 		$(".tabl_tc tbody tr").each(function(){
 			var v=$(this).find('td:nth-child(1) input[type="checkbox"]:checked').val();
 			if(v){
-				++inc;
 				var tc=$(this).find('td:nth-child(2)').text();
-				$('#terms_conditions').append(inc+". "+tc+"&#13;&#10;");
+				$('#sortable').append('<li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>'+tc+'</li>');
 			}
 		});
 		var terms_conditions=$("#terms_conditions").text();
@@ -522,11 +532,6 @@ $(document).ready(function() {
 		return false;
 	  }
 	});
-	
-	
-
-
-	
 });
 
 </script>
