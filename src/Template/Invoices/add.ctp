@@ -140,6 +140,15 @@
 				</tbody>
 			</table>
 			<table class="table tableitm" id="tbl2">
+				<tr>
+					<td  align="right">
+					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
+					<div class="input-group col-md-2" style="display:none;" id="discount_text">
+						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
+					</div>
+					</td>
+					<td><?php echo $this->Form->input('discount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
+				</tr>
 				<?php if(in_array('Yes',@$ed_des) or $process_status=="New") { ?>
 				<tr style="background-color:#e6faf9;">
 					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:right']]); ?> </b></td>
@@ -381,7 +390,15 @@ $(document).ready(function() {
 		}
 	})
 	
-	
+	$("#discount_per").on('click',function(){
+		if($(this).is(':checked')){
+			$("#discount_text").show();
+			$('input[name="discount"]').attr('readonly','readonly');
+		}else{
+			$("#discount_text").hide();
+			$('input[name="discount"]').removeAttr('readonly');
+		}
+	})
 	
 	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
 		calculate_total();
