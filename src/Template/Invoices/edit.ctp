@@ -1,3 +1,4 @@
+<?php //pr($invoice); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -9,7 +10,7 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
-		<?= $this->Form->create($invoice,['id'=>'quotation_entry']) ?>
+		<?= $this->Form->create($invoice,['id'=>'form_sample_3']) ?>
 		<div class="form-body">
 			<div class="row">
 				<div class="col-md-6">
@@ -115,46 +116,47 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php $ed_des=[];
-					if(!empty($sales_order->sales_order_rows)){
-					$q=0; foreach ($sales_order->sales_order_rows as $sales_order_rows): 
-						$ed_des[]=$sales_order_rows->excise_duty;
-					?>
-						<tr class="tr1" row_no='<?php echo @$sales_order_rows->id; ?>'>
-							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
-							<td><?php echo $this->Form->input('q', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Item','value' => @$sales_order_rows->item->id,'readonly']); ?></td>
-							<td><?php echo $this->Form->input('q', ['label' => false,'type' => 'number','class' => 'form-control input-sm','placeholder'=>'Quantity','value' => @$sales_order_rows->quantity-$sales_order_rows->processed_quantity,'readonly','min'=>'1','max'=>@$sales_order_rows->quantity-$sales_order_rows->processed_quantity]); ?></td>
-							<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate','value' => @$sales_order_rows->rate,'readonly','step'=>0.01]); ?></td>
-							<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$sales_order_rows->amount,'readonly','step'=>0.01]); ?></td>
-							<td>
-								<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$sales_order_rows->id]); ?></label>
-								<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','value' => @$sales_order_rows->so_sale_tax]); ?>
-							</td>
+					<?php if($invoice->process_status=="New"){ 
+					$q=1; foreach ($invoice->invoice_rows as $invoice_rows): ?>
+						<tr class="tr1" row_no="<?= h($q) ?>">
+							<td rowspan="2"><?= h($q) ?></td>
+							<td><?php echo $this->Form->input('item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item','value'=>$invoice_rows->item_id]); ?></td>
+							<td><?php echo $this->Form->input('unit[]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity','value'=>$invoice_rows->quantity]); ?></td>
+							<td><?php echo $this->Form->input('rate[]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$invoice_rows->rate]); ?></td>
+							<td><?php echo $this->Form->input('amount[]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$invoice_rows->amount]); ?></td>
+							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
-						<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
-							<td colspan="4"><?php echo $this->Form->input('q', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm ','placeholder'=>'Description','value' => @$sales_order_rows->description,'readonly']); ?></td>
+						<tr class="tr2" row_no="<?= h($q) ?>">
+							<td colspan="4"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value'=>$invoice_rows->description]); ?></td>
 							<td></td>
 						</tr>
-					<?php $q++; endforeach; }?>
+					<?php $q++; endforeach; } ?>
 				</tbody>
 			</table>
 			<table class="table tableitm" id="tbl2">
-				<?php if(in_array('Yes',@$ed_des) or $process_status=="New") { ?>
+				<?php if($invoice->process_status=="New") { ?>
 				<tr style="background-color:#e6faf9;">
 					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:right']]); ?> </b></td>
-					<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty','value' => 0]); ?></td>
+					<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty']); ?></td>
 				</tr>
 				<?php } ?>
 				<tr>
 					<td align="right"><b>Total</b></td>
-					<td width="20%"><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','value' => 0,'step'=>0.01,'readonly']); ?></td>
+					<td width="20%"><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','step'=>0.01,'readonly']); ?></td>
 				</tr>
 				<tr>
 					<td  align="right">
 					<b>P&F <label><?php echo $this->Form->input('pnf_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'pnfper']); ?></label>(in %)</b>
-					<div class="input-group col-md-2" style="display:none;" id="pnf_text">
-						<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
-					</div>
+					<?php if($invoice->pnf_type=='1'){ ?>
+						<div class="input-group col-md-2"  id="pnf_text">
+							<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='<?= h($invoice->pnf_per) ?>'><span class="input-group-addon">%</span>
+						</div>
+					<?php }else{ ?>
+						<div class="input-group col-md-2"  id="pnf_text" style="display:none;">
+							<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='0'><span class="input-group-addon">%</span>
+						</div>
+					<?php } ?>
+					
 					</td>
 					<td><?php echo $this->Form->input('pnf', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01]); ?></td>
 				</tr>
@@ -164,19 +166,18 @@
 				</tr>
 				<tr>
 					<td  align="right">
-						<b>Sale Tax Description</b>
+						<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" value="<?= h($invoice->sale_tax_description) ?>"/>
 						<div class="input-group col-md-2">
-						<?php if($process_status!="New"){ ?>
-							<input type="text" name="sale_tax_per" class="form-control input-sm" readonly><span class="input-group-addon">%</span>
-						
-						<?php }else{ 
+							<div class="input-group">
+						<?php						
 							$options=[];
 							foreach($SaleTaxes as $SaleTaxe){
-								$options[(string)$SaleTaxe->tax_figure]=$SaleTaxe->tax_figure.'%';
+								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 							}
-							echo $this->Form->input('sale_tax_per', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); 
-						} ?>
+							echo $this->Form->input('sale_tax_per', ['options'=>$options,'label' => false,'class' => 'form-control input-sm','value'=>$invoice->sale_tax_per]);  ?>
+							</div>
 						</div>
+						
 					</td>
 					<td><?php echo $this->Form->input('sale_tax_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01]); ?></td>
 				</tr>
@@ -245,97 +246,116 @@
 <script>
 $(document).ready(function() {
 	//--------- FORM VALIDATION
+	var form3 = $('#form_sample_3');
+	var error3 = $('.alert-danger', form3);
+	var success3 = $('.alert-success', form3);
+	form3.validate({
+		errorElement: 'span', //default input error message container
+		errorClass: 'help-block help-block-error', // default input error message class
+		focusInvalid: true, // do not focus the last invalid input
+		rules: {
+			company_id:{
+				required: true,
+			},
+			date_created : {
+				  required: true,
+			},
+			customer_id : {
+				  required: true,
+			},
+			in1 : {
+				  required: true,
+			},
+			in3:{
+				required: true
+			},
+			in4:{
+				required: true,
+			},
+			customer_address:{
+				required: true,
+			},
+			lr_no : {
+				  required: true,
+			},
+			customer_po_no  : {
+				  required: true,
+			},
+			employee_id: {
+				  required: true,
+			}
+		},
 
-			var form1 = $('#quotation_entry');
-            var error1 = $('.alert-danger', form1);
-            var success1 = $('.alert-success', form1);
+		messages: { // custom messages for radio buttons and checkboxes
+			membership: {
+				required: "Please select a Membership type"
+			},
+			service: {
+				required: "Please select  at least 2 types of Service",
+				minlength: jQuery.validator.format("Please select  at least {0} types of Service")
+			}
+		},
 
-            form1.validate({
-                errorElement: 'span', //default input error message container
-                errorClass: 'help-block help-block-error', // default input error message class
-                focusInvalid: false, // do not focus the last invalid input
-                ignore: "",  // validate all fields including form hidden input
-                messages: {
-                    select_multi: {
-                        maxlength: jQuery.validator.format("Max {0} items allowed for selection"),
-                        minlength: jQuery.validator.format("At least {0} items must be selected")
-                    }
-                },
-                rules: {
-                    company_id:{
-						required: true,
-					},
- 					date_created : {
-						  required: true,
-                    },
-					customer_id : {
-						  required: true,
-                    },
-					in1 : {
-						  required: true,
-                    },
-					in3:{
-						required: true
-					},
-					in4:{
-						required: true,
-					},
-					customer_address:{
-						required: true,
-					},
- 					lr_no : {
-						  required: true,
-                    },
-					customer_po_no  : {
-						  required: true,
-                    },
-					employee_id: {
-						  required: true,
-                    }
-                },
+		errorPlacement: function (error, element) { // render error placement for each input type
+			if (element.parent(".input-group").size() > 0) {
+				error.insertAfter(element.parent(".input-group"));
+			} else if (element.attr("data-error-container")) { 
+				error.appendTo(element.attr("data-error-container"));
+			} else if (element.parents('.radio-list').size() > 0) { 
+				error.appendTo(element.parents('.radio-list').attr("data-error-container"));
+			} else if (element.parents('.radio-inline').size() > 0) { 
+				error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
+			} else if (element.parents('.checkbox-list').size() > 0) {
+				error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
+			} else if (element.parents('.checkbox-inline').size() > 0) { 
+				error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
+			} else {
+				error.insertAfter(element); // for other inputs, just perform default behavior
+			}
+		},
 
-                invalidHandler: function (event, validator) { //display error alert on form submit              
-                    success1.hide();
-                    error1.show();
-                    Metronic.scrollTo(error1, -200);
-                },
+		invalidHandler: function (event, validator) { //display error alert on form submit   
+			success3.hide();
+			error3.show();
+			Metronic.scrollTo(error3, -200);
+		},
 
-                highlight: function (element) { // hightlight error inputs
-                    $(element).closest('.form-group').addClass('has-error'); // set error class to the control group
-                },
+		highlight: function (element) { // hightlight error inputs
+		   $(element)
+				.closest('.form-group').addClass('has-error'); // set error class to the control group
+		},
 
-                unhighlight: function (element) { // revert the change done by hightlight
-                    $(element)
-                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
-                },
+		unhighlight: function (element) { // revert the change done by hightlight
+			$(element)
+				.closest('.form-group').removeClass('has-error'); // set error class to the control group
+		},
 
-                success: function (label) {
-                    label
-                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
-                },
+		success: function (label) {
+			label
+				.closest('.form-group').removeClass('has-error'); // set success class to the control group
+		},
 
-                submitHandler: function (form) {
-					q="ok";
-					$("#main_tb tbody tr.tr1").each(function(){
-						var w=$(this).find("td:nth-child(3) input").val();
-						var r=$(this).find("td:nth-child(4) input").val();
-						if(w=="" || r==""){
-							q="e";
-						}
-					});
-					if(q=="e"){
-						$("#row_error").show();
-						return false;
-					}else{
-						success1.show();
-						error1.hide();
-						form[0].submit(); // submit the form
-					}
-                    
-                }
-            });
-		
-//--	 END OF VALIDATION
+		submitHandler: function (form) {
+			q="ok";
+			$("#main_tb tbody tr.tr1").each(function(){
+				var w=$(this).find("td:nth-child(3) input").val();
+				var r=$(this).find("td:nth-child(4) input").val();
+				if(w=="" || r==""){
+					q="e";
+				}
+			});
+			if(q=="e"){
+				$("#row_error").show();
+				return false;
+			}else{
+				success1.show();
+				error1.hide();
+				form[0].submit(); // submit the form
+			}
+		}
+
+	});
+	//--	 END OF VALIDATION
 
 	$('select[name="company_id"]').on("change",function() {
 		var alias=$('select[name="company_id"] option:selected').attr("alias");
@@ -352,8 +372,6 @@ $(document).ready(function() {
 		}
 	})
 	
-	
-	
 	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
 		calculate_total();
     });
@@ -365,90 +383,11 @@ $(document).ready(function() {
 		rename_rows(); calculate_total();
     });
 	
-	<?php if($process_status!="New"){ ?>
-	function rename_rows(){
-		$("#main_tb tbody tr.tr1").each(function(){
-			var row_no=$(this).attr('row_no');
-			var val=$(this).find('td:nth-child(6) input[type="checkbox"]:checked').val();
-			if(val){
-				$(this).find('td:nth-child(2) select').attr("name","invoice_rows["+val+"][item_id]");
-				$(this).find('td:nth-child(3) input').removeAttr("readonly").attr("name","invoice_rows["+val+"][quantity]");
-				$(this).find('td:nth-child(4) input').attr("name","invoice_rows["+val+"][rate]");
-				$(this).find('td:nth-child(5) input').attr("name","invoice_rows["+val+"][amount]");
-				
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').removeAttr("readonly").attr("name","invoice_rows["+val+"][description]");
-				
-				$(this).css('background-color','#fffcda');
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
-			}else{
-				$(this).find('td:nth-child(2) select').attr({ name:"q", readonly:"readonly"});
-				$(this).find('td:nth-child(3) input').attr({ name:"q", readonly:"readonly"});
-				$(this).find('td:nth-child(4) input').attr({ name:"q", readonly:"readonly"});
-				
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').attr({ name:"q", readonly:"readonly"});
-				
-				$(this).css('background-color','#FFF');
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
-			}
-		});
-	}
-	
-	
-	function calculate_total(){
-		var total=0; var grand_total=0;
-		$("#main_tb tbody tr.tr1").each(function(){
-			var val=$(this).find('td:nth-child(6) input[type="checkbox"]:checked').val();
-			if(val){
-				var qty=parseInt($(this).find("td:nth-child(3) input").val());
-				var Rate=parseFloat($(this).find("td:nth-child(4) input").val());
-				var Amount=qty*Rate;
-				$(this).find("td:nth-child(5) input").val(Amount);
-				total=total+Amount;
-				var sale_tax=parseFloat($(this).find("td:nth-child(6) input[type=text]").val());
-				if(isNaN(sale_tax)) { var sale_tax = 0; }
-				$('input[name="sale_tax_per"]').val(sale_tax);
-			}
-		});
-		var exceise_duty=parseFloat($('input[name="exceise_duty"]').val());
-		if(isNaN(exceise_duty)) { var exceise_duty = 0; }
-		total=total+exceise_duty
-		$('input[name="total"]').val(total.toFixed(2));
-		
-		if($("#pnfper").is(':checked')){
-			var pnf_per=parseFloat($('input[name="pnf_per"]').val());
-			var pnf_amount=(total*pnf_per)/100;
-			if(isNaN(pnf_amount)) { var pnf_amount = 0; }
-			$('input[name="pnf"]').val(pnf_amount.toFixed(2));
-		}else{
-			var pnf_amount=parseFloat($('input[name="pnf"]').val());
-			if(isNaN(pnf_amount)) { var pnf_amount = 0; }
-		}
-		var total_after_pnf=total+pnf_amount;
-		if(isNaN(total_after_pnf)) { var total_after_pnf = 0; }
-		$('input[name="total_after_pnf"]').val(total_after_pnf.toFixed(2));
-		
-		var sale_tax_per=parseFloat($('input[name="sale_tax_per"]').val());
-		var sale_tax=(total_after_pnf*sale_tax_per)/100;
-		if(isNaN(sale_tax)) { var sale_tax = 0; }
-		$('input[name="sale_tax_amount"]').val(sale_tax.toFixed(2));
-		
-		var fright_amount=parseFloat($('input[name="fright_amount"]').val());
-		if(isNaN(fright_amount)) { var fright_amount = 0; }
-		
-		grand_total=total_after_pnf+sale_tax+fright_amount;
-		$('input[name="grand_total"]').val(grand_total.toFixed(2));
-	}
-	<?php } ?>
-	
-	
-	
-	<?php if($process_status=="New"){ ?> add_row(); <?php } ?>
-    $('.addrow').die().live("click",function() { 
+	$('.addrow').die().live("click",function() { 
 		add_row();
     });
 	
-	<?php if($process_status=="New"){ ?>
-		$('.deleterow').die().live("click",function() {
+	$('.deleterow').die().live("click",function() {
 			var l=$(this).closest("table tbody").find("tr").length;
 			if (confirm("Are you sure to remove row ?") == true) {
 				if(l>2){
@@ -527,7 +466,7 @@ $(document).ready(function() {
 				var unit=$(this).find("td:nth-child(3) input").val();
 				var Rate=$(this).find("td:nth-child(4) input").val();
 				var Amount=unit*Rate;
-				$(this).find("td:nth-child(5) input").val(Amount);
+				$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
 				total=total+Amount;
 			});
 			var exceise_duty=parseFloat($('input[name="exceise_duty"]').val());
@@ -553,6 +492,9 @@ $(document).ready(function() {
 			if(isNaN(sale_tax)) { var sale_tax = 0; }
 			$('input[name="sale_tax_amount"]').val(sale_tax.toFixed(2));
 			
+			var sale_tax_description=$('select[name="sale_tax_per"] option:selected').attr("description");
+			$('input[name="sale_tax_description"]').val(sale_tax_description);
+			
 			var fright_amount=parseFloat($('input[name="fright_amount"]').val());
 			if(isNaN(fright_amount)) { var fright_amount = 0; }
 			
@@ -561,12 +503,7 @@ $(document).ready(function() {
 			
 		}
 		
-	<?php } ?>
-	
-	
-	
-	
-	$('.select_address').on("click",function() { 
+		$('.select_address').on("click",function() { 
 		open_address();
     });
 	
@@ -597,20 +534,6 @@ $(document).ready(function() {
 		
     });
 	
-	<?php if($process_status!="New"){ ?> 
-		var customer_id=$('select[name="customer_id"] option:selected').val();
-		
-		$("#in3_div").html('Loading...');
-		var url="<?php echo $this->Url->build(['controller'=>'Filenames','action'=>'listFilename']); ?>";
-		url=url+'/'+customer_id+'/in',
-		$.ajax({
-			url: url,
-		}).done(function(response) {
-			$("#in3_div").html(response);
-			$('select[name="qt3"]').attr('name','in3');
-		});
-	<?php } ?>
-	
 	function open_address(){
 		var customer_id=$('select[name="customer_id"]').val();
 		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
@@ -629,14 +552,6 @@ $(document).ready(function() {
 		$('textarea[name="customer_address"]').val(addr);
 		$("#myModal12").hide();
     });
-	
-	$('form').on('keyup keypress', function(e) {
-	  var keyCode = e.keyCode || e.which;
-	  if (keyCode === 13) { 
-		e.preventDefault();
-		return false;
-	  }
-	});
 });
 </script>
 	 

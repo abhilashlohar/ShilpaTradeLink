@@ -62,7 +62,8 @@ class InvoicesTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('InvoiceRows', [
-            'foreignKey' => 'invoice_id'
+            'foreignKey' => 'invoice_id',
+			'saveStrategy' => 'replace'
         ]);
 		$this->belongsTo('CompanyBanks');
 		$this->belongsTo('SaleTaxes');
