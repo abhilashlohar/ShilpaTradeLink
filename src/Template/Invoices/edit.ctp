@@ -117,10 +117,10 @@
 					$q=1; foreach ($invoice->invoice_rows as $invoice_rows): ?>
 						<tr class="tr1" row_no="<?= h($q) ?>">
 							<td rowspan="2"><?= h($q) ?></td>
-							<td><?php echo $this->Form->input('item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item','value'=>$invoice_rows->item_id]); ?></td>
-							<td><?php echo $this->Form->input('unit[]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity','value'=>$invoice_rows->quantity]); ?></td>
-							<td><?php echo $this->Form->input('rate[]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$invoice_rows->rate]); ?></td>
-							<td><?php echo $this->Form->input('amount[]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$invoice_rows->amount]); ?></td>
+							<td><?php echo $this->Form->input('invoice_rows['.$q.'][item_id]', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item','value'=>$invoice_rows->item_id]); ?></td>
+							<td><?php echo $this->Form->input('invoice_rows['.$q.'][quantity]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity','value'=>$invoice_rows->quantity]); ?></td>
+							<td><?php echo $this->Form->input('invoice_rows['.$q.'][rate]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$invoice_rows->rate]); ?></td>
+							<td><?php echo $this->Form->input('invoice_rows['.$q.'][amount]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$invoice_rows->amount]); ?></td>
 							<td>
 							<?php if($invoice->process_status=="New"){ ?>
 							<a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a>
@@ -128,7 +128,7 @@
 							</td>
 						</tr>
 						<tr class="tr2" row_no="<?= h($q) ?>">
-							<td colspan="4"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value'=>$invoice_rows->description]); ?></td>
+							<td colspan="4"><?php echo $this->Form->textarea('invoice_rows['.$q.'][description]', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value'=>$invoice_rows->description]); ?></td>
 							<td></td>
 						</tr>
 					<?php $q++; endforeach; } ?>
