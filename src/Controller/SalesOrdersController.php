@@ -153,10 +153,12 @@ class SalesOrdersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $salesOrder = $this->SalesOrders->get($id, [
-            'contain' => []
+            'contain' => ['SalesOrderRows' => ['Items']]
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $salesOrder = $this->SalesOrders->patchEntity($salesOrder, $this->request->data);
+			$salesOrder->expected_delivery_date=date("Y-m-d",strtotime($salesOrder->expected_delivery_date));
+			$salesOrder->po_date=date("Y-m-d",strtotime($salesOrder->po_date));
             if ($this->SalesOrders->save($salesOrder)) {
                 $this->Flash->success(__('The sales order has been saved.'));
 

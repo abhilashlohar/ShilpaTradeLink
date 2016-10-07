@@ -4,12 +4,9 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Edit Sales Order</span>
 		</div>
-		<div class="actions">
-			<a href="#myModal1" role="button" class="btn blue pull-right" data-toggle="modal">Pull Quotation</a>
-		</div>
 	</div>
 	<div class="portlet-body form">
-		<?= $this->Form->create($salesOrder,['id'=>'quotation_entry']) ?>
+		<?= $this->Form->create($salesOrder,['id'=>'form_sample_3']) ?>
 		<div class="form-body">
 			<div class="row">
 				<div class="col-md-6">
@@ -21,7 +18,7 @@
 							foreach($companies as $companie){
 								$options[]=['text' => $companie->name, 'value' => $companie->id, 'alias' => $companie->alias];
 							}
-							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me','value' => @$quotation->company_id] ); ?>
+							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me'] ); ?>
 						</div>
 					</div>
 				</div>
@@ -41,7 +38,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Customer</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $customers,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
+							<?php echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $customers,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 				</div>
@@ -65,7 +62,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Address</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address','value' => @$quotation->customer_address]); ?>
+							<?php echo $this->Form->input('customer_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address']); ?>
 							<a href="#" role="button" class="pull-right select_address" >
 							Select Address </a>
 						</div>
@@ -75,7 +72,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Salesman</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
+							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 				</div>
@@ -94,7 +91,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">PO Date <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('po_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'PO Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d']); ?>
+							<?php echo $this->Form->input('po_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'PO Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d','value'=>date("d-m-Y",strtotime($salesOrder->po_date))]); ?>
 						</div>
 					</div>
 				</div>
@@ -117,32 +114,31 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php 
-					if(!empty($quotation->quotation_rows)){
-					$q=0; foreach ($quotation->quotation_rows as $quotation_rows): ?>
-						<tr class="tr1" row_no='<?php echo @$quotation_rows->id; ?>'>
-							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
-							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Item','value' => @$quotation_rows->item->id]); ?></td>
-							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity','value' => @$quotation_rows->quantity]); ?></td>
-							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate','value' => @$quotation_rows->rate]); ?></td>
-							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$quotation_rows->amount]); ?></td>
-							<td><?php 
-							$options=['Yes'=>'Yes','No'=>'No'];
-							echo $this->Form->input('sales_order_rows.'.$q.'.excise_duty', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?></td>
-							<td>
-							<?php $options=[];
-							foreach($SaleTaxes as $SaleTaxe){
-								$options[(string)$SaleTaxe->tax_figure]=$SaleTaxe->tax_figure;
-							}
-							echo $this->Form->input('so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?>
-							</td>
-							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
-						</tr>
-						<tr class="tr2" row_no='<?php echo @$quotation_rows->id; ?>'>
-							<td colspan="6"><?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','placeholder'=>'Description','rows'=>'3','value' => @$quotation_rows->description]); ?></td>
-							<td></td>
-						</tr>
-					<?php $q++; endforeach; } ?>
+					<?php $q=1; foreach ($salesOrder->sales_order_rows as $sales_order_rows): ?>
+					<tr class="tr1">
+						<td rowspan="2"><?= h($q) ?></td>
+						<td><?php echo $this->Form->input('sales_order_rows'.$q.'item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item','value'=>$sales_order_rows->item_id]); ?></td>
+						<td><?php echo $this->Form->input('sales_order_rows'.$q.'item_id', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity','value'=>$sales_order_rows->quantity]); ?></td>
+						<td><?php echo $this->Form->input('sales_order_rows'.$q.'item_id', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01",'value'=>$sales_order_rows->rate]); ?></td>
+						<td><?php echo $this->Form->input('sales_order_rows'.$q.'item_id', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value'=>$sales_order_rows->amount]); ?></td>
+						<td><?php 
+						$options=['Yes'=>'Yes','No'=>'No'];
+						echo $this->Form->input('sales_order_rows'.$q.'item_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm','value'=>$sales_order_rows->excise_duty]); ?></td>
+						<td>
+						<?php $options=[];
+						foreach($SaleTaxes as $SaleTaxe){
+							$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
+						}
+						echo $this->Form->input('sales_order_rows'.$q.'so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des','value'=>$sales_order_rows->so_sale_tax]);
+						echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false]); ?>
+						</td>
+						<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+					</tr>
+					<tr class="tr2">
+						<td colspan="6"><?php echo $this->Form->textarea('sales_order_rows'.$q.'so_sale_tax', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value'=>$sales_order_rows->description]); ?></td>
+						<td></td>
+					</tr>
+					<?php $q++; endforeach; ?>
 				</tbody>
 			</table>
 			<table class="table" id="tbl2">
@@ -154,7 +150,7 @@
 					</tr>
 					<tr>
 						<td colspan="3">
-						<label class="control-label">Additional Note <span class="required" aria-required="true">*</span></label>
+						<label class="control-label">Additional Note </label>
 						<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional Note']); ?></td>
 					</tr>
 				</tbody>
@@ -176,7 +172,7 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<label class="control-label">Expected Delivery Date <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('expected_delivery_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder' => 'Expected Delivery Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d']); ?>
+						<?php echo $this->Form->input('expected_delivery_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder' => 'Expected Delivery Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d','value'=>date("d-m-Y",strtotime($salesOrder->expected_delivery_date))]); ?>
 					</div>
 				</div>
 				<div class="col-md-4">
@@ -208,16 +204,23 @@
 				</div>
 			</div>
 			<div class="row">
+				
 				<div class="col-md-4">
 					<div class="form-group">
+						<div class="radio-list" data-error-container="#road_permit_required_error">
 						<label class="control-label">Road Permit Required <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->radio('road_permit_required',[['value' => 'Yes', 'text' => 'Yes'],['value' => 'No', 'text' => 'No']]); ?>
+						</div>
+						<div id="road_permit_required_error"></div>
 					</div>
 				</div>
 				<div class="col-md-4">
 					<div class="form-group">
+						<div class="radio-list" data-error-container="#form49_error">
 						<label class="control-label">Form-49 Required <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->radio('form49',[['value' => 'Yes', 'text' => 'Yes'],['value' => 'No', 'text' => 'No']]); ?>
+						</div>
+						<div id="form49_error"></div>
 					</div>
 				</div>
 			</div>
@@ -229,7 +232,7 @@
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
-					<button type="submit" class="btn btn-primary">ADD SALES ORDER</button>
+					<button type="submit" class="btn btn-primary">UPDATE SALES ORDER</button>
 				</div>
 			</div>
 		</div>
@@ -259,9 +262,10 @@
 			<td>
 			<?php $options=[];
 			foreach($SaleTaxes as $SaleTaxe){
-				$options[(string)$SaleTaxe->tax_figure]=$SaleTaxe->tax_figure;
+				$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 			}
-			echo $this->Form->input('so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?>
+			echo $this->Form->input('so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
+			echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false]); ?>
 			</td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
@@ -277,133 +281,158 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-	
 	//--------- FORM VALIDATION
+	var form3 = $('#form_sample_3');
+	var error3 = $('.alert-danger', form3);
+	var success3 = $('.alert-success', form3);
+	form3.validate({
+		errorElement: 'span', //default input error message container
+		errorClass: 'help-block help-block-error', // default input error message class
+		focusInvalid: true, // do not focus the last invalid input
+		rules: {
+			company_id:{
+				required: true,
+			},
+			date : {
+				  required: true,
+			},
+			customer_id : {
+				  required: true,
+			},
+			so1 : {
+				  required: true,
+			},
+			so3:{
+				required: true
+			},
+			so4:{
+				required: true,
+			},
+			customer_address:{
+				required: true,
+			},
+			employee_id : {
+				  required: true,
+			},
+			customer_po_no  : {
+				  required: true,
+			},
+			po_date: {
+				  required: true,
+			},
+			transporter_id:{
+				required: true,	
+			},
+			documents_courier_id:{
+				required: true,	
+			},
+			expected_delivery_date:{
+				required: true,	
+			},
+			delivery_description:{
+				required: true,	
+			},
+			dispatch_name:{
+				required: true,	
+			},
+			dispatch_mobile:{
+				required: true,	
+			},
+			dispatch_email:{
+				required: true,
+				email: true,
+			},
+			road_permit_required:{
+				required: true,
+			},
+			form49:{
+				required: true,
+			}
+		},
 
-			var form1 = $('#quotation_entry');
-            var error1 = $('.alert-danger', form1);
-            var success1 = $('.alert-success', form1);
+		messages: { // custom messages for radio buttons and checkboxes
+			membership: {
+				required: "Please select a Membership type"
+			},
+			service: {
+				required: "Please select  at least 2 types of Service",
+				minlength: jQuery.validator.format("Please select  at least {0} types of Service")
+			}
+		},
 
-            form1.validate({
-                errorElement: 'span', //default input error message container
-                errorClass: 'help-block help-block-error', // default input error message class
-                focusInvalid: false, // do not focus the last invalid input
-                ignore: "",  // validate all fields including form hidden input
-                messages: {
-                    select_multi: {
-                        maxlength: jQuery.validator.format("Max {0} items allowed for selection"),
-                        minlength: jQuery.validator.format("At least {0} items must be selected")
-                    }
-                },
-                rules: {
-                    company_id:{
-						required: true,
-					},
- 					date : {
-						  required: true,
-                    },
-					customer_id : {
-						  required: true,
-                    },
-					so1 : {
-						  required: true,
-                    },
-					so3:{
-						required: true
-					},
-					so4:{
-						required: true,
-					},
-					customer_address:{
-						required: true,
-					},
- 					employee_id : {
-						  required: true,
-                    },
-					customer_po_no  : {
-						  required: true,
-                    },
-					po_date: {
-						  required: true,
-                    },
-					transporter_id:{
-						required: true,	
-					},
-					documents_courier_id:{
-						required: true,	
-					},
-					expected_delivery_date:{
-						required: true,	
-					},
-					delivery_description:{
-						required: true,	
-					},
-					dispatch_name:{
-						required: true,	
-					},
-					dispatch_mobile:{
-						required: true,	
-					},
-					dispatch_email:{
-						required: true,	
-					}
-                },
+		errorPlacement: function (error, element) { // render error placement for each input type
+			if (element.parent(".input-group").size() > 0) {
+				error.insertAfter(element.parent(".input-group"));
+			} else if (element.attr("data-error-container")) { 
+				error.appendTo(element.attr("data-error-container"));
+			} else if (element.parents('.radio-list').size() > 0) { 
+				error.appendTo(element.parents('.radio-list').attr("data-error-container"));
+			} else if (element.parents('.radio-inline').size() > 0) { 
+				error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
+			} else if (element.parents('.checkbox-list').size() > 0) {
+				error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
+			} else if (element.parents('.checkbox-inline').size() > 0) { 
+				error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
+			} else {
+				error.insertAfter(element); // for other inputs, just perform default behavior
+			}
+		},
 
-                invalidHandler: function (event, validator) { //display error alert on form submit              
-                    success1.hide();
-                    error1.show();
-                    Metronic.scrollTo(error1, -200);
-                },
+		invalidHandler: function (event, validator) { //display error alert on form submit   
+			success3.hide();
+			error3.show();
+			Metronic.scrollTo(error3, -200);
+		},
 
-                highlight: function (element) { // hightlight error inputs
-                    $(element).closest('.form-group').addClass('has-error'); // set error class to the control group
-                },
+		highlight: function (element) { // hightlight error inputs
+		   $(element)
+				.closest('.form-group').addClass('has-error'); // set error class to the control group
+		},
 
-                unhighlight: function (element) { // revert the change done by hightlight
-                    $(element)
-                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
-                },
+		unhighlight: function (element) { // revert the change done by hightlight
+			$(element)
+				.closest('.form-group').removeClass('has-error'); // set error class to the control group
+		},
 
-                success: function (label) {
-                    label
-                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
-                },
+		success: function (label) {
+			label
+				.closest('.form-group').removeClass('has-error'); // set success class to the control group
+		},
 
-                submitHandler: function (form) {
-					q="ok";
-					$("#main_tb tbody tr.tr1").each(function(){
-						var w=$(this).find("td:nth-child(3) input").val();
-						var r=$(this).find("td:nth-child(4) input").val();
-						if(w=="" || r==""){
-							q="e";
-						}
-					});
-					if(q=="e"){
-						$("#row_error").show();
-						return false;
-					}else{
-						success1.show();
-						error1.hide();
-						form[0].submit(); // submit the form
-					}
-                    
-                }
-            });
-		
-//--	 END OF VALIDATION
-	<?php if($process_status=="New"){ ?> <?php } ?>
-    $('.addrow').die().live("click",function() { 
+		submitHandler: function (form) {
+			q="ok";
+			$("#main_tb tbody tr.tr1").each(function(){
+				var w=$(this).find("td:nth-child(3) input").val();
+				var r=$(this).find("td:nth-child(4) input").val();
+				if(w=="" || r==""){
+					q="e";
+				}
+			});
+			if(q=="e"){
+				$("#row_error").show();
+				return false;
+			}else{
+				success3.show();
+				error3.hide();
+				form[0].submit(); // submit the form
+			}
+		}
+
+	});
+	//--	 END OF VALIDATION
+	$("#main_tb tbody tr.tr1").each(function(){
+		var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
+		$(this).find("td:nth-child(7) input").val(description);
+	});
+	
+	$('.addrow').die().live("click",function() { 
 		add_row();
     });
 	
-	
-	<?php if($process_status=="New"){ ?> 
-	
-	<?php }else{ ?>calculate_total(); 
-		var alias=$('select[name="company_id"] option:selected').attr("alias");
-		$('input[name="so1"]').val(alias);
-	<?php } ?>
-	
+	$('.change_des').die().live("change",function() { 
+		var description=$(this).find('option:selected').attr("description");
+		$(this).closest("td").find('input').val(description);
+    });
 	
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
@@ -422,6 +451,9 @@ $(document).ready(function() {
 					$(this).find("td:nth-child(5) input").attr("name","sales_order_rows["+i+"][amount]");
 					$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
 					$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][so_sale_tax]");
+					$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_description]");
+					var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
+					$(this).find("td:nth-child(7) input").val(description);
 				});
 				var i=0;
 				$("#main_tb tbody tr.tr2").each(function(){
@@ -456,6 +488,9 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(5) input").attr("name","sales_order_rows["+i+"][amount]");
 			$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
 			$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][so_sale_tax]");
+			$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_description]");
+			var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
+			$(this).find("td:nth-child(7) input").val(description);
 		});
 		var i=0;
 		
@@ -510,6 +545,34 @@ $(document).ready(function() {
 		$('input[name="grand_total"]').val(grand_total.toFixed(2));
 	}
 	
+	$('.select_address').on("click",function() { 
+		open_address();
+    });
+	
+	$('.closebtn').on("click",function() { 
+		$("#myModal12").hide();
+    });
+	
+	
+	
+	function open_address(){
+		var customer_id=$('select[name="customer_id"]').val();
+		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
+		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'addressList']); ?>";
+		url=url+'/'+customer_id,
+		$("#myModal12").show();
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$("#result_ajax").html(response);
+		});
+	}
+	
+	$('.insert_address').die().live("click",function() { 
+		var addr=$(this).text();
+		$('textarea[name="customer_address"]').val(addr);
+		$("#myModal12").hide();
+    });
 	
 	$('select[name="customer_id"]').on("change",function() {
 		var customer_id=$('select[name="customer_id"] option:selected').val();
@@ -534,33 +597,82 @@ $(document).ready(function() {
 		
     });
 	
-	<?php if($process_status!="New"){ ?> 
-		var customer_id=$('select[name="customer_id"] option:selected').val();
-		
-		$("#so3_div").html('Loading...');
-		var url="<?php echo $this->Url->build(['controller'=>'Filenames','action'=>'listFilename']); ?>";
-		url=url+'/'+customer_id+'/so',
-		$.ajax({
-			url: url,
-		}).done(function(response) {
-			$("#so3_div").html(response);
-			$('select[name="qt3"]').attr('name','so3');
-		});
-	<?php } ?>
-	
 	$('select[name="company_id"]').on("change",function() {
 		var alias=$('select[name="company_id"] option:selected').attr("alias");
 		$('input[name="so1"]').val(alias);
     });
 	
+	$('.select_term_condition').die().live("click",function() { 
+		var addr=$(this).text();
+		$("#myModal2").show();
+    });
 	
-	$('form').on('keyup keypress', function(e) {
-	  var keyCode = e.keyCode || e.which;
-	  if (keyCode === 13) { 
-		e.preventDefault();
-		return false;
-	  }
-	});
+	$('.closebtn2').on("click",function() { 
+		$("#myModal2").hide();
+    });
+	
+	
 });
 </script>
 	 
+<div id="myModal12" class="modal fade in" tabindex="-1"  style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body" id="result_ajax">
+				
+			</div>
+			<div class="modal-footer">
+				<button class="btn default closebtn">Close</button>
+				<button class="btn yellow">Save</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="myModal1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<?php echo $this->Form->create('pull_from_quotation', ['url' => ['action' => 'pull_from_quotation']])?>
+			<div class="modal-body">
+				<p>
+					<label>Select Quotation Ref. No.</label>
+					<?php 
+					$options=array();
+					foreach($quotationlists as $quotationdata){
+						$options[]=['text' => h(($quotationdata->qt1.'/QT-'.str_pad($quotationdata->id, 3, '0', STR_PAD_LEFT).'/'.$quotationdata->qt3.'/'.$quotationdata->qt4)), 'value' => $quotationdata->id];
+					}
+					echo $this->Form->input('quotation_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me']); ?>
+				</p>
+			</div>
+			<div class="modal-footer">
+				<button class="btn default" data-dismiss="modal" aria-hidden="true">Close</button>
+				<button class="btn blue" type="submit" name="pull_submit">GO</button>
+			</div>
+		<?= $this->Form->end() ?>
+		</div>
+	</div>
+</div>
+
+<div id="myModal2" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body" id="result_ajax">
+			<h4>Commercial Terms & Conditions</h4>
+			<table class="table table-hover tabl_tc">
+			<?php foreach ($termsConditions as $termsCondition): ?>
+				 
+				 <tr>
+					<td width="10"><label><?php echo $this->Form->input('dummy', ['type' => 'checkbox','label' => false,'class' => '']); ?></label></td>
+					<td><p><?= h($termsCondition->text_line) ?></p></td>
+				</tr>
+			<?php endforeach; ?>
+			</table>
+			</div>
+			<div class="modal-footer">
+				<button class="btn default closebtn2">Close</button>
+				<button class="btn btn-primary insert_tc">Insert</button>
+			</div>
+		</div>
+	</div>
+</div>
