@@ -9,7 +9,6 @@ $Edit_url=$this->Url->build(['controller'=>'Invoices','action'=>'Edit']);
 		<div class="list-group">
 			<a href="<?php echo $list_url; ?>" class="list-group-item"><i class="fa fa-chevron-left"></i> Back to Invoices </a>
 			<a href="#" class="list-group-item"><i class="fa fa-envelope"></i> Email </a>
-			<a href="<?php echo $Edit_url.'/'.$id; ?>" class="list-group-item"><i class="fa fa-edit"></i> Edit </a>
 			<a href="#" class="list-group-item" onclick="window.close()"><i class="fa fa-times"></i> Close </a>
 		</div>
 		</td>
