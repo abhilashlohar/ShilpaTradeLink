@@ -48,7 +48,7 @@
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Rate <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('ob_rate', ['label' => false,'type'=>'text','class' => 'form-control input-sm','placeholder'=>'Rate']); ?>
+							<?php echo $this->Form->input('ob_rate', ['label' => false,'type'=>'text','class' => 'form-control input-sm allLetter','placeholder'=>'Rate']); ?>
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -145,7 +145,6 @@ $(document).ready(function() {
 				  required: true,
 			}
 			
-			
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
@@ -227,5 +226,19 @@ $(document).ready(function() {
 		var total=ob_quantity*ob_rate;
 		$('input[name="ob_value"]').val(total.toFixed(2));
     });
+	$('.allLetter').keyup(function(){
+	var inputtxt=  $(this).val();
+	var numbers =  /^[0-9]*\.?[0-9]*$/;
+	
+	if(inputtxt.match(numbers))  
+	{  
+	} 
+	else  
+	{  
+		$(this).val('');
+		return false;  
+	}
+});
+	
 });
 </script>
