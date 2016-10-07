@@ -98,6 +98,7 @@ class InvoicesController extends AppController
         if ($this->request->is('post')) {
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 			$invoice->date_created=date("Y-m-d",strtotime($invoice->date_created));
+			//pr($invoice); exit;
             if ($this->Invoices->save($invoice)) {
 				if(!empty($sales_order_id)){
 					$invoice->check=array_filter($invoice->check);
@@ -113,7 +114,7 @@ class InvoicesController extends AppController
 				}
                 $this->Flash->success(__('The invoice has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'confirm/'.$invoice->id]);
             } else {
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }

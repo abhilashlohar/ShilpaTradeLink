@@ -113,7 +113,6 @@ class InvoicesTable extends Table
     {
         $rules->add($rules->existsIn(['customer_id'], 'Customers'));
         $rules->add($rules->existsIn(['company_id'], 'Companies'));
-        $rules->add($rules->existsIn(['sales_order_id'], 'SalesOrders'));
 
         return $rules;
     }

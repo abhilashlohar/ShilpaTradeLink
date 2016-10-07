@@ -135,6 +135,22 @@
 				</tbody>
 			</table>
 			<table class="table tableitm" id="tbl2">
+				<tr>
+					<td  align="right">
+					<b>P&F <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
+					<?php if($invoice->discount_type=='1'){ ?>
+						<div class="input-group col-md-2"  id="pnf_text">
+							<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='<?= h($invoice->discount_per) ?>'><span class="input-group-addon">%</span>
+						</div>
+					<?php }else{ ?>
+						<div class="input-group col-md-2"  id="pnf_text" style="display:none;">
+							<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='0'><span class="input-group-addon">%</span>
+						</div>
+					<?php } ?>
+					
+					</td>
+					<td><?php echo $this->Form->input('pnf', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01]); ?></td>
+				</tr>
 				<?php if($invoice->process_status=="New") { ?>
 				<tr style="background-color:#e6faf9;">
 					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:right']]); ?> </b></td>
@@ -178,7 +194,6 @@
 							echo $this->Form->input('sale_tax_per', ['options'=>$options,'label' => false,'class' => 'form-control input-sm','value'=>$invoice->sale_tax_per]);  ?>
 							</div>
 						</div>
-						
 					</td>
 					<td><?php echo $this->Form->input('sale_tax_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01]); ?></td>
 				</tr>
@@ -470,6 +485,17 @@ $(document).ready(function() {
 				$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
 				total=total+Amount;
 			});
+			if($("#discount_per").is(':checked')){
+				var discount_per=parseFloat($('input[name="discount_per"]').val());
+				var discount_amount=(total*discount_per)/100;
+				if(isNaN(discount_amount)) { var discount_amount = 0; }
+				$('input[name="discount"]').val(discount_amount.toFixed(2));
+			}else{
+				var discount_amount=parseFloat($('input[name="discount"]').val());
+				if(isNaN(discount_amount)) { var discount_amount = 0; }
+			}
+			total=total-discount_amount
+			
 			var exceise_duty=parseFloat($('input[name="exceise_duty"]').val());
 			if(isNaN(exceise_duty)) { var exceise_duty = 0; }
 			total=total+exceise_duty

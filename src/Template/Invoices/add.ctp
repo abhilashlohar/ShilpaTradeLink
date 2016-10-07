@@ -457,6 +457,18 @@ $(document).ready(function() {
 				$('input[name="sale_tax_description"]').val(sale_tax_description);
 			}
 		});
+		
+		if($("#discount_per").is(':checked')){
+			var discount_per=parseFloat($('input[name="discount_per"]').val());
+			var discount_amount=(total*discount_per)/100;
+			if(isNaN(discount_amount)) { var discount_amount = 0; }
+			$('input[name="discount"]').val(discount_amount.toFixed(2));
+		}else{
+			var discount_amount=parseFloat($('input[name="discount"]').val());
+			if(isNaN(discount_amount)) { var discount_amount = 0; }
+		}
+		total=total-discount_amount
+		
 		var exceise_duty=parseFloat($('input[name="exceise_duty"]').val());
 		if(isNaN(exceise_duty)) { var exceise_duty = 0; }
 		total=total+exceise_duty
@@ -578,6 +590,18 @@ $(document).ready(function() {
 				$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
 				total=total+Amount;
 			});
+			
+			if($("#discount_per").is(':checked')){
+				var discount_per=parseFloat($('input[name="discount_per"]').val());
+				var discount_amount=(total*discount_per)/100;
+				if(isNaN(discount_amount)) { var discount_amount = 0; }
+				$('input[name="discount"]').val(discount_amount.toFixed(2));
+			}else{
+				var discount_amount=parseFloat($('input[name="discount"]').val());
+				if(isNaN(discount_amount)) { var discount_amount = 0; }
+			}
+			total=total-discount_amount
+		
 			var exceise_duty=parseFloat($('input[name="exceise_duty"]').val());
 			if(isNaN(exceise_duty)) { var exceise_duty = 0; }
 			total=total+exceise_duty

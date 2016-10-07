@@ -37,7 +37,7 @@ $html = '
 	   border: 1px solid  #000;border-collapse: collapse;padding:2px; 
 	}
 	.table2 td{
-		border: 0px solid  #000;font-size: 13px;padding:0px; 
+		border: 0px solid  #000;font-size: 14px;padding:0px; 
 	}
 	.table_rows th{
 		font-size:14px;
@@ -129,18 +129,19 @@ $html.='
 		}
 endforeach; 
 
-if($invoice->pnf_type=='1'){ $pnf_text='P&F @ '.$invoice->pnf_per.'%'; }
-else{ $pnf_text='P&F'; }
+if($invoice->pnf_type=='1'){ $pnf_text='P&F @ '.$invoice->pnf_per.'%'; }else{ $pnf_text='P&F'; }
+if($invoice->discount_type=='1'){ $discount_text='Discount @ '.$invoice->discount_per.'%'; }else{ $discount_text='Discount'; }
+
 $html.='</table>';		
 $html.='
 <table width="100%" class="table_rows">
 	<tbody>
 			<tr>
-				<td rowspan="5">
-					<b style="font-size:12px;"><u>Our Bank Details</u></b>
+				<td rowspan="6">
+					<b style="font-size:13px;"><u>Our Bank Details</u></b>
 					<table width="100%" class="table2">
 						<tr>
-							<td>Bank Name</td>
+							<td width="30%">Bank Name</td>
 							<td>: '.h($invoice->company->company_banks[0]->bank_name).'</td>
 						</tr>
 						<tr>
@@ -157,6 +158,10 @@ $html.='
 						</tr>
 					</table>
 				</td>
+				<td style="text-align:right;">'.$discount_text.'</td>
+				<td style="text-align:right;">'. $this->Number->format($invoice->discount,[ 'places' => 2]).'</td>
+			</tr>
+			<tr>
 				<td style="text-align:right;">'. h($invoice->ed_description).'</td>
 				<td style="text-align:right;" width="100">'. $this->Number->format($invoice->exceise_duty,[ 'places' => 2]).'</td>
 			</tr>
