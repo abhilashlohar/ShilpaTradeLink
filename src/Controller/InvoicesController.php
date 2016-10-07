@@ -92,7 +92,7 @@ class InvoicesController extends AppController
 			]);
 			$process_status='Pulled From Sales-Order';
 		}
-		$this->set(compact('sales_order','process_status'));
+		$this->set(compact('sales_order','process_status','sales_order_id'));
 		
         $invoice = $this->Invoices->newEntity();
         if ($this->request->is('post')) {
@@ -171,7 +171,7 @@ class InvoicesController extends AppController
             }
         }
        $customers = $this->Invoices->Customers->find('list', ['limit' => 200]);
-        $companies = $this->Invoices->Companies->find('all', ['limit' => 200]);
+       $companies = $this->Invoices->Companies->find('all', ['limit' => 200]);
 		
 		$salesOrders = $this->Invoices->SalesOrders->find()->select(['total_rows' => 
 				$this->Invoices->SalesOrders->find()->func()->count('SalesOrderRows.id')])

@@ -5,9 +5,6 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Edit Invoice</span>
 		</div>
-		<div class="actions">
-			<a href="#myModal1" role="button" class="btn blue pull-right" data-toggle="modal">Pull Sales Order</a>
-		</div>
 	</div>
 	<div class="portlet-body form">
 		<?= $this->Form->create($invoice,['id'=>'form_sample_3']) ?>
@@ -116,7 +113,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php if($invoice->process_status=="New"){ 
+					<?php if($invoice->process_status=="New" or 1==1){
 					$q=1; foreach ($invoice->invoice_rows as $invoice_rows): ?>
 						<tr class="tr1" row_no="<?= h($q) ?>">
 							<td rowspan="2"><?= h($q) ?></td>
@@ -124,7 +121,11 @@
 							<td><?php echo $this->Form->input('unit[]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity','value'=>$invoice_rows->quantity]); ?></td>
 							<td><?php echo $this->Form->input('rate[]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$invoice_rows->rate]); ?></td>
 							<td><?php echo $this->Form->input('amount[]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$invoice_rows->amount]); ?></td>
-							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+							<td>
+							<?php if($invoice->process_status=="New"){ ?>
+							<a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a>
+							<?php } ?>
+							</td>
 						</tr>
 						<tr class="tr2" row_no="<?= h($q) ?>">
 							<td colspan="4"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value'=>$invoice_rows->description]); ?></td>
