@@ -20,7 +20,7 @@ class EmployeesController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['Dipartments']
+            'contain' => ['Departments']
         ];
         $employees = $this->paginate($this->Employees);
 
@@ -38,7 +38,7 @@ class EmployeesController extends AppController
     public function view($id = null)
     {
         $employee = $this->Employees->get($id, [
-            'contain' => ['Dipartments']
+            'contain' => ['Departments']
         ]);
 
         $this->set('employee', $employee);
@@ -75,9 +75,9 @@ class EmployeesController extends AppController
                 $this->Flash->error(__('The employee could not be saved. Please, try again.'));
             }
         }
-        $dipartments = $this->Employees->Dipartments->find('list', ['limit' => 200]);
+        $departments = $this->Employees->Departments->find('list', ['limit' => 200]);
 		$designations = $this->Employees->Designations->find('list', ['limit' => 200]);
-        $this->set(compact('employee', 'dipartments','designations'));
+        $this->set(compact('employee', 'departments','designations'));
         $this->set('_serialize', ['employee']);
     }
 
@@ -104,8 +104,8 @@ class EmployeesController extends AppController
                 $this->Flash->error(__('The employee could not be saved. Please, try again.'));
             }
         }
-        $dipartments = $this->Employees->Dipartments->find('list', ['limit' => 200]);
-        $this->set(compact('employee', 'dipartments'));
+        $departments = $this->Employees->Departments->find('list', ['limit' => 200]);
+        $this->set(compact('employee', 'departments'));
         $this->set('_serialize', ['employee']);
     }
 

@@ -36,7 +36,7 @@ class EmployeesTable extends Table
         $this->displayField('name');
         $this->primaryKey('id');
 
-        $this->belongsTo('Dipartments', [
+        $this->belongsTo('Departments', [
             'foreignKey' => 'dipartment_id',
             'joinType' => 'INNER'
         ]);
@@ -91,7 +91,7 @@ class EmployeesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['dipartment_id'], 'Dipartments'));
+        $rules->add($rules->existsIn(['department_id'], 'Departments'));
 
         return $rules;
     }

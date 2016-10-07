@@ -13,7 +13,7 @@
 						<th><?= $this->Paginator->sort('id') ?></th>
 						<th><?= $this->Paginator->sort('name') ?></th>
 						<th><?= $this->Paginator->sort('sex') ?></th>
-						<th><?= $this->Paginator->sort('dipartment_id') ?></th>
+						<th><?= $this->Paginator->sort('department_id') ?></th>
 						<th><?= $this->Paginator->sort('mobile') ?></th>
 						<th><?= $this->Paginator->sort('Email') ?></th>
 						<th class="actions"><?= __('Actions') ?></th>
@@ -25,7 +25,7 @@
 						<td><?= $this->Number->format($employee->id) ?></td>
 						<td><?= h($employee->name) ?></td>
 						<td><?= h($employee->sex) ?></td>
-						<td><?= h($employee->dipartment->name) ?></td>
+						<td><?= h($employee->department->name) ?></td>
 						<td><?= h($employee->mobile) ?></td>
 						<td><?= h($employee->email) ?></td>
 						<td class="actions">
