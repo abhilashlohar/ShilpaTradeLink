@@ -89,7 +89,7 @@
 						<div class="form-group">
 							<label class="control-label">Mode of Payment<span class="required" aria-required="true">*</span></label>
 							<div class="radio-list">
-								<div class="radio-inline" data-error-container="#road_permit_required_error">
+								<div class="radio-inline" data-error-container="#mode_of_payment_error">
 								<?php echo $this->Form->radio(
 									'mode_of_payment',
 									[
@@ -99,7 +99,7 @@
 									]
 								); ?>
 								</div>
-                                <div id="road_permit_required_error"></div>
+                                <div id="mode_of_payment_error"></div>
 							</div>
 						</div>
 					</div>
@@ -197,16 +197,16 @@ $(document).ready(function() {
 			ecc_no  :{
 				required: true,
 			},
-			employee_id   : {
+			employee_id : {
 				  required: true,
 			},
-			payment_terms    : {
+			payment_terms : {
 				  required: true,
 			},
-			customer_group_id   : {
+			customer_group_id : {
 				  required: true,
 			},
-			mode_of_payment   : {
+			mode_of_payment : {
 				  required: true,
 			}
 			
@@ -276,24 +276,24 @@ $(document).ready(function() {
 				$("#row_error").show();
 				return false;
 			}else{
-				
+				$("#row_error").hide();
 				$("#main_tb2 tbody tr").each(function(){
 				var a=$(this).find("td:nth-child(2) input").val();
 				var s=$(this).find("td:nth-child(3) input").val();
 				var d=$(this).find("td:nth-child(4) input").val();
 				var f=$(this).find("td:nth-child(5) input").val();
 				if(a=="" || s=="" || d=="" || f==""){
-					t="e";
+					t="x";
 				}
 				});
-			}
-			if(t=="e"){
-				$("#row_error1").show();
-				return false;
-			}else{
-				success3.show();
-				error3.hide();
-				form[0].submit(); // submit the form
+				if(t=="x"){
+					$("#row_error1").show();
+					return false;
+				}else{
+					success3.show();
+					error3.hide();
+					form[0].submit(); // submit the form
+				}
 			}
 		}
 

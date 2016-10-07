@@ -94,7 +94,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Inventory <span class="required" aria-required="true">*</span></label>
-							<div class="radio-list">
+							<div class="radio-list" data-error-container="#inventory_status_error">
 							<?php echo $this->Form->radio(
 								'inventory_status',
 								[
@@ -103,6 +103,7 @@
 								]
 							); ?>
 							</div>
+                            <div id="inventory_status_error"></div>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -136,6 +137,9 @@
 						
 					</tbody>
 				</table>
+                <div class="alert alert-danger" id="row_error" style="display:none;">
+                    Provide your Bank Details.
+                </div>
 			</div>
 		
 			<div class="form-actions">
@@ -182,6 +186,12 @@ $(document).ready(function() {
 			},
 			address : {
 				  required: true,
+			},
+			mobile_no:{
+				  required: true,
+			},
+			inventory_status:{
+				 required: true,
 			}
 			
 		},
@@ -237,7 +247,7 @@ $(document).ready(function() {
 
 		submitHandler: function (form) {
 			q="ok";
-			$("#main_tb tbody tr.tr1").each(function(){
+			$("#main_tb tbody tr").each(function(){
 				var w=$(this).find("td:nth-child(3) input").val();
 				var r=$(this).find("td:nth-child(4) input").val();
 				if(w=="" || r==""){
