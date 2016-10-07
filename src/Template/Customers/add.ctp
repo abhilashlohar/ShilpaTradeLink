@@ -7,7 +7,7 @@
 	</div>
 	<div class="portlet-body form">
 		<!-- BEGIN FORM-->
-		 <?= $this->Form->create($customer,array("class"=>"form-horizontal")) ?>
+		 <?= $this->Form->create($customer,array("class"=>"form-horizontal",'id'=>'form_sample_3')) ?>
 			<div class="form-body">
 				<div class="row">
 					<div class="col-md-4">
@@ -89,7 +89,7 @@
 						<div class="form-group">
 							<label class="control-label">Mode of Payment<span class="required" aria-required="true">*</span></label>
 							<div class="radio-list">
-								<div class="radio-inline">
+								<div class="radio-inline" data-error-container="#road_permit_required_error">
 								<?php echo $this->Form->radio(
 									'mode_of_payment',
 									[
@@ -99,6 +99,7 @@
 									]
 								); ?>
 								</div>
+                                <div id="road_permit_required_error"></div>
 							</div>
 						</div>
 					</div>
@@ -130,6 +131,9 @@
 						
 					</tbody>
 				</table>
+                <div class="alert alert-danger" id="row_error" style="display:none;">
+                    Provide Customer's Contacts details.
+                </div>
 				
 				<h4 style="font-size:13px'">Customer's Address</h4>
 				<table class="table table-condensed tableitm" id="main_tb2">
@@ -147,6 +151,9 @@
 						
 					</tbody>
 				</table>
+                <div class="alert alert-danger" id="row_error1" style="display:none;">
+                    Provide Customer Address details
+                </div>
 		</div>
 		
 			<div class="form-actions">
@@ -160,6 +167,143 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
+	//--------- FORM VALIDATION
+	var form3 = $('#form_sample_3');
+	var error3 = $('.alert-danger', form3);
+	var success3 = $('.alert-success', form3);
+	form3.validate({
+		errorElement: 'span', //default input error message container
+		errorClass: 'help-block help-block-error', // default input error message class
+		focusInvalid: true, // do not focus the last invalid input
+		rules: {
+			customer_name:{
+				required: true,
+			},
+			contact_person : {
+				  required: true,
+			},
+			district_id : {
+				  required: true,
+			},
+			customer_seg_id : {
+				  required: true,
+			},
+			tin_no  :{
+				required: true
+			},
+			pan_no:{
+				required: true,
+			},
+			ecc_no  :{
+				required: true,
+			},
+			employee_id   : {
+				  required: true,
+			},
+			payment_terms    : {
+				  required: true,
+			},
+			customer_group_id   : {
+				  required: true,
+			},
+			mode_of_payment   : {
+				  required: true,
+			}
+			
+		},
+
+		messages: { // custom messages for radio buttons and checkboxes
+			membership: {
+				required: "Please select a Membership type"
+			},
+			service: {
+				required: "Please select  at least 2 types of Service",
+				minlength: jQuery.validator.format("Please select  at least {0} types of Service")
+			}
+		},
+
+		errorPlacement: function (error, element) { // render error placement for each input type
+			if (element.parent(".input-group").size() > 0) {
+				error.insertAfter(element.parent(".input-group"));
+			} else if (element.attr("data-error-container")) { 
+				error.appendTo(element.attr("data-error-container"));
+			} else if (element.parents('.radio-list').size() > 0) { 
+				error.appendTo(element.parents('.radio-list').attr("data-error-container"));
+			} else if (element.parents('.radio-inline').size() > 0) { 
+				error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
+			} else if (element.parents('.checkbox-list').size() > 0) {
+				error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
+			} else if (element.parents('.checkbox-inline').size() > 0) { 
+				error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
+			} else {
+				error.insertAfter(element); // for other inputs, just perform default behavior
+			}
+		},
+
+		invalidHandler: function (event, validator) { //display error alert on form submit   
+			success3.hide();
+			error3.show();
+			Metronic.scrollTo(error3, -200);
+		},
+
+		highlight: function (element) { // hightlight error inputs
+		   $(element)
+				.closest('.form-group').addClass('has-error'); // set error class to the control group
+		},
+
+		unhighlight: function (element) { // revert the change done by hightlight
+			$(element)
+				.closest('.form-group').removeClass('has-error'); // set error class to the control group
+		},
+
+		success: function (label) {
+			label
+				.closest('.form-group').removeClass('has-error'); // set success class to the control group
+		},
+
+		submitHandler: function (form) {
+			q="ok";
+			$("#main_tb tbody tr").each(function(){
+				var w=$(this).find("td:nth-child(2) input").val();
+				var r=$(this).find("td:nth-child(3) input").val();
+				var x=$(this).find("td:nth-child(4) input").val();
+				var y=$(this).find("td:nth-child(5) input").val();
+				if(w=="" || r=="" || x=="" || y==""){
+					q="e";
+				}
+			});
+			if(q=="e"){
+				$("#row_error").show();
+				return false;
+			}else{
+				
+				$("#main_tb2 tbody tr").each(function(){
+				var a=$(this).find("td:nth-child(2) input").val();
+				var s=$(this).find("td:nth-child(3) input").val();
+				var d=$(this).find("td:nth-child(4) input").val();
+				var f=$(this).find("td:nth-child(5) input").val();
+				if(a=="" || s=="" || d=="" || f==""){
+					t="e";
+				}
+				});
+			}
+			if(t=="e"){
+				$("#row_error1").show();
+				return false;
+			}else{
+				success3.show();
+				error3.hide();
+				form[0].submit(); // submit the form
+			}
+		}
+
+	});
+	//--	 END OF VALIDATION
+	
+	
+	
+	
+	
 	add_row(); $('.default_btn2:first').attr('checked','checked'); $.uniform.update();
 	$('.default_btn2').die().live("click",function() { 
 		$('.default_btn2').removeAttr('checked');
