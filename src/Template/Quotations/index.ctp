@@ -4,29 +4,29 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Quotations</span>
 		</div>
+		<div class="actions">
+			<div class="btn-group">
+			<?php
+			if($status==null or $status=='Pending'){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
+			if($status=='Converted Into Sales Order'){ $class2='btn btn-primary'; }else{ $class2='btn btn-default'; }
+			
+			?>
+				<?= $this->Html->link(
+					'Pending',
+					'/Quotations/index/Pending',
+					['class' => $class1]
+				); ?>
+				<?= $this->Html->link(
+					'Converted Into Sales Order',
+					'/Quotations/index/Converted Into Sales Order',
+					['class' => $class2]
+				); ?>
+			</div>
+		</div>
 	</div>
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="pull-right" style="margin-bottom: 2px;">
-					<div class="btn-group">
-					<?php
-					if($status==null or $status=='Pending'){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
-					if($status=='Converted Into Sales Order'){ $class2='btn btn-primary'; }else{ $class2='btn btn-default'; }
-					
-					?>
-						<?= $this->Html->link(
-							'Pending',
-							'/Quotations/index/Pending',
-							['class' => $class1]
-						); ?>
-						<?= $this->Html->link(
-							'Converted Into Sales Order',
-							'/Quotations/index/Converted Into Sales Order',
-							['class' => $class2]
-						); ?>
-					</div>
-				</div>
 				<form method="GET" >
 				<table class="table table-condensed">
 					<thead>

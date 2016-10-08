@@ -10,12 +10,7 @@ use App\Controller\AppController;
  */
 class QuotationsController extends AppController
 {
-
-	public function initialize()
-	{
-		parent::initialize();
-		$this->loadComponent('Csrf');
-	}
+	
     /**
      * Index method
      *

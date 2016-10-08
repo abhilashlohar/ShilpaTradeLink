@@ -173,8 +173,7 @@ select
 						</li>
 					
 						<li>
-							<a href="logout">
-							<i class="icon-key"></i> Log Out </a>
+							<?php echo $this->Html->link('<i class="icon-key"></i> Log Out','/Logins/logout',array('escape'=>false)); ?>
 						</li>
 					</ul>
 				</li>
@@ -322,6 +321,7 @@ select
 						<li><?php echo $this->Html->link( 'View', '/employees' ); ?></li>
 					</ul>
 				</li>
+				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Create Login','/Logins/Add',array('escape'=>false)); ?></li>
 				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Terms&Conditions','/Terms-Conditions',array('escape'=>false)); ?></li>
 				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Designations','/Designations',array('escape'=>false)); ?></li>
 				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Departments','/Departments',array('escape'=>false)); ?></li>

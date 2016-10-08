@@ -1,36 +1,4 @@
-<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|PT+Sans+Narrow|Source+Sans+Pro:200,300,400,600,700,900&amp;subset=all" rel="stylesheet" type="text/css">
- <style type="text/css">
-.title-main {
-	font-weight: 400 !important;
-	font: 28px "PT Sans Narrow",sans-serif;
-	text-transform: uppercase !important;
-	box-sizing:border-box;
-	line-height:1.1;
-}
-option 
-{
-    border-top:1px solid #CACACA;
-    padding:4px;
-	cursor:pointer;
-}
-select 
-{
-	cursor:pointer;
-}
-</style>  
-<body class="login" style="background-color:#364150 !important;">
-<!-- BEGIN LOGO -->
-<div class="logo">
-</span><span class="title-main" style="color:#0ECCEE !important;">SHILPA TRADE LINK</span>
-</div>
-<!-- END LOGO -->
-<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-<div class="menu-toggler sidebar-toggler">
-</div>
-<!-- END SIDEBAR TOGGLER BUTTON -->
-<!-- BEGIN LOGIN -->
-<div class="content">
-	<!-- BEGIN LOGIN FORM -->
+<!-- BEGIN LOGIN FORM -->
 	<form  method="post">
 		<h3 class="form-title">Login to your account</h3>
         <div class="alert alert-danger display-hide">
@@ -75,11 +43,3 @@ select
 		</div>
 	</form>
 	<!-- END LOGIN FORM -->
-</div>
-<!-- END LOGIN -->
-<!-- BEGIN COPYRIGHT -->
-<div class="copyright">
-	 <a href="http://phppoets.com/" target="_blank">2016 &copy; PHPPOETS IT Solution Pvt. Ltd.</a>
-</div>
-<!-- END JAVASCRIPTS -->
-</body>

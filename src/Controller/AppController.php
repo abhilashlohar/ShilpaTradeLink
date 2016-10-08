@@ -43,6 +43,20 @@ class AppController extends Controller
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
+		$this->loadComponent('Csrf');
+		
+		
+		$session = $this->request->session();
+		$controller = $this->request->params['controller'];
+		$action = $this->request->params['action']; 
+		if (in_array($controller, ['Logins']) and in_array($action, ['index'])) {
+		}else{
+			$st_login_id = $session->read('st_login_id');
+			if(empty($st_login_id)){
+				return $this->redirect("/login");
+			}
+		}
+		
     }
 
     /**

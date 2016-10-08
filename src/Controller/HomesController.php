@@ -14,11 +14,7 @@ class HomesController extends AppController
 		}
 	}
 
-	public function isAuthorized($user)
-	{
-		// Default deny
-		return false;
-	}
+	
 
 	public function index()
     {
