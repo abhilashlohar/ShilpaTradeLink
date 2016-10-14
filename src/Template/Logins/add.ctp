@@ -52,6 +52,7 @@
 						<th>Sr. No.</th>
 						<th>Name</th>
 						<th>Username</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -60,6 +61,7 @@
 						<td><?= h($i) ?></td>
 						<td><?= h($Login->employee->name) ?></td>
 						<td><?= h($Login->username) ?></td>
+						<td><?= $this->Html->link(__('UserRights'), ['controller'=>'UserRights','action' => 'add', $Login->id]) ?></td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>

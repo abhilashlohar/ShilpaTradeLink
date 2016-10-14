@@ -186,45 +186,13 @@ $html.='
 			<td>: '. h($salesOrder->dispatch_email).'</td>
 		</tr>
 	</table>
-<br/>
-	<table>
-		<tr>
-			<td>
-			<div class="avoid_break"> 
-				<b>Commercial Terms & Conditions:</b>
-				'. $this->Text->autoParagraph(h($salesOrder->terms_conditions)) .'
-			</div>
-			</td>
-		</tr>
-	</table>
 ';
 
 $html.='
 <table width="100%" class="divFooter">
 			<tr>
 				<td width="60%">
-					<table>
-						<tr>
-							<td collapse="2">Intrest @15% per annum shall be charged if not paid with in agreed terms</td>
-						</tr>
-						<tr>
-							<td collapse="2">Invoice is Subject to Udaipur</td>
-						</tr>
-					</table>
-					<table>
-						<tr>
-							<td>TIN</td>
-							<td>: '. h($salesOrder->company->tin_no) .'</td>
-						</tr>
-						<tr width="30">
-							<td>PAN</td>
-							<td>: '. h($salesOrder->company->pan_no) .'</td>
-						</tr>
-						<tr>
-							<td>CIN</td>
-							<td>: '. h($salesOrder->company->cin_no) .'</td>
-						</tr>
-					</table>
+					
 				</td>
 				<td style="text-align:right;" align="right">
 					<table>

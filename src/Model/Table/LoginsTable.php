@@ -1,7 +1,10 @@
 <?php
 namespace App\Model\Table;
 
+use Cake\ORM\Query;
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Validation\Validator;
 
 class LoginsTable extends Table
 {
@@ -14,5 +17,25 @@ class LoginsTable extends Table
 		
     }
 	
+	 public function validationDefault(Validator $validator)
+    {
+        $validator
+            ->integer('id')
+            ->allowEmpty('id', 'create');
+
+        $validator
+            ->requirePresence('username', 'create')
+            ->notEmpty('username');
+
+        $validator
+            ->requirePresence('password', 'create')
+            ->notEmpty('password');
+			
+		 $validator
+            ->requirePresence('password', 'create')
+            ->notEmpty('password');
+
+        return $validator;
+    }
 	
 }

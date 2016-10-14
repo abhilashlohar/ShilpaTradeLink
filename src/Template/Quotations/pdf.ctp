@@ -85,14 +85,6 @@ $html .= '
 						<td>
 							<table style="margin: 0px 0 0 -2px;">
 								<tr>
-									<td>TIN No.</td>
-									<td>: '.h(($quotation->customer->tin_no)).'</td>
-								</tr>
-								<tr>
-									<td>PAN No.</td>
-									<td>: '.h(($quotation->customer->pan_no)).'</td>
-								</tr>
-								<tr>
 									<td>Kind Attn.</td>
 									<td>: '. h(($quotation->customer_for_attention)) .' ('. h($quotation->customer_contact) .')</td>
 								</tr>

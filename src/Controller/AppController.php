@@ -56,7 +56,23 @@ class AppController extends Controller
 				return $this->redirect("/login");
 			}
 		}
+		if(!empty($st_login_id)){
+			$this->loadModel('UserRights');
+			$UserRights=$this->UserRights->find()->where(['login_id'=>$st_login_id]);
+			$allowed_pages=array();
+			foreach($UserRights as $qwe){
+				$allowed_pages[]=$qwe->page_id;
+			}
+			$this->set(compact('allowed_pages'));
+		}
 		
+		
+		$this->loadModel('pages');
+		$page=$this->pages->find()->where(['controller'=>$controller,'action'=>$action])->first();
+		if(!empty($page->id) and !in_array($page->id,$allowed_pages)){
+			$this->viewBuilder()->layout('index_layout');
+			$this -> render('/Error/not_allow'); 
+		}
     }
 
     /**

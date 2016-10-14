@@ -229,9 +229,7 @@ select
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<?php if(in_array(3,$allowed_pages)){
-						echo '<li>'.$this->Html->link( 'Create', '/Sales-Orders/add' ).'</li>';
-						} ?>
+						<li><?php echo $this->Html->link( 'Create', '/Sales-Orders/add' ); ?></li>
 						<li><?php echo $this->Html->link( 'View', '/Sales-Orders' ); ?></li>
 					</ul>
 				</li>

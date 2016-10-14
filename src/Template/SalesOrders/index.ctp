@@ -49,7 +49,7 @@
 							<td class="actions">
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $salesOrder->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
 								
-								<?php if($status!='Converted Into Invoice'){ ?> 
+								<?php if($status!='Converted Into Invoice' and in_array(4,$allowed_pages)){ ?> 
 									<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $salesOrder->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 								<?php } ?>
 								<!--<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',

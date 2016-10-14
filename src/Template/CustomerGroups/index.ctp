@@ -42,9 +42,9 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($customerGroups as $customerGroup): ?>
+					<?php $i=0; foreach ($customerGroups as $customerGroup): $i++; ?>
 					<tr>
-						<td><?= $this->Number->format($customerGroup->id) ?></td>
+						<td><?= h($i) ?></td>
 						<td><?= h($customerGroup->name) ?></td>
 						<td class="actions">
 							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $customerGroup->id]) ?>

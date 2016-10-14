@@ -85,7 +85,8 @@
 							<td class="actions">
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $quotation->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
 								
-								<?php if($quotation->status=='Pending'){
+							
+								<?php if($quotation->status=='Pending' and in_array(2,$allowed_pages)){
 									echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $quotation->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));
 								} ?>
 								<!--<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
