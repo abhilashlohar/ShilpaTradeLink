@@ -22,7 +22,7 @@ class CustomersController extends AppController
         $this->paginate = [
             'contain' => ['Districts', 'CustomerSegs']
         ];
-        $customers = $this->paginate($this->Customers->find()->where(['deleted'=>'no']));
+        $customers = $this->paginate($this->Customers->find()->where(['Customers.deleted'=>'no']));
 
         $this->set(compact('customers'));
         $this->set('_serialize', ['customers']);
