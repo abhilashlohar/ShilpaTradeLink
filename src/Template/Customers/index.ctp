@@ -22,9 +22,9 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($customers as $customer): ?>
+					<?php $i=0; foreach ($customers as $customer): $i++; ?>
 					<tr>
-						<td><?= $this->Number->format($customer->id) ?></td>
+						<td><?= h($i) ?></td>
 						<td><?= h($customer->customer_name) ?></td>
 						<td><?= h($customer->district->district) ?></td>
 						<td><?= h($customer->customer_seg->name) ?></td>

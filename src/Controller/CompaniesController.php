@@ -37,7 +37,7 @@ class CompaniesController extends AppController
 		$this->paginate = [
             'contain' => ['CompanyGroups']
         ];
-        $companies = $this->paginate($this->Companies);
+        $companies = $this->paginate($this->Companies->find()->where(['deleted'=>'no']));
 
         $this->set(compact('companies'));
         $this->set('_serialize', ['companies']);
@@ -154,7 +154,8 @@ class CompaniesController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $company = $this->Companies->get($id);
-        if ($this->Companies->delete($company)) {
+		$company->deleted='yes';
+        if ($this->Companies->save($company)) {
             $this->Flash->success(__('The company has been deleted.'));
         } else {
             $this->Flash->error(__('The company could not be deleted. Please, try again.'));

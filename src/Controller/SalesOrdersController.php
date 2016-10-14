@@ -123,10 +123,10 @@ class SalesOrdersController extends AppController
                 $this->Flash->error(__('The sales order could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->SalesOrders->Customers->find('list', ['limit' => 200]);
-        $companies = $this->SalesOrders->Companies->find('all', ['limit' => 200]);
+        $customers = $this->SalesOrders->Customers->find('list')->where(['deleted'=>'no']);
+        $companies = $this->SalesOrders->Companies->find('all')->where(['deleted'=>'no']);
 		$quotationlists = $this->SalesOrders->Quotations->find()->where(['status'=>'Pending'])->order(['Quotations.id' => 'DESC']);
-		$items = $this->SalesOrders->Items->find('list',['limit' => 200]);
+		$items = $this->SalesOrders->Items->find('list')->where(['deleted'=>'no']);
 		$transporters = $this->SalesOrders->Carrier->find('list', ['limit' => 200]);
 		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200]);
 		$termsConditions = $this->SalesOrders->TermsConditions->find('all',['limit' => 200]);

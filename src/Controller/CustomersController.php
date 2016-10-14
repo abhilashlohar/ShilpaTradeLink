@@ -22,7 +22,7 @@ class CustomersController extends AppController
         $this->paginate = [
             'contain' => ['Districts', 'CustomerSegs']
         ];
-        $customers = $this->paginate($this->Customers);
+        $customers = $this->paginate($this->Customers->find()->where(['deleted'=>'no']));
 
         $this->set(compact('customers'));
         $this->set('_serialize', ['customers']);
@@ -121,7 +121,8 @@ class CustomersController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $customer = $this->Customers->get($id);
-        if ($this->Customers->delete($customer)) {
+		$customer->deleted='yes';
+        if ($this->Customers->save($customer)) {
             $this->Flash->success(__('The customer has been deleted.'));
         } else {
             $this->Flash->error(__('The customer could not be deleted. Please, try again.'));
