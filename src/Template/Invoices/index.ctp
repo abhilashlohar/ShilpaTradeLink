@@ -8,6 +8,42 @@
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
+				<form method="GET" >
+				<table class="table table-condensed">
+					<thead>
+						<tr>
+							<th>Ref. No</th>
+							<th>Customer</th>
+							<th>Date</th>
+							<th>Total</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="text" name="invoice_no" class="form-control input-sm" placeholder="Invoice No." value="<?php echo @$invoice_no; ?>"></td>
+							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
+							<td>
+							<table>
+								<tr>
+									<td><input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>" style="width: 100px;" data-date-format="dd-mm-yyyy" ></td>
+									<td><input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>" style="width: 100px;" data-date-format="dd-mm-yyyy" ></td>
+								</tr>
+							</table>
+							</td>
+							<td>
+							<table>
+								<tr>
+									<td><input type="text" name="total_From" class="form-control input-sm" placeholder="From" value="<?php echo @$total_From; ?>" style="width: 100px;"></td>
+									<td><input type="text" name="total_To" class="form-control input-sm" placeholder="To" value="<?php echo @$total_To; ?>" style="width: 100px;"></td>
+								</tr>
+							</table>
+							</td>
+							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>

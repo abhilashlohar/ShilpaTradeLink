@@ -19,12 +19,50 @@ class InvoicesController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-		
+		$where=[];
+		$invoice_no=$this->request->query('invoice_no');
+		$customer=$this->request->query('customer');
+		$From=$this->request->query('From');
+		$To=$this->request->query('To');
+		$total_From=$this->request->query('total_From');
+		$total_To=$this->request->query('total_To');
+		$page=$this->request->query('page');
+		$this->set(compact('ref_no','customer','total_From','total_To','From','To','page'));
+		if(!empty($invoice_no)){
+			$invoice_no_arr=explode('/',$invoice_no);
+			if(!empty($invoice_no_arr[0])){
+				$where['in1 LIKE']='%'.$invoice_no_arr[0].'%';
+			}
+			if(!empty($invoice_no_arr[2])){
+				$where['in3 LIKE']='%'.$invoice_no_arr[2].'%';
+			}
+			if(!empty($invoice_no_arr[3])){
+				$where['in4 LIKE']='%'.$invoice_no_arr[3].'%';
+			}
+			
+		}
+		if(!empty($customer)){
+			$where['customers.customer_name LIKE']='%'.$customer.'%';
+		}
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['date_created >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['date_created <=']=$To;
+		}
+		if(!empty($total_From)){
+			$where['total_after_pnf >=']=$total_From;
+		}
+		if(!empty($total_To)){
+			$where['total_after_pnf <=']=$total_To;
+		}
         $this->paginate = [
             'contain' => ['Customers', 'Companies']
         ];
-        $invoices = $this->paginate($this->Invoices->find()->order(['Invoices.id' => 'DESC']));
-
+        $invoices = $this->paginate($this->Invoices->find()->where($where)->order(['Invoices.id' => 'DESC']));
+		
         $this->set(compact('invoices'));
         $this->set('_serialize', ['invoices']);
     }
