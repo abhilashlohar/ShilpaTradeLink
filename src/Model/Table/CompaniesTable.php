@@ -100,5 +100,11 @@ class CompaniesTable extends Table
         return $validator;
     }
 	
+	public function validationCustom($validator)
+	{
+		$validator->remove('logo');
+		return $validator;
+	}
+	
 }
 

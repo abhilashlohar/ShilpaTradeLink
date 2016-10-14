@@ -27,7 +27,7 @@
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap-select/bootstrap-select.min.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/jquery-multi-select/css/multi-select.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/icheck/skins/all.css'); ?>
-
+<?php echo $this->Html->css('/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css'); ?>
 <!-- END GLOBAL MANDATORY STYLES -->
 <?php echo $this->Html->css('/assets/global/plugins/clockface/css/clockface.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css'); ?>
@@ -434,7 +434,7 @@ select
 
 <?php echo $this->Html->script('/assets/global/plugins/datatables/media/js/jquery.dataTables.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js'); ?>
-
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js'); ?>
 
 <?php echo $this->Html->script('/assets/global/scripts/metronic.js'); ?>
 <?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js'); ?>

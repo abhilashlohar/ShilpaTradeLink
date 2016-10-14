@@ -74,7 +74,7 @@ class CompaniesController extends AppController
 			
 			$file = $this->request->data['logo'];
 			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
-			$arr_ext = array('jpg', 'jpeg', 'png'); //set allowed extensions
+			$arr_ext = array('png'); //set allowed extensions
 			$setNewFileName = uniqid();
 			
 			$company->logo=$setNewFileName. '.' . $ext;
@@ -91,7 +91,7 @@ class CompaniesController extends AppController
             }
         }
 		
-		 $companyGroups = $this->Companies->CompanyGroups->find('list', ['limit' => 200]);
+		$companyGroups = $this->Companies->CompanyGroups->find('list');
 		
         $this->set(compact('company','companyGroups'));
         $this->set('_serialize', ['company']);
@@ -109,11 +109,28 @@ class CompaniesController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		
         $company = $this->Companies->get($id, [
-            'contain' => []
+            'contain' => ['CompanyBanks']
         ]);
+		
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $company = $this->Companies->patchEntity($company, $this->request->data);
-            if ($this->Companies->save($company)) {
+            $company = $this->Companies->patchEntity($company, $this->request->data,['validate' => 'Custom']);
+			
+			$file = $this->request->data['logo'];
+			if(!empty($file['name'])){
+				$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
+				$arr_ext = array('png'); //set allowed extensions
+				$setNewFileName = uniqid();
+				
+				$company->logo=$setNewFileName. '.' . $ext;
+				unlink(WWW_ROOT . '/logos/' . $company->getOriginal('logo'));
+				if (in_array($ext, $arr_ext)) {
+					move_uploaded_file($file['tmp_name'], WWW_ROOT . '/logos/' . $setNewFileName . '.' . $ext);
+				}
+			}else{
+				$company->logo=$company->getOriginal('logo');
+			}
+			
+			if ($this->Companies->save($company)) {
                 $this->Flash->success(__('The company has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -121,7 +138,8 @@ class CompaniesController extends AppController
                 $this->Flash->error(__('The company could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('company'));
+		$companyGroups = $this->Companies->CompanyGroups->find('list');
+        $this->set(compact('company','companyGroups'));
         $this->set('_serialize', ['company']);
     }
 

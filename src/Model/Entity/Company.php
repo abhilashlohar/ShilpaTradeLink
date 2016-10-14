@@ -27,4 +27,5 @@ class Company extends Entity
         '*' => true,
         'id' => false
     ];
+
 }
