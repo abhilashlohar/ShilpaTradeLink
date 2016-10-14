@@ -94,8 +94,24 @@ class EmployeesController extends AppController
         $employee = $this->Employees->get($id, [
             'contain' => []
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        if ($this->request->is(['patch', 'post', 'put'])) {		
             $employee = $this->Employees->patchEntity($employee, $this->request->data);
+			
+			$file = $this->request->data['signature'];
+			if(!empty($file['name'])){
+				$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
+				$arr_ext = array('png'); //set allowed extensions
+				$setNewFileName = uniqid();
+				
+				$employee->signature=$setNewFileName. '.' . $ext;
+				unlink(WWW_ROOT . '/signatures/' . $employee->getOriginal('signature'));
+				if (in_array($ext, $arr_ext)) {
+					move_uploaded_file($file['tmp_name'], WWW_ROOT . '/signatures/' . $setNewFileName . '.' . $ext);
+				}
+			}else{
+				$employee->signature=$employee->getOriginal('signature');
+			}
+			
             if ($this->Employees->save($employee)) {
                 $this->Flash->success(__('The employee has been saved.'));
 
@@ -105,7 +121,8 @@ class EmployeesController extends AppController
             }
         }
         $departments = $this->Employees->Departments->find('list', ['limit' => 200]);
-        $this->set(compact('employee', 'departments'));
+		$designations = $this->Employees->Designations->find('list', ['limit' => 200]);
+        $this->set(compact('employee', 'departments','designations'));
         $this->set('_serialize', ['employee']);
     }
 
