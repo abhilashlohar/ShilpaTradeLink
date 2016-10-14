@@ -19,10 +19,24 @@ class CustomersController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$where=[];
+		$customer=$this->request->query('customer');
+		$district=$this->request->query('district');
+		$customer_seg=$this->request->query('customer_seg');
+		$this->set(compact('customer','district','customer_seg'));
+		if(!empty($customer)){
+			$where['customer_name LIKE']='%'.$customer.'%';
+		}
+		if(!empty($district)){
+			$where['districts.district LIKE']='%'.$district.'%';
+		}
+		if(!empty($customer_seg)){
+			$where['customerSegs.name LIKE']='%'.$customer_seg.'%';
+		}
         $this->paginate = [
             'contain' => ['Districts', 'CustomerSegs']
         ];
-        $customers = $this->paginate($this->Customers->find()->where(['Customers.deleted'=>'no']));
+        $customers = $this->paginate($this->Customers->find()->where($where)->where(['Customers.deleted'=>'no']));
 
         $this->set(compact('customers'));
         $this->set('_serialize', ['customers']);

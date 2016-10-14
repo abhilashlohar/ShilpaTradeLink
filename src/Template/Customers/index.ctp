@@ -7,6 +7,26 @@
 	</div>
 	<div class="portlet-body">
 		<div class="table-scrollable">
+			<form method="GET" >
+				<table class="table table-condensed">
+				<thead>
+					<tr>
+						<th>Customer Name</th>
+						<th>District</th>
+						<th>Customer Seg</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer Name" value="<?php echo @$customer; ?>"></td>
+						<td><input type="text" name="district" class="form-control input-sm" placeholder="District" value="<?php echo @$district; ?>"></td>
+						<td><input type="text" name="customer_seg" class="form-control input-sm" placeholder="Customer Seg" value="<?php echo @$customer_seg; ?>"></td>
+						<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+					</tr>
+				</tbody>
+			</table>
+			</form>
 			 <table class="table table-hover">
 				 <thead>
 					<tr>
