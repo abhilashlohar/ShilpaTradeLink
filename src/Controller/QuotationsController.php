@@ -150,7 +150,7 @@ class QuotationsController extends AppController
         }
         $customers = $this->Quotations->Customers->find('all')->where(['deleted'=>'no']);
 		$companies = $this->Quotations->Companies->find('all')->where(['deleted'=>'no']);
-		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
+		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1])->where(['deleted'=>'no']);
 		$Categories = $this->Quotations->Categories->find('treeList',['limit' => 200]);
 		$items = $this->Quotations->Items->find('list')->where(['deleted'=>'no']);
 		$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);

@@ -34,7 +34,7 @@ class DesignationsController extends AppController
         $this->set(compact('designation'));
         $this->set('_serialize', ['designation']);
 		
-        $designations = $this->paginate($this->Designations);
+        $designations = $this->paginate($this->Designations->find()->where(['deleted'=>'no']));
 
         $this->set(compact('designations'));
         $this->set('_serialize', ['designations']);
@@ -117,7 +117,8 @@ class DesignationsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $designation = $this->Designations->get($id);
-        if ($this->Designations->delete($designation)) {
+		$designation->deleted='yes';
+        if ($this->Designations->save($designation)) {
             $this->Flash->success(__('The designation has been deleted.'));
         } else {
             $this->Flash->error(__('The designation could not be deleted. Please, try again.'));

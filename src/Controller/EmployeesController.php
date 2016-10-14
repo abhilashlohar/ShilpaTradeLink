@@ -22,7 +22,7 @@ class EmployeesController extends AppController
         $this->paginate = [
             'contain' => ['Departments']
         ];
-        $employees = $this->paginate($this->Employees);
+        $employees = $this->paginate($this->Employees->find()->where(['deleted'=>'no']));
 
         $this->set(compact('employees'));
         $this->set('_serialize', ['employees']);
@@ -75,8 +75,8 @@ class EmployeesController extends AppController
                 $this->Flash->error(__('The employee could not be saved. Please, try again.'));
             }
         }
-        $departments = $this->Employees->Departments->find('list', ['limit' => 200]);
-		$designations = $this->Employees->Designations->find('list', ['limit' => 200]);
+        $departments = $this->Employees->Departments->find('list')->where(['deleted'=>'no']);
+		$designations = $this->Employees->Designations->find('list')->where(['deleted'=>'no']);
         $this->set(compact('employee', 'departments','designations'));
         $this->set('_serialize', ['employee']);
     }
@@ -137,7 +137,8 @@ class EmployeesController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $employee = $this->Employees->get($id);
-        if ($this->Employees->delete($employee)) {
+		$employee->deleted='yes';
+        if ($this->Employees->save($employee)) {
             $this->Flash->success(__('The employee has been deleted.'));
         } else {
             $this->Flash->error(__('The employee could not be deleted. Please, try again.'));

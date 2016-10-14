@@ -67,12 +67,12 @@ class CustomersController extends AppController
             }
 			
         }
-        $districts = $this->Customers->Districts->find('list', ['limit' => 200]);
+        $districts = $this->Customers->Districts->find('list')->where(['deleted' => 'no']);
         $companyGroups = $this->Customers->CompanyGroups->find('list', ['limit' => 200]);
-		$CustomerGroups = $this->Customers->CustomerGroups->find('list', ['limit' => 200]);
-        $customerSegs = $this->Customers->CustomerSegs->find('list', ['limit' => 200]);
+		$CustomerGroups = $this->Customers->CustomerGroups->find('list')->where(['deleted'=>'no']);
+        $customerSegs = $this->Customers->CustomerSegs->find('list')->where(['deleted'=>'no']);
 		$employees = $this->Customers->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
-		$transporters = $this->Customers->Transporters->find('list', ['limit' => 200]);
+		$transporters = $this->Customers->Transporters->find('list')->where(['deleted'=>'no']);
         $this->set(compact('customer', 'districts', 'companyGroups', 'customerSegs','employees','transporters','CustomerGroups'));
         $this->set('_serialize', ['customer']);
     }
@@ -101,7 +101,7 @@ class CustomersController extends AppController
                 $this->Flash->error(__('The customer could not be saved. Please, try again.'));
             }
         }
-        $districts = $this->Customers->Districts->find('list', ['limit' => 200]);
+        $districts = $this->Customers->Districts->find('list')->where(['deleted' => 'no']);
         $companyGroups = $this->Customers->CompanyGroups->find('list', ['limit' => 200]);
         $customerSegs = $this->Customers->CustomerSegs->find('list', ['limit' => 200]);
 		$employees = $this->Customers->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);

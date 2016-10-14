@@ -81,7 +81,7 @@ class DistrictsController extends AppController
 				]));
        }
 	   
-	    $listdistricts = $this->paginate($this->Districts);
+	    $listdistricts = $this->paginate($this->Districts->find()->where(['deleted' => 'no']));
 		
         $this->set(compact('alldistricts','listdistricts'));
         $this->set('_serialize', ['alldistricts']);
@@ -128,7 +128,8 @@ class DistrictsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $district = $this->Districts->get($id);
-        if ($this->Districts->delete($district)) {
+		$district->deleted='yes';
+        if ($this->Districts->save($district)) {
             $this->Flash->success(__('The district has been deleted.'));
         } else {
             $this->Flash->error(__('The district could not be deleted. Please, try again.'));

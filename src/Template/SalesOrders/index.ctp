@@ -27,6 +27,35 @@
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
+				<form method="GET" >
+				<table class="table table-condensed">
+					<thead>
+						<tr>
+							<th>Sales Order No</th>
+							<th>Customer</th>
+							<th>Date</th>
+							<th>PO No.</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="text" name="sales_order_no" class="form-control input-sm" placeholder="Sales Order No" value="<?php echo @$sales_order_no; ?>"></td>
+							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
+							<td>
+							<table>
+								<tr>
+									<td><input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>" style="width: 100px;" data-date-format="dd-mm-yyyy" ></td>
+									<td><input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>" style="width: 100px;" data-date-format="dd-mm-yyyy" ></td>
+								</tr>
+							</table>
+							</td>
+							<td><input type="text" name="po_no" class="form-control input-sm" placeholder="PO No." value="<?php echo @$po_no; ?>"></td>
+							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>

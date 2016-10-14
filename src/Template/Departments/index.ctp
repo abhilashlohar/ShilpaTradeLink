@@ -48,6 +48,9 @@
 						<td><?= h($department->name) ?></td>
 						<td class="actions">
 							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $department->id]) ?>
+							<?php if($department->id!=1){ ?>
+							<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $department->id], ['confirm' => __('Are you sure you want to delete # {0}?', $department->id)]) ?>
+							<?php } ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>

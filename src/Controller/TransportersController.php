@@ -33,7 +33,7 @@ class TransportersController extends AppController
         $this->set(compact('transporter'));
         $this->set('_serialize', ['transporter']);
 		
-        $transporters = $this->paginate($this->Transporters);
+        $transporters = $this->paginate($this->Transporters->find()->where(['deleted'=>'no']));
 
         $this->set(compact('transporters'));
         $this->set('_serialize', ['transporters']);
@@ -116,7 +116,8 @@ class TransportersController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $transporter = $this->Transporters->get($id);
-        if ($this->Transporters->delete($transporter)) {
+		$transporter->deleted='yes';
+        if ($this->Transporters->save($transporter)) {
             $this->Flash->success(__('The transporter has been deleted.'));
         } else {
             $this->Flash->error(__('The transporter could not be deleted. Please, try again.'));

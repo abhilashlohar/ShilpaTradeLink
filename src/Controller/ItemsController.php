@@ -68,7 +68,7 @@ class ItemsController extends AppController
             }
         }
 		$Categories = $this->Items->Categories->find('treeList');
-        $units = $this->Items->Units->find('list', ['limit' => 200]);
+        $units = $this->Items->Units->find('list')->where(['deleted'=>'no']);
 		$Companies = $this->Items->Companies->find('list')->where(['deleted'=>'no']);
 		$sources = $this->Items->Sources->find('list', ['Sources' => 200]);
         $this->set(compact('item','Categories', 'units', 'Companies','sources'));

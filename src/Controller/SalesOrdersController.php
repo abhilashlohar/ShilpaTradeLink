@@ -19,8 +19,47 @@ class SalesOrdersController extends AppController
     public function index($status=null)
     {
 		$this->viewBuilder()->layout('index_layout');
+		$where=[];
+		$sales_order_no=$this->request->query('sales_order_no');
+		$customer=$this->request->query('customer');
+		$po_no=$this->request->query('po_no');
+		$From=$this->request->query('From');
+		$To=$this->request->query('To');
+		$page=$this->request->query('page');
+		$this->set(compact('sales_order_no','customer','po_no','product','From','To','page'));
+		if(!empty($sales_order_no)){
+			$sales_order_no_arr=explode('/',$sales_order_no);
+			if(!empty($sales_order_no_arr[0])){
+				$where['so1 LIKE']='%'.$sales_order_no_arr[0].'%';
+			}
+			if(!empty($sales_order_no_arr[2])){
+				$where['so3 LIKE']='%'.$sales_order_no_arr[2].'%';
+			}
+			if(!empty($sales_order_no_arr[3])){
+				$where['so4 LIKE']='%'.$sales_order_no_arr[3].'%';
+			}
+			
+		}
+		if(!empty($customer)){
+			$where['customers.customer_name LIKE']='%'.$customer.'%';
+		}
+		if(!empty($po_no)){
+			$where['customer_po_no LIKE']='%'.$po_no.'%';
+		}
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['date >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['date <=']=$To;
+		}
         $this->paginate = [
-            'contain' => ['Customers', 'Companies']
+            'contain' => ['Customers','Employees','Categories', 'Companies']
+        ];
+		
+        $this->paginate = [
+            'contain' => ['Customers']
         ];
 		
 		if($status==null or $status=='Pending'){
@@ -37,6 +76,7 @@ class SalesOrdersController extends AppController
 				->group(['SalesOrders.id'])
 				->autoFields(true)
 				->having($having)
+				->where($where)
 				->order(['SalesOrders.id' => 'DESC'])
 			);
 		
@@ -127,8 +167,8 @@ class SalesOrdersController extends AppController
         $companies = $this->SalesOrders->Companies->find('all')->where(['deleted'=>'no']);
 		$quotationlists = $this->SalesOrders->Quotations->find()->where(['status'=>'Pending'])->order(['Quotations.id' => 'DESC']);
 		$items = $this->SalesOrders->Items->find('list')->where(['deleted'=>'no']);
-		$transporters = $this->SalesOrders->Carrier->find('list', ['limit' => 200]);
-		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200]);
+		$transporters = $this->SalesOrders->Carrier->find('list')->where(['deleted'=>'no']);
+		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1])->where(['deleted'=>'no']);
 		$termsConditions = $this->SalesOrders->TermsConditions->find('all',['limit' => 200]);
 		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all');
         $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes'));

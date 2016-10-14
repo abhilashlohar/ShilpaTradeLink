@@ -276,6 +276,8 @@ select
 					</a>
 					<ul class="sub-menu">
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> Customer Groups','/Customer-Groups',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> Districts','/Districts',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> Customers Segments','/customer-segs',array('escape'=>false)); ?></li>
 						<li>
 							<a href="javascript:;">
 							<i class="icon-basket"></i>
@@ -287,8 +289,7 @@ select
 								<li><?php echo $this->Html->link( 'View', '/Customers' ); ?></li>
 							</ul>
 						</li>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Districts','/Districts',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Customers Segments','/customer-segs',array('escape'=>false)); ?></li>
+						
 					</ul>
 				</li>
 				<li>

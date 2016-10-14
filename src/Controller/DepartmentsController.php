@@ -34,7 +34,7 @@ class DepartmentsController extends AppController
         $this->set(compact('department'));
         $this->set('_serialize', ['department']);
 		
-        $departments = $this->paginate($this->Departments);
+        $departments = $this->paginate($this->Departments->find()->where(['deleted'=>'no']));
 
         $this->set(compact('departments'));
         $this->set('_serialize', ['departments']);
@@ -117,7 +117,8 @@ class DepartmentsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $dipartment = $this->Departments->get($id);
-        if ($this->Departments->delete($dipartment)) {
+		$dipartment->deleted='yes';
+        if ($this->Departments->save($dipartment)) {
             $this->Flash->success(__('The dipartment has been deleted.'));
         } else {
             $this->Flash->error(__('The dipartment could not be deleted. Please, try again.'));

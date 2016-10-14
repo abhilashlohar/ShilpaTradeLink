@@ -63,7 +63,7 @@ class CustomerSegsController extends AppController
                 $this->Flash->error(__('The Customer Segment could not be saved. Please, try again.'));
             }
         }
-		$customerSegs = $this->paginate($this->CustomerSegs);
+		$customerSegs = $this->paginate($this->CustomerSegs->find()->where(['deleted'=>'no']));
         $this->set(compact('customerSeg','customerSegs'));
         $this->set('_serialize', ['customerSeg','customerSegs']);
 		
@@ -107,7 +107,8 @@ class CustomerSegsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $customerSeg = $this->CustomerSegs->get($id);
-        if ($this->CustomerSegs->delete($customerSeg)) {
+		$customerSeg->deleted='yes';
+        if ($this->CustomerSegs->save($customerSeg)) {
             $this->Flash->success(__('The customer seg has been deleted.'));
         } else {
             $this->Flash->error(__('The customer seg could not be deleted. Please, try again.'));

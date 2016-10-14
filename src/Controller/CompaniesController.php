@@ -91,7 +91,7 @@ class CompaniesController extends AppController
             }
         }
 		
-		$companyGroups = $this->Companies->CompanyGroups->find('list');
+		$companyGroups = $this->Companies->CompanyGroups->find('list')->where(['deleted'=>'no']);
 		
         $this->set(compact('company','companyGroups'));
         $this->set('_serialize', ['company']);
