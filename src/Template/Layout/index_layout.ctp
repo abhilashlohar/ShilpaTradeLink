@@ -331,6 +331,7 @@ select
 				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Designations','/Designations',array('escape'=>false)); ?></li>
 				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Departments','/Departments',array('escape'=>false)); ?></li>
 				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Files','/Filenames',array('escape'=>false)); ?></li>
+				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Sale-Taxes','/SaleTaxes',array('escape'=>false)); ?></li>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>

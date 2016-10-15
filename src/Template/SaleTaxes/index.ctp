@@ -34,7 +34,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-offset-4 col-md-8">
-						<button type="submit" class="btn green">Add Unit</button>
+						<button type="submit" class="btn btn-primary">Add Sale Tax</button>
 					</div>
 				</div>
 			</div>
@@ -59,7 +59,6 @@
 						<td><?= $this->Number->format($saleTax->tax_figure) ?></td>
 						<td><?= h($saleTax->description) ?></td>
 						<td class="actions">
-							<?= $this->Html->link(__('View'), ['action' => 'view', $saleTax->id]) ?>
 							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $saleTax->id]) ?>
 							<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $saleTax->id], ['confirm' => __('Are you sure you want to delete # {0}?', $saleTax->id)]) ?>
 						</td>
