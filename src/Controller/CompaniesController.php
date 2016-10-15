@@ -37,7 +37,7 @@ class CompaniesController extends AppController
 		$this->paginate = [
             'contain' => ['CompanyGroups']
         ];
-        $companies = $this->paginate($this->Companies->find()->where(['deleted'=>'no']));
+        $companies = $this->paginate($this->Companies->find()->where(['Companies.deleted'=>'no']));
 
         $this->set(compact('companies'));
         $this->set('_serialize', ['companies']);

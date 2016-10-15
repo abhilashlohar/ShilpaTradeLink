@@ -591,15 +591,17 @@ $(document).ready(function() {
 		<div class="modal-content">
 			<div class="modal-body" id="result_ajax">
 			<h4>Commercial Terms & Conditions</h4>
-			<table class="table table-hover tabl_tc">
-			<?php foreach ($termsConditions as $termsCondition): ?>
-				 
-				 <tr>
-					<td width="10"><label><?php echo $this->Form->input('dummy', ['type' => 'checkbox','label' => false,'class' => '']); ?></label></td>
-					<td><p><?= h($termsCondition->text_line) ?></p></td>
-				</tr>
-			<?php endforeach; ?>
-			</table>
+				<div style=" overflow: auto; height: 450px; ">
+				<table class="table table-hover tabl_tc">
+				<?php foreach ($termsConditions as $termsCondition): ?>
+					 
+					 <tr>
+						<td width="10"><label><?php echo $this->Form->input('dummy', ['type' => 'checkbox','label' => false,'class' => '']); ?></label></td>
+						<td><p><?= h($termsCondition->text_line) ?></p></td>
+					</tr>
+				<?php endforeach; ?>
+				</table>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button class="btn default closebtn2">Close</button>
