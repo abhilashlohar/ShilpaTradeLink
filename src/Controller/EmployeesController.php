@@ -22,7 +22,7 @@ class EmployeesController extends AppController
         $this->paginate = [
             'contain' => ['Departments']
         ];
-        $employees = $this->paginate($this->Employees->find()->where(['deleted'=>'no']));
+        $employees = $this->paginate($this->Employees->find()->where(['Employees.deleted'=>'no']));
 
         $this->set(compact('employees'));
         $this->set('_serialize', ['employees']);

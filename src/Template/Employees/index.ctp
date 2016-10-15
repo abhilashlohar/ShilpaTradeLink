@@ -20,9 +20,9 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($employees as $employee): ?>
+					<?php $i=0; foreach ($employees as $employee): $i++; ?>
 					<tr>
-						<td><?= $this->Number->format($employee->id) ?></td>
+						<td><?= h($i) ?></td>
 						<td><?= h($employee->name) ?></td>
 						<td><?= h($employee->sex) ?></td>
 						<td><?= h($employee->department->name) ?></td>

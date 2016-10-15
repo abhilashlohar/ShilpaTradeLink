@@ -42,9 +42,9 @@
 					</tr>
 				</thead>
 				<tbody>
-					 <?php foreach ($designations as $designation): ?>
+					 <?php $i=0; foreach ($designations as $designation): $i++; ?>
 					<tr>
-						<td><?= $this->Number->format($designation->id) ?></td>
+						<td><?= h($i) ?></td>
 						<td><?= h($designation->name) ?></td>
 						<td class="actions">
 							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $designation->id]) ?>
