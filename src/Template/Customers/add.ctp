@@ -18,12 +18,6 @@
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Contact Person <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('contact_person', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Contact Person']); ?>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
 							<label class="control-label">District <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm']); ?>
 						</div>
@@ -112,6 +106,12 @@
 							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Credit Limit']); ?>
 						</div>
 					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Transporter</label>
+							<?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Transporter']); ?>
+						</div>
+					</div>
 				</div>
 				
 				<h4 style="font-size:13px'">Customer's Contacts</h4>
@@ -178,9 +178,6 @@ $(document).ready(function() {
 		rules: {
 			customer_name:{
 				required: true,
-			},
-			contact_person : {
-				  required: true,
 			},
 			district_id : {
 				  required: true,

@@ -117,10 +117,11 @@ class CustomersController extends AppController
         }
         $districts = $this->Customers->Districts->find('list')->where(['deleted' => 'no']);
         $companyGroups = $this->Customers->CompanyGroups->find('list', ['limit' => 200]);
-        $customerSegs = $this->Customers->CustomerSegs->find('list', ['limit' => 200]);
+		$CustomerGroups = $this->Customers->CustomerGroups->find('list')->where(['deleted'=>'no']);
+        $customerSegs = $this->Customers->CustomerSegs->find('list')->where(['deleted'=>'no']);
 		$employees = $this->Customers->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
-		$transporters = $this->Customers->Transporters->find('list', ['limit' => 200]);
-        $this->set(compact('customer', 'districts', 'companyGroups', 'customerSegs','employees','transporters'));
+		$transporters = $this->Customers->Transporters->find('list')->where(['deleted'=>'no']);
+        $this->set(compact('customer', 'districts', 'companyGroups', 'customerSegs','employees','transporters','CustomerGroups'));
         $this->set('_serialize', ['customer']);
     }
 
