@@ -67,7 +67,7 @@
 					<div class="form-group">
 						<label class="col-md-4 control-label">Product</label>
 						<div class="col-md-8">
-							<?php echo $this->Form->input('category_id', ['options' => $Categories,'label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('item_group_id', ['empty'=>'--Select--','options' => $ItemGroups,'label' => false,'class' => 'form-control input-sm','required']); ?>
 						</div>
 					</div>
 					<br/>
@@ -142,7 +142,7 @@
 			</div>
 			<br/>
 			<div class="alert alert-danger" id="row_error" style="display:none;">
-				Fill Quantity and Rate.
+				All fields are Required
 			</div>
 			<table class="table tableitm" id="main_tb">
 				<thead>
@@ -226,7 +226,7 @@
 	<tbody>
 		<tr class="tr1">
 			<td rowspan="2" width="10">0</td>
-			<td><?php echo $this->Form->input('item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen','placeholder' => 'Item']); ?></td>
+			<td><?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen','placeholder' => 'Item']); ?></td>
 			<td width="100"><?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity']); ?></td>
 			<td width="130"><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate']); ?></td>
 			<td width="130"><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>

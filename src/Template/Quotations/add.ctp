@@ -67,7 +67,7 @@
 					<div class="form-group">
 						<label class="col-md-4 control-label">Product</label>
 						<div class="col-md-8">
-							<?php echo $this->Form->input('category_id', ['options' => $Categories,'label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('item_group_id', ['empty'=>'--Select--','options' => $ItemGroups,'label' => false,'class' => 'form-control input-sm','required']); ?>
 						</div>
 					</div>
 					<br/>

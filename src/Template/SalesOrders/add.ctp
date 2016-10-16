@@ -101,7 +101,7 @@
 			</div>
 			<br/>
 			<div class="alert alert-danger" id="row_error" style="display:none;">
-				Fill Quantity and Rate.
+				All fields are Required
 			</div>
 			<table class="table tableitm" id="main_tb">
 				<thead>
@@ -122,7 +122,7 @@
 					$q=0; foreach ($quotation->quotation_rows as $quotation_rows): ?>
 						<tr class="tr1" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
-							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Item','value' => @$quotation_rows->item->id]); ?></td>
+							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Item','value' => @$quotation_rows->item->id]); ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity','value' => @$quotation_rows->quantity]); ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate','value' => @$quotation_rows->rate]); ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$quotation_rows->amount]); ?></td>
@@ -257,7 +257,7 @@
 	<tbody>
 		<tr class="tr1">
 			<td rowspan="2">0</td>
-			<td><?php echo $this->Form->input('item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item']); ?></td>
+			<td><?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item']); ?></td>
 			<td><?php echo $this->Form->input('unit[]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity']); ?></td>
 			<td><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01"]); ?></td>
 			<td><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>

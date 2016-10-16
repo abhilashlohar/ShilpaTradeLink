@@ -49,8 +49,8 @@ class QuotationsTable extends Table
             'foreignKey' => 'employee_id',
             'joinType' => 'INNER'
         ]);
-		$this->belongsTo('Categories', [
-            'foreignKey' => 'category_id',
+		$this->belongsTo('ItemGroups', [
+            'foreignKey' => 'item_group_id',
             'joinType' => 'INNER'
         ]);
 		$this->belongsTo('TermsConditions');

@@ -48,7 +48,7 @@ class QuotationsController extends AppController
 			$where['employees.name LIKE']='%'.$salesman.'%';
 		}
 		if(!empty($product)){
-			$where['categories.name LIKE']='%'.$product.'%';
+			$where['ItemGroups.name LIKE']='%'.$product.'%';
 		}
 		if(!empty($From)){
 			$From=date("Y-m-d",strtotime($this->request->query('From')));
@@ -59,7 +59,7 @@ class QuotationsController extends AppController
 			$where['finalisation_date <=']=$To;
 		}
         $this->paginate = [
-            'contain' => ['Customers','Employees','Categories']
+            'contain' => ['Customers','Employees','ItemGroups']
         ];
 		if($status==null or $status=='Pending'){
 			$where['status']='Pending';
@@ -96,7 +96,7 @@ class QuotationsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $quotation = $this->Quotations->get($id, [
-            'contain' => ['Customers','Companies','Employees','Categories','QuotationRows' => ['Items']]
+            'contain' => ['Customers','Companies','Employees','ItemGroups','QuotationRows' => ['Items']]
         ]);
 
         $this->set('quotation', $quotation);
@@ -119,7 +119,7 @@ class QuotationsController extends AppController
     {
 		$this->viewBuilder()->layout('');
         $quotation = $this->Quotations->get($id, [
-            'contain' => ['Customers','Companies','Employees','Categories','QuotationRows' => ['Items'=>['Units']]]
+            'contain' => ['Customers','Companies','Employees','ItemGroups','QuotationRows' => ['Items'=>['Units']]]
         ]);
 
         $this->set('quotation', $quotation);
@@ -151,11 +151,11 @@ class QuotationsController extends AppController
         $customers = $this->Quotations->Customers->find('all')->where(['deleted'=>'no']);
 		$companies = $this->Quotations->Companies->find('all')->where(['deleted'=>'no']);
 		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1])->where(['deleted'=>'no']);
-		$Categories = $this->Quotations->Categories->find('treeList',['limit' => 200]);
+		$ItemGroups = $this->Quotations->ItemGroups->find('list');
 		$items = $this->Quotations->Items->find('list')->where(['deleted'=>'no']);
 		$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);
 		
-        $this->set(compact('quotation', 'customers','companies','employees','Categories','items','termsConditions'));
+        $this->set(compact('quotation', 'customers','companies','employees','ItemGroups','items','termsConditions'));
         $this->set('_serialize', ['quotation']);
     }
 
@@ -188,11 +188,11 @@ class QuotationsController extends AppController
         $customers = $this->Quotations->Customers->find('all');
 		$companies = $this->Quotations->Companies->find('all',['limit' => 200]);
 		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
-		$Categories = $this->Quotations->Categories->find('treeList',['limit' => 200]);
+		$ItemGroups = $this->Quotations->ItemGroups->find('list');
 		$items = $this->Quotations->Items->find('list',['limit' => 200]);
 		$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);
 		
-        $this->set(compact('quotation', 'customers','companies','employees','Categories','items','termsConditions'));
+        $this->set(compact('quotation', 'customers','companies','employees','ItemGroups','items','termsConditions'));
         $this->set('_serialize', ['quotation']);
     }
 
