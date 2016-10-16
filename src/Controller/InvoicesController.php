@@ -136,7 +136,7 @@ class InvoicesController extends AppController
         if ($this->request->is('post')) {
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 			$invoice->date_created=date("Y-m-d",strtotime($invoice->date_created));
-			//pr($invoice); exit;
+			
             if ($this->Invoices->save($invoice)) {
 				if(!empty($sales_order_id)){
 					$invoice->check=array_filter($invoice->check);
