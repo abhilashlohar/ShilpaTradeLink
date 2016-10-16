@@ -2,7 +2,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Add Item</span>
+			<span class="caption-subject font-blue-steel uppercase">Edit Item</span>
 		</div>
 	</div>
 	<div class="portlet-body form">
@@ -117,7 +117,7 @@
 			</div>
 			
 			<div class="form-actions">
-				 <button type="submit" class="btn blue-hoki">Add Item</button>
+				 <button type="submit" class="btn blue-hoki">Edit Item</button>
 			</div>
 		<?= $this->Form->end() ?>
 		<!-- END FORM-->

@@ -47,7 +47,7 @@ $html = '
   <div id="header">
 		<table width="100%">
 			<tr>
-				<td width="50%">'.$this->Html->image(ROOT . DS  . 'webroot' . DS  .'/logos/'.$quotation->company->logo, ["height" => "50px"]).'</td>
+				<td width="50%"><img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$quotation->company->logo.' height="50px" style="height:50px;"/></td>
 				<td align="right" width="50%" style="font-size: 12px;">
 				<span style="font-size: 16px;">'. h($quotation->company->name) .'</span><br/>
 				<span>'. $this->Text->autoParagraph(h($quotation->company->address)) .'</span>
@@ -182,7 +182,8 @@ $html.='
 	</div><br/>
 	<div><b>I hope above is to your requirement and in case of any clarification kindly revert back.</b></div><br/>
 	<div class="avoid_break"><b>Thanks and Regards,</b><br/>
-	'.$this->Html->image(ROOT . DS  . 'webroot' . DS  .'/signatures/'.$quotation->employee->signature, ["height" => "50px"]).'<br/>
+	<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->employee->signature.' height="50px" style="height:50px;"/>
+	<br/>
 	<span>'. h(($quotation->employee->name)) .'</span><br/>
 	<span>'. h(($quotation->employee->mobile)) .'</span><br/>
 	<span>'. h(($quotation->employee->email)) .'</span>

@@ -50,7 +50,9 @@ $html = '
   <div id="header">
 		<table width="100%">
 			<tr>
-				<td width="50%">'.$this->Html->image(ROOT . DS  . 'webroot' . DS  .'/logos/'.$invoice->company->logo, ["width" => "200px"]).'</td>
+				<td width="50%">
+				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$invoice->company->logo.' height="50px" style="height:50px;"/>
+				</td>
 				<td align="right" width="50%" style="font-size: 12px;">
 				<span style="font-size: 16px;">'. h($invoice->company->name) .'</span><br/>
 				<span>'. $this->Text->autoParagraph(h($invoice->company->address)) .'</span>
@@ -227,7 +229,8 @@ $html.='
 						<tr>
 							<td align="center">
 							For '. h($invoice->company->name) .'<br/>
-							'.$this->Html->image(ROOT . DS  . 'webroot' . DS  .'/signatures/'.$invoice->employee->signature, ["height" => "50px"]).'<br/>
+							<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$invoice->employee->signature.' height="50px" style="height:50px;"/>
+							<br/>
 							<span style="    border-top: solid 1px #585757;">Authorised Signatory</span>
 							</td>
 						</tr>
