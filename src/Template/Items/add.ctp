@@ -33,7 +33,23 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Category <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('category_id', ['options' => $Categories,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Category']); ?>
+							<?php echo $this->Form->input('item_category_id', ['empty'=>'--Select--','options' => $ItemCategories,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Category']); ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Group <span class="required" aria-required="true">*</span></label>
+							<div id="item_group_div">
+							<?php echo $this->Form->input('item_group_id', ['options' => [],'label' => false,'class' => 'form-control input-sm','placeholder'=>'Group']); ?>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Sub-Group <span class="required" aria-required="true">*</span></label>
+							<div id="item_sub_group_div">
+							<?php echo $this->Form->input('item_sub_group_id', ['options' => [],'label' => false,'class' => 'form-control input-sm','placeholder'=>'Sub-Group']); ?>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -111,6 +127,7 @@
 <script>
 $(document).ready(function() {
 	
+	
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -129,7 +146,13 @@ $(document).ready(function() {
 			alias  : {
 				  required: true,
 			},
-			category_id    : {
+			item_category_id    : {
+				  required: true,
+			},
+			item_group_id    : {
+				  required: true,
+			},
+			item_sub_group_id    : {
 				  required: true,
 			},
 			ob_quantity    :{
@@ -238,6 +261,33 @@ $(document).ready(function() {
 		$(this).val('');
 		return false;  
 	}
+});
+
+
+$('select[name="item_category_id"]').on("change",function() {
+	$('#item_group_div').html('Loading...');
+	var itemCategoryId=$('select[name="item_category_id"] option:selected').val();
+	var url="<?php echo $this->Url->build(['controller'=>'ItemGroups','action'=>'ItemGroupDropdown']); ?>";
+	url=url+'/'+itemCategoryId,
+	$.ajax({
+		url: url,
+		type: 'GET',
+	}).done(function(response) {
+		$('#item_group_div').html(response);
+	});
+});
+
+$('select[name="item_group_id"]').die().live("change",function() {
+	$('#item_sub_group_div').html('Loading...');
+	var itemGroupId=$('select[name="item_group_id"] option:selected').val();
+	var url="<?php echo $this->Url->build(['controller'=>'ItemSubGroups','action'=>'ItemSubGroupDropdown']); ?>";
+	url=url+'/'+itemGroupId,
+	$.ajax({
+		url: url,
+		type: 'GET',
+	}).done(function(response) {
+		$('#item_sub_group_div').html(response);
+	});
 });
 	
 });

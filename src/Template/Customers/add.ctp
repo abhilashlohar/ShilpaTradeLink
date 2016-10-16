@@ -75,7 +75,7 @@
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Customer Group<span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Customer Group</label>
 							<?php echo $this->Form->input('customer_group_id', ['options'=>$CustomerGroups,'label' => false,'class' => 'form-control input-sm']); ?>
 						</div>
 					</div>
@@ -198,9 +198,6 @@ $(document).ready(function() {
 				  required: true,
 			},
 			payment_terms : {
-				  required: true,
-			},
-			customer_group_id : {
 				  required: true,
 			},
 			mode_of_payment : {

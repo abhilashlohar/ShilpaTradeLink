@@ -299,7 +299,10 @@ select
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Categories','/Categories',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Categories','/Item-Categories',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Groups','/Item-Groups',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Sub-Groups','/Item-Sub-Groups',array('escape'=>false)); ?></li>
+						<!--<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Categories','/Categories',array('escape'=>false)); ?></li>-->
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> Units','/units',array('escape'=>false)); ?></li>
 						<li>
 							<a href="javascript:;">

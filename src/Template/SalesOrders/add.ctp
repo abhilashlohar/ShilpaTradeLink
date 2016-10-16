@@ -407,9 +407,10 @@ $(document).ready(function() {
 		submitHandler: function (form) {
 			q="ok";
 			$("#main_tb tbody tr.tr1").each(function(){
+				var t=$(this).find("td:nth-child(2) select").val();
 				var w=$(this).find("td:nth-child(3) input").val();
 				var r=$(this).find("td:nth-child(4) input").val();
-				if(w=="" || r==""){
+				if(t=="" || w=="" || r==""){
 					q="e";
 				}
 			});

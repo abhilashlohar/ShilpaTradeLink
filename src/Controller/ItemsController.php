@@ -21,7 +21,7 @@ class ItemsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
        
 		$this->paginate = [
-            'contain' => ['Categories', 'Units']
+            'contain' => ['ItemCategories','ItemGroups','ItemSubGroups','Units']
         ];
 		
         $items = $this->paginate($this->Items);
@@ -67,11 +67,11 @@ class ItemsController extends AppController
                 $this->Flash->error(__('The item could not be saved. Please, try again.'));
             }
         }
-		$Categories = $this->Items->Categories->find('treeList');
+		$ItemCategories = $this->Items->ItemCategories->find('list');
         $units = $this->Items->Units->find('list')->where(['deleted'=>'no']);
 		$Companies = $this->Items->Companies->find('list')->where(['deleted'=>'no']);
 		$sources = $this->Items->Sources->find('list', ['Sources' => 200]);
-        $this->set(compact('item','Categories', 'units', 'Companies','sources'));
+        $this->set(compact('item','ItemCategories', 'units', 'Companies','sources'));
         $this->set('_serialize', ['item']);
 
     }
@@ -100,13 +100,13 @@ class ItemsController extends AppController
                 $this->Flash->error(__('The item could not be saved. Please, try again.'));
             }
         }
-        $itemCategories = $this->Items->ItemCategories->find('list', ['limit' => 200]);
-        $itemGroups = $this->Items->ItemGroups->find('list', ['limit' => 200]);
-        $itemSubGroups = $this->Items->ItemSubGroups->find('list', ['limit' => 200]);
-        $units = $this->Items->Units->find('list', ['limit' => 200]);
-		$Companies = $this->Items->Companies->find('list', ['Companies' => 200]);
+		$ItemCategories = $this->Items->ItemCategories->find('list');
+		$ItemGroups = $this->Items->ItemGroups->find('list');
+		$ItemSubGroups = $this->Items->ItemSubGroups->find('list');
+        $units = $this->Items->Units->find('list')->where(['deleted'=>'no']);
+		$Companies = $this->Items->Companies->find('list')->where(['deleted'=>'no']);
 		$sources = $this->Items->Sources->find('list', ['Sources' => 200]);
-        $this->set(compact('item', 'itemCategories', 'itemGroups', 'itemSubGroups', 'units', 'Companies','sources'));
+        $this->set(compact('item','ItemCategories','ItemGroups','ItemSubGroups', 'units', 'Companies','sources'));
         $this->set('_serialize', ['item']);
     }
 

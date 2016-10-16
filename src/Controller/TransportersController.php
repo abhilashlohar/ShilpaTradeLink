@@ -93,7 +93,7 @@ class TransportersController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $transporter = $this->Transporters->patchEntity($transporter, $this->request->data);
-            pr($transporter); exit;
+            
 			if ($this->Transporters->save($transporter)) {
                 $this->Flash->success(__('The transporter has been saved.'));
 

@@ -40,8 +40,16 @@ class ItemsTable extends Table
         $this->displayField('name');
         $this->primaryKey('id');
 
-		$this->belongsTo('Categories', [
-            'foreignKey' => 'category_id',
+		$this->belongsTo('ItemCategories', [
+            'foreignKey' => 'item_category_id',
+            'joinType' => 'INNER'
+        ]);
+		$this->belongsTo('ItemGroups', [
+            'foreignKey' => 'item_group_id',
+            'joinType' => 'INNER'
+        ]);
+		$this->belongsTo('ItemSubGroups', [
+            'foreignKey' => 'item_sub_group_id',
             'joinType' => 'INNER'
         ]);
        

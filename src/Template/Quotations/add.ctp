@@ -6,7 +6,7 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
-		<?= $this->Form->create($quotation,['id'=>'quotation_entry']) ?>
+		<?= $this->Form->create($quotation,['id'=>'form_sample_3']) ?>
 		<div class="form-body">
 			<div class="row">
 				<div class="col-md-6">
@@ -18,7 +18,7 @@
 							foreach($companies as $companie){
 								$options[]=['text' => $companie->name, 'value' => $companie->id, 'alias' => $companie->alias];
 							}
-							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me']); ?>
+							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me','required']); ?>
 						</div>
 					</div>
 				</div>
@@ -142,7 +142,7 @@
 			</div>
 			<br/>
 			<div class="alert alert-danger" id="row_error" style="display:none;">
-				Fill Quantity and Rate.
+				All fields are Required.
 			</div>
 			<table class="table tableitm" id="main_tb">
 				<thead>
@@ -203,7 +203,7 @@
 	<tbody>
 		<tr class="tr1">
 			<td rowspan="2" width="10">0</td>
-			<td><?php echo $this->Form->input('item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen','placeholder' => 'Item']); ?></td>
+			<td><?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen','placeholder' => 'Item']); ?></td>
 			<td width="100"><?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity']); ?></td>
 			<td width="130"><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate']); ?></td>
 			<td width="130"><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
@@ -234,113 +234,138 @@ $( "#sortable" ).disableSelection();
 </script>
 <script>
 $(document).ready(function() {
-	
 	//--------- FORM VALIDATION
+	var form3 = $('#form_sample_3');
+	var error3 = $('.alert-danger', form3);
+	var success3 = $('.alert-success', form3);
+	form3.validate({
+		errorElement: 'span', //default input error message container
+		errorClass: 'help-block help-block-error', // default input error message class
+		focusInvalid: true, // do not focus the last invalid input
+		rules: {
+			rules: {
+				company_id:{
+					required: true,
+				},
+				date : {
+					  required: true,
+				},
+				customer_id : {
+					  required: true,
+				},
+				customer_address : {
+					  required: true,
+				},
+				
+				employee_id:{
+					required: true
+				},
+				category_id:{
+					required: true,
+				},
+				
+				finalisation_date:{
+					required: true,
+				},
+				customer_for_attention : {
+					  required: true,
+				},
+				enquiry_no  : {
+					  required: true,
+				},
+				customer_contact: {
+					  required: true,
+				},
+				subject:{
+					required: true,	
+				},
+				qt1:{
+					required: true,	
+				},
+				qt3:{
+					required: true,	
+				},
+				qt4:{
+					required: true,	
+				}
+			},
+		},
 
-			var form1 = $('#quotation_entry');
-            var error1 = $('.alert-danger', form1);
-            var success1 = $('.alert-success', form1);
+		messages: { // custom messages for radio buttons and checkboxes
+			membership: {
+				required: "Please select a Membership type"
+			},
+			service: {
+				required: "Please select  at least 2 types of Service",
+				minlength: jQuery.validator.format("Please select  at least {0} types of Service")
+			}
+		},
 
-            form1.validate({
-                errorElement: 'span', //default input error message container
-                errorClass: 'help-block help-block-error', // default input error message class
-                focusInvalid: false, // do not focus the last invalid input
-                ignore: "",  // validate all fields including form hidden input
-                messages: {
-                    select_multi: {
-                        maxlength: jQuery.validator.format("Max {0} items allowed for selection"),
-                        minlength: jQuery.validator.format("At least {0} items must be selected")
-                    }
-                },
-                rules: {
-                    company_id:{
-						required: true,
-					},
- 					date : {
-						  required: true,
-                    },
-					customer_id : {
-						  required: true,
-                    },
-					customer_address : {
-						  required: true,
-                    },
-					
-					employee_id:{
-						required: true
-					},
-					category_id:{
-						required: true,
-					},
-					
-					finalisation_date:{
-						required: true,
-					},
- 					customer_for_attention : {
-						  required: true,
-                    },
-					enquiry_no  : {
-						  required: true,
-                    },
-					customer_contact: {
-						  required: true,
-                    },
-					subject:{
-						required: true,	
-					},
-					qt1:{
-						required: true,	
-					},
-					qt3:{
-						required: true,	
-					},
-					qt4:{
-						required: true,	
-					}
-                },
+		errorPlacement: function (error, element) { // render error placement for each input type
+			if (element.parent(".input-group").size() > 0) {
+				error.insertAfter(element.parent(".input-group"));
+			} else if (element.attr("data-error-container")) { 
+				error.appendTo(element.attr("data-error-container"));
+			} else if (element.parents('.radio-list').size() > 0) { 
+				error.appendTo(element.parents('.radio-list').attr("data-error-container"));
+			} else if (element.parents('.radio-inline').size() > 0) { 
+				error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
+			} else if (element.parents('.checkbox-list').size() > 0) {
+				error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
+			} else if (element.parents('.checkbox-inline').size() > 0) { 
+				error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
+			} else {
+				error.insertAfter(element); // for other inputs, just perform default behavior
+			}
+		},
 
-                invalidHandler: function (event, validator) { //display error alert on form submit              
-                    success1.hide();
-                    error1.show();
-                    Metronic.scrollTo(error1, -200);
-                },
+		invalidHandler: function (event, validator) { //display error alert on form submit   
+			success3.hide();
+			error3.show();
+			Metronic.scrollTo(error3, -200);
+		},
 
-                highlight: function (element) { // hightlight error inputs
-                    $(element).closest('.form-group').addClass('has-error'); // set error class to the control group
-                },
+		highlight: function (element) { // hightlight error inputs
+		   $(element)
+				.closest('.form-group').addClass('has-error'); // set error class to the control group
+		},
 
-                unhighlight: function (element) { // revert the change done by hightlight
-                    $(element)
-                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
-                },
+		unhighlight: function (element) { // revert the change done by hightlight
+			$(element)
+				.closest('.form-group').removeClass('has-error'); // set error class to the control group
+		},
 
-                success: function (label) {
-                    label
-                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
-                },
+		success: function (label) {
+			label
+				.closest('.form-group').removeClass('has-error'); // set success class to the control group
+		},
 
-                submitHandler: function (form) {
-					q="ok";
-					$("#main_tb tbody tr.tr1").each(function(){
-						var w=$(this).find("td:nth-child(3) input").val();
-						var r=$(this).find("td:nth-child(4) input").val();
-						if(w=="" || r==""){
-							q="e";
-						}
-					});
-					if(q=="e"){
-						$("#row_error").show();
-						return false;
-					}else{
-						$("#row_error").hide();
-						success1.show();
-						error1.hide();
-						form[0].submit(); // submit the form
-					}
-                }
-            });
-		
-//--	 END OF VALIDATION
+		submitHandler: function (form) {
+			q="ok";
+			$("#main_tb tbody tr.tr1").each(function(){
+				var it=$(this).find("td:nth-child(2) select").val();
+				var w=$(this).find("td:nth-child(3) input").val();
+				var r=$(this).find("td:nth-child(4) input").val();
+				if(it=="" || w=="" || r==""){
+					q="e";
+				}
+			});
+			if(q=="e"){
+				$("#row_error").show();
+				return false;
+			}else{
+				success3.show();
+				error3.hide();
+				form[0].submit(); // submit the form
+			}
+		}
+
+	});
+	//--	 END OF VALIDATION
+	
+                
+
+               
 
 	add_row();
     $('.addrow').die().live("click",function() { 
