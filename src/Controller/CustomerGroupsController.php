@@ -116,13 +116,19 @@ class CustomerGroupsController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $customerGroup = $this->CustomerGroups->get($id);
-		$customerGroup->deleted='yes';
-        if ($this->CustomerGroups->save($customerGroup)) {
-            $this->Flash->success(__('The customer group has been deleted.'));
-        } else {
-            $this->Flash->error(__('The customer group could not be deleted. Please, try again.'));
-        }
+		$Customersexists = $this->CustomerGroups->Customers->exists(['customer_group_id' => $id]);
+		if(!$Customersexists){
+			$customerGroup = $this->CustomerGroups->get($id);
+			$customerGroup->deleted='yes';
+			if ($this->CustomerGroups->save($customerGroup)) {
+				$this->Flash->success(__('The customer group has been deleted.'));
+			} else {
+				$this->Flash->error(__('The customer group could not be deleted. Please, try again.'));
+			}
+		}else{
+			$this->Flash->error(__('Once the customer group has registered customers under it, the group cannot be deleted.'));
+		}
+        
 
         return $this->redirect(['action' => 'index']);
     }

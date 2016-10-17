@@ -40,7 +40,7 @@
 						<div class="form-group">
 							<label class="control-label">Group <span class="required" aria-required="true">*</span></label>
 							<div id="item_group_div">
-							<?php echo $this->Form->input('item_group_id', ['empty'=>'--Select--','options' => $ItemGroups,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Group']); ?>
+							<?php echo $this->Form->input('item_group_id', ['options' => [],'label' => false,'class' => 'form-control input-sm','placeholder'=>'Group']); ?>
 							</div>
 						</div>
 					</div>
@@ -48,7 +48,7 @@
 						<div class="form-group">
 							<label class="control-label">Sub-Group <span class="required" aria-required="true">*</span></label>
 							<div id="item_sub_group_div">
-							<?php echo $this->Form->input('item_sub_group_id', ['empty'=>'--Select--','options' => $ItemSubGroups,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Sub-Group']); ?>
+							<?php echo $this->Form->input('item_sub_group_id', ['options' => [],'label' => false,'class' => 'form-control input-sm','placeholder'=>'Sub-Group']); ?>
 							</div>
 						</div>
 					</div>

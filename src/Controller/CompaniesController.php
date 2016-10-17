@@ -153,13 +153,25 @@ class CompaniesController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $company = $this->Companies->get($id);
-		$company->deleted='yes';
-        if ($this->Companies->save($company)) {
-            $this->Flash->success(__('The company has been deleted.'));
-        } else {
-            $this->Flash->error(__('The company could not be deleted. Please, try again.'));
-        }
+		$Quotationsexists = $this->Companies->Quotations->exists(['company_id' => $id]);
+		$SalesOrdersexists = $this->Companies->SalesOrders->exists(['company_id' => $id]);
+		$Invoicesexists = $this->Companies->Invoices->exists(['company_id' => $id]);
+		if(!$Quotationsexists and !$SalesOrdersexists and !$Invoicesexists){
+			$company = $this->Companies->get($id);
+			$company->deleted='yes';
+			if ($this->Companies->save($company)) {
+				$this->Flash->success(__('The company has been deleted.'));
+			} else {
+				$this->Flash->error(__('The company could not be deleted. Please, try again.'));
+			}
+		}elseif($Quotationsexists){
+			$this->Flash->error(__('Once the company has generated quotations, the company cannot be deleted.'));
+		}elseif($SalesOrdersexists){
+			$this->Flash->error(__('Once the company has generated Sales-Order, the company cannot be deleted.'));
+		}elseif($Invoicesexists){
+			$this->Flash->error(__('Once the company has generated Invoice, the company cannot be deleted.'));
+		}
+        
 
         return $this->redirect(['action' => 'index']);
     }
