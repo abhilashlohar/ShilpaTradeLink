@@ -105,13 +105,20 @@ class CompanyGroupsController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $companyGroup = $this->CompanyGroups->get($id);
-		$companyGroup->deleted='yes';
-        if ($this->CompanyGroups->save($companyGroup)) {
-            $this->Flash->success(__('The company group has been deleted.'));
-        } else {
-            $this->Flash->error(__('The company group could not be deleted. Please, try again.'));
+		$exists = $this->CompanyGroups->Companies->exists(['company_group_id' => $id]);
+		if(!$exists){
+			$companyGroup = $this->CompanyGroups->get($id);
+			$companyGroup->deleted='yes';
+			if ($this->CompanyGroups->save($companyGroup)) {
+				$this->Flash->success(__('The company group has been deleted.'));
+			}else {
+				$this->Flash->error(__('The company group could not be deleted. Please, try again.'));
+			}
+		}else {
+            $this->Flash->error(__('Once the company group has registered companies under it, the group cannot be deleted.'));
         }
+        
+         
 		return $this->redirect('/company-groups');
     }
 }

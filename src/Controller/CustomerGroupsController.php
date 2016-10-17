@@ -34,7 +34,7 @@ class CustomerGroupsController extends AppController
         $this->set(compact('customerGroup'));
         $this->set('_serialize', ['customerGroup']);
 		
-        $customerGroups = $this->paginate($this->CustomerGroups->find()->where(['deleted'=>'no']));
+        $customerGroups = $this->paginate($this->CustomerGroups->find()->where(['CustomerGroups.deleted'=>'no']));
 
         $this->set(compact('customerGroups'));
         $this->set('_serialize', ['customerGroups']);
