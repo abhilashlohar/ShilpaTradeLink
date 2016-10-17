@@ -33,6 +33,7 @@ class CustomerSegsTable extends Table
         $this->table('customer_segs');
         $this->displayField('name');
         $this->primaryKey('id');
+		$this->belongsTo('Customers');
     }
 
     /**

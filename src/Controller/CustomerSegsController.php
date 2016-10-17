@@ -107,12 +107,18 @@ class CustomerSegsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $customerSeg = $this->CustomerSegs->get($id);
-		$customerSeg->deleted='yes';
-        if ($this->CustomerSegs->save($customerSeg)) {
-            $this->Flash->success(__('The customer seg has been deleted.'));
-        } else {
-            $this->Flash->error(__('The customer seg could not be deleted. Please, try again.'));
-        }
+		$Customersexists = $this->CustomerSegs->Customers->exists(['customer_seg_id' => $id]);
+		if(!$Customersexists){
+			$customerSeg->deleted='yes';
+			if ($this->CustomerSegs->save($customerSeg)) {
+				$this->Flash->success(__('The customer seg has been deleted.'));
+			} else {
+				$this->Flash->error(__('The customer seg could not be deleted. Please, try again.'));
+			}
+		}else{
+			$this->Flash->error(__('Once the company segment has registered companies under it, the segment cannot be deleted.'));
+		}
+		
 
         return $this->redirect('/customer-segs');
     }

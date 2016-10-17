@@ -167,9 +167,9 @@ class CompaniesController extends AppController
 		}elseif($Quotationsexists){
 			$this->Flash->error(__('Once the company has generated quotations, the company cannot be deleted.'));
 		}elseif($SalesOrdersexists){
-			$this->Flash->error(__('Once the company has generated Sales-Order, the company cannot be deleted.'));
+			$this->Flash->error(__('Once the company has generated sales-order, the company cannot be deleted.'));
 		}elseif($Invoicesexists){
-			$this->Flash->error(__('Once the company has generated Invoice, the company cannot be deleted.'));
+			$this->Flash->error(__('Once the company has generated invoice, the company cannot be deleted.'));
 		}
         
 

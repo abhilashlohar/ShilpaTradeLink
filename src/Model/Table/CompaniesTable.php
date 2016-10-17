@@ -48,9 +48,20 @@ class CompaniesTable extends Table
 			'saveStrategy' => 'replace'
         ]);
 		
-		$this->belongsTo('Quotations');
-		$this->belongsTo('SalesOrders');
-		$this->belongsTo('Invoices');
+		$this->hasMany('Quotations', [
+            'foreignKey' => 'company_id',
+			'saveStrategy' => 'replace'
+        ]);
+		
+		$this->hasMany('SalesOrders', [
+            'foreignKey' => 'company_id',
+			'saveStrategy' => 'replace'
+        ]);
+		
+		$this->hasMany('Invoices', [
+            'foreignKey' => 'company_id',
+			'saveStrategy' => 'replace'
+        ]);
     }
 
     /**

@@ -135,14 +135,28 @@ class CustomersController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $customer = $this->Customers->get($id);
-		$customer->deleted='yes';
-        if ($this->Customers->save($customer)) {
-            $this->Flash->success(__('The customer has been deleted.'));
-        } else {
-            $this->Flash->error(__('The customer could not be deleted. Please, try again.'));
-        }
-
+		$Quotationsexists = $this->Customers->Quotations->exists(['customer_id' => $id]);
+		$SalesOrdersexists = $this->Customers->SalesOrders->exists(['customer_id' => $id]);
+		$Invoicesexists = $this->Customers->Invoices->exists(['customer_id' => $id]);
+		$Filenamesexists = $this->Customers->Filenames->exists(['customer_id' => $id]);
+		if(!$Quotationsexists and !$SalesOrdersexists and !$Invoicesexists and !$Filenamesexists){
+			$customer = $this->Customers->get($id);
+			$customer->deleted='yes';
+			if ($this->Customers->save($customer)) {
+				$this->Flash->success(__('The customer has been deleted.'));
+			} else {
+				$this->Flash->error(__('The customer could not be deleted. Please, try again.'));
+			}
+		}elseif($Quotationsexists){
+			$this->Flash->error(__('Once the quotations has generated with customer, the customer cannot be deleted.'));
+		}elseif($SalesOrdersexists){
+			$this->Flash->error(__('Once the sales-order has generated with customer, the customer cannot be deleted.'));
+		}elseif($Invoicesexists){
+			$this->Flash->error(__('Once the invoice has generated with customer, the customer cannot be deleted.'));
+		}elseif($Filenamesexists){
+			$this->Flash->error(__('Once the File has generated with customer, the customer cannot be deleted.'));
+		}
+		
         return $this->redirect(['action' => 'index']);
     }
 	

@@ -75,6 +75,27 @@ class CustomersTable extends Table
             'foreignKey' => 'customer_id',
 			'saveStrategy' => 'replace'
         ]);
+		
+		$this->hasMany('Quotations', [
+            'foreignKey' => 'customer_id',
+			'saveStrategy' => 'replace'
+        ]);
+		
+		$this->hasMany('SalesOrders', [
+            'foreignKey' => 'customer_id',
+			'saveStrategy' => 'replace'
+        ]);
+		
+		$this->hasMany('Invoices', [
+            'foreignKey' => 'customer_id',
+			'saveStrategy' => 'replace'
+        ]);
+		
+		$this->hasMany('Filenames', [
+            'foreignKey' => 'customer_id',
+			'saveStrategy' => 'replace'
+        ]);
+		
     }
 
     /**
