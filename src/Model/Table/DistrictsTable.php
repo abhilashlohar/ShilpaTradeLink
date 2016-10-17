@@ -33,6 +33,7 @@ class DistrictsTable extends Table
         $this->table('districts');
         $this->displayField('district');
         $this->primaryKey('id');
+		$this->belongsTo('Customers');
     }
 
     /**

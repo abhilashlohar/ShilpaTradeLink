@@ -127,13 +127,19 @@ class DistrictsController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $district = $this->Districts->get($id);
-		$district->deleted='yes';
-        if ($this->Districts->save($district)) {
-            $this->Flash->success(__('The district has been deleted.'));
-        } else {
-            $this->Flash->error(__('The district could not be deleted. Please, try again.'));
-        }
+		$Customersexists = $this->Districts->Customers->exists(['district_id' => $id]);
+		if(!$Customersexists){
+			$district = $this->Districts->get($id);
+			$district->deleted='yes';
+			if ($this->Districts->save($district)) {
+				$this->Flash->success(__('The district has been deleted.'));
+			} else {
+				$this->Flash->error(__('The district could not be deleted. Please, try again.'));
+			}
+		}else{
+			$this->Flash->error(__('Once the customers has generated with district, the district cannot be deleted.'));
+		}
+        
 
          return $this->redirect('/Districts');
     }
