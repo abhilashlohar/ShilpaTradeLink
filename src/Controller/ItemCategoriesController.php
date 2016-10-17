@@ -117,12 +117,18 @@ class ItemCategoriesController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $itemCategory = $this->ItemCategories->get($id);
-        if ($this->ItemCategories->delete($itemCategory)) {
-            $this->Flash->success(__('The item category has been deleted.'));
-        } else {
-            $this->Flash->error(__('The item category could not be deleted. Please, try again.'));
-        }
+		$ItemGroupsexists = $this->ItemCategories->ItemGroups->exists(['item_category_id' => $id]);
+		if(!$ItemGroupsexists){
+			$itemCategory = $this->ItemCategories->get($id);
+			if ($this->ItemCategories->delete($itemCategory)) {
+				$this->Flash->success(__('The item category has been deleted.'));
+			} else {
+				$this->Flash->error(__('The item category could not be deleted. Please, try again.'));
+			}
+		}else{
+			$this->Flash->error(__('Once the item groups has generated with item categories, the item categories cannot be deleted.'));
+		}
+        
 
         return $this->redirect(['action' => 'index']);
     }

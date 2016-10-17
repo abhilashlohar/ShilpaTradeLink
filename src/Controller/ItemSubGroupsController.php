@@ -121,12 +121,18 @@ class ItemSubGroupsController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $itemSubGroup = $this->ItemSubGroups->get($id);
-        if ($this->ItemSubGroups->delete($itemSubGroup)) {
-            $this->Flash->success(__('The item sub group has been deleted.'));
-        } else {
-            $this->Flash->error(__('The item sub group could not be deleted. Please, try again.'));
-        }
+		$Itemsexists = $this->ItemSubGroups->Items->exists(['item_sub_group_id' => $id]);
+		if(!$Itemsexists){
+			$itemSubGroup = $this->ItemSubGroups->get($id);
+			if ($this->ItemSubGroups->delete($itemSubGroup)) {
+				$this->Flash->success(__('The item sub group has been deleted.'));
+			} else {
+				$this->Flash->error(__('The item sub group could not be deleted. Please, try again.'));
+			}
+		}else{
+			$this->Flash->error(__('Once the item has created with item sub group, the item sub group cannot be deleted.'));
+		}
+        
 
         return $this->redirect(['action' => 'index']);
     }
