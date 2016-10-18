@@ -19,7 +19,7 @@ class CompanyGroupsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $companyGroups = $this->paginate($this->CompanyGroups->find()->where(['deleted' => 'no']));
+        $companyGroups = $this->paginate($this->CompanyGroups);
 
         $this->set(compact('companyGroups'));
         $this->set('_serialize', ['companyGroups']);
@@ -62,7 +62,7 @@ class CompanyGroupsController extends AppController
                 $this->Flash->error(__('The company group could not be saved. Please, try again.'));
             }
         }
-		$companyGroups = $this->paginate($this->CompanyGroups->find()->where(['deleted' => 'no']));
+		$companyGroups = $this->paginate($this->CompanyGroups);
         $this->set(compact('companyGroup','companyGroups'));
         $this->set('_serialize', ['companyGroup']);
 		 $this->set('_serialize', ['companyGroups']);
@@ -108,8 +108,7 @@ class CompanyGroupsController extends AppController
 		$exists = $this->CompanyGroups->Companies->exists(['company_group_id' => $id]);
 		if(!$exists){
 			$companyGroup = $this->CompanyGroups->get($id);
-			$companyGroup->deleted='yes';
-			if ($this->CompanyGroups->save($companyGroup)) {
+			if ($this->CompanyGroups->delete($companyGroup)) {
 				$this->Flash->success(__('The company group has been deleted.'));
 			}else {
 				$this->Flash->error(__('The company group could not be deleted. Please, try again.'));

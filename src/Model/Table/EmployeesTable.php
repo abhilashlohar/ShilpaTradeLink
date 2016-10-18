@@ -45,6 +45,10 @@ class EmployeesTable extends Table
             'foreignKey' => 'designation_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->belongsTo('Quotations');
+		$this->belongsTo('SalesOrders');
+		$this->belongsTo('Invoices');
     }
 
     /**

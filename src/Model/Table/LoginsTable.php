@@ -26,6 +26,7 @@ class LoginsTable extends Table
         $validator
             ->requirePresence('username', 'create')
             ->notEmpty('username');
+		
 		$validator->add(
 				'username', 
 				['unique' => [

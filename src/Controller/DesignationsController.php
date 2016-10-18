@@ -34,7 +34,7 @@ class DesignationsController extends AppController
         $this->set(compact('designation'));
         $this->set('_serialize', ['designation']);
 		
-        $designations = $this->paginate($this->Designations->find()->where(['deleted'=>'no']));
+        $designations = $this->paginate($this->Designations->find());
 
         $this->set(compact('designations'));
         $this->set('_serialize', ['designations']);
@@ -116,13 +116,18 @@ class DesignationsController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $designation = $this->Designations->get($id);
-		$designation->deleted='yes';
-        if ($this->Designations->save($designation)) {
-            $this->Flash->success(__('The designation has been deleted.'));
-        } else {
-            $this->Flash->error(__('The designation could not be deleted. Please, try again.'));
-        }
+		$Employeesexists = $this->Designations->Employees->exists(['designation_id' => $id]);
+		if(!$Employeesexists){
+			$designation = $this->Designations->get($id);
+			if ($this->Designations->delete($designation)) {
+				$this->Flash->success(__('The designation has been deleted.'));
+			} else {
+				$this->Flash->error(__('The designation could not be deleted. Please, try again.'));
+			}
+		}else{
+			$this->Flash->error(__('Once the employees has registered with designation, the designations cannot be deleted.'));
+		}
+        
 
         return $this->redirect(['action' => 'index']);
     }

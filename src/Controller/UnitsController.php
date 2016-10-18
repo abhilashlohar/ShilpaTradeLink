@@ -20,7 +20,7 @@ class UnitsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		
-        $units = $this->paginate($this->Units->find()->where(['deleted'=>'no']));
+        $units = $this->paginate($this->Units->find());
 		
 		$unit = $this->Units->newEntity();
         if ($this->request->is('post')) {
@@ -118,8 +118,7 @@ class UnitsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $unit = $this->Units->get($id);
-		$unit->deleted='yes';
-        if ($this->Units->save($unit)) {
+        if ($this->Units->delete($unit)) {
             $this->Flash->success(__('The unit has been deleted.'));
         } else {
             $this->Flash->error(__('The unit could not be deleted. Please, try again.'));

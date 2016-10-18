@@ -37,7 +37,7 @@ class CompaniesController extends AppController
 		$this->paginate = [
             'contain' => ['CompanyGroups']
         ];
-        $companies = $this->paginate($this->Companies->find()->where(['Companies.deleted'=>'no']));
+        $companies = $this->paginate($this->Companies);
 
         $this->set(compact('companies'));
         $this->set('_serialize', ['companies']);
@@ -91,7 +91,7 @@ class CompaniesController extends AppController
             }
         }
 		
-		$companyGroups = $this->Companies->CompanyGroups->find('list')->where(['deleted'=>'no']);
+		$companyGroups = $this->Companies->CompanyGroups->find('list');
 		
         $this->set(compact('company','companyGroups'));
         $this->set('_serialize', ['company']);
@@ -158,8 +158,7 @@ class CompaniesController extends AppController
 		$Invoicesexists = $this->Companies->Invoices->exists(['company_id' => $id]);
 		if(!$Quotationsexists and !$SalesOrdersexists and !$Invoicesexists){
 			$company = $this->Companies->get($id);
-			$company->deleted='yes';
-			if ($this->Companies->save($company)) {
+			if ($this->Companies->delete($company)) {
 				$this->Flash->success(__('The company has been deleted.'));
 			} else {
 				$this->Flash->error(__('The company could not be deleted. Please, try again.'));

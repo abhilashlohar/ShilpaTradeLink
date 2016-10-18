@@ -33,6 +33,11 @@ class TransportersTable extends Table
         $this->table('transporters');
         $this->displayField('transporter_name');
         $this->primaryKey('id');
+		
+		$this->belongsTo('SalesOrders');
+		$this->belongsTo('Customers');
+		$this->belongsTo('CustomerAddress');
+		
     }
 
     /**

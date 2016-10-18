@@ -22,7 +22,7 @@ class EmployeesController extends AppController
         $this->paginate = [
             'contain' => ['Departments']
         ];
-        $employees = $this->paginate($this->Employees->find()->where(['Employees.deleted'=>'no']));
+        $employees = $this->paginate($this->Employees->find());
 
         $this->set(compact('employees'));
         $this->set('_serialize', ['employees']);
@@ -75,8 +75,8 @@ class EmployeesController extends AppController
                 $this->Flash->error(__('The employee could not be saved. Please, try again.'));
             }
         }
-        $departments = $this->Employees->Departments->find('list')->where(['deleted'=>'no']);
-		$designations = $this->Employees->Designations->find('list')->where(['deleted'=>'no']);
+        $departments = $this->Employees->Departments->find('list');
+		$designations = $this->Employees->Designations->find('list');
         $this->set(compact('employee', 'departments','designations'));
         $this->set('_serialize', ['employee']);
     }
@@ -136,13 +136,24 @@ class EmployeesController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $employee = $this->Employees->get($id);
-		$employee->deleted='yes';
-        if ($this->Employees->save($employee)) {
-            $this->Flash->success(__('The employee has been deleted.'));
-        } else {
-            $this->Flash->error(__('The employee could not be deleted. Please, try again.'));
-        }
+		$Quotationsexists = $this->Employees->Quotations->exists(['employee_id' => $id]);
+		$SalesOrdersexists = $this->Employees->SalesOrders->exists(['employee_id' => $id]);
+		$Invoicesexists = $this->Employees->Invoices->exists(['employee_id' => $id]);
+		if(!$Quotationsexists){
+			 $employee = $this->Employees->get($id);
+			if ($this->Employees->delete($employee)) {
+				$this->Flash->success(__('The employee has been deleted.'));
+			} else {
+				$this->Flash->error(__('The employee could not be deleted. Please, try again.'));
+			}	
+		}elseif($Quotationsexists){
+			$this->Flash->error(__('Once the quotations has created with employees, the employees cannot be deleted.'));
+		}elseif($SalesOrdersexists){
+			$this->Flash->error(__('Once the sales-order has created with sales-order, the employees cannot be deleted.'));
+		}elseif($Invoicesexists){
+			$this->Flash->error(__('Once the sales-order has created with invoice, the employees cannot be deleted.'));
+		}
+       
 
         return $this->redirect(['action' => 'index']);
     }

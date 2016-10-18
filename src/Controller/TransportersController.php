@@ -33,7 +33,7 @@ class TransportersController extends AppController
         $this->set(compact('transporter'));
         $this->set('_serialize', ['transporter']);
 		
-        $transporters = $this->paginate($this->Transporters->find()->where(['deleted'=>'no']));
+        $transporters = $this->paginate($this->Transporters->find());
 
         $this->set(compact('transporters'));
         $this->set('_serialize', ['transporters']);
@@ -116,13 +116,23 @@ class TransportersController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $transporter = $this->Transporters->get($id);
-		$transporter->deleted='yes';
-        if ($this->Transporters->save($transporter)) {
-            $this->Flash->success(__('The transporter has been deleted.'));
-        } else {
-            $this->Flash->error(__('The transporter could not be deleted. Please, try again.'));
-        }
+		$SalesOrdersexists = $this->Transporters->SalesOrders->exists(['transporter_id' => $id]);
+		$SalesOrdersexists2 = $this->Transporters->SalesOrders->exists(['documents_courier_id' => $id]);
+		$Customersexists = $this->Transporters->Customers->exists(['transporter_id' => $id]);
+		$CustomerAddressexists = $this->Transporters->CustomerAddress->exists(['transporter_id' => $id]);
+		if(!$SalesOrdersexists and !$SalesOrdersexists2 and !$Customersexists and !$CustomerAddressexists){
+			$transporter = $this->Transporters->get($id);
+			if ($this->Transporters->delete($transporter)) {
+				$this->Flash->success(__('The transporter has been deleted.'));
+			} else {
+				$this->Flash->error(__('The transporter could not be deleted. Please, try again.'));
+			}
+		}elseif($SalesOrdersexists or $SalesOrdersexists2){
+			$this->Flash->error(__('Once the sales order has generated with transporter, the transporter cannot be deleted.'));
+		}elseif($Customersexists or $CustomerAddressexists){
+			$this->Flash->error(__('Once the customer has registered with transporter, the transporter cannot be deleted.'));
+		}
+        
 
         return $this->redirect(['action' => 'index']);
     }

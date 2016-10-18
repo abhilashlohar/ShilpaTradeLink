@@ -34,7 +34,7 @@ class CustomerGroupsController extends AppController
         $this->set(compact('customerGroup'));
         $this->set('_serialize', ['customerGroup']);
 		
-        $customerGroups = $this->paginate($this->CustomerGroups->find()->where(['CustomerGroups.deleted'=>'no']));
+        $customerGroups = $this->paginate($this->CustomerGroups);
 
         $this->set(compact('customerGroups'));
         $this->set('_serialize', ['customerGroups']);
@@ -119,8 +119,7 @@ class CustomerGroupsController extends AppController
 		$Customersexists = $this->CustomerGroups->Customers->exists(['customer_group_id' => $id]);
 		if(!$Customersexists){
 			$customerGroup = $this->CustomerGroups->get($id);
-			$customerGroup->deleted='yes';
-			if ($this->CustomerGroups->save($customerGroup)) {
+			if ($this->CustomerGroups->delete($customerGroup)) {
 				$this->Flash->success(__('The customer group has been deleted.'));
 			} else {
 				$this->Flash->error(__('The customer group could not be deleted. Please, try again.'));

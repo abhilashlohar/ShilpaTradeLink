@@ -163,12 +163,12 @@ class SalesOrdersController extends AppController
                 $this->Flash->error(__('The sales order could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->SalesOrders->Customers->find('list')->where(['deleted'=>'no']);
-        $companies = $this->SalesOrders->Companies->find('all')->where(['deleted'=>'no']);
+        $customers = $this->SalesOrders->Customers->find('list');
+        $companies = $this->SalesOrders->Companies->find('all');
 		$quotationlists = $this->SalesOrders->Quotations->find()->where(['status'=>'Pending'])->order(['Quotations.id' => 'DESC']);
-		$items = $this->SalesOrders->Items->find('list')->where(['deleted'=>'no']);
-		$transporters = $this->SalesOrders->Carrier->find('list')->where(['deleted'=>'no']);
-		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1])->where(['deleted'=>'no']);
+		$items = $this->SalesOrders->Items->find('list');
+		$transporters = $this->SalesOrders->Carrier->find('list');
+		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
 		$termsConditions = $this->SalesOrders->TermsConditions->find('all',['limit' => 200]);
 		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all');
         $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes'));

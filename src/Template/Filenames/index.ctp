@@ -81,7 +81,7 @@
 						<td><?= h($filename->file1) ?>-<?= h($filename->file2) ?></td>
 						<td><?= h($filename->customer->customer_name) ?></td>
 						<td class="actions">
-							<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $filename->id], ['confirm' => __('Are you sure you want to delete # {0}?', $filename->id)]) ?>
+							<!--<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $filename->id], ['confirm' => __('Are you sure you want to delete # {0}?', $filename->id)]) ?>-->
 						</td>
 					</tr>
 					<?php endforeach; ?>
@@ -115,7 +115,7 @@
 						<td><?= h($filename->file1) ?>-<?= h($filename->file2) ?></td>
 						<td><?= h($filename->customer->customer_name) ?></td>
 						<td class="actions">
-							<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $filename->id], ['confirm' => __('Are you sure you want to delete # {0}?', $filename->id)]) ?>
+							<!--<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $filename->id], ['confirm' => __('Are you sure you want to delete # {0}?', $filename->id)]) ?>-->
 						</td>
 					</tr>
 					<?php endforeach; ?>

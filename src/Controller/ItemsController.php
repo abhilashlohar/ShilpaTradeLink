@@ -68,8 +68,8 @@ class ItemsController extends AppController
             }
         }
 		$ItemCategories = $this->Items->ItemCategories->find('list');
-        $units = $this->Items->Units->find('list')->where(['deleted'=>'no']);
-		$Companies = $this->Items->Companies->find('list')->where(['deleted'=>'no']);
+        $units = $this->Items->Units->find('list');
+		$Companies = $this->Items->Companies->find('list');
 		$sources = $this->Items->Sources->find('list', ['Sources' => 200]);
         $this->set(compact('item','ItemCategories', 'units', 'Companies','sources'));
         $this->set('_serialize', ['item']);
@@ -103,8 +103,8 @@ class ItemsController extends AppController
 		$ItemCategories = $this->Items->ItemCategories->find('list');
 		$ItemGroups = $this->Items->ItemGroups->find('list');
 		$ItemSubGroups = $this->Items->ItemSubGroups->find('list');
-        $units = $this->Items->Units->find('list')->where(['deleted'=>'no']);
-		$Companies = $this->Items->Companies->find('list')->where(['deleted'=>'no']);
+        $units = $this->Items->Units->find('list');
+		$Companies = $this->Items->Companies->find('list');
 		$sources = $this->Items->Sources->find('list', ['Sources' => 200]);
         $this->set(compact('item','ItemCategories','ItemGroups','ItemSubGroups', 'units', 'Companies','sources'));
         $this->set('_serialize', ['item']);
@@ -120,12 +120,24 @@ class ItemsController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $item = $this->Items->get($id);
-        if ($this->Items->delete($item)) {
-            $this->Flash->success(__('The item has been deleted.'));
-        } else {
-            $this->Flash->error(__('The item could not be deleted. Please, try again.'));
-        }
+		$QuotationRowsexists = $this->Items->QuotationRows->exists(['item_id' => $id]);
+		$SalesOrderRowsexists = $this->Items->SalesOrderRows->exists(['item_id' => $id]);
+		$InvoiceRowsexists = $this->Items->InvoiceRows->exists(['item_id' => $id]);
+		if(!$QuotationRowsexists and !$SalesOrderRowsexists and !$InvoiceRowsexists){
+			$item = $this->Items->get($id);
+			if ($this->Items->delete($item)) {
+				$this->Flash->success(__('The item has been deleted.'));
+			} else {
+				$this->Flash->error(__('The item could not be deleted. Please, try again.'));
+			}			
+		}elseif($QuotationRowsexists){
+			$this->Flash->error(__('Once the item has used in quotation, the item cannot be deleted.'));
+		}elseif($SalesOrderRowsexists){
+			$this->Flash->error(__('Once the item has used in sales-order, the item cannot be deleted.'));
+		}elseif($InvoiceRowsexists){
+			$this->Flash->error(__('Once the item has used in invoice, the item cannot be deleted.'));
+		}
+        
 
         return $this->redirect(['action' => 'index']);
     }

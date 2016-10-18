@@ -33,6 +33,10 @@ class DesignationsTable extends Table
         $this->table('designations');
         $this->displayField('name');
         $this->primaryKey('id');
+		
+		$this->hasMany('Employees', [
+            'foreignKey' => 'department_id'
+        ]);
     }
 
     /**

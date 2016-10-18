@@ -70,6 +70,9 @@ class ItemsTable extends Table
         $this->hasMany('ItemUsedByCompanies', [
             'foreignKey' => 'item_id'
         ]);
+		$this->belongsTo('QuotationRows');
+		$this->belongsTo('SalesOrderRows');
+		$this->belongsTo('InvoiceRows');
     }
 
     /**

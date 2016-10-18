@@ -4,18 +4,22 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Category Entity
+ * CustomerAddres Entity
  *
  * @property int $id
- * @property int $parent_id
- * @property int $lft
- * @property int $rght
- * @property string $name
+ * @property int $customer_id
+ * @property string $address
+ * @property int $district_id
+ * @property string $telephone
+ * @property string $mobile
+ * @property int $transporter_id
+ * @property bool $default_address
  *
- * @property \App\Model\Entity\ParentCategory $parent_category
- * @property \App\Model\Entity\ChildCategory[] $child_categories
+ * @property \App\Model\Entity\Customer $customer
+ * @property \App\Model\Entity\District $district
+ * @property \App\Model\Entity\Transporter $transporter
  */
-class Category extends Entity
+class CustomerAddres extends Entity
 {
 
     /**

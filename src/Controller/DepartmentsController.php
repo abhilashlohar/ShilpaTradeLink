@@ -34,7 +34,7 @@ class DepartmentsController extends AppController
         $this->set(compact('department'));
         $this->set('_serialize', ['department']);
 		
-        $departments = $this->paginate($this->Departments->find()->where(['deleted'=>'no']));
+        $departments = $this->paginate($this->Departments->find());
 
         $this->set(compact('departments'));
         $this->set('_serialize', ['departments']);
@@ -116,13 +116,18 @@ class DepartmentsController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $dipartment = $this->Departments->get($id);
-		$dipartment->deleted='yes';
-        if ($this->Departments->save($dipartment)) {
-            $this->Flash->success(__('The dipartment has been deleted.'));
-        } else {
-            $this->Flash->error(__('The dipartment could not be deleted. Please, try again.'));
-        }
+		$Employeesexists = $this->Departments->Employees->exists(['dipartment_id' => $id]);
+		if(!$Employeesexists){
+			$dipartment = $this->Departments->get($id);
+			if ($this->Departments->delete($dipartment)) {
+				$this->Flash->success(__('The dipartment has been deleted.'));
+			} else {
+				$this->Flash->error(__('The dipartment could not be deleted. Please, try again.'));
+			}
+		}else{
+			$this->Flash->error(__('Once the employees has registered with department, the department cannot be deleted.'));
+		}
+        
 
         return $this->redirect(['action' => 'index']);
     }

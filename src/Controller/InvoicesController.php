@@ -157,8 +157,8 @@ class InvoicesController extends AppController
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Invoices->Customers->find('list')->where(['deleted'=>'no']);
-        $companies = $this->Invoices->Companies->find('all')->where(['deleted'=>'no']);
+        $customers = $this->Invoices->Customers->find('list');
+        $companies = $this->Invoices->Companies->find('all');
 		
 		$salesOrders = $this->Invoices->SalesOrders->find()->select(['total_rows' => 
 				$this->Invoices->SalesOrders->find()->func()->count('SalesOrderRows.id')])
@@ -169,7 +169,7 @@ class InvoicesController extends AppController
 				->autoFields(true)
 				->having(['total_rows >' => 0]);
 				
-		$items = $this->Invoices->Items->find('list')->where(['deleted'=>'no']);
+		$items = $this->Invoices->Items->find('list');
 		$transporters = $this->Invoices->Transporters->find('list', ['limit' => 200]);
 		$termsConditions = $this->Invoices->TermsConditions->find('all',['limit' => 200]);
 		$SaleTaxes = $this->Invoices->SaleTaxes->find('all');

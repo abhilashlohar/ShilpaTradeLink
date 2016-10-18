@@ -36,7 +36,7 @@ class CustomersController extends AppController
         $this->paginate = [
             'contain' => ['Districts', 'CustomerSegs']
         ];
-        $customers = $this->paginate($this->Customers->find()->where($where)->where(['Customers.deleted'=>'no']));
+        $customers = $this->paginate($this->Customers->find()->where($where));
 
         $this->set(compact('customers'));
         $this->set('_serialize', ['customers']);
@@ -71,7 +71,6 @@ class CustomersController extends AppController
         $customer = $this->Customers->newEntity();
         if ($this->request->is('post')) {
             $customer = $this->Customers->patchEntity($customer, $this->request->data);
-			
             if ($this->Customers->save($customer)) {
 				
                 $this->Flash->success(__('The customer has been saved.'));
@@ -81,12 +80,12 @@ class CustomersController extends AppController
             }
 			
         }
-        $districts = $this->Customers->Districts->find('list')->where(['deleted' => 'no']);
+        $districts = $this->Customers->Districts->find('list');
         $companyGroups = $this->Customers->CompanyGroups->find('list', ['limit' => 200]);
-		$CustomerGroups = $this->Customers->CustomerGroups->find('list')->where(['deleted'=>'no']);
-        $customerSegs = $this->Customers->CustomerSegs->find('list')->where(['deleted'=>'no']);
+		$CustomerGroups = $this->Customers->CustomerGroups->find('list');
+        $customerSegs = $this->Customers->CustomerSegs->find('list');
 		$employees = $this->Customers->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
-		$transporters = $this->Customers->Transporters->find('list')->where(['deleted'=>'no']);
+		$transporters = $this->Customers->Transporters->find('list');
         $this->set(compact('customer', 'districts', 'companyGroups', 'customerSegs','employees','transporters','CustomerGroups'));
         $this->set('_serialize', ['customer']);
     }
@@ -115,12 +114,12 @@ class CustomersController extends AppController
                 $this->Flash->error(__('The customer could not be saved. Please, try again.'));
             }
         }
-        $districts = $this->Customers->Districts->find('list')->where(['deleted' => 'no']);
+        $districts = $this->Customers->Districts->find('list');
         $companyGroups = $this->Customers->CompanyGroups->find('list', ['limit' => 200]);
-		$CustomerGroups = $this->Customers->CustomerGroups->find('list')->where(['deleted'=>'no']);
-        $customerSegs = $this->Customers->CustomerSegs->find('list')->where(['deleted'=>'no']);
-		$employees = $this->Customers->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
-		$transporters = $this->Customers->Transporters->find('list')->where(['deleted'=>'no']);
+		$CustomerGroups = $this->Customers->CustomerGroups->find('list');
+        $customerSegs = $this->Customers->CustomerSegs->find('list');
+		$employees = $this->Customers->Employees->find('list', ['limit' => 200]);
+		$transporters = $this->Customers->Transporters->find('list');
         $this->set(compact('customer', 'districts', 'companyGroups', 'customerSegs','employees','transporters','CustomerGroups'));
         $this->set('_serialize', ['customer']);
     }
@@ -141,8 +140,7 @@ class CustomersController extends AppController
 		$Filenamesexists = $this->Customers->Filenames->exists(['customer_id' => $id]);
 		if(!$Quotationsexists and !$SalesOrdersexists and !$Invoicesexists and !$Filenamesexists){
 			$customer = $this->Customers->get($id);
-			$customer->deleted='yes';
-			if ($this->Customers->save($customer)) {
+			if ($this->Customers->delete($customer)) {
 				$this->Flash->success(__('The customer has been deleted.'));
 			} else {
 				$this->Flash->error(__('The customer could not be deleted. Please, try again.'));

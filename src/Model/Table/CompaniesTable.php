@@ -79,6 +79,15 @@ class CompaniesTable extends Table
         $validator
             ->requirePresence('name', 'create')
             ->notEmpty('name');
+			
+		$validator->add(
+				'name', 
+				['unique' => [
+					'rule' => 'validateUnique', 
+					'provider' => 'table', 
+					'message' => 'Not unique']
+				]
+			);
 		
 		$validator
             ->requirePresence('alias', 'create')
