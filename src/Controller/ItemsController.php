@@ -85,7 +85,6 @@ class ItemsController extends AppController
      */
     public function edit($id = null)
     {
-		
 		$this->viewBuilder()->layout('index_layout');
         $item = $this->Items->get($id, [
             'contain' => ['Companies','Sources']
