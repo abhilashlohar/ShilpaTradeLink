@@ -122,7 +122,7 @@ class CompaniesController extends AppController
 				$setNewFileName = uniqid();
 				
 				$company->logo=$setNewFileName. '.' . $ext;
-				unlink(WWW_ROOT . '/logos/' . $company->getOriginal('logo'));
+				@unlink(WWW_ROOT . '/logos/' . $company->getOriginal('logo'));
 				if (in_array($ext, $arr_ext)) {
 					move_uploaded_file($file['tmp_name'], WWW_ROOT . '/logos/' . $setNewFileName . '.' . $ext);
 				}

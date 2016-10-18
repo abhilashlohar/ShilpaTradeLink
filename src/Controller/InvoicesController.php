@@ -42,7 +42,7 @@ class InvoicesController extends AppController
 			
 		}
 		if(!empty($customer)){
-			$where['customers.customer_name LIKE']='%'.$customer.'%';
+			$where['Customers.customer_name LIKE']='%'.$customer.'%';
 		}
 		if(!empty($From)){
 			$From=date("Y-m-d",strtotime($this->request->query('From')));

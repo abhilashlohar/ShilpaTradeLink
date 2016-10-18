@@ -42,10 +42,10 @@ class QuotationsController extends AppController
 			
 		}
 		if(!empty($customer)){
-			$where['customers.customer_name LIKE']='%'.$customer.'%';
+			$where['Customers.customer_name LIKE']='%'.$customer.'%';
 		}
 		if(!empty($salesman)){
-			$where['employees.name LIKE']='%'.$salesman.'%';
+			$where['Employees.name LIKE']='%'.$salesman.'%';
 		}
 		if(!empty($product)){
 			$where['ItemGroups.name LIKE']='%'.$product.'%';

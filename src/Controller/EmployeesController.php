@@ -104,7 +104,7 @@ class EmployeesController extends AppController
 				$setNewFileName = uniqid();
 				
 				$employee->signature=$setNewFileName. '.' . $ext;
-				unlink(WWW_ROOT . '/signatures/' . $employee->getOriginal('signature'));
+				@unlink(WWW_ROOT . '/signatures/' . $employee->getOriginal('signature'));
 				if (in_array($ext, $arr_ext)) {
 					move_uploaded_file($file['tmp_name'], WWW_ROOT . '/signatures/' . $setNewFileName . '.' . $ext);
 				}

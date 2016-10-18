@@ -41,7 +41,7 @@ class SalesOrdersController extends AppController
 			
 		}
 		if(!empty($customer)){
-			$where['customers.customer_name LIKE']='%'.$customer.'%';
+			$where['Customers.customer_name LIKE']='%'.$customer.'%';
 		}
 		if(!empty($po_no)){
 			$where['customer_po_no LIKE']='%'.$po_no.'%';
