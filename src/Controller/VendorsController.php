@@ -35,7 +35,7 @@ class VendorsController extends AppController
     public function view($id = null)
     {
         $vendor = $this->Vendors->get($id, [
-            'contain' => ['PurchaseOrders']
+            'contain' => []
         ]);
 
         $this->set('vendor', $vendor);
@@ -53,6 +53,7 @@ class VendorsController extends AppController
         $vendor = $this->Vendors->newEntity();
         if ($this->request->is('post')) {
             $vendor = $this->Vendors->patchEntity($vendor, $this->request->data);
+			//pr($vendor); exit;	
             if ($this->Vendors->save($vendor)) {
                 $this->Flash->success(__('The vendor has been saved.'));
 
@@ -61,7 +62,8 @@ class VendorsController extends AppController
                 $this->Flash->error(__('The vendor could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('vendor'));
+		$ItemGroups = $this->Vendors->ItemGroups->find('list');
+        $this->set(compact('vendor','ItemGroups'));
         $this->set('_serialize', ['vendor']);
     }
 
@@ -76,7 +78,7 @@ class VendorsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $vendor = $this->Vendors->get($id, [
-            'contain' => []
+            'contain' => ['VendorContactPersons']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $vendor = $this->Vendors->patchEntity($vendor, $this->request->data);
@@ -88,7 +90,8 @@ class VendorsController extends AppController
                 $this->Flash->error(__('The vendor could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('vendor'));
+		$ItemGroups = $this->Vendors->ItemGroups->find('list');
+        $this->set(compact('vendor','ItemGroups'));
         $this->set('_serialize', ['vendor']);
     }
 

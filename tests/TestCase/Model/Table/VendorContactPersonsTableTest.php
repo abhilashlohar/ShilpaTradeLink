@@ -1,14 +1,22 @@
 <?php
-namespace App\Test\TestCase\Controller;
+namespace App\Test\TestCase\Model\Table;
 
-use App\Controller\VendorsController;
-use Cake\TestSuite\IntegrationTestCase;
+use App\Model\Table\VendorContactPersonsTable;
+use Cake\ORM\TableRegistry;
+use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\VendorsController Test Case
+ * App\Model\Table\VendorContactPersonsTable Test Case
  */
-class VendorsControllerTest extends IntegrationTestCase
+class VendorContactPersonsTableTest extends TestCase
 {
+
+    /**
+     * Test subject
+     *
+     * @var \App\Model\Table\VendorContactPersonsTable
+     */
+    public $VendorContactPersons;
 
     /**
      * Fixtures
@@ -16,6 +24,7 @@ class VendorsControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
+        'app.vendor_contact_persons',
         'app.vendors',
         'app.purchase_orders',
         'app.companies',
@@ -57,51 +66,55 @@ class VendorsControllerTest extends IntegrationTestCase
     ];
 
     /**
-     * Test index method
+     * setUp method
      *
      * @return void
      */
-    public function testIndex()
+    public function setUp()
+    {
+        parent::setUp();
+        $config = TableRegistry::exists('VendorContactPersons') ? [] : ['className' => 'App\Model\Table\VendorContactPersonsTable'];
+        $this->VendorContactPersons = TableRegistry::get('VendorContactPersons', $config);
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        unset($this->VendorContactPersons);
+
+        parent::tearDown();
+    }
+
+    /**
+     * Test initialize method
+     *
+     * @return void
+     */
+    public function testInitialize()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
-     * Test view method
+     * Test validationDefault method
      *
      * @return void
      */
-    public function testView()
+    public function testValidationDefault()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
-     * Test add method
+     * Test buildRules method
      *
      * @return void
      */
-    public function testAdd()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test edit method
-     *
-     * @return void
-     */
-    public function testEdit()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test delete method
-     *
-     * @return void
-     */
-    public function testDelete()
+    public function testBuildRules()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

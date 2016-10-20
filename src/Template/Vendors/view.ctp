@@ -13,20 +13,40 @@
     <h3><?= h($vendor->name) ?></h3>
     <table class="vertical-table">
         <tr>
-            <th><?= __('Name') ?></th>
-            <td><?= h($vendor->name) ?></td>
-        </tr>
-        <tr>
             <th><?= __('Company Name') ?></th>
             <td><?= h($vendor->company_name) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Tin No') ?></th>
+            <td><?= h($vendor->tin_no) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Gst No') ?></th>
+            <td><?= h($vendor->gst_no) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Ecc No') ?></th>
+            <td><?= h($vendor->ecc_no) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Pan No') ?></th>
+            <td><?= h($vendor->pan_no) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Mode Of Payment') ?></th>
+            <td><?= h($vendor->mode_of_payment) ?></td>
         </tr>
         <tr>
             <th><?= __('Id') ?></th>
             <td><?= $this->Number->format($vendor->id) ?></td>
         </tr>
         <tr>
-            <th><?= __('Phone') ?></th>
-            <td><?= $this->Number->format($vendor->phone) ?></td>
+            <th><?= __('Payment Terms') ?></th>
+            <td><?= $this->Number->format($vendor->payment_terms) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Item Group Id') ?></th>
+            <td><?= $this->Number->format($vendor->item_group_id) ?></td>
         </tr>
     </table>
     <div class="row">

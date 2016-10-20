@@ -9,7 +9,9 @@ use Cake\Validation\Validator;
 /**
  * Vendors Model
  *
+ * @property \Cake\ORM\Association\BelongsTo $ItemGroups
  * @property \Cake\ORM\Association\HasMany $PurchaseOrders
+ * @property \Cake\ORM\Association\HasMany $VendorContactPersons
  *
  * @method \App\Model\Entity\Vendor get($primaryKey, $options = [])
  * @method \App\Model\Entity\Vendor newEntity($data = null, array $options = [])
@@ -36,8 +38,13 @@ class VendorsTable extends Table
         $this->displayField('name');
         $this->primaryKey('id');
 
-        $this->hasMany('PurchaseOrders', [
-            'foreignKey' => 'vendor_id'
+        $this->belongsTo('ItemGroups', [
+            'foreignKey' => 'item_group_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->hasMany('VendorContactPersons', [
+            'foreignKey' => 'vendor_id',
+			'saveStrategy' => 'replace'
         ]);
     }
 
@@ -54,22 +61,48 @@ class VendorsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('name', 'create')
-            ->notEmpty('name');
+            ->requirePresence('company_name', 'create')
+            ->notEmpty('company_name');
 
         $validator
             ->requirePresence('address', 'create')
             ->notEmpty('address');
 
         $validator
-            ->integer('phone')
-            ->requirePresence('phone', 'create')
-            ->notEmpty('phone');
+            ->requirePresence('tin_no', 'create')
+            ->notEmpty('tin_no');
 
         $validator
-            ->requirePresence('company_name', 'create')
-            ->notEmpty('company_name');
+            ->requirePresence('ecc_no', 'create')
+            ->notEmpty('ecc_no');
+
+        $validator
+            ->requirePresence('pan_no', 'create')
+            ->notEmpty('pan_no');
+
+        $validator
+            ->integer('payment_terms')
+            ->requirePresence('payment_terms', 'create')
+            ->notEmpty('payment_terms');
+
+        $validator
+            ->requirePresence('mode_of_payment', 'create')
+            ->notEmpty('mode_of_payment');
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['item_group_id'], 'ItemGroups'));
+
+        return $rules;
     }
 }

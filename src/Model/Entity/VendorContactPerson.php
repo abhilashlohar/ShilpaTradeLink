@@ -4,22 +4,18 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Vendor Entity
+ * VendorContactPerson Entity
  *
  * @property int $id
- * @property string $company_name
- * @property string $address
- * @property string $tin_no
- * @property string $gst_no
- * @property string $ecc_no
- * @property string $pan_no
- * @property int $payment_terms
- * @property string $mode_of_payment
- * @property int $item_group_id
+ * @property string $name
+ * @property string $email
+ * @property int $mobile
+ * @property bool $default_person
+ * @property int $vendor_id
  *
- * @property \App\Model\Entity\PurchaseOrder[] $purchase_orders
+ * @property \App\Model\Entity\Vendor $vendor
  */
-class Vendor extends Entity
+class VendorContactPerson extends Entity
 {
 
     /**
