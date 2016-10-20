@@ -31,7 +31,7 @@
 				<table class="table table-condensed">
 					<thead>
 						<tr>
-							<th>Ref. No</th>
+							<th>Quotation No.</th>
 							<th>Customer</th>
 							<th>Salesman</th>
 							<th>Product</th>
@@ -41,7 +41,11 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td><input type="text" name="ref_no" class="form-control input-sm" placeholder="Ref. No" value="<?php echo @$ref_no; ?>"></td>
+							<td>
+							<div class="input-group col-md-9" style="" id="pnf_text">
+								<span class="input-group-addon">QT-</span><input type="text" name="quotation_no" class="form-control input-sm" placeholder="Quotation No" value="<?php echo @$quotation_no; ?>">
+							</div>
+							</td>
 							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
 							<td><input type="text" name="salesman" class="form-control input-sm" placeholder="Salesman" value="<?php echo @$salesman; ?>"></td>
 							<td><input type="text" name="product" class="form-control input-sm" placeholder="Product" value="<?php echo @$product; ?>"></td>

@@ -20,26 +20,16 @@ class QuotationsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$where=[];
-		$ref_no=$this->request->query('ref_no');
+		$quotation_no=$this->request->query('quotation_no');
 		$customer=$this->request->query('customer');
 		$salesman=$this->request->query('salesman');
 		$product=$this->request->query('product');
 		$From=$this->request->query('From');
 		$To=$this->request->query('To');
 		$page=$this->request->query('page');
-		$this->set(compact('ref_no','customer','salesman','product','From','To','page'));
-		if(!empty($ref_no)){
-			$ref_no_arr=explode('/',$ref_no);
-			if(!empty($ref_no_arr[0])){
-				$where['qt1 LIKE']='%'.$ref_no_arr[0].'%';
-			}
-			if(!empty($ref_no_arr[2])){
-				$where['qt3 LIKE']='%'.$ref_no_arr[2].'%';
-			}
-			if(!empty($ref_no_arr[3])){
-				$where['qt4 LIKE']='%'.$ref_no_arr[3].'%';
-			}
-			
+		$this->set(compact('quotation_no','customer','salesman','product','From','To','page'));
+		if(!empty($quotation_no)){
+			$where['Quotations.id']=$quotation_no;
 		}
 		if(!empty($customer)){
 			$where['Customers.customer_name LIKE']='%'.$customer.'%';
@@ -68,7 +58,6 @@ class QuotationsController extends AppController
 		}
 		//pr($where); exit;
         $quotations = $this->paginate($this->Quotations->find()->where($where)->order(['Quotations.id' => 'DESC']));
-
         $this->set(compact('quotations','status'));
         $this->set('_serialize', ['quotations']);
     }
