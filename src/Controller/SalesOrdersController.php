@@ -28,17 +28,7 @@ class SalesOrdersController extends AppController
 		$page=$this->request->query('page');
 		$this->set(compact('sales_order_no','customer','po_no','product','From','To','page'));
 		if(!empty($sales_order_no)){
-			$sales_order_no_arr=explode('/',$sales_order_no);
-			if(!empty($sales_order_no_arr[0])){
-				$where['so1 LIKE']='%'.$sales_order_no_arr[0].'%';
-			}
-			if(!empty($sales_order_no_arr[2])){
-				$where['so3 LIKE']='%'.$sales_order_no_arr[2].'%';
-			}
-			if(!empty($sales_order_no_arr[3])){
-				$where['so4 LIKE']='%'.$sales_order_no_arr[3].'%';
-			}
-			
+			$where['SalesOrders.id']=$sales_order_no;
 		}
 		if(!empty($customer)){
 			$where['Customers.customer_name LIKE']='%'.$customer.'%';

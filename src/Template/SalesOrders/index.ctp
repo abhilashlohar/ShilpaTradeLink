@@ -40,7 +40,11 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td><input type="text" name="sales_order_no" class="form-control input-sm" placeholder="Sales Order No" value="<?php echo @$sales_order_no; ?>"></td>
+							<td>
+							<div class="input-group col-md-9" style="" id="pnf_text">
+								<span class="input-group-addon">SO-</span><input type="text" name="sales_order_no" class="form-control input-sm" placeholder="Sales Order No" value="<?php echo @$sales_order_no; ?>">
+							</div>
+							</td>
 							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
 							<td>
 							<table>

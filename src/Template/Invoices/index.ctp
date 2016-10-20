@@ -12,7 +12,7 @@
 				<table class="table table-condensed">
 					<thead>
 						<tr>
-							<th>Ref. No</th>
+							<th>Invoice No</th>
 							<th>Customer</th>
 							<th>Date</th>
 							<th>Total</th>
@@ -21,7 +21,11 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td><input type="text" name="invoice_no" class="form-control input-sm" placeholder="Invoice No." value="<?php echo @$invoice_no; ?>"></td>
+							<td>
+							<div class="input-group col-md-9" style="" id="pnf_text">
+								<span class="input-group-addon">IN-</span><input type="text" name="invoice_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$invoice_no; ?>">
+							</div>
+							</td>
 							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
 							<td>
 							<table>

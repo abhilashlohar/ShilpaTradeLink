@@ -27,19 +27,9 @@ class InvoicesController extends AppController
 		$total_From=$this->request->query('total_From');
 		$total_To=$this->request->query('total_To');
 		$page=$this->request->query('page');
-		$this->set(compact('ref_no','customer','total_From','total_To','From','To','page'));
+		$this->set(compact('ref_no','customer','total_From','total_To','From','To','page','invoice_no'));
 		if(!empty($invoice_no)){
-			$invoice_no_arr=explode('/',$invoice_no);
-			if(!empty($invoice_no_arr[0])){
-				$where['in1 LIKE']='%'.$invoice_no_arr[0].'%';
-			}
-			if(!empty($invoice_no_arr[2])){
-				$where['in3 LIKE']='%'.$invoice_no_arr[2].'%';
-			}
-			if(!empty($invoice_no_arr[3])){
-				$where['in4 LIKE']='%'.$invoice_no_arr[3].'%';
-			}
-			
+			$where['Invoices.id']=$invoice_no;
 		}
 		if(!empty($customer)){
 			$where['Customers.customer_name LIKE']='%'.$customer.'%';
