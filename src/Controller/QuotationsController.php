@@ -129,7 +129,7 @@ class QuotationsController extends AppController
 			
 			$this->request->data["finalisation_date"]=date("Y-m-d",strtotime($this->request->data["finalisation_date"]));
             $quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
-			$quotation->date=date('y-m-d');
+			$quotation->date=date('Y-m-d');
 			
             if ($this->Quotations->save($quotation)) {
                 return $this->redirect(['action' => 'confirm/'.$quotation->id]);
@@ -163,9 +163,11 @@ class QuotationsController extends AppController
         ]);
 		
         if ($this->request->is(['patch', 'post', 'put'])) {
+        	$this->request->data["finalisation_date"]=date("Y-m-d",strtotime($this->request->data["finalisation_date"]));
             $quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
-			$quotation->finalisation_date=date("Y-m-d",strtotime($quotation->finalisation_date));
+			
 			$quotation->ref_no=$quotation->alias.'/'.$quotation->ref.'/'.$quotation->yr;
+			$quotation->date=date('Y-m-d');
             if ($this->Quotations->save($quotation)) {
                 $this->Flash->success(__('The quotation has been saved.'));
 
