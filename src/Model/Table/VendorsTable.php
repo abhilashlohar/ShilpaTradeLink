@@ -35,7 +35,7 @@ class VendorsTable extends Table
         parent::initialize($config);
 
         $this->table('vendors');
-        $this->displayField('name');
+        $this->displayField('company_name');
         $this->primaryKey('id');
 
         $this->belongsTo('ItemGroups', [

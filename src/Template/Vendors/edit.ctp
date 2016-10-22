@@ -280,7 +280,6 @@ $(document).ready(function() {
 			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Name']); ?></td>
 			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email']); ?></td>
 			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mobile']); ?></td>
-			<td width="90"><?php echo $this->Form->input('q', ['type'=>'checkbox','label' => false,'class' => 'form-control default_btn','value'=>1]); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 	</tbody>

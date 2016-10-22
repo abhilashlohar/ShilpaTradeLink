@@ -57,6 +57,8 @@ class PurchaseOrdersController extends AppController
         $purchaseOrder = $this->PurchaseOrders->newEntity();
         if ($this->request->is('post')) {
             $purchaseOrder = $this->PurchaseOrders->patchEntity($purchaseOrder, $this->request->data);
+			
+			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
             if ($this->PurchaseOrders->save($purchaseOrder)) {
                 $this->Flash->success(__('The purchase order has been saved.'));
 
@@ -65,9 +67,16 @@ class PurchaseOrdersController extends AppController
                 $this->Flash->error(__('The purchase order could not be saved. Please, try again.'));
             }
         }
-        $companies = $this->PurchaseOrders->Companies->find('list', ['limit' => 200]);
-        $vendors = $this->PurchaseOrders->Vendors->find('list', ['limit' => 200]);
-        $this->set(compact('purchaseOrder', 'companies', 'vendors'));
+        $companies = $this->PurchaseOrders->Companies->find();
+		$filenames = $this->PurchaseOrders->Filenames->find('list', ['valueField' => function ($row) {
+				return $row['file1'] . '-' . $row['file2'];
+			},
+			'keyField' => function ($row) {
+				return $row['file1'] . '-' . $row['file2'];
+			}])->where(['file1' => 'BE']);
+        $vendors = $this->PurchaseOrders->Vendors->find('list');
+		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list');
+        $this->set(compact('purchaseOrder', 'companies', 'vendors','filenames','items'));
         $this->set('_serialize', ['purchaseOrder']);
     }
 

@@ -43,6 +43,9 @@ class PurchaseOrdersTable extends Table
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
+		
+		 $this->belongsTo('Filenames');
+		
         $this->belongsTo('Vendors', [
             'foreignKey' => 'vendor_id',
             'joinType' => 'INNER'
@@ -68,28 +71,13 @@ class PurchaseOrdersTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('shipping_method', 'create')
-            ->notEmpty('shipping_method');
+            ->requirePresence('company_id', 'create')
+            ->notEmpty('company_id');
 
-        $validator
-            ->integer('shipping_terms')
-            ->requirePresence('shipping_terms', 'create')
-            ->notEmpty('shipping_terms');
-
-        $validator
-            ->date('delivery_date')
-            ->requirePresence('delivery_date', 'create')
-            ->notEmpty('delivery_date');
-
-        $validator
-            ->decimal('total')
-            ->requirePresence('total', 'create')
-            ->notEmpty('total');
-
-        $validator
-            ->requirePresence('terms_conditions', 'create')
-            ->notEmpty('terms_conditions');
-
+		$validator
+            ->requirePresence('vendor_id', 'create')
+            ->notEmpty('vendor_id');
+			
         $validator
             ->requirePresence('po1', 'create')
             ->notEmpty('po1');
