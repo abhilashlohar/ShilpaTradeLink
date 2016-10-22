@@ -56,6 +56,7 @@ class PurchaseOrdersTable extends Table
         $this->hasMany('PurchaseOrderRows', [
             'foreignKey' => 'purchase_order_id'
         ]);
+		$this->belongsTo('SaleTaxes');
     }
 
     /**
@@ -89,6 +90,26 @@ class PurchaseOrdersTable extends Table
         $validator
             ->requirePresence('po4', 'create')
             ->notEmpty('po4');
+		
+		$validator
+            ->requirePresence('material_to_be_transported', 'create')
+            ->notEmpty('material_to_be_transported');
+			
+		$validator
+            ->requirePresence('sale_tax_per', 'create')
+            ->notEmpty('sale_tax_per');
+			
+		$validator
+            ->requirePresence('exceise_duty', 'create')
+            ->notEmpty('exceise_duty');
+			
+		$validator
+            ->requirePresence('delivery', 'create')
+            ->notEmpty('delivery');
+		
+		$validator
+            ->requirePresence('lr_to_be_prepared_in_favour_of', 'create')
+            ->notEmpty('lr_to_be_prepared_in_favour_of');
 
         return $validator;
     }

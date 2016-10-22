@@ -75,6 +75,53 @@ With reference to your price list we are pleased to place an order for the follo
 						</tbody>
 					</table>
 				</div>
+				
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Material to be transported at <span class="required" aria-required="true">*</span></label>
+							<?php 
+							echo $this->Form->input('material_to_be_transported',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Material to be transported at']); ?>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Sale Tax <span class="required" aria-required="true">*</span></label>
+							<?php 
+							$options=[];
+							foreach($SaleTaxes as $SaleTaxe){
+								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
+							}
+							echo $this->Form->input('sale_tax_per', ['empty'=>'--Select--','options'=>$options,'label' => false,'class' => 'form-control input-sm']);
+							echo $this->Form->input('sale_tax_description', ['label' => false,'class' => 'form-control input-sm']);
+							?>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Exceise Duty <span class="required" aria-required="true">*</span></label>
+							<?php 
+							echo $this->Form->input('exceise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Exceise Duty']); ?>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Delivery <span class="required" aria-required="true">*</span></label>
+							<?php 
+							echo $this->Form->input('delivery',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Delivery']); ?>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">LR to be prepared in favour of <span class="required" aria-required="true">*</span></label>
+							<?php 
+							echo $this->Form->input('lr_to_be_prepared_in_favour_of',['label' => false,'class' => 'form-control input-sm','placeholder'=>'LR to be prepared in favour of']); ?>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="form-actions">
 				 <button type="submit" class="btn blue-hoki">Add Vendor</button>
@@ -241,8 +288,12 @@ $(document).ready(function() {
 			rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
 			this.rows = minRows + rows;
 		});
-		
 	}
+	
+	$('select[name=sale_tax_per]').die().live("change",function() {
+		var description=$('select[name=sale_tax_per] option:selected').attr('description');
+		$('input[name=sale_tax_description]').val(description);
+    });
 });
 </script>
 <table id="sample_tb" style="display:none;">

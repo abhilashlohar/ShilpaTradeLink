@@ -75,8 +75,9 @@ class PurchaseOrdersController extends AppController
 				return $row['file1'] . '-' . $row['file2'];
 			}])->where(['file1' => 'BE']);
         $vendors = $this->PurchaseOrders->Vendors->find('list');
+		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all');
 		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list');
-        $this->set(compact('purchaseOrder', 'companies', 'vendors','filenames','items'));
+        $this->set(compact('purchaseOrder', 'companies', 'vendors','filenames','items','SaleTaxes'));
         $this->set('_serialize', ['purchaseOrder']);
     }
 
