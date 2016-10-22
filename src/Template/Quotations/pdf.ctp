@@ -47,7 +47,7 @@ $html = '
   <div id="header">
 		<table width="100%">
 			<tr>
-				<td width="50%"><img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$quotation->company->logo.' height="50px" style="height:50px;"/></td>
+				<td width="50%"><img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$quotation->company->logo.' height="70px" style="height:70px;margin-top:5px;"/></td>
 				<td align="right" width="50%" style="font-size: 12px;">
 				<span style="font-size: 16px;">'. h($quotation->company->name) .'</span><br/>
 				<span>'. $this->Text->autoParagraph(h($quotation->company->address)) .'</span>
@@ -72,9 +72,7 @@ $html .= '
 		<tr>
 			<td style="">
 				<table width="100%">
-					<tr>
-						<td>To,</td>
-					</tr>
+					
 					<tr>
 						<td>
 							<span>'. h(($quotation->customer->customer_name)) .'</span>
@@ -82,7 +80,7 @@ $html .= '
 						</td>
 					</tr>
 					<tr>
-						<td>
+						<td><br/>
 							<table style="margin: 0px 0 0 -2px;">
 								<tr>
 									<td>Kind Attn.</td>
@@ -105,7 +103,7 @@ $html .= '
 				<table>
 					<tr>
 						<td>Date</td>
-						<td>: '. h(date("d-M-Y",strtotime($quotation->date))) .'</td>
+						<td>: '. h(date("d-m-Y",strtotime($quotation->date))) .'</td>
 					</tr>
 					<tr>
 						<td>Ref no</td>
@@ -115,9 +113,10 @@ $html .= '
 			</td>
 		</tr>
 	</table>
+	<br/>
 	<table>
 		<tr>
-				<td>Dear Sir,</td>
+				<td>Dear Sir,<br/><br/></td>
 		</tr>
 		<tr>
 			<td>'. $this->Text->autoParagraph(h($quotation->text)) .'</td>
@@ -177,7 +176,7 @@ if(!empty($quotation->additional_note)){
 $html.='
 <div class="avoid_break">
 	<div class="avoid_break">
-		<b>Commercial Terms & Conditions:</b>
+		<b><u>Commercial Terms & Conditions:</u></b>
 		'. $this->Text->autoParagraph(h($quotation->terms_conditions)) .'
 	</div><br/>
 	<div><b>I hope above is to your requirement and in case of any clarification kindly revert back.</b></div><br/>

@@ -51,7 +51,7 @@ $html = '
 		<table width="100%">
 			<tr>
 				<td width="50%">
-				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$salesOrder->company->logo.' height="50px" style="height:50px;"/>
+				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$salesOrder->company->logo.' height="70px" style="height:70px;margin-top:5px;"/>
 				</td>
 				<td align="right" width="50%" style="font-size: 12px;">
 				<span style="font-size: 16px;">'. h($salesOrder->company->name) .'</span><br/>
@@ -76,31 +76,24 @@ $html = '
 $html.='
 	<table width="100%">
 		<tr>
-			<td width="60%">
-				To,<br/>
+			<td width="55%">
 				<span>'. h(($salesOrder->customer->customer_name)) .'</span><br/>
-				'. $this->Text->autoParagraph(h($salesOrder->customer_address)) .'
-				<span>TIN No. :'. h($salesOrder->customer->tin_no) .'</span><br/>
-				<span>PAN No. :'. h($salesOrder->customer->pan_no) .'</span><br/>
-				<span>Your P.O. No. '. h($salesOrder->customer_po_no).' dated '. h(date("d-M-Y",strtotime($salesOrder->po_date))).'</span>
+				'. $this->Text->autoParagraph(h($salesOrder->customer_address)) .'<br/>
+				<span>Customer P.O. No. '. h($salesOrder->customer_po_no).' dated '. h(date("d-M-Y",strtotime($salesOrder->po_date))).'</span><br/><br/>
 			</td>
-			<td width="40%" valign="top" align="right">
+			<td width="45%" valign="top" align="right">
 				<table>
 					<tr>
 						<td>Sales Order No.</td>
 						<td width="20" align="center">:</td>
-						<td>'. h(($salesOrder->so1."/".str_pad($salesOrder->id, 3, "0", STR_PAD_LEFT)."/".$salesOrder->so3."/".$salesOrder->so4)) .'</td>
+						<td>'. h(($salesOrder->so1."/SO-".str_pad($salesOrder->id, 3, "0", STR_PAD_LEFT)."/".$salesOrder->so3."/".$salesOrder->so4)) .'</td>
 					</tr>
 					<tr>
 						<td>Date</td>
 						<td width="20" align="center">:</td>
-						<td>'. h(date("d-M-Y",strtotime($salesOrder->date))) .'</td>
+						<td>'. h(date("d-m-Y",strtotime($salesOrder->date))) .'</td>
 					</tr>
-					<tr>
-						<td>Carrier</td>
-						<td width="20" align="center">:</td>
-						<td>'. h($salesOrder->courier->transporter_name) .'</td>
-					</tr>
+					
 				</table>
 			</td>
 		</tr>
@@ -147,34 +140,38 @@ $html.='
 				<td style="text-align:right;">Total</td>
 				<td style="text-align:right;" width="104">'. $this->Number->format($salesOrder->total,[ 'places' => 2]).'</td>
 			</tr>
-			<tr>
-				<td colspan="2"><b>Amount in words: </b>'. h($this->NumberWords->convert_number_to_words($salesOrder->total)) .' </td>
-			</tr>
-			<tr>
-				<td colspan="2"><b>Documents: </b> '. h($salesOrder->carrier->transporter_name) .' </td>
-			</tr>
 		</tbody>
 	</table>'; 
 	
 $html.='
-	<table width="100%">
+	<table >
 		<tr>
-			<td>Road Permit Required</td>
-			<td>: '. h($salesOrder->road_permit_required).'</td>
-			<td>Form-49 Required</td>
-			<td>: '. h($salesOrder->form49).'</td>
+			<td valign="top">Transporter</td>
+			<td>:</td>
+			<td width="40%">'. h($salesOrder->carrier->transporter_name) .'</td>
+			<td valign="top">Form-49 Required</td>
+			<td>:</td>
+			<td>'. h($salesOrder->form49).'</td>
 		</tr>
 		<tr>
-			<td>Expected Delivery Date</td>
-			<td>: '. h(date("d-M-Y",strtotime($salesOrder->expected_delivery_date))).'</td>
-			<td></td>
-			<td></td>
+			<td valign="top">Carrier</td>
+			<td>:</td>
+			<td>'. h($salesOrder->courier->transporter_name) .'</td>
+			<td valign="top">Expected Delivery Date</td>
+			<td>:</td>
+			<td>'. h(date("d-m-Y",strtotime($salesOrder->expected_delivery_date))).'</td>
+			
 		</tr>
 		<tr>
 			<td valign="top">Delivery Description</td>
-			<td collapse="3">: '. h($salesOrder->delivery_description).'</td>
+			<td>:</td>
+			<td>'. h($salesOrder->delivery_description).'</td>
+			<td valign="top">Road Permit Required</td>
+			<td>:</td>
+			<td>'. h($salesOrder->road_permit_required).'</td>
+			
 		</tr>
-	</table>
+	</table><br/>
 	<b>Dispatch Details</b>
 	<table width="100%">
 		<tr>

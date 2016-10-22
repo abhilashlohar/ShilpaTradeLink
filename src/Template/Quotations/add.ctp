@@ -79,7 +79,7 @@
 					</div>
 					<br/>
 					<div class="form-group">
-						<label class="col-md-4 control-label">Qutote Ref. No.</label>
+						<label class="col-md-4 control-label">Quotation No.</label>
 						<div class="col-md-2">
 							<?php echo $this->Form->input('qt1', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
 						</div>
