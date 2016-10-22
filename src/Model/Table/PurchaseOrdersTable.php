@@ -50,6 +50,12 @@ class PurchaseOrdersTable extends Table
             'foreignKey' => 'vendor_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->belongsTo('Transporters', [
+            'foreignKey' => 'transporter_id',
+            'joinType' => 'INNER'
+        ]);
+		
         $this->hasMany('Grns', [
             'foreignKey' => 'purchase_order_id'
         ]);
@@ -110,6 +116,18 @@ class PurchaseOrdersTable extends Table
 		$validator
             ->requirePresence('lr_to_be_prepared_in_favour_of', 'create')
             ->notEmpty('lr_to_be_prepared_in_favour_of');
+			
+		$validator
+            ->requirePresence('payment_terms', 'create')
+            ->notEmpty('payment_terms');
+			
+		$validator
+            ->requirePresence('road_permit_form47', 'create')
+            ->notEmpty('road_permit_form47');
+			
+		$validator
+            ->requirePresence('transporter_id', 'create')
+            ->notEmpty('transporter_id');
 
         return $validator;
     }

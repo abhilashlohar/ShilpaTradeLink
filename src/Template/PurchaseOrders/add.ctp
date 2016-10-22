@@ -121,6 +121,27 @@ With reference to your price list we are pleased to place an order for the follo
 							echo $this->Form->input('lr_to_be_prepared_in_favour_of',['label' => false,'class' => 'form-control input-sm','placeholder'=>'LR to be prepared in favour of']); ?>
 						</div>
 					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Payment Terms <span class="required" aria-required="true">*</span></label>
+							<?php 
+							echo $this->Form->input('payment_terms',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Payment Terms']); ?>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Road permit form 47 <span class="required" aria-required="true">*</span></label>
+							<?php 
+							echo $this->Form->input('road_permit_form47',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Road permit form 47']); ?>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Transporter <span class="required" aria-required="true">*</span></label>
+							<?php 
+							echo $this->Form->input('transporter_id',['empty'=>'--Select--','options'=>$transporters,'label' => false,'class' => 'form-control input-sm']); ?>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="form-actions">

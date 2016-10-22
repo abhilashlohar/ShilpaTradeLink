@@ -77,7 +77,8 @@ class PurchaseOrdersController extends AppController
         $vendors = $this->PurchaseOrders->Vendors->find('list');
 		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all');
 		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list');
-        $this->set(compact('purchaseOrder', 'companies', 'vendors','filenames','items','SaleTaxes'));
+		$transporters = $this->PurchaseOrders->Transporters->find('list');
+        $this->set(compact('purchaseOrder', 'companies', 'vendors','filenames','items','SaleTaxes','transporters'));
         $this->set('_serialize', ['purchaseOrder']);
     }
 
