@@ -53,10 +53,10 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($saleTaxes as $saleTax): ?>
+					<?php $i=0; foreach ($saleTaxes as $saleTax): $i++; ?>
 					<tr>
-						<td><?= $this->Number->format($saleTax->id) ?></td>
-						<td><?= $this->Number->format($saleTax->tax_figure) ?></td>
+						<td><?= h($i) ?></td>
+						<td><?= $this->Number->format($saleTax->tax_figure,[ 'places' => 2]) ?></td>
 						<td><?= h($saleTax->description) ?></td>
 						<td class="actions">
 							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $saleTax->id]) ?>

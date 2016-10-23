@@ -17,7 +17,7 @@
 					<div class="col-md-6">
 						<div class="input-icon right">
 							<i class="fa"></i>
-							 <?php echo $this->Form->input('tax_figure', ['label' => false,'class' => 'form-control','placeholder'=>'Figure']); ?>
+							 <?php echo $this->Form->input('tax_figure', ['label' => false,'class' => 'form-control','placeholder'=>'Figure','value'=>$this->Number->format($saleTax->tax_figure,[ 'places' => 2])]); ?>
 						</div>
 					</div>
 				</div>

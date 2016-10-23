@@ -267,7 +267,7 @@
 			<td>
 			<?php $options=[];
 			foreach($SaleTaxes as $SaleTaxe){
-				$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
+				$options[]=['text' => $this->Number->format($SaleTaxe->tax_figure,[ 'places' => 2]).'%', 'value' => $this->Number->format($SaleTaxe->tax_figure,[ 'places' => 2]), 'description' => $SaleTaxe->description];
 			}
 			echo $this->Form->input('so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
 			echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false]); ?>

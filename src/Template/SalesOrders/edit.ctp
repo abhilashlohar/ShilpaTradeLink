@@ -115,27 +115,27 @@
 				</thead>
 				<tbody>
 					<?php $q=1; foreach ($salesOrder->sales_order_rows as $sales_order_rows): ?>
-					<tr class="tr1">
+					<tr class="tr1" row_no='<?php echo @$sales_order_rows->id; ?>'>
 						<td rowspan="2"><?= h($q) ?></td>
-						<td><?php echo $this->Form->input('sales_order_rows'.$q.'item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item','value'=>$sales_order_rows->item_id]); ?></td>
-						<td><?php echo $this->Form->input('sales_order_rows'.$q.'item_id', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity','value'=>$sales_order_rows->quantity]); ?></td>
-						<td><?php echo $this->Form->input('sales_order_rows'.$q.'item_id', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01",'value'=>$sales_order_rows->rate]); ?></td>
-						<td><?php echo $this->Form->input('sales_order_rows'.$q.'item_id', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value'=>$sales_order_rows->amount]); ?></td>
+						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item','value'=>$sales_order_rows->item_id]); ?></td>
+						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity','value'=>$sales_order_rows->quantity]); ?></td>
+						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01",'value'=>$sales_order_rows->rate]); ?></td>
+						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value'=>$sales_order_rows->amount]); ?></td>
 						<td><?php 
 						$options=['Yes'=>'Yes','No'=>'No'];
-						echo $this->Form->input('sales_order_rows'.$q.'item_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm','value'=>$sales_order_rows->excise_duty]); ?></td>
+						echo $this->Form->input('sales_order_rows.'.$q.'.exceise_duty', ['options'=>$options,'label' => false,'class' => 'form-control input-sm','value'=>$sales_order_rows->excise_duty]); ?></td>
 						<td>
 						<?php $options=[];
 						foreach($SaleTaxes as $SaleTaxe){
-							$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
+							$options[]=['text' => $this->Number->format($SaleTaxe->tax_figure,[ 'places' => 2]).'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 						}
-						echo $this->Form->input('sales_order_rows'.$q.'so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des','value'=>$sales_order_rows->so_sale_tax]);
+						echo $this->Form->input('sales_order_rows.'.$q.'.so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des','value'=>$sales_order_rows->so_sale_tax]);
 						echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false]); ?>
 						</td>
 						<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 					</tr>
-					<tr class="tr2">
-						<td colspan="6"><?php echo $this->Form->textarea('sales_order_rows'.$q.'so_sale_tax', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value'=>$sales_order_rows->description]); ?></td>
+					<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
+						<td colspan="6"><?php echo $this->Form->textarea('sales_order_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value'=>$sales_order_rows->description]); ?></td>
 						<td></td>
 					</tr>
 					<?php $q++; endforeach; ?>
@@ -515,6 +515,38 @@ $(document).ready(function() {
 			this.rows = minRows + rows;
 		});
 	}
+	
+	
+	$('.deleterow').die().live("click",function() {
+		var l=$(this).closest("table tbody").find("tr").length;
+		if (confirm("Are you sure to remove row ?") == true) {
+			if(l>2){
+				var row_no=$(this).closest("tr").attr("row_no");
+				var del="tr[row_no="+row_no+"]";
+				$(del).remove();
+				var i=0;
+				$("#main_tb tbody tr.tr1").each(function(){
+					i++;
+					$(this).find("td:nth-child(1)").html(i);
+					$(this).find("td:nth-child(2) select").attr("name","sales_order_rows["+i+"][item_id]");
+					$(this).find("td:nth-child(3) input").attr("name","sales_order_rows["+i+"][quantity]");
+					$(this).find("td:nth-child(4) input").attr("name","sales_order_rows["+i+"][rate]");
+					$(this).find("td:nth-child(5) input").attr("name","sales_order_rows["+i+"][amount]");
+					$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
+					$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][so_sale_tax]");
+					$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_description]");
+					var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
+					$(this).find("td:nth-child(7) input").val(description);
+				});
+				var i=0;
+				$("#main_tb tbody tr.tr2").each(function(){
+					i++;
+					$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
+				});
+				calculate_total();
+			}
+		} 
+    });
 	
 	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
 		calculate_total();

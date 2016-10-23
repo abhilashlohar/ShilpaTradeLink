@@ -190,6 +190,7 @@ class SalesOrdersController extends AppController
 			$salesOrder->expected_delivery_date=date("Y-m-d",strtotime($salesOrder->expected_delivery_date));
 			$salesOrder->po_date=date("Y-m-d",strtotime($salesOrder->po_date));
 			$salesOrder->date=date("Y-m-d",strtotime($salesOrder->date));
+			
             if ($this->SalesOrders->save($salesOrder)) {
                 $this->Flash->success(__('The sales order has been saved.'));
 
