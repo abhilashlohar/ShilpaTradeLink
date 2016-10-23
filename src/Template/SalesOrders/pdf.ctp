@@ -108,7 +108,7 @@ $html.='
 			<th>Rate</th>
 			<th>Amount</th>
 			<th>Excise Duty</th>
-			<th>Sale Tax</th>
+			<th>Sale Tax(%)</th>
 		</tr>
 ';
 
@@ -121,7 +121,6 @@ $html.='
 		<td style="width: 40;">'. $this->Number->format($salesOrderRows->rate,[ 'places' => 2]) .'</td>
 		<td style="width: 40;">'. $this->Number->format($salesOrderRows->amount,[ 'places' => 2]) .'</td>
 		<td style="width: 55;">'. h($salesOrderRows->excise_duty) .'</td>
-		<td style="width: 45;">'. $this->Number->format($salesOrderRows->so_sale_tax,[ 'places' => 2]) .'</td>
 	</tr>';
 	if(!empty($salesOrderRows->description)){
 		$html.='

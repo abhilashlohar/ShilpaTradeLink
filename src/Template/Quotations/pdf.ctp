@@ -129,7 +129,7 @@ $html.='
 <table width="100%" class="table_rows">
 		<tr>
 			<th width="30">S No</th>
-			<th>Item</th>
+			<th>Item Description</th>
 			<th width="10">Unit</th>
 			<th width="10">Quantity</th>
 			<th width="10">Rate</th>
@@ -141,20 +141,12 @@ $sr=0; foreach ($quotation->quotation_rows as $quotationRows): $sr++;
 $html.='
 	<tr>
 		<td valign="top">'. h($sr) .'</td>
-		<td>'. h($quotationRows->item->name) .'</td>
-		<td align="right">'. h($quotationRows->item->unit->name) .'</td>
-		<td align="right">'. h($quotationRows->quantity) .'</td>
-		<td align="right" style="width: 10;">'. $this->Number->format($quotationRows->rate,[ 'places' => 2]).'</td>
-		<td align="right" style="width: 10;">'. $this->Number->format($quotationRows->amount,[ 'places' => 2]) .'</td>
+		<td>'. $this->Text->autoParagraph(h($quotationRows->description)) .'</td>
+		<td align="right" valign="top">'. h($quotationRows->item->unit->name) .'</td>
+		<td align="right" valign="top">'. h($quotationRows->quantity) .'</td>
+		<td align="right" style="width: 10;" valign="top">'. $this->Number->format($quotationRows->rate,[ 'places' => 2]).'</td>
+		<td align="right" style="width: 10;" valign="top">'. $this->Number->format($quotationRows->amount,[ 'places' => 2]) .'</td>
 	</tr>';
-	if(!empty($quotationRows->description)){
-		$html.='
-		<tr>
-			<td></td>
-			<td colspan="5" style="text-align: justify;"><b>Description: </b>'. $this->Text->autoParagraph(h($quotationRows->description)) .'</td>
-		</tr>';
-	}
-
 endforeach;
 
 
