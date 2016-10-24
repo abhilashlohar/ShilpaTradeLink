@@ -103,7 +103,7 @@ $html .= '
 				<table>
 					<tr>
 						<td>Date</td>
-						<td>: '. h(date("d-m-Y",strtotime($quotation->date))) .'</td>
+						<td>: '. h(date("d-m-Y",strtotime($quotation->created_on))) .'</td>
 					</tr>
 					<tr>
 						<td>Ref no</td>
@@ -172,14 +172,35 @@ $html.='
 		'. $this->Text->autoParagraph(h($quotation->terms_conditions)) .'
 	</div><br/>
 	<div><b>I hope above is to your requirement and in case of any clarification kindly revert back.</b></div><br/>
-	<div class="avoid_break"><b>Thanks and Regards,</b><br/>
-	<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->employee->signature.' height="50px" style="height:50px;"/>
-	<br/>
-	<span>'. h($quotation->employee->name) .'</span><br/>
-	<span>'. h($quotation->creator->name) .'</span><br/>
-	<span>'. h($quotation->employee->mobile) .'</span><br/>
-	<span>'. h($quotation->employee->email) .'</span>
-	</div>
+	<div class="avoid_break"><b>Thanks and Regards,</b></div><br/>
+	<table width="100%">
+		<tr>';
+		
+			if(!empty($quotation->edited_by)){
+				$html.='<td width="30%" align="center">
+					<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->editor->signature.' height="50px" style="height:50px;"/>
+					<br/>
+					<span><b>Edited by</b></span><br/>
+					<span>'. h($quotation->editor->name) .'</span><br/>
+					<span>'. h($quotation->editor->designation->name) .'</span><br/>
+					<span>'. h($quotation->editor->mobile) .'</span><br/>
+					<span>'. h($quotation->editor->email) .'</span>
+				</td>';
+			}
+			
+	$html.='<td align="center">
+				<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->creator->signature.' height="50px" style="height:50px;"/>
+				<br/>
+				<span><b>Created by</b></span><br/>
+				<span>'. h($quotation->creator->name) .'</span><br/>
+				<span>'. h($quotation->creator->designation->name) .'</span><br/>
+				<span>'. h($quotation->creator->mobile) .'</span><br/>
+				<span>'. h($quotation->creator->email) .'</span>
+			</td>';
+			
+			
+		$html.='</tr>
+	</table>
 </div>
 	'; 
 

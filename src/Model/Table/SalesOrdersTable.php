@@ -68,6 +68,16 @@ class SalesOrdersTable extends Table
             'foreignKey' => 'employee_id',
             'joinType' => 'INNER'
         ]);
+		$this->belongsTo('Creator', [
+			'className' => 'Employees',
+			'foreignKey' => 'created_by',
+			'propertyName' => 'creator',
+		]);
+		$this->belongsTo('Editor', [
+			'className' => 'Employees',
+			'foreignKey' => 'edited_by',
+			'propertyName' => 'editor',
+		]);
         $this->hasMany('SalesOrderRows', [
             'foreignKey' => 'sales_order_id',
 			'saveStrategy' => 'replace'

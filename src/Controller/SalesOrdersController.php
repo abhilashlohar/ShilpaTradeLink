@@ -95,7 +95,7 @@ class SalesOrdersController extends AppController
     {
 		$this->viewBuilder()->layout('');
         $salesOrder = $this->SalesOrders->get($id, [
-            'contain' => ['Customers', 'Companies','Carrier','Courier','Employees','SalesOrderRows' => ['Items']]
+            'contain' => ['Customers', 'Companies','Carrier','Creator'=>['Designations'],'Editor'=>['Designations'],'Courier','Employees','SalesOrderRows' => ['Items']]
         ]);
 
         $this->set('salesOrder', $salesOrder);
@@ -118,6 +118,8 @@ class SalesOrdersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		
 		$quotation_id=@(int)$this->request->query('quotation');
 		$quotation=array(); $process_status='New';
 		if(!empty($quotation_id)){
@@ -131,9 +133,11 @@ class SalesOrdersController extends AppController
         $salesOrder = $this->SalesOrders->newEntity();
         if ($this->request->is('post')) {
             $salesOrder = $this->SalesOrders->patchEntity($salesOrder, $this->request->data);
-			$salesOrder->date=date("Y-m-d",strtotime($salesOrder->date));
+			
 			$salesOrder->expected_delivery_date=date("Y-m-d",strtotime($salesOrder->expected_delivery_date));
 			$salesOrder->po_date=date("Y-m-d",strtotime($salesOrder->po_date));
+			$salesOrder->created_by=$s_employee_id;
+			$salesOrder->created_on=date("Y-m-d",strtotime($quotation->created_on));
 			
             if ($this->SalesOrders->save($salesOrder)) {
 				if(!empty($quotation_id)){
@@ -185,11 +189,15 @@ class SalesOrdersController extends AppController
         $salesOrder = $this->SalesOrders->get($id, [
             'contain' => ['SalesOrderRows' => ['Items']]
         ]);
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $salesOrder = $this->SalesOrders->patchEntity($salesOrder, $this->request->data);
 			$salesOrder->expected_delivery_date=date("Y-m-d",strtotime($salesOrder->expected_delivery_date));
-			$salesOrder->po_date=date("Y-m-d",strtotime($salesOrder->po_date));
+			$salesOrder->created_on=date("Y-m-d",strtotime($salesOrder->created_on));
 			$salesOrder->date=date("Y-m-d",strtotime($salesOrder->date));
+			$salesOrder->edited_by=$s_employee_id;
+			$salesOrder->edited_on=date("Y-m-d");
 			
             if ($this->SalesOrders->save($salesOrder)) {
                 $this->Flash->success(__('The sales order has been saved.'));

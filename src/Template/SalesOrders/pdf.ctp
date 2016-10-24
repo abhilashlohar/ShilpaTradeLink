@@ -144,34 +144,50 @@ $html.='
 	</table>'; 
 	
 $html.='
-	<table >
+	<table width="100%">
 		<tr>
-			<td valign="top">Transporter</td>
-			<td>:</td>
-			<td width="40%">'. h($salesOrder->carrier->transporter_name) .'</td>
-			<td valign="top">Form-49 Required</td>
-			<td>:</td>
-			<td>'. h($salesOrder->form49).'</td>
+			<td width="60%">
+				<table>
+					<tr>
+						<td valign="top">Transporter</td>
+						<td>:</td>
+						<td width="40%"> '. h($salesOrder->carrier->transporter_name) .'</td>
+					</tr>
+					<tr>
+						<td valign="top">Carrier</td>
+						<td>:</td>
+						<td> '. h($salesOrder->courier->transporter_name) .'</td>
+					</tr>
+					<tr>
+						<td valign="top">Delivery Description</td>
+						<td>:</td>
+						<td> '. h($salesOrder->delivery_description).'</td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td valign="top">Form-49 Required</td>
+						<td>:</td>
+						<td>'. h($salesOrder->form49).'</td>
+					</tr>
+					<tr>
+						<td valign="top">Expected Delivery Date</td>
+						<td>:</td>
+						<td> '. h(date("d-m-Y",strtotime($salesOrder->expected_delivery_date))).'</td>
+						
+					</tr>
+					<tr>
+						<td valign="top">Road Permit Required</td>
+						<td>:</td>
+						<td> '. h($salesOrder->road_permit_required).'</td>
+					</tr>
+				</table>
+			</td>
 		</tr>
-		<tr>
-			<td valign="top">Carrier</td>
-			<td>:</td>
-			<td>'. h($salesOrder->courier->transporter_name) .'</td>
-			<td valign="top">Expected Delivery Date</td>
-			<td>:</td>
-			<td>'. h(date("d-m-Y",strtotime($salesOrder->expected_delivery_date))).'</td>
-			
-		</tr>
-		<tr>
-			<td valign="top">Delivery Description</td>
-			<td>:</td>
-			<td>'. h($salesOrder->delivery_description).'</td>
-			<td valign="top">Road Permit Required</td>
-			<td>:</td>
-			<td>'. h($salesOrder->road_permit_required).'</td>
-			
-		</tr>
-	</table><br/>
+	</table>
+	<br/>
 	<b>Dispatch Details</b>
 	<table width="100%">
 		<tr>
@@ -187,27 +203,37 @@ $html.='
 	</table>
 ';
 
-$html.='
-<table width="100%" class="divFooter">
-			<tr>
-				<td width="60%">
-					
-				</td>
-				<td style="text-align:right;" align="right">
-					<table>
-						<tr>
-							<td align="center">
-							For '. h($salesOrder->company->name) .'<br/>
-							<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$salesOrder->employee->signature.' height="50px" style="height:50px;"/>
-							<br/>
-							<span style="    border-top: solid 1px #585757;">Authorised Signatory</span>
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-		</table>
-';
+$html.='<table width="100%">
+		<tr><td width="40%" align="right"></td><td width="30%" align="right">';
+		
+if(!empty($salesOrder->edited_by)){
+$html.='<div align="center">
+		<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$salesOrder->editor->signature.' height="50px" style="height:50px;"/>
+		<br/>
+		<span><b>Edited by</b></span><br/>
+		<span>'. h($salesOrder->editor->name) .'</span><br/>
+		<span>'. h($salesOrder->editor->designation->name) .'</span><br/>
+		<span>'. h($salesOrder->editor->mobile) .'</span><br/>
+		<span>'. h($salesOrder->editor->email) .'</span>
+		</div>';
+}
+			
+$html.='</td>
+<td align="right">
+			<div align="center">
+			<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$salesOrder->creator->signature.' height="50px" style="height:50px;"/>
+			<br/>
+			<span><b>Created by</b></span><br/>
+			<span>'. h($salesOrder->creator->name) .'</span><br/>
+			<span>'. h($salesOrder->creator->designation->name) .'</span><br/>
+			<span>'. h($salesOrder->creator->mobile) .'</span><br/>
+			<span>'. h($salesOrder->creator->email) .'</span>
+			</div>
+		</td>';
+			
+			
+$html.='</tr>
+	</table>';
 
 $html .= '</div>
 </body>

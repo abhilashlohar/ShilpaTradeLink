@@ -108,7 +108,7 @@ class QuotationsController extends AppController
     {
 		$this->viewBuilder()->layout('');
         $quotation = $this->Quotations->get($id, [
-            'contain' => ['Customers','Companies','Employees','ItemGroups','Creator','QuotationRows' => ['Items'=>['Units']]]
+            'contain' => ['Customers','Companies','Employees','ItemGroups','Creator'=>['Designations'],'Editor'=>['Designations'],'QuotationRows' => ['Items'=>['Units']]]
         ]);
 
         $this->set('quotation', $quotation);
@@ -128,9 +128,12 @@ class QuotationsController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		
         if ($this->request->is('post')) {
-			$this->request->data["finalisation_date"]=date("Y-m-d",strtotime($this->request->data["finalisation_date"]));
+			
             $quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
 			$quotation->created_by=$s_employee_id;
+			$quotation->created_on=date("Y-m-d",strtotime($quotation->created_on));
+			$quotation->finalisation_date=date("Y-m-d",strtotime($quotation->finalisation_date));
+			
             if ($this->Quotations->save($quotation)) {
                 return $this->redirect(['action' => 'confirm/'.$quotation->id]);
             } else {
@@ -167,10 +170,11 @@ class QuotationsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
         	$this->request->data["finalisation_date"]=date("Y-m-d",strtotime($this->request->data["finalisation_date"]));
             $quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
-			
+			$quotation->created_on=date("Y-m-d",strtotime($quotation->created_on));
 			$quotation->ref_no=$quotation->alias.'/'.$quotation->ref.'/'.$quotation->yr;
-			$quotation->date=date('Y-m-d');
 			$quotation->edited_by=$s_employee_id;
+			$quotation->edited_on=date("Y-m-d");
+			
             if ($this->Quotations->save($quotation)) {
                 $this->Flash->success(__('The quotation has been saved.'));
 

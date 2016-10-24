@@ -26,7 +26,7 @@
 					<div class="form-group">
 						<label class="col-md-8 control-label">Date</label>
 						<div class="col-md-4">
-							<?php echo $this->Form->input('date', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
+							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y",strtotime($quotation->created_on)),'readonly']); ?>
 						</div>
 					</div>
 				</div>
@@ -162,7 +162,7 @@
 								<?php echo ++$q; --$q; ?><?php echo $this->Form->input('quotation_rows.'.$q.'.id'); ?>
 							</td>
 							<td>
-								<?php echo $this->Form->input('quotation_rows['.$q.'][item_id]', ['options' => $items,'label' => false,'class' => 'form-control input-sm','value' => $quotation_row->item_id]); ?>
+								<?php echo $this->Form->input('quotation_rows['.$q.'][item_id]', ['options' => $items,'label' => false,'class' => 'form-control input-sm select2me','value' => $quotation_row->item_id]); ?>
 							</td>
 							<td width="100">
 								<?php echo $this->Form->input('quotation_rows['.$q.'][quantity]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity','value' => $quotation_row->quantity]); ?>
@@ -386,6 +386,12 @@ $(document).ready(function() {
 				var w=$(this).find("td:nth-child(3) input").val();
 				var r=$(this).find("td:nth-child(4) input").val();
 				if(it=="" || w=="" || r==""){
+					q="e";
+				}
+			});
+			$("#main_tb tbody tr.tr2").each(function(){
+				var d=$(this).find("td:nth-child(1) textarea").val();
+				if(d==""){
 					q="e";
 				}
 			});

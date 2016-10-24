@@ -54,6 +54,11 @@ class QuotationsTable extends Table
 			'foreignKey' => 'created_by',
 			'propertyName' => 'creator',
 		]);
+		$this->belongsTo('Editor', [
+			'className' => 'Employees',
+			'foreignKey' => 'edited_by',
+			'propertyName' => 'editor',
+		]);
 		$this->belongsTo('ItemGroups', [
             'foreignKey' => 'item_group_id',
             'joinType' => 'INNER'
@@ -98,7 +103,6 @@ class QuotationsTable extends Table
 
 
         $validator
-            ->date('finalisation_date')
             ->requirePresence('finalisation_date', 'create')
             ->notEmpty('finalisation_date');
 
