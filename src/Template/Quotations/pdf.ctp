@@ -175,9 +175,10 @@ $html.='
 	<div class="avoid_break"><b>Thanks and Regards,</b><br/>
 	<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->employee->signature.' height="50px" style="height:50px;"/>
 	<br/>
-	<span>'. h(($quotation->employee->name)) .'</span><br/>
-	<span>'. h(($quotation->employee->mobile)) .'</span><br/>
-	<span>'. h(($quotation->employee->email)) .'</span>
+	<span>'. h($quotation->employee->name) .'</span><br/>
+	<span>'. h($quotation->creator->name) .'</span><br/>
+	<span>'. h($quotation->employee->mobile) .'</span><br/>
+	<span>'. h($quotation->employee->email) .'</span>
 	</div>
 </div>
 	'; 
@@ -185,7 +186,7 @@ $html.='
 $html .= '</div>
 </body>
 </html>';
-  
+
 //echo $html; exit;
 
 $name='Quotation-';

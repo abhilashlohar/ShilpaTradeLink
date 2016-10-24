@@ -49,6 +49,11 @@ class QuotationsTable extends Table
             'foreignKey' => 'employee_id',
             'joinType' => 'INNER'
         ]);
+		$this->belongsTo('Creator', [
+			'className' => 'Employees',
+			'foreignKey' => 'created_by',
+			'propertyName' => 'creator',
+		]);
 		$this->belongsTo('ItemGroups', [
             'foreignKey' => 'item_group_id',
             'joinType' => 'INNER'
@@ -63,7 +68,6 @@ class QuotationsTable extends Table
             'foreignKey' => 'quotation_id',
 			'saveStrategy' => 'replace'
         ]);
-		
 		
     }
 	

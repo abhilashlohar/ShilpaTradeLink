@@ -54,6 +54,10 @@ class AppController extends Controller
 			$st_login_id = $session->read('st_login_id');
 			if(empty($st_login_id)){
 				return $this->redirect("/login");
+			}else{
+				$this->loadModel('Logins');
+				$login=$this->Logins->get($st_login_id);
+				$this->set('s_employee_id',$login->employee_id);
 			}
 		}
 		if(!empty($st_login_id)){
