@@ -22,18 +22,30 @@
 					<tbody>
 						<tr>
 							<td>
-							<div class="input-group col-md-9" style="" id="pnf_text">
-								<span class="input-group-addon">IN-</span><input type="text" name="invoice_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$invoice_no; ?>">
-							</div>
+								<div class="row">
+									<div class="col-md-4">
+										<input type="text" name="company_alise" class="form-control input-sm" placeholder="Company" value="<?php echo @$company_alise; ?>">
+									</div>
+									<div class="col-md-4">
+										<div class="input-group" style="" id="pnf_text">
+											<span class="input-group-addon">IN-</span><input type="text" name="invoice_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$invoice_no; ?>">
+										</div>
+									</div>
+									<div class="col-md-4">
+										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
+									</div>
+								</div>
 							</td>
 							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
 							<td>
-							<table>
-								<tr>
-									<td><input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>" style="width: 100px;" data-date-format="dd-mm-yyyy" ></td>
-									<td><input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>" style="width: 100px;" data-date-format="dd-mm-yyyy" ></td>
-								</tr>
-							</table>
+								<div class="row">
+									<div class="col-md-6">
+										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+									<div class="col-md-6">
+										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+								</div>
 							</td>
 							<td>
 							<table>
