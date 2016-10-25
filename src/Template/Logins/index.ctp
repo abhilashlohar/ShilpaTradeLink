@@ -1,5 +1,11 @@
+<?php
+$this->Form->templates([
+    'inputContainer' => '{{content}}'
+]);
+?>
 <!-- BEGIN LOGIN FORM -->
 	<form  method="post">
+	<?= $this->Form->create($login,['url'=>'/Logins/index']) ?>
 		<h3 class="form-title">Login to your account</h3>
         <div class="alert alert-danger display-hide">
 			<button class="close" data-close="alert"></button>
@@ -23,14 +29,14 @@
 			<label class="control-label visible-ie8 visible-ie9">Username</label>
 			<div class="input-icon">
 				<i class="fa fa-user"></i>
-				<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Login ID" name="login_id"/>
+				<?php echo $this->Form->input('username', ['label'=>false,'class' => 'form-control','placeholder'=>'Username']); ?>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="control-label visible-ie8 visible-ie9">Password</label>
 			<div class="input-icon">
 				<i class="fa fa-lock"></i>
-				<input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password"/>
+				<?php echo $this->Form->input('password', ['label'=>false,'class' => 'form-control','placeholder'=>'Password']); ?>
 			</div>
 		</div>
         
@@ -41,5 +47,5 @@
 			Login <i class="m-icon-swapright m-icon-white"></i>
 			</button>
 		</div>
-	</form>
+	<?= $this->Form->end() ?>
 	<!-- END LOGIN FORM -->

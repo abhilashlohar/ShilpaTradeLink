@@ -93,7 +93,7 @@ $html.='
 					<tr>
 						<td>Date</td>
 						<td width="20" align="center">:</td>
-						<td>'. h(date("d-M-Y",strtotime($invoice->date_created))) .'</td>
+						<td>'. h(date("d-m-Y",strtotime($invoice->date_created))) .'</td>
 					</tr>
 				</table>
 			</td>

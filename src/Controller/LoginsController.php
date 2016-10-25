@@ -14,9 +14,10 @@ class LoginsController extends AppController
     {
        $this->viewBuilder()->layout('login_layout');
 	   
+	   $login = $this->Logins->newEntity();
 	   if ($this->request->is('post')) 
 		{
-			$username=$this->request->data["login_id"];
+			$username=$this->request->data["username"];
 			$password=$this->request->data["password"];
 			$query = $this->Logins->findAllByUsernameAndPassword($username, $password);
 			$number = $query->count();
@@ -28,6 +29,9 @@ class LoginsController extends AppController
 				return $this->redirect("/Dashboard");
 			}
 		}
+		
+		$this->set(compact('login'));
+		$this->set('_serialize', ['login']);
     }
 	
 	public function logout()

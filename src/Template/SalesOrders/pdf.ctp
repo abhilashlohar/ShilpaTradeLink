@@ -79,7 +79,7 @@ $html.='
 			<td width="55%">
 				<span>'. h(($salesOrder->customer->customer_name)) .'</span><br/>
 				'. $this->Text->autoParagraph(h($salesOrder->customer_address)) .'<br/>
-				<span>Customer P.O. No. '. h($salesOrder->customer_po_no).' dated '. h(date("d-M-Y",strtotime($salesOrder->po_date))).'</span><br/><br/>
+				<span>Customer P.O. No. '. h($salesOrder->customer_po_no).' dated '. h(date("d-m-Y",strtotime($salesOrder->po_date))).'</span><br/><br/>
 			</td>
 			<td width="45%" valign="top" align="right">
 				<table>
@@ -146,7 +146,7 @@ $html.='
 $html.='
 	<table width="100%">
 		<tr>
-			<td width="60%">
+			<td width="60%" valign="top">
 				<table>
 					<tr>
 						<td valign="top">Transporter</td>
@@ -165,7 +165,7 @@ $html.='
 					</tr>
 				</table>
 			</td>
-			<td>
+			<td valign="top">
 				<table>
 					<tr>
 						<td valign="top">Form-49 Required</td>
