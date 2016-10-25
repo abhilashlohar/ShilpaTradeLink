@@ -70,7 +70,11 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Payment Terms<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('payment_terms', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Payment Terms']); ?>
+							<?php $options=[];
+							for($q=0; $q<100; $q++){
+								$options[$q]=$q;
+							}
+							echo $this->Form->input('payment_terms', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
