@@ -58,7 +58,11 @@
 					<div class="col-md-2">
 						<div class="form-group">
 							<label class="control-label">Payment Terms</label>
-							<?php echo $this->Form->input('payment_terms', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Payment Terms']); ?>
+							<?php $options=[];
+							for($q=0; $q<100; $q++){
+								$options[$q]=$q;
+							}
+							echo $this->Form->input('payment_terms', ['options'=>$options,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Payment Terms']); ?>
 						</div>
 					</div>
 					<div class="col-md-2">

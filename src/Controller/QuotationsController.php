@@ -20,16 +20,24 @@ class QuotationsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$where=[];
+		$company_alise=$this->request->query('company_alise');
 		$quotation_no=$this->request->query('quotation_no');
+		$file=$this->request->query('file');
 		$customer=$this->request->query('customer');
 		$salesman=$this->request->query('salesman');
 		$product=$this->request->query('product');
 		$From=$this->request->query('From');
 		$To=$this->request->query('To');
 		$page=$this->request->query('page');
-		$this->set(compact('quotation_no','customer','salesman','product','From','To','page'));
+		$this->set(compact('quotation_no','customer','salesman','product','From','To','page','company_alise','file'));
+		if(!empty($company_alise)){
+			$where['Quotations.qt1 LIKE']='%'.$company_alise.'%';
+		}
 		if(!empty($quotation_no)){
-			$where['Quotations.id']=$quotation_no;
+			$where['Quotations.id ']=$quotation_no;
+		}
+		if(!empty($file)){
+			$where['Quotations.qt3 LIKE']='%'.$file.'%';
 		}
 		if(!empty($customer)){
 			$where['Customers.customer_name LIKE']='%'.$customer.'%';
