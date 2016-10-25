@@ -140,10 +140,10 @@ $html.='
 $sr=0; foreach ($quotation->quotation_rows as $quotationRows): $sr++; 
 $html.='
 	<tr>
-		<td valign="top">'. h($sr) .'</td>
+		<td valign="top" align="center">'. h($sr) .'</td>
 		<td>'. $this->Text->autoParagraph(h($quotationRows->description)) .'</td>
-		<td align="right" valign="top">'. h($quotationRows->item->unit->name) .'</td>
-		<td align="right" valign="top">'. h($quotationRows->quantity) .'</td>
+		<td align="center" valign="top">'. h($quotationRows->item->unit->name) .'</td>
+		<td align="center" valign="top">'. h($quotationRows->quantity) .'</td>
 		<td align="right" style="width: 10;" valign="top">'. $this->Number->format($quotationRows->rate,[ 'places' => 2]).'</td>
 		<td align="right" style="width: 10;" valign="top">'. $this->Number->format($quotationRows->amount,[ 'places' => 2]) .'</td>
 	</tr>';
@@ -172,37 +172,41 @@ $html.='
 		'. $this->Text->autoParagraph(h($quotation->terms_conditions)) .'
 	</div><br/>
 	<div><b>I hope above is to your requirement and in case of any clarification kindly revert back.</b></div><br/>
-	<div class="avoid_break"><b>Thanks and Regards,</b></div><br/>
-	<table width="100%">
-		<tr>';
+	<div class="avoid_break"><b>Thanks and Regards,</b></div><br/>';
+	
+$html.='<table width="100%">
+		<tr><td width="40%" align="right"></td><td width="30%" align="right">';
 		
-			if(!empty($quotation->edited_by)){
-				$html.='<td width="30%" align="center">
-					<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->editor->signature.' height="50px" style="height:50px;"/>
-					<br/>
-					<span><b>Edited by</b></span><br/>
-					<span>'. h($quotation->editor->name) .'</span><br/>
-					<span>'. h($quotation->editor->designation->name) .'</span><br/>
-					<span>'. h($quotation->editor->mobile) .'</span><br/>
-					<span>'. h($quotation->editor->email) .'</span>
-				</td>';
-			}
+if(!empty($quotation->edited_by)){
+$html.='<div align="center">
+		<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->editor->signature.' height="50px" style="height:50px;"/>
+		<br/>
+		<span><b>Edited by</b></span><br/>
+		<span>'. h($quotation->editor->name) .'</span><br/>
+		<span>'. h($quotation->editor->designation->name) .'</span><br/>
+		<span>'. h($quotation->editor->mobile) .'</span><br/>
+		<span>'. h($quotation->editor->email) .'</span>
+		</div>';
+}
 			
-	$html.='<td align="center">
-				<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->creator->signature.' height="50px" style="height:50px;"/>
-				<br/>
-				<span><b>Created by</b></span><br/>
-				<span>'. h($quotation->creator->name) .'</span><br/>
-				<span>'. h($quotation->creator->designation->name) .'</span><br/>
-				<span>'. h($quotation->creator->mobile) .'</span><br/>
-				<span>'. h($quotation->creator->email) .'</span>
-			</td>';
+$html.='</td>
+<td align="right">
+			<div align="center">
+			<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->creator->signature.' height="50px" style="height:50px;"/>
+			<br/>
+			<span><b>Created by</b></span><br/>
+			<span>'. h($quotation->creator->name) .'</span><br/>
+			<span>'. h($quotation->creator->designation->name) .'</span><br/>
+			<span>'. h($quotation->creator->mobile) .'</span><br/>
+			<span>'. h($quotation->creator->email) .'</span>
+			</div>
+		</td>';
 			
 			
-		$html.='</tr>
-	</table>
-</div>
-	'; 
+$html.='</tr>
+	</table>';
+	
+$html.='</div>'; 
 
 $html .= '</div>
 </body>

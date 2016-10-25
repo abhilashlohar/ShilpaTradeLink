@@ -115,9 +115,9 @@ $html.='
 $sr=0; foreach ($salesOrder->sales_order_rows as $salesOrderRows): $sr++; 
 $html.='
 	<tr class="odd">
-		<td valign="top" style="width: 40;">'. h($sr) .'</td>
+		<td valign="top" align="center" style="width: 40;">'. h($sr) .'</td>
 		<td>'. h($salesOrderRows->item->name) .'</td>
-		<td style="width: 40;">'. h($salesOrderRows->quantity) .'</td>
+		<td align="center" style="width: 40;">'. h($salesOrderRows->quantity) .'</td>
 		<td style="width: 40;">'. $this->Number->format($salesOrderRows->rate,[ 'places' => 2]) .'</td>
 		<td style="width: 40;">'. $this->Number->format($salesOrderRows->amount,[ 'places' => 2]) .'</td>
 		<td style="width: 55;">'. h($salesOrderRows->excise_duty) .'</td>

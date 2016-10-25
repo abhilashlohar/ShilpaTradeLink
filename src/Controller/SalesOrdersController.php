@@ -132,12 +132,14 @@ class SalesOrdersController extends AppController
 		
         $salesOrder = $this->SalesOrders->newEntity();
         if ($this->request->is('post')) {
+			
             $salesOrder = $this->SalesOrders->patchEntity($salesOrder, $this->request->data);
 			
-			$salesOrder->expected_delivery_date=date("Y-m-d",strtotime($salesOrder->expected_delivery_date));
-			$salesOrder->po_date=date("Y-m-d",strtotime($salesOrder->po_date));
-			$salesOrder->created_by=$s_employee_id;
-			$salesOrder->created_on=date("Y-m-d",strtotime($quotation->created_on));
+			$salesOrder->expected_delivery_date=date("Y-m-d",strtotime($salesOrder->expected_delivery_date)); 
+			$salesOrder->po_date=date("Y-m-d",strtotime($salesOrder->po_date)); 
+			$salesOrder->created_by=$s_employee_id; 
+			
+			$salesOrder->created_on=date("Y-m-d",strtotime($salesOrder->created_on));
 			
             if ($this->SalesOrders->save($salesOrder)) {
 				if(!empty($quotation_id)){
