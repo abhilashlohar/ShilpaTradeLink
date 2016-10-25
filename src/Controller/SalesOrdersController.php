@@ -20,15 +20,23 @@ class SalesOrdersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$where=[];
+		$company_alise=$this->request->query('company_alise');
 		$sales_order_no=$this->request->query('sales_order_no');
+		$file=$this->request->query('file');
 		$customer=$this->request->query('customer');
 		$po_no=$this->request->query('po_no');
 		$From=$this->request->query('From');
 		$To=$this->request->query('To');
 		$page=$this->request->query('page');
-		$this->set(compact('sales_order_no','customer','po_no','product','From','To','page'));
+		$this->set(compact('sales_order_no','customer','po_no','product','From','To','page','company_alise','file'));
+		if(!empty($company_alise)){
+			$where['SalesOrders.so1 LIKE']='%'.$company_alise.'%';
+		}
 		if(!empty($sales_order_no)){
 			$where['SalesOrders.id']=$sales_order_no;
+		}
+		if(!empty($file)){
+			$where['SalesOrders.so3 LIKE']='%'.$file.'%';
 		}
 		if(!empty($customer)){
 			$where['Customers.customer_name LIKE']='%'.$customer.'%';
