@@ -51,7 +51,8 @@ $html = '
 				<td align="right" width="50%" style="font-size: 12px;">
 				<span style="font-size: 16px;">'. h($quotation->company->name) .'</span><br/>
 				<span>'. $this->Text->autoParagraph(h($quotation->company->address)) .'</span>
-				<span>'. h($quotation->company->mobile_no).'</span>
+				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/telephone.gif height="11px" style="height:11px;margin-top:5px;"/>'. h($quotation->company->mobile_no).'</span> | 
+				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/email.png height="15px" style="height:15px;margin-top:4px;"/> '. h($quotation->company->email).'</span>
 				</td>
 			</tr>
 			<tr>
