@@ -72,6 +72,7 @@
 					</tbody>
 				</table>
 				</form>
+				<?php $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
@@ -84,12 +85,12 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php $i=0; foreach ($salesOrders as $salesOrder): $i++; ?>
+						<?php foreach ($salesOrders as $salesOrder): ?>
 						<tr <?php if($status=='Converted Into Invoice'){ echo 'style="background-color:#f4f4f4"'; } ?> >
-							<td><?= $i; ?></td>
+							<td><?= h(++$page_no) ?></td>
 							<td><?= h(($salesOrder->so1.'/SO-'.str_pad($salesOrder->id, 3, '0', STR_PAD_LEFT).'/'.$salesOrder->so3.'/'.$salesOrder->so4)) ?></td>
 							<td><?= h($salesOrder->customer->customer_name) ?></td>
-							<td><?php echo date("d-m-Y",strtotime($salesOrder->date)); ?></td>
+							<td><?php echo date("d-m-Y",strtotime($salesOrder->created_on)); ?></td>
 							<td><?= h($salesOrder->customer_po_no) ?></td>
 							<td class="actions">
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $salesOrder->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>

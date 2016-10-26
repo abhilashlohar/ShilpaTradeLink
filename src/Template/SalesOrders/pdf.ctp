@@ -92,7 +92,7 @@ $html.='
 					<tr>
 						<td>Date</td>
 						<td width="20" align="center">:</td>
-						<td>'. h(date("d-m-Y",strtotime($salesOrder->date))) .'</td>
+						<td>'. h(date("d-m-Y",strtotime($salesOrder->created_on))) .'</td>
 					</tr>
 					
 				</table>

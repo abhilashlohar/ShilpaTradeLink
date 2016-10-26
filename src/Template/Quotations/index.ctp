@@ -55,9 +55,6 @@
 										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
 									</div>
 								</div>
-							
-							
-							
 							</td>
 							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
 							<td><input type="text" name="salesman" class="form-control input-sm" placeholder="Salesman" value="<?php echo @$salesman; ?>"></td>
@@ -77,6 +74,7 @@
 					</tbody>
 				</table>
 				</form>
+				<?php $page_no=$this->Paginator->current('Quotations'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
@@ -95,7 +93,7 @@
 						if($quotation->status=='Pending'){ $tr_color='#FFF'; }
 						?>
 						<tr style="background-color:<?php echo $tr_color; ?>;">
-							<td><?= $i; ?></td>
+							<td><?= h(++$page_no) ?></td>
 							<td><?= h(($quotation->qt1.'/QT-'.str_pad($quotation->id, 3, '0', STR_PAD_LEFT).'/'.$quotation->qt3.'/'.$quotation->qt4)) ?></td>
 							<td><?= h($quotation->customer->customer_name) ?></td>
 							<td><?= h($quotation->employee->name) ?></td>

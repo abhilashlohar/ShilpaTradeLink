@@ -29,7 +29,7 @@ class QuotationsController extends AppController
 		$From=$this->request->query('From');
 		$To=$this->request->query('To');
 		$page=$this->request->query('page');
-		$this->set(compact('quotation_no','customer','salesman','product','From','To','page','company_alise','file'));
+		$this->set(compact('quotation_no','customer','salesman','product','From','To','company_alise','file'));
 		if(!empty($company_alise)){
 			$where['Quotations.qt1 LIKE']='%'.$company_alise.'%';
 		}
@@ -77,6 +77,7 @@ class QuotationsController extends AppController
             'contain' => ['Customers']
         ];
         $quotations = $this->paginate($this->Quotations);
+		$start = $this->Paginator->counter(array('format' => '%start%'));
 
         $this->set(compact('quotations'));
         $this->set('_serialize', ['quotations']);
