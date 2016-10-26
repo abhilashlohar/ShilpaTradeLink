@@ -180,7 +180,7 @@ $html.='<table width="100%">
 		<div align="left">
 			<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->creator->signature.' height="50px" style="height:50px;"/>
 			<br/>
-			<span><b>Salesmen </b></span><br/>
+			<span><b>Salesman </b></span><br/>
 			<span>'. h($quotation->employee->name) .'</span><br/>
 			<span>'. h($quotation->employee->designation->name) .'</span><br/>
 			<span>'. h($quotation->employee->mobile) .'</span><br/>

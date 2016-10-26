@@ -167,7 +167,7 @@ class SalesOrdersController extends AppController
                 $this->Flash->error(__('The sales order could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->SalesOrders->Customers->find('list');
+        $customers = $this->SalesOrders->Customers->find('all');
         $companies = $this->SalesOrders->Companies->find('all');
 		$quotationlists = $this->SalesOrders->Quotations->find()->where(['status'=>'Pending'])->order(['Quotations.id' => 'DESC']);
 		$items = $this->SalesOrders->Items->find('list');

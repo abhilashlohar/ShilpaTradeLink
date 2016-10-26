@@ -40,7 +40,7 @@
 							<?php 
 							$options=array();
 							foreach($customers as $customer){
-								$options[]=['text' => $customer->customer_name, 'value' => $customer->id, 'contact_person' => $customer->contact_person];
+								$options[]=['text' => $customer->customer_name, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
 							}
 							echo $this->Form->input('customer_id', ['empty' => "--Select Customer--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me ']); ?>
 						</div>
@@ -56,18 +56,18 @@
 					</div>
 					
 				</div>
-				<div class="col-md-6" align="right">
+				<div class="col-md-6" >
 					<div class="form-group">
 						<label class="col-md-4 control-label">Salesman</label>
 						<div class="col-md-8">
-							<?php echo $this->Form->input('employee_id', ['options'=>$employees,'label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('employee_id', ['options'=>$employees,'empty' => "--Select Salesman--",'label' => false,'class' => 'form-control input-sm ','required']); ?>
 						</div>
 					</div>
 					<br/>
 					<div class="form-group">
 						<label class="col-md-4 control-label">Product</label>
 						<div class="col-md-8">
-							<?php echo $this->Form->input('item_group_id', ['empty'=>'--Select--','options' => $ItemGroups,'label' => false,'class' => 'form-control input-sm','required']); ?>
+							<?php echo $this->Form->input('item_group_id', ['empty'=>'--Select--','options' => $ItemGroups,'empty' => "--Select Product--",'label' => false,'class' => 'form-control input-sm select2me','required']); ?>
 						</div>
 					</div>
 					<br/>
@@ -531,6 +531,9 @@ $(document).ready(function() {
 		}).done(function(response) {
 			$("#qt3_div").html(response);
 		});
+		
+		var employee_id=$('select[name="customer_id"] option:selected').attr("employee_id");
+		$("select[name=employee_id]").val(employee_id);
     });
 	
 	$('select[name="company_id"]').on("change",function() {
@@ -579,9 +582,12 @@ $(document).ready(function() {
 	})
 	
 	
+	
+	
 });
 
 </script>
+
 	 
 <div id="myModal1" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
 	<div class="modal-dialog">

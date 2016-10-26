@@ -41,7 +41,13 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Customer</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $customers,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
+						
+							<?php
+							$options=array();
+							foreach($customers as $customer){
+								$options[]=['text' => $customer->customer_name, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
+							}
+							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 						</div>
 					</div>
 				</div>
@@ -75,7 +81,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Salesman</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
+							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm','value' => @$quotation->customer_id]); ?>
 						</div>
 					</div>
 				</div>
@@ -614,6 +620,9 @@ $(document).ready(function() {
 			$("#so3_div").html(response);
 			$('select[name="qt3"]').attr('name','so3');
 		});
+		
+		var employee_id=$('select[name="customer_id"] option:selected').attr("employee_id");
+		$("select[name=employee_id]").val(employee_id);
 		
     });
 	
