@@ -12,7 +12,7 @@ class LoginsController extends AppController
 	}
 	public function index()
     {
-       $this->viewBuilder()->layout('login_layout2');
+       $this->viewBuilder()->layout('login_layout');
 	   
 	   $login = $this->Logins->newEntity();
 	   if ($this->request->is('post')) 
