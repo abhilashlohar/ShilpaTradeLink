@@ -117,7 +117,7 @@ class QuotationsController extends AppController
     {
 		$this->viewBuilder()->layout('');
         $quotation = $this->Quotations->get($id, [
-            'contain' => ['Customers','Companies','Employees','ItemGroups','Creator'=>['Designations'],'Editor'=>['Designations'],'QuotationRows' => ['Items'=>['Units']]]
+            'contain' => ['Customers','Companies','Employees'=>['Designations'],'ItemGroups','Creator'=>['Designations'],'Editor'=>['Designations'],'QuotationRows' => ['Items'=>['Units']]]
         ]);
 
         $this->set('quotation', $quotation);

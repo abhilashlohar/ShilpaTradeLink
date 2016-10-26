@@ -176,32 +176,20 @@ $html.='
 	<div class="avoid_break"><b>Thanks and Regards,</b></div><br/>';
 	
 $html.='<table width="100%">
-		<tr><td width="40%" align="right"></td><td width="30%" align="right">';
-		
-if(!empty($quotation->edited_by)){
-$html.='<div align="center">
-		<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->editor->signature.' height="50px" style="height:50px;"/>
-		<br/>
-		<span><b>Edited by</b></span><br/>
-		<span>'. h($quotation->editor->name) .'</span><br/>
-		<span>'. h($quotation->editor->designation->name) .'</span><br/>
-		<span>'. h($quotation->editor->mobile) .'</span><br/>
-		<span>'. h($quotation->editor->email) .'</span>
-		</div>';
-}
-			
-$html.='</td>
-<td align="right">
-			<div align="center">
+		<tr><td width="40%" align="left">
+		<div align="left">
 			<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->creator->signature.' height="50px" style="height:50px;"/>
 			<br/>
-			<span><b>Created by</b></span><br/>
-			<span>'. h($quotation->creator->name) .'</span><br/>
-			<span>'. h($quotation->creator->designation->name) .'</span><br/>
-			<span>'. h($quotation->creator->mobile) .'</span><br/>
-			<span>'. h($quotation->creator->email) .'</span>
+			<span><b>Salesmen </b></span><br/>
+			<span>'. h($quotation->employee->name) .'</span><br/>
+			<span>'. h($quotation->employee->designation->name) .'</span><br/>
+			<span>'. h($quotation->employee->mobile) .'</span><br/>
+			<span>'. h($quotation->employee->email) .'</span>
 			</div>
 		</td>';
+		
+
+
 			
 			
 $html.='</tr>
