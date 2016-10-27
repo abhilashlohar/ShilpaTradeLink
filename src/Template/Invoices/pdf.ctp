@@ -128,6 +128,10 @@ endforeach;
 if($invoice->pnf_type=='1'){ $pnf_text='P&F @ '.$invoice->pnf_per.'%'; }else{ $pnf_text='P&F'; }
 if($invoice->discount_type=='1'){ $discount_text='Discount @ '.$invoice->discount_per.'%'; }else{ $discount_text='Discount'; }
 
+$grand_total=explode('.',$invoice->grand_total);
+$rupees=$grand_total[0];
+$paisa=$grand_total[1];
+
 $html.='</table>';		
 $html.='
 <table width="100%" class="table_rows">
@@ -187,7 +191,7 @@ $html.='
 				<td style="text-align:right;">'. $this->Number->format($invoice->grand_total,[ 'places' => 2]) .'</td>
 			</tr>
 			<tr>
-				<td colspan="3"><b>Amount in words: </b>'. h($this->NumberWords->convert_number_to_words($invoice->grand_total)) .' </td>
+				<td colspan="3"><b>Amount in words: </b>'. h($this->NumberWords->convert_number_to_words($rupees)) .'  Rupees and '. h($this->NumberWords->convert_number_to_words($paisa)) .' Paisa</td>
 			</tr>
 		</tbody>
 	</table>'; 
