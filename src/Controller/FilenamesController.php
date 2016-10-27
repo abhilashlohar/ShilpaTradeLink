@@ -29,11 +29,7 @@ class FilenamesController extends AppController
         $this->set(compact('filename', 'customers','file_inc_dc','file_inc_be'));
         $this->set('_serialize', ['filename']);
 		
-        $this->paginate = [
-            'contain' => ['Customers']
-        ];
-		
-
+        
 		$files1_first=$this->request->query('file1_first');
 		$files1_second=$this->request->query('file1_second');
 		$customer1=$this->request->query('customer1');
@@ -69,8 +65,11 @@ class FilenamesController extends AppController
 			$where1['Customers.customer_name LIKE']='%'.$customer2.'%';
 		}
 		
+		$this->paginate = [
+            'contain' => ['Customers']
+        ];
+		
 		$DCfilenames = $this->paginate($this->Filenames->find()->where(['file1' => 'DC'])->where($where1));
-		$BEfilenames = $this->paginate($this->Filenames->find()->where(['file1' => 'BE'])->where($where));
         $this->set(compact('DCfilenames','BEfilenames'));
         $this->set('_serialize', ['filenames']);
     }
