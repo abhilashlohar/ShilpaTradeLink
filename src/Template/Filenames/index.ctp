@@ -63,8 +63,39 @@
 	<div class="portlet-body form">
 		<!-- BEGIN FORM-->
 		<div class="row ">
+		
 		<div class="col-md-6">
+					<form method="GET" name="form1">
+							<table class="table table-condensed">
+								<thead>
+									<tr>
+										<th>FILES</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<div class="row">
+												<div class="col-md-4">
+													<input type="text" name="file1_first" class="form-control input-sm" placeholder="FILES1" value="<?php echo @$file1_first; ?>">
+												</div>
+												<div class="col-md-4">
+													<input type="text" name="file1_second" class="form-control input-sm" placeholder="FILES2" value="<?php echo @$file1_second; ?>">
+												</div>
+												<div class="col-md-4">
+													<input type="text" name="customer1" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer1; ?>">
+												</div>
+											</div>
+										</td>
+										<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+									</tr>
+								</tbody>
+							</table>
+					</form>
+
 		<div class="table-scrollable">
+		 <?php $page_no=$this->Paginator->current('Filenames'); $page_no=($page_no-1)*20; ?>
 			<table class="table table-hover">
 				 <thead>
 					<tr>
@@ -77,7 +108,7 @@
 				<tbody>
 					<?php $i=0;foreach ($BEfilenames as $filename): $i++; ?>
 					<tr>
-						<td><?= h($i) ?></td>
+						<td><?= h(++$page_no) ?></td>
 						<td><?= h($filename->file1) ?>-<?= h($filename->file2) ?></td>
 						<td><?= h($filename->customer->customer_name) ?></td>
 						<td class="actions">
@@ -97,8 +128,39 @@
 				<p><?= $this->Paginator->counter() ?></p>
 			</div>
 		</div>
+		
 		<div class="col-md-6">
+						<form method="GET" name="form2" >
+								<table class="table table-condensed">
+									<thead>
+										<tr>
+											<th>FILES</th>
+											<th></th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<div class="row">
+												<div class="col-md-4">
+													<input type="text" name="file2_first" class="form-control input-sm" placeholder="FILES1" value="<?php echo @$file2_first; ?>">
+												</div>
+												<div class="col-md-4">
+													<input type="text" name="file2_second" class="form-control input-sm" placeholder="FILES2" value="<?php echo @$file2_second; ?>">
+												</div>
+												<div class="col-md-4">
+													<input type="text" name="customer2" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer2; ?>">
+												</div>
+											</div>
+											</td>
+											<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+										</tr>
+									</tbody>
+								</table>
+						</form>
 		<div class="table-scrollable">
+		<?php $page_no=$this->Paginator->current('Filenames'); $page_no=($page_no-1)*20; ?>
 			<table class="table table-hover">
 				 <thead>
 					<tr>
@@ -111,7 +173,7 @@
 				<tbody>
 					<?php $i=0;foreach ($DCfilenames as $filename): $i++; ?>
 					<tr>
-						<td><?= h($i) ?></td>
+						<td><?= h(++$page_no) ?></td>
 						<td><?= h($filename->file1) ?>-<?= h($filename->file2) ?></td>
 						<td><?= h($filename->customer->customer_name) ?></td>
 						<td class="actions">

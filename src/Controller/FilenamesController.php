@@ -19,6 +19,8 @@ class FilenamesController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$where=[];
+		$where1=[];
 		$filename = $this->Filenames->newEntity();
 		
 		$file_inc_dc=$this->Filenames->find()->select(['file2'])->where(['file1' => 'DC'])->order(['file2' => 'DESC'])->first();
@@ -30,8 +32,45 @@ class FilenamesController extends AppController
         $this->paginate = [
             'contain' => ['Customers']
         ];
-        $DCfilenames = $this->paginate($this->Filenames->find()->where(['file1' => 'DC']));
-		$BEfilenames = $this->paginate($this->Filenames->find()->where(['file1' => 'BE']));
+		
+
+		$files1_first=$this->request->query('file1_first');
+		$files1_second=$this->request->query('file1_second');
+		$customer1=$this->request->query('customer1');
+
+		$files2_first=$this->request->query('file2_first');
+		$files2_second=$this->request->query('file2_second');
+		$customer2=$this->request->query('customer2'); 
+		
+		$this->set(compact('files1_first','files1_second','customer1')); 
+		$this->set(compact('files2_first','files2_second','customer2')); 
+		
+		if(!empty($files1_first)){
+			$where['file1 LIKE']='%'.$files1_first.'%';
+		}
+		
+		if(!empty($files1_second)){
+			$where['file2 LIKE']='%'.$files1_second.'%';
+		}
+		
+		if(!empty($customer1)){
+			$where['Customers.customer_name LIKE']='%'.$customer1.'%';
+		}
+		
+		if(!empty($files2_first)){
+			$where1['file1 LIKE']='%'.$files2_first.'%';
+		}
+		
+		if(!empty($files2_second)){
+			$where1['file2 LIKE']='%'.$files2_second.'%';
+		}
+		
+		if(!empty($customer2)){
+			$where1['Customers.customer_name LIKE']='%'.$customer2.'%';
+		}
+		
+		$DCfilenames = $this->paginate($this->Filenames->find()->where(['file1' => 'DC'])->where($where1));
+		$BEfilenames = $this->paginate($this->Filenames->find()->where(['file1' => 'BE'])->where($where));
         $this->set(compact('DCfilenames','BEfilenames'));
         $this->set('_serialize', ['filenames']);
     }
