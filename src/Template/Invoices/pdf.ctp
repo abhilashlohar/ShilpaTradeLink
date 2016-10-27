@@ -123,13 +123,6 @@ $html.='
 		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($invoiceRows->rate,[ 'places' => 2]) .'</td>
 		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($invoiceRows->amount,[ 'places' => 2]) .'</td>
 	</tr>';
-	if(!empty($salesOrderRows->description)){
-		$html.='
-		<tr class="even">
-			<td></td>
-			<td colspan="5" style="text-align: justify;"><b>Description: </b>'. $this->Text->autoParagraph(h($invoiceRows->description)) .'</td>
-		</tr>';
-		}
 endforeach; 
 
 if($invoice->pnf_type=='1'){ $pnf_text='P&F @ '.$invoice->pnf_per.'%'; }else{ $pnf_text='P&F'; }
