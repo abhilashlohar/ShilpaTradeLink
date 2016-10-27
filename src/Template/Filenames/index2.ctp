@@ -2,19 +2,19 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Add BE Files</span>
+			<span class="caption-subject font-blue-steel uppercase">Add DC Files</span>
 		</div>
 		<div class="actions">
 			<div class="btn-group">
 			<?= $this->Html->link(
 				'Add BE Files',
 				'/Filenames/Index',
-				['class' => 'btn btn-primary']
+				['class' => 'btn btn-default']
 			); ?>
 			<?= $this->Html->link(
 				'Add DC Files',
 				'/Filenames/Index2',
-				['class' => 'btn btn-default']
+				['class' => 'btn btn-primary']
 			); ?>
 			</div>
 		</div>
@@ -27,11 +27,11 @@
 			<div class="form-body">
 				<div class="form-group">
 					<div class="col-md-2">
-						<?php $options=['BE'=>'BE'];
+						<?php $options=['DC'=>'DC'];
 						echo $this->Form->input('file1', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?>
 					</div>
 					<div class="col-md-2">
-						<?php echo $this->Form->input('file2', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'File Number','value'=>@$file_inc_be->file2+1]); ?>
+						<?php echo $this->Form->input('file2', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'File Number','value'=>@$file_inc_dc->file2+1]); ?>
 					</div>
 					<div class="col-md-3">
 						<?php echo $this->Form->input('customer_id', ['options' => $customers,'label' => false,'class' => 'form-control input-sm select2me']); ?>
@@ -52,7 +52,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">BE Files</span>
+			<span class="caption-subject font-blue-steel uppercase">DC Files</span>
 		</div>
 	</div>
 	<div class="portlet-body form">
@@ -60,39 +60,39 @@
 		<div class="row ">
 		
 		<div class="col-md-6">
-					<form method="GET" name="form1">
-							<table class="table table-condensed">
-								<thead>
-									<tr>
-										<th>FILES</th>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td>
-											<div class="row">
+						<form method="GET" name="form2" >
+								<table class="table table-condensed">
+									<thead>
+										<tr>
+											<th>FILES</th>
+											<th></th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<div class="row">
 												<div class="col-md-4">
 													<div class="input-group" style="" id="pnf_text">
-														<span class="input-group-addon">BE-</span>
-														<input type="text" name="file_number" class="form-control input-sm" placeholder="File Number" value="<?php echo @$file_number; ?>">
+														<span class="input-group-addon">DC-</span>
+														<input type="text" name="file_number" class="form-control input-sm" placeholder="File Number" value="<?php echo @$file2_second; ?>">
 													</div>
 												</div>
 												<div class="col-md-4">
-													<input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>">
+													<input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer2; ?>">
 												</div>
 												<div class="col-md-4">
 													<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
 												</div>
 											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-					</form>
-
+											</td>
+										</tr>
+									</tbody>
+								</table>
+						</form>
 		<div class="table-scrollable">
-		 <?php $page_no=$this->Paginator->current('Filenames'); $page_no=($page_no-1)*20; ?>
+		<?php $page_no=$this->Paginator->current('Filenames'); $page_no=($page_no-1)*20; ?>
 			<table class="table table-hover">
 				 <thead>
 					<tr>
@@ -102,7 +102,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php $i=0;foreach ($BEfilenames as $filename): $i++; ?>
+					<?php $i=0;foreach ($DCfilenames as $filename): $i++; ?>
 					<tr>
 						<td><?= h(++$page_no) ?></td>
 						<td><?= h($filename->file1) ?>-<?= h($filename->file2) ?></td>
@@ -124,8 +124,6 @@
 				<p><?= $this->Paginator->counter() ?></p>
 			</div>
 		</div>
-		
-		
 		<!-- END FORM-->
 	</div>
 </div>
