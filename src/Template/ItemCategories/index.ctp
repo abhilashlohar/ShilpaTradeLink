@@ -31,8 +31,33 @@
 		<?= $this->Form->end() ?>
 		</div>
 		<div class="col-md-6">
+		<form method="GET" name="form2" >
+								<table class="table table-condensed">
+									<thead>
+										<tr>
+											<th>ITEMS</th>
+											
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<div class="row">
+												<div class="col-md-6">
+													<input type="text" name="item_name" class="form-control input-sm" placeholder="Item Name" value="<?php echo @$itemname; ?>">
+												</div>
+												
+											</div>
+											</td>
+											<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+										</tr>
+									</tbody>
+								</table>
+		</form>
 			<div class="portlet-body">
+			
 			<div class="table-scrollable">
+			<?php $page_no=$this->Paginator->current('ItemCategories'); $page_no=($page_no-1)*20; ?>
 			<table class="table table-hover">
 				<thead>
 					<tr>
@@ -44,7 +69,7 @@
 				<tbody>
 					<?php foreach ($itemCategories as $itemCategory): ?>
 					<tr>
-						<td><?= $this->Number->format($itemCategory->id) ?></td>
+						<td><?= h(++$page_no) ?></td>
 						<td><?= h($itemCategory->name) ?></td>
 						<td class="actions">
 							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $itemCategory->id]) ?>

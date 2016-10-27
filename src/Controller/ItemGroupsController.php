@@ -30,6 +30,22 @@ class ItemGroupsController extends AppController
                 $this->Flash->error(__('The item group could not be saved. Please, try again.'));
             }
         }
+		
+		$where=[];
+		$item_category=$this->request->query('item_category');
+		$item_group=$this->request->query('item_group');
+		 
+		$this->set(compact('item_category','item_group'));
+		
+		if(!empty($item_category)){
+			$where['ItemCategories.name LIKE']='%'.$item_category.'%';
+		}
+		
+		
+		if(!empty($item_group)){
+			$where['ItemGroups.name LIKE']='%'.$item_group.'%';
+		}
+		
         $itemCategories = $this->ItemGroups->ItemCategories->find('list', ['limit' => 200]);
         $this->set(compact('itemGroup', 'itemCategories'));
         $this->set('_serialize', ['itemGroup']);
@@ -37,7 +53,7 @@ class ItemGroupsController extends AppController
         $this->paginate = [
             'contain' => ['ItemCategories']
         ];
-        $itemGroups = $this->paginate($this->ItemGroups);
+        $itemGroups = $this->paginate($this->ItemGroups->find()->where($where));
 
         $this->set(compact('itemGroups'));
         $this->set('_serialize', ['itemGroups']);

@@ -31,11 +31,21 @@ class ItemCategoriesController extends AppController
                 $this->Flash->error(__('The item category could not be saved. Please, try again.'));
             }
         }
+		
+		$where=[];
+		$item_name=$this->request->query('item_name');
+		$this->set(compact('item_name'));
+		
+		if(!empty($item_name)){
+			$where['name LIKE']='%'.$item_name.'%';
+		}
+		//$itemname = $this->paginate($this->ItemCategories->find()
+		
         $this->set(compact('itemCategory'));
         $this->set('_serialize', ['itemCategory']);
 		
-        $itemCategories = $this->paginate($this->ItemCategories);
-
+       
+		$itemCategories = $this->paginate($this->ItemCategories->find()->where($where));
         $this->set(compact('itemCategories'));
         $this->set('_serialize', ['itemCategories']);
     }

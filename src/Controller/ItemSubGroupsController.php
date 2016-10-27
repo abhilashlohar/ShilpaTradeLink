@@ -30,6 +30,27 @@ class ItemSubGroupsController extends AppController
                 $this->Flash->error(__('The item sub group could not be saved. Please, try again.'));
             }
         }
+		
+		$where=[];
+		$item_category_name=$this->request->query('item_category_name');
+		$item_group_name=$this->request->query('item_group_name');
+		$item_subgroup_name=$this->request->query('item_subgroup_name');
+		 
+		$this->set(compact('item_category_name','item_group_name','item_subgroup_name'));
+		
+		if(!empty($item_category_name)){
+			$where['ItemCategories.name LIKE']='%'.$item_category_name.'%';
+		}
+		
+		if(!empty($item_group_name)){
+			$where['ItemGroups.name LIKE']='%'.$item_group_name.'%';
+		}
+		
+		if(!empty($item_subgroup_name)){
+			$where['ItemSubGroups.name LIKE']='%'.$item_subgroup_name.'%';
+		}
+		
+		
 		$itemCategories = $this->ItemSubGroups->ItemCategories->find('list');
         $itemGroups = $this->ItemSubGroups->ItemGroups->find('list');
         $this->set(compact('itemSubGroup', 'itemGroups','itemCategories'));
@@ -37,7 +58,7 @@ class ItemSubGroupsController extends AppController
         $this->paginate = [
             'contain' => ['ItemGroups'=>['ItemCategories']]
         ];
-        $itemSubGroups = $this->paginate($this->ItemSubGroups);
+        $itemSubGroups = $this->paginate($this->ItemSubGroups->find()->where($where));
 
         $this->set(compact('itemSubGroups'));
         $this->set('_serialize', ['itemSubGroups']);

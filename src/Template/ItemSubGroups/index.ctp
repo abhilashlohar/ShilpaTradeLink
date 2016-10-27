@@ -50,8 +50,41 @@
 		<?= $this->Form->end() ?>
 		</div>
 		<div class="col-md-6">
+		
+		<form method="GET" >
+								<table class="table table-condensed">
+									<thead>
+										<tr>
+											<th>ITEMS GROUP</th>
+											
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<div class="row">
+												<div class="col-md-4">
+													<input type="text" name="item_category_name" class="form-control input-sm" placeholder="Item Category" value="<?php echo @$item_category_name; ?>">
+												</div>
+												
+												<div class="col-md-4">
+													<input type="text" name="item_group_name" class="form-control input-sm" placeholder="Item Group" value="<?php echo @$item_group_name; ?>">
+												</div>
+												
+												<div class="col-md-4">
+													<input type="text" name="item_subgroup_name" class="form-control input-sm" placeholder="Item Subgroup" value="<?php echo @$item_subgroup_name; ?>">
+												</div>
+												
+											</div>
+											</td>
+											<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+										</tr>
+									</tbody>
+								</table>
+		</form>
 			<div class="portlet-body">
 			<div class="table-scrollable">
+				<?php $page_no=$this->Paginator->current('ItemSubGroups'); $page_no=($page_no-1)*20; ?>
 			<table class="table table-hover">
 				<thead>
 					<tr>
@@ -65,7 +98,7 @@
 				<tbody>
 					<?php foreach ($itemSubGroups as $itemSubGroup): ?>
 					<tr>
-						<td><?= $this->Number->format($itemSubGroup->id) ?></td>
+						<td><?= h(++$page_no) ?></td>
 						<td><?= h($itemSubGroup->item_group->item_category->name) ?></td>
 						<td><?= h($itemSubGroup->item_group->name) ?></td>
 						<td><?= h($itemSubGroup->name) ?></td>

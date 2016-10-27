@@ -42,12 +42,42 @@
 		<?= $this->Form->end() ?>
 		</div>
 		<div class="col-md-6">
+		
+		<form method="GET" name="form2" >
+								<table class="table table-condensed">
+									<thead>
+										<tr>
+											<th>ITEMS GROUP</th>
+											
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<div class="row">
+												<div class="col-md-6">
+													<input type="text" name="item_category" class="form-control input-sm" placeholder="Item Category" value="<?php echo @$item_category; ?>">
+												</div>
+												
+												<div class="col-md-6">
+													<input type="text" name="item_group" class="form-control input-sm" placeholder="Item Group" value="<?php echo @$item_group; ?>">
+												</div>
+												
+											</div>
+											</td>
+											<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+										</tr>
+									</tbody>
+								</table>
+		</form>
 			<div class="portlet-body">
 			<div class="table-scrollable">
+			<?php $page_no=$this->Paginator->current('ItemGroups'); $page_no=($page_no-1)*20; ?>
 			<table class="table table-hover">
 				<thead>
 					<tr>
 						<th><?= $this->Paginator->sort('id') ?></th>
+						<th><?= $this->Paginator->sort('item_category_id') ?></th>
 						<th><?= $this->Paginator->sort('name') ?></th>
 						<th class="actions"><?= __('Actions') ?></th>
 					</tr>
@@ -55,7 +85,7 @@
 				<tbody>
 					<?php foreach ($itemGroups as $itemGroup): ?>
 					<tr>
-						<td><?= $this->Number->format($itemGroup->id) ?></td>
+						<td><?= h(++$page_no) ?></td>
 						<td><?= h($itemGroup->item_category->name) ?></td>
 						<td><?= h($itemGroup->name) ?></td>
 						<td class="actions">
