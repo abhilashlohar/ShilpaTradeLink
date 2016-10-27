@@ -405,6 +405,7 @@ $(document).ready(function() {
 			$("#discount_text").hide();
 			$('input[name="discount"]').removeAttr('readonly');
 		}
+		calculate_total();
 	})
 	
 	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
