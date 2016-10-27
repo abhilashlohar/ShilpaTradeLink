@@ -19,58 +19,95 @@ class FilenamesController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
+		
+		$filename = $this->Filenames->newEntity();
+        if ($this->request->is('post')) {
+            $filename = $this->Filenames->patchEntity($filename, $this->request->data);
+            if ($this->Filenames->save($filename)) {
+                $this->Flash->success(__('The filename has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The filename could not be saved. Please, try again.'));
+            }
+        }
+		
 		$where=[];
-		$where1=[];
 		$filename = $this->Filenames->newEntity();
 		
-		$file_inc_dc=$this->Filenames->find()->select(['file2'])->where(['file1' => 'DC'])->order(['file2' => 'DESC'])->first();
 		$file_inc_be=$this->Filenames->find()->select(['file2'])->where(['file1' => 'BE'])->order(['file2' => 'DESC'])->first();
         $customers = $this->Filenames->Customers->find('list', ['limit' => 200]);
-        $this->set(compact('filename', 'customers','file_inc_dc','file_inc_be'));
+        $this->set(compact('filename', 'customers','file_inc_be'));
         $this->set('_serialize', ['filename']);
 		
         
-		$files1_first=$this->request->query('file1_first');
-		$files1_second=$this->request->query('file1_second');
-		$customer1=$this->request->query('customer1');
-
-		$files2_first=$this->request->query('file2_first');
-		$files2_second=$this->request->query('file2_second');
-		$customer2=$this->request->query('customer2'); 
+		$file_number=$this->request->query('file_number');
+		$customer=$this->request->query('customer');
 		
-		$this->set(compact('files1_first','files1_second','customer1')); 
+		$this->set(compact('file_number','customer')); 
+		
+		
+		if(!empty($file_number)){
+			$where['Filenames.file2']=$file_number;
+		}
+		
+		if(!empty($customer)){
+			$where['Customers.customer_name LIKE']='%'.$customer.'%';
+		}
+		
+		
+		$this->paginate = [
+            'contain' => ['Customers']
+        ];
+		
+		$BEfilenames = $this->paginate($this->Filenames->find()->where(['file1' => 'BE'])->where($where));
+        $this->set(compact('BEfilenames'));
+        $this->set('_serialize', ['filenames']);
+    }
+	
+	public function index2()
+    {
+		$this->viewBuilder()->layout('index_layout');
+		
+		$filename = $this->Filenames->newEntity();
+        if ($this->request->is('post')) {
+            $filename = $this->Filenames->patchEntity($filename, $this->request->data);
+            if ($this->Filenames->save($filename)) {
+                $this->Flash->success(__('The filename has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The filename could not be saved. Please, try again.'));
+            }
+        }
+		
+		
+		$where=[];
+		
+		$file_inc_dc=$this->Filenames->find()->select(['file2'])->where(['file1' => 'DC'])->order(['file2' => 'DESC'])->first();
+        $customers = $this->Filenames->Customers->find('list', ['limit' => 200]);
+        $this->set(compact('filename', 'customers','file_inc_dc'));
+        $this->set('_serialize', ['filename']);
+
+		$file_number=$this->request->query('file_number');
+		$customer2=$this->request->query('customer'); 
+		
 		$this->set(compact('files2_first','files2_second','customer2')); 
 		
-		if(!empty($files1_first)){
-			$where['file1 LIKE']='%'.$files1_first.'%';
+		if(!empty($file_number)){
+			$where['Filenames.file2']=$file_number;
 		}
 		
-		if(!empty($files1_second)){
-			$where['file2 LIKE']='%'.$files1_second.'%';
-		}
-		
-		if(!empty($customer1)){
-			$where['Customers.customer_name LIKE']='%'.$customer1.'%';
-		}
-		
-		if(!empty($files2_first)){
-			$where1['file1 LIKE']='%'.$files2_first.'%';
-		}
-		
-		if(!empty($files2_second)){
-			$where1['file2 LIKE']='%'.$files2_second.'%';
-		}
-		
-		if(!empty($customer2)){
-			$where1['Customers.customer_name LIKE']='%'.$customer2.'%';
+		if(!empty($customer)){
+			$where['Customers.customer_name LIKE']='%'.$customer.'%';
 		}
 		
 		$this->paginate = [
             'contain' => ['Customers']
         ];
 		
-		$DCfilenames = $this->paginate($this->Filenames->find()->where(['file1' => 'DC'])->where($where1));
-        $this->set(compact('DCfilenames','BEfilenames'));
+		$DCfilenames = $this->paginate($this->Filenames->find()->where(['file1' => 'DC'])->where($where));
+        $this->set(compact('DCfilenames'));
         $this->set('_serialize', ['filenames']);
     }
 
@@ -101,36 +138,6 @@ class FilenamesController extends AppController
         $customers = $this->Filenames->Customers->find('list', ['limit' => 200]);
         $this->set(compact('filename', 'customers'));
         $this->set('_serialize', ['filename']);
-    }
-	
-	public function AddBe()
-    {
-		$filename = $this->Filenames->newEntity();
-        if ($this->request->is('post')) {
-            $filename = $this->Filenames->patchEntity($filename, $this->request->data);
-            if ($this->Filenames->save($filename)) {
-                $this->Flash->success(__('The filename has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The filename could not be saved. Please, try again.'));
-            }
-        }
-    }
-	
-	public function AddDc()
-    {
-		$filename = $this->Filenames->newEntity();
-        if ($this->request->is('post')) {
-            $filename = $this->Filenames->patchEntity($filename, $this->request->data);
-            if ($this->Filenames->save($filename)) {
-                $this->Flash->success(__('The filename has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The filename could not be saved. Please, try again.'));
-            }
-        }
     }
 
     /**
