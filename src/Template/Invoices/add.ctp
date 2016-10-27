@@ -364,6 +364,12 @@ $(document).ready(function() {
 					q="e";
 				}
 			});
+			$("#main_tb tbody tr.tr2").each(function(){
+				var d=$(this).find("td:nth-child(1) textarea").val();
+				if(d==""){
+					q="e";
+				}
+			});
 			if(q=="e"){
 				$("#row_error").show();
 				return false;
