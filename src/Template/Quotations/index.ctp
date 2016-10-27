@@ -28,6 +28,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<form method="GET" >
+				<input type="hidden" name="pull-request" value="<?php echo @$pull_request; ?>">
 				<table class="table table-condensed">
 					<thead>
 						<tr>
@@ -103,8 +104,11 @@
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $quotation->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
 								
 							
-								<?php if($quotation->status=='Pending' and in_array(2,$allowed_pages)){
+								<?php if($quotation->status=='Pending' and in_array(2,$allowed_pages) and $pull_request!="true"){
 									echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $quotation->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));
+								} ?>
+								<?php if($pull_request=="true"){
+									echo $this->Html->link('<i class="icon-home"></i> Convert Into Sales Order','/Sales-Orders/Add?quotation='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs blue'));
 								} ?>
 								<!--<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
 									['action' => 'delete', $quotation->id], 

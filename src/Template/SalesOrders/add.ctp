@@ -5,7 +5,8 @@
 			<span class="caption-subject font-blue-steel uppercase">Add Sales Order</span>
 		</div>
 		<div class="actions">
-			<a href="#myModal1" role="button" class="btn blue pull-right" data-toggle="modal">Pull Quotation</a>
+			<!--<a href="#myModal1" role="button" class="btn blue pull-right" data-toggle="modal">Pull Quotation</a>-->
+			<?php echo $this->Html->link('<i class="icon-home"></i> Pull Quotation','/Quotations/index?pull-request=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
 		</div>
 	</div>
 	<div class="portlet-body form">

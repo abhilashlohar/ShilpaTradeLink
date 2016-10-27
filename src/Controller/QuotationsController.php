@@ -28,8 +28,8 @@ class QuotationsController extends AppController
 		$product=$this->request->query('product');
 		$From=$this->request->query('From');
 		$To=$this->request->query('To');
-		$page=$this->request->query('page');
-		$this->set(compact('quotation_no','customer','salesman','product','From','To','company_alise','file'));
+		$pull_request=$this->request->query('pull-request');
+		$this->set(compact('quotation_no','customer','salesman','product','From','To','company_alise','file','pull_request'));
 		if(!empty($company_alise)){
 			$where['Quotations.qt1 LIKE']='%'.$company_alise.'%';
 		}
