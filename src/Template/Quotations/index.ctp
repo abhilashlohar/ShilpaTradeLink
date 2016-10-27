@@ -2,15 +2,18 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Quotations</span>
+			<span class="caption-subject font-blue-steel uppercase">Quotations</span> 
+			<?php if($pull_request=="true"){ ?>
+			- Select a quotation to convert into sales-order
+			<?php } ?>
 		</div>
 		<div class="actions">
 			<div class="btn-group">
 			<?php
 			if($status==null or $status=='Pending'){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
 			if($status=='Converted Into Sales Order'){ $class2='btn btn-primary'; }else{ $class2='btn btn-default'; }
-			
 			?>
+			<?php if($pull_request!="true"){ ?>
 				<?= $this->Html->link(
 					'Pending',
 					'/Quotations/index/Pending',
@@ -21,6 +24,7 @@
 					'/Quotations/index/Converted Into Sales Order',
 					['class' => $class2]
 				); ?>
+			<?php } ?>
 			</div>
 		</div>
 	</div>
@@ -28,6 +32,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<form method="GET" >
+				<input type="hidden" name="pull-request" value="<?php echo @$pull_request; ?>">
 				<table class="table table-condensed">
 					<thead>
 						<tr>
@@ -103,8 +108,11 @@
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $quotation->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
 								
 							
-								<?php if($quotation->status=='Pending' and in_array(2,$allowed_pages)){
+								<?php if($quotation->status=='Pending' and in_array(2,$allowed_pages) and $pull_request!="true"){
 									echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $quotation->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));
+								} ?>
+								<?php if($pull_request=="true"){
+									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Sales Order','/Sales-Orders/Add?quotation='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
 								<!--<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
 									['action' => 'delete', $quotation->id], 
