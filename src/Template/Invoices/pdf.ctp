@@ -87,7 +87,7 @@ $html.='
 			<td width="" valign="top" align="right">
 				<table>
 					<tr>
-						<td>Sales Order No.</td>
+						<td>Invoice No.</td>
 						<td width="20" align="center">:</td>
 						<td>'. h(($invoice->in1."/IN-".str_pad($invoice->id, 3, "0", STR_PAD_LEFT)."/".$invoice->in3."/".$invoice->in4)) .'</td>
 					</tr>

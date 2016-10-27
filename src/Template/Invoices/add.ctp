@@ -8,6 +8,7 @@
 			<a href="#myModal1" role="button" class="btn blue pull-right" data-toggle="modal">Pull Sales Order</a>
 		</div>
 	</div>
+	<?php if($process_status!="New"){ ?>
 	<div class="portlet-body form">
 		<?= $this->Form->create($invoice,['id'=>'form_sample_3']) ?>
 		<div class="form-body">
@@ -234,6 +235,7 @@
 		
 		<?= $this->Form->end() ?>
 	</div>
+	<?php } ?>
 </div>
 <style>
 .table thead tr th {
