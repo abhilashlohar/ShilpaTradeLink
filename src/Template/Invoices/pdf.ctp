@@ -228,11 +228,14 @@ $html.='
 				<td style="text-align:right;" valign="top">
 					<table>
 						<tr>
-							<td align="center">
-							For '. h($invoice->company->name) .'<br/>
-							<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$invoice->employee->signature.' height="50px" style="height:50px;"/>
+							<td align="right">
+							<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$invoice->creator->signature.' height="50px" style="height:50px;"/>
 							<br/>
-							<span style="    border-top: solid 1px #585757;">Authorised Signatory</span>
+							<span><b>Created by</b></span><br/>
+							<span>'. h($invoice->creator->name) .'</span><br/>
+							<span>'. h($invoice->creator->designation->name) .'</span><br/>
+							<span>'. h($invoice->creator->mobile) .'</span><br/>
+							<span>'. h($invoice->creator->email) .'</span>
 							</td>
 						</tr>
 					</table>

@@ -87,7 +87,7 @@ class InvoicesController extends AppController
     {
 		$this->viewBuilder()->layout('');
          $invoice = $this->Invoices->get($id, [
-            'contain' => ['Customers','Employees', 'Companies'=> [
+            'contain' => ['Customers','Employees','Creator'=>['Designations'],'Companies'=> [
 			'CompanyBanks'=> function ($q) {
 				return $q
 				->where(['CompanyBanks.default_bank' => 1]);
@@ -114,6 +114,8 @@ class InvoicesController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		
 		$sales_order_id=@(int)$this->request->query('sales-order');
 		
 		$sales_order=array(); $process_status='New';
@@ -134,6 +136,7 @@ class InvoicesController extends AppController
         if ($this->request->is('post')) {
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 			$invoice->date_created=date("Y-m-d",strtotime($invoice->date_created));
+			$invoice->created_by=$s_employee_id;
 			
             if ($this->Invoices->save($invoice)) {
 				if(!empty($sales_order_id)){

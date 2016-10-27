@@ -68,11 +68,13 @@ class SalesOrdersTable extends Table
             'foreignKey' => 'employee_id',
             'joinType' => 'INNER'
         ]);
+		
 		$this->belongsTo('Creator', [
 			'className' => 'Employees',
 			'foreignKey' => 'created_by',
 			'propertyName' => 'creator',
 		]);
+		
 		$this->belongsTo('Editor', [
 			'className' => 'Employees',
 			'foreignKey' => 'edited_by',
