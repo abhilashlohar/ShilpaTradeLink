@@ -155,15 +155,8 @@ $(document).ready(function() {
 			item_sub_group_id    : {
 				  required: true,
 			},
-			ob_quantity    :{
-				required: true,
-			},
-			ob_rate  :{
-				required: true,
-			},
-			ob_value    :{
-				required: true,
-			},
+			
+			
 			minimum_quantity  : {
 				  required: true,
 			}

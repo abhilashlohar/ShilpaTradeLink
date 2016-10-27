@@ -81,7 +81,7 @@
 							<td><?php echo date("d-m-Y",strtotime($invoice->date_created)); ?></td>
 							<td><?= h($invoice->total_after_pnf) ?></td>
 							<td class="actions">
-								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $invoice->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow')); ?>
+								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $invoice->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
 								<!--<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $invoice->id],array('escape'=>false,'class'=>'btn btn-xs blue')); ?>-->
 							</td>
 						</tr>

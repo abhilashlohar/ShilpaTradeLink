@@ -92,19 +92,6 @@ class ItemsTable extends Table
             ->notEmpty('name');
 
         $validator
-            ->integer('ob_quantity')
-            ->requirePresence('ob_quantity', 'create')
-            ->notEmpty('ob_quantity');
-
-        $validator
-            ->requirePresence('ob_rate', 'create')
-            ->notEmpty('ob_rate');
-
-        $validator
-            ->requirePresence('ob_value', 'create')
-            ->notEmpty('ob_value');
-
-        $validator
             ->integer('freeze')
             ->requirePresence('freeze', 'create')
             ->notEmpty('freeze');

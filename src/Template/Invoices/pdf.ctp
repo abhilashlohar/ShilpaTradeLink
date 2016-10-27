@@ -107,7 +107,7 @@ $html.='
 <table width="100%" class="table_rows">
 		<tr>
 			<th>S No</th>
-			<th>Item</th>
+			<th>Item Description</th>
 			<th>Quantity</th>
 			<th>Rate</th>
 			<th>Amount</th>
@@ -118,7 +118,7 @@ $sr=0; foreach ($invoice->invoice_rows as $invoiceRows): $sr++;
 $html.='
 	<tr class="odd">
 		<td valign="top" align="center" width="30">'. h($sr) .'</td>
-		<td>'. h($invoiceRows->item->name) .'</td>
+		<td>'. $this->Text->autoParagraph(h($invoiceRows->description)) .'</td>
 		<td width="40" valign="top" align="center">'. h($invoiceRows->quantity) .'</td>
 		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($invoiceRows->rate,[ 'places' => 2]) .'</td>
 		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($invoiceRows->amount,[ 'places' => 2]) .'</td>
