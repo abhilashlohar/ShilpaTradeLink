@@ -8,6 +8,7 @@
 			<a href="#myModal1" role="button" class="btn blue pull-right" data-toggle="modal">Pull Sales Order</a>
 		</div>
 	</div>
+	<?php if($process_status!="New"){ ?>
 	<div class="portlet-body form">
 		<?= $this->Form->create($invoice,['id'=>'form_sample_3']) ?>
 		<div class="form-body">
@@ -234,6 +235,7 @@
 		
 		<?= $this->Form->end() ?>
 	</div>
+	<?php } ?>
 </div>
 <style>
 .table thead tr th {
@@ -364,6 +366,12 @@ $(document).ready(function() {
 					q="e";
 				}
 			});
+			$("#main_tb tbody tr.tr2").each(function(){
+				var d=$(this).find("td:nth-child(1) textarea").val();
+				if(d==""){
+					q="e";
+				}
+			});
 			if(q=="e"){
 				$("#row_error").show();
 				return false;
@@ -399,6 +407,7 @@ $(document).ready(function() {
 			$("#discount_text").hide();
 			$('input[name="discount"]').removeAttr('readonly');
 		}
+		calculate_total();
 	})
 	
 	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
