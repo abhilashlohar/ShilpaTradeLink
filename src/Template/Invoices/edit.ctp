@@ -99,7 +99,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">PO DATE  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('po_date', ['type' => 'text','label' => false,'options' => $employees,'class' => 'form-control input-sm select2me','value'=>date("d-m-Y",strtotime($invoice->po_date))]); ?>
+							<?php echo $this->Form->input('po_date', ['type' => 'text','label' => false,'options' => $employees,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value'=>date("d-m-Y",strtotime($invoice->po_date))]); ?>
 						</div>
 					</div>
 				</div>
