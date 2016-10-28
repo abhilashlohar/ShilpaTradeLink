@@ -14,11 +14,11 @@ $html = '
 <html>
 <head>
   <style>
-    @page { margin: 120px 15px 20px 30px; }
+    @page { margin: 120px 15px 200px 30px; }
     #header { position: fixed; left: 0px; top: -120px; right: 0px; height: 120px;}
-    #footer { position: fixed; left: 0px; bottom: -20px; right: 0px; height: 20px;text-align:center;}
+    #footer { position: fixed; left: 0px; bottom: -200px; right: 0px; height: 200px;}
     #footer .page:after { content: content: counter(page); }
-	#footer { display:none; }
+	
 	
 	@font-face {
 		font-family: Lato;
@@ -68,9 +68,7 @@ $html = '
 			</tr>
 		</table>
   </div>
-  <div id="footer">
-    <p class="page">Page : </p>
-  </div>
+ 
 
   <div id="content"> ';
   
@@ -203,7 +201,7 @@ $html.='
 $html.='
 <table width="100%" class="divFooter">
 			<tr>
-				<td width="60%">
+				<td >
 					<table>
 						<tr>
 							<td collapse="2">Interest @15% per annum shall be charged if not paid with in agreed terms. Invoice is Subject to Udaipur</td>
@@ -224,26 +222,61 @@ $html.='
 						</tr>
 					</table>
 				</td>
-				<td style="text-align:right;" valign="top">
+				<td align="right" >
+					<div align="center">
+						<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$invoice->creator->signature.' height="50px" style="height:50px;"/>
+						<br/>
+						<span><b>Created by</b></span><br/>
+						<span>'. h($invoice->creator->name) .'</span><br/>
+						<span>'. h($invoice->creator->designation->name) .'</span><br/>
+						<span>'. h($invoice->creator->mobile) .'</span><br/>
+						<span>'. h($invoice->creator->email) .'</span>
+					</div>
+				</td>
+			</tr>
+		</table>';
+		
+$html .= '<div id="footer">
+   <table width="100%" class="divFooter">
+			<tr>
+				<td >
 					<table>
 						<tr>
-							<td align="right">
-							<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$invoice->creator->signature.' height="50px" style="height:50px;"/>
-							<br/>
-							<span><b>Created by</b></span><br/>
-							<span>'. h($invoice->creator->name) .'</span><br/>
-							<span>'. h($invoice->creator->designation->name) .'</span><br/>
-							<span>'. h($invoice->creator->mobile) .'</span><br/>
-							<span>'. h($invoice->creator->email) .'</span>
-							</td>
+							<td collapse="2">Interest @15% per annum shall be charged if not paid with in agreed terms. Invoice is Subject to Udaipur</td>
+						</tr>
+					</table>
+					<table>
+						<tr>
+							<td>TIN</td>
+							<td>: '. h($invoice->company->tin_no) .'</td>
+						</tr>
+						<tr width="30">
+							<td>PAN</td>
+							<td>: '. h($invoice->company->pan_no) .'</td>
+						</tr>
+						<tr>
+							<td>CIN</td>
+							<td>: '. h($invoice->company->cin_no) .'</td>
 						</tr>
 					</table>
 				</td>
+				<td align="right" >
+					<div align="center">
+						<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$invoice->creator->signature.' height="50px" style="height:50px;"/>
+						<br/>
+						<span><b>Created by</b></span><br/>
+						<span>'. h($invoice->creator->name) .'</span><br/>
+						<span>'. h($invoice->creator->designation->name) .'</span><br/>
+						<span>'. h($invoice->creator->mobile) .'</span><br/>
+						<span>'. h($invoice->creator->email) .'</span>
+					</div>
+				</td>
 			</tr>
 		</table>
-';
+  </div>';
+  
 
-$html .= '</div>
+ $html .= '</div>
 </body>
 </html>';
 
