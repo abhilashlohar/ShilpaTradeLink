@@ -24,7 +24,33 @@ class ItemsController extends AppController
             'contain' => ['ItemCategories','ItemGroups','ItemSubGroups','Units']
         ];
 		
-        $items = $this->paginate($this->Items);
+		$where=[];
+		$item_name=$this->request->query('item_name');
+		$item_category=$this->request->query('item_category');
+		$item_group=$this->request->query('item_group');
+		$item_subgroup=$this->request->query('item_subgroup');
+		 
+		$this->set(compact('item_name','item_category','item_group','item_subgroup'));
+		
+		if(!empty($item_name)){
+			$where['Items.name LIKE']='%'.$item_name.'%';
+		}
+		
+				if(!empty($item_category)){
+			$where['ItemCategories.name LIKE']='%'.$item_category.'%';
+		}
+		
+		if(!empty($item_group)){
+			$where['ItemGroups.name LIKE']='%'.$item_group.'%';
+		}
+		
+		
+		if(!empty($item_subgroup)){
+			$where['ItemSubGroups.name LIKE']='%'.$item_subgroup.'%';
+		}
+		
+        $items = $this->paginate($this->Items->find()->where($where));
+
 
         $this->set(compact('items'));
         $this->set('_serialize', ['items']);
@@ -67,6 +93,10 @@ class ItemsController extends AppController
                 $this->Flash->error(__('The item could not be saved. Please, try again.'));
             }
         }
+		
+
+		
+		
 		$ItemCategories = $this->Items->ItemCategories->find('list');
         $units = $this->Items->Units->find('list');
 		$Companies = $this->Items->Companies->find('list');

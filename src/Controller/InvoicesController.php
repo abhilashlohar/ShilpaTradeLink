@@ -134,6 +134,10 @@ class InvoicesController extends AppController
 		
         $invoice = $this->Invoices->newEntity();
         if ($this->request->is('post')) {
+			$dates=$this->request->data['po_date'];
+			$date_cnv=date('Y-m-d', strtotime($dates));
+			$this->request->data['po_date']=$date_cnv;
+			
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 			$invoice->date_created=date("Y-m-d",strtotime($invoice->date_created));
 			$invoice->created_by=$s_employee_id;
@@ -158,7 +162,7 @@ class InvoicesController extends AppController
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Invoices->Customers->find('list');
+        $customers = $this->Invoices->Customers->find('all');
         $companies = $this->Invoices->Companies->find('all');
 		
 		$salesOrders = $this->Invoices->SalesOrders->find()->select(['total_rows' => 

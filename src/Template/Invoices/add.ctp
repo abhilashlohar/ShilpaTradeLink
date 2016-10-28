@@ -42,7 +42,12 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Customer</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $customers,'class' => 'form-control input-sm select2me','value' => @$sales_order->customer_id]); ?>
+						<?php 
+							$options=array();
+							foreach($customers as $customer){
+								$options[]=['text' => $customer->customer_name, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
+							}
+							 echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$sales_order->customer_id]); ?>
 						</div>
 					</div>
 				</div>
@@ -82,21 +87,27 @@
 					</div>
 					<br/>
 					<div class="form-group">
-						<label class="col-md-3 control-label">Customer PO NO  <span class="required" aria-required="true">*</span></label>
+						<label class="col-md-3 control-label">Salesman  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_po_no', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Customer PO NO','value'=>@$sales_order->customer_po_no]); ?>
+							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm','value' => @$sales_order->customer_id]); ?>
 						</div>
 					</div>
 				</div>
 			</div><br/>
 			<div class="row">
 				<div class="col-md-6">
+				<div class="form-group">
+						<label class="col-md-3 control-label">Customer PO NO  <span class="required" aria-required="true">*</span></label>
+						<div class="col-md-9">
+							<?php echo $this->Form->input('customer_po_no', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Customer PO NO','value'=>@$sales_order->customer_po_no]); ?>
+						</div>
+					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
-						<label class="col-md-3 control-label">Salesman  <span class="required" aria-required="true">*</span></label>
+						<label class="col-md-3 control-label">PO DATE  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm select2me','value' => @$sales_order->customer_id]); ?>
+							<?php echo $this->Form->input('po_date', ['type' => 'text','label' => false,'options' => $employees,'class' => 'form-control input-sm select2me','value' => @$sales_order->po_date]); ?>
 						</div>
 					</div>
 				</div>
@@ -679,6 +690,9 @@ $(document).ready(function() {
 			$("#in3_div").html(response);
 			$('select[name="qt3"]').attr('name','in3');
 		});
+		
+		var employee_id=$('select[name="customer_id"] option:selected').attr("employee_id");
+			$("select[name=employee_id]").val(employee_id);
 		
     });
 	

@@ -17,11 +17,20 @@
 				<tbody>
 					<tr>
 						<td><input type="text" name="item_name" class="form-control input-sm" placeholder="Item Name" value="<?php echo @$item_name; ?>"></td>
+						
+						<td><input type="text" name="item_category" class="form-control input-sm" placeholder="Item Category" value="<?php echo @$item_category; ?>"></td>
+						
+						<td><input type="text" name="item_group" class="form-control input-sm" placeholder="Item Group" value="<?php echo @$item_group; ?>"></td>
+						
+						<td><input type="text" name="item_subgroup" class="form-control input-sm" placeholder="Item Subgroup" value="<?php echo @$item_subgroup; ?>"></td>
+						
+						
 						<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
 					</tr>
 				</tbody>
 			</table>
 			</form>
+			<?php $page_no=$this->Paginator->current('Items'); $page_no=($page_no-1)*20; ?>
 			 <table class="table table-hover">
 				 <thead>
 					<tr>
@@ -39,7 +48,7 @@
 				<tbody>
 					<?php $i=0; foreach ($items as $item): $i++; ?>
 					<tr>
-						<td><?= $i ?></td>
+						<td><?= h(++$page_no) ?></td>
 						<td><?= h($item->name) ?></td>
 						<td><?= $item->item_category->name ?></td>
 						<td><?= $item->item_group->name ?></td>

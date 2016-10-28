@@ -81,6 +81,8 @@ $html.='
 				To,<br/>
 				<span>'. h(($invoice->customer->customer_name)) .'</span><br/>
 				'. $this->Text->autoParagraph(h($invoice->customer_address)) .'
+				<span>PO No. :'. h($invoice->customer_po_no) .'</span><br/>
+				<span>PO Date. :'. h($invoice->po_date) .'</span><br/>
 				<span>TIN No. :'. h($invoice->customer->tin_no) .'</span><br/>
 				<span>PAN No. :'. h($invoice->customer->pan_no) .'</span>
 			</td>
