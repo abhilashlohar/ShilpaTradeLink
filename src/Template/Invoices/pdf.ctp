@@ -14,8 +14,8 @@ $html = '
 <html>
 <head>
   <style>
-    @page { margin: 120px 15px 200px 30px; }
-    #header { position: fixed; left: 0px; top: -120px; right: 0px; height: 120px;}
+    @page { margin: 150px 15px 200px 30px; }
+    #header { position: fixed; left: 0px; top: -150px; right: 0px; height: 150px;}
     #footer { position: fixed; left: 0px; bottom: -200px; right: 0px; height: 200px;}
     #footer .page:after { content: content: counter(page); }
 	
@@ -47,7 +47,7 @@ $html = '
 	}
 	</style>
 <body>
-  <div id="header">
+  <div id="header" ><br/>	
 		<table width="100%">
 			<tr>
 				<td width="50%">
@@ -103,7 +103,7 @@ $html.='
 	
 ';
  
-$html.='
+$html.='<br/>
 <table width="100%" class="table_rows">
 		<tr>
 			<th>S No</th>
@@ -118,7 +118,7 @@ $sr=0; foreach ($invoice->invoice_rows as $invoiceRows): $sr++;
 $html.='
 	<tr class="odd">
 		<td valign="top" align="center" width="30">'. h($sr) .'</td>
-		<td>'. $this->Text->autoParagraph(h($invoiceRows->description)) .'</td>
+		<td>'. $this->Text->autoParagraph(h($invoiceRows->description)) .'<br/></td>
 		<td width="40" valign="top" align="center">'. h($invoiceRows->quantity) .'</td>
 		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($invoiceRows->rate,[ 'places' => 2]) .'</td>
 		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($invoiceRows->amount,[ 'places' => 2]) .'</td>
@@ -132,7 +132,7 @@ $grand_total=explode('.',$invoice->grand_total);
 $rupees=$grand_total[0];
 $paisa=$grand_total[1];
 
-$html.='</table>';		
+$html.='</table><br/>';		
 $html.='
 <table width="100%" class="table_rows">
 	<tbody>
@@ -162,7 +162,7 @@ $html.='
 				<td style="text-align:right;">'. $this->Number->format($invoice->discount,[ 'places' => 2]).'</td>
 			</tr>
 			<tr>
-				<td style="text-align:right;">'. h($invoice->ed_description).'</td>
+				<td style="text-align:justify;">'. h($invoice->ed_description).'</td>
 				<td style="text-align:right;" width="100">'. $this->Number->format($invoice->exceise_duty,[ 'places' => 2]).'</td>
 			</tr>
 			<tr>
@@ -183,7 +183,7 @@ $html.='
 			</tr>
 			<tr>
 				<td rowspan="2">'. h($invoice->additional_note) .'</td>
-				<td style="text-align:right;">Fright Amount<br/>'. h($invoice->fright_text) .'</td>
+				<td style="text-align:justify;">Fright Amount<br/>'. h($invoice->fright_text) .'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->fright_amount,[ 'places' => 2]) .'</td>
 			</tr>
 			<tr>
@@ -198,43 +198,6 @@ $html.='
 
 	
 
-$html.='
-<table width="100%" class="divFooter">
-			<tr>
-				<td >
-					<table>
-						<tr>
-							<td collapse="2">Interest @15% per annum shall be charged if not paid with in agreed terms. Invoice is Subject to Udaipur</td>
-						</tr>
-					</table>
-					<table>
-						<tr>
-							<td>TIN</td>
-							<td>: '. h($invoice->company->tin_no) .'</td>
-						</tr>
-						<tr width="30">
-							<td>PAN</td>
-							<td>: '. h($invoice->company->pan_no) .'</td>
-						</tr>
-						<tr>
-							<td>CIN</td>
-							<td>: '. h($invoice->company->cin_no) .'</td>
-						</tr>
-					</table>
-				</td>
-				<td align="right" >
-					<div align="center">
-						<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$invoice->creator->signature.' height="50px" style="height:50px;"/>
-						<br/>
-						<span><b>Created by</b></span><br/>
-						<span>'. h($invoice->creator->name) .'</span><br/>
-						<span>'. h($invoice->creator->designation->name) .'</span><br/>
-						<span>'. h($invoice->creator->mobile) .'</span><br/>
-						<span>'. h($invoice->creator->email) .'</span>
-					</div>
-				</td>
-			</tr>
-		</table>';
 		
 $html .= '<div id="footer">
    <table width="100%" class="divFooter">

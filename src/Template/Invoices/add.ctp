@@ -107,7 +107,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">PO DATE  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('po_date', ['type' => 'text','label' => false,'options' => $employees,'class' => 'form-control input-sm select2me','value' => @$sales_order->po_date]); ?>
+							<?php echo $this->Form->input('po_date', ['type' => 'text','label' => false,'options' => $employees,'class' => 'form-control input-sm select2me','value' => @date("d-m-Y",strtotime($sales_order->po_date))]); ?>
 						</div>
 					</div>
 				</div>
