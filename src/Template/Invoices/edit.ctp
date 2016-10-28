@@ -79,21 +79,27 @@
 					</div>
 					<br/>
 					<div class="form-group">
-						<label class="col-md-3 control-label">Customer PO NO  <span class="required" aria-required="true">*</span></label>
+						<label class="col-md-3 control-label">Salesman  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_po_no', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Customer PO NO','value'=>@$sales_order->customer_po_no]); ?>
+							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm']); ?>
 						</div>
 					</div>
 				</div>
 			</div><br/>
 			<div class="row">
 				<div class="col-md-6">
+				<div class="form-group">
+						<label class="col-md-3 control-label">Customer PO NO  <span class="required" aria-required="true">*</span></label>
+						<div class="col-md-9">
+							<?php echo $this->Form->input('customer_po_no', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Customer PO NO']); ?>
+						</div>
+					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
-						<label class="col-md-3 control-label">Salesman  <span class="required" aria-required="true">*</span></label>
+						<label class="col-md-3 control-label">PO DATE  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm select2me','value' => @$sales_order->customer_id]); ?>
+							<?php echo $this->Form->input('po_date', ['type' => 'text','label' => false,'options' => $employees,'class' => 'form-control input-sm select2me','value'=>date("d-m-Y",strtotime($invoice->po_date))]); ?>
 						</div>
 					</div>
 				</div>
@@ -149,14 +155,12 @@
 					<?php } ?>
 					
 					</td>
-					<td><?php echo $this->Form->input('pnf', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01]); ?></td>
+					<td><?php echo $this->Form->input('discount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01]); ?></td>
 				</tr>
-				<?php if($invoice->process_status=="New") { ?>
 				<tr style="background-color:#e6faf9;">
 					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:right']]); ?> </b></td>
 					<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty']); ?></td>
 				</tr>
-				<?php } ?>
 				<tr>
 					<td align="right"><b>Total</b></td>
 					<td width="20%"><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','step'=>0.01,'readonly']); ?></td>

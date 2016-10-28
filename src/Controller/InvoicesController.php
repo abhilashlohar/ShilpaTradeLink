@@ -134,11 +134,9 @@ class InvoicesController extends AppController
 		
         $invoice = $this->Invoices->newEntity();
         if ($this->request->is('post')) {
-			$dates=$this->request->data['po_date'];
-			$date_cnv=date('Y-m-d', strtotime($dates));
-			$this->request->data['po_date']=$date_cnv;
 			
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
+			$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date));
 			$invoice->date_created=date("Y-m-d",strtotime($invoice->date_created));
 			$invoice->created_by=$s_employee_id;
 			
@@ -206,6 +204,8 @@ class InvoicesController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
+			$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date));
+			$invoice->date_created=date("Y-m-d",strtotime($invoice->date_created));
             if ($this->Invoices->save($invoice)) {
 				
                 $this->Flash->success(__('The invoice has been saved.'));
