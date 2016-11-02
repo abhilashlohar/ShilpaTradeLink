@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 26, 2016 at 09:26 AM
+-- Generation Time: Nov 02, 2016 at 07:16 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 7.0.9
 
@@ -349,7 +349,57 @@ INSERT INTO `filenames` (`id`, `file1`, `customer_id`, `file2`) VALUES
 (9, 'DC', 1, 441),
 (10, 'BE', 2, 843),
 (11, 'DC', 2, 442),
-(12, 'BE', 5, 844);
+(12, 'BE', 5, 844),
+(13, 'BE', 1, 845),
+(14, 'BE', 1, 846),
+(15, 'BE', 1, 847),
+(16, 'BE', 1, 848),
+(17, 'BE', 1, 849),
+(18, 'BE', 1, 849),
+(19, 'BE', 1, 850),
+(20, 'BE', 1, 851),
+(21, 'BE', 1, 852),
+(22, 'BE', 1, 852),
+(23, 'DC', 1, 443),
+(24, 'BE', 1, 852),
+(25, 'BE', 1, 852),
+(26, 'DC', 1, 443),
+(27, 'BE', 1, 852),
+(28, 'DC', 1, 443),
+(29, 'DC', 1, 444),
+(30, 'DC', 1, 444),
+(31, 'DC', 1, 444),
+(32, 'DC', 1, 444),
+(33, 'DC', 1, 444),
+(34, 'DC', 1, 444),
+(35, 'DC', 1, 444),
+(36, 'DC', 1, 444),
+(37, 'DC', 1, 444),
+(38, 'DC', 1, 444),
+(39, 'DC', 1, 444),
+(40, 'DC', 1, 444),
+(41, 'DC', 1, 444),
+(42, 'DC', 1, 444),
+(43, 'BE', 1, 853),
+(44, 'BE', 1, 853),
+(45, 'BE', 1, 853),
+(46, 'BE', 1, 853),
+(47, 'BE', 1, 853),
+(48, 'BE', 1, 853),
+(49, 'BE', 1, 853),
+(50, 'BE', 1, 853),
+(51, 'BE', 1, 853),
+(52, 'DC', 1, 445),
+(53, 'DC', 1, 445),
+(54, 'DC', 1, 445),
+(55, 'DC', 1, 445),
+(56, 'DC', 1, 445),
+(57, 'DC', 1, 445),
+(58, 'DC', 1, 446),
+(59, 'DC', 1, 447),
+(60, 'BE', 1, 854),
+(61, 'DC', 1, 448),
+(62, 'BE', 1, 855);
 
 -- --------------------------------------------------------
 
@@ -416,16 +466,18 @@ CREATE TABLE `invoices` (
   `in4` varchar(10) NOT NULL,
   `in3` varchar(10) NOT NULL,
   `customer_po_no` varchar(100) NOT NULL,
+  `po_date` date NOT NULL,
   `additional_note` varchar(255) NOT NULL,
-  `employee_id` int(10) NOT NULL
+  `employee_id` int(10) NOT NULL,
+  `created_by` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `invoices`
 --
 
-INSERT INTO `invoices` (`id`, `customer_id`, `customer_address`, `lr_no`, `terms_conditions`, `total`, `pnf`, `pnf_type`, `pnf_per`, `total_after_pnf`, `sale_tax_description`, `sale_tax_per`, `sale_tax_amount`, `discount_type`, `discount_per`, `discount`, `exceise_duty`, `ed_description`, `fright_amount`, `fright_text`, `grand_total`, `date_created`, `company_id`, `process_status`, `sales_order_id`, `in1`, `in4`, `in3`, `customer_po_no`, `additional_note`, `employee_id`) VALUES
-(1, 1, 'Address 1 Address 1 Address 1 Address 1 ', '3456', '', '1343.45', '53.74', 1, '4.00', '1397.19', 'sfdsf sf sdf sdf ', '14.60', '203.99', 1, '5.00', '52.55', '345.00', 'werrwer', '3434.00', '43543', '5035.18', '2016-10-25', 17, 'Pulled From Sales-Order', 1, 'Shilpa', '16-17', 'BE-842', '34567', '435', 3);
+INSERT INTO `invoices` (`id`, `customer_id`, `customer_address`, `lr_no`, `terms_conditions`, `total`, `pnf`, `pnf_type`, `pnf_per`, `total_after_pnf`, `sale_tax_description`, `sale_tax_per`, `sale_tax_amount`, `discount_type`, `discount_per`, `discount`, `exceise_duty`, `ed_description`, `fright_amount`, `fright_text`, `grand_total`, `date_created`, `company_id`, `process_status`, `sales_order_id`, `in1`, `in4`, `in3`, `customer_po_no`, `po_date`, `additional_note`, `employee_id`, `created_by`) VALUES
+(1, 1, 'Address 1 Address 1 Address 1 Address 1 ', '123', '', '108.00', '2.16', 1, '2.00', '110.16', 'sfdsf sf sdf sdf ', '5.50', '6.06', 1, '2.00', '2.00', '10.00', 'Excise Duty Text', '10.00', 'Fright Amount Text', '126.22', '2016-10-28', 17, 'Pulled From Sales-Order', 1, 'Shilpa', '16-17', 'BE-842', '12345', '2016-10-28', '', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -460,8 +512,7 @@ CREATE TABLE `invoice_rows` (
 --
 
 INSERT INTO `invoice_rows` (`id`, `invoice_id`, `item_id`, `description`, `quantity`, `rate`, `amount`) VALUES
-(1, 1, 8, 'The requested URL was not found on this server. If you entered the URL manually please check your spelling and try again.\r\n\r\nIf you think this is a server error, please contact the', 3, '345.00', '1035.00'),
-(2, 1, 9, 'The requested URL was not found on this server. If you entered the URL manually please check your spelling and try again.\r\n\r\nIf you think this is a server error, please contact the', 4, '4.00', '16.00');
+(2, 1, 8, 'qwerty', 1, '100.00', '100.00');
 
 -- --------------------------------------------------------
 
@@ -825,7 +876,7 @@ INSERT INTO `quotations` (`id`, `customer_id`, `customer_address`, `employee_id`
 (63, 1, 'Address 1 Address 1 Address 1 Address 1 ', 3, 3, '2016-10-25', 'xvcvxcv', '9876543345', 'erer', 'reer', 'With reference to above enquiry we are pleased to submit our quote as follows :-', '', '1. Unique Pivot-Joint Design Extends Service Life And Reduces Replacement Cost.\r\n', '136.00', 'Pending', 17, 'Shilpa', 'BE-842', '16-17', 2, 0, '2016-10-25', '0000-00-00'),
 (64, 1, 'Address 1 Address 1 Address 1 Address 1 ', 3, 3, '2016-10-25', 'xvcvxcv', '9876543345', 'erer', 'reer', 'With reference to above enquiry we are pleased to submit our quote as follows :-', '', '1. Unique Pivot-Joint Design Extends Service Life And Reduces Replacement Cost.\r\n', '136.00', 'Pending', 17, 'Shilpa', 'BE-842', '16-17', 2, 0, '2016-10-25', '0000-00-00'),
 (65, 1, 'Address 1 Address 1 Address 1 Address 1 ', 3, 3, '2016-10-25', 'xvcvxcv', '9876543345', 'erer', 'reer', 'With reference to above enquiry we are pleased to submit our quote as follows :-', '', '1. Unique Pivot-Joint Design Extends Service Life And Reduces Replacement Cost.\r\n', '136.00', 'Pending', 17, 'Shilpa', 'BE-842', '16-17', 2, 0, '2016-10-25', '0000-00-00'),
-(66, 1, 'Address 1 Address 1 Address 1 Address 1 ', 3, 3, '2016-10-25', 'xvcvxcv', '9876543345', 'erer', 'reer', 'With reference to above enquiry we are pleased to submit our quote as follows :-', '', '1. Unique Pivot-Joint Design Extends Service Life And Reduces Replacement Cost.\r\n', '136.00', 'Pending', 17, 'Shilpa', 'BE-842', '16-17', 2, 0, '2016-10-25', '0000-00-00');
+(66, 1, 'Address 1 Address 1 Address 1 Address 1 ', 3, 3, '2016-10-25', 'xvcvxcv', '9876543345', 'erer', 'reer', 'With reference to above enquiry we are pleased to submit our quote as follows :-', '', '1. Unique Pivot-Joint Design Extends Service Life And Reduces Replacement Cost.\r\n', '136.00', 'Converted Into Sales Order', 17, 'Shilpa', 'BE-842', '16-17', 2, 0, '2016-10-25', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -959,7 +1010,7 @@ CREATE TABLE `sales_orders` (
 --
 
 INSERT INTO `sales_orders` (`id`, `customer_id`, `employee_id`, `customer_address`, `subject`, `terms_conditions`, `total`, `additional_note`, `company_id`, `process_status`, `quotation_id`, `transporter_id`, `expected_delivery_date`, `delivery_description`, `documents_courier_id`, `customer_po_no`, `po_date`, `dispatch_name`, `dispatch_mobile`, `dispatch_email`, `road_permit_required`, `form49`, `so1`, `so3`, `so4`, `created_by`, `edited_by`, `created_on`, `edited_on`) VALUES
-(1, 1, 3, 'Address 1 Address 1 Address 1 Address 1 ', '', '', '1051.00', 'The requested URL was not found on this server. If you entered the URL manually please check your spelling and try again.\r\n\r\nIf you think this is a server error, please contact the', 17, 'New', NULL, 3, '2016-10-25', 'The requested URL was not found on this server. If you entered the URL manually please check your spelling and try again.\r\n\r\nIf you think this is a server error, please contact the', 3, '34567', '2016-10-24', 'Sdfgh', '234567', 'sdfyg@werty.ertyui', 'Yes', 'No', 'Shilpa', 'BE-842', '16-17', 2, 0, '2016-10-25', '0000-00-00');
+(1, 1, 2, 'Address 1 Address 1 Address 1 Address 1 ', '', '', '100.00', '', 17, 'New', NULL, 2, '2016-10-31', 'fghgf', 1, '12345', '2016-10-28', 'Dfgdf', '434324', 'wqeq@wewerwe.uytuy', 'Yes', 'Yes', 'Shilpa', 'BE-842', '16-17', 2, 0, '2016-10-28', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -986,8 +1037,7 @@ CREATE TABLE `sales_order_rows` (
 --
 
 INSERT INTO `sales_order_rows` (`id`, `sales_order_id`, `item_id`, `description`, `quantity`, `rate`, `amount`, `excise_duty`, `so_sale_tax`, `sale_tax_description`, `processed_quantity`) VALUES
-(1, 1, 8, 'The requested URL was not found on this server. If you entered the URL manually please check your spelling and try again.\r\n\r\nIf you think this is a server error, please contact the', 3, '345.00', '1035.00', 'Yes', '5.50', 'sfdsf sf sdf sdf ', 3),
-(2, 1, 9, 'The requested URL was not found on this server. If you entered the URL manually please check your spelling and try again.\r\n\r\nIf you think this is a server error, please contact the', 4, '4.00', '16.00', 'Yes', '14.60', 'saasd asihd iashdukha sukd ask', 4);
+(1, 1, 8, 'qwerty', 1, '100.00', '100.00', 'Yes', '5.50', 'sfdsf sf sdf sdf ', 1);
 
 -- --------------------------------------------------------
 
@@ -1493,7 +1543,7 @@ ALTER TABLE `employees`
 -- AUTO_INCREMENT for table `filenames`
 --
 ALTER TABLE `filenames`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 --
 -- AUTO_INCREMENT for table `grns`
 --
@@ -1578,7 +1628,7 @@ ALTER TABLE `sales_orders`
 -- AUTO_INCREMENT for table `sales_order_rows`
 --
 ALTER TABLE `sales_order_rows`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `sale_taxes`
 --
