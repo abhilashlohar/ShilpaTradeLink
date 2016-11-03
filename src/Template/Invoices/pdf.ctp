@@ -96,6 +96,12 @@ $html.='
 						<td width="20" align="center">:</td>
 						<td>'. h(date("d-m-Y",strtotime($invoice->date_created))) .'</td>
 					</tr>
+					<tr>
+						<td>LR No.</td>
+						<td width="20" align="center">:</td>
+						<td>'. h($invoice->lr_no) .'</td>
+					</tr>
+
 				</table>
 			</td>
 		</tr>

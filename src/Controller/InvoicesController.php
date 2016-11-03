@@ -87,7 +87,7 @@ class InvoicesController extends AppController
     {
 		$this->viewBuilder()->layout('');
          $invoice = $this->Invoices->get($id, [
-            'contain' => ['Customers','Employees','Creator'=>['Designations'],'Companies'=> [
+            'contain' => ['Customers','Employees','Transporters','Creator'=>['Designations'],'Companies'=> [
 			'CompanyBanks'=> function ($q) {
 				return $q
 				->where(['CompanyBanks.default_bank' => 1]);

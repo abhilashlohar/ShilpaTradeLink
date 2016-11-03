@@ -89,11 +89,19 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Salesman  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm','value' => @$sales_order->customer_id]); ?>
+							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm select2me','value' => @$sales_order->customer_id]); ?>
+						</div>
+					</div><br/>
+					
+					<div class="form-group">
+						<label class="col-md-3 control-label">Carrier <span class="required" aria-required="true">*</span></label>
+						<div class="col-md-9">
+							<?php echo $this->Form->input('transporter_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm select2me','value' => @$sales_order->transporter_id]); ?>
 						</div>
 					</div>
 				</div>
 			</div><br/>
+
 			<div class="row">
 				<div class="col-md-6">
 				<div class="form-group">
@@ -112,6 +120,14 @@
 					</div>
 				</div>
 			</div><br/>
+			
+			
+
+
+			
+			
+			
+			
 			<div class="alert alert-danger" id="row_error" style="display:none;">
 				All fields are Required
 			</div>

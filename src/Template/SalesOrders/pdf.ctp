@@ -77,21 +77,21 @@ $html = '
 $html.='
 	<table width="100%">
 		<tr>
-			<td width="55%">
+			<td width="53%">
 				<span>'. h(($salesOrder->customer->customer_name)) .'</span><br/>
 				'. $this->Text->autoParagraph(h($salesOrder->customer_address)) .'<br/>
 				<span>Customer P.O. No. '. h($salesOrder->customer_po_no).' dated '. h(date("d-m-Y",strtotime($salesOrder->po_date))).'</span><br/><br/>
 			</td>
-			<td width="45%" valign="top" align="right">
+			<td width="47%" valign="top" align="right">
 				<table>
 					<tr>
-						<td>Sales Order No.</td>
-						<td width="20" align="center">:</td>
+						<td style="width:110px;" >Sales Order No</td>
+						<td style="width:5px;">:</td>
 						<td>'. h(($salesOrder->so1."/SO-".str_pad($salesOrder->id, 3, "0", STR_PAD_LEFT)."/".$salesOrder->so3."/".$salesOrder->so4)) .'</td>
 					</tr>
 					<tr>
 						<td>Date</td>
-						<td width="20" align="center">:</td>
+						<td width="2" align="center">:</td>
 						<td>'. h(date("d-m-Y",strtotime($salesOrder->created_on))) .'</td>
 					</tr>
 					
@@ -100,7 +100,7 @@ $html.='
 		</tr>
 	</table>';
  
-$html.='
+$html.='<br/>
 <table width="100%" class="table_rows">
 		<tr>
 			<th>S No</th>
@@ -108,27 +108,27 @@ $html.='
 			<th>Quantity</th>
 			<th>Rate</th>
 			<th>Amount</th>
-			<th>Excise Duty</th>
-			<th>Sale Tax(%)</th>
+			<th style="width: 80px;">Excise Duty</th>
+			<th style="width: 80px;">Sale Tax(%)</th>
 		</tr>
 ';
 
 $sr=0; foreach ($salesOrder->sales_order_rows as $salesOrderRows): $sr++; 
 $html.='
 	<tr class="odd">
-		<td valign="top" align="center" style="width: 40;">'. h($sr) .'</td>
+		<td valign="top" align="center" style="width: 30;">'. h($sr) .'</td>
 		<td>'. h($salesOrderRows->item->name) .'</td>
-		<td align="center" style="width: 40;">'. h($salesOrderRows->quantity) .'</td>
-		<td style="width: 40;">'. $this->Number->format($salesOrderRows->rate,[ 'places' => 2]) .'</td>
-		<td style="width: 40;">'. $this->Number->format($salesOrderRows->amount,[ 'places' => 2]) .'</td>
-		<td style="width: 55;">'. h($salesOrderRows->excise_duty) .'</td>
-		<td style="width: 60;">'. $this->Number->format($salesOrderRows->so_sale_tax,[ 'places' => 2]) .'</td>
+		<td width="40" valign="top" align="center">'. h($salesOrderRows->quantity) .'</td>
+		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($salesOrderRows->rate,[ 'places' => 2]) .'</td>
+		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($salesOrderRows->amount,[ 'places' => 2]) .'</td>
+		<td align="center">'. h($salesOrderRows->excise_duty) .'</td>
+		<td align="right" >'. $this->Number->format($salesOrderRows->so_sale_tax,[ 'places' => 2]) .'</td>
 	</tr>';
 	if(!empty($salesOrderRows->description)){
 		$html.='
 		<tr class="even">
 			<td></td>
-			<td colspan="6" style="text-align: justify;"><b>Description: </b>'. $this->Text->autoParagraph(h($salesOrderRows->description)) .'</td>
+			<td colspan="6" style="text-align: justify;"><b> </b>'. $this->Text->autoParagraph(h($salesOrderRows->description)) .'</td>
 		</tr>';
 	}
 endforeach;
@@ -213,9 +213,11 @@ $html.='<div align="center">
 		<br/>
 		<span><b>Edited by</b></span><br/>
 		<span>'. h($salesOrder->editor->name) .'</span><br/>
-		<span>'. h($salesOrder->editor->designation->name) .'</span><br/>
-		<span>'. h($salesOrder->editor->mobile) .'</span><br/>
-		<span>'. h($salesOrder->editor->email) .'</span>
+		
+		On '. h(date("d-m-Y",strtotime($salesOrder->edited_on))).','. h(date("h:i:s A",strtotime($salesOrder->edited_on_time))).'<br/>
+		
+		
+		
 		</div>';
 }
 			
@@ -225,10 +227,14 @@ $html.='</td>
 			<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$salesOrder->creator->signature.' height="50px" style="height:50px;"/>
 			<br/>
 			<span><b>Created by</b></span><br/>
-			<span>'. h($salesOrder->creator->name) .'</span><br/>
-			<span>'. h($salesOrder->creator->designation->name) .'</span><br/>
-			<span>'. h($salesOrder->creator->mobile) .'</span><br/>
-			<span>'. h($salesOrder->creator->email) .'</span>
+			
+			<span>'. h($salesOrder->creator->name).' </span><br/>
+			On '. h(date("d-m-Y",strtotime($salesOrder->created_on))).','. h(date("h:i:s A",strtotime($salesOrder->created_on_time))).'<br/>
+			
+			
+			
+		
+			
 			</div>
 		</td>';
 			
