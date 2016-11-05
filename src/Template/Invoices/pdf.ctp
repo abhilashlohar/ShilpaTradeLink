@@ -167,9 +167,16 @@ $html.='</table><br/>';
  	
 $html.='</table><br/>';	
 $temp=4;
-if($invoice->pnf==0)
+if($invoice->pnf==0 && $invoice->sale_tax_per==0)
 {
-	$temp=3;
+	$temp=2;
+}
+else
+{
+		if($invoice->pnf==0 !! $invoice->sale_tax_per==0)
+			{
+				$temp=3;
+			}
 }
 
 
@@ -248,7 +255,16 @@ $html.='
 			$html.='	
 			
 			<tr>
-			<td colspan="3"><b>Amount in words: </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h($this->NumberWords->convert_number_to_words($paisa)) .' Paisa</td>
+			
+			
+			
+			
+			
+
+			
+			
+				
+				<td colspan="3"><b>Amount in words: </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h($this->NumberWords->convert_number_to_words($paisa)) .' Paisa</td>
 			</tr>
 		</tbody>
 	</table>'; 
