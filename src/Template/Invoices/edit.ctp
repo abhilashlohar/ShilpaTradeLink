@@ -143,7 +143,7 @@
 			<table class="table tableitm" id="tbl2">
 				<tr>
 					<td  align="right">
-					<b>P&F <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
+					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
 					<?php if($invoice->discount_type=='1'){ ?>
 						<div class="input-group col-md-2"  id="pnf_text">
 							<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='<?= h($invoice->discount_per) ?>'><span class="input-group-addon">%</span>
