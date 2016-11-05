@@ -218,7 +218,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Additional Note</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional Note']); ?>
+							<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional Note','rows'=>'5']); ?>
 						</div>
 					</div>
 				</div>

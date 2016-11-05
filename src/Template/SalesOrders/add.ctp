@@ -46,7 +46,8 @@
 							<?php
 							$options=array();
 							foreach($customers as $customer){
-								$options[]=['text' => $customer->customer_name, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
+								$merge=$customer->customer_name.'	('.$customer->alias.')';
+								$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
 							}
 							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 						</div>
@@ -147,26 +148,84 @@
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$quotation_rows->id; ?>'>
-							<td colspan="6"><?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','placeholder'=>'Description','rows'=>'3','value' => @$quotation_rows->description]); ?></td>
+							<td colspan="6"><?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','placeholder'=>'Description','rows'=>'6','value' => @$quotation_rows->description]); ?></td>
 							<td></td>
 						</tr>
 					<?php $q++; endforeach; } ?>
 				</tbody>
 			</table>
-			<table class="table" id="tbl2">
-				<tbody>
-					<tr>
-						<td align="right"><b>Total</b></td>
-						<td width="200"><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','value' => @$quotation->total]); ?></td>
-						<td width="70"></td>
-					</tr>
-					<tr>
-						<td colspan="3">
-						<label class="control-label">Additional Note </label>
-						<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional Note']); ?></td>
-					</tr>
-				</tbody>
-			</table> 
+						<table class="table tableitm" id="tbl2">
+				<tr>
+					<td  align="right">
+					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
+					<div class="input-group col-md-2" style="display:none;" id="discount_text">
+						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
+					</div>
+					</td>
+					<td><?php echo $this->Form->input('discount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
+				</tr>
+				<?php if(in_array('Yes',@$ed_des) or $process_status=="New") { ?>
+				<tr style="background-color:#e6faf9;">
+					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:right']]); ?> </b></td>
+					<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty','value' => 0]); ?></td>
+				</tr>
+				<?php } ?>
+				<tr>
+					<td align="right"><b>Total</b></td>
+					<td width="20%"><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','value' => 0,'step'=>0.01,'readonly']); ?></td>
+				</tr>
+				<tr>
+					<td  align="right">
+					<b>P&F <label><?php echo $this->Form->input('pnf_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'pnfper']); ?></label>(in %)</b>
+					<div class="input-group col-md-2" style="display:none;" id="pnf_text">
+						<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
+					</div>
+					</td>
+					<td><?php echo $this->Form->input('pnf', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01]); ?></td>
+				</tr>
+				<tr>
+					<td  align="right"><b>Total after P&F </b></td>
+					<td><?php echo $this->Form->input('total_after_pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total after P&F','readonly','step'=>0.01]); ?></td>
+				</tr>
+				<tr>
+					<td  align="right">
+						<?php if($process_status!="New"){ ?>
+							<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" />
+							<div class="input-group col-md-2">
+							<div class="input-group">
+							<input type="text" name="sale_tax_per" class="form-control input-sm" readonly><span class="input-group-addon">%</span>
+							</div>
+							</div>
+						
+						<?php }else{ ?>
+						<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" />
+						<div class="input-group col-md-2">
+							<div class="input-group">
+						<?php						
+							$options=[];
+							foreach($SaleTaxes as $SaleTaxe){
+								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
+							}
+							echo $this->Form->input('sale_tax_per', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); 
+						} ?>
+							</div>
+						</div>
+						
+					</td>
+					<td><?php echo $this->Form->input('sale_tax_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01]); ?></td>
+				</tr>
+				<tr>
+					<td  align="right">
+					<b>Fright Amount </b>
+					<?php echo $this->Form->input('fright_text', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional text for Fright Amount','style'=>['text-align:right']]); ?>
+					</td>
+					<td><?php echo $this->Form->input('fright_amount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01]); ?></td>
+				</tr>
+				<tr>
+					<td  align="right"><b>Grand Total </b></td>
+					<td><?php echo $this->Form->input('grand_total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Grand Total','readonly','step'=>0.01]); ?></td>
+				</tr>
+			</table>
 			
 			
 			<div class="row">
@@ -282,7 +341,7 @@
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 		<tr class="tr2">
-			<td colspan="6"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1']); ?></td>
+			<td colspan="6"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'4']); ?></td>
 			<td></td>
 		</tr>
 	</tbody>

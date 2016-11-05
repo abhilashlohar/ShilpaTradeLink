@@ -77,6 +77,8 @@ class InvoicesTable extends Table
 			'foreignKey' => 'created_by',
 			'propertyName' => 'creator',
 		]);
+		
+		
     }
 
     /**
