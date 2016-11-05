@@ -51,7 +51,7 @@ $html = '
 		<table width="100%">
 			<tr>
 				<td width="50%">
-				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$salesOrder->company->logo.' height="70px" style="height:70px;margin-top:5px;"/>
+				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$salesOrder->company->logo.' height="80px" style="height:80px;margin-top:5px;"/>
 				</td>
 				<td align="right" width="50%" style="font-size: 12px;">
 				<span style="font-size: 16px;">'. h($salesOrder->company->name) .'</span><br/>

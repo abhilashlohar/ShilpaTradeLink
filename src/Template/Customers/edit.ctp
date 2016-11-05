@@ -18,6 +18,12 @@
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
+							<label class="control-label">Alise <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('alias', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Customer Name']); ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
 							<label class="control-label">District <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm']); ?>
 						</div>

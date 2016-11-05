@@ -136,6 +136,7 @@ class InvoicesController extends AppController
         if ($this->request->is('post')) {
 			
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
+			//pr ($invoice); exit;
 			$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date));
 			$invoice->date_created=date("Y-m-d",strtotime($invoice->date_created));
 			$invoice->created_by=$s_employee_id;
