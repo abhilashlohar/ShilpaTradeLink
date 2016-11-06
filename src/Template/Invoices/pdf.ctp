@@ -10,6 +10,8 @@ $dompdf = new Dompdf($options);
 $dompdf = new Dompdf();
 
 
+
+
 $html = '
 <html>
 <head>
@@ -171,14 +173,13 @@ if($invoice->pnf==0 && $invoice->sale_tax_per==0)
 {
 	$temp=2;
 }
-else
+else if($invoice->pnf!=0 && $invoice->sale_tax_per==0 || $invoice->pnf==0 && $invoice->sale_tax_per!=0)
 {
-		if($invoice->pnf==0 !! $invoice->sale_tax_per==0)
-			{
-				$temp=3;
-			}
+	$temp=3;
 }
-
+else{
+	$temp=4;	
+}
 
 $html.='
 <table width="100%" class="table_rows">
@@ -222,12 +223,17 @@ $html.='
 			$html.='<tr>	
 				<td style="text-align:right;">Total after P&F</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->total_after_pnf,[ 'places' => 2]).'</td>
-			</tr>
+			</tr>';
+				
+				
+			if($invoice->sale_tax_per>0){
+				$html.='
+			
 			<tr>
 				<td style="text-align:right;">'.h($invoice->sale_tax_description).'('.$this->Number->format($invoice->sale_tax_per,[ 'places' => 2]).'%)</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->sale_tax_amount,[ 'places' => 2]).'</td>
 			</tr>';
-			
+			}
 						
 			$tot=1;
 			if($invoice->fright_amount > 0 ){ $tot=2;}
