@@ -39,7 +39,7 @@
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Tin No <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Tin No </label>
 							<?php echo $this->Form->input('tin_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Tin No']); ?>
 						</div>
 					</div>
@@ -54,13 +54,13 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Pan No <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Pan No </label>
 							<?php echo $this->Form->input('pan_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Pan No']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Ecc No <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Ecc No </label>
 							<?php echo $this->Form->input('ecc_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Ecc No']); ?>
 						</div>
 					</div>
@@ -82,7 +82,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Customer Group</label>
-							<?php echo $this->Form->input('customer_group_id', ['options'=>$CustomerGroups,'label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('customer_group_id', ['options'=>$CustomerGroups,'empty' => "--Select Company Group--",'label' => false,'class' => 'form-control input-sm']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -212,15 +212,7 @@ $(document).ready(function() {
 			customer_seg_id : {
 				  required: true,
 			},
-			tin_no  :{
-				required: true
-			},
-			pan_no:{
-				required: true,
-			},
-			ecc_no  :{
-				required: true,
-			},
+			
 			employee_id : {
 				  required: true,
 			},

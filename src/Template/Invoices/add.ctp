@@ -172,9 +172,9 @@
 					</td>
 					<td><?php echo $this->Form->input('discount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
 				</tr>
-				<?php if(in_array('Yes',@$ed_des) or $process_status=="New") { ?>
+				<?php if(in_array('Yes',@$ed_des)) { ?>
 				<tr style="background-color:#e6faf9;">
-					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:right']]); ?> </b></td>
+					<td align="right"><b><?php echo $this->Form->input('ed_description', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description']); ?> </b></td>
 					<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty','value' => 0]); ?></td>
 				</tr>
 				<?php } ?>
