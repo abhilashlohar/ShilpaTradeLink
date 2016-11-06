@@ -150,8 +150,7 @@ if($invoice->discount_type=='1'){ $discount_text='Discount @ '.$invoice->discoun
 $grand_total=explode('.',$invoice->grand_total);
 $rupees=$grand_total[0];
 if(sizeof($grand_total)==2){
-	$paisa=$grand_total[1];
-	
+	$paisa=(int)$grand_total[1];
 }else{ $paisa=""; }
 $html.='<tr>
 				
