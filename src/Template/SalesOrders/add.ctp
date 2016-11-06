@@ -47,7 +47,7 @@
 							$options=array();
 							foreach($customers as $customer){
 								$merge=$customer->customer_name.'	('.$customer->alias.')';
-								$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
+								$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id, 'transporter_id' => $customer->transporter_id, 'documents_courier_id' => $customer->documents_courier_id];
 							}
 							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 						</div>
@@ -226,18 +226,19 @@
 					<td><?php echo $this->Form->input('grand_total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Grand Total','readonly','step'=>0.01]); ?></td>
 				</tr>
 			</table>
+
 			
 			
 			<div class="row">
 				<div class="col-md-4">
 					<div class="form-group">
 						<label class="control-label">Transporter <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('transporter_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm','placeholder'=>'Transporter']); ?>
+						<?php echo $this->Form->input('transporter_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm','value' => @$quotation->customer_id]); ?>
 					</div>
 					<br/>
 					<div class="form-group">
 						<label class="control-label">Documents Courier <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('documents_courier_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm','placeholder'=>'Documents Courier']); ?>
+						<?php echo $this->Form->input('documents_courier_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm','value' => @$quotation->customer_id]); ?>
 					</div>
 				</div>
 				<div class="col-md-4">
@@ -683,6 +684,12 @@ $(document).ready(function() {
 		
 		var employee_id=$('select[name="customer_id"] option:selected').attr("employee_id");
 		$("select[name=employee_id]").val(employee_id);
+		
+		var transporter_id=$('select[name="customer_id"] option:selected').attr("transporter_id");
+		$("select[name=transporter_id]").val(transporter_id);
+		
+		var documents_courier_id=$('select[name="customer_id"] option:selected').attr("documents_courier_id");
+		$("select[name=documents_courier_id]").val(documents_courier_id);
 		
     });
 	

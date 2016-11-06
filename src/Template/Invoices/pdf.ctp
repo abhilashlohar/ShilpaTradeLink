@@ -153,16 +153,19 @@ if(sizeof($grand_total)==2){
 	$paisa=$grand_total[1];
 	
 }else{ $paisa=""; }
+
+if($invoice->discount>0){
 $html.='<tr>
 				
 				<td colspan="4" style="text-align:right;">'.$discount_text.'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->discount,[ 'places' => 2]).'</td>
-				
-			</tr>
-						<tr>
+</tr>';
+}
+if($invoice->exceise_duty>0){
+				$html.='<tr>
 				<td colspan="4" style="text-align:left;">Exceise Duty</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->exceise_duty,[ 'places' => 2]).'</td>
-			</tr>';	
+</tr>';	}
 
 $html.='</table><br/>';
 
@@ -261,16 +264,7 @@ $html.='
 			$html.='	
 			
 			<tr>
-			
-			
-			
-			
-			
-
-			
-			
-				
-				<td colspan="3"><b>Amount in words: </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h($this->NumberWords->convert_number_to_words($paisa)) .' Paisa</td>
+				<td colspan="3"><b>Amount in words: </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td>
 			</tr>
 		</tbody>
 	</table>'; 
