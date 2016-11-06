@@ -4,7 +4,7 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Quotations</span> 
 			<?php if($pull_request=="true"){ ?>
-			- Select a quotation to convert into sales-order
+			: Select a quotation to convert into sales-order
 			<?php } ?>
 		</div>
 		<div class="actions">

@@ -3,14 +3,17 @@
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Sales Orders</span>
+			<?php if($pull_request=="true"){ ?>
+			: Select a Sales-Order to convert into Invoice
+			<?php } ?>
 		</div>
 		<div class="actions">
 			<div class="btn-group">
 			<?php
 			if($status==null or $status=='Pending'){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
 			if($status=='Converted Into Invoice'){ $class2='btn btn-primary'; }else{ $class2='btn btn-default'; }
-			
 			?>
+			<?php if($pull_request!="true"){ ?>
 				<?= $this->Html->link(
 					'Pending',
 					'/Sales-Orders/index/Pending',
@@ -21,6 +24,7 @@
 					'/Sales-Orders/index/Converted Into Invoice',
 					['class' => $class2]
 				); ?>
+			<?php } ?>
 			</div>
 		</div>
 	</div>
@@ -28,6 +32,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<form method="GET" >
+				<input type="hidden" name="pull-request" value="<?php echo @$pull_request; ?>">
 				<table class="table table-condensed">
 					<thead>
 						<tr>
@@ -95,9 +100,12 @@
 							<td class="actions">
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $salesOrder->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
 								
-								<?php if($status!='Converted Into Invoice' and in_array(4,$allowed_pages)){ ?> 
+								<?php if($status!='Converted Into Invoice' and in_array(4,$allowed_pages) and $pull_request!="true"){ ?> 
 									<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $salesOrder->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 								<?php } ?>
+								<?php if($pull_request=="true"){
+									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Invoice','/Invoices/Add?sales-order='.$salesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+								} ?>
 								<!--<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
 									['action' => 'delete', $salesOrder->id], 
 									[

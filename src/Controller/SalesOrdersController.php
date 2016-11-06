@@ -27,8 +27,8 @@ class SalesOrdersController extends AppController
 		$po_no=$this->request->query('po_no');
 		$From=$this->request->query('From');
 		$To=$this->request->query('To');
-		$page=$this->request->query('page');
-		$this->set(compact('sales_order_no','customer','po_no','product','From','To','page','company_alise','file'));
+		$pull_request=$this->request->query('pull-request');
+		$this->set(compact('sales_order_no','customer','po_no','product','From','To','company_alise','file','pull_request'));
 		if(!empty($company_alise)){
 			$where['SalesOrders.so1 LIKE']='%'.$company_alise.'%';
 		}
