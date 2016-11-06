@@ -158,11 +158,12 @@ $html.='<tr>
 				
 				<td colspan="4" style="text-align:right;">'.$discount_text.'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->discount,[ 'places' => 2]).'</td>
+
 </tr>';
 }
 if($invoice->exceise_duty>0){
 				$html.='<tr>
-				<td colspan="4" style="text-align:left;">Exceise Duty</td>
+				<td colspan="4" style="text-align:justify;">'. $this->Text->autoParagraph(h($invoice->ed_description)) .'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->exceise_duty,[ 'places' => 2]).'</td>
 </tr>';	}
 
@@ -243,7 +244,7 @@ $html.='
 				<td rowspan="'.$tot.'">'. h($invoice->additional_note) .'</td>';
 				if($invoice->fright_amount > 0 ){
 				$html.='	
-				<td style="text-align:right;">'. h($invoice->fright_text) .'</td>
+				<td style="text-align:justify;">'. h($invoice->fright_text) .'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->fright_amount,[ 'places' => 2]) .'</td>
 				</tr>';
 				$html.='<tr>

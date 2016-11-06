@@ -143,7 +143,7 @@
 								$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 							}
 							echo $this->Form->input('sales_order_rows.'.$q.'.so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
-							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_description', ['type'=>'hidden','label' => false]); ?>
+							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_description', ['label' => false]); ?>
 							</td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
@@ -164,12 +164,12 @@
 					</td>
 					<td><?php echo $this->Form->input('discount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
 				</tr>
-				<?php if(in_array('Yes',@$ed_des) or $process_status=="New") { ?>
+				
 				<tr style="background-color:#e6faf9;">
 					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:right']]); ?> </b></td>
 					<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty','value' => 0]); ?></td>
 				</tr>
-				<?php } ?>
+				
 				<tr>
 					<td align="right"><b>Total</b></td>
 					<td width="20%"><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','value' => 0,'step'=>0.01,'readonly']); ?></td>
