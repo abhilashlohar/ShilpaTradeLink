@@ -125,7 +125,7 @@ class InvoicesController extends AppController
 						'SalesOrderRows.Items' => function ($q) {
 						   return $q
 								->where(['SalesOrderRows.quantity > SalesOrderRows.processed_quantity']);
-						}
+						},'Companies'
 					]
 			]);
 			$process_status='Pulled From Sales-Order';
@@ -136,10 +136,12 @@ class InvoicesController extends AppController
         if ($this->request->is('post')) {
 			
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
-			//pr ($invoice); exit;
+			
 			$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date));
-			$invoice->date_created=date("Y-m-d",strtotime($invoice->date_created));
+			
 			$invoice->created_by=$s_employee_id;
+			$invoice->company_id=$sales_order->company_id;
+			$invoice->date_created=date("Y-m-d");
 			
             if ($this->Invoices->save($invoice)) {
 				if(!empty($sales_order_id)){

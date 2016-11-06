@@ -5,7 +5,7 @@
 			<span class="caption-subject font-blue-steel uppercase">Add Invoice</span>
 		</div>
 		<div class="actions">
-			<a href="#myModal1" role="button" class="btn blue pull-right" data-toggle="modal">Pull Sales Order</a>
+			<?php echo $this->Html->link('<i class="icon-home"></i> Pull Sales-Order','/SalesOrders/index?pull-request=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
 		</div>
 	</div>
 	<?php if($process_status!="New"){ ?>
@@ -17,12 +17,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Company</label>
 						<div class="col-md-9">
-							<?php 
-							$options=array();
-							foreach($companies as $companie){
-								$options[]=['text' => $companie->name, 'value' => $companie->id, 'alias' => $companie->alias];
-							}
-							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me','value' => @$sales_order->company_id] ); ?>
+							<?php echo @$sales_order->company->name; ?>
 						</div>
 					</div>
 				</div>
@@ -115,7 +110,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">PO DATE  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('po_date', ['type' => 'text','label' => false,'options' => $employees,'class' => 'form-control input-sm  date-picker','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d','value' => @date("d-m-Y",strtotime($sales_order->po_date))]); ?>
+							<?php echo $this->Form->input('po_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm  date-picker','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d','value' => @date("d-m-Y",strtotime($sales_order->po_date))]); ?>
 						</div>
 					</div>
 				</div>
