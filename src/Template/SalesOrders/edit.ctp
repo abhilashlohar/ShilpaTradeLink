@@ -135,7 +135,7 @@
 						<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 					</tr>
 					<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
-						<td colspan="6"><?php echo $this->Form->textarea('sales_order_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value'=>$sales_order_rows->description]); ?></td>
+						<td colspan="6"><?php echo $this->Form->textarea('sales_order_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'5','value'=>$sales_order_rows->description]); ?></td>
 						<td></td>
 					</tr>
 					<?php $q++; endforeach; ?>
@@ -270,7 +270,7 @@
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 		<tr class="tr2">
-			<td colspan="6"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1']); ?></td>
+			<td colspan="6"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'5']); ?></td>
 			<td></td>
 		</tr>
 	</tbody>

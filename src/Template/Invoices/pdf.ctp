@@ -10,6 +10,8 @@ $dompdf = new Dompdf($options);
 $dompdf = new Dompdf();
 
 
+
+
 $html = '
 <html>
 <head>
@@ -51,7 +53,7 @@ $html = '
 		<table width="100%">
 			<tr>
 				<td width="50%">
-				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$invoice->company->logo.' height="50px" style="height:50px;"/>
+				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$invoice->company->logo.' height="80px" style="height:80px;"/>
 				</td>
 				<td align="right" width="50%" style="font-size: 12px;">
 				<span style="font-size: 16px;">'. h($invoice->company->name) .'</span><br/>
@@ -63,7 +65,7 @@ $html = '
 			<tr>
 				<td colspan="2">
 					<div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">INVOICE</div>
-					<div style="border:solid 2px #0685a8;margin-bottom:15px;margin-top: 5px;"></div>
+					<div style="border:solid 2px #0685a8;margin-bottom:35px;margin-top: 5px;"></div>
 				</td>
 			</tr>
 		</table>
@@ -76,11 +78,9 @@ $html.='
 	<table width="100%">
 		<tr>
 			<td width="50%">
-				To,<br/>
+				
 				<span>'. h(($invoice->customer->customer_name)) .'</span><br/>
 				'. $this->Text->autoParagraph(h($invoice->customer_address)) .'
-				<span>PO No. :'. h($invoice->customer_po_no) .'</span><br/>
-				<span>PO Date. :'. h($invoice->po_date) .'</span><br/>
 				<span>TIN No. :'. h($invoice->customer->tin_no) .'</span><br/>
 				<span>PAN No. :'. h($invoice->customer->pan_no) .'</span>
 			</td>
@@ -116,6 +116,13 @@ $html.='
 $html.='<br/>
 <table width="100%" class="table_rows">
 		<tr>
+			
+			<td colspan=5 align="">
+			Your Purchase Order No.'. h($invoice->customer_po_no) .' dated '. h(date("d-m-Y",strtotime($invoice->po_date))) .'
+			</td>
+			
+		</tr>
+		<tr>
 			<th>S No</th>
 			<th>Item Description</th>
 			<th>Quantity</th>
@@ -135,19 +142,50 @@ $html.='
 	</tr>';
 endforeach; 
 
+
+
 if($invoice->pnf_type=='1'){ $pnf_text='P&F @ '.$invoice->pnf_per.'%'; }else{ $pnf_text='P&F'; }
 if($invoice->discount_type=='1'){ $discount_text='Discount @ '.$invoice->discount_per.'%'; }else{ $discount_text='Discount'; }
 
 $grand_total=explode('.',$invoice->grand_total);
 $rupees=$grand_total[0];
-$paisa=$grand_total[1];
+if(sizeof($grand_total)==2){
+	$paisa=$grand_total[1];
+	
+}else{ $paisa=""; }
+$html.='<tr>
+				
+				<td colspan="4" style="text-align:right;">'.$discount_text.'</td>
+				<td style="text-align:right;">'. $this->Number->format($invoice->discount,[ 'places' => 2]).'</td>
+				
+			</tr>
+						<tr>
+				<td colspan="4" style="text-align:left;">Exceise Duty</td>
+				<td style="text-align:right;">'. $this->Number->format($invoice->exceise_duty,[ 'places' => 2]).'</td>
+			</tr>';	
 
-$html.='</table><br/>';		
+$html.='</table><br/>';
+
+ 	
+$html.='</table><br/>';	
+$temp=4;
+if($invoice->pnf==0 && $invoice->sale_tax_per==0)
+{
+	$temp=2;
+}
+else if($invoice->pnf!=0 && $invoice->sale_tax_per==0 || $invoice->pnf==0 && $invoice->sale_tax_per!=0)
+{
+	$temp=3;
+}
+else{
+	$temp=4;	
+}
+
 $html.='
 <table width="100%" class="table_rows">
 	<tbody>
 			<tr>
-				<td rowspan="6">
+				<td rowspan="'.$temp.'">
 					<b style="font-size:13px;"><u>Our Bank Details</u></b>
 					<table width="100%" class="table2">
 						<tr>
@@ -168,46 +206,74 @@ $html.='
 						</tr>
 					</table>
 				</td>
-				<td style="text-align:right;">'.$discount_text.'</td>
-				<td style="text-align:right;">'. $this->Number->format($invoice->discount,[ 'places' => 2]).'</td>
-			</tr>
-			<tr>
-				<td style="text-align:justify;">'. h($invoice->ed_description).'</td>
-				<td style="text-align:right;" width="100">'. $this->Number->format($invoice->exceise_duty,[ 'places' => 2]).'</td>
-			</tr>
-			<tr>
 				<td  style="text-align:right;">Total</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->total,[ 'places' => 2]).'</td>
 			</tr>
+			';
+				
+				
+			if($invoice->pnf>0){
+				$html.='
 			<tr>
 				<td style="text-align:right;">'.h($pnf_text).'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->pnf,[ 'places' => 2]).'</td>
-			</tr>
-			<tr>
+				</tr>';
+			}	
+		
+			$html.='<tr>	
 				<td style="text-align:right;">Total after P&F</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->total_after_pnf,[ 'places' => 2]).'</td>
-			</tr>
+			</tr>';
+				
+				
+			if($invoice->sale_tax_per>0){
+				$html.='
+			
 			<tr>
 				<td style="text-align:right;">'.h($invoice->sale_tax_description).'('.$this->Number->format($invoice->sale_tax_per,[ 'places' => 2]).'%)</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->sale_tax_amount,[ 'places' => 2]).'</td>
-			</tr>
-			<tr>
-				<td rowspan="2">'. h($invoice->additional_note) .'</td>
-				<td style="text-align:justify;">Fright Amount<br/>'. h($invoice->fright_text) .'</td>
+			</tr>';
+			}
+						
+			$tot=1;
+			if($invoice->fright_amount > 0 ){ $tot=2;}
+				$html.='<tr>
+				<td rowspan="'.$tot.'">'. h($invoice->additional_note) .'</td>';
+				if($invoice->fright_amount > 0 ){
+				$html.='	
+				<td style="text-align:right;">'. h($invoice->fright_text) .'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->fright_amount,[ 'places' => 2]) .'</td>
-			</tr>
-			<tr>
-				<td style="text-align:right;"><b>GRAND TOTAL</b></td>
+				</tr>';
+				$html.='<tr>
+					
+				<td style="text-align:right"; rowspan="1"><b>GRAND TOTAL</b></td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->grand_total,[ 'places' => 2]) .'</td>
-			</tr>
+			</tr>';
+				}
+				else {
+					
+				$html.='					
+				<td style="text-align:right"; rowspan="1"><b>GRAND TOTAL</b></td>
+				<td style="text-align:right;">'. $this->Number->format($invoice->grand_total,[ 'places' => 2]) .'</td>
+			</tr>';
+				}
+			
+			$html.='	
+			
 			<tr>
-				<td colspan="3"><b>Amount in words: </b>'. h($this->NumberWords->convert_number_to_words($rupees)) .'  Rupees and '. h($this->NumberWords->convert_number_to_words($paisa)) .' Paisa</td>
+			
+			
+			
+			
+			
+
+			
+			
+				
+				<td colspan="3"><b>Amount in words: </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h($this->NumberWords->convert_number_to_words($paisa)) .' Paisa</td>
 			</tr>
 		</tbody>
 	</table>'; 
-
-	
-
 		
 $html .= '<div id="footer">
    <table width="100%" class="divFooter">
@@ -215,7 +281,7 @@ $html .= '<div id="footer">
 				<td >
 					<table>
 						<tr>
-							<td collapse="2">Interest @15% per annum shall be charged if not paid with in agreed terms. Invoice is Subject to Udaipur</td>
+							<td collapse="2">Interest @15% per annum shall be charged if not paid with in agreed terms. Invoice is Subject to Udaipur jurisdiction</td>
 						</tr>
 					</table>
 					<table>
@@ -235,6 +301,7 @@ $html .= '<div id="footer">
 				</td>
 				<td align="right" >
 					<div align="center">
+						<span><b>'. h($invoice->company->name) .'</b></span><br/>
 						<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$invoice->creator->signature.' height="50px" style="height:50px;"/>
 						<br/>
 						<span><b>Created by</b></span><br/>

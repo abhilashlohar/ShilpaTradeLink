@@ -143,13 +143,13 @@
 			<table class="table tableitm" id="tbl2">
 				<tr>
 					<td  align="right">
-					<b>P&F <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
+					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
 					<?php if($invoice->discount_type=='1'){ ?>
-						<div class="input-group col-md-2"  id="pnf_text">
+						<div class="input-group col-md-2"  id="discount_text">
 							<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='<?= h($invoice->discount_per) ?>'><span class="input-group-addon">%</span>
 						</div>
 					<?php }else{ ?>
-						<div class="input-group col-md-2"  id="pnf_text" style="display:none;">
+						<div class="input-group col-md-2"  id="discount_text" style="display:none;">
 							<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='0'><span class="input-group-addon">%</span>
 						</div>
 					<?php } ?>
@@ -218,7 +218,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Additional Note</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional Note']); ?>
+							<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional Note','rows'=>'5']); ?>
 						</div>
 					</div>
 				</div>
@@ -382,15 +382,7 @@ $(document).ready(function() {
 		$('input[name="in1"]').val(alias);
     });
 	
-	$("#pnfper").on('click',function(){
-		if($(this).is(':checked')){
-			$("#pnf_text").show();
-			$('input[name="pnf"]').attr('readonly','readonly');
-		}else{
-			$("#pnf_text").hide();
-			$('input[name="pnf"]').removeAttr('readonly');
-		}
-	})
+	
 	
 	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
 		calculate_total();
@@ -406,6 +398,25 @@ $(document).ready(function() {
 	$('.addrow').die().live("click",function() { 
 		add_row();
     });
+	$("#pnfper").on('click',function(){
+		if($(this).is(':checked')){
+			$("#pnf_text").show();
+			$('input[name="pnf"]').attr('readonly','readonly');
+		}else{
+			$("#pnf_text").hide();
+			$('input[name="pnf"]').removeAttr('readonly');
+		}
+	});
+	$("#discount_per").on('click',function(){
+		if($(this).is(':checked')){
+			$("#discount_text").show();
+			$('input[name="discount"]').attr('readonly','readonly');
+		}else{
+			$("#discount_text").hide();
+			$('input[name="discount"]').removeAttr('readonly');
+		}
+		calculate_total();
+	});
 	
 	$('.deleterow').die().live("click",function() {
 			var l=$(this).closest("table tbody").find("tr").length;

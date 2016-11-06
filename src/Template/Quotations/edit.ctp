@@ -26,7 +26,7 @@
 					<div class="form-group">
 						<label class="col-md-8 control-label">Date</label>
 						<div class="col-md-4">
-							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y",strtotime($quotation->created_on)),'readonly']); ?>
+							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
 						</div>
 					</div>
 				</div>

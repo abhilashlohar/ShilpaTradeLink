@@ -24,7 +24,7 @@
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Unit <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Unit </label>
 							<?php echo $this->Form->input('unit_id', ['options' => $units,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Name']); ?>
 						</div>
 					</div>
@@ -57,19 +57,19 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Quantity <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Quantity </label>
 							<?php echo $this->Form->input('ob_quantity', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity']); ?>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Rate <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Rate </label>
 							<?php echo $this->Form->input('ob_rate', ['label' => false,'type'=>'text','class' => 'form-control input-sm allLetter','placeholder'=>'Rate']); ?>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Value <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Value </label>
 							<?php echo $this->Form->input('ob_value', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Value','readonly']); ?>
 						</div>
 					</div>
@@ -104,11 +104,11 @@
 				
 				<div class="row">
 					<div class="col-md-4">
-						<label class="control-label">Used By Companies <span class="required" aria-required="true">*</span></label>
+						<label class="control-label">Used By Companies</label>
 						<?php echo $this->Form->input('companies._ids', ['label' => false,'options' => $Companies,'multiple' => 'checkbox']); ?>
 					</div>
 					<div class="col-md-4">
-						<label class="control-label">Source <span class="required" aria-required="true">*</span></label>
+						<label class="control-label">Source</label>
 						<div class="checkbox-list">
 							<?php echo $this->Form->input('sources._ids', ['label' => false,'options' => $sources,'multiple' => 'checkbox','class' => 'form-control input-sm']); ?>
 						</div>
