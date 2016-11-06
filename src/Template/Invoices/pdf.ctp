@@ -159,7 +159,7 @@ $html.='<tr>
 				
 			</tr>
 						<tr>
-				<td colspan="4" style="text-align:left;">Exceise Duty</td>
+				<td colspan="4" style="text-align:left;">'. $this->Text->autoParagraph(h($invoice->ed_description)) .'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->exceise_duty,[ 'places' => 2]).'</td>
 			</tr>';	
 

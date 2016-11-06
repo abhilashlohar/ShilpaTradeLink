@@ -151,8 +151,8 @@
 							<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$sales_order_rows->amount,'readonly','step'=>0.01]); ?></td>
 							<td>
 								<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$sales_order_rows->id]); ?></label>
-								<?php echo $this->Form->input('q', ['label' => false,'type' => 'hidden','value' => @$sales_order_rows->so_sale_tax]); ?>
-								<?php echo $this->Form->input('sale_tax_description', ['type' => 'hidden','label' => false,'value' => @$sales_order_rows->sale_tax_description]); ?>
+								<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','value' => @$sales_order_rows->so_sale_tax]); ?>
+								<?php echo $this->Form->input('sale_tax_description', ['type' => 'text','label' => false,'value' => @$sales_order_rows->sale_tax_description]); ?>
 							</td>
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
