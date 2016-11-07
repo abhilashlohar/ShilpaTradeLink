@@ -40,6 +40,8 @@ class FilenamesTable extends Table
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'
         ]);
+		
+
     }
 
     /**
@@ -58,6 +60,14 @@ class FilenamesTable extends Table
             ->requirePresence('file2', 'create')
             ->notEmpty('file2');
 
+		$validator->add(
+				'file2', 
+				['unique' => [
+					'rule' => 'validateUnique', 
+					'provider' => 'table', 
+					'message' => 'Not unique']
+				]
+			);
         return $validator;
     }
 

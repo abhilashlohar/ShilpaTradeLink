@@ -152,16 +152,20 @@ $rupees=$grand_total[0];
 if(sizeof($grand_total)==2){
 	$paisa=(int)$grand_total[1];
 }else{ $paisa=""; }
+
+if($invoice->discount>0){
 $html.='<tr>
 				
 				<td colspan="4" style="text-align:right;">'.$discount_text.'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->discount,[ 'places' => 2]).'</td>
-				
-			</tr>
-						<tr>
-				<td colspan="4" style="text-align:left;">'. $this->Text->autoParagraph(h($invoice->ed_description)) .'</td>
+
+</tr>';
+}
+if($invoice->exceise_duty>0){
+				$html.='<tr>
+				<td colspan="4" style="text-align:justify;">'. $this->Text->autoParagraph(h($invoice->ed_description)) .'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->exceise_duty,[ 'places' => 2]).'</td>
-			</tr>';	
+</tr>';	}
 
 $html.='</table><br/>';
 
@@ -240,7 +244,7 @@ $html.='
 				<td rowspan="'.$tot.'">'. h($invoice->additional_note) .'</td>';
 				if($invoice->fright_amount > 0 ){
 				$html.='	
-				<td style="text-align:right;">'. h($invoice->fright_text) .'</td>
+				<td style="text-align:justify;">'. h($invoice->fright_text) .'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->fright_amount,[ 'places' => 2]) .'</td>
 				</tr>';
 				$html.='<tr>
@@ -260,16 +264,7 @@ $html.='
 			$html.='	
 			
 			<tr>
-			
-			
-			
-			
-			
-
-			
-			
-				
-				<td colspan="3"><b>Amount in words: </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h($this->NumberWords->convert_number_to_words($paisa)) .' Paisa</td>
+				<td colspan="3"><b>Amount in words: </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td>
 			</tr>
 		</tbody>
 	</table>'; 

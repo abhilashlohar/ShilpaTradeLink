@@ -47,7 +47,7 @@
 							$options=array();
 							foreach($customers as $customer){
 								$merge=$customer->customer_name.'	('.$customer->alias.')';
-								$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
+								$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id, 'transporter_id' => $customer->transporter_id, 'documents_courier_id' => $customer->customer_address[0]->transporter_id];
 							}
 							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 						</div>
@@ -195,18 +195,19 @@
 					<td><?php echo $this->Form->input('fright_amount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01]); ?></td>
 				</tr>
 			</table>
+
 			
 			
 			<div class="row">
 				<div class="col-md-4">
 					<div class="form-group">
 						<label class="control-label">Transporter <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('transporter_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm','placeholder'=>'Transporter']); ?>
+						<?php echo $this->Form->input('transporter_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm','value' => @$quotation->customer_id]); ?>
 					</div>
 					<br/>
 					<div class="form-group">
 						<label class="control-label">Documents Courier <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('documents_courier_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm','placeholder'=>'Documents Courier']); ?>
+						<?php echo $this->Form->input('documents_courier_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm','value' => @$quotation->customer_id]); ?>
 					</div>
 				</div>
 				<div class="col-md-4">
@@ -461,6 +462,29 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+	
+	
+	$("#pnfper").on('click',function(){
+		if($(this).is(':checked')){
+			$("#pnf_text").show();
+			$('input[name="pnf"]').attr('readonly','readonly');
+		}else{
+			$("#pnf_text").hide();
+			$('input[name="pnf"]').removeAttr('readonly');
+		}
+	})
+	
+	$("#discount_per").on('click',function(){
+		if($(this).is(':checked')){
+			$("#discount_text").show();
+			$('input[name="discount"]').attr('readonly','readonly');
+		}else{
+			$("#discount_text").hide();
+			$('input[name="discount"]').removeAttr('readonly');
+		}
+		calculate_total();
+	})
+	
 	<?php if($process_status=="New"){ ?> add_row(); 
 	$("#main_tb tbody tr.tr1").each(function(){
 		var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
@@ -587,17 +611,36 @@ $(document).ready(function() {
 			total=total+Amount;
 		});
 		
-		$('input[name="total"]').val(total.toFixed(2));
+		
+		if($("#discount_per").is(':checked')){
+			var discount_per=parseFloat($('input[name="discount_per"]').val());
+			var discount_amount=(total*discount_per)/100;
+			if(isNaN(discount_amount)) { var discount_amount = 0; }
+			$('input[name="discount"]').val(discount_amount.toFixed(2));
+		}else{
+			var discount_amount=parseFloat($('input[name="discount"]').val());
+			if(isNaN(discount_amount)) { var discount_amount = 0; }
+		}
+		total=total-discount_amount
+		
 		var exceise_duty=parseFloat($('input[name="exceise_duty"]').val());
 		if(isNaN(exceise_duty)) { var exceise_duty = 0; }
-		var pnf=parseFloat($('input[name="pnf"]').val());
-		if(isNaN(pnf)) { var pnf = 0; }
-		var sale_tax=parseFloat($('input[name="sale_tax"]').val());
-		if(isNaN(sale_tax)) { var sale_tax = 0; }
-		var fright_amount=parseFloat($('input[name="fright_amount"]').val());
-		if(isNaN(fright_amount)) { var fright_amount = 0; }
-		grand_total=total+exceise_duty+pnf+sale_tax+fright_amount;
-		$('input[name="grand_total"]').val(grand_total.toFixed(2));
+		total=total+exceise_duty
+		$('input[name="total"]').val(total.toFixed(2));
+		
+		if($("#pnfper").is(':checked')){
+			var pnf_per=parseFloat($('input[name="pnf_per"]').val());
+			var pnf_amount=(total*pnf_per)/100;
+			if(isNaN(pnf_amount)) { var pnf_amount = 0; }
+			$('input[name="pnf"]').val(pnf_amount.toFixed(2));
+		}else{
+			var pnf_amount=parseFloat($('input[name="pnf"]').val());
+			if(isNaN(pnf_amount)) { var pnf_amount = 0; }
+		}
+		var total_after_pnf=total+pnf_amount;
+		if(isNaN(total_after_pnf)) { var total_after_pnf = 0; }
+		$('input[name="total_after_pnf"]').val(total_after_pnf.toFixed(2));
+		
 	}
 	
 	$('.select_address').on("click",function() { 
@@ -652,6 +695,12 @@ $(document).ready(function() {
 		
 		var employee_id=$('select[name="customer_id"] option:selected').attr("employee_id");
 		$("select[name=employee_id]").val(employee_id);
+		
+		var transporter_id=$('select[name="customer_id"] option:selected').attr("transporter_id");
+		$("select[name=transporter_id]").val(transporter_id);
+		
+		var documents_courier_id=$('select[name="customer_id"] option:selected').attr("documents_courier_id");
+		$("select[name=documents_courier_id]").val(documents_courier_id);
 		
     });
 	

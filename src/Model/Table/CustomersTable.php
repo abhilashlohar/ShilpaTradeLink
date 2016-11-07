@@ -114,9 +114,7 @@ class CustomersTable extends Table
             ->requirePresence('customer_name', 'create')
             ->notEmpty('customer_name');
 
-        $validator
-            ->requirePresence('tin_no', 'create')
-            ->notEmpty('tin_no');
+
 		
 		$validator
 			->integer('payment_terms')
@@ -129,13 +127,6 @@ class CustomersTable extends Table
             ->requirePresence('payment_terms', 'create')
             ->notEmpty('payment_terms');
 
-        $validator
-            ->requirePresence('pan_no', 'create')
-            ->notEmpty('pan_no');
-
-        $validator
-            ->requirePresence('ecc_no', 'create')
-            ->notEmpty('ecc_no');
 
 
         return $validator;

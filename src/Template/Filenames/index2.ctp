@@ -99,6 +99,7 @@
 						<th>Sr. No.</th>
 						<th>File</th>
 						<th>Customer</th>
+						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -107,9 +108,9 @@
 						<td><?= h(++$page_no) ?></td>
 						<td><?= h($filename->file1) ?>-<?= h($filename->file2) ?></td>
 						<td><?= h($filename->customer->customer_name) ?></td>
-						<!--<td class="actions">
+						<td class="actions">
 							<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $filename->id], ['confirm' => __('Are you sure you want to delete # {0}?', $filename->id)]) ?>
-						</td>-->
+						</td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
