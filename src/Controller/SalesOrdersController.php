@@ -18,6 +18,9 @@ class SalesOrdersController extends AppController
      */
     public function index($status=null)
     {
+		
+		$url=$this->request->here();
+		$url=parse_url($url,PHP_URL_QUERY);
 		$this->viewBuilder()->layout('index_layout');
 		$where=[];
 		$company_alise=$this->request->query('company_alise');
@@ -80,7 +83,78 @@ class SalesOrdersController extends AppController
 		
         $this->set(compact('salesOrders','status'));
         $this->set('_serialize', ['salesOrders']);
+		$this->set(compact('url'));
     }
+	
+	
+	 public function exportExcel($status=null)
+    {
+		$this->viewBuilder()->layout('');
+		$where=[];
+		$company_alise=$this->request->query('company_alise');
+		$sales_order_no=$this->request->query('sales_order_no');
+		$file=$this->request->query('file');
+		$customer=$this->request->query('customer');
+		$po_no=$this->request->query('po_no');
+		$From=$this->request->query('From');
+		$To=$this->request->query('To');
+		$pull_request=$this->request->query('pull-request');
+		$this->set(compact('sales_order_no','customer','po_no','product','From','To','company_alise','file','pull_request'));
+		if(!empty($company_alise)){
+			$where['SalesOrders.so1 LIKE']='%'.$company_alise.'%';
+		}
+		if(!empty($sales_order_no)){
+			$where['SalesOrders.id']=$sales_order_no;
+		}
+		if(!empty($file)){
+			$where['SalesOrders.so3 LIKE']='%'.$file.'%';
+		}
+		if(!empty($customer)){
+			$where['Customers.customer_name LIKE']='%'.$customer.'%';
+		}
+		if(!empty($po_no)){
+			$where['customer_po_no LIKE']='%'.$po_no.'%';
+		}
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['date >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['date <=']=$To;
+		}
+        $this->paginate = [
+            'contain' => ['Customers','Employees','Categories', 'Companies']
+        ];
+		
+        $this->paginate = [
+            'contain' => ['Customers']
+        ];
+		
+		if($status==null or $status=='Pending'){
+			$having=['total_rows >' => 0];
+		}elseif($status=='Converted Into Invoice'){
+			$having=['total_rows =' => 0];
+		}
+		$salesOrders=$this->paginate(
+			$this->SalesOrders->find()->select(['total_rows' => 
+				$this->SalesOrders->find()->func()->count('SalesOrderRows.id')])
+				->leftJoinWith('SalesOrderRows', function ($q) {
+					return $q->where();
+				})
+				->group(['SalesOrders.id'])
+				->autoFields(true)
+				->having($having)
+				->where($where)
+				->order(['SalesOrders.id' => 'DESC'])
+			);
+		
+        $this->set(compact('salesOrders','status'));
+        $this->set('_serialize', ['salesOrders']);
+    }
+	
+	
+	
 
     /**
      * View method

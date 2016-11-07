@@ -1,3 +1,13 @@
+
+<?php 
+
+	if(!empty($status)){
+		$url_excel=$status."/?".$url;
+	}else{
+		$url_excel="/?".$url;
+	}
+
+?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -8,6 +18,7 @@
 			<?php } ?>
 		</div>
 		<div class="actions">
+			<?php echo $this->Html->link( 'Excel', '/SalesOrders/Export-Excel/'.$url_excel.'',['class' =>'btn  green','target'=>'_blank'] ); ?>
 			<div class="btn-group">
 			<?php
 			if($status==null or $status=='Pending'){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
