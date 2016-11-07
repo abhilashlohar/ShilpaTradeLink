@@ -56,7 +56,7 @@ $html = '
 				<td align="right" width="50%" style="font-size: 12px;">
 				<span style="font-size: 16px;">'. h($salesOrder->company->name) .'</span><br/>
 				<span>'. $this->Text->autoParagraph(h($salesOrder->company->address)) .'</span>
-				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/telephone.gif height="11px" style="height:11px;margin-top:5px;"/>'. h($salesOrder->company->mobile_no).'</span> | 
+				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/telephone.gif height="11px" style="height:11px;margin-top:5px;"/> '. h($salesOrder->company->mobile_no).'</span> | 
 				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/email.png height="15px" style="height:15px;margin-top:4px;"/> '. h($salesOrder->company->email).'</span>
 				</td>
 			</tr>
@@ -133,15 +133,50 @@ $html.='
 	}
 endforeach;
 
+if($salesOrder->discount_type=='1'){ $discount_text='Discount @ '.$salesOrder->discount_per.'%'; }else{ $discount_text='Discount'; }
+if($salesOrder->pnf_type=='1'){ $pnf_text='P&F @ '.$salesOrder->pnf_per.'%'; }else{ $pnf_text='P&F'; }
 $html.='</table>';		
 $html.='
 <table width="100%" class="table_rows">
-	<tbody>
-			<tr>
+	<tbody>';
+		if(!empty($salesOrder->discount)){
+		$html.='<tr>
+					<td style="text-align:right;">'.$discount_text.'</td>
+					<td style="text-align:right;" width="104">'. $this->Number->format($salesOrder->discount,[ 'places' => 2]).'</td>
+				</tr>';
+		}
+		if(!empty($salesOrder->exceise_duty)){
+		$html.='<tr>
+					<td style="text-align:right;">'. $this->Text->autoParagraph(h($salesOrder->ed_description)) .'</td>
+					<td style="text-align:right;" width="104">'. $this->Number->format($salesOrder->exceise_duty,[ 'places' => 2]).'</td>
+				</tr>';
+		}
+	
+		$html.='<tr>
 				<td style="text-align:right;">Total</td>
 				<td style="text-align:right;" width="104">'. $this->Number->format($salesOrder->total,[ 'places' => 2]).'</td>
-			</tr>
-		</tbody>
+			</tr>';
+		if(!empty($salesOrder->pnf)){
+		$html.='<tr>
+					<td style="text-align:right;">'. $pnf_text .'</td>
+					<td style="text-align:right;" width="104">'. $this->Number->format($salesOrder->pnf,[ 'places' => 2]).'</td>
+				</tr>';
+		}
+		if(!empty($salesOrder->pnf)){
+		$html.='<tr>
+					<td style="text-align:right;">Total after P&F</td>
+					<td style="text-align:right;" width="104">'. $this->Number->format($salesOrder->total_after_pnf,[ 'places' => 2]).'</td>
+				</tr>';
+		}
+		if(!empty($salesOrder->fright_amount)){
+		$html.='<tr>
+					<td style="text-align:right;">'. $this->Text->autoParagraph(h($salesOrder->fright_text)) .'</td>
+					<td style="text-align:right;" width="104">'. $this->Number->format($salesOrder->fright_amount,[ 'places' => 2]).'</td>
+				</tr>';
+		}
+			
+			
+		$html.='</tbody>
 	</table>'; 
 	
 $html.='
