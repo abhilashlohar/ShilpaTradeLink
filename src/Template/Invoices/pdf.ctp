@@ -243,7 +243,7 @@ $html.='
 				$html.='<tr>
 				<td rowspan="'.$tot.'">'. h($invoice->additional_note) .'</td>';
 				if($invoice->fright_amount > 0 ){
-				$html.='	
+				$html.='
 				<td style="text-align:justify;">'. h($invoice->fright_text) .'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->fright_amount,[ 'places' => 2]) .'</td>
 				</tr>';

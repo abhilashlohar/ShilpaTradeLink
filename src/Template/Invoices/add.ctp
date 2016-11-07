@@ -151,8 +151,8 @@
 							<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$sales_order_rows->amount,'readonly','step'=>0.01]); ?></td>
 							<td>
 								<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$sales_order_rows->id]); ?></label>
-								<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','value' => @$sales_order_rows->so_sale_tax]); ?>
-								<?php echo $this->Form->input('sale_tax_description', ['type' => 'text','label' => false,'value' => @$sales_order_rows->sale_tax_description]); ?>
+								<?php echo $this->Form->input('q', ['label' => false,'type' => 'hidden','value' => @$sales_order_rows->so_sale_tax]); ?>
+								<?php echo $this->Form->input('st_description', ['type' => 'hidden','label' => false,'value' => @$sales_order_rows->sale_tax_description]); ?>
 							</td>
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
@@ -381,17 +381,22 @@ $(document).ready(function() {
 		submitHandler: function (form) {
 			q="ok";
 			$("#main_tb tbody tr.tr1").each(function(){
-				var t=$(this).find("td:nth-child(2) select").val();
-				var w=$(this).find("td:nth-child(3) input").val();
-				var r=$(this).find("td:nth-child(4) input").val();
-				if(t=="" || w=="" || r==""){
-					q="e";
+				var val=$(this).find('td:nth-child(6) input[type="checkbox"]:checked').val();
+				if(val){
+					var t=$(this).find("td:nth-child(2) select").val();
+					var w=$(this).find("td:nth-child(3) input").val();
+					var r=$(this).find("td:nth-child(4) input").val();
+					if(t=="" || w=="" || r==""){
+						q="e";
+					}
 				}
 			});
 			$("#main_tb tbody tr.tr2").each(function(){
-				var d=$(this).find("td:nth-child(1) textarea").val();
-				if(d==""){
-					q="e";
+				if(val){
+					var d=$(this).find("td:nth-child(1) textarea").val();
+					if(d==""){
+						q="e";
+					}
 				}
 			});
 			if(q=="e"){
@@ -534,143 +539,10 @@ $(document).ready(function() {
 	
 	
 	
-	<?php if($process_status=="New"){ ?> add_row(); <?php } ?>
+	
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
-	
-	<?php if($process_status=="New"){ ?>
-		$('.deleterow').die().live("click",function() {
-			var l=$(this).closest("table tbody").find("tr").length;
-			if (confirm("Are you sure to remove row ?") == true) {
-				if(l>2){
-					var row_no=$(this).closest("tr").attr("row_no");
-					var del="tr[row_no="+row_no+"]";
-					$(del).remove();
-					var i=0;
-					$("#main_tb tbody tr.tr1").each(function(){
-						i++;
-						$(this).find("td:nth-child(1)").html(i);
-						$(this).find("td:nth-child(2) select").attr("name","invoice_rows["+i+"][item_id]");
-						$(this).find("td:nth-child(3) input").attr("name","invoice_rows["+i+"][quantity]");
-						$(this).find("td:nth-child(4) input").attr("name","invoice_rows["+i+"][rate]");
-						$(this).find("td:nth-child(5) input").attr("name","invoice_rows["+i+"][amount]");
-						$(this).find('td:nth-child(6) select').attr("name","invoice_rows["+i+"][excise_duty]");
-					});
-					var i=0;
-					$("#main_tb tbody tr.tr2").each(function(){
-						i++;
-						$(this).find("td:nth-child(1) textarea").attr("name","invoice_rows["+i+"][description]");
-					});
-					calculate_total();
-				}
-			} 
-		});
-		
-		function add_row(){
-			var tr1=$("#sample_tb tbody tr.tr1").clone();
-			$("#main_tb tbody").append(tr1);
-			var tr2=$("#sample_tb tbody tr.tr2").clone();
-			$("#main_tb tbody").append(tr2);
-			
-			var w=0; var r=0;
-			$("#main_tb tbody tr").each(function(){
-				$(this).attr("row_no",w);
-				r++;
-				if(r==2){ w++; r=0; }
-			});
-			
-			var i=0;
-			$("#main_tb tbody tr.tr1").each(function(){
-				i++;
-				$(this).find("td:nth-child(1)").html(i);
-				$(this).find("td:nth-child(2) select").attr("name","invoice_rows["+i+"][item_id]").select2();
-				$(this).find("td:nth-child(3) input").attr("name","invoice_rows["+i+"][quantity]");
-				$(this).find("td:nth-child(4) input").attr("name","invoice_rows["+i+"][rate]");
-				$(this).find("td:nth-child(5) input").attr("name","invoice_rows["+i+"][amount]");
-				$(this).find('td:nth-child(6) select').attr("name","invoice_rows["+i+"][excise_duty]");
-			});
-			var i=0;
-			
-			$("#main_tb tbody tr.tr2").each(function(){
-				i++;
-				$(this).find("td:nth-child(1) textarea").attr("name","invoice_rows["+i+"][description]");
-			});
-			
-			$(document)
-			.one('focus.textarea', '.autoExpand', function(){
-				var savedValue = this.value;
-				this.value = '';
-				this.baseScrollHeight = this.scrollHeight;
-				this.value = savedValue;
-			})
-			.on('input.textarea', '.autoExpand', function(){
-				var minRows = this.getAttribute('data-min-rows')|0,rows;
-				this.rows = minRows;
-				console.log(this.scrollHeight , this.baseScrollHeight);
-				rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
-				this.rows = minRows + rows;
-			});
-		}
-		
-		function calculate_total(){
-			var total=0;
-			$("#main_tb tbody tr.tr1").each(function(){
-				var unit=$(this).find("td:nth-child(3) input").val();
-				var Rate=$(this).find("td:nth-child(4) input").val();
-				var Amount=unit*Rate;
-				$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
-				total=total+Amount;
-			});
-			
-			if($("#discount_per").is(':checked')){
-				var discount_per=parseFloat($('input[name="discount_per"]').val());
-				var discount_amount=(total*discount_per)/100;
-				if(isNaN(discount_amount)) { var discount_amount = 0; }
-				$('input[name="discount"]').val(discount_amount.toFixed(2));
-			}else{
-				var discount_amount=parseFloat($('input[name="discount"]').val());
-				if(isNaN(discount_amount)) { var discount_amount = 0; }
-			}
-			total=total-discount_amount
-		
-			var exceise_duty=parseFloat($('input[name="exceise_duty"]').val());
-			if(isNaN(exceise_duty)) { var exceise_duty = 0; }
-			total=total+exceise_duty
-			$('input[name="total"]').val(total.toFixed(2));
-			
-			if($("#pnfper").is(':checked')){
-				var pnf_per=parseFloat($('input[name="pnf_per"]').val());
-				var pnf_amount=(total*pnf_per)/100;
-				if(isNaN(pnf_amount)) { var pnf_amount = 0; }
-				$('input[name="pnf"]').val(pnf_amount.toFixed(2));
-			}else{
-				var pnf_amount=parseFloat($('input[name="pnf"]').val());
-				if(isNaN(pnf_amount)) { var pnf_amount = 0; }
-			}
-			var total_after_pnf=total+pnf_amount;
-			if(isNaN(total_after_pnf)) { var total_after_pnf = 0; }
-			$('input[name="total_after_pnf"]').val(total_after_pnf.toFixed(2));
-			
-			var sale_tax_per=parseFloat($('select[name="sale_tax_per"] option:selected').val());
-			var sale_tax=(total_after_pnf*sale_tax_per)/100;
-			if(isNaN(sale_tax)) { var sale_tax = 0; }
-			$('input[name="sale_tax_amount"]').val(sale_tax.toFixed(2));
-			
-			var sale_tax_description=$('select[name="sale_tax_per"] option:selected').attr("description");
-			$('input[name="sale_tax_description"]').val(sale_tax_description);
-			
-			var fright_amount=parseFloat($('input[name="fright_amount"]').val());
-			if(isNaN(fright_amount)) { var fright_amount = 0; }
-			
-			grand_total=total_after_pnf+sale_tax+fright_amount;
-			$('input[name="grand_total"]').val(grand_total.toFixed(2));
-			
-		}
-		
-	<?php } ?>
-	
-	
 	
 	
 	$('.select_address').on("click",function() { 
