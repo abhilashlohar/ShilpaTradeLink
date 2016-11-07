@@ -143,7 +143,7 @@
 								$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 							}
 							echo $this->Form->input('sales_order_rows.'.$q.'.so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
-							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_description', ['label' => false]); ?>
+							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_description', ['type'=>'text','label' => false]); ?>
 							</td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
@@ -154,7 +154,7 @@
 					<?php $q++; endforeach; } ?>
 				</tbody>
 			</table>
-						<table class="table tableitm" id="tbl2">
+			<table class="table tableitm" id="tbl2">
 				<tr>
 					<td  align="right">
 					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
@@ -189,41 +189,10 @@
 				</tr>
 				<tr>
 					<td  align="right">
-						<?php if($process_status!="New"){ ?>
-							<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" />
-							<div class="input-group col-md-2">
-							<div class="input-group">
-							<input type="text" name="sale_tax_per" class="form-control input-sm" readonly><span class="input-group-addon">%</span>
-							</div>
-							</div>
-						
-						<?php }else{ ?>
-						<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" />
-						<div class="input-group col-md-2">
-							<div class="input-group">
-						<?php						
-							$options=[];
-							foreach($SaleTaxes as $SaleTaxe){
-								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
-							}
-							echo $this->Form->input('sale_tax_per', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); 
-						} ?>
-							</div>
-						</div>
-						
-					</td>
-					<td><?php echo $this->Form->input('sale_tax_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01]); ?></td>
-				</tr>
-				<tr>
-					<td  align="right">
 					<b>Fright Amount </b>
 					<?php echo $this->Form->input('fright_text', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional text for Fright Amount','style'=>['text-align:right']]); ?>
 					</td>
 					<td><?php echo $this->Form->input('fright_amount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01]); ?></td>
-				</tr>
-				<tr>
-					<td  align="right"><b>Grand Total </b></td>
-					<td><?php echo $this->Form->input('grand_total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Grand Total','readonly','step'=>0.01]); ?></td>
 				</tr>
 			</table>
 			
