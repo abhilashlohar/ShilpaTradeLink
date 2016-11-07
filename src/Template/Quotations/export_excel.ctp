@@ -30,7 +30,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<?php $i=0; foreach ($quotations as $quotation): $i++; ?>
+		<?php $i=0; foreach ($quotations as $quotation): ?>
 		<tr >
 			<td><?= h(++$i) ?></td>
 			<td><?= h(($quotation->qt1.'/QT-'.str_pad($quotation->id, 3, '0', STR_PAD_LEFT).'/'.$quotation->qt3.'/'.$quotation->qt4)) ?></td>

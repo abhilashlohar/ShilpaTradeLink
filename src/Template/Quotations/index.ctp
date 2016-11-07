@@ -21,7 +21,7 @@
 			<?php } ?>
 		</div>
 		<div class="actions">
-				<?php echo $this->Html->link( 'Excel', '/Quotations/export_excel/'.$url_excel.'',['class' =>'btn  blue','target'=>'_blank'] ); ?>
+				<?php echo $this->Html->link('<i class="fa fa-file-excel-o"></i> Excel','/Quotations/Export-Excel/'.$url_excel,['class' =>'btn  green','target'=>'_blank','escape'=>false]); ?>
 			<div class="btn-group">
 			
 			<?php
