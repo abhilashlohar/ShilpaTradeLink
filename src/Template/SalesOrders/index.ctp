@@ -18,7 +18,7 @@
 			<?php } ?>
 		</div>
 		<div class="actions">
-			<?php echo $this->Html->link( 'Excel', '/SalesOrders/Export-Excel/'.$url_excel.'',['class' =>'btn  green','target'=>'_blank'] ); ?>
+			<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/SalesOrders/Export-Excel/'.$url_excel.'',['class' =>'btn  green','target'=>'_blank','escape'=>false]); ?>
 			<div class="btn-group">
 			<?php
 			if($status==null or $status=='Pending'){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
