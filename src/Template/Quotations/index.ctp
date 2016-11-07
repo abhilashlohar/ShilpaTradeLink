@@ -21,7 +21,7 @@
 			<?php } ?>
 		</div>
 		<div class="actions">
-				<?php echo $this->Html->link('<i class="fa fa-file-excel-o"></i> Excel','/Quotations/Export-Excel/'.$url_excel,['class' =>'btn  green','target'=>'_blank','escape'=>false]); ?>
+				<?php echo $this->Html->link('<i class="fa fa-file-excel-o"></i> Excel','/Quotations/Export-Excel/'.$url_excel,['class' =>'btn  green tooltips','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
 			<div class="btn-group">
 			
 			<?php
