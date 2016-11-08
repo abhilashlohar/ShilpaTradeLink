@@ -193,7 +193,7 @@ $html.='
 <table width="100%" class="table_rows">
 	<tbody>
 			<tr>
-				<td rowspan="'.$temp.'" width="40%">
+				<td rowspan="'.$temp.'" width="50%">
 					<b style="font-size:13px;"><u>Our Bank Details</u></b>
 					<table width="100%" class="table2">
 						<tr>
