@@ -174,11 +174,16 @@ $html.='</table><br/>';
 $temp=4;
 if($invoice->pnf==0 && $invoice->sale_tax_per==0)
 {
-	$temp=2;
+	$temp=1;
 }
-else if($invoice->pnf!=0 && $invoice->sale_tax_per==0 || $invoice->pnf==0 && $invoice->sale_tax_per!=0)
+else if($invoice->pnf!=0 && $invoice->sale_tax_per==0)
 {
 	$temp=3;
+}
+
+else if($invoice->pnf==0 && $invoice->sale_tax_per!=0)
+{
+	$temp=2;
 }
 else{
 	$temp=4;	
@@ -220,14 +225,13 @@ $html.='
 			<tr>
 				<td style="text-align:right;">'.h($pnf_text).'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->pnf,[ 'places' => 2]).'</td>
-				</tr>';
-			}	
+				</tr>
 		
-			$html.='<tr>	
+			<tr>	
 				<td style="text-align:right;">Total after P&F</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->total_after_pnf,[ 'places' => 2]).'</td>
 			</tr>';
-				
+			}	
 				
 			if($invoice->sale_tax_per>0){
 				$html.='

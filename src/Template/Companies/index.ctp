@@ -11,7 +11,7 @@
 		<div class="col-md-12">
 			<div class="portlet-body">
 			<div class="table-scrollable">
-			<table class="table ">
+			<table class="table table-condensed">
 				 <thead>
 					<tr>
 						<th>Sr. No.</th>
