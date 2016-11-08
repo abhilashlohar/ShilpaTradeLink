@@ -44,6 +44,11 @@ class PurchaseOrdersTable extends Table
             'joinType' => 'INNER'
         ]);
 		
+		  $this->belongsTo('Customers', [
+            'foreignKey' => 'customer_id',
+            'joinType' => 'INNER'
+        ]);
+		
 		 $this->belongsTo('Filenames');
 		
         $this->belongsTo('Vendors', [
@@ -63,6 +68,17 @@ class PurchaseOrdersTable extends Table
             'foreignKey' => 'purchase_order_id'
         ]);
 		$this->belongsTo('SaleTaxes');
+		
+		$this->belongsTo('Employees', [
+            'foreignKey' => 'employee_id',
+            'joinType' => 'INNER'
+        ]);
+		
+		$this->belongsTo('Creator', [
+			'className' => 'Employees',
+			'foreignKey' => 'created_by',
+			'propertyName' => 'creator',
+		]);
     }
 
     /**

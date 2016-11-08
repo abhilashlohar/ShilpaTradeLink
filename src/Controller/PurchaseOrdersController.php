@@ -57,6 +57,7 @@ class PurchaseOrdersController extends AppController
         $purchaseOrder = $this->PurchaseOrders->newEntity();
         if ($this->request->is('post')) {
             $purchaseOrder = $this->PurchaseOrders->patchEntity($purchaseOrder, $this->request->data);
+			$purchaseOrder->delivery_date=date("Y-m-d",strtotime($purchaseOrder->delivery_date));
 			
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
             if ($this->PurchaseOrders->save($purchaseOrder)) {
@@ -130,4 +131,23 @@ class PurchaseOrdersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+		public function pdf($id = null)
+    {
+		$this->viewBuilder()->layout('');
+         $purchaseOrder = $this->PurchaseOrders->get($id, [
+            'contain' => ['Companies','Vendors','PurchaseOrderRows']
+			]);
+
+        $this->set('purchaseOrder', $purchaseOrder);
+        $this->set('_serialize', ['purchaseOrder']);
+    }
+	
+	public function confirm($id = null)
+    {
+		$this->viewBuilder()->layout('pdf_layout');
+		
+        $this->set('id', $id);
+    }
+
 }

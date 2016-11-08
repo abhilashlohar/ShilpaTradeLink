@@ -85,10 +85,29 @@ With reference to your price list we are pleased to place an order for the follo
 							<td><?php echo $this->Form->input('discount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
 							</tr>
 							
+
+							
+							<tr>
+								<td  colspan="4" align="right">
+								<b>P&F <label><?php echo $this->Form->input('pnf_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'pnfper']); ?></label>(in %)</b>
+								<div class="input-group col-md-2" style="display:none;" id="pnf_text">
+								<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
+								</div>
+								</td>
+								<td><?php echo $this->Form->input('pnf', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01]); ?></td>
+							</tr>
+							<tr>
+							<td  colspan="4" align="right"><b>Total after P&F </b></td>
+							<td><?php echo $this->Form->input('total_after_pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total after P&F','readonly','step'=>0.01]); ?></td>
+							</tr>
+							
 							<tr style="background-color:#e6faf9;">
 								<td colspan="4" align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:right']]); ?> </b></td>
 								<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty','value' => 0]); ?></td>
 							</tr>
+							
+							
+
 							<tr>
 								<td colspan="4" align="right"><b>Total</b></td>
 								<td><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total']); ?></td>
@@ -115,17 +134,11 @@ With reference to your price list we are pleased to place an order for the follo
 								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 							}
 							echo $this->Form->input('sale_tax_per', ['empty'=>'--Select--','options'=>$options,'label' => false,'class' => 'form-control input-sm']);
-							echo $this->Form->input('sale_tax_description', ['label' => false,'class' => 'form-control input-sm']);
+							
 							?>
 						</div>
 					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Exceise Duty <span class="required" aria-required="true">*</span></label>
-							<?php 
-							echo $this->Form->input('exceise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Exceise Duty']); ?>
-						</div>
-					</div>
+					
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Delivery <span class="required" aria-required="true">*</span></label>
@@ -133,6 +146,15 @@ With reference to your price list we are pleased to place an order for the follo
 							echo $this->Form->input('delivery',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Delivery']); ?>
 						</div>
 					</div>
+					
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Delivery Date</label>
+							
+								<?php echo $this->Form->input('delivery_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Delivery Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d']); ?>
+							</div>
+						</div>
+				</div>
 				</div>
 				
 				<div class="row">
@@ -276,7 +298,15 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 	
-	
+		$("#pnfper").on('click',function(){
+			if($(this).is(':checked')){
+				$("#pnf_text").show();
+				$('input[name="pnf"]').attr('readonly','readonly');
+			}else{
+				$("#pnf_text").hide();
+				$('input[name="pnf"]').removeAttr('readonly');
+			}
+		})
 	
 		$("#discount_per").on('click',function(){
 		if($(this).is(':checked')){
@@ -346,6 +376,36 @@ $(document).ready(function() {
 		});
 	}
 	
+		$('.deleterow').die().live("click",function() {
+		var l=$(this).closest("table tbody").find("tr").length;
+		if (confirm("Are you sure to remove row ?") == true) {
+			if(l>2){
+				var row_no=$(this).closest("tr").attr("row_no");
+				var del="tr[row_no="+row_no+"]";
+				$(del).remove();
+				var i=0;
+				$("#main_tb tbody tr.tr1").each(function(){
+					i++;
+					$(this).find("td:nth-child(1)").html(i);
+					$(this).find("td:nth-child(2) select").attr("name","purchase_order_rows["+i+"][item_id]").select2();
+					$(this).find("td:nth-child(3) input").attr("name","purchase_order_rows["+i+"][quantity]");
+					$(this).find("td:nth-child(4) input").attr("name","purchase_order_rows["+i+"][rate]");
+					$(this).find("td:nth-child(5) input").attr("name","purchase_order_rows["+i+"][amount]");
+					$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_description]");
+					var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
+					$(this).find("td:nth-child(7) input").val(description);
+				});
+				var i=0;
+				$("#main_tb tbody tr.tr2").each(function(){
+					i++;
+					$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
+				});
+				calculate_total();
+			}
+		} 
+    });
+	
+	
 		$('#main_tb input').die().live("keyup","blur",function() { 
 		calculate_total();
     });
@@ -373,6 +433,21 @@ $(document).ready(function() {
 		var exceise_duty=parseFloat($('input[name="exceise_duty"]').val());
 		if(isNaN(exceise_duty)) { var exceise_duty = 0; }
 		total=total+exceise_duty
+		
+				if($("#pnfper").is(':checked')){
+			var pnf_per=parseFloat($('input[name="pnf_per"]').val());
+			var pnf_amount=(total*pnf_per)/100;
+			if(isNaN(pnf_amount)) { var pnf_amount = 0; }
+			$('input[name="pnf"]').val(pnf_amount.toFixed(2));
+		}else{
+			var pnf_amount=parseFloat($('input[name="pnf"]').val());
+			if(isNaN(pnf_amount)) { var pnf_amount = 0; }
+		}
+		var total_after_pnf=total+pnf_amount;
+		if(isNaN(total_after_pnf)) { var total_after_pnf = 0; }
+		
+		$('input[name="total_after_pnf"]').val(total_after_pnf.toFixed(2));
+		
 		$('input[name="total"]').val(total.toFixed(2));
 		
 		$('input[name="total"]').val(total.toFixed(2));
