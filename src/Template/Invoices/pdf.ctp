@@ -193,7 +193,7 @@ $html.='
 <table width="100%" class="table_rows">
 	<tbody>
 			<tr>
-				<td rowspan="'.$temp.'">
+				<td rowspan="'.$temp.'" width="40%">
 					<b style="font-size:13px;"><u>Our Bank Details</u></b>
 					<table width="100%" class="table2">
 						<tr>
@@ -215,7 +215,7 @@ $html.='
 					</table>
 				</td>
 				<td  style="text-align:right;">Total</td>
-				<td style="text-align:right;">'. $this->Number->format($invoice->total,[ 'places' => 2]).'</td>
+				<td style="text-align:right;" width="10">'. $this->Number->format($invoice->total,[ 'places' => 2]).'</td>
 			</tr>
 			';
 				
