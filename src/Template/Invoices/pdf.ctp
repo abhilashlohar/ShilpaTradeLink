@@ -299,10 +299,10 @@ $html .= '<div id="footer">
 				</td>
 				<td align="right" >
 					<div align="center">
-						<span><b>'. h($invoice->company->name) .'</b></span><br/>
+						<span>For <b>'. h($invoice->company->name) .'</b></span><br/>
 						<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$invoice->creator->signature.' height="50px" style="height:50px;"/>
 						<br/>
-						<span><b>Created by</b></span><br/>
+						<span><b>Authorised Signatory</b></span><br/>
 						<span>'. h($invoice->creator->name) .'</span><br/>
 						<span>'. h($invoice->creator->designation->name) .'</span><br/>
 						<span>'. h($invoice->creator->mobile) .'</span><br/>
