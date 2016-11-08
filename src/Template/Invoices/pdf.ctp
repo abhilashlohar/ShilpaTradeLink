@@ -193,7 +193,7 @@ $html.='
 <table width="100%" class="table_rows">
 	<tbody>
 			<tr>
-				<td rowspan="'.$temp.'">
+				<td rowspan="'.$temp.'" width="50%">
 					<b style="font-size:13px;"><u>Our Bank Details</u></b>
 					<table width="100%" class="table2">
 						<tr>
@@ -215,7 +215,7 @@ $html.='
 					</table>
 				</td>
 				<td  style="text-align:right;">Total</td>
-				<td style="text-align:right;">'. $this->Number->format($invoice->total,[ 'places' => 2]).'</td>
+				<td style="text-align:right;" width="10">'. $this->Number->format($invoice->total,[ 'places' => 2]).'</td>
 			</tr>
 			';
 				
@@ -299,10 +299,10 @@ $html .= '<div id="footer">
 				</td>
 				<td align="right" >
 					<div align="center">
-						<span><b>'. h($invoice->company->name) .'</b></span><br/>
+						<span>For <b>'. h($invoice->company->name) .'</b></span><br/>
 						<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$invoice->creator->signature.' height="50px" style="height:50px;"/>
 						<br/>
-						<span><b>Created by</b></span><br/>
+						<span><b>Authorised Signatory</b></span><br/>
 						<span>'. h($invoice->creator->name) .'</span><br/>
 						<span>'. h($invoice->creator->designation->name) .'</span><br/>
 						<span>'. h($invoice->creator->mobile) .'</span><br/>

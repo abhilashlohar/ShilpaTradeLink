@@ -270,11 +270,6 @@ $html.='</td>
 			
 			<span>'. h($salesOrder->creator->name).' </span><br/>
 			On '. h(date("d-m-Y",strtotime($salesOrder->created_on))).','. h(date("h:i:s A",strtotime($salesOrder->created_on_time))).'<br/>
-			
-			
-			
-		
-			
 			</div>
 		</td>';
 			

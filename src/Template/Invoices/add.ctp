@@ -225,7 +225,7 @@
 				<tr>
 					<td  align="right">
 					<b>Fright Amount </b>
-					<?php echo $this->Form->input('fright_text', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional text for Fright Amount','style'=>['text-align:right']]); ?>
+					<?php echo $this->Form->input('fright_text', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional text for Fright Amount','style'=>['text-align:right']]); ?>
 					</td>
 					<td><?php echo $this->Form->input('fright_amount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01]); ?></td>
 				</tr>

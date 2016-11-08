@@ -130,8 +130,8 @@ class ItemsController extends AppController
             }
         }
 		$ItemCategories = $this->Items->ItemCategories->find('list');
-		$ItemGroups = $this->Items->ItemGroups->find('list');
-		$ItemSubGroups = $this->Items->ItemSubGroups->find('list');
+		$ItemGroups = $this->Items->ItemGroups->find('list')->where(['item_category_id'=>$item->item_category_id]);
+		$ItemSubGroups = $this->Items->ItemSubGroups->find('list')->where(['item_group_id'=>$item->item_group_id]);
         $units = $this->Items->Units->find('list');
 		$Companies = $this->Items->Companies->find('list');
 		$sources = $this->Items->Sources->find('list', ['Sources' => 200]);
