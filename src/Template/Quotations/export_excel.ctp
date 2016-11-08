@@ -25,7 +25,7 @@
 			<th>Customer</th>
 			<th>Salesman</th>
 			<th>Product</th>
-			<th>Finalisation Ddate</th>
+			<th>Finalisation Date</th>
 			
 		</tr>
 	</thead>
