@@ -264,6 +264,13 @@
 						<div id="form49_error"></div>
 					</div>
 				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="control-label">Address</label>
+						<?php echo $this->Form->input('dispatch_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Address']); ?>
+					</div>
+				</div>
+				
 			</div>
 			<!--<label>Commercial Terms & Conditions:</label> <a href="#" role="button" class="select_term_condition">Select </a>
 			<?php echo $this->Form->input('terms_conditions', ['label' => false,'class' => 'form-control','value' => @$quotation->terms_conditions]); ?>-->

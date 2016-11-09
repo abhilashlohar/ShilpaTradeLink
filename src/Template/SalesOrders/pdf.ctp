@@ -242,6 +242,10 @@ $html.='
 		<tr>
 			<td>Email</td>
 			<td>: '. h($salesOrder->dispatch_email).'</td>
+			
+			<td>Address</td>
+			<td>: '. h($salesOrder->dispatch_address).'</td>
+			
 		</tr>
 	</table>
 ';

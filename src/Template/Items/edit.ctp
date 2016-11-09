@@ -57,19 +57,19 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Quantity <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Quantity </label>
 							<?php echo $this->Form->input('ob_quantity', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity']); ?>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Rate <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Rate</label>
 							<?php echo $this->Form->input('ob_rate', ['label' => false,'type'=>'text','class' => 'form-control input-sm allLetter','placeholder'=>'Rate']); ?>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Value <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Value</label>
 							<?php echo $this->Form->input('ob_value', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Value','readonly']); ?>
 						</div>
 					</div>
@@ -79,13 +79,13 @@
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Dynamic Cost <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('dynamic_cost', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity']); ?>
+							<?php echo $this->Form->input('dynamic_cost', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Dynamic Cost']); ?>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Minimum Selling Price Factor <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('minimum_selling_price_factor', ['label' => false,'type'=>'text','class' => 'form-control input-sm allLetter','placeholder'=>'Rate']); ?>
+							<?php echo $this->Form->input('minimum_selling_price_factor', ['label' => false,'type'=>'text','class' => 'form-control input-sm allLetter','placeholder'=>'Selling Price']); ?>
 						</div>
 					</div>
 				</div>
@@ -170,15 +170,8 @@ $(document).ready(function() {
 			item_sub_group_id    : {
 				  required: true,
 			},
-			ob_quantity    :{
-				required: true,
-			},
-			ob_rate  :{
-				required: true,
-			},
-			ob_value    :{
-				required: true,
-			},
+			
+			
 			minimum_quantity  : {
 				  required: true,
 			}

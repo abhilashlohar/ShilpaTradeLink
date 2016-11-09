@@ -66,6 +66,8 @@ class QuotationsController extends AppController
 			$where['status']='Pending';
 		}elseif($status=='Converted Into Sales Order'){
 			$where['status']='Converted Into Sales Order';
+		}elseif($status=='Closed'){
+			$where['status']='Closed';
 		}
 		
         $quotations = $this->paginate($this->Quotations->find()->where($where)->order(['Quotations.id' => 'DESC']));
@@ -124,6 +126,8 @@ class QuotationsController extends AppController
 			$where['status']='Pending';
 		}elseif($status=='Converted Into Sales Order'){
 			$where['status']='Converted Into Sales Order';
+		}elseif($status=='Closed'){
+			$where['status']='Closed';
 		}
 	
         $quotations = $this->paginate($this->Quotations->find()->where($where)->order(['Quotations.id' => 'DESC']));
@@ -281,6 +285,21 @@ class QuotationsController extends AppController
             $this->Flash->success(__('The quotation has been deleted.'));
         } else {
             $this->Flash->error(__('The quotation could not be deleted. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index']);
+    }
+	
+	public function close($id = null)
+    {
+        $this->request->allowMethod(['post', 'close']);
+        $quotation = $this->Quotations->get($id);
+		
+		$quotation->status='Closed';
+        if ($this->Quotations->save($quotation)) {
+            $this->Flash->success(__('The quotation has been closed.'));
+        } else {
+            $this->Flash->error(__('The quotation could not be closed. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

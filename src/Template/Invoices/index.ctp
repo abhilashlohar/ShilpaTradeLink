@@ -90,7 +90,7 @@ $url_excel="/?".$url;
 							<td><?= h($invoice->total_after_pnf) ?></td>
 							<td class="actions">
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $invoice->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
-								<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $invoice->id],array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
+								<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $invoice->id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

@@ -37,12 +37,13 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Customer</label>
 						<div class="col-md-9">
-							<?php 
+							<?php
 							$options=array();
 							foreach($customers as $customer){
-								$options[]=['text' => $customer->customer_name, 'value' => $customer->id, 'contact_person' => $customer->contact_person];
+								$merge=$customer->customer_name.'	('.$customer->alias.')';
+								$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
 							}
-							echo $this->Form->input('customer_id', ['empty' => "--Select Customer--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me ']); ?>
+							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 						</div>
 					</div>
 					<br/>
@@ -568,6 +569,9 @@ $(document).ready(function() {
 	$('select[name="company_id"]').on("change",function() {
 		var alias=$('select[name="company_id"] option:selected').attr("alias");
 		$('input[name="qt1"]').val(alias);
+		
+		var employee_id=$('select[name="customer_id"] option:selected').attr("employee_id");
+		$("select[name=employee_id]").val(employee_id);
     });
 	
 	$('.select_term_condition').die().live("click",function() { 

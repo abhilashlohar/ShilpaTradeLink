@@ -40,7 +40,8 @@
 						<?php 
 							$options=array();
 							foreach($customers as $customer){
-								$options[]=['text' => $customer->customer_name, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
+								$merge=$customer->customer_name.'	('.$customer->alias.')';
+								$options[]=['text' => $merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
 							}
 							 echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$sales_order->customer_id]); ?>
 						</div>
@@ -84,7 +85,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Salesman  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm select2me','value' => @$sales_order->customer_id]); ?>
+							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm select2','value' => @$sales_order->customer_id]); ?>
 						</div>
 					</div><br/>
 					
@@ -123,8 +124,11 @@
 			
 			
 			
-			<div class="alert alert-danger" id="row_error" style="display:none;">
+			<div class="alert alert-danger" id="row_error" style="display:none;padding: 5px !important;">
 				All fields are Required
+			</div>
+			<div class="alert alert-danger" id="row_error_item" style="display:none;padding: 5px !important;">
+				Please check at least one row.
 			</div>
 			<table class="table tableitm" id="main_tb">
 				<thead>
@@ -146,7 +150,7 @@
 						<tr class="tr1" row_no='<?php echo @$sales_order_rows->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 							<td><?php echo $this->Form->input('q', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Item','value' => @$sales_order_rows->item->id,'readonly']); ?></td>
-							<td><?php echo $this->Form->input('q', ['label' => false,'type' => 'number','class' => 'form-control input-sm','placeholder'=>'Quantity','value' => @$sales_order_rows->quantity-$sales_order_rows->processed_quantity,'readonly','min'=>'1','max'=>@$sales_order_rows->quantity-$sales_order_rows->processed_quantity]); ?></td>
+							<td><?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$sales_order_rows->quantity-$sales_order_rows->processed_quantity,'readonly','min'=>'1','max'=>@$sales_order_rows->quantity-$sales_order_rows->processed_quantity]); ?></td>
 							<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate','value' => @$sales_order_rows->rate,'readonly','step'=>0.01]); ?></td>
 							<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$sales_order_rows->amount,'readonly','step'=>0.01]); ?></td>
 							<td>
@@ -170,7 +174,7 @@
 						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
 					</div>
 					</td>
-					<td><?php echo $this->Form->input('discount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
+					<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
 				</tr>
 				<?php if(in_array('Yes',@$ed_des)) { ?>
 				<tr style="background-color:#e6faf9;">
@@ -189,7 +193,7 @@
 						<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
 					</div>
 					</td>
-					<td><?php echo $this->Form->input('pnf', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01]); ?></td>
+					<td><?php echo $this->Form->input('pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01]); ?></td>
 				</tr>
 				<tr>
 					<td  align="right"><b>Total after P&F </b></td>
@@ -227,7 +231,7 @@
 					<b>Fright Amount </b>
 					<?php echo $this->Form->input('fright_text', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional text for Fright Amount','style'=>['text-align:right']]); ?>
 					</td>
-					<td><?php echo $this->Form->input('fright_amount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01]); ?></td>
+					<td><?php echo $this->Form->input('fright_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01]); ?></td>
 				</tr>
 				<tr>
 					<td  align="right"><b>Grand Total </b></td>
@@ -272,9 +276,9 @@
 		<tr class="tr1">
 			<td rowspan="2">0</td>
 			<td><?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item']); ?></td>
-			<td><?php echo $this->Form->input('unit[]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity']); ?></td>
-			<td><?php echo $this->Form->input('rate[]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01]); ?></td>
-			<td><?php echo $this->Form->input('amount[]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01]); ?></td>
+			<td><?php echo $this->Form->input('unit[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
+			<td><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01]); ?></td>
+			<td><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01]); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 		<tr class="tr2">
@@ -288,6 +292,8 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
+	
+	
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -379,6 +385,21 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			var check_d=0;
+				$(".rename_check").each(function () {
+					if($(this).prop('checked'))
+					{
+						check_d=1;
+					}
+				});
+			if(check_d==0)
+			{
+				$("#row_error_item").show();
+				success3.hide();
+				error3.show();
+				Metronic.scrollTo(error3, -200);
+				return false;
+			}
 			q="ok";
 			$("#main_tb tbody tr.tr1").each(function(){
 				var val=$(this).find('td:nth-child(6) input[type="checkbox"]:checked').val();
@@ -403,14 +424,44 @@ $(document).ready(function() {
 				$("#row_error").show();
 				return false;
 			}else{
-				success1.show();
-				error1.hide();
-				form[0].submit(); // submit the form
+					success1.show();
+					error1.hide();
+					form[0].submit(); // submit the form
 			}
 		}
 
 	});
+	
 	//--	 END OF VALIDATION
+	$('.quantity').die().live("keyup",function() {
+			var asc=$(this).val();
+			var numbers =  /^[0-9]*\.?[0-9]*$/;
+			if(asc==0)
+			{
+				$(this).val('');
+				return false; 
+			}
+			else if(asc.match(numbers))  
+			{  
+			} 
+			else  
+			{  
+				$(this).val('');
+				return false;  
+			}
+	});
+	$('input[name="discount"],input[name="discount_per"],input[name="pnf"],input[name="fright_amount"],input[name="pnf_per"]').die().live("keyup",function() {
+			var asc=$(this).val();
+			var numbers =  /^[0-9]*\.?[0-9]*$/;
+			if(asc.match(numbers))  
+			{  
+			} 
+			else  
+			{  
+				$(this).val('');
+				return false;  
+			}
+	});
 	$('select[name="company_id"]').on("change",function() {
 		var alias=$('select[name="company_id"] option:selected').attr("alias");
 		$('input[name="in1"]').val(alias);
@@ -575,7 +626,7 @@ $(document).ready(function() {
 		});
 		
 		var employee_id=$('select[name="customer_id"] option:selected').attr("employee_id");
-			$("select[name=employee_id]").val(employee_id);
+			$("select[name=employee_id]").val(employee_id).select2();
 		
     });
 	

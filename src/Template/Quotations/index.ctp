@@ -27,6 +27,7 @@
 			<?php
 			if($status==null or $status=='Pending'){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
 			if($status=='Converted Into Sales Order'){ $class2='btn btn-primary'; }else{ $class2='btn btn-default'; }
+			if($status=='Closed'){ $class3='btn btn-primary'; }else{ $class3='btn btn-default'; }
 			?>
 			<?php if($pull_request!="true"){ ?>
 				<?= $this->Html->link(
@@ -39,6 +40,13 @@
 					'/Quotations/index/Converted Into Sales Order',
 					['class' => $class2]
 				); ?>
+				
+				<?= $this->Html->link(
+					'Closed',
+					'/Quotations/index/Closed',
+					['class' => $class3]
+				); ?>
+				
 			<?php } ?>
 			</div>
 		</div>
@@ -111,6 +119,7 @@
 						<?php $i=0; foreach ($quotations as $quotation): $i++;
 						if($quotation->status=='Converted Into Sales Order'){ $tr_color='#f4f4f4'; }
 						if($quotation->status=='Pending'){ $tr_color='#FFF'; }
+						if($quotation->status=='Closed'){ $tr_color='#FFF'; }
 						?>
 						<tr style="background-color:<?php echo $tr_color; ?>;">
 							<td><?= h(++$page_no) ?></td>
@@ -129,14 +138,12 @@
 								<?php if($pull_request=="true"){
 									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Sales Order','/Sales-Orders/Add?quotation='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
-								<!--<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
-									['action' => 'delete', $quotation->id], 
-									[
-										'escape' => false,
-										'class' => 'btn btn-xs red',
-										'confirm' => __('Are you sure, you want to delete {0}?', $quotation->id)
-									]
-								) ?>-->
+								<?php 
+								if($quotation->status=='Pending'){
+									echo $this->Form->postLink('<i class="fa fa-trash"></i> ',['action' =>'close', $quotation->id],['escape' => false,'class' => 'btn btn-xs red','confirm' => __('Are you sure, you want to delete # {0} ?', $quotation->id)
+										]
+									);
+								} ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>
