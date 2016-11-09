@@ -153,39 +153,19 @@ $html.='
 <table width="100%" class="table_rows">
 	<tbody>
 			<tr>
-				<td rowspan="4" width="50%">
-					<b style="font-size:13px;"><u>Our Bank Details</u></b>
-					<table width="100%" class="table2">
-						<tr>
-							<td width="30%">Bank Name</td>
-							
-						</tr>
-						<tr>
-							<td>Branch</td>
-							
-						</tr>
-						<tr>
-							<td>Account No</td>
-							
-						</tr>
-						<tr>
-							<td>IFSC Code</td>
-							
-						</tr>
-					</table>
-				</td>
-				<td  style="text-align:right;">Total</td>
-				<td style="text-align:right;" width="10">'. $this->Number->format($purchaseOrder->total,[ 'places' => 2]).'</td>
+				
+				<td width="90%" style="text-align:right;">Total</td>
+				<td width="10%" style="text-align:right;">'. $this->Number->format($purchaseOrder->total,[ 'places' => 2]).'</td>
 			</tr>
 			
 			<tr>
-				<td style="text-align:right;">cvb</td>
-				<td style="text-align:right;">'. $this->Number->format($purchaseOrder->pnf,[ 'places' => 2]).'</td>
+				<td  style="text-align:right;">Pnf</td>
+				<td style="text-align:right;">'. $this->Number->format($purchaseOrder->pnf_per,[ 'places' => 2]).'</td>
 				</tr>
 		
 			<tr>	
-				<td style="text-align:right;">Total after P&F</td>
-				<td style="text-align:right;">'. $this->Number->format($purchaseOrder->total_after_pnf,[ 'places' => 2]).'</td>
+				<td style="text-align:right;">Excise Duty</td>
+				<td style="text-align:right;">'. $this->Number->format($purchaseOrder->exceise_duty,[ 'places' => 2]).'</td>
 			</tr>
 			
 			
@@ -203,24 +183,26 @@ $html.='
 		
 $html .= '	<table width="100%" class="table_rows">
   <tr>
-    <td></td>
-    <td>&nbsp;</td>
-    <td><p>&nbsp;</p>
+    <td>Material To Be Transported:</br>'. h(($purchaseOrder->material_to_be_transported)) .'</td>
+    <td>Sale Tax:</br>'. h(($purchaseOrder->sale_tax_per)) .'</td>
+    <td><p>Discount:</br>'. h(($purchaseOrder->discount)) .'</p>
+    <p></p></td>
+  </tr>
+  <tr>
+    <td>'. h(($purchaseOrder->lr_to_be_prepared_in_favour_of)) .'</td>
+    <td>'. h(($purchaseOrder->payment_terms)) .'</td>
+    <td><p>'. h(($purchaseOrder->pnf_per)) .'</p>
     <p>&nbsp;</p></td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td><p>&nbsp;</p>
-    <p>&nbsp;</p></td>
+    <td rowspan="2">'. h(($purchaseOrder->road_permit_form47)) .'</td>
+    <td rowspan="2">'. h(($purchaseOrder->transporter->transporter_name)) .'</td>
+    <td>'. h(($purchaseOrder->exceise_duty)) .'
+		</td>
+	
   </tr>
   <tr>
-    <td rowspan="2">&nbsp;</td>
-    <td rowspan="2">&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
+    <td>'. h(($purchaseOrder->delivery)) .'</td>
   </tr>
 </table>';
 

@@ -305,9 +305,7 @@ $html .= '<div id="footer">
 						<br/>
 						<span><b>Authorised Signatory</b></span><br/>
 						<span>'. h($invoice->creator->name) .'</span><br/>
-						<span>'. h($invoice->creator->designation->name) .'</span><br/>
-						<span>'. h($invoice->creator->mobile) .'</span><br/>
-						<span>'. h($invoice->creator->email) .'</span>
+						
 					</div>
 				</td>
 			</tr>

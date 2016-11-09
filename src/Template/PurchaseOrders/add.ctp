@@ -53,7 +53,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
-							<?php echo $this->Form->input('descryption', ['label' => false,'class' => 'form-control input-sm','value' => 'Dear Sir,
+							<?php echo $this->Form->textarea('descryption', ['label' => false,'class' => 'form-control input-sm','value' => 'Dear Sir,
 With reference to your price list we are pleased to place an order for the following items as per conditions given below.','required']); ?>
 						</div>
 					</div>
