@@ -16,10 +16,17 @@ $html = '
 <html>
 <head>
   <style>
-    @page { margin: 0px 15px 200px 30px; }
+  @page { margin: 150px 15px 200px 30px; }
+    #header { position: fixed; left: 0px; top: -150px; right: 0px; height: 150px;}
+    
     #footer { position: fixed; left: 0px; bottom: -200px; right: 0px; height: 200px;}
     #footer .page:after { content: content: counter(page); }
-	
+	#content{
+    position: relative; 
+	}
+	 #header {
+		display: block;
+	}
 	@font-face {
 		font-family: Lato;
 		src: url("https://fonts.googleapis.com/css?family=Lato");
