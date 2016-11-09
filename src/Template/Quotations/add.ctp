@@ -196,6 +196,12 @@
     color: #FFF;
 	background-color: #254b73;
 }
+.padding-right-decrease{
+	padding-right: 0;
+}
+.padding-left-decrease{
+	padding-left: 0;
+}
 </style>
 
 
@@ -203,7 +209,28 @@
 	<tbody>
 		<tr class="tr1">
 			<td rowspan="2" width="10">0</td>
-			<td><?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen','placeholder' => 'Item']); ?></td>
+			<td>
+				<div class="row">
+					<div class="col-md-11 padding-right-decrease">
+						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen','placeholder' => 'Item']); ?>
+					</div>
+					<div class="col-md-1 padding-left-decrease">
+						<a href="#" class="btn btn-default btn-sm popup_btn" role="button"> <i class="fa fa-info-circle"></i> </a>
+						<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-body" >
+										
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn default closebtn">Close</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</td>
 			<td width="100"><?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity']); ?></td>
 			<td width="130"><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate']); ?></td>
 			<td width="130"><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
@@ -393,6 +420,9 @@ $(document).ready(function() {
 					i++;
 					$(this).find("td:nth-child(1)").html(i);
 					$(this).find("td:nth-child(2) select").attr("name","quotation_rows["+i+"][item_id]");
+					$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
+					$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
+					$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
 					$(this).find("td:nth-child(3) input").attr("name","quotation_rows["+i+"][quantity]");
 					$(this).find("td:nth-child(4) input").attr("name","quotation_rows["+i+"][rate]");
 					$(this).find("td:nth-child(5) input").attr("name","quotation_rows["+i+"][amount]");
@@ -425,6 +455,9 @@ $(document).ready(function() {
 			i++;
 			$(this).find("td:nth-child(1)").html(i);
 			$(this).find("td:nth-child(2) select").attr("name","quotation_rows["+i+"][item_id]").select2();
+			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
+			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
+			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
 			$(this).find("td:nth-child(3) input").attr("name","quotation_rows["+i+"][quantity]");
 			$(this).find("td:nth-child(4) input").attr("name","quotation_rows["+i+"][rate]");
 			$(this).find("td:nth-child(5) input").attr("name","quotation_rows["+i+"][amount]");
@@ -474,11 +507,14 @@ $(document).ready(function() {
 		open_address();
     });
 	
-	$('.closebtn').on("click",function() { 
-		$("#myModal1").hide();
+	$('.closebtn').live("click",function() { 
+		$(".modal").hide();
     });
 	
-	
+	$('.popup_btn').live("click",function() {
+		var popup_id=$(this).attr('popup_id');
+		$("div[popup_div_id="+popup_id+"]").show();
+    });
 	
 	function open_address(){
 		var customer_id=$('select[name="customer_id"]').val();
