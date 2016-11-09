@@ -53,7 +53,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
-							<?php echo $this->Form->input('text', ['label' => false,'class' => 'form-control input-sm','value' => 'Dear Sir,
+							<?php echo $this->Form->input('descryption', ['label' => false,'class' => 'form-control input-sm','value' => 'Dear Sir,
 With reference to your price list we are pleased to place an order for the following items as per conditions given below.','required']); ?>
 						</div>
 					</div>
@@ -85,6 +85,17 @@ With reference to your price list we are pleased to place an order for the follo
 							<td><?php echo $this->Form->input('discount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
 							</tr>
 							
+							<tr style="background-color:#e6faf9;">
+								<td colspan="4" align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:right']]); ?> </b></td>
+								<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty','value' => 0]); ?></td>
+							</tr>
+							
+							<tr>
+								<td colspan="4" align="right"><b>Total</b></td>
+								<td><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total']); ?></td>
+								<td></td>
+							</tr>
+							
 
 							
 							<tr>
@@ -97,22 +108,10 @@ With reference to your price list we are pleased to place an order for the follo
 								<td><?php echo $this->Form->input('pnf', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01]); ?></td>
 							</tr>
 							<tr>
-							<td  colspan="4" align="right"><b>Total after P&F </b></td>
-							<td><?php echo $this->Form->input('total_after_pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total after P&F','readonly','step'=>0.01]); ?></td>
+							<td  colspan="4" align="right"><b>Grand Total </b></td>
+							<td><?php echo $this->Form->input('grand_total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total after P&F','readonly','step'=>0.01]); ?></td>
 							</tr>
 							
-							<tr style="background-color:#e6faf9;">
-								<td colspan="4" align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:right']]); ?> </b></td>
-								<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty','value' => 0]); ?></td>
-							</tr>
-							
-							
-
-							<tr>
-								<td colspan="4" align="right"><b>Total</b></td>
-								<td><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total']); ?></td>
-								<td></td>
-							</tr>
 						</tfoot>
 					</table>
 				</div>
@@ -411,7 +410,7 @@ $(document).ready(function() {
     });
 	
 	function calculate_total(){
-		var total=0;
+		var total=0;  var grand_total=0;
 		$("#main_tb tbody tr.tr1").each(function(){
 			var unit=$(this).find("td:nth-child(3) input").val();
 			var Rate=$(this).find("td:nth-child(4) input").val();
@@ -428,13 +427,14 @@ $(document).ready(function() {
 			var discount_amount=parseFloat($('input[name="discount"]').val());
 			if(isNaN(discount_amount)) { var discount_amount = 0; }
 		}
-		total=total-discount_amount
+		total=total-discount_amount;
 		
 		var exceise_duty=parseFloat($('input[name="exceise_duty"]').val());
 		if(isNaN(exceise_duty)) { var exceise_duty = 0; }
-		total=total+exceise_duty
+		total=total+exceise_duty;
+		$('input[name="total"]').val(total.toFixed(2));
 		
-				if($("#pnfper").is(':checked')){
+		if($("#pnfper").is(':checked')){
 			var pnf_per=parseFloat($('input[name="pnf_per"]').val());
 			var pnf_amount=(total*pnf_per)/100;
 			if(isNaN(pnf_amount)) { var pnf_amount = 0; }
@@ -443,14 +443,15 @@ $(document).ready(function() {
 			var pnf_amount=parseFloat($('input[name="pnf"]').val());
 			if(isNaN(pnf_amount)) { var pnf_amount = 0; }
 		}
-		var total_after_pnf=total+pnf_amount;
-		if(isNaN(total_after_pnf)) { var total_after_pnf = 0; }
+		var grand_total=total+pnf_amount;
 		
-		$('input[name="total_after_pnf"]').val(total_after_pnf.toFixed(2));
+		if(isNaN(grand_total)) { var grand_total = 0; }
 		
-		$('input[name="total"]').val(total.toFixed(2));
 		
-		$('input[name="total"]').val(total.toFixed(2));
+		
+		$('input[name="grand_total"]').val(grand_total.toFixed(2));
+		
+	
 		
 	}
 	
