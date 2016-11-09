@@ -212,7 +212,7 @@
 			<td>
 				<div class="row">
 					<div class="col-md-11 padding-right-decrease">
-						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen','placeholder' => 'Item']); ?>
+						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen item_box','placeholder' => 'Item']); ?>
 					</div>
 					<div class="col-md-1 padding-left-decrease">
 						<a href="#" class="btn btn-default btn-sm popup_btn" role="button"> <i class="fa fa-info-circle"></i> </a>
@@ -454,7 +454,7 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			i++;
 			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr("name","quotation_rows["+i+"][item_id]").select2();
+			$(this).find("td:nth-child(2) select").attr("name","quotation_rows["+i+"][item_id]").attr("popup_id",i).select2();
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
@@ -617,7 +617,18 @@ $(document).ready(function() {
 		copy_term_condition_to_textarea();
 	})
 	
+	$("select.item_box").die().live("change",function(){
+		var popup_id=$(this).attr('popup_id');
+		var item_id=$(this).val();
+		last_three_rates(popup_id,item_id);
+	})
 	
+	function last_three_rates(popup_id,item_id){
+			alert(popup_id);
+			alert(item_id);
+			var customer_id=$('select[name="customer_id"]').val();
+			alert(customer_id);
+	}
 	
 	
 });
@@ -643,10 +654,9 @@ $(document).ready(function() {
 		<div class="modal-content">
 			<div class="modal-body" id="result_ajax">
 			<h4>Commercial Terms & Conditions</h4>
-				<div style=" overflow: auto; height: 450px; ">
+				<div style=" overflow: auto; height: 450px;">
 				<table class="table table-hover tabl_tc">
 				<?php foreach ($termsConditions as $termsCondition): ?>
-					 
 					 <tr>
 						<td width="10"><label><?php echo $this->Form->input('dummy', ['type' => 'checkbox','label' => false,'class' => '']); ?></label></td>
 						<td><p><?= h($termsCondition->text_line) ?></p></td>
