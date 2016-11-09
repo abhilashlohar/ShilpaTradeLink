@@ -177,7 +177,7 @@ class SalesOrdersController extends AppController
     {
 		$this->viewBuilder()->layout('');
         $salesOrder = $this->SalesOrders->get($id, [
-            'contain' => ['Customers', 'Companies','Carrier','Creator','Editor','Courier','Employees','SalesOrderRows' => ['Items']]
+            'contain' => ['Customers', 'Companies','Carrier','Creator','Editor','Courier','Employees','SalesOrderRows' => ['Items'=>['Units']]]
         ]);
 
         $this->set('salesOrder', $salesOrder);
@@ -302,7 +302,10 @@ class SalesOrdersController extends AppController
                 $this->Flash->error(__('The sales order could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->SalesOrders->Customers->find('list', ['limit' => 200]);
+        $customers = $this->SalesOrders->Customers->find('all')->contain(['CustomerAddress'=>function($q){
+			return $q
+			->where(['CustomerAddress.default_address'=>1]);
+		}]);
         $companies = $this->SalesOrders->Companies->find('all', ['limit' => 200]);
 		$quotationlists = $this->SalesOrders->Quotations->find()->where(['status'=>'Pending'])->order(['Quotations.id' => 'DESC']);
 		$items = $this->SalesOrders->Items->find('list',['limit' => 200]);

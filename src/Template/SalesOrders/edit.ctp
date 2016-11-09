@@ -18,7 +18,7 @@
 							foreach($companies as $companie){
 								$options[]=['text' => $companie->name, 'value' => $companie->id, 'alias' => $companie->alias];
 							}
-							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me'] ); ?>
+							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me','value' => @$quotation->company_id] ); ?>
 						</div>
 					</div>
 				</div>
@@ -38,7 +38,14 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Customer</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $customers,'class' => 'form-control input-sm select2me']); ?>
+						
+							<?php
+							$options=array();
+							foreach($customers as $customer){
+								$merge=$customer->customer_name.'	('.$customer->alias.')';
+								$options[]=['text' =>$merge, 'value' => $customer->id,'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id, 'transporter_id' => $customer->transporter_id,'documents_courier_id' => $customer->customer_address[0]->transporter_id];
+							}
+							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 				</div>
@@ -72,7 +79,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Salesman</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm select2me']); ?>
+							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm','value' => @$quotation->customer_id]); ?>
 						</div>
 					</div>
 				</div>
@@ -161,12 +168,13 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<label class="control-label">Transporter <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('transporter_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm','placeholder'=>'Transporter']); ?>
+						<?php echo $this->Form->input('transporter_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm','value' => @$quotation->customer_id]); ?>
+						
 					</div>
 					<br/>
 					<div class="form-group">
 						<label class="control-label">Documents Courier <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('documents_courier_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm','placeholder'=>'Documents Courier']); ?>
+						<?php echo $this->Form->input('documents_courier_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm','value' => @$quotation->customer_id]); ?>
 					</div>
 				</div>
 				<div class="col-md-4">
@@ -643,6 +651,15 @@ $(document).ready(function() {
 			$("#so3_div").html(response);
 			$('select[name="qt3"]').attr('name','so3');
 		});
+		
+		var employee_id=$('select[name="customer_id"] option:selected').attr("employee_id");
+		$("select[name=employee_id]").val(employee_id);
+		
+		var transporter_id=$('select[name="customer_id"] option:selected').attr("transporter_id");
+		$("select[name=transporter_id]").val(transporter_id);
+		
+		var documents_courier_id=$('select[name="customer_id"] option:selected').attr("documents_courier_id");
+		$("select[name=documents_courier_id]").val(documents_courier_id);
 		
     });
 	

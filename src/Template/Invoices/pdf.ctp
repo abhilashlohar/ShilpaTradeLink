@@ -87,7 +87,7 @@ $html.='
 		<tr>
 			<td width="50%">
 				
-				<span>'. h(($invoice->customer->customer_name)) .'</span><br/>
+				
 				'. $this->Text->autoParagraph(h($invoice->customer_address)) .'
 				<span>TIN No. :'. h($invoice->customer->tin_no) .'</span><br/>
 				<span>PAN No. :'. h($invoice->customer->pan_no) .'</span>
@@ -125,7 +125,7 @@ $html.='<br/>
 <table width="100%" class="table_rows">
 		<tr>
 			
-			<td colspan=5 align="">
+			<td colspan=6 align="">
 			Your Purchase Order No.'. h($invoice->customer_po_no) .' dated '. h(date("d-m-Y",strtotime($invoice->po_date))) .'
 			</td>
 			
@@ -133,6 +133,7 @@ $html.='<br/>
 		<tr>
 			<th>S No</th>
 			<th>Item Description</th>
+			<th>Unit</th>
 			<th>Quantity</th>
 			<th>Rate</th>
 			<th>Amount</th>
@@ -144,6 +145,7 @@ $html.='
 	<tr class="odd">
 		<td valign="top" align="center" width="30">'. h($sr) .'</td>
 		<td>'. $this->Text->autoParagraph(h($invoiceRows->description)) .'<br/></td>
+		<td width="40" valign="top" align="center">'. h($invoiceRows->item->unit->name) .'</td>
 		<td width="40" valign="top" align="center">'. h($invoiceRows->quantity) .'</td>
 		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($invoiceRows->rate,[ 'places' => 2]) .'</td>
 		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($invoiceRows->amount,[ 'places' => 2]) .'</td>
@@ -164,14 +166,14 @@ if(sizeof($grand_total)==2){
 if($invoice->discount>0){
 $html.='<tr>
 				
-				<td colspan="4" style="text-align:right;">'.$discount_text.'</td>
+				<td colspan="5" style="text-align:right;">'.$discount_text.'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->discount,[ 'places' => 2]).'</td>
 
 </tr>';
 }
 if($invoice->exceise_duty>0){
 				$html.='<tr>
-				<td colspan="4" style="text-align:justify;">'. $this->Text->autoParagraph(h($invoice->ed_description)) .'</td>
+				<td colspan="5" style="text-align:justify;">'. $this->Text->autoParagraph(h($invoice->ed_description)) .'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->exceise_duty,[ 'places' => 2]).'</td>
 </tr>';	}
 

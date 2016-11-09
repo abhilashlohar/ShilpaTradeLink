@@ -146,11 +146,11 @@ class InvoicesController extends AppController
 			'CompanyBanks'=> function ($q) {
 				return $q
 				->where(['CompanyBanks.default_bank' => 1]);
-				}], 'InvoiceRows' => ['Items']]
+				}], 'InvoiceRows' => ['Items'=>['Units']]]
 			]);
 
         $this->set('invoice', $invoice);
-        $this->set('_serialize', ['invoice']);
+        $this->set('_serialize', ['invoice'=>['Units']]);
     }
 	
 	public function confirm($id = null)

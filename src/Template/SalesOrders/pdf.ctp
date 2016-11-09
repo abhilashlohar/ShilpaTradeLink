@@ -105,6 +105,7 @@ $html.='<br/>
 		<tr>
 			<th>S No</th>
 			<th>Item</th>
+			<th>Unit</th>
 			<th>Quantity</th>
 			<th>Rate</th>
 			<th>Amount</th>
@@ -118,6 +119,7 @@ $html.='
 	<tr class="odd">
 		<td valign="top" align="center" style="width: 30;">'. h($sr) .'</td>
 		<td>'. h($salesOrderRows->item->name) .'</td>
+		<td align="center" valign="top">'. h($salesOrderRows->item->unit->name) .'</td>
 		<td width="40" valign="top" align="center">'. h($salesOrderRows->quantity) .'</td>
 		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($salesOrderRows->rate,[ 'places' => 2]) .'</td>
 		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($salesOrderRows->amount,[ 'places' => 2]) .'</td>
@@ -128,7 +130,7 @@ $html.='
 		$html.='
 		<tr class="even">
 			<td></td>
-			<td colspan="6" style="text-align: justify;"><b> </b>'. $this->Text->autoParagraph(h($salesOrderRows->description)) .'</td>
+			<td colspan="7" style="text-align: justify;"><b> </b>'. $this->Text->autoParagraph(h($salesOrderRows->description)) .'</td>
 		</tr>';
 	}
 endforeach;
