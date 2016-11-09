@@ -78,6 +78,21 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group">
+							<label class="control-label">Dynamic Cost <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('dynamic_cost', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity']); ?>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Minimum Selling Price Factor <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('minimum_selling_price_factor', ['label' => false,'type'=>'text','class' => 'form-control input-sm allLetter','placeholder'=>'Rate']); ?>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group">
 							<label class="control-label">Minimum Quantity <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('minimum_quantity', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Minimum Quantity']); ?>
 						</div>
