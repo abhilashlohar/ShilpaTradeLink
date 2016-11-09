@@ -81,27 +81,19 @@ $html.='
 					<td width="40%" ><span>'. h(($purchaseOrder->vendor->company_name)) .'</span><br/>
 					<span>'. h(($purchaseOrder->vendor->address)) .'</span><br/>
 					</td>
-					
-				
 					<td >
 						<p>Tin No:'. h(($purchaseOrder->company->tin_no)) .'</p>
 						<p>Pan No:'. h(($purchaseOrder->company->pan_no)) .'</p>
 						<p>Cin No:'. h(($purchaseOrder->company->cin_no)) .'</p>
 						
 					</td>
-				
-				
 					<td width="30%">
-					<p>No.'.h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->id, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)).'</p>
-					<p>Date:'. h(date("d-m-Y")) .'</p>
+						<p>No.'.h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->id, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)).'</p>
+						<p>Date:'. h(date("d-m-Y")) .'</p>
 					</td>
 				</tr>
 			</table>';
-			
-			
-			
 		
- 
 $html.='<br/>
 <table width="100%" class="table_rows">
 		<tr>
@@ -213,8 +205,12 @@ $html .= '	<table width="100%" class="table_rows">
     <td>Excise Invoice Required in favour of conignee.<br/>
 	Name:-
     </td >
-    <td align="center" width="50%">Please confirm that you have registered this order and request you to return back the duplicate copy duly signed i token of having accepted the order.<br/>
-	<span align="right" style="font-size: 16px;"><b>For'. h($purchaseOrder->company->name) .' </b></span>
+    <td align="center" width="50%">Please confirm that you have registered this order and request you to return back the duplicate copy duly signed in token of having accepted the order.<br/><br/>
+	
+	<span align="right" style="font-size: 16px;"><b>For'. h($purchaseOrder->company->name) .' </b></span><br/>
+	<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$purchaseOrder->creator->signature.' height="50px" style="height:50px;"/>
+						<br/>
+	<span align="right" style="font-size: 16px;">Authorised signatory</span>
 	</td>
   </tr>
   
