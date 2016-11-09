@@ -18,6 +18,8 @@ class InvoicesController extends AppController
      */
     public function index()
     {
+		$url=$this->request->here();
+		$url=parse_url($url,PHP_URL_QUERY);
 		$this->viewBuilder()->layout('index_layout');
 		$where=[];
 		$company_alise=$this->request->query('company_alise');
@@ -63,8 +65,61 @@ class InvoicesController extends AppController
 		
         $this->set(compact('invoices'));
         $this->set('_serialize', ['invoices']);
+		$this->set(compact('url'));
     }
 
+	    public function exportExcel()
+		{
+			
+			$this->viewBuilder()->layout('');
+			$where=[];
+			$company_alise=$this->request->query('company_alise');
+			$invoice_no=$this->request->query('invoice_no');
+			$file=$this->request->query('file');
+			$customer=$this->request->query('customer');
+			$From=$this->request->query('From');
+			$To=$this->request->query('To');
+			$total_From=$this->request->query('total_From');
+			$total_To=$this->request->query('total_To');
+			$page=$this->request->query('page');
+			$this->set(compact('ref_no','customer','total_From','total_To','From','To','page','invoice_no','company_alise','file'));
+			if(!empty($company_alise)){
+				$where['Invoices.in1 LIKE']='%'.$company_alise.'%';
+			}
+			if(!empty($invoice_no)){
+				$where['Invoices.id']=$invoice_no;
+			}
+			if(!empty($file)){
+				$where['Invoices.in3 LIKE']='%'.$file.'%';
+			}
+			if(!empty($customer)){
+				$where['Customers.customer_name LIKE']='%'.$customer.'%';
+			}
+			if(!empty($From)){
+				$From=date("Y-m-d",strtotime($this->request->query('From')));
+				$where['date_created >=']=$From;
+			}
+			if(!empty($To)){
+				$To=date("Y-m-d",strtotime($this->request->query('To')));
+				$where['date_created <=']=$To;
+			}
+			if(!empty($total_From)){
+				$where['total_after_pnf >=']=$total_From;
+			}
+			if(!empty($total_To)){
+				$where['total_after_pnf <=']=$total_To;
+			}
+			$this->paginate = [
+				'contain' => ['Customers', 'Companies']
+			];
+			$invoices = $this->paginate($this->Invoices->find()->where($where)->order(['Invoices.id' => 'DESC']));
+			
+			$this->set(compact('invoices'));
+			$this->set('_serialize', ['invoices']);
+        }
+	
+	
+	
     /**
      * View method
      *
