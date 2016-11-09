@@ -131,7 +131,7 @@
 						<tr class="tr1" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Item','value' => @$quotation_rows->item->id]); ?></td>
-							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity','value' => @$quotation_rows->quantity]); ?></td>
+							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity','min'=>'1', 'max'=>@$quotation_rows->quantity,'value' => @$quotation_rows->quantity]); ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate','value' => @$quotation_rows->rate]); ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$quotation_rows->amount]); ?></td>
 							<td><?php 
