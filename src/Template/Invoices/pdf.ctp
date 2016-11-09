@@ -16,11 +16,9 @@ $html = '
 <html>
 <head>
   <style>
-    @page { margin: 150px 15px 200px 30px; }
-    #header { position: fixed; left: 0px; top: -150px; right: 0px; height: 150px;}
+    @page { margin: 0px 15px 200px 30px; }
     #footer { position: fixed; left: 0px; bottom: -200px; right: 0px; height: 200px;}
     #footer .page:after { content: content: counter(page); }
-	
 	
 	@font-face {
 		font-family: Lato;
@@ -40,6 +38,9 @@ $html = '
 	}
 	.table2 td{
 		border: 0px solid  #000;font-size: 14px;padding:0px; 
+	}
+	.table-amnt td{
+		border: 0px solid  #000;padding:0px; 
 	}
 	.table_rows th{
 		font-size:14px;
@@ -65,7 +66,7 @@ $html = '
 			<tr>
 				<td colspan="2">
 					<div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">INVOICE</div>
-					<div style="border:solid 2px #0685a8;margin-bottom:35px;margin-top: 5px;"></div>
+					<div style="border:solid 2px #0685a8;margin-top: 5px;"></div>
 				</td>
 			</tr>
 		</table>
@@ -75,7 +76,7 @@ $html = '
   <div id="content"> ';
   
 $html.='
-	<table width="100%">
+	<table width="100%" style="margin-top: 0px;">
 		<tr>
 			<td width="50%">
 				
@@ -190,7 +191,7 @@ else{
 }
 
 $html.='
-<table width="100%" class="table_rows">
+<table width="100%" class="table_rows" >
 	<tbody>
 			<tr>
 				<td rowspan="'.$temp.'" width="50%">
@@ -268,7 +269,7 @@ $html.='
 			$html.='	
 			
 			<tr>
-				<td colspan="3"><b>Amount in words: </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td>
+				<td colspan="3"><table   width="100%" class="table-amnt"><tr><td valign="top" width="18%"> <b><div style="margin-top:5px;">Amount in words: </div></b></td><td  valign="top">'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td></tr></table></td>
 			</tr>
 		</tbody>
 	</table>'; 
@@ -318,10 +319,13 @@ $html .= '<div id="footer">
 </body>
 </html>';
 
-//echo $html; exit; 
+//echo $html;
+
+ //exit; 
 
 $name='Invoice-'.h(($invoice->in1.'_IN'.str_pad($invoice->id, 3, '0', STR_PAD_LEFT).'_'.$invoice->in3.'_'.$invoice->in4));
 $dompdf->loadHtml($html);
+
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 $dompdf->stream($name,array('Attachment'=>0));
