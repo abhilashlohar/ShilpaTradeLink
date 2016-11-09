@@ -287,7 +287,7 @@ $html .= '<div id="footer">
 				<td >
 					<table>
 						<tr>
-							<td collapse="2">Interest @15% per annum shall be charged if not paid with in agreed terms. Invoice is Subject to Udaipur jurisdiction</td>
+							<td >Interest @15% per annum shall be charged if not paid  <br/>with in agreed terms. <br/> Invoice is Subject to Udaipur jurisdiction</td>
 						</tr>
 					</table>
 					<table>

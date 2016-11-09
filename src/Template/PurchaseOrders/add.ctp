@@ -150,7 +150,7 @@ With reference to your price list we are pleased to place an order for the follo
 						<div class="form-group">
 							<label class="control-label">Delivery Date</label>
 							
-								<?php echo $this->Form->input('delivery_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Delivery Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d']); ?>
+								<?php echo $this->Form->input('delivery_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Delivery Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d']); ?>
 							</div>
 						</div>
 				</div>

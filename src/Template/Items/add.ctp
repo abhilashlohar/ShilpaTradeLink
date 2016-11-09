@@ -78,13 +78,13 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Dynamic Cost <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Dynamic Cost</label>
 							<?php echo $this->Form->input('dynamic_cost', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity']); ?>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Minimum Selling Price Factor <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Minimum Selling Price Factor</label>
 							<?php echo $this->Form->input('minimum_selling_price_factor', ['label' => false,'type'=>'text','class' => 'form-control input-sm allLetter','placeholder'=>'Rate']); ?>
 						</div>
 					</div>

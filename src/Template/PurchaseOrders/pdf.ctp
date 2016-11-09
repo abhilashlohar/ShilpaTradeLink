@@ -183,28 +183,41 @@ $html.='
 		
 $html .= '	<table width="100%" class="table_rows">
   <tr>
-    <td>Material To Be Transported:</br>'. h(($purchaseOrder->material_to_be_transported)) .'</td>
-    <td>Sale Tax:</br>'. h(($purchaseOrder->sale_tax_per)) .'</td>
-    <td><p>Discount:</br>'. h(($purchaseOrder->discount)) .'</p>
+    <td>Material To Be Transported:<br/>'. h(($purchaseOrder->material_to_be_transported)) .'</td>
+    <td>Sale Tax:<br/>'. h(($purchaseOrder->sale_tax_per)) .'</td>
+    <td><p>Discount:'. h(($purchaseOrder->discount)) .'</p>
     <p></p></td>
   </tr>
   <tr>
-    <td>'. h(($purchaseOrder->lr_to_be_prepared_in_favour_of)) .'</td>
-    <td>'. h(($purchaseOrder->payment_terms)) .'</td>
-    <td><p>'. h(($purchaseOrder->pnf_per)) .'</p>
-    <p>&nbsp;</p></td>
+    <td>LR To Be Prepared In Favour Of:<br/>'. h(($purchaseOrder->lr_to_be_prepared_in_favour_of)) .'</td>
+    <td>Payment Terms<br/>'. h(($purchaseOrder->payment_terms)) .'</td>
+    <td>PNF Per			:'. h(($purchaseOrder->pnf_per)) .'</td>
+   
   </tr>
   <tr>
-    <td rowspan="2">'. h(($purchaseOrder->road_permit_form47)) .'</td>
-    <td rowspan="2">'. h(($purchaseOrder->transporter->transporter_name)) .'</td>
-    <td>'. h(($purchaseOrder->exceise_duty)) .'
+    <td rowspan="2">Road Permit Form<br/>'. h(($purchaseOrder->road_permit_form47)) .'</td>
+    <td rowspan="2">Transporter Name<br/>'. h(($purchaseOrder->transporter->transporter_name)) .'</td>
+    <td>Exceise Duty		'. h(($purchaseOrder->exceise_duty)) .'
 		</td>
 	
   </tr>
   <tr>
-    <td>'. h(($purchaseOrder->delivery)) .'</td>
+    <td>Delivery:-		'. h(($purchaseOrder->delivery)) .'</td>
   </tr>
+  
 </table>';
+
+ $html .= '
+<table width="100%" class="table_rows">
+  <tr>
+    <td>Excise Invoice Required in favour of conignee.<br/>
+	Name:-
+    </td>
+    <td width="50%">Please confirm that you have registered this order and request you to return back the duplicate copy duly signed i token of having accepted the order.</td>
+  </tr>
+  
+</table>';
+
 
 
 
