@@ -212,8 +212,10 @@ $html .= '	<table width="100%" class="table_rows">
   <tr>
     <td>Excise Invoice Required in favour of conignee.<br/>
 	Name:-
-    </td>
-    <td width="50%">Please confirm that you have registered this order and request you to return back the duplicate copy duly signed i token of having accepted the order.</td>
+    </td >
+    <td align="center" width="50%">Please confirm that you have registered this order and request you to return back the duplicate copy duly signed i token of having accepted the order.<br/>
+	<span align="right" style="font-size: 16px;"><b>For'. h($purchaseOrder->company->name) .' </b></span>
+	</td>
   </tr>
   
 </table>';

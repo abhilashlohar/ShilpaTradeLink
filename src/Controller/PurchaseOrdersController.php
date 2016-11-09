@@ -54,10 +54,12 @@ class PurchaseOrdersController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$s_employee_id=$this->viewVars['s_employee_id'];
         $purchaseOrder = $this->PurchaseOrders->newEntity();
         if ($this->request->is('post')) {
             $purchaseOrder = $this->PurchaseOrders->patchEntity($purchaseOrder, $this->request->data);
 			$purchaseOrder->delivery_date=date("Y-m-d",strtotime($purchaseOrder->delivery_date));
+			$purchaseOrder->created_by=$s_employee_id; 
 			
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
             if ($this->PurchaseOrders->save($purchaseOrder)) {
