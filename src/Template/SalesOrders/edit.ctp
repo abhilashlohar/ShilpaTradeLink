@@ -118,7 +118,7 @@
 					<tr class="tr1" row_no='<?php echo @$sales_order_rows->id; ?>'>
 						<td rowspan="2"><?= h($q) ?></td>
 						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item','value'=>$sales_order_rows->item_id]); ?></td>
-						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity','value'=>$sales_order_rows->quantity]); ?></td>
+						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$sales_order_rows->quantity]); ?></td>
 						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01",'value'=>$sales_order_rows->rate]); ?></td>
 						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value'=>$sales_order_rows->amount]); ?></td>
 						<td><?php 
@@ -253,7 +253,7 @@
 		<tr class="tr1">
 			<td rowspan="2">0</td>
 			<td><?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item']); ?></td>
-			<td><?php echo $this->Form->input('unit[]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity']); ?></td>
+			<td><?php echo $this->Form->input('unit[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
 			<td><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01"]); ?></td>
 			<td><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td><?php 
@@ -434,7 +434,23 @@ $(document).ready(function() {
 		var description=$(this).find('option:selected').attr("description");
 		$(this).closest("td").find('input').val(description);
     });
-	
+	$('.quantity').die().live("keyup",function() {
+			var asc=$(this).val();
+			var numbers =  /^[0-9]*\.?[0-9]*$/;
+			if(asc==0)
+			{
+				$(this).val('');
+				return false; 
+			}
+			else if(asc.match(numbers))  
+			{  
+			} 
+			else  
+			{  
+				$(this).val('');
+				return false;  
+			}
+	});
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {

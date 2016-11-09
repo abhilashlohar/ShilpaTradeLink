@@ -131,7 +131,7 @@
 						<tr class="tr1" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Item','value' => @$quotation_rows->item->id]); ?></td>
-							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity','min'=>'1', 'max'=>@$quotation_rows->quantity,'value' => @$quotation_rows->quantity]); ?></td>
+							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$quotation_rows->quantity]); ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate','value' => @$quotation_rows->rate]); ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$quotation_rows->amount]); ?></td>
 							<td><?php 
@@ -294,7 +294,7 @@
 		<tr class="tr1">
 			<td rowspan="2">0</td>
 			<td><?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item']); ?></td>
-			<td><?php echo $this->Form->input('unit[]', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity']); ?></td>
+			<td><?php echo $this->Form->input('unit[]', ['type' => 'type','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
 			<td><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01"]); ?></td>
 			<td><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td><?php 
@@ -511,8 +511,23 @@ $(document).ready(function() {
 		var alias=$('select[name="company_id"] option:selected').attr("alias");
 		$('input[name="so1"]').val(alias);
 	<?php } ?>
-	
-	
+	$('.quantity').die().live("keyup",function() {
+			var asc=$(this).val();
+			var numbers =  /^[0-9]*\.?[0-9]*$/;
+			if(asc==0)
+			{
+				$(this).val('');
+				return false; 
+			}
+			else if(asc.match(numbers))  
+			{  
+			} 
+			else  
+			{  
+				$(this).val('');
+				return false;  
+			}
+	});
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
