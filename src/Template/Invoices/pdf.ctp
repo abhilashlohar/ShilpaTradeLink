@@ -87,7 +87,7 @@ $html.='
 		<tr>
 			<td width="50%">
 				
-				
+				<span><b>'. h($invoice->customer->customer_name) .'</b></span><br/>
 				'. $this->Text->autoParagraph(h($invoice->customer_address)) .'
 				<span>TIN No. :'. h($invoice->customer->tin_no) .'</span><br/>
 				<span>PAN No. :'. h($invoice->customer->pan_no) .'</span>
