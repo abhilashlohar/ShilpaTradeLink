@@ -17,13 +17,13 @@
 				<table class="table table-bordered table-striped table-hover">
 						<thead>
 							<tr>
-								<th>id</th>
+								<th>S.N</th>
 								<th>Company</th>
 								<th>Purchase No.</th>
 								
 							
-								<th>delivery_date</th>
-								<th>total</th>
+								<th>Delivery Date</th>
+								<th>Total</th>
 								
 								<th class="actions"><?= __('Actions') ?></th>
 							</tr>
@@ -33,7 +33,7 @@
 					<tbody>
 						<?php foreach ($purchaseOrders as $purchaseOrder): ?>
 						<tr>
-							<td><?= $this->Number->format($purchaseOrder->id) ?></td>
+							<td><?= h(++$page_no) ?></td>
 							<td><?= $purchaseOrder->has('company') ? $this->Html->link($purchaseOrder->company->name, ['controller' => 'Companies', 'action' => 'view', $purchaseOrder->company->id]) : '' ?></td>
 							<td><?= h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->id, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)) ?></td>
 							<td><?= h($purchaseOrder->delivery_date) ?></td>

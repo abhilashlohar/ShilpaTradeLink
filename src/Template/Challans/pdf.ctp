@@ -41,6 +41,9 @@ $html = '
 	.table2 td{
 		border: 0px solid  #000;font-size: 14px;padding:0px; 
 	}
+	.inner-table td{
+		border: 0px solid  #000;padding:0px; 
+	}
 	.table_rows th{
 		font-size:14px;
 	}
@@ -147,21 +150,15 @@ if(sizeof($total)==2){
 
 
 $html.='
-	<tfoot>
+	<tbody>
 			<tr>
 				<td colspan="4" style="text-align:right;border-top: none !important;">Total</td>
 				<td style="text-align:right;border-top: none !important;" width="10">'. $this->Number->format($challan->total,[ 'places' => 2]) .'</td>
 			</tr>
-		</tfoot>
-	</table>';
-  
-  
-
- 
-  		$html.='<table width="100%" class="table_rows">
-		    <tr>
-				<td colspan="3"><table   width="100%" class="table-amnt"><tr><td valign="top" width="18%"> <b><div style="margin-top:5px;">Amount in words: </div></b></td>
-				<td  valign="top">'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td></tr></table></td>
+			
+		
+		<tr>
+				<td colspan="5"><table  width="100%" class="inner-table" ><tr><td valign="top" width="18%"> <b><div style="margin-top:5px;">Amount in words: </div></b></td><td  valign="top">'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td></tr></table></td>
 			</tr>
 		</tbody>
 	</table>'; 
