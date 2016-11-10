@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once(ROOT . DS  .'vendor' . DS  . 'dompdf' . DS . 'autoload.inc.php');
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -64,7 +64,7 @@ $html = '
 			</tr>
 			<tr>
 				<td colspan="2">
-					<div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">RETURNABLE CHALLAN</div>
+					<div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">'. h(strtoupper($challan->challan_type)) .' CHALLAN</div>
 					<div style="border:solid 2px #0685a8;margin-bottom:35px;margin-top: 5px;"></div>
 				</td>
 			</tr>
@@ -119,7 +119,7 @@ $html.='
 		<tr>
 			<th width="30">S No</th>
 			<th>Item Description</th>
-			<th width="10">Unit</th>
+			
 			<th width="10">Quantity</th>
 			<th width="10">Rate</th>
 			<th width="10">Amount</th>
@@ -131,26 +131,79 @@ $html.='
 	<tr>
 		<td valign="top" align="center">'. h($sr) .'</td>
 		<td>'. $this->Text->autoParagraph(h($challanRows->description)) .'</td>
-		<td align="center" valign="top">'. h($challanRows->item->unit->name) .'</td>
+	
 		<td align="center" valign="top">'. h($challanRows->quantity) .'</td>
 		<td align="right" style="width: 10;" valign="top">'. $this->Number->format($challanRows->rate,[ 'places' => 2]).'</td>
 		<td align="right" style="width: 10;" valign="top">'. $this->Number->format($challanRows->amount,[ 'places' => 2]) .'</td>
 	</tr>';
 endforeach;
 
+ 
+$total=explode('.',$challan->total);
+$rupees=$total[0];
+if(sizeof($total)==2){
+	$paisa=(int)$total[1];
+}else{ $paisa=""; }
+
 
 $html.='
 	<tfoot>
 			<tr>
-				<td colspan="5" style="text-align:right;border-top: none !important;">Total</td>
+				<td colspan="4" style="text-align:right;border-top: none !important;">Total</td>
 				<td style="text-align:right;border-top: none !important;" width="10">'. $this->Number->format($challan->total,[ 'places' => 2]) .'</td>
 			</tr>
 		</tfoot>
 	</table>';
   
   
-  
-  
+
+ 
+  		$html.='<table width="100%" class="table_rows">
+		    <tr>
+				<td colspan="3"><table   width="100%" class="table-amnt"><tr><td valign="top" width="18%"> <b><div style="margin-top:5px;">Amount in words: </div></b></td>
+				<td  valign="top">'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td></tr></table></td>
+			</tr>
+		</tbody>
+	</table>'; 
+		
+  		
+$html .= '<div id="footer">
+   <table width="100%" class="divFooter">
+			<tr>
+				<td >
+					<table>
+						<tr>
+							<td >Invoice is Subject to Udaipur jurisdiction</td>
+						</tr>
+					</table>
+					<table>
+						<tr>
+							<td>TIN</td>
+							<td>: '. h($challan->company->tin_no) .'</td>
+						</tr>
+						<tr width="30">
+							<td>PAN</td>
+							<td>: '. h($challan->company->pan_no) .'</td>
+						</tr>
+						<tr>
+							<td>CIN</td>
+							<td>: '. h($challan->company->cin_no) .'</td>
+						</tr>
+					</table>
+				</td>
+				<td align="right" >
+					<div align="center">
+						<span>For <b>'. h($challan->company->name) .'</b></span><br/>
+						<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$challan->creator->signature.' height="50px" style="height:50px;"/>
+						<br/>
+						<span><b>Authorised Signatory</b></span><br/>
+						<span>'. h($challan->creator->name) .'</span><br/>
+						
+					</div>
+				</td>
+			</tr>
+		</table>
+  </div>';
   
   
   

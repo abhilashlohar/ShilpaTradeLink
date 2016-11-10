@@ -85,6 +85,16 @@
 							</div>
 						</div>
 					</div>
+					
+					<div class="col-md-3">
+						<div class="form-group">
+						<div class="radio-list" data-error-container="#road_permit_required_error">
+						<label class="control-label">Challan Type <span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->radio('challan_type',[['value' => 'Returnable', 'text' => 'Returnable'],['value' => 'Non Returnable', 'text' => 'Non Returnable']]); ?>
+						</div>
+						<div id="road_permit_required_error"></div>
+					</div>
+				</div>
 
 				</div>
 		
@@ -135,7 +145,7 @@
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
-					<button type="submit" class="btn btn-primary" >GENERATE QUOTATION</button>
+					<button type="submit" class="btn btn-primary" >GENERATE CHALLAN</button>
 				</div>
 			</div>
 		</div>

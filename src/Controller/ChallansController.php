@@ -53,15 +53,16 @@ class ChallansController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$s_employee_id=$this->viewVars['s_employee_id'];
         $challan = $this->Challans->newEntity();
         if ($this->request->is('post')) {
             $challan = $this->Challans->patchEntity($challan, $this->request->data);
-		
+			$challan->created_by=$s_employee_id; 
 			$challan->created_on=date("Y-m-d",strtotime($challan->created_on));
             if ($this->Challans->save($challan)) {
                 $this->Flash->success(__('The challan has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                  return $this->redirect(['action' => 'confirm/'.$challan->id]);
             } else {
                 $this->Flash->error(__('The challan could not be saved. Please, try again.'));
             }
@@ -84,6 +85,7 @@ class ChallansController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $challan = $this->Challans->get($id, [
             'contain' => []
         ]);
@@ -97,11 +99,13 @@ class ChallansController extends AppController
                 $this->Flash->error(__('The challan could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Challans->Customers->find('list', ['limit' => 200]);
-        $companies = $this->Challans->Companies->find('list', ['limit' => 200]);
-        $invoices = $this->Challans->Invoices->find('list', ['limit' => 200]);
-        $transporters = $this->Challans->Transporters->find('list', ['limit' => 200]);
-        $this->set(compact('challan', 'customers', 'companies', 'invoices', 'transporters'));
+		$customers = $this->Challans->Customers->find('all');
+        $companies = $this->Challans->Companies->find('all');
+		$items = $this->Challans->Items->find('list');
+        $invoices = $this->Challans->Invoices->find('all');
+        $transporters = $this->Challans->Transporters->find('list');
+        $this->set(compact('challan', 'customers', 'companies', 'invoices', 'transporters','items'));
+	
         $this->set('_serialize', ['challan']);
     }
 
@@ -129,7 +133,7 @@ class ChallansController extends AppController
     {
 		$this->viewBuilder()->layout('');
          $challan = $this->Challans->get($id, [
-            'contain' => ['Companies','Invoices','Transporters','ChallanRows']
+            'contain' => ['Companies','Invoices','Transporters','ChallanRows','Creator']
 			]);
 
         $this->set('challan', $challan);

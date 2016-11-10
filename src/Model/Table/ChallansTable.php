@@ -62,8 +62,15 @@ class ChallansTable extends Table
         ]);
 		
 		 $this->hasMany('ChallanRows', [
-            'foreignKey' => 'challan_id'
+            'foreignKey' => 'challan_id',
+			'saveStrategy' => 'replace'
         ]);
+		
+		$this->belongsTo('Creator', [
+			'className' => 'Employees',
+			'foreignKey' => 'created_by',
+			'propertyName' => 'creator',
+		]);
     }
 
     /**
