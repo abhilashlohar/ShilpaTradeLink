@@ -156,7 +156,7 @@
 						<th width="70"></th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="main_tbody">
 					
 				</tbody>
 				<tfoot>
@@ -440,9 +440,9 @@ $(document).ready(function() {
 	
 	function add_row(){
 		var tr1=$("#sample_tb tbody tr.tr1").clone();
-		$("#main_tb tbody").append(tr1);
+		$("#main_tb tbody#main_tbody").append(tr1);
 		var tr2=$("#sample_tb tbody tr.tr2").clone();
-		$("#main_tb tbody").append(tr2);
+		$("#main_tb tbody#main_tbody").append(tr2);
 		
 		var w=0; var r=0;
 		$("#main_tb tbody tr").each(function(){
@@ -625,13 +625,22 @@ $(document).ready(function() {
 	})
 	
 	function last_three_rates(popup_id,item_id){
-			alert(popup_id);
-			alert(item_id);
 			var customer_id=$('select[name="customer_id"]').val();
-			alert(customer_id);
+			$('.modal[popup_div_id='+popup_id+']').show();
+			$('div[popup_ajax_id='+popup_id+']').html('Loading...');
+			if(customer_id){
+				var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'RecentRecords']); ?>";
+				url=url+'/'+item_id+'/'+customer_id,
+				$.ajax({
+					url: url,
+				}).done(function(response) {
+					$('div[popup_ajax_id='+popup_id+']').html(response);
+				});
+			}else{
+				$('div[popup_ajax_id='+popup_id+']').html('Select customer first.');
+				$(".item_box[popup_id="+popup_id+"]").val('').select2();
+			}
 	}
-	
-	
 });
 
 </script>
