@@ -61,7 +61,7 @@ class ChallansTable extends Table
             'joinType' => 'INNER'
         ]);
 		
-		 $this->hasMany('challan_rows', [
+		 $this->hasMany('ChallanRows', [
             'foreignKey' => 'challan_id'
         ]);
     }

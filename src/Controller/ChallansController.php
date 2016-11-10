@@ -124,4 +124,22 @@ class ChallansController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function pdf($id = null)
+    {
+		$this->viewBuilder()->layout('');
+         $challan = $this->Challans->get($id, [
+            'contain' => ['Companies','Invoices','Transporters','ChallanRows']
+			]);
+
+        $this->set('challan', $challan);
+        $this->set('_serialize', ['challan']);
+    }
+	
+	public function confirm($id = null)
+    {
+		$this->viewBuilder()->layout('pdf_layout');
+		
+        $this->set('id', $id);
+    }
 }

@@ -366,7 +366,7 @@ select
 					</a>
 					<ul class="sub-menu">
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> Create','/Challans/Add',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Purchase-Orders',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Challans',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
 			</ul>

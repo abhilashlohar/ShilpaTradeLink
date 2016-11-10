@@ -41,7 +41,7 @@
 								<?php
 									$options=array();
 									foreach($invoices as $invoice){
-										$merge=(($invoice->in1.'/PO-'.str_pad($invoice->id, 3, '0', STR_PAD_LEFT).'/'.$invoice->in4.'/'.$invoice->in4));
+										$merge=(($invoice->in1.'/PO-'.str_pad($invoice->id, 3, '0', STR_PAD_LEFT).'/'.$invoice->in4.'/'.$invoice->in3));
 										$options[]=['text' =>$merge, 'value' => $invoice->id];
 									}
 									echo $this->Form->input('invoice_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me']); ?>
@@ -167,7 +167,7 @@
 						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen item_box','placeholder' => 'Item']); ?>
 					</div>
 					<div class="col-md-1 padding-left-decrease">
-						<a href="#" class="btn btn-default btn-sm popup_btn" role="button"> <i class="fa fa-info-circle"></i> </a>
+						
 						<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
 							<div class="modal-dialog">
 								<div class="modal-content">
@@ -537,19 +537,7 @@ $(document).ready(function() {
 		copy_term_condition_to_textarea();
 	})
 	
-	$("select.item_box").die().live("change",function(){
-		var popup_id=$(this).attr('popup_id');
-		var item_id=$(this).val();
-		last_three_rates(popup_id,item_id);
-	})
-	
-	function last_three_rates(popup_id,item_id){
-			alert(popup_id);
-			alert(item_id);
-			var customer_id=$('select[name="customer_id"]').val();
-			alert(customer_id);
-	}
-	
+
 	
 });
 

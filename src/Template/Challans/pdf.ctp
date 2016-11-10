@@ -1,0 +1,171 @@
+<?php 
+require_once(ROOT . DS  .'vendor' . DS  . 'dompdf' . DS . 'autoload.inc.php');
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
+$options = new Options();
+$options->set('defaultFont', 'Lato-Hairline');
+$dompdf = new Dompdf($options);
+
+$dompdf = new Dompdf();
+
+
+
+
+$html = '
+<html>
+<head>
+  <style>
+    @page { margin: 150px 15px 200px 30px; }
+    #header { position: fixed; left: 0px; top: -150px; right: 0px; height: 150px;}
+    #footer { position: fixed; left: 0px; bottom: -200px; right: 0px; height: 200px;}
+    #footer .page:after { content: content: counter(page); }
+	
+	
+	@font-face {
+		font-family: Lato;
+		src: url("https://fonts.googleapis.com/css?family=Lato");
+	}
+	p{
+		margin:0;font-family: Lato;font-weight: 100;line-height: 1;
+	}
+	table td{
+		margin:0;font-family: Lato;font-weight: 100;padding:0;line-height: 1;
+	}
+	table.table_rows tr.odd{
+		page-break-inside: avoid;
+	}
+	.table_rows, .table_rows th, .table_rows td {
+	   border: 1px solid  #000;border-collapse: collapse;padding:2px; 
+	}
+	.table2 td{
+		border: 0px solid  #000;font-size: 14px;padding:0px; 
+	}
+	.table_rows th{
+		font-size:14px;
+	}
+	.avoid_break{
+		page-break-inside: avoid;
+	}
+	</style>
+<body>
+  <div id="header" ><br/>	
+		<table width="100%">
+			<tr>
+				<td width="50%">
+				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$challan->company->logo.' height="80px" style="height:80px;"/>
+				</td>
+				<td align="right" width="50%" style="font-size: 12px;">
+				<span style="font-size: 16px;">'. h($challan->company->name) .'</span><br/>
+				<span>'. $this->Text->autoParagraph(h($challan->company->address)) .'</span>
+				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/telephone.gif height="11px" style="height:11px;margin-top:5px;"/> '. h($challan->company->mobile_no).'</span> | 
+				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/email.png height="15px" style="height:15px;margin-top:4px;"/> '. h($challan->company->email).'</span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">RETURNABLE CHALLAN</div>
+					<div style="border:solid 2px #0685a8;margin-bottom:35px;margin-top: 5px;"></div>
+				</td>
+			</tr>
+		</table>
+  </div>
+ 
+
+  <div id="content"> ';
+  
+$html.='
+	<table width="100%" style="margin-top: 0px;">
+		<tr>
+			<td width="50%">
+				
+				
+				'. $this->Text->autoParagraph(h($challan->customer_address)) .'
+			
+			</td>
+			<td width="" valign="top" align="right">
+				<table>
+					<tr>
+						<td>Invoice No.</td>
+						<td width="20" align="center">:</td>
+						<td>'. h(($challan->invoice->in1."/IN-".str_pad($challan->invoice->id, 3, "0", STR_PAD_LEFT)."/".$challan->invoice->in3."/".$challan->invoice->in4)) .'</td>
+					</tr>
+					<tr>
+						<td>Date</td>
+						<td width="20" align="center">:</td>
+						<td>'. h(date("d-m-Y",strtotime($challan->created_on))) .'</td>
+					</tr>
+					<tr>
+						<td>LR No.</td>
+						<td width="20" align="center">:</td>
+						<td>'. h($challan->lr_no) .'</td>
+					</tr>
+					<tr>
+						<td>Carrier</td>
+						<td width="20" align="center">:</td>
+						<td>'. h($challan->transporter->transporter_name) .'</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	
+';
+  
+   
+
+$html.='
+<table width="100%" class="table_rows">
+		<tr>
+			<th width="30">S No</th>
+			<th>Item Description</th>
+			<th width="10">Unit</th>
+			<th width="10">Quantity</th>
+			<th width="10">Rate</th>
+			<th width="10">Amount</th>
+		</tr>
+';
+
+$sr=0; foreach ($challan->challan_rows as $challanRows): $sr++; 
+$html.='
+	<tr>
+		<td valign="top" align="center">'. h($sr) .'</td>
+		<td>'. $this->Text->autoParagraph(h($challanRows->description)) .'</td>
+		<td align="center" valign="top">'. h($challanRows->item->unit->name) .'</td>
+		<td align="center" valign="top">'. h($challanRows->quantity) .'</td>
+		<td align="right" style="width: 10;" valign="top">'. $this->Number->format($challanRows->rate,[ 'places' => 2]).'</td>
+		<td align="right" style="width: 10;" valign="top">'. $this->Number->format($challanRows->amount,[ 'places' => 2]) .'</td>
+	</tr>';
+endforeach;
+
+
+$html.='
+	<tfoot>
+			<tr>
+				<td colspan="5" style="text-align:right;border-top: none !important;">Total</td>
+				<td style="text-align:right;border-top: none !important;" width="10">'. $this->Number->format($challan->total,[ 'places' => 2]) .'</td>
+			</tr>
+		</tfoot>
+	</table>';
+  
+  
+  
+  
+  
+  
+  
+  
+
+ $html .= '</div>
+</body>
+</html>';
+
+//echo $html; exit; 
+
+
+$dompdf->loadHtml($html);
+$dompdf->setPaper('A4', 'portrait');
+$dompdf->render();
+$dompdf->stream($name,array('Attachment'=>0));
+exit(0);
+?>
