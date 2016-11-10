@@ -315,28 +315,31 @@ class InvoicesController extends AppController
     }
 	
 	function RecentRecords($item_id=null,$customer_id=null){
-		
 		$this->viewBuilder()->layout('');
 		if(!empty($item_id) and !empty($customer_id)){
+			
+			$item=$this->Invoices->Items->get($item_id);
+			
+			
 			$customerIds=[]; $customer_text='';
 			$customer=$this->Invoices->Customers->get($customer_id);
 			if($customer->customer_group_id!=0){
 				$customerGroup=$this->Invoices->CustomerGroups->get($customer->customer_group_id);
-				$customer_text='Recent Record for customer group - ';
+				$customer_text='Recent Record for customer group - <b>'.$customerGroup->name.'</b>';
 				$customers=$this->Invoices->Customers->find()->select(['id'])->where(['customer_group_id'=>$customer->customer_group_id]);
 				foreach($customers as $data){
 					$customerIds[]=$data->id;
 				}
 			}else{
 				$customerIds=array($customer_id);
-				 $customer_text='Recent Record for customer - '.$customer->name;
+				 $customer_text='Recent Record for customer - <b>'.$customer->customer_name.'</b>';
 			}
 			$Invoices=$this->Invoices->find()->where(['customer_id IN' => $customerIds])->matching(
 					'InvoiceRows', function ($q) use($item_id) {
 						return $q->where(['InvoiceRows.item_id' => $item_id]);
 					}
 				);
-			$this->set(compact('Invoices','customer_text'));
+			$this->set(compact('Invoices','customer_text','item'));
 		}
 	}
 }

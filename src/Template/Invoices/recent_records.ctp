@@ -1,4 +1,5 @@
-<span style="font-size: 16px;"><?php echo $customer_text; ?></span>
+<span style="font-size: 14px;">Minimum Selling Rate for item "<?php echo $item->name; ?>" : <?php echo $item->dynamic_cost*$item->minimum_selling_price_factor; ?></span><br/><br/>
+<div style="font-size: 14px;"><?php echo $customer_text; ?></div>
 <table class="table">
 	<thead>
 		<tr>
