@@ -16,9 +16,12 @@ $html = '
   <style>
     @page { margin: 120px 15px 20px 30px; }
     #header { position: fixed; left: 0px; top: -120px; right: 0px; height: 120px;}
-	#footer { position: fixed; left: 0px; bottom: 30px; right: 0px; height: 20px;text-align:center;}
+	#footer { position: fixed; left: 0px; bottom: 30px; right: 0px; height: 160px;text-align:center;}
     #footer .page:after { content: content: counter(page); }
-	
+	.img-height{
+		height:20;
+		text-align:center;
+	}
 	
 	@font-face {
 		font-family: Lato;
@@ -64,13 +67,36 @@ $html = '
 		</table>
   </div>
   <div id="footer">
-	<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/tushaco_pumps.png" style="height: 30px;" />
-	<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/johnson_pump.png"  style="height: 30px;" />
-	<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/antico.png"  style="height: 30px;" />
-	<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/darling_pump.png"  style="height: 30px;" />
-	<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/allweler.png"  style="height: 30px;" />
-	<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/lightnin.png"  style="height: 30px;" />
-	<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/positive.png"  style="height: 30px;" />
+	<hr style="width:100%"/>
+	<table width="100%" style="text-align:center;">
+		<tr>
+			<td  width="100%" colspan="4" align="center"><b><u>:: Authorised Dealer for Rajasthan ::</u></b><br/><br/></td>
+		</tr>
+		<tr>
+			<td width="25%"><img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/tushaco_pumps.png" class="img-height" /></td>
+			<td width="25%"><img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/johnson_pump.png" class="img-height"/></td>
+			<td width="25%"><img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/antico.png" class="img-height" /></td>
+			<td width="25%"><img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/darling_pump.png" class="img-height" /></td>
+		</tr>
+		<tr>
+			<td>Gear / Screw Pumps</td>
+			<td>Centrifugal/Multistage Pumps</td>
+			<td>Non Metallic Pumps</td>
+			<td>Submersible Pumps</td>
+		</tr>
+	</table>
+	<table width="100%" style="text-align:center;">
+		<tr>
+			<td width="33%"><img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/allweler.png" class="img-height"  /></td>
+			<td width="33%"><img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/lightnin.png" class="img-height" /></td>
+			<td width="34%"><img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/positive.png" class="img-height" /></td>
+		</tr>
+		<tr>
+			<td>Screw Pumps</td>
+			<td>Mixers / Agitators</td>
+			<td>Dosing / Diaphragm Pumps</td>
+		</tr>
+	</table>
   </div>
 	<div id="content"> ';
   
