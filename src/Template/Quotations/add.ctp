@@ -232,8 +232,8 @@
 					</div>
 				</div>
 			</td>
-			<td width="100"><?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity']); ?></td>
-			<td width="130"><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate']); ?></td>
+			<td width="100"><?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
+			<td width="130"><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm rate','placeholder' => 'Rate']); ?></td>
 			<td width="130"><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
@@ -405,7 +405,35 @@ $(document).ready(function() {
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
-	
+	$('.quantity').die().live("keyup",function() {
+			var asc=$(this).val();
+			var numbers =  /^[0-9]*\.?[0-9]*$/;
+			if(asc==0)
+			{
+				$(this).val('');
+				return false; 
+			}
+			else if(asc.match(numbers))  
+			{  
+			} 
+			else  
+			{  
+				$(this).val('');
+				return false;  
+			}
+	});
+	$('.rate').die().live("keyup",function() {
+			var asc=$(this).val();
+			var numbers =  /^[0-9]*\.?[0-9]*$/;
+			if(asc.match(numbers))  
+			{  
+			} 
+			else  
+			{  
+				$(this).val('');
+				return false;  
+			}
+	});
 	var terms_conditions=$("#terms_conditions").text();
 	$('textarea[name="terms_conditions"]').val(terms_conditions);
 	
