@@ -39,6 +39,7 @@ class InvoicesTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
+		$this->belongsTo('CustomerGroups');
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'
