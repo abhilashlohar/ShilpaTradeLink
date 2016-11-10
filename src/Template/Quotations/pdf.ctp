@@ -16,7 +16,7 @@ $html = '
   <style>
     @page { margin: 120px 15px 20px 30px; }
     #header { position: fixed; left: 0px; top: -120px; right: 0px; height: 120px;}
-    #footer { position: fixed; left: 0px; bottom: -20px; right: 0px; height: 20px;text-align:center;display:none;}
+	#footer { position: fixed; left: 0px; bottom: 30px; right: 0px; height: 20px;text-align:center;}
     #footer .page:after { content: content: counter(page); }
 	
 	
@@ -64,7 +64,13 @@ $html = '
 		</table>
   </div>
   <div id="footer">
-    <p class="page">Page : </p>
+	<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/tushaco_pumps.png" style="height: 30px;" />
+	<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/johnson_pump.png"  style="height: 30px;" />
+	<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/antico.png"  style="height: 30px;" />
+	<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/darling_pump.png"  style="height: 30px;" />
+	<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/allweler.png"  style="height: 30px;" />
+	<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/lightnin.png"  style="height: 30px;" />
+	<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/positive.png"  style="height: 30px;" />
   </div>
 	<div id="content"> ';
   
