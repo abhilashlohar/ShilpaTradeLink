@@ -627,7 +627,7 @@ $(document).ready(function() {
 	function last_three_rates(popup_id,item_id){
 			var customer_id=$('select[name="customer_id"]').val();
 			$('.modal[popup_div_id='+popup_id+']').show();
-			$('div[popup_ajax_id='+popup_id+']').html('Loading...');
+			$('div[popup_ajax_id='+popup_id+']').html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 			if(customer_id){
 				var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'RecentRecords']); ?>";
 				url=url+'/'+item_id+'/'+customer_id,
