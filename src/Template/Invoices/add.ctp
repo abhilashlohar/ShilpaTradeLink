@@ -506,7 +506,7 @@ $(document).ready(function() {
 			var val=$(this).find('td:nth-child(6) input[type="checkbox"]:checked').val();
 			if(val){
 				$(this).find('td:nth-child(2) select').attr("name","invoice_rows["+val+"][item_id]");
-				$(this).find('td:nth-child(3) input').removeAttr("readonly").attr("name","invoice_rows["+val+"][quantity]");
+				$(this).find('td:nth-child(3) input').removeAttr("readonly").attr("name","invoice_rows["+val+"][quantity]").attr("id","q"+val);
 				$(this).find('td:nth-child(4) input').attr("name","invoice_rows["+val+"][rate]");
 				$(this).find('td:nth-child(5) input').attr("name","invoice_rows["+val+"][amount]");
 				
