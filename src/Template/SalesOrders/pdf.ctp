@@ -232,19 +232,20 @@ $html.='
 	</table>
 	<br/>
 	<b>Dispatch Details</b>
-	<table width="100%">
-		<tr>
-			<td>Name</td>
-			<td>: '. h($salesOrder->dispatch_name).'</td>
-			<td>Mobile</td>
-			<td>: '. h($salesOrder->dispatch_mobile).'</td>
+	<table width="100%" >
+		<tr  >
+			<td width="5%">Name</td>
+			<td width="30%">: '. h($salesOrder->dispatch_name).'</td>
+			<td width="30%"><td>
+			<td width="5%">Mobile</td>
+			<td width="30%">: '. h($salesOrder->dispatch_mobile).'</td>
 		</tr>
 		<tr>
-			<td>Email</td>
-			<td>: '. h($salesOrder->dispatch_email).'</td>
-			
 			<td>Address</td>
 			<td>: '. h($salesOrder->dispatch_address).'</td>
+			<td width="30%"><td>
+			<td>Email</td>
+			<td>: '. h($salesOrder->dispatch_email).'</td>
 			
 		</tr>
 	</table>

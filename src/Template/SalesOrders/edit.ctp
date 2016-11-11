@@ -18,7 +18,7 @@
 							foreach($companies as $companie){
 								$options[]=['text' => $companie->name, 'value' => $companie->id, 'alias' => $companie->alias];
 							}
-							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me','value' => @$quotation->company_id] ); ?>
+							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me','value' => @$salesOrder->company_id] ); ?>
 						</div>
 					</div>
 				</div>
@@ -79,7 +79,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Salesman</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm','value' => @$quotation->customer_id]); ?>
+							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm','value' => @$salesOrder->customer_id]); ?>
 						</div>
 					</div>
 				</div>
@@ -129,8 +129,8 @@
 						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01",'value'=>$sales_order_rows->rate]); ?></td>
 						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value'=>$sales_order_rows->amount]); ?></td>
 						<td><?php 
-						$options=['Yes'=>'Yes','No'=>'No'];
-						echo $this->Form->input('sales_order_rows.'.$q.'.exceise_duty', ['options'=>$options,'label' => false,'class' => 'form-control input-sm','value'=>$sales_order_rows->excise_duty]); ?></td>
+							$options=['Yes'=>'Yes','No'=>'No'];
+							echo $this->Form->input('sales_order_rows.'.$q.'.excise_duty', ['options'=>$options,'label' => false,'class' => 'form-control input-sm' ,'value'=>$sales_order_rows->excise_duty]); ?></td>
 						<td>
 						<?php $options=[];
 						foreach($SaleTaxes as $SaleTaxe){
@@ -152,7 +152,7 @@
 				<tbody>
 					<tr>
 						<td align="right"><b>Total</b></td>
-						<td width="200"><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','value' => @$quotation->total]); ?></td>
+						<td width="200"><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','value' => @$salesOrder->total]); ?></td>
 						<td width="70"></td>
 					</tr>
 					<tr>
@@ -235,7 +235,8 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<label class="control-label">Address</label>
-						<?php echo $this->Form->input('dispatch_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Address']); ?>
+						
+						<?php echo $this->Form->input('dispatch_address', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Address']); ?>
 					</div>
 				</div>
 			</div>

@@ -29,7 +29,7 @@
 									<?php echo $this->Form->input('po1', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
 								</div>
 								<div class="col-md-4">
-									<?php echo $this->Form->input('po3', ['options'=>$filenames,'label' => false,'class' => 'form-control input-sm']); ?>
+									<?php echo $this->Form->input('po3', ['options'=>$filenames,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 								</div>
 								<div class="col-md-4">
 									<?php echo $this->Form->input('po4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
@@ -86,7 +86,7 @@ With reference to your price list we are pleased to place an order for the follo
 							</tr>
 							
 							<tr style="background-color:#e6faf9;">
-								<td colspan="4" align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:right']]); ?> </b></td>
+								<td colspan="4" align="right"><b><?php echo $this->Form->textarea('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:left']]); ?> </b></td>
 								<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty','value' => 0]); ?></td>
 							</tr>
 							
@@ -132,7 +132,7 @@ With reference to your price list we are pleased to place an order for the follo
 							foreach($SaleTaxes as $SaleTaxe){
 								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 							}
-							echo $this->Form->input('sale_tax_per', ['empty'=>'--Select--','options'=>$options,'label' => false,'class' => 'form-control input-sm']);
+							echo $this->Form->input('sale_tax_per', ['empty'=>'--Select--','options'=>$options,'label' => false,'class' => 'form-control input-sm select2me']);
 							
 							?>
 						</div>
@@ -182,13 +182,13 @@ With reference to your price list we are pleased to place an order for the follo
 						<div class="form-group">
 							<label class="control-label">Transporter <span class="required" aria-required="true">*</span></label>
 							<?php 
-							echo $this->Form->input('transporter_id',['empty'=>'--Select--','options'=>$transporters,'label' => false,'class' => 'form-control input-sm']); ?>
+							echo $this->Form->input('transporter_id',['empty'=>'--Select--','options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="form-actions">
-				 <button type="submit" class="btn blue-hoki">Add Vendor</button>
+				 <button type="submit" class="btn blue-hoki">Add Purchase Order</button>
 			</div>
 		<?= $this->Form->end() ?>
 		<!-- END FORM-->

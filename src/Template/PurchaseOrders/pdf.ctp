@@ -78,18 +78,19 @@ $html.='
 
 			<table width="100%" class="table_rows">
 				<tr >
-					<td width="40%" ><span>'. h(($purchaseOrder->vendor->company_name)) .'</span><br/>
+					<td width="40%" valign="top" ><span>'. h(($purchaseOrder->vendor->company_name)) .'</span><br/>
 					<span>'. h(($purchaseOrder->vendor->address)) .'</span><br/>
 					</td>
-					<td >
+					<td valign="top" >
 						<p>Tin No:'. h(($purchaseOrder->company->tin_no)) .'</p>
 						<p>Pan No:'. h(($purchaseOrder->company->pan_no)) .'</p>
 						<p>Cin No:'. h(($purchaseOrder->company->cin_no)) .'</p>
 						
 					</td>
-					<td width="30%">
-						<p>No.'.h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->id, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)).'</p>
+					<td width="30%" valign="top">
 						<p>Date:'. h(date("d-m-Y",strtotime($purchaseOrder->date_created))) .'</p>
+						<p>No.'.h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->id, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)).'</p>
+						
 					</td>
 				</tr>
 			</table>';
@@ -149,25 +150,10 @@ $html.='
 				<td width="90%" style="text-align:right;">Total</td>
 				<td width="10%" style="text-align:right;">'. $this->Number->format($purchaseOrder->total,[ 'places' => 2]).'</td>
 			</tr>
+				
 			
 			<tr>
-				<td  style="text-align:right;">Pnf</td>
-				<td style="text-align:right;">'. $this->Number->format($purchaseOrder->pnf_per,[ 'places' => 2]).'</td>
-				</tr>
-		
-			<tr>	
-				<td style="text-align:right;">Excise Duty</td>
-				<td style="text-align:right;">'. $this->Number->format($purchaseOrder->exceise_duty,[ 'places' => 2]).'</td>
-			</tr>
-			
-			
-			<tr>					
-				<td style="text-align:right"; rowspan="1"><b>GRAND TOTAL</b></td>
-				<td style="text-align:right;">'. $this->Number->format($purchaseOrder->grand_total,[ 'places' => 2]) .'</td>
-			</tr>	
-			
-			<tr>
-				<td colspan="3"><b>Amount in words: </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td>
+				<td colspan="2"><b>Amount in words: </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td>
 			</tr>
 		</tbody>
 	</table>';
@@ -183,34 +169,35 @@ $html .= '	<table width="100%" class="table_rows">
   <tr>
     <td>LR To Be Prepared In Favour Of:<br/>'. h(($purchaseOrder->lr_to_be_prepared_in_favour_of)) .'</td>
     <td>Payment Terms<br/>'. h(($purchaseOrder->payment_terms)) .'</td>
-    <td>PNF Per			:'. h(($purchaseOrder->pnf_per)) .'</td>
+    <td>PNF Per	:'. h(($purchaseOrder->pnf_per)) .'</td>
    
   </tr>
   <tr>
-    <td rowspan="2">Road Permit Form<br/>'. h(($purchaseOrder->road_permit_form47)) .'</td>
-    <td rowspan="2">Transporter Name<br/>'. h(($purchaseOrder->transporter->transporter_name)) .'</td>
-    <td>Exceise Duty		'. h(($purchaseOrder->exceise_duty)) .'
-		</td>
+    <td>Road Permit Form:<br/>'. h(($purchaseOrder->road_permit_form47)) .'</td>
+    <td >Transporter Name:<br/>'. h(($purchaseOrder->transporter->transporter_name)) .'</td>
+    <td >Delivery:-		'. h(($purchaseOrder->delivery)) .'</td>
 	
   </tr>
-  <tr>
-    <td>Delivery:-		'. h(($purchaseOrder->delivery)) .'</td>
-  </tr>
-  
+
 </table>';
 
  $html .= '
 <table width="100%" class="table_rows">
   <tr>
-    <td>Excise Invoice Required in favour of conignee.<br/>
+    <td valign="top">Excise Invoice Required in favour of conignee.<br/>
 	Name:-
     </td >
-    <td align="center" width="50%">Please confirm that you have registered this order and request you to return back the duplicate copy duly signed in token of having accepted the order.<br/><br/>
-	
-	<span align="right" style="font-size: 16px;"><b>For'. h($purchaseOrder->company->name) .' </b></span><br/>
-	<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$purchaseOrder->creator->signature.' height="50px" style="height:50px;"/>
+		<td align="left" width="50%">Please confirm that you have registered this order and request you to return back the duplicate copy duly signed in token of having accepted the order.<br/><br/>
+					<div align="center">
+						<span>For <b>'. h($purchaseOrder->company->name) .'</b></span><br/>
+						<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$purchaseOrder->creator->signature.' height="50px" style="height:50px;"/>
 						<br/>
-	<span align="right" style="font-size: 16px;">Authorised signatory</span>
+						<span><b>Authorised Signatory</b></span><br/>
+						<span>'. h($purchaseOrder->creator->name) .'</span><br/>
+						
+					</div>
+				</td>
+	
 	</td>
   </tr>
   

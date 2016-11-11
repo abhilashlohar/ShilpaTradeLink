@@ -284,6 +284,7 @@ class SalesOrdersController extends AppController
 		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $salesOrder = $this->SalesOrders->patchEntity($salesOrder, $this->request->data);
+			
 			$salesOrder->expected_delivery_date=date("Y-m-d",strtotime($salesOrder->expected_delivery_date));
 			$salesOrder->po_date=date("Y-m-d",strtotime($salesOrder->po_date)); 
 			//$salesOrder->created_on=date("Y-m-d",strtotime($salesOrder->created_on));
