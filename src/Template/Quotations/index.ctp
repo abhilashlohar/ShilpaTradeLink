@@ -140,7 +140,7 @@
 								} ?>
 								<?php 
 								if($quotation->status=='Pending'){
-									echo $this->Form->postLink('<i class="fa fa-trash"></i> ',['action' =>'close', $quotation->id],['escape' => false,'class' => 'btn btn-xs red','confirm' => __('Are you sure, you want to delete # {0} ?', $quotation->id)
+									echo $this->Form->postLink('<i class="fa fa-minus-circle"></i> ',['action' =>'close', $quotation->id],['escape' => false,'class' => 'btn btn-xs red tooltips','data-original-title'=>'Close','confirm' => __('Are you sure, you want to close ?', $quotation->id)
 										]
 									);
 								} ?>
