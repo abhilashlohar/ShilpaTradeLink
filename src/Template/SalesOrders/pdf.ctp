@@ -123,8 +123,8 @@ $html.='
 		<td width="40" valign="top" align="center">'. h($salesOrderRows->quantity) .'</td>
 		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($salesOrderRows->rate,[ 'places' => 2]) .'</td>
 		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($salesOrderRows->amount,[ 'places' => 2]) .'</td>
-		<td align="center">'. h($salesOrderRows->excise_duty) .'</td>
-		<td align="right" >'. $this->Number->format($salesOrderRows->so_sale_tax,[ 'places' => 2]) .'</td>
+		<td align="center" valign="top">'. h($salesOrderRows->excise_duty) .'</td>
+		<td align="center" valign="top">'. $this->Number->format($salesOrderRows->so_sale_tax,[ 'places' => 2]) .'</td>
 	</tr>';
 	if(!empty($salesOrderRows->description)){
 		$html.='
