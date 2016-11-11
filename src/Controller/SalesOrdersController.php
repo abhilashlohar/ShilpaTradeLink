@@ -18,7 +18,6 @@ class SalesOrdersController extends AppController
      */
     public function index($status=null)
     {
-		
 		$url=$this->request->here();
 		$url=parse_url($url,PHP_URL_QUERY);
 		$this->viewBuilder()->layout('index_layout');
@@ -72,7 +71,7 @@ class SalesOrdersController extends AppController
 			$this->SalesOrders->find()->select(['total_rows' => 
 				$this->SalesOrders->find()->func()->count('SalesOrderRows.id')])
 				->leftJoinWith('SalesOrderRows', function ($q) {
-					return $q->where();
+					return $q->where(['SalesOrderRows.processed_quantity < SalesOrderRows.quantity']);
 				})
 				->group(['SalesOrders.id'])
 				->autoFields(true)

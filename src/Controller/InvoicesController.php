@@ -264,8 +264,13 @@ class InvoicesController extends AppController
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 			$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date));
 			$invoice->date_created=date("Y-m-d",strtotime($invoice->date_created));
+			
             if ($this->Invoices->save($invoice)) {
-				
+				$qq=0; foreach($invoice->invoice_rows as $invoice_rows){
+					$salesorderrow=$this->Invoices->SalesOrderRows->find()->where(['sales_order_id'=>$invoice->sales_order_id,'item_id'=>$invoice_rows->item_id])->first();
+					$salesorderrow->processed_quantity=$salesorderrow->processed_quantity-$invoice->getOriginal('invoice_rows')[$qq]->quantity+$invoice_rows->quantity;
+					$this->Invoices->SalesOrderRows->save($salesorderrow);
+				$qq++; }
                 $this->Flash->success(__('The invoice has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
