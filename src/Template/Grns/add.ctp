@@ -127,7 +127,7 @@
 		<?= $this->Form->end() ?>
 	</div>
 	<?php } ?>
-	
+</div>
 	
 <style>
 .table thead tr th {
@@ -332,20 +332,14 @@ $(document).ready(function() {
 				$("#main_tb tbody tr.tr1").each(function(){
 					i++;
 					$(this).find("td:nth-child(1)").html(i);
-					$(this).find("td:nth-child(2) select").attr("name","sales_order_rows["+i+"][item_id]");
-					$(this).find("td:nth-child(3) input").attr("name","sales_order_rows["+i+"][quantity]");
-					$(this).find("td:nth-child(4) input").attr("name","sales_order_rows["+i+"][rate]");
-					$(this).find("td:nth-child(5) input").attr("name","sales_order_rows["+i+"][amount]");
-					$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
-					$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][so_sale_tax]");
-					$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_description]");
-					var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
-					$(this).find("td:nth-child(7) input").val(description);
+					$(this).find("td:nth-child(2) select").attr("name","grn_rows["+i+"][item_id]");
+					$(this).find("td:nth-child(3) input").attr("name","grn_rows["+i+"][quantity]");
+
 				});
 				var i=0;
 				$("#main_tb tbody tr.tr2").each(function(){
 					i++;
-					$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
+					$(this).find("td:nth-child(1) textarea").attr("name","grn_rows["+i+"][description]");
 				});
 				calculate_total();
 			}
@@ -369,15 +363,15 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			i++;
 			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr("name","sales_order_rows["+i+"][item_id]").select2();
-			$(this).find("td:nth-child(3) input").attr("name","sales_order_rows["+i+"][quantity]");
+			$(this).find("td:nth-child(2) select").attr("name","grn_rows["+i+"][item_id]").select2();
+			$(this).find("td:nth-child(3) input").attr("name","grn_rows["+i+"][quantity]");
 			
 		});
 		var i=0;
 		
 		$("#main_tb tbody tr.tr2").each(function(){
 			i++;
-			$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
+			$(this).find("td:nth-child(1) textarea").attr("name","grn_rows["+i+"][description]");
 		});
 		
 		$(document)
@@ -521,7 +515,7 @@ $(document).ready(function() {
 					foreach($quotationlists as $quotationdata){
 						$options[]=['text' => h(($quotationdata->qt1.'/QT-'.str_pad($quotationdata->id, 3, '0', STR_PAD_LEFT).'/'.$quotationdata->qt3.'/'.$quotationdata->qt4)), 'value' => $quotationdata->id];
 					}
-					echo $this->Form->input('quotation_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me']); ?>
+					echo $this->Form->input('quotation_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm ']); ?>
 				</p>
 			</div>
 			<div class="modal-footer">
