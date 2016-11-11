@@ -369,6 +369,18 @@ select
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Challans',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
+				
+				<li>
+					<a href="javascript:;">
+					<i class="fa fa-puzzle-piece"></i>
+					<span class="title">Grns</span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> Create','/Grns/Add',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Grns',array('escape'=>false)); ?></li>
+					</ul>
+				</li>
 			</ul>
 			<!-- END SIDEBAR MENU -->
 		</div>

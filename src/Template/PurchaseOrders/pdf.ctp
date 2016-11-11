@@ -89,7 +89,7 @@ $html.='
 					</td>
 					<td width="30%">
 						<p>No.'.h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->id, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)).'</p>
-						<p>Date:'. h(date("d-m-Y")) .'</p>
+						<p>Date:'. h(date("d-m-Y",strtotime($purchaseOrder->date_created))) .'</p>
 					</td>
 				</tr>
 			</table>';

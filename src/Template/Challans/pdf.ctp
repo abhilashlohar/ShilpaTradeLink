@@ -160,6 +160,9 @@ $html.='
 		<tr>
 				<td colspan="5"><table  width="100%" class="inner-table" ><tr><td valign="top" width="18%"> <b><div style="margin-top:5px;">Amount in words: </div></b></td><td  valign="top">'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td></tr></table></td>
 			</tr>
+		<tr>
+				<td colspan="5"><table  width="100%" class="inner-table" ><tr><td valign="top" width="18%"> <b><div style="margin-top:5px;">Documents: </div></b></td><td  valign="top">'. h($challan->documents) .' </td></tr></table></td>
+			</tr>
 		</tbody>
 	</table>'; 
 		

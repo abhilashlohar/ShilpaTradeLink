@@ -16,16 +16,27 @@ class PurchaseOrdersController extends AppController
      *
      * @return \Cake\Network\Response|null
      */
-    public function index()
+    public function index($status=null)
     {
+		$url=$this->request->here();
+		$url=parse_url($url,PHP_URL_QUERY);
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
             'contain' => ['Companies', 'Vendors']
         ];
+		$pull_request=$this->request->query('pull-request');
+		
         $purchaseOrders = $this->paginate($this->PurchaseOrders);
+		
+		if($status==null or $status=='Pending'){
+			$having=['total_rows >' => 0];
+		}elseif($status=='Converted Into Invoice'){
+			$having=['total_rows =' => 0];
+		}
 
-        $this->set(compact('purchaseOrders'));
+        $this->set(compact('purchaseOrders','pull_request','status'));
         $this->set('_serialize', ['purchaseOrders']);
+		$this->set(compact('url'));
     }
 
     /**
