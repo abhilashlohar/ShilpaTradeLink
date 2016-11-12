@@ -132,10 +132,16 @@ With reference to your price list we are pleased to place an order for the follo
 							foreach($SaleTaxes as $SaleTaxe){
 								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 							}
-							echo $this->Form->input('sale_tax_per', ['empty'=>'--Select--','options'=>$options,'label' => false,'class' => 'form-control input-sm select2me']);
-							
+							echo $this->Form->input('sale_tax_per', ['empty'=>'--Select--','options'=>$options,'label' => false,'class' => 'form-control input-sm select2me','id'=>'saletax']);
 							?>
+							
+							<div class="input-group col-md-2" style="display:none;" id="pnf_text">
+							<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
+							</div>
+							
 						</div>
+				
+											
 					</div>
 					
 					<div class="col-md-3">
@@ -204,6 +210,7 @@ With reference to your price list we are pleased to place an order for the follo
 <?php echo $this->Html->css('/drag_drop/jquery-ui.css'); ?>
 <?php echo $this->Html->script('/drag_drop/jquery-1.12.4.js'); ?>
 <?php echo $this->Html->script('/drag_drop/jquery-ui.js'); ?>
+
 <script>
 $( function() {
 $( "#sortable" ).sortable();
@@ -297,15 +304,25 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 	
-		$("#pnfper").on('click',function(){
-			if($(this).is(':checked')){
+		$("#saletax").on('click',function(){
+			if($(this).is(':click')){ 
 				$("#pnf_text").show();
-				$('input[name="pnf"]').attr('readonly','readonly');
+				$('input[name="pnf"]').css('display','block');
 			}else{
 				$("#pnf_text").hide();
 				$('input[name="pnf"]').removeAttr('readonly');
 			}
 		})
+		
+		$("#pnfper").on('click',function(){
+		if($(this).is(':checked')){
+			$("#pnf_text").show();
+			$('input[name="pnf"]').attr('readonly','readonly');
+		}else{
+			$("#pnf_text").hide();
+			$('input[name="pnf"]').removeAttr('readonly');
+		}
+	})
 	
 		$("#discount_per").on('click',function(){
 		if($(this).is(':checked')){

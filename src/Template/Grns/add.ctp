@@ -93,6 +93,11 @@
 
 							<td><?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$purchase_order_rows->quantity-$purchase_order_rows->processed_quantity,'readonly','min'=>'1','max'=>@$purchase_order_rows->quantity-$purchase_order_rows->processed_quantity]); ?></td>
 							
+							<td>
+								<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$sales_order_rows->id]); ?></label>
+								
+							</td>
+							
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$purchase_order_rows->id; ?>'>
 							<td colspan="4"><?php echo $this->Form->input('q', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm ','placeholder'=>'Description','value' => @$purchase_order_rows->description,'readonly']); ?></td>
@@ -158,6 +163,7 @@
 </div>
 
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+
 <script>
 $(document).ready(function() {
 
@@ -182,101 +188,12 @@ $(document).ready(function() {
 			},
 		},
 		
-		
-		
-		messages: { // custom messages for radio buttons and checkboxes
-			membership: {
-				required: "Please select a Membership type"
-			},
-			service: {
-				required: "Please select  at least 2 types of Service",
-				minlength: jQuery.validator.format("Please select  at least {0} types of Service")
-			}
-		},
-
-		errorPlacement: function (error, element) { // render error placement for each input type
-			if (element.parent(".input-group").size() > 0) {
-				error.insertAfter(element.parent(".input-group"));
-			} else if (element.attr("data-error-container")) { 
-				error.appendTo(element.attr("data-error-container"));
-			} else if (element.parents('.radio-list').size() > 0) { 
-				error.appendTo(element.parents('.radio-list').attr("data-error-container"));
-			} else if (element.parents('.radio-inline').size() > 0) { 
-				error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
-			} else if (element.parents('.checkbox-list').size() > 0) {
-				error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
-			} else if (element.parents('.checkbox-inline').size() > 0) { 
-				error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
-			} else {
-				error.insertAfter(element); // for other inputs, just perform default behavior
-			}
-		},
-
-		invalidHandler: function (event, validator) { //display error alert on form submit   
-			success3.hide();
-			error3.show();
-			Metronic.scrollTo(error3, -200);
-		},
-
-		highlight: function (element) { // hightlight error inputs
-		   $(element)
-				.closest('.form-group').addClass('has-error'); // set error class to the control group
-		},
-
-		unhighlight: function (element) { // revert the change done by hightlight
-			$(element)
-				.closest('.form-group').removeClass('has-error'); // set error class to the control group
-		},
-
-		success: function (label) {
-			label
-				.closest('.form-group').removeClass('has-error'); // set success class to the control group
-		},
-
-		submitHandler: function (form) {
-			q="ok";
-			$("#main_tb tbody tr.tr1").each(function(){
-				var t=$(this).find("td:nth-child(2) select").val();
-				var w=$(this).find("td:nth-child(3) input").val();
-				var r=$(this).find("td:nth-child(4) input").val();
-				if(t=="" || w=="" || r==""){
-					q="e";
-				}
-			});
-			if(q=="e"){
-				$("#row_error").show();
-				return false;
-			}else{
-				success3.show();
-				error3.hide();
-				form[0].submit(); // submit the form
-			}
-		}
-
-	});
-	//--	 END OF VALIDATION
+	});\
 	
 	
-	$("#pnfper").on('click',function(){
-		if($(this).is(':checked')){
-			$("#pnf_text").show();
-			$('input[name="pnf"]').attr('readonly','readonly');
-		}else{
-			$("#pnf_text").hide();
-			$('input[name="pnf"]').removeAttr('readonly');
-		}
-	})
 	
-	$("#discount_per").on('click',function(){
-		if($(this).is(':checked')){
-			$("#discount_text").show();
-			$('input[name="discount"]').attr('readonly','readonly');
-		}else{
-			$("#discount_text").hide();
-			$('input[name="discount"]').removeAttr('readonly');
-		}
-		calculate_total();
-	})
+	
+	
 	
 	<?php if($process_status=="New"){ ?> add_row(); 
 	$("#main_tb tbody tr.tr1").each(function(){
@@ -346,7 +263,7 @@ $(document).ready(function() {
 		} 
     });
 	
-	function add_row(){
+		function add_row(){
 		var tr1=$("#sample_tb tbody tr.tr1").clone();
 		$("#main_tb tbody").append(tr1);
 		var tr2=$("#sample_tb tbody tr.tr2").clone();
@@ -390,103 +307,11 @@ $(document).ready(function() {
 		});
 	}
 	
-	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
-		calculate_total();
-    });
-	$('#main_tb select').die().live("change",function() {
-		calculate_total();
-    });
-	
-	$('.select_address').on("click",function() { 
-		open_address();
-    });
-	
-	$('.closebtn').on("click",function() { 
-		$("#myModal12").hide();
-    });
+
 	
 
-
-	$('select[name="customer_id"]').on("change",function() {
-		var customer_id=$('select[name="customer_id"] option:selected').val();
-		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'defaultAddress']); ?>";
-		url=url+'/'+customer_id,
-		$.ajax({
-			url: url,
-		}).done(function(response) {
-			$('textarea[name="customer_address"]').val(response);
-		});
-		
-		
-		$("#so3_div").html('Loading...');
-		var url="<?php echo $this->Url->build(['controller'=>'Filenames','action'=>'listFilename']); ?>";
-		url=url+'/'+customer_id+'/so',
-		$.ajax({
-			url: url,
-		}).done(function(response) {
-			$("#so3_div").html(response);
-			$('select[name="qt3"]').attr('name','so3');
-		});
-		
-		var employee_id=$('select[name="customer_id"] option:selected').attr("employee_id");
-		$("select[name=employee_id]").val(employee_id);
-		
-		var transporter_id=$('select[name="customer_id"] option:selected').attr("transporter_id");
-		$("select[name=transporter_id]").val(transporter_id);
-		
-		var documents_courier_id=$('select[name="customer_id"] option:selected').attr("documents_courier_id");
-		$("select[name=documents_courier_id]").val(documents_courier_id);
-		
-    });
-	
-	<?php if($process_status!="New"){ ?> 
-		var customer_id=$('select[name="customer_id"] option:selected').val();
-		
-		$("#so3_div").html('Loading...');
-		var url="<?php echo $this->Url->build(['controller'=>'Filenames','action'=>'listFilename']); ?>";
-		url=url+'/'+customer_id+'/so',
-		$.ajax({
-			url: url,
-		}).done(function(response) {
-			$("#so3_div").html(response);
-			$('select[name="qt3"]').attr('name','so3');
-		});
-	<?php } ?>
-	
-	$('select[name="company_id"]').on("change",function() {
-		var alias=$('select[name="company_id"] option:selected').attr("alias");
-		$('input[name="so1"]').val(alias);
-    });
-	
-	$('.select_term_condition').die().live("click",function() { 
-		var addr=$(this).text();
-		$("#myModal2").show();
-    });
-	
-	$('.closebtn2').on("click",function() { 
-		$("#myModal2").hide();
-    });
-	
-	$('.insert_tc').die().live("click",function() {
-		$('#terms_conditions').html("");
-		var inc=0;
-		$(".tabl_tc tbody tr").each(function(){
-			var v=$(this).find('td:nth-child(1) input[type="checkbox"]:checked').val();
-			if(v){
-				++inc;
-				var tc=$(this).find('td:nth-child(2)').text();
-				//$('textarea[name="terms_conditions"]').val($('textarea[name="terms_conditions"]').val()+inc+". "+tc+"&#13;&#10;");
-				$('#terms_conditions').append(inc+". "+tc+"&#13;&#10;");
-			}
-		});
-		var terms_conditions=$("#terms_conditions").text();
-		$('textarea[name="terms_conditions"]').val(terms_conditions);
-		$("#myModal2").hide();
-    });
-	
-	
-});
 </script>
+
 	 
 <div id="myModal12" class="modal fade in" tabindex="-1"  style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
 	<div class="modal-dialog">
