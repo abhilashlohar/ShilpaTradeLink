@@ -130,7 +130,10 @@
 					$q=1; foreach ($invoice->invoice_rows as $invoice_rows): ?>
 						<tr class="tr1" row_no="<?= h($q) ?>">
 							<td rowspan="2"><?= h($q) ?></td>
-							<td><?php echo $this->Form->input('invoice_rows['.$q.'][item_id]', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item','value'=>$invoice_rows->item_id]); ?></td>
+							<td><?php 
+							echo $this->Form->input('invoice_rows['.$q.'][item_id]', ['type'=>'hidden','value'=>$invoice_rows->item_id]);
+							echo $this->Form->input('item_id_display', ['type'=>'text','label' => false,'class' => 'form-control input-sm','value'=>$invoice_rows->item->name,'readonly']);
+							?></td>
 							<td><?php echo $this->Form->input('invoice_rows['.$q.'][quantity]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$invoice_rows->quantity]); ?></td>
 							<td><?php echo $this->Form->input('invoice_rows['.$q.'][rate]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$invoice_rows->rate]); ?></td>
 							<td><?php echo $this->Form->input('invoice_rows['.$q.'][amount]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$invoice_rows->amount]); ?></td>
@@ -384,6 +387,9 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+
+		
+		
 	$('.quantity').die().live("keyup",function() {
 			var asc=$(this).val();
 			var numbers =  /^[0-9]*\.?[0-9]*$/;

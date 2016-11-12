@@ -117,16 +117,6 @@
 				</div>
 			</div><br/>
 			
-			
-
-
-			
-			
-			
-			
-			<div class="alert alert-danger" id="row_error" style="display:none;padding: 5px !important;">
-				All fields are Required
-			</div>
 			<div class="alert alert-danger" id="row_error_item" style="display:none;padding: 5px !important;">
 				Please check at least one row.
 			</div>
@@ -400,35 +390,11 @@ $(document).ready(function() {
 				Metronic.scrollTo(error3, -200);
 				return false;
 			}
-			q="ok";
-			$("#main_tb tbody tr.tr1").each(function(){
-				var val=$(this).find('td:nth-child(6) input[type="checkbox"]:checked').val();
-				if(val){
-					var t=$(this).find("td:nth-child(2) select").val();
-					var w=$(this).find("td:nth-child(3) input").val();
-					var r=$(this).find("td:nth-child(4) input").val();
-					if(t=="" || w=="" || r==""){
-						q="e";
-					}
-				}
-			});
-			$("#main_tb tbody tr.tr2").each(function(){
-				if(val){
-					var d=$(this).find("td:nth-child(1) textarea").val();
-					if(d==""){
-						q="e";
-					}
-				}
-			});
+			q="ok"; var count=0;
 			
-			if(q=="e"){
-				$("#row_error").show();
-				return false;
-			}else{
-					success1.show();
-					error1.hide();
-					form[0].submit(); // submit the form
-			}
+			success1.show();
+			error1.hide();
+			form[0].submit(); // submit the form
 		}
 
 	});
@@ -438,21 +404,21 @@ $(document).ready(function() {
 			
 	//--	 END OF VALIDATION
 	$('.quantity').die().live("keyup",function() {
-			var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc==0)
-			{
-				$(this).val('');
-				return false; 
-			}
-			else if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
+		var asc=$(this).val();
+		var numbers =  /^[0-9]*\.?[0-9]*$/;
+		if(asc==0)
+		{
+			$(this).val('');
+			return false; 
+		}
+		else if(asc.match(numbers))  
+		{  
+		} 
+		else  
+		{  
+			$(this).val('');
+			return false;  
+		}
 	});
 	$('input[name="discount"],input[name="discount_per"],input[name="pnf"],input[name="fright_amount"],input[name="pnf_per"]').die().live("keyup",function() {
 			var asc=$(this).val();
@@ -509,25 +475,28 @@ $(document).ready(function() {
 			var row_no=$(this).attr('row_no');
 			var val=$(this).find('td:nth-child(6) input[type="checkbox"]:checked').val();
 			if(val){
-				$(this).find('td:nth-child(2) select').attr("name","invoice_rows["+val+"][item_id]");
-				$(this).find('td:nth-child(3) input').removeAttr("readonly").attr("name","invoice_rows["+val+"][quantity]").attr("id","q"+val);
-				$(this).find('td:nth-child(4) input').attr("name","invoice_rows["+val+"][rate]");
-				$(this).find('td:nth-child(5) input').attr("name","invoice_rows["+val+"][amount]");
+				$(this).find('td:nth-child(2) select').attr("name","invoice_rows["+val+"][item_id]").attr("id","invoice_rows-"+val+"-item_id").rules("add", "required");
+				$(this).find('td:nth-child(3) input').removeAttr("readonly").attr("name","invoice_rows["+val+"][quantity]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-quantity").rules("add", "required");
+				$(this).find('td:nth-child(4) input').attr("name","invoice_rows["+val+"][rate]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-rate").rules("add", "required");
+				$(this).find('td:nth-child(5) input').attr("name","invoice_rows["+val+"][amount]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-amount").rules("add", "required");
 				
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').removeAttr("readonly").attr("name","invoice_rows["+val+"][description]");
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').removeAttr("readonly").attr("name","invoice_rows["+val+"][description]").attr("id","invoice_rows-"+val+"-description").rules("add", "required");
 				
 				$(this).css('background-color','#fffcda');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
 			}else{
-				$(this).find('td:nth-child(2) select').attr({ name:"q", readonly:"readonly"});
-				$(this).find('td:nth-child(3) input').attr({ name:"q", readonly:"readonly"});
-				$(this).find('td:nth-child(4) input').attr({ name:"q", readonly:"readonly"});
+				$(this).find('td:nth-child(2) select').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
+				$(this).find('td:nth-child(3) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
+				$(this).find('td:nth-child(4) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
+				$(this).find('td:nth-child(5) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').attr({ name:"q", readonly:"readonly"});
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				
 				$(this).css('background-color','#FFF');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
 			}
+			
+			
 		});
 	}
 	
