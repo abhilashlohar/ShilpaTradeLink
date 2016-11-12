@@ -192,22 +192,28 @@
 			</div>
 			<h4>Dispatch Details</h4>
 			<div class="row">
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<div class="form-group">
 						<label class="control-label">Name <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->input('dispatch_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
 					</div>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<div class="form-group">
 						<label class="control-label">Mobile <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->input('dispatch_mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Mobile','data-date-format'=>'dd-mm-yyyy']); ?>
 					</div>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<div class="form-group">
 						<label class="control-label">Email <span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->input('dispatch_email', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Email']); ?>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label class="control-label">Address  <span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->input('dispatch_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Address']); ?>
 					</div>
 				</div>
 			</div>
@@ -232,13 +238,6 @@
 					</div>
 				</div>
 				
-				<div class="col-md-4">
-					<div class="form-group">
-						<label class="control-label">Address</label>
-						
-						<?php echo $this->Form->input('dispatch_address', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Address']); ?>
-					</div>
-				</div>
 			</div>
 			<!--<label>Commercial Terms & Conditions:</label> <a href="#" role="button" class="select_term_condition">Select </a>
 			<?php echo $this->Form->input('terms_conditions', ['label' => false,'class' => 'form-control','value' => @$quotation->terms_conditions]); ?>-->
