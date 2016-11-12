@@ -88,8 +88,9 @@ $html.='
 						
 					</td>
 					<td width="30%" valign="top">
-						<p>Date:'. h(date("d-m-Y",strtotime($purchaseOrder->date_created))) .'</p>
 						<p>No.'.h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->id, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)).'</p>
+						<p>Date:'. h(date("d-m-Y",strtotime($purchaseOrder->date_created))) .'</p>
+						
 						
 					</td>
 				</tr>
@@ -110,7 +111,7 @@ $sr=0; foreach ($purchaseOrder->purchase_order_rows as $purchase_order_rows): $s
 $html.='
 	<tr class="odd">
 		<td valign="top" align="center" width="30">'. h($sr) .'</td>
-		<td>'. $this->Text->autoParagraph(h($purchase_order_rows->descryption)) .'<br/></td>
+		<td>'. $this->Text->autoParagraph(h($purchase_order_rows->description)) .'<br/></td>
 		<td width="40" valign="top" align="center">'. h($purchase_order_rows->quantity) .'</td>
 		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($purchase_order_rows->rate,[ 'places' => 2]) .'</td>
 		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($purchase_order_rows->amount,[ 'places' => 2]) .'</td>

@@ -71,6 +71,7 @@ class PurchaseOrdersController extends AppController
             $purchaseOrder = $this->PurchaseOrders->patchEntity($purchaseOrder, $this->request->data);
 			$purchaseOrder->delivery_date=date("Y-m-d",strtotime($purchaseOrder->delivery_date));
 			$purchaseOrder->created_by=$s_employee_id; 
+			$purchaseOrder->sale_tax_description=$purchaseOrder->sale_tax_description; 
 			
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
             if ($this->PurchaseOrders->save($purchaseOrder)) {

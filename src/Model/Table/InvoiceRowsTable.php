@@ -58,8 +58,7 @@ class InvoiceRowsTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
-
-
+		
         $validator
             ->integer('quantity')
             ->requirePresence('quantity', 'create')

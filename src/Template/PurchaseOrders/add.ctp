@@ -206,6 +206,11 @@ With reference to your price list we are pleased to place an order for the follo
 #sortable li{
 	cursor: -webkit-grab;
 }
+ 
+.table thead tr th {
+    color: #FFF;
+	background-color: #254b73;
+}
 </style>
 <?php echo $this->Html->css('/drag_drop/jquery-ui.css'); ?>
 <?php echo $this->Html->script('/drag_drop/jquery-1.12.4.js'); ?>
@@ -407,14 +412,14 @@ $(document).ready(function() {
 					$(this).find("td:nth-child(3) input").attr("name","purchase_order_rows["+i+"][quantity]");
 					$(this).find("td:nth-child(4) input").attr("name","purchase_order_rows["+i+"][rate]");
 					$(this).find("td:nth-child(5) input").attr("name","purchase_order_rows["+i+"][amount]");
-					$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_description]");
+					$(this).find("td:nth-child(7) input").attr("name","purchase_order_rows["+i+"][description]");
 					var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
 					$(this).find("td:nth-child(7) input").val(description);
 				});
 				var i=0;
 				$("#main_tb tbody tr.tr2").each(function(){
 					i++;
-					$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
+					$(this).find("td:nth-child(1) textarea").attr("name","purchase_order_rows["+i+"][description]");
 				});
 				calculate_total();
 			}

@@ -16,13 +16,13 @@
 				<table class="table table-bordered table-striped table-hover">
 						<thead>
 							<tr>
-								<th>S.N</th>
+								<th>S.No</th>
 								<th>Customer Name</th>
 								<th>Company name</th>
 								<th>Transporter Name</th>
-								<th>lr_no</th>
-								<th>reference_detail</th>
-								<th>total.</th>
+								<th>LR No</th>
+								<th>Reference Detail</th>
+								<th>Total.</th>
 								
 								
 								<th class="actions"><?= __('Actions') ?></th>
@@ -34,11 +34,12 @@
             <?php foreach ($challans as $challan): ?>
             <tr>
                 <td><?= h(++$page_no) ?></td>
-                <td><?= $challan->has('customer') ? $this->Html->link($challan->customer->customer_name, ['controller' => 'Customers', 'action' => 'view', $challan->customer->id]) : '' ?></td>
-                <td><?= $challan->has('company') ? $this->Html->link($challan->company->name, ['controller' => 'Companies', 'action' => 'view', $challan->company->id]) : '' ?></td>
                 
-               
-                <td><?= $challan->has('transporter') ? $this->Html->link($challan->transporter->transporter_name, ['controller' => 'Transporters', 'action' => 'view', $challan->transporter->id]) : '' ?></td>
+				<td><?= h($challan->customer->customer_name) ?></td>
+                
+				<td><?= h($challan->company->name) ?></td>
+				<td><?= h($challan->transporter->transporter_name) ?></td>
+                
                 <td><?= $this->Number->format($challan->lr_no) ?></td>
                 <td><?= h($challan->reference_detail) ?></td>
                 <td><?= $this->Number->format($challan->total) ?></td>

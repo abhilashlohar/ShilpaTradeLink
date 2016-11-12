@@ -81,7 +81,7 @@ $html.='
 	<table width="100%" style="margin-top: 0px;">
 		<tr>
 			<td width="50%">
-				
+				<span>'. h(($challan->customer->customer_name)) .'</span><br/>
 				
 				'. $this->Text->autoParagraph(h($challan->customer_address)) .'
 			
