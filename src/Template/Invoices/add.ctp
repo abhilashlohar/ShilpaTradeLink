@@ -420,6 +420,7 @@ $(document).ready(function() {
 					}
 				}
 			});
+			
 			if(q=="e"){
 				$("#row_error").show();
 				return false;
@@ -432,6 +433,9 @@ $(document).ready(function() {
 
 	});
 	
+	
+	
+			
 	//--	 END OF VALIDATION
 	$('.quantity').die().live("keyup",function() {
 			var asc=$(this).val();
