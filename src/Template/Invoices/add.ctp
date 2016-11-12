@@ -280,6 +280,7 @@
 
 
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+
 <script>
 $(document).ready(function() {
 	

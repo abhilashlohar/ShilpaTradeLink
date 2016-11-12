@@ -155,15 +155,7 @@ endforeach;
 
 
 	
-if($invoice->pnf_type=='1'){ $pnf_text='P&F @ '.$invoice->pnf_per.'%'; }else{ $pnf_text='P&F'; }
 if($invoice->discount_type=='1'){ $discount_text='Discount @ '.$invoice->discount_per.'%'; }else{ $discount_text='Discount'; }
-
-
-$grand_total=explode('.',$invoice->grand_total);
-$rupees=$grand_total[0];
-if(sizeof($grand_total)==2){
-	$paisa=(int)$grand_total[1];
-}else{ $paisa=""; }
 
 $html.='</table>';		
 $html.='
@@ -174,8 +166,7 @@ $html.='
 					<td style="text-align:right;">'.$discount_text.'</td>
 					<td style="text-align:right;" width="104">'. $this->Number->format($invoice->discount,[ 'places' => 2]).'</td>
 				</tr>';
-	
-}
+		}
 
 
 if($invoice->exceise_duty>0){
@@ -183,11 +174,20 @@ if($invoice->exceise_duty>0){
 				<td colspan="5" style="text-align:justify;">'. $this->Text->autoParagraph(h($invoice->ed_description)) .'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->exceise_duty,[ 'places' => 2]).'</td>
 </tr>';	}
-
+			
+			
+		$html.='</tbody>
+	</table>'; 
+ 	
 $html.='</table><br/>';
 
- 	
-$html.='</table><br/>';	
+$grand_total=explode('.',$invoice->grand_total);
+$rupees=$grand_total[0];
+if(sizeof($grand_total)==2){
+	$paisa=(int)$grand_total[1];
+}else{ $paisa=""; }
+
+	
 $temp=4;
 if($invoice->pnf==0 && $invoice->sale_tax_per==0)
 {
