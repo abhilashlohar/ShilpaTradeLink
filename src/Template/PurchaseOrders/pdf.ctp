@@ -162,7 +162,7 @@ $html.='
 $html .= '	<table width="100%" class="table_rows">
   <tr>
     <td>Material To Be Transported:<br/>'. h(($purchaseOrder->material_to_be_transported)) .'</td>
-    <td>Sale Tax:<br/>'. h(($purchaseOrder->sale_tax_per)) .'</td>
+    <td>Sale Tax:'. h(($purchaseOrder->sale_tax_per)) .'%<br/>'. h(($purchaseOrder->sale_tax_description)) .'</td>
     <td><p>Discount:'. h(($purchaseOrder->discount)) .'</p>
     <p></p></td>
   </tr>

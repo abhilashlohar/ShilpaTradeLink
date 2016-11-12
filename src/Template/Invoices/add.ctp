@@ -315,6 +315,8 @@ $(document).ready(function() {
 			in1 : {
 				  required: true,
 			},
+			
+			
 			in3:{
 				required: true
 			},
@@ -333,6 +335,7 @@ $(document).ready(function() {
 			employee_id: {
 				  required: true,
 			}
+			
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes

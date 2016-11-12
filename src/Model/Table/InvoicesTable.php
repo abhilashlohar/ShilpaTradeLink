@@ -107,6 +107,9 @@ class InvoicesTable extends Table
         $validator
             ->requirePresence('process_status', 'create')
             ->notEmpty('process_status');
+			
+		$validator
+          ->notEmpty('description');
 
         return $validator;
     }

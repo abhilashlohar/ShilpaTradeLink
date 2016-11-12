@@ -135,11 +135,11 @@ With reference to your price list we are pleased to place an order for the follo
 							echo $this->Form->input('sale_tax_per', ['empty'=>'--Select--','options'=>$options,'label' => false,'class' => 'form-control input-sm select2me','id'=>'saletax']);
 							?>
 							
-							<div class="input-group col-md-2" style="display:none;" id="pnf_text">
-							<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
+							<?php echo $this->Form->input('sale_tax_description', ['label' => false,'class' => 'form-control input-sm ', 'placeholder'=>'Sale Tax Description']);
+							?>
 							</div>
 							
-						</div>
+						
 				
 											
 					</div>
@@ -471,10 +471,6 @@ $(document).ready(function() {
 	
 		
 	}
-	
-	
-	
-	
 	$('select[name=sale_tax_per]').die().live("change",function() {
 		var description=$('select[name=sale_tax_per] option:selected').attr('description');
 		$('input[name=sale_tax_description]').val(description);

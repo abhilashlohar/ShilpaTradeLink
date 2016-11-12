@@ -202,7 +202,7 @@ $html.='
 						<td> '. h($salesOrder->delivery_description).'</td>
 					</tr>
 					<tr>
-						<td width="35%">Additional Note:</td>
+						<td valign="top" width="35%">Additional Note</td>
 						<td width="5%">:</td>
 						<td width="50%"> '. h($salesOrder->additional_note).'</td>
 					</tr>
