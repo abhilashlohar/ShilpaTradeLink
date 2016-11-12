@@ -83,7 +83,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Salesman</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm','value' => @$quotation->customer_id]); ?>
+							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm','value' => @$quotation->employee_id]); ?>
 						</div>
 					</div>
 				</div>
