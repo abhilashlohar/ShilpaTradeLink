@@ -110,9 +110,7 @@
 					</div>
 				</div>
 			</div><br/>
-			<div class="alert alert-danger" id="row_error" style="display:none;padding: 5px !important;">
-				All fields are Required
-			</div>
+			
 		
 			<table class="table tableitm" id="main_tb">
 				<thead>
@@ -388,8 +386,14 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 
+	$("#main_tb tbody tr.tr1").each(function(){
+		var row_no=$(this).attr('row_no');
+		$(this).find('td:nth-child(3) input').rules("add", "required");
+		$(this).find('td:nth-child(4) input').rules("add", "required");
 		
-		
+		$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').rules("add", "required");
+	});	
+	
 	$('.quantity').die().live("keyup",function() {
 			var asc=$(this).val();
 			var numbers =  /^[0-9]*\.?[0-9]*$/;
