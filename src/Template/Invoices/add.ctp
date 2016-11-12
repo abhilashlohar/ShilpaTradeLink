@@ -168,7 +168,7 @@
 				</tr>
 				<?php if(in_array('Yes',@$ed_des)) { ?>
 				<tr style="background-color:#e6faf9;">
-					<td align="right"><b><?php echo $this->Form->input('ed_description', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description']); ?> </b></td>
+					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description']); ?> </b></td>
 					<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty','value' => 0]); ?></td>
 				</tr>
 				<?php } ?>
