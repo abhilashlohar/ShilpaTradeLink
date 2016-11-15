@@ -148,20 +148,47 @@
 					<?php $q++; endforeach; ?>
 				</tbody>
 			</table>
-			<table class="table" id="tbl2">
-				<tbody>
-					<tr>
-						<td align="right"><b>Total</b></td>
-						<td width="200"><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','value' => @$salesOrder->total]); ?></td>
-						<td width="70"></td>
-					</tr>
-					<tr>
-						<td colspan="3">
-						<label class="control-label">Additional Note </label>
-						<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional Note']); ?></td>
-					</tr>
-				</tbody>
-			</table> 
+			<table class="table tableitm" id="tbl2">
+				<tr>
+					<td  align="right">
+					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
+					<div class="input-group col-md-2" style="display:none;" id="discount_text">
+						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
+					</div>
+					</td>
+					<td><?php echo $this->Form->input('discount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
+				</tr>
+				
+				<tr style="background-color:#e6faf9;">
+					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:right']]); ?> </b></td>
+					<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty','value' => 0]); ?></td>
+				</tr>
+				
+				<tr>
+					<td align="right"><b>Total</b></td>
+					<td width="20%"><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','value' => 0,'step'=>0.01,'readonly']); ?></td>
+				</tr>
+				<tr>
+					<td  align="right">
+					<b>P&F <label><?php echo $this->Form->input('pnf_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'pnfper']); ?></label>(in %)</b>
+					<div class="input-group col-md-2" style="display:none;" id="pnf_text">
+						<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
+					</div>
+					</td>
+					<td><?php echo $this->Form->input('pnf', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01]); ?></td>
+				</tr>
+				<tr>
+					<td  align="right"><b>Total after P&F </b></td>
+					<td><?php echo $this->Form->input('total_after_pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total after P&F','readonly','step'=>0.01]); ?></td>
+				</tr>
+				<tr>
+					<td  align="right">
+					<b>Fright Amount </b>
+					<?php echo $this->Form->input('fright_text', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional text for Fright Amount','style'=>['text-align:right']]); ?>
+					</td>
+					<td><?php echo $this->Form->input('fright_amount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01]); ?></td>
+				</tr>
+			</table>
 			
 			
 			<div class="row">
