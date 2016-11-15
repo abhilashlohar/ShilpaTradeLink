@@ -463,6 +463,29 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+	
+		$("#pnfper").on('click',function(){
+		if($(this).is(':checked')){
+			$("#pnf_text").show();
+			$('input[name="pnf"]').attr('readonly','readonly');
+		}else{
+			$("#pnf_text").hide();
+			$('input[name="pnf"]').removeAttr('readonly');
+		}
+	})
+	
+	$("#discount_per").on('click',function(){
+		if($(this).is(':checked')){
+			$("#discount_text").show();
+			$('input[name="discount"]').attr('readonly','readonly');
+		}else{
+			$("#discount_text").hide();
+			$('input[name="discount"]').removeAttr('readonly');
+		}
+		calculate_total();
+	})
+	
+	
 	$("#main_tb tbody tr.tr1").each(function(){
 		var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
 		$(this).find("td:nth-child(7) input").val(description);
