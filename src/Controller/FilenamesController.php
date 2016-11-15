@@ -187,6 +187,19 @@ class FilenamesController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 	
+	    public function delete2($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $filename = $this->Filenames->get($id);
+        if ($this->Filenames->delete($filename)) {
+            $this->Flash->success(__('The filename has been deleted.'));
+        } else {
+            $this->Flash->error(__('The filename could not be deleted. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index2']);
+    }
+	
 	public function listFilename($id = null,$rqstfrom = null){
 		$this->viewBuilder()->layout('');
 		if(empty($id)){ exit; }
