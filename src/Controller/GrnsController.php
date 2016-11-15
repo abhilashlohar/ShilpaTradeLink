@@ -57,7 +57,7 @@ class GrnsController extends AppController
 		
 		$purchase_order_id=@(int)$this->request->query('purchase-order');
 		
-		$purchase_order=array(); $process_status='New';
+		$purchase_order=array();
 		
 		if(!empty($purchase_order_id)){
 			$purchase_order = $this->Grns->PurchaseOrders->get($purchase_order_id, [
@@ -65,12 +65,12 @@ class GrnsController extends AppController
 						'PurchaseOrderRows.Items' => function ($q) {
 						   return $q
 								->where(['PurchaseOrderRows.quantity > PurchaseOrderRows.processed_quantity']);
-						},'Companies'
+						},'Companies','Vendors'
 					]
 			]);
 			$process_status='Pulled From Purchase-Order';
 		}
-		$this->set(compact('purchase_order','process_status','sales_order_id'));
+		$this->set(compact('purchase_order','sales_order_id'));
 		
 		
         $grn = $this->Grns->newEntity();
