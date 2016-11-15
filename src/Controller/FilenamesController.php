@@ -75,7 +75,7 @@ class FilenamesController extends AppController
             if ($this->Filenames->save($filename)) {
                 $this->Flash->success(__('The filename has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'index2']);
             } else {
                 $this->Flash->error(__('The filename could not be saved. Please, try again.'));
             }
