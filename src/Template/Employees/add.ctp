@@ -45,7 +45,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Mobile <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mobile']); ?>
+							<?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Mobile']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -79,6 +79,32 @@
 					</div>
 				</div>
 				</div>
+				<h4 style="font-size:13px'">Bank's Detail</h4>
+				<table class="table table-condensed tableitm" id="main_tb">
+					<thead>
+						<tr>
+							<th><label class="control-label">Bank Name<label></th>
+							<th><label class="control-label">Account Number<label></th>
+							<th><label class="control-label">Branch Name<label></th>
+							<th><label class="control-label">IFSC Code<label></th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<td>
+							<?php echo $this->Form->input('bank_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Bank Name']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('account_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Account No']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('branch_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Branch Name']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('ifsc_code', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'IFSC Code']); ?>
+						</td>
+					</tbody>
+				</table>
 		</div>
 		
 			<div class="form-actions">
