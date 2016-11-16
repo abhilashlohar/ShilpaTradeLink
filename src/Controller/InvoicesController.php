@@ -202,12 +202,23 @@ class InvoicesController extends AppController
 					$invoice->check=array_filter($invoice->check);
 					$i=0; 
 					foreach($invoice->check as $sales_order_row_id){
+						$item_id=$invoice->invoice_rows[$i]['item_id'];
 						$qty=$invoice->invoice_rows[$i]['quantity'];
 						
 						$SalesOrderRow = $this->Invoices->SalesOrderRows->get($sales_order_row_id);
 						$SalesOrderRow->processed_quantity=$SalesOrderRow->processed_quantity+$qty;
 						$this->Invoices->SalesOrderRows->save($SalesOrderRow);
 						$i++;
+						
+						//Insert in Item Ledger//
+						$itemLedger = $this->Invoices->ItemLedger->newEntity();
+						$itemLedger->item_id = $item_id;
+						$itemLedger->quantity = $qty;
+						$itemLedger->source_model = 'Invoices';
+						$itemLedger->source_id = $invoice->id;
+						$itemLedger->in_out = 'Out';
+						$itemLedger->processed_on = date("Y-m-d");
+						$this->Invoices->ItemLedger->save($itemLedger);
 					}
 				}
                 $this->Flash->success(__('The invoice has been saved.'));
