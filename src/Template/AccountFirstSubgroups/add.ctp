@@ -16,7 +16,7 @@
 					<div class="col-md-5">
 					<label class="control-label">Account Group <span class="required" aria-required="true">*</span></label>
 						<?php 
-						echo $this->Form->input('account_group_id', ['options' => $accountGroups,'empty' => "--Select--",'label' => false,'class' => 'form-control select2me ']); 
+						echo $this->Form->input('account_group_id', ['options' => $accountGroups,'empty' => "--Select--",'label' => false,'class' => 'form-control select2me ','required']); 
 						?>
 					</div>
 					<div class="col-md-5">

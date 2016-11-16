@@ -22,7 +22,20 @@ class AccountGroupsController extends AppController
         $this->paginate = [
             'contain' => ['AccountCategories']
         ];
-        $accountGroups = $this->paginate($this->AccountGroups);
+		
+		$where=[];
+		$name=$this->request->query('name');
+		$Account_category=$this->request->query('Account_category');
+		//echo $name; exit;
+		$this->set(compact('name','Account_category'));
+		
+		if(!empty($name)){
+			$where['AccountGroups.name LIKE']='%'.$name.'%';
+		}
+		if(!empty($Account_category)){
+			$where['AccountCategories.name LIKE']='%'.$Account_category.'%';
+		}
+        $accountGroups = $this->paginate($this->AccountGroups->find()->where($where));
 
         $this->set(compact('accountGroups'));
         $this->set('_serialize', ['accountGroups']);

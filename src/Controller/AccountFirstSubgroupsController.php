@@ -22,7 +22,22 @@ class AccountFirstSubgroupsController extends AppController
         $this->paginate = [
             'contain' => ['AccountGroups']
         ];
-        $accountFirstSubgroups = $this->paginate($this->AccountFirstSubgroups);
+		
+		$where=[];
+		$name=$this->request->query('name');
+		$Account_group=$this->request->query('Account_group');
+		//echo $Account_group; exit;
+		$this->set(compact('name','Account_group'));
+		
+		if(!empty($name)){
+			$where['AccountFirstSubgroups.name LIKE']='%'.$name.'%';
+		}
+		if(!empty($Account_group)){
+			$where['AccountGroups.name LIKE']='%'.$Account_group.'%';
+		}
+		
+		
+        $accountFirstSubgroups = $this->paginate($this->AccountFirstSubgroups->find()->where($where));
 
         $this->set(compact('accountFirstSubgroups'));
         $this->set('_serialize', ['accountFirstSubgroups']);

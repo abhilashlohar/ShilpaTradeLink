@@ -19,7 +19,16 @@ class AccountCategoriesController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $accountCategories = $this->paginate($this->AccountCategories);
+		$where=[];
+		$name=$this->request->query('name');
+		$this->set(compact('name'));
+		
+		if(!empty($name)){
+			$where['name LIKE']='%'.$name.'%';
+		}
+		
+		
+	    $accountCategories = $this->paginate($this->AccountCategories->find()->where($where));
 
         $this->set(compact('accountCategories'));
         $this->set('_serialize', ['accountCategories']);
@@ -51,6 +60,7 @@ class AccountCategoriesController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
+		
         $accountCategory = $this->AccountCategories->newEntity();
         if ($this->request->is('post')) {
             $accountCategory = $this->AccountCategories->patchEntity($accountCategory, $this->request->data);

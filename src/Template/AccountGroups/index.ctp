@@ -1,45 +1,3 @@
-
-<div class="accountGroups index large-9 medium-8 columns content">
-    <h3><?= __('Account Groups') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th><?= $this->Paginator->sort('id') ?></th>
-                <th><?= $this->Paginator->sort('account_category_id') ?></th>
-                <th><?= $this->Paginator->sort('name') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($accountGroups as $accountGroup): ?>
-            <tr>
-                <td><?= $this->Number->format($accountGroup->id) ?></td>
-                <td><?= $accountGroup->has('account_category') ? $this->Html->link($accountGroup->account_category->id, ['controller' => 'AccountCategories', 'action' => 'view', $accountGroup->account_category->id]) : '' ?></td>
-                <td><?= h($accountGroup->name) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $accountGroup->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $accountGroup->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $accountGroup->id], ['confirm' => __('Are you sure you want to delete # {0}?', $accountGroup->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-        </ul>
-        <p><?= $this->Paginator->counter() ?></p>
-    </div>
-</div>
-
-
-
-
-
-
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -60,21 +18,36 @@
 			<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
+				<form method="GET" >
+					<table class="table table-condensed">
+						<tbody>
+							<tr>
+								<td><input type="text" name="Account_category" class="form-control input-sm" placeholder="Account Category" value="<?php echo @$Account_category; ?>"></td>
+								<td><input type="text" name="name" class="form-control input-sm" placeholder="Name" value="<?php echo @$name; ?>"></td>
+								<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
 				
 				<?php $page_no=$this->Paginator->current('Account Categories'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered table-striped table-hover">
 						<thead>
 							<tr>
 								<th>S.No</th>
+								<th>Account Categories</th>
 								<th>Name</th>
 								<th class="actions"><?= __('Actions') ?></th>
 							</tr>
 					
 					</thead>
 					<tbody>
+					
 						   <?php foreach ($accountGroups as $accountGroup): ?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
+							
+							<td><?= h($accountGroup->account_category->name) ?></td>
 							
 							<td><?= h($accountGroup->name) ?></td>
 										

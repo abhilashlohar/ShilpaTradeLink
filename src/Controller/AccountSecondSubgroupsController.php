@@ -22,6 +22,19 @@ class AccountSecondSubgroupsController extends AppController
         $this->paginate = [
             'contain' => ['AccountFirstSubgroups']
         ];
+		
+		$where=[];
+		$name=$this->request->query('name');
+		$Account_first_subgroup=$this->request->query('Account_first_subgroup');
+		//echo $Account_group; exit;
+		$this->set(compact('name','Account_first_subgroup'));
+		
+		if(!empty($name)){
+			$where['AccountSecondSubgroups.name LIKE']='%'.$name.'%';
+		}
+		if(!empty($Account_first_subgroup)){
+			$where['AccountFirstSubgroups.name LIKE']='%'.$Account_first_subgroup.'%';
+		}
         $accountSecondSubgroups = $this->paginate($this->AccountSecondSubgroups);
 
         $this->set(compact('accountSecondSubgroups'));
