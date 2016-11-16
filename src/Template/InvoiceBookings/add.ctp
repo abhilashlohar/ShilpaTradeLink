@@ -1,4 +1,3 @@
-<?php //pr($purchase_order); ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
