@@ -18,8 +18,9 @@ class GrnsController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['PurchaseOrders', 'Companies']
+            'contain' => ['PurchaseOrders', 'Companies','Vendors']
         ];
         $grns = $this->paginate($this->Grns);
 
@@ -68,24 +69,51 @@ class GrnsController extends AppController
 						},'Companies','Vendors'
 					]
 			]);
-			$process_status='Pulled From Purchase-Order';
 		}
-		$this->set(compact('purchase_order','sales_order_id'));
+		$this->set(compact('purchase_order'));
 		
 		
         $grn = $this->Grns->newEntity();
         if ($this->request->is('post')) {
             $grn = $this->Grns->patchEntity($grn, $this->request->data);
+			$grn->vendor_id=$purchase_order->vendor_id;
+			$grn->date_created=date("Y-m-d");
+			$grn->purchase_order_id=$purchase_order_id;
+			$grn->company_id=$purchase_order->company_id;
+			$grn->created_by=$s_employee_id;
+			//pr($grn); exit;
             if ($this->Grns->save($grn)) {
-                $this->Flash->success(__('The grn has been saved.'));
+					if(!empty($purchase_order_id)){
+						$grn->check=array_filter($grn->check);
+						$i=0; 
+						foreach($grn->check as $purchase_order_row_id){
+							$qty=$grn->grn_rows[$i]['quantity'];
+							$item_id=$grn->grn_rows[$i]['item_id'];
+							
+							$PurchaseOrderRows = $this->Grns->PurchaseOrderRows->get($purchase_order_row_id);
+							$PurchaseOrderRows->processed_quantity=$PurchaseOrderRows->processed_quantity+$qty;
+							$this->Grns->PurchaseOrderRows->save($PurchaseOrderRows);
+							$i++;
+							
+							//Insert in Item Ledger//
+							$itemLedger = $this->Grns->ItemLedger->newEntity();
+							$itemLedger->item_id = $item_id;
+							$itemLedger->quantity = $qty;
+							$itemLedger->source_model = 'Grns';
+							$itemLedger->source_id = $grn->id;
+							$itemLedger->in_out = 'In';
+							$itemLedger->processed_on = date("Y-m-d");
+							$this->Grns->ItemLedger->save($itemLedger);
+						} 
+					} 
+					$this->Flash->success(__('The grn has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The grn could not be saved. Please, try again.'));
-            }
-        }
+					return $this->redirect(['action' => 'index']);
+				} else {
+					$this->Flash->error(__('The grn could not be saved. Please, try again.'));
+				}
+			}
 		$items = $this->Grns->Items->find('list');
-		$customers = $this->Grns->Customers->find('all');
         $companies = $this->Grns->Companies->find('all');
         $purchaseOrders = $this->Grns->PurchaseOrders->find('all');
         

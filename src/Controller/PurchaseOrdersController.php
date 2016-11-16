@@ -26,13 +26,25 @@ class PurchaseOrdersController extends AppController
         ];
 		$pull_request=$this->request->query('pull-request');
 		
-        $purchaseOrders = $this->paginate($this->PurchaseOrders);
+        //$purchaseOrders = $this->paginate($this->PurchaseOrders);
 		
 		if($status==null or $status=='Pending'){
 			$having=['total_rows >' => 0];
-		}elseif($status=='Converted Into Invoice'){
+		}elseif($status=='Converted-Into-GRN'){
 			$having=['total_rows =' => 0];
 		}
+		
+		$purchaseOrders=$this->paginate(
+			$this->PurchaseOrders->find()->select(['total_rows' => 
+				$this->PurchaseOrders->find()->func()->count('PurchaseOrderRows.id')])
+				->leftJoinWith('PurchaseOrderRows', function ($q) {
+					return $q->where(['PurchaseOrderRows.processed_quantity < PurchaseOrderRows.quantity']);
+				})
+				->group(['PurchaseOrders.id'])
+				->autoFields(true)
+				->having($having)
+				->order(['PurchaseOrders.id' => 'DESC'])
+			);
 
         $this->set(compact('purchaseOrders','pull_request','status'));
         $this->set('_serialize', ['purchaseOrders']);

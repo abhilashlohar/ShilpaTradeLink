@@ -39,6 +39,9 @@ class GrnsTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
+		$this->belongsTo('PurchaseOrderRows');
+		$this->belongsTo('ItemLedger');
+		
         $this->belongsTo('PurchaseOrders', [
             'foreignKey' => 'purchase_order_id',
             'joinType' => 'INNER'
@@ -54,8 +57,8 @@ class GrnsTable extends Table
             'foreignKey' => 'grn_id'
         ]);
 		
-		$this->belongsTo('Customers', [
-            'foreignKey' => 'customer_id',
+		$this->belongsTo('Vendors', [
+            'foreignKey' => 'vendor_id',
             'joinType' => 'INNER'
         ]);
 		

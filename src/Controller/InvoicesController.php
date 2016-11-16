@@ -189,7 +189,6 @@ class InvoicesController extends AppController
 		
         $invoice = $this->Invoices->newEntity();
         if ($this->request->is('post')) {
-			
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 			
 			$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date));
