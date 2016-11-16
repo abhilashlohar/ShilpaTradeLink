@@ -61,7 +61,54 @@
 						</div>
 					</div>
 				</div>
-				
+					<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Date of Birth<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('dob', ['label' => false,'class' => 'form-control input-sm']); ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Marital Status<span class="required" aria-required="true">*</span></label>
+								<div class="radio-list">
+								<div class="radio-inline" data-error-container="#marital_status_required_error">
+									<?php echo $this->Form->radio(
+											'marital_status',
+											[
+												['value' => 'Single', 'text' => 'Single', 'id'=>'id_radio1'],
+												['value' => 'Married', 'text' => 'Married', 'id'=>'id_radio2']
+											]
+									); ?>
+								</div>
+								<div id="marital_status_error"></div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+					<div class="row" id="married_info" style="display:none;">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Date Of Anniversary</label>
+							<?php echo $this->Form->input('date_of_anniversary', ['label' => false,'class' => 'form-control input-sm']); ?>
+					</div>
+					</div>
+					
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Spouse Name</label>
+							<?php echo $this->Form->input('spouse_name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Spouse Name']); ?>
+						</div>
+					</div>
+					
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">No Of Child</label>
+							<?php echo $this->Form->input('children', ['label' => false,'class' => 'form-control input-sm']); ?>
+					</div>
+					</div>
+					</div>
 				<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
@@ -225,4 +272,14 @@ $(document).ready(function() {
 	//--	 END OF VALIDATION
 	
 });
+</script>
+ <script type="text/javascript">
+                 $(document).ready(function () {
+                    $('#id_radio2').click(function () {
+                     $('#married_info').show('fast');
+                });
+				 $('#id_radio1').click(function () {
+                     $('#married_info').hide('fast');
+                });
+				 });
 </script>
