@@ -50,18 +50,25 @@
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
+							<label class="control-label">Landline <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('phone-no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Phone No']); ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
 							<label class="control-label">Email <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email']); ?>
 						</div>
 					</div>
+					
+				</div>
+					<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Designation <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('designation_id', ['options'=>$designations,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Designation']); ?>
 						</div>
 					</div>
-				</div>
-					<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Date of Birth<span class="required" aria-required="true">*</span></label>
@@ -102,21 +109,44 @@
 						</div>
 					</div>
 					
-					<div class="col-md-4">
+					<div class="col-md-2">
 						<div class="form-group">
 							<label class="control-label">No Of Child</label>
 							<?php echo $this->Form->input('children', ['label' => false,'class' => 'form-control input-sm']); ?>
 					</div>
 					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label class="control-label">Working?<span class="required" aria-required="true">*</span></label>
+								<div class="radio-list">
+								<div class="radio-inline">
+									<?php echo $this->Form->radio(
+											'spouse_working',
+											[
+												['value' => 'Yes', 'text' => 'Yes'],
+												['value' => 'No', 'text' => 'No']
+											]
+									); ?>
+								</div>
+								<div id="marital_status_error"></div>
+							</div>
+						</div>
+					</div>
 					</div>
 				<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Address <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Address']); ?>
+							<label class="control-label">Permanent Address <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('permanent_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Address']); ?>
 						</div>
 					</div>
-					<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Residence Address <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('residence_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Address']); ?>
+						</div>
+					</div>
+					
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Signature <span class="required" aria-required="true">*</span></label>
@@ -124,7 +154,7 @@
 							<span class="help-block">Only PNG format is allowed | Upload transparent Signature of size 420 x 165 </span>
 						</div>
 					</div>
-				</div>
+				
 				</div>
 				<h4 style="font-size:13px'">Bank's Detail</h4>
 				<table class="table table-condensed tableitm" id="main_tb">
