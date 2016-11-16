@@ -114,8 +114,10 @@ class GrnsController extends AppController
 				}
 			}
 		$items = $this->Grns->Items->find('list');
+
         $companies = $this->Grns->Companies->find('all');
         $purchaseOrders = $this->Grns->PurchaseOrders->find('all');
+		
         
         $this->set(compact('grn', 'purchaseOrders', 'companies','customers'));
         $this->set('_serialize', ['grn']);

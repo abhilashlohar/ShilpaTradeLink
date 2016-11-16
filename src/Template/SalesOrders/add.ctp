@@ -329,6 +329,9 @@
 
 <div id="terms_conditions" style="display:none;">
 </div>
+
+
+
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
@@ -494,6 +497,9 @@ $(document).ready(function() {
 		}
 		calculate_total();
 	})
+	
+	
+
 	
 	<?php if($process_status=="New"){ ?> add_row(); 
 	$("#main_tb tbody tr.tr1").each(function(){

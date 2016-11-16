@@ -9,10 +9,7 @@
 			<form method="GET" >
 			<table class="table table-condensed">
 				<thead>
-					<tr>
-						<th>Item Name</th>
-						<th></th>
-					</tr>
+					
 				</thead>
 				<tbody>
 					<tr>
