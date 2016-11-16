@@ -10,14 +10,13 @@
 		
 	<div class="portlet-body">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-6">
 				<?php $page_no=$this->Paginator->current('Account Categories'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered table-striped table-hover">
 						<thead>
 							<tr>
 								<th>S.No</th>
 								<th>Name</th>
-								<th class="actions"><?= __('Actions') ?></th>
 							</tr>
 					
 					</thead>
@@ -28,19 +27,6 @@
 							
 							<td><?= h($accountCategory->name) ?></td>
 										
-							<td class="actions">
-							
-								<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
-								['action' => 'delete', $accountCategory->id], 
-								[
-									'escape' => false,
-									'class' => 'btn btn-xs btn-danger',
-									'confirm' => __('Are you sure ?', $accountCategory->id)
-								]
-							) ?>
-								
-								
-							</td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>
