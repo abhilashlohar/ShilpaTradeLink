@@ -154,6 +154,7 @@
 					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
 					<div class="input-group col-md-2" style="display:none;" id="discount_text">
 						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
+						
 					</div>
 					</td>
 					<td><?php echo $this->Form->input('discount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
@@ -320,7 +321,11 @@
 
 <div id="terms_conditions" style="display:none;">
 </div>
+
+
+
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+
 <script>
 $(document).ready(function() {
 	//--------- FORM VALIDATION
@@ -598,6 +603,8 @@ $(document).ready(function() {
 	}
 	
 	
+	
+	
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
@@ -646,17 +653,35 @@ $(document).ready(function() {
 			total=total+Amount;
 		});
 		
-		$('input[name="total"]').val(total.toFixed(2));
+			
+		if($("#discount_per").is(':checked')){
+			var discount_per=parseFloat($('input[name="discount_per"]').val());
+			var discount_amount=(total*discount_per)/100;
+			if(isNaN(discount_amount)) { var discount_amount = 0; }
+			$('input[name="discount"]').val(discount_amount.toFixed(2));
+		}else{
+			var discount_amount=parseFloat($('input[name="discount"]').val());
+			if(isNaN(discount_amount)) { var discount_amount = 0; }
+		}
+		total=total-discount_amount;
+		
 		var exceise_duty=parseFloat($('input[name="exceise_duty"]').val());
 		if(isNaN(exceise_duty)) { var exceise_duty = 0; }
-		var pnf=parseFloat($('input[name="pnf"]').val());
-		if(isNaN(pnf)) { var pnf = 0; }
-		var sale_tax=parseFloat($('input[name="sale_tax"]').val());
-		if(isNaN(sale_tax)) { var sale_tax = 0; }
-		var fright_amount=parseFloat($('input[name="fright_amount"]').val());
-		if(isNaN(fright_amount)) { var fright_amount = 0; }
-		grand_total=total+exceise_duty+pnf+sale_tax+fright_amount;
-		$('input[name="grand_total"]').val(grand_total.toFixed(2));
+		total=total+exceise_duty
+		$('input[name="total"]').val(total.toFixed(2));
+		
+		if($("#pnfper").is(':checked')){
+			var pnf_per=parseFloat($('input[name="pnf_per"]').val());
+			var pnf_amount=(total*pnf_per)/100;
+			if(isNaN(pnf_amount)) { var pnf_amount = 0; }
+			$('input[name="pnf"]').val(pnf_amount.toFixed(2));
+		}else{
+			var pnf_amount=parseFloat($('input[name="pnf"]').val());
+			if(isNaN(pnf_amount)) { var pnf_amount = 0; }
+		}
+		var total_after_pnf=total+pnf_amount;
+		if(isNaN(total_after_pnf)) { var total_after_pnf = 0; }
+		$('input[name="total_after_pnf"]').val(total_after_pnf.toFixed(2));
 	}
 	
 	$('.select_address').on("click",function() { 
@@ -737,6 +762,8 @@ $(document).ready(function() {
 	
 });
 </script>
+
+
 	 
 <div id="myModal12" class="modal fade in" tabindex="-1"  style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
 	<div class="modal-dialog">

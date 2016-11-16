@@ -84,10 +84,11 @@ class GrnsController extends AppController
                 $this->Flash->error(__('The grn could not be saved. Please, try again.'));
             }
         }
-		$items = $this->Grns->Items->find('list');
+		$items = $this->Grns->Items->find('all');
 		$customers = $this->Grns->Customers->find('all');
         $companies = $this->Grns->Companies->find('all');
         $purchaseOrders = $this->Grns->PurchaseOrders->find('all');
+		
         
         $this->set(compact('grn', 'purchaseOrders', 'companies','customers'));
         $this->set('_serialize', ['grn']);
