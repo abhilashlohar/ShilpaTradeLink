@@ -22,6 +22,7 @@ class GrnsController extends AppController
         $this->paginate = [
             'contain' => ['PurchaseOrders', 'Companies','Vendors']
         ];
+		
         $grns = $this->paginate($this->Grns);
 
         $this->set(compact('grns'));
