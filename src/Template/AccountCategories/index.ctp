@@ -5,32 +5,12 @@
 		<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Account Categories</span> 
 		</div>
-		<div class="actions">
-			<?php echo $this->Html->link('<i class="icon-home"></i> Add Account Categories','/AccountCategories/add',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
-		</div>
-		
-		
-		
-		</div>
+	</div>
 		
 		
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
-			
-			<form method="GET" >
-			<table class="table table-condensed">
-				<tbody>
-					<tr>
-						<td><input type="text" name="name" class="form-control input-sm" placeholder="Account Name" value="<?php echo @$name; ?>"></td>
-						<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
-					</tr>
-				</tbody>
-			</table>
-			</form>
-			
-			
-				
 				<?php $page_no=$this->Paginator->current('Account Categories'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered table-striped table-hover">
 						<thead>
