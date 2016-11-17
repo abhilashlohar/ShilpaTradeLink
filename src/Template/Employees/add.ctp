@@ -195,57 +195,8 @@
 						</div>
 					</div>
 				</div>
-				<h4 style="font-size:13px'">Employee Emergency Contact Person</h4>
-				<table class="table table-condensed tableitm" id="main_tb">
-					<thead>
-						<tr>
-							<th><label class="control-label">Name<label></th>
-							<th><label class="control-label">Mobile Number<label></th>
-							<th><label class="control-label">Landline Number<label></th>
-							<th><label class="control-label">Email<label></th>
-							<th><label class="control-label">Relation<label></th>
-							
-						</tr>
-					</thead>
-					<tbody>
-					<tr>
-						<td>
-							<?php echo $this->Form->input('emergency_contact_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
-						</td>
-						<td>
-							<?php echo $this->Form->input('emergency_contact_mobile', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Mobile Number']); ?>
-						</td>
-						<td>
-							<?php echo $this->Form->input('emergency_contact_landline', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Landline Number']); ?>
-						</td>
-						<td>
-							<?php echo $this->Form->input('emergency_contact_email', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Email']); ?>
-						</td>
-						<td>
-							<?php echo $this->Form->input('emergency_contact_relation', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Relation']); ?>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<?php echo $this->Form->input('emergency_contact_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
-						</td>
-						<td>
-							<?php echo $this->Form->input('emergency_contact_mobile', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Mobile Number']); ?>
-						</td>
-						<td>
-							<?php echo $this->Form->input('emergency_contact_landline', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Landline Number']); ?>
-						</td>
-						<td>
-							<?php echo $this->Form->input('emergency_contact_email', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Email']); ?>
-						</td>
-						<td>
-							<?php echo $this->Form->input('emergency_contact_relation', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Relation']); ?>
-						</td>
-					</tr>
-					</tbody>
-				</table>
 				<h4 style="font-size:13px'">Bank's Detail</h4>
-				<table class="table table-condensed tableitm" id="main_tb">
+				<table class="table table-condensed tableitm">
 					<thead>
 						<tr>
 							<th><label class="control-label">Bank Name<label></th>
