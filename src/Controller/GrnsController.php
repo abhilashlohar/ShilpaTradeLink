@@ -22,10 +22,11 @@ class GrnsController extends AppController
         $this->paginate = [
             'contain' => ['PurchaseOrders', 'Companies','Vendors']
         ];
-		
+		$pull_request=$this->request->query('pull-request');
+
         $grns = $this->paginate($this->Grns);
 
-        $this->set(compact('grns'));
+        $this->set(compact('grns','pull_request'));
         $this->set('_serialize', ['grns']);
     }
 

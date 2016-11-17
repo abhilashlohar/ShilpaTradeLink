@@ -40,6 +40,31 @@ class InvoiceBookingsTable extends Table
             'foreignKey' => 'grn_id',
             'joinType' => 'INNER'
         ]);
+		
+		        $this->belongsTo('PurchaseOrders', [
+            'foreignKey' => 'purchase_order_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Companies', [
+            'foreignKey' => 'company_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->hasMany('GrnRows', [
+            'foreignKey' => 'grn_id'
+        ]);
+        $this->hasMany('InvoiceBookings', [
+            'foreignKey' => 'grn_id'
+        ]);
+		
+		$this->belongsTo('Vendors', [
+            'foreignKey' => 'vendor_id',
+            'joinType' => 'INNER'
+        ]);
+		
+		$this->belongsTo('Items', [
+            'foreignKey' => 'item_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**

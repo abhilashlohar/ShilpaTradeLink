@@ -20,11 +20,9 @@ class InvoiceBookingsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['Grns'=>['puhjb']]
+            'contain' => ['Grns']
         ];
-		
-		
-        $invoiceBookings = $this->paginate($this->InvoiceBookings);
+		$invoiceBookings = $this->paginate($this->InvoiceBookings);
 
         $this->set(compact('invoiceBookings'));
         $this->set('_serialize', ['invoiceBookings']);
@@ -56,9 +54,26 @@ class InvoiceBookingsController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $invoiceBooking = $this->InvoiceBookings->newEntity();
-        if ($this->request->is('post')) {
+		
+		
+		$grn_id=@(int)$this->request->query('grn-no');
+		
+		$grn=array();
+		
+		if(!empty($grn_id)){
+			$grn = $this->InvoiceBookings->Grns->get($grn_id, [
+				'contain' => ['GrnRows'=>['Items'],'Companies','Vendors','PurchaseOrders'=>['PurchaseOrderRows']]
+			]);
+		}
+		$this->set(compact('grn'));
+		$invoiceBooking = $this->InvoiceBookings->newEntity();
+		
+        
+		if ($this->request->is('post')) {
             $invoiceBooking = $this->InvoiceBookings->patchEntity($invoiceBooking, $this->request->data);
+			$invoiceBooking->grn_id=$grn_id; 
+			$invoiceBooking->created_on=date("Y-m-d");
+			//pr($invoiceBooking); exit;
             if ($this->InvoiceBookings->save($invoiceBooking)) {
                 $this->Flash->success(__('The invoice booking has been saved.'));
 
@@ -67,8 +82,10 @@ class InvoiceBookingsController extends AppController
                 $this->Flash->error(__('The invoice booking could not be saved. Please, try again.'));
             }
         }
+		
+		$companies = $this->InvoiceBookings->Companies->find('all');
         $grns = $this->InvoiceBookings->Grns->find('list', ['limit' => 200]);
-        $this->set(compact('invoiceBooking', 'grns'));
+        $this->set(compact('invoiceBooking', 'grns','companies'));
         $this->set('_serialize', ['invoiceBooking']);
     }
 

@@ -1,45 +1,53 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Invoice Booking'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Grns'), ['controller' => 'Grns', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Grn'), ['controller' => 'Grns', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="invoiceBookings index large-9 medium-8 columns content">
-    <h3><?= __('Invoice Bookings') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th><?= $this->Paginator->sort('id') ?></th>
-                <th><?= $this->Paginator->sort('grn_id') ?></th>
-                <th><?= $this->Paginator->sort('invoice_no') ?></th>
-                <th><?= $this->Paginator->sort('created_on') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($invoiceBookings as $invoiceBooking): ?>
-            <tr>
-                <td><?= $this->Number->format($invoiceBooking->id) ?></td>
-                <td><?= $invoiceBooking->has('grn') ? $this->Html->link($invoiceBooking->grn->id, ['controller' => 'Grns', 'action' => 'view', $invoiceBooking->grn->id]) : '' ?></td>
-                <td><?= h($invoiceBooking->invoice_no) ?></td>
-                <td><?= h($invoiceBooking->created_on) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $invoiceBooking->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $invoiceBooking->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $invoiceBooking->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoiceBooking->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-        </ul>
-        <p><?= $this->Paginator->counter() ?></p>
-    </div>
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="icon-globe font-blue-steel"></i>
+			<span class="caption-subject font-blue-steel uppercase">Invoice Book</span>
+			
+		</div>
+		<div class="actions">
+			<div class="btn-group">
+			
+			</div>
+		</div>
+	</div>
+	<div class="portlet-body">
+		<div class="row">
+			<div class="col-md-12">
+				<?php $page_no=$this->Paginator->current('Invoices'); $page_no=($page_no-1)*20; ?>
+				<table class="table table-bordered table-striped table-hover">
+					<thead>
+						<tr>
+							<th>Sr. No.</th>
+							<th>Invoice No.</th>
+							<th>Date Created</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php foreach ($invoiceBookings as $invoiceBooking): ?>
+						<tr>
+							<td><?= h(++$page_no) ?></td>
+							<td><?= h($invoiceBooking->invoice_no) ?></td>
+							<td><?php echo date("d-m-Y",strtotime($invoiceBooking->created_on)) ?></td>
+							<td class="actions">
+								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $invoiceBooking->id]) ?>
+								
+							</td>
+						</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+				<div class="paginator">
+					<ul class="pagination">
+						<?= $this->Paginator->prev('< ' . __('previous')) ?>
+						<?= $this->Paginator->numbers() ?>
+						<?= $this->Paginator->next(__('next') . ' >') ?>
+					</ul>
+					<p><?= $this->Paginator->counter() ?></p>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+

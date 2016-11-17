@@ -2,7 +2,15 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">GRNs</span>
+			<span class="caption-subject font-blue-steel uppercase">GRN</span>
+			<?php if($pull_request=="true"){ ?>
+			: Select a GRN to Book Invoice
+			<?php } ?>
+		</div>
+		<div class="actions">
+			<div class="btn-group">
+			
+			</div>
 		</div>
 	</div>
 	<div class="portlet-body">
@@ -20,6 +28,7 @@
 						</tr>
 					</thead>
 					<tbody>
+					
 						<?php foreach ($grns as $grn): ?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
@@ -27,7 +36,12 @@
 							<td><?= h($grn->vendor->company_name) ?></td>
 							<td><?php echo date("d-m-Y",strtotime($grn->date_created)); ?></td>
 							<td class="actions">
+								<?php if($pull_request=="true"){
+									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Book Invoice','/InvoiceBookings/Add?grn-no='.$grn->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+								} else { ?>
+								
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $grn->id]) ?>
+								<?php } ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>
