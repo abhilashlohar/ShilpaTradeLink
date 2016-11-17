@@ -16,7 +16,7 @@ class GrnsController extends AppController
      *
      * @return \Cake\Network\Response|null
      */
-    public function index()
+    public function index($status=null)
     {
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
@@ -24,9 +24,16 @@ class GrnsController extends AppController
         ];
 		$pull_request=$this->request->query('pull-request');
 
-        $grns = $this->paginate($this->Grns);
-
-        $this->set(compact('grns','pull_request'));
+      
+		$where=[];
+		if($status==null or $status=='Pending'){
+			$where['status']='Pending';
+		}elseif($status=='Invoice-Booked'){
+			$where['status']='Invoice-Booked';
+		}
+		
+		$grns = $this->paginate($this->Grns->find()->where($where));
+        $this->set(compact('grns','pull_request','status'));
         $this->set('_serialize', ['grns']);
     }
 

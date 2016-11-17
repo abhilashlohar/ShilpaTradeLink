@@ -16,15 +16,16 @@ class InvoiceBookingsController extends AppController
      *
      * @return \Cake\Network\Response|null
      */
-    public function index()
+    public function index($status=null)
     {
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
             'contain' => ['Grns']
         ];
+		
 		$invoiceBookings = $this->paginate($this->InvoiceBookings);
 
-        $this->set(compact('invoiceBookings'));
+        $this->set(compact('invoiceBookings','status'));
         $this->set('_serialize', ['invoiceBookings']);
     }
 
@@ -56,15 +57,15 @@ class InvoiceBookingsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		
 		
-		$grn_id=@(int)$this->request->query('grn-no');
+		$grn_id=@(int)$this->request->query('grn');
 		
 		$grn=array();
-		
 		if(!empty($grn_id)){
 			$grn = $this->InvoiceBookings->Grns->get($grn_id, [
 				'contain' => ['GrnRows'=>['Items'],'Companies','Vendors','PurchaseOrders'=>['PurchaseOrderRows']]
 			]);
 		}
+		
 		$this->set(compact('grn'));
 		$invoiceBooking = $this->InvoiceBookings->newEntity();
 		
@@ -75,6 +76,11 @@ class InvoiceBookingsController extends AppController
 			$invoiceBooking->created_on=date("Y-m-d");
 			//pr($invoiceBooking); exit;
             if ($this->InvoiceBookings->save($invoiceBooking)) {
+				if(!empty($grn_id)){
+					$grn = $this->InvoiceBookings->Grns->get($grn_id);
+					$grn->status='Invoice-Booked';
+					$this->InvoiceBookings->Grns->save($grn);
+				}
                 $this->Flash->success(__('The invoice booking has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

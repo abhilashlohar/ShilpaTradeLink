@@ -45,7 +45,13 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Mobile <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mobile']); ?>
+							<?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Mobile']); ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Landline <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('phone-no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Phone No']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -54,22 +60,93 @@
 							<?php echo $this->Form->input('email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email']); ?>
 						</div>
 					</div>
+					
+				</div>
+					<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Designation <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('designation_id', ['options'=>$designations,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Designation']); ?>
 						</div>
 					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Date of Birth<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('dob', ['label' => false,'class' => 'form-control input-sm']); ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Marital Status<span class="required" aria-required="true">*</span></label>
+								<div class="radio-list">
+								<div class="radio-inline" data-error-container="#marital_status_required_error">
+									<?php echo $this->Form->radio(
+											'marital_status',
+											[
+												['value' => 'Single', 'text' => 'Single', 'id'=>'id_radio1'],
+												['value' => 'Married', 'text' => 'Married', 'id'=>'id_radio2']
+											]
+									); ?>
+								</div>
+								<div id="marital_status_error"></div>
+							</div>
+						</div>
+					</div>
+					
 				</div>
-				
+					<div class="row" id="married_info" style="display:none;">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Date Of Anniversary</label>
+							<?php echo $this->Form->input('date_of_anniversary', ['label' => false,'class' => 'form-control input-sm']); ?>
+					</div>
+					</div>
+					
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Spouse Name</label>
+							<?php echo $this->Form->input('spouse_name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Spouse Name']); ?>
+						</div>
+					</div>
+					
+					<div class="col-md-2">
+						<div class="form-group">
+							<label class="control-label">No Of Child</label>
+							<?php echo $this->Form->input('children', ['label' => false,'class' => 'form-control input-sm']); ?>
+					</div>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label class="control-label">Working?<span class="required" aria-required="true">*</span></label>
+								<div class="radio-list">
+								<div class="radio-inline">
+									<?php echo $this->Form->radio(
+											'spouse_working',
+											[
+												['value' => 'Yes', 'text' => 'Yes'],
+												['value' => 'No', 'text' => 'No']
+											]
+									); ?>
+								</div>
+								<div id="marital_status_error"></div>
+							</div>
+						</div>
+					</div>
+					</div>
 				<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Address <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Address']); ?>
+							<label class="control-label">Permanent Address <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('permanent_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Address']); ?>
 						</div>
 					</div>
-					<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Residence Address <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('residence_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Address']); ?>
+						</div>
+					</div>
+					
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Signature <span class="required" aria-required="true">*</span></label>
@@ -77,8 +154,34 @@
 							<span class="help-block">Only PNG format is allowed | Upload transparent Signature of size 420 x 165 </span>
 						</div>
 					</div>
+				
 				</div>
-				</div>
+				<h4 style="font-size:13px'">Bank's Detail</h4>
+				<table class="table table-condensed tableitm" id="main_tb">
+					<thead>
+						<tr>
+							<th><label class="control-label">Bank Name<label></th>
+							<th><label class="control-label">Account Number<label></th>
+							<th><label class="control-label">Branch Name<label></th>
+							<th><label class="control-label">IFSC Code<label></th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<td>
+							<?php echo $this->Form->input('bank_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Bank Name']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('account_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Account No']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('branch_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Branch Name']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('ifsc_code', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'IFSC Code']); ?>
+						</td>
+					</tbody>
+				</table>
 		</div>
 		
 			<div class="form-actions">
@@ -199,4 +302,14 @@ $(document).ready(function() {
 	//--	 END OF VALIDATION
 	
 });
+</script>
+ <script type="text/javascript">
+                 $(document).ready(function () {
+                    $('#id_radio2').click(function () {
+                     $('#married_info').show('fast');
+                });
+				 $('#id_radio1').click(function () {
+                     $('#married_info').hide('fast');
+                });
+				 });
 </script>

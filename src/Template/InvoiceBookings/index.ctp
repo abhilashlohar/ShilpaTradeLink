@@ -1,3 +1,5 @@
+
+<?php //pr ($invoiceBookings); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -5,11 +7,7 @@
 			<span class="caption-subject font-blue-steel uppercase">Invoice Book</span>
 			
 		</div>
-		<div class="actions">
-			<div class="btn-group">
-			
-			</div>
-		</div>
+		
 	</div>
 	<div class="portlet-body">
 		<div class="row">
@@ -19,19 +17,25 @@
 					<thead>
 						<tr>
 							<th>Sr. No.</th>
+							<th>GRN No.</th>
 							<th>Invoice No.</th>
-							<th>Date Created</th>
+							<th>Invoice Booked On</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
 					<tbody>
-					<?php foreach ($invoiceBookings as $invoiceBooking): ?>
+					<?php foreach ($invoiceBookings as $invoiceBooking):
+						if($invoiceBooking->grn->status=='Converted Into Invoice Booking'){ $tr_color='#f4f4f4'; }
+						if($invoiceBooking->grn->status=='Pending'){ $tr_color='#FFF'; }
+					?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
+							<td><?= h(($invoiceBooking->grn->grn1.'/GRN-'.str_pad($invoiceBooking->grn->id, 3, '0', STR_PAD_LEFT).'/'.$invoiceBooking->grn->grn3.'/'.$invoiceBooking->grn->grn4)) ?></td>
 							<td><?= h($invoiceBooking->invoice_no) ?></td>
 							<td><?php echo date("d-m-Y",strtotime($invoiceBooking->created_on)) ?></td>
 							<td class="actions">
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $invoiceBooking->id]) ?>
+								<?= $this->Html->link(__('Delete'), ['action' => 'delete', $invoiceBooking->id]) ?>
 								
 							</td>
 						</tr>

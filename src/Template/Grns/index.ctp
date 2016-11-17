@@ -9,7 +9,21 @@
 		</div>
 		<div class="actions">
 			<div class="btn-group">
-			
+			<?php
+			if($status==null or $status=='Pending'){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
+			if($status=='Invoice-Booked'){ $class2='btn btn-primary'; }else{ $class2='btn btn-default'; }
+			?>
+				<?= $this->Html->link(
+					'Pending',
+					'/Grns/index/Pending',
+					['class' => $class1]
+				); ?>
+				<?= $this->Html->link(
+					'Invoice-Booked',
+					'/Grns/index/Invoice-Booked',
+					['class' => $class2]
+				); ?>
+			<?php  ?>
 			</div>
 		</div>
 	</div>
@@ -37,7 +51,7 @@
 							<td><?php echo date("d-m-Y",strtotime($grn->date_created)); ?></td>
 							<td class="actions">
 								<?php if($pull_request=="true"){
-									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Book Invoice','/InvoiceBookings/Add?grn-no='.$grn->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Book Invoice','/InvoiceBookings/Add?grn='.$grn->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} else { ?>
 								
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $grn->id]) ?>

@@ -385,6 +385,18 @@ select
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
+					<span class="title">Book Invoice</span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> Create','/InvoiceBookings/Add',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/InvoiceBookings/',array('escape'=>false)); ?></li>
+					</ul>
+				</li>
+				
+				<li>
+					<a href="javascript:;">
+					<i class="fa fa-puzzle-piece"></i>
 					<span class="title">Ledger</span>
 					<span class="arrow "></span>
 					</a>

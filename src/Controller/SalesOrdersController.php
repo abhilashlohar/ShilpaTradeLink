@@ -202,7 +202,8 @@ class SalesOrdersController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		
 		$quotation_id=@(int)$this->request->query('quotation');
-		$quotation=array(); $process_status='New';
+		$quotation=array(); 
+		$process_status='New';
 		if(!empty($quotation_id)){
 			$quotation = $this->SalesOrders->Quotations->get($quotation_id, [
 				'contain' => ['QuotationRows' => ['Items']]
