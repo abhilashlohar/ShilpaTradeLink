@@ -1,32 +1,8 @@
 <?php 
-require_once(ROOT . DS  .'vendor' . DS  . 'dompdf' . DS . 'autoload.inc.php');
-use Dompdf\Dompdf;
-use Dompdf\Options;
-
-$options = new Options();
-$options->set('defaultFont', 'Lato-Hairline');
-$dompdf = new Dompdf($options);
-
-$dompdf = new Dompdf();
-
-
-
-
 $html = '
 <html>
 <head>
   <style>
-  @page { margin: 150px 15px 200px 30px; }
-    #header { position: fixed; left: 0px; top: -150px; right: 0px; height: 150px;}
-    
-    #footer { position: fixed; left: 0px; bottom: -200px; right: 0px; height: 200px;}
-    #footer .page:after { content: content: counter(page); }
-	#content{
-    position: relative; 
-	}
-	 #header {
-		display: block;
-	}
 	@font-face {
 		font-family: Lato;
 		src: url("https://fonts.googleapis.com/css?family=Lato");
@@ -333,13 +309,5 @@ $html .= '<div id="footer">
 </body>
 </html>';
 
-//echo $html; exit; 
-
-$name='Invoice-'.h(($invoice->in1.'_IN'.str_pad($invoice->id, 3, '0', STR_PAD_LEFT).'_'.$invoice->in3.'_'.$invoice->in4));
-$dompdf->loadHtml($html);
-
-$dompdf->setPaper('A4', 'portrait');
-$dompdf->render();
-$dompdf->stream($name,array('Attachment'=>0));
-exit(0);
+echo $html;
 ?>
