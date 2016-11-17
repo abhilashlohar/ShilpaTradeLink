@@ -72,7 +72,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Date of Birth<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('dob', ['label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('dob',['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Birth']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
