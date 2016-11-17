@@ -18,10 +18,11 @@
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Department <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('dipartment_id', ['options' => $departments,'label' => false,'class' => 'form-control input-sm']); ?>
+							<label class="control-label">Date of Birth<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('dob',['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Birth']); ?>
 						</div>
 					</div>
+					
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Gender <span class="required" aria-required="true">*</span></label>
@@ -60,20 +61,60 @@
 							<?php echo $this->Form->input('email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email']); ?>
 						</div>
 					</div>
-					
 				</div>
-					<div class="row">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Blood Group <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('blood_group', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Blood Group']); ?>
+						</div>
+					</div>
+				
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Education Qualification <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('qualification', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Education Qualification']); ?>
+						</div>
+					</div>
+					
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label"> Last Company worked Name<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('last_company', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Last Company Name']); ?>
+						</div>
+					</div>
+				</div>
+					
+					
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Department <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('dipartment_id', ['options' => $departments,'label' => false,'class' => 'form-control input-sm']); ?>
+						</div>
+					</div>
+					
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Designation <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('designation_id', ['options'=>$designations,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Designation']); ?>
 						</div>
 					</div>
+					
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Date of Birth<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('dob',['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Birth']); ?>
-						</div>
+							<label class="control-label">Date Of Joining</label>
+							<?php echo $this->Form->input('join_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Joining']); ?>
+					</div>
+					</div>
+					
+				</div>
+				<div class="row">
+				<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Date of Confirmation as Permanent</label>
+							<?php echo $this->Form->input('permanent_join_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Confirmation']); ?>
+					</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
@@ -92,32 +133,30 @@
 							</div>
 						</div>
 					</div>
-					
-				</div>
-					<div class="row" id="married_info" style="display:none;">
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Date Of Anniversary</label>
-							<?php echo $this->Form->input('date_of_anniversary', ['label' => false,'class' => 'form-control input-sm']); ?>
 					</div>
-					</div>
-					
+				<div class="row"  id="married_info" style="display:none;">
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Spouse Name</label>
 							<?php echo $this->Form->input('spouse_name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Spouse Name']); ?>
 						</div>
 					</div>
-					
-					<div class="col-md-2">
+				
+					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">No Of Child</label>
-							<?php echo $this->Form->input('children', ['label' => false,'class' => 'form-control input-sm']); ?>
+							<label class="control-label">Date Of Anniversary</label>
+							<?php echo $this->Form->input('date_of_anniversary', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Anniversary']); ?>
 					</div>
 					</div>
-					<div class="col-md-2">
+						<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Working?<span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Number Of Child</label>
+							<?php echo $this->Form->input('children', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Number Of Child']); ?>
+					</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label"> Whether Spouse Working?<span class="required" aria-required="true">*</span></label>
 								<div class="radio-list">
 								<div class="radio-inline">
 									<?php echo $this->Form->radio(
@@ -128,22 +167,23 @@
 											]
 									); ?>
 								</div>
-								<div id="marital_status_error"></div>
+								<div id="spouse_working_error"></div>
 							</div>
 						</div>
 					</div>
-					</div>
+				</div>
+					
 				<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Permanent Address <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('permanent_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Address']); ?>
+							<?php echo $this->Form->input('permanent_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Permanent Address']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Residence Address <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('residence_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Address']); ?>
+							<?php echo $this->Form->input('residence_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Residence Address']); ?>
 						</div>
 					</div>
 					
@@ -154,8 +194,56 @@
 							<span class="help-block">Only PNG format is allowed | Upload transparent Signature of size 420 x 165 </span>
 						</div>
 					</div>
-				
 				</div>
+				<h4 style="font-size:13px'">Employee Emergency Contact Person</h4>
+				<table class="table table-condensed tableitm" id="main_tb">
+					<thead>
+						<tr>
+							<th><label class="control-label">Name<label></th>
+							<th><label class="control-label">Mobile Number<label></th>
+							<th><label class="control-label">Landline Number<label></th>
+							<th><label class="control-label">Email<label></th>
+							<th><label class="control-label">Relation<label></th>
+							
+						</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td>
+							<?php echo $this->Form->input('emergency_contact_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('emergency_contact_mobile', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Mobile Number']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('emergency_contact_landline', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Landline Number']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('emergency_contact_email', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Email']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('emergency_contact_relation', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Relation']); ?>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<?php echo $this->Form->input('emergency_contact_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('emergency_contact_mobile', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Mobile Number']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('emergency_contact_landline', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Landline Number']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('emergency_contact_email', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Email']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('emergency_contact_relation', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Relation']); ?>
+						</td>
+					</tr>
+					</tbody>
+				</table>
 				<h4 style="font-size:13px'">Bank's Detail</h4>
 				<table class="table table-condensed tableitm" id="main_tb">
 					<thead>
