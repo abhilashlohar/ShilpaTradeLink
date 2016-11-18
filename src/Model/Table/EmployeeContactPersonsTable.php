@@ -72,6 +72,10 @@ class EmployeeContactPersonsTable extends Table
             ->integer('landline')
             ->requirePresence('landline', 'create')
             ->notEmpty('landline');
+			
+		$validator
+            ->requirePresence('email', 'create')
+            ->notEmpty('email');
 
         $validator
             ->requirePresence('relation', 'create')

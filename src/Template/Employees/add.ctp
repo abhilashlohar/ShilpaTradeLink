@@ -254,6 +254,7 @@
 						
 						
 					</tbody>
+					
 				</table>
 				
 				
@@ -285,7 +286,11 @@
 						</td>
 					</tbody>
 				</table>
+				<div class="alert alert-danger" id="row_error" style="display:none;">
+                    Fill all fileds.
+                </div>
 		</div>
+		
 		
 			<div class="form-actions">
 					<button type="submit" class="btn btn-primary">ADD EMPLOYEE</button>
@@ -333,10 +338,10 @@ $(document).ready(function() {
 			},
 			signature : {
 				  required: true,
-			}
+			},
 			marital_status:{
 				 required: true,
-			}
+			},
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
