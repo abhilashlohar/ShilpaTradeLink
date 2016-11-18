@@ -21,7 +21,7 @@ color: #113775;
 							
 							<td><label class="control-label1"><?= __('Date of Birth') ?></label></td>
 							<td><?= h($employee->dob) ?></td>
-							<td><label class="control-label"><?= __('Sex') ?></label></td>
+							<td><label class="control-label1"><?= __('Sex') ?></label></td>
 							<td><?= h($employee->sex) ?></td>
 						</tr>
 						<tr>
@@ -50,7 +50,7 @@ color: #113775;
 						</tr>
 						
 						<tr>
-							<td><label class="control-label"><?= __('Last Comapany Name') ?></label></td>
+							<td><label class="control-label1"><?= __('Last Comapany Name') ?></label></td>
 							<td><?= h($employee->last_company) ?></td>
 							<td><label class="control-label1"><?= __('Marital_Status') ?></label></td>
 							<td><?=h($employee->marital_status) ?></td>
