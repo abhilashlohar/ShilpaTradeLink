@@ -41,6 +41,11 @@ class EmployeesTable extends Table
             'joinType' => 'INNER'
         ]);
 		
+		 $this->hasMany('EmployeeEmergencyContactPersons', [
+            'foreignKey' => 'employee_id',
+			'saveStrategy' => 'replace'
+        ]);
+		
 		$this->belongsTo('Designations', [
             'foreignKey' => 'designation_id',
             'joinType' => 'INNER'
@@ -80,8 +85,8 @@ class EmployeesTable extends Table
             ->notEmpty('email');
 
         $validator
-            ->requirePresence('address', 'create')
-            ->notEmpty('address');
+            ->requirePresence('permanent_address', 'create')
+            ->notEmpty('permanent_address');
 
         return $validator;
     }

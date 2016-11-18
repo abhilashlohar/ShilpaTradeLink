@@ -405,7 +405,7 @@ select
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> Account Group','/AccountGroups/Index',array('escape'=>false)); ?></li>
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> Account First SubGroup','/AccountFirstSubgroups/Index',array('escape'=>false)); ?></li>
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> Account Second SubGroup','/AccountSecondSubgroups/Index',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Account First SubGroup','/Grns/Add',array('escape'=>false)); ?></li>
+						
 					</ul>
 				</li>
 			</ul>

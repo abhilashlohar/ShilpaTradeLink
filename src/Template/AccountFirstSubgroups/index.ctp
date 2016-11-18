@@ -23,7 +23,7 @@
 						<tbody>
 							<tr>
 								<td><input type="text" name="Account_group" class="form-control input-sm" placeholder="Account Group" value="<?php echo @$Account_group; ?>"></td>
-								<td><input type="text" name="name" class="form-control input-sm" placeholder="Name" value="<?php echo @$name; ?>"></td>
+								<td><input type="text" name="name" class="form-control input-sm" placeholder="First Sub-Group Name" value="<?php echo @$name; ?>"></td>
 								<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
 							</tr>
 						</tbody>
