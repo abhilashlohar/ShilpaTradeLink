@@ -8,10 +8,29 @@ $options->set('defaultFont', 'Lato-Hairline');
 $dompdf = new Dompdf($options);
 
 $dompdf = new Dompdf();
+
+
+
+
 $html = '
 <html>
 <head>
   <style>
+  @page { margin: 150px 15px 200px 30px; }
+    #header { position: fixed; left: 0px; top: -150px; right: 0px; height: 150px;}
+    
+	@page:last {
+		@bottom-center {
+			content: "hello";
+		}
+	}
+	
+	#content{
+    position: relative; 
+	}
+	 #header {
+		display: block;
+	}
 	@font-face {
 		font-family: Lato;
 		src: url("https://fonts.googleapis.com/css?family=Lato");
@@ -46,7 +65,7 @@ $html = '
 		<table width="100%">
 			<tr>
 				<td width="50%">
-				<img src="/ShilpaTradeLink/logos/'.$invoice->company->logo.'" height="80px" style="height:80px;"/>
+				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$invoice->company->logo.' height="80px" style="height:80px;"/>
 				</td>
 				<td align="right" width="50%" style="font-size: 12px;">
 				<span style="font-size: 16px;">'. h($invoice->company->name) .'</span><br/>
@@ -318,7 +337,7 @@ $html .= '<div id="footer">
 </body>
 </html>';
 
-
+//echo $html; exit; 
 
 $name='Invoice-'.h(($invoice->in1.'_IN'.str_pad($invoice->id, 3, '0', STR_PAD_LEFT).'_'.$invoice->in3.'_'.$invoice->in4));
 $dompdf->loadHtml($html);
