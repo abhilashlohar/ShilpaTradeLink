@@ -47,6 +47,11 @@ class EmployeesTable extends Table
             'joinType' => 'INNER'
         ]);
 		
+		$this->hasMany('EmployeeContactPersons', [
+            'foreignKey' => 'employee_id',
+			'saveStrategy' => 'replace'
+        ]);
+		
 		$this->belongsTo('Quotations');
 		$this->belongsTo('SalesOrders');
 		$this->belongsTo('Invoices');

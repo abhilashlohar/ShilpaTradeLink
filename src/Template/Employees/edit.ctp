@@ -214,6 +214,68 @@ $this->Form->templates([
 						</div>
 					</div>
 				</div>
+				
+								<h4 style="font-size:13px'">Employee Contact </h4>
+				<table class="table table-condensed tableitm">
+					<thead>
+						<tr>
+							<th><label class="control-label">Name<label></th>
+							<th><label class="control-label">Mobile<label></th>
+							<th><label class="control-label">Landline<label></th>
+							<th><label class="control-label">Email<label></th>
+							<th><label class="control-label">Relation<label></th>
+							
+						</tr>
+					</thead>
+					<tbody>
+					
+					<tr>
+						<td>
+							<?php echo $this->Form->input('employee_contact_persons.0.name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('employee_contact_persons.0.mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?>
+							
+						</td>
+						<td>
+						<?php echo $this->Form->input('employee_contact_persons.0.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?>
+						
+						</td>
+						<td>
+							<?php echo $this->Form->input('employee_contact_persons.0.email', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Email']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('employee_contact_persons.0.relation', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Relation']); ?>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<?php echo $this->Form->input('employee_contact_persons.1.name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('employee_contact_persons.1.mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?>
+							
+						</td>
+						<td>
+						<?php echo $this->Form->input('employee_contact_persons.1.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?>
+						
+						</td>
+						<td>
+							<?php echo $this->Form->input('employee_contact_persons.1.email', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Email']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('employee_contact_persons.1.relation', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Relation']); ?>
+						</td>
+					</tr>
+						
+						
+					</tbody>
+				</table>
+				
+				
+				
+				
 				<h4 style="font-size:13px'">Bank's Detail</h4>
 				<table class="table table-condensed tableitm">
 					<thead>

@@ -213,37 +213,41 @@
 					<tbody>
 					<tr>
 						<td>
-							<?php echo $this->Form->input('emp_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
+							<?php echo $this->Form->input('employee_contact_persons.0.name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
 						</td>
 						<td>
-							<?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Mobile']); ?>
+							<?php echo $this->Form->input('employee_contact_persons.0.mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?>
+							
 						</td>
 						<td>
-							<?php echo $this->Form->input('landline', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Landline']); ?>
+						<?php echo $this->Form->input('employee_contact_persons.0.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?>
+						
 						</td>
 						<td>
-							<?php echo $this->Form->input('email', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Email']); ?>
+							<?php echo $this->Form->input('employee_contact_persons.0.email', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Email']); ?>
 						</td>
 						<td>
-							<?php echo $this->Form->input('relation', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Relation']); ?>
+							<?php echo $this->Form->input('employee_contact_persons.0.relation', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Relation']); ?>
 						</td>
 					</tr>
 					
 					<tr>
 						<td>
-							<?php echo $this->Form->input('emp_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
+							<?php echo $this->Form->input('employee_contact_persons.1.name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
 						</td>
 						<td>
-							<?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Mobile']); ?>
+							<?php echo $this->Form->input('employee_contact_persons.1.mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?>
+							
 						</td>
 						<td>
-							<?php echo $this->Form->input('landline', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Landline']); ?>
+						<?php echo $this->Form->input('employee_contact_persons.1.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?>
+						
 						</td>
 						<td>
-							<?php echo $this->Form->input('email', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Email']); ?>
+							<?php echo $this->Form->input('employee_contact_persons.1.email', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Email']); ?>
 						</td>
 						<td>
-							<?php echo $this->Form->input('relation', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Relation']); ?>
+							<?php echo $this->Form->input('employee_contact_persons.1.relation', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Relation']); ?>
 						</td>
 					</tr>
 						

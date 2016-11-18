@@ -96,7 +96,7 @@ class EmployeesController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $employee = $this->Employees->get($id, [
-            'contain' => []
+            'contain' => ['EmployeeContactPersons']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {		
             $employee = $this->Employees->patchEntity($employee, $this->request->data);
