@@ -1,6 +1,6 @@
 <style>
 .control-label1{
-	font-weight: 600;
+font-weight: 600;
 font-size: 12px;
 text-transform: titlecase;
 color: #113775;
