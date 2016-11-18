@@ -68,7 +68,7 @@
 							<label class="control-label">Blood Group </label>
 							<?php 
 							
-							$arrblood=array(0=>"Select Blood Group", 'A+'=>"A+",'A-'=>"A-",'B+'=>"B+",'B-'=>"B-",'AB+'=>"AB+",'AB-'=>"AB-",'O+'=>"O+",'O-'=>"O-");
+							$arrblood=array(""=>"Select Blood Group", 'A+'=>"A+",'A-'=>"A-",'B+'=>"B+",'B-'=>"B-",'AB+'=>"AB+",'AB-'=>"AB-",'O+'=>"O+",'O-'=>"O-");
 							echo $this->Form->input('blood_group', ['options'=>$arrblood,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Blood Group']);?>
 						</div>
 					</div>
@@ -199,7 +199,7 @@
 					</div>
 				</div>
 				
-				<h4 style="font-size:13px'">Employee Contact </h4>
+				<h4 style="font-size:13px'">Employee Emergency Contact Persons</h4>
 				<table class="table table-condensed tableitm">
 					<thead>
 						<tr>
@@ -221,7 +221,11 @@
 							
 						</td>
 						<td>
+<<<<<<< HEAD
 						<?php echo $this->Form->input('employee_contact_persons.0.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'landline']); ?>
+=======
+						<?php echo $this->Form->input('employee_contact_persons.0.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Landline']); ?>
+>>>>>>> ea4d3c84abe388a135d2169e57ad5b6eaedd7c0f
 						
 						</td>
 						<td>
