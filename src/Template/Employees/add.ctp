@@ -199,7 +199,7 @@
 					</div>
 				</div>
 				
-				<h4 style="font-size:13px'">Employee Contact </h4>
+				<h4 style="font-size:13px'">Employee Emergency Contact Persons</h4>
 				<table class="table table-condensed tableitm">
 					<thead>
 						<tr>
@@ -221,7 +221,7 @@
 							
 						</td>
 						<td>
-						<?php echo $this->Form->input('employee_contact_persons.0.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?>
+						<?php echo $this->Form->input('employee_contact_persons.0.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Landline']); ?>
 						
 						</td>
 						<td>

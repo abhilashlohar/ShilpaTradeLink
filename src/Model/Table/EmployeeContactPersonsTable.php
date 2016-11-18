@@ -68,11 +68,6 @@ class EmployeeContactPersonsTable extends Table
             ->requirePresence('mobile', 'create')
             ->notEmpty('mobile');
 
-        $validator
-            ->integer('landline')
-            ->requirePresence('landline', 'create')
-            ->notEmpty('landline');
-			
 		$validator
             ->requirePresence('email', 'create')
             ->notEmpty('email');
