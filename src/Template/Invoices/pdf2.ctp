@@ -1,4 +1,13 @@
 <?php 
+require_once(ROOT . DS  .'vendor' . DS  . 'dompdf' . DS . 'autoload.inc.php');
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
+$options = new Options();
+$options->set('defaultFont', 'Lato-Hairline');
+$dompdf = new Dompdf($options);
+
+$dompdf = new Dompdf();
 $html = '
 <html>
 <head>
@@ -37,7 +46,7 @@ $html = '
 		<table width="100%">
 			<tr>
 				<td width="50%">
-				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$invoice->company->logo.' height="80px" style="height:80px;"/>
+				<img src="/ShilpaTradeLink/logos/'.$invoice->company->logo.'" height="80px" style="height:80px;"/>
 				</td>
 				<td align="right" width="50%" style="font-size: 12px;">
 				<span style="font-size: 16px;">'. h($invoice->company->name) .'</span><br/>
@@ -309,5 +318,13 @@ $html .= '<div id="footer">
 </body>
 </html>';
 
-echo $html;
+
+
+$name='Invoice-'.h(($invoice->in1.'_IN'.str_pad($invoice->id, 3, '0', STR_PAD_LEFT).'_'.$invoice->in3.'_'.$invoice->in4));
+$dompdf->loadHtml($html);
+
+$dompdf->setPaper('A4', 'portrait');
+$dompdf->render();
+$dompdf->stream($name,array('Attachment'=>0));
+exit(0);
 ?>
