@@ -100,6 +100,10 @@ class EmployeesController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {		
             $employee = $this->Employees->patchEntity($employee, $this->request->data);
+			$employee->dob=date("Y-m-d",strtotime($employee->dob));
+			$employee->date_of_anniversary=date("Y-m-d",strtotime($employee->date_of_anniversary));
+			$employee->join_date=date("Y-m-d",strtotime($employee->join_date));
+			$employee->permanent_join_date=date("Y-m-d",strtotime($employee->permanent_join_date));
 			
 			$file = $this->request->data['signature'];
 			if(!empty($file['name'])){

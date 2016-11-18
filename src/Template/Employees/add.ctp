@@ -51,8 +51,8 @@
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Landline <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('phone-no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Phone No']); ?>
+							<label class="control-label">Landline</label>
+							<?php echo $this->Form->input('phone_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Landline']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -70,21 +70,23 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Blood Group <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('blood_group', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Blood Group']); ?>
+							<label class="control-label">Blood Group </label>
+							<?php 
+							$arrblood=array(0=>"Select Blood Group", 1=>"A+",2=>"A-",3=>"B+",4=>"B-",5=>"AB+",6=>"AB-",7=>"O+",8=>"O-");
+							echo $this->Form->input('blood_group', ['options'=>$arrblood,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Blood Group']);?>
 						</div>
 					</div>
 				
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Education Qualification <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Education Qualification</label>
 							<?php echo $this->Form->input('qualification', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Education Qualification']); ?>
 						</div>
 					</div>
 					
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label"> Last Company worked Name<span class="required" aria-required="true">*</span></label>
+							<label class="control-label"> Last Company worked Name</label>
 							<?php echo $this->Form->input('last_company', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Last Company Name']); ?>
 						</div>
 					</div>
@@ -210,8 +212,12 @@
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
+<<<<<<< HEAD
 							<label class="control-label"> Whether Spouse Working?<span class="required" aria-required="true">*</span></label>
 >>>>>>> 4a2ac502a99f4dc28e56e7a827f44d165988155d
+=======
+							<label class="control-label"> Whether Spouse Working?</label>
+>>>>>>> 50697b3609277b987028d76ee87f152667355adc
 								<div class="radio-list">
 								<div class="radio-inline">
 									<?php echo $this->Form->radio(
@@ -337,11 +343,17 @@ $(document).ready(function() {
 			designation_id:{
 				required: true,
 			},
-			address:{
+			permanent_address:{
+				required: true,
+			},
+			residence_address:{
 				required: true,
 			},
 			signature : {
 				  required: true,
+			}
+			marital_status:{
+				 required: true,
 			}
 		},
 

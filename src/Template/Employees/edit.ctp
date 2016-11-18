@@ -23,10 +23,11 @@ $this->Form->templates([
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Department <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('dipartment_id', ['options' => $departments,'label' => false,'class' => 'form-control input-sm']); ?>
+							<label class="control-label">Date of Birth<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('dob',['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Birth']); ?>
 						</div>
 					</div>
+					
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Gender <span class="required" aria-required="true">*</span></label>
@@ -50,7 +51,13 @@ $this->Form->templates([
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Mobile <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mobile']); ?>
+							<?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Mobile']); ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Landline</label>
+							<?php echo $this->Form->input('phone_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Landline']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -59,24 +66,134 @@ $this->Form->templates([
 							<?php echo $this->Form->input('email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email']); ?>
 						</div>
 					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Blood Group </label>
+							<?php 
+							$arrblood=array(0=>"Select Blood Group",1=>"A+",2=>"A-",3=>"B+",4=>"B-",5=>"AB+",6=>"AB-",7=>"O+",8=>"O-");
+							echo $this->Form->input('blood_group', ['options'=>$arrblood,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Blood Group']);?>
+						</div>
+					</div>
+				
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Education Qualification</label>
+							<?php echo $this->Form->input('qualification', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Education Qualification']); ?>
+						</div>
+					</div>
+					
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label"> Last Company worked Name</label>
+							<?php echo $this->Form->input('last_company', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Last Company Name']); ?>
+						</div>
+					</div>
+				</div>
+					
+					
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Department <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('dipartment_id', ['options' => $departments,'label' => false,'class' => 'form-control input-sm']); ?>
+						</div>
+					</div>
+					
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Designation <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('designation_id', ['options'=>$designations,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Designation']); ?>
 						</div>
 					</div>
-				</div>
-				
-				<div class="row">
+					
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Address <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Address']); ?>
+							<label class="control-label">Date Of Joining</label>
+							<?php echo $this->Form->input('join_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Joining']); ?>
+					</div>
+					</div>
+					
+				</div>
+				<div class="row">
+				<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Date of Confirmation as Permanent</label>
+							<?php echo $this->Form->input('permanent_join_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Confirmation']); ?>
+					</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Marital Status<span class="required" aria-required="true">*</span></label>
+								<div class="radio-list">
+								<div class="radio-inline" data-error-container="#marital_status_required_error">
+									<?php echo $this->Form->radio(
+											'marital_status',
+											[
+												['value' => 'Single', 'text' => 'Single', 'id'=>'id_radio1'],
+												['value' => 'Married', 'text' => 'Married', 'id'=>'id_radio2']
+											]
+									); ?>
+								</div>
+								<div id="marital_status_error"></div>
+							</div>
 						</div>
 					</div>
-					<div class="row">
+					</div>
+				<div class="row"  id="married_info" style="display:none;">
 					<div class="col-md-4">
-						
+						<div class="form-group">
+							<label class="control-label">Spouse Name</label>
+							<?php echo $this->Form->input('spouse_name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Spouse Name']); ?>
+						</div>
+					</div>
+				
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Date Of Anniversary</label>
+							<?php echo $this->Form->input('date_of_anniversary', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Anniversary']); ?>
+					</div>
+					</div>
+						<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Number Of Child</label>
+							<?php echo $this->Form->input('children', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Number Of Child']); ?>
+					</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label"> Whether Spouse Working?</label>
+								<div class="radio-list">
+								<div class="radio-inline">
+									<?php echo $this->Form->radio(
+											'spouse_working',
+											[
+												['value' => 'Yes', 'text' => 'Yes'],
+												['value' => 'No', 'text' => 'No']
+											]
+									); ?>
+								</div>
+								<div id="spouse_working_error"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+					
+				<div class="row">
+						<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Permanent Address <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('permanent_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Permanent Address']); ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Residence Address <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('residence_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Residence Address']); ?>
+						</div>
+					</div>
+						<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Signature <span class="required" aria-required="true">*</span></label>
 							<div><?php echo $this->Html->image('/signatures/'.$employee->signature, ['height' => '50px']); ?></div>
@@ -97,6 +214,32 @@ $this->Form->templates([
 						</div>
 					</div>
 				</div>
+				<h4 style="font-size:13px'">Bank's Detail</h4>
+				<table class="table table-condensed tableitm">
+					<thead>
+						<tr>
+							<th><label class="control-label">Bank Name<label></th>
+							<th><label class="control-label">Account Number<label></th>
+							<th><label class="control-label">Branch Name<label></th>
+							<th><label class="control-label">IFSC Code<label></th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<td>
+							<?php echo $this->Form->input('bank_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Bank Name']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('account_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Account No']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('branch_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Branch Name']); ?>
+						</td>
+						<td>
+							<?php echo $this->Form->input('ifsc_code', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'IFSC Code']); ?>
+						</td>
+					</tbody>
+				</table>
 				</div>
 		</div>
 		
@@ -138,8 +281,17 @@ $(document).ready(function() {
 			designation_id:{
 				required: true,
 			},
-			address:{
+			permanent_address:{
 				required: true,
+			},
+			residence_address:{
+				required: true,
+			},
+			signature : {
+				  required: true,
+			}
+			marital_status:{
+				 required: true,
 			}
 		},
 
@@ -215,4 +367,21 @@ $(document).ready(function() {
 	//--	 END OF VALIDATION
 	
 });
+</script>
+ <script type="text/javascript">
+ $(document).ready(function () {
+                    $('#id_radio2').click(function () {
+                     $('#married_info').show('fast');
+                });
+				 $('#id_radio1').click(function () {
+                     $('#married_info').hide('fast');
+                });
+					 
+				if ($('#id_radio2').is(':checked')) {
+					$('#married_info').show('fast');
+                }
+				else{
+					$('#married_info').hide('fast');
+                }
+				 });
 </script>

@@ -153,6 +153,21 @@ class InvoicesController extends AppController
         $this->set('_serialize', ['invoice'=>['Units']]);
     }
 	
+	public function pdf2($id = null)
+    {
+		$this->viewBuilder()->layout('');
+         $invoice = $this->Invoices->get($id, [
+            'contain' => ['Customers','Employees','Transporters','Creator'=>['Designations'],'Companies'=> [
+			'CompanyBanks'=> function ($q) {
+				return $q
+				->where(['CompanyBanks.default_bank' => 1]);
+				}], 'InvoiceRows' => ['Items'=>['Units']]]
+			]);
+
+        $this->set('invoice', $invoice);
+        $this->set('_serialize', ['invoice'=>['Units']]);
+    }
+	
 	public function confirm($id = null)
     {
 		$this->viewBuilder()->layout('pdf_layout');
