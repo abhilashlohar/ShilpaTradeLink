@@ -39,7 +39,7 @@ class EmployeesController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $employee = $this->Employees->get($id, [
-            'contain' => ['Departments','Designations']
+            'contain' => ['Departments','Designations','EmployeeContactPersons']
         ]);
 
         $this->set('employee', $employee);

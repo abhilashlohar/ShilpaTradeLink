@@ -221,7 +221,7 @@
 							
 						</td>
 						<td>
-						<?php echo $this->Form->input('employee_contact_persons.0.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?>
+						<?php echo $this->Form->input('employee_contact_persons.0.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'landline']); ?>
 						
 						</td>
 						<td>
@@ -241,7 +241,7 @@
 							
 						</td>
 						<td>
-						<?php echo $this->Form->input('employee_contact_persons.1.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?>
+						<?php echo $this->Form->input('employee_contact_persons.1.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'landline']); ?>
 						
 						</td>
 						<td>

@@ -8,8 +8,8 @@ color: #113775;
 </style>
 <div class="portlet light bordered">
 <div class="employees view large-9 medium-8 columns content">
-    <h3 ><?= h($employee->name) ?></h3>
-	<table class="table table-condensed ">
+    <h3 >Employee Details</h3>
+	<table class="table table-bordered table-striped table-hover">
 					<tbody>
 						<tr>
 							<td><label class="control-label1"><?= __('Name') ?></label></td>
@@ -74,36 +74,67 @@ color: #113775;
 						?>
 						<tr>
 							<td><label class="control-label1"><?= __('Permanent Address') ?></label></td>
-							<td colspan="4"> <?= $this->Text->autoParagraph(h($employee->permanent_address)); ?>
+							<td colspan="6"> <?= $this->Text->autoParagraph(h($employee->permanent_address)); ?>
 							</td>
 							</tr>
 							<tr>
 							<td><label class="control-label1"><?= __('Residence Address') ?></label></td>
-							<td colspan="4"> <?= $this->Text->autoParagraph(h($employee->residence_address)); ?>
+							<td colspan="6"> <?= $this->Text->autoParagraph(h($employee->residence_address)); ?>
 							</td>
 						</tr>				
 						<tr>
-							<td colspan="4"><h4 style="font-size:13px'">Bank's Detail</h4></td>
+							<td colspan="6"><h4 style="font-size:16px'">Bank's Detail</h4></td>
 							
 						</tr>
 						<tr>
+							<th>Sr.No.</th>
 							<th><label class="control-label1">Bank Name<label></th>
-							<td><?= h($employee->bank_name) ?></td>
-							
 							<th><label class="control-label1">Branch Name<label></th>
-							<td><?= h($employee->branch_name) ?></td>
+							<th><label class="control-label1">Account Number<label></th>
+							<th><label class="control-label1">IFSC Code<label></th>
+							<th></th>
+						
 						</tr>
 						<tr>
-							<th><label class="control-label1">Account Number<label></th>
+							<td>1.</td>
+							<td><?= h($employee->bank_name) ?></td>
+							<td><?= h($employee->branch_name) ?></td>
 							<td><?= h($employee->account_no) ?></td>	
-							<th><label class="control-label1">IFSC Code<label></th>
 							<td><?= h($employee->ifsc_code) ?></td>
+							<td></td>
+							
 						</tr>
+						
+						<tr>
+							<td colspan="6"><h4 style="font-size:16px'">Employee Contact Detail</h4></td>
+							
+						</tr>
+						<tr>
+							<th><label class="control-label1">Sr.No<label></th>
+							<th><label class="control-label1">Name<label></th>
+							<th><label class="control-label1">Mobile<label></th>
+							<th><label class="control-label1">Landline<label></th>
+							<th><label class="control-label1">Email<label></th>
+							<th><label class="control-label1">Relation<label></th>
+							
+						</tr>
+						<?php $i=0;  foreach($employee->employee_contact_persons as $employee_contact_persons): $i++; ?>
+						<tr>
+							<td><?= h($i) ?></td>
+							<td><?= h($employee_contact_persons->name) ?></td>	
+							<td><?= h($employee_contact_persons->mobile) ?></td>
+							<td><?= h($employee_contact_persons->landline) ?></td>
+							<td><?= h($employee_contact_persons->email) ?></td>
+							<td><?= h($employee_contact_persons->relation) ?></td>
+						</tr>
+						<?php endforeach ?>
 					</tbody>
 					
 				
 	
 				</table>
+				
+		
    
 				
 </div>
