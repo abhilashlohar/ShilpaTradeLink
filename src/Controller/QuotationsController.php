@@ -25,6 +25,7 @@ class QuotationsController extends AppController
 		$where=[];
 		$company_alise=$this->request->query('company_alise');
 		$quotation_no=$this->request->query('quotation_no');
+		//pr ($quotation_no); exit;
 		$file=$this->request->query('file');
 		$customer=$this->request->query('customer');
 		$salesman=$this->request->query('salesman');
@@ -37,7 +38,8 @@ class QuotationsController extends AppController
 			$where['Quotations.qt1 LIKE']='%'.$company_alise.'%';
 		}
 		if(!empty($quotation_no)){
-			$where['Quotations.id ']=$quotation_no;
+			$where['Quotations.id LIKE']=$quotation_no;
+			//pr($where);exit;
 		}
 		if(!empty($file)){
 			$where['Quotations.qt3 LIKE']='%'.$file.'%';
