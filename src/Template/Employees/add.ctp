@@ -67,7 +67,8 @@
 						<div class="form-group">
 							<label class="control-label">Blood Group </label>
 							<?php 
-							$arrblood=array(0=>"Select Blood Group", 1=>"A+",2=>"A-",3=>"B+",4=>"B-",5=>"AB+",6=>"AB-",7=>"O+",8=>"O-");
+							
+							$arrblood=array(0=>"Select Blood Group", 'A+'=>"A+",'A-'=>"A-",'B+'=>"B+",'B-'=>"B-",'AB+'=>"AB+",'AB-'=>"AB-",'O+'=>"O+",'O-'=>"O-");
 							echo $this->Form->input('blood_group', ['options'=>$arrblood,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Blood Group']);?>
 						</div>
 					</div>

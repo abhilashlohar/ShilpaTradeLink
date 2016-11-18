@@ -20,7 +20,7 @@ class EmployeesController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['Departments']
+            'contain' => ['Departments','Designations']
         ];
         $employees = $this->paginate($this->Employees->find());
 
@@ -37,8 +37,9 @@ class EmployeesController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $employee = $this->Employees->get($id, [
-            'contain' => ['Departments']
+            'contain' => ['Departments','Designations']
         ]);
 
         $this->set('employee', $employee);
