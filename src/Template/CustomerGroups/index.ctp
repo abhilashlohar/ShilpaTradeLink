@@ -1,3 +1,12 @@
+<?php 
+
+	if(!empty($status)){
+		$url_excel=$status."/?".$url;
+	}else{
+		$url_excel="/?".$url;
+	}
+
+?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -32,6 +41,15 @@
 		</div>
 		<div class="col-md-6">
 			<div class="portlet-body">
+			<form method="GET" >
+				<div class="row">
+									
+					<div class="col-md-6">
+						<input type="text" name="customer_group" class="form-control input-sm" placeholder="Customer Group" value="<?php echo @$customer_group; ?>">
+					</div>
+					<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
+				</div>
+				</form>
 			<div class="table-scrollable">
 			<table class="table table-hover">
 				<thead>
@@ -47,8 +65,15 @@
 						<td><?= h($i) ?></td>
 						<td><?= h($customerGroup->name) ?></td>
 						<td class="actions">
-							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $customerGroup->id]) ?>
-							<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $customerGroup->id], ['confirm' => __('Are you sure you want to delete # {0}?', $customerGroup->id)]) ?>
+						<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $customerGroup->id],array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
+							<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+								['action' => 'delete', $customerGroup->id], 
+								[
+									'escape' => false,
+									'class' => 'btn btn-xs btn-danger',
+									'confirm' => __('Are you sure ?', $customerGroup->id)
+								]
+							) ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>

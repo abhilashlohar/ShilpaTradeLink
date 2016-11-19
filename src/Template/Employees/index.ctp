@@ -1,3 +1,12 @@
+<?php 
+
+	if(!empty($status)){
+		$url_excel=$status."/?".$url;
+	}else{
+		$url_excel="/?".$url;
+	}
+
+?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -9,7 +18,6 @@
 	<div class="row">
 				<div class="col-md-12">
 				<form method="GET" >
-				<input type="hidden" name="pull-request" value="<?php echo @$pull_request; ?>">
 				<div class="row">
 									
 									<div class="col-md-3">
@@ -20,6 +28,7 @@
 									</div>
 									<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
 				</div>
+				</form>
 		<div class="table-scrollable">
 			 <table class="table table-hover">
 				 <thead>
