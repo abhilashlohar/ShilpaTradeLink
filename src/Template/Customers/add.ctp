@@ -123,6 +123,28 @@
 						</div>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-4">
+					<h4 style="font-size:13px'">Create Ledger</h4>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Account Category<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('account_category_id', ['options'=>$AccountCategories,'empty' => "--Select Account Category--",'label' => false,'class' => 'form-control input-sm']); ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						<label class="control-label">Account Group <span class="required" aria-required="true">*</span></label>
+							<div id="account_group_div">
+							<?php echo $this->Form->input('account_group_id', ['options' => [],'label' => false,'class' => 'form-control input-sm','placeholder'=>'Account Group']); ?>
+							</div>
+						</div>
+					</div>
+				</div>
 				
 				<h4 style="font-size:13px'">Customer's Contacts</h4>
 				<table class="table table-condensed tableitm" id="main_tb">
@@ -309,6 +331,18 @@ $(document).ready(function() {
 		}
 	});
 	
+	$('select[name="account_category_id"]').on("change",function() {
+	$('#account_group_div').html('Loading...');
+	var accountCategoryId=$('select[name="account_category_id"] option:selected').val();
+	var url="<?php echo $this->Url->build(['controller'=>'AccountGroups','action'=>'AccountGroupDropdown']); ?>";
+	url=url+'/'+accountCategoryId,
+	$.ajax({
+		url: url,
+		type: 'GET',
+	}).done(function(response) {
+		$('#account_group_div').html(response);
+	});
+});
 	
 	
 	
