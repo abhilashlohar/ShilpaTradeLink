@@ -106,7 +106,7 @@ color: #113775;
 						</tr>
 						
 						<tr>
-							<td colspan="6"><h4 style="font-size:16px'">Employee Contact Detail</h4></td>
+							<td colspan="6"><h4 style="font-size:16px'">Employee Emerjency Contact Detail</h4></td>
 							
 						</tr>
 						<tr>

@@ -4,6 +4,10 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Generate Quotation</span>
 		</div>
+		
+		<div class="actions">
+			<?php echo $this->Html->link('<i class="icon-home"></i> Copy Quotation','/Quotations/index?copy-request=copy',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
+		</div>
 	</div>
 	<div class="portlet-body form">
 		<?= $this->Form->create($quotation,['id'=>'form_sample_3']) ?>

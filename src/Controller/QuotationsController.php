@@ -20,12 +20,15 @@ class QuotationsController extends AppController
     {
 		 $url=$this->request->here();
 		 $url=parse_url($url,PHP_URL_QUERY);
+		 
+		 $copy_request=$this->request->query('copy-request');
+		// pr ($copy_request);exit;
 		
 		$this->viewBuilder()->layout('index_layout');
 		$where=[];
 		$company_alise=$this->request->query('company_alise');
-		$quotation_no=$this->request->query('quotation_no');
-		//pr ($quotation_no); exit;
+		$id=$this->request->query('id');
+		//pr ($id); exit;
 		$file=$this->request->query('file');
 		$customer=$this->request->query('customer');
 		$salesman=$this->request->query('salesman');
@@ -33,12 +36,12 @@ class QuotationsController extends AppController
 		$From=$this->request->query('From');
 		$To=$this->request->query('To');
 		$pull_request=$this->request->query('pull-request');
-		$this->set(compact('quotation_no','customer','salesman','product','From','To','company_alise','file','pull_request'));
+		$this->set(compact('id','customer','salesman','product','From','To','company_alise','file','pull_request'));
 		if(!empty($company_alise)){
 			$where['Quotations.qt1 LIKE']='%'.$company_alise.'%';
 		}
-		if(!empty($quotation_no)){
-			$where['Quotations.id LIKE']=$quotation_no;
+		if(!empty($id)){
+			$where['Quotations.id LIKE']='%'.$id;
 			//pr($where);exit;
 		}
 		if(!empty($file)){
@@ -73,7 +76,7 @@ class QuotationsController extends AppController
 		}
 		
         $quotations = $this->paginate($this->Quotations->find()->where($where)->order(['Quotations.id' => 'DESC']));
-        $this->set(compact('quotations','status'));
+        $this->set(compact('quotations','status','copy_request'));
         $this->set('_serialize', ['quotations']);
 		$this->set(compact('url'));
 	
@@ -165,8 +168,12 @@ class QuotationsController extends AppController
         $quotation = $this->Quotations->get($id, [
             'contain' => ['Customers','Companies','Employees','ItemGroups','QuotationRows' => ['Items']]
         ]);
+		
+		
+		
 
         $this->set('quotation', $quotation);
+	
         $this->set('_serialize', ['quotation']);
     }
 	
@@ -198,10 +205,13 @@ class QuotationsController extends AppController
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
         $quotation = $this->Quotations->newEntity();
+		
+		 $copy=$this->request->query('copy');
+		//pr ($copy); exit;
 		
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		
