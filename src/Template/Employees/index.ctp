@@ -6,6 +6,20 @@
 		</div>
 	</div>
 	<div class="portlet-body">
+	<div class="row">
+				<div class="col-md-12">
+				<form method="GET" >
+				<input type="hidden" name="pull-request" value="<?php echo @$pull_request; ?>">
+				<div class="row">
+									
+									<div class="col-md-3">
+										<input type="text" name="employee_name" class="form-control input-sm" placeholder="Employee Name" value="<?php echo @$employee_name; ?>">
+									</div>
+									<div class="col-md-3">
+										<input type="text" name="department_name" class="form-control input-sm" placeholder="Department Name" value="<?php echo @$department_name; ?>">
+									</div>
+									<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
+				</div>
 		<div class="table-scrollable">
 			 <table class="table table-hover">
 				 <thead>
@@ -56,4 +70,4 @@
 		</div>
 	</div>
 </div>
-
+</div>
