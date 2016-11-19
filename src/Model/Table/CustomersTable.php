@@ -95,6 +95,22 @@ class CustomersTable extends Table
             'foreignKey' => 'customer_id',
 			'saveStrategy' => 'replace'
         ]);
+		$this->belongsTo('AccountCategories', [
+            'foreignKey' => 'account_category_id',
+            'joinType' => 'INNER'
+        ]);
+		$this->belongsTo('AccountGroups', [
+            'foreignKey' => 'account_group_id',
+            'joinType' => 'INNER'
+        ]);
+		$this->belongsTo('AccountFirstSubgroups', [
+            'foreignKey' => 'account__first_sub_group_id',
+            'joinType' => 'INNER'
+        ]);
+		$this->belongsTo('AccountSecondSubgroups', [
+            'foreignKey' => 'account__second_sub_group_id',
+            'joinType' => 'INNER'
+        ]);
 		
     }
 
