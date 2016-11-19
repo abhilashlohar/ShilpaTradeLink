@@ -16,8 +16,11 @@ class TransportersController extends AppController
      *
      * @return \Cake\Network\Response|null
      */
-    public function index()
+    public function index($status=null)
     {
+		$url=$this->request->here();
+		 $url=parse_url($url,PHP_URL_QUERY);
+		
 		$this->viewBuilder()->layout('index_layout');
 		$transporter = $this->Transporters->newEntity();
 		if ($this->request->is('post')) {
@@ -30,13 +33,22 @@ class TransportersController extends AppController
                 $this->Flash->error(__('The transporter could not be saved. Please, try again.'));
             }
         }
+		$where=[];
+		$transporter_name=$this->request->query('transporter_name');
+		$pull_request=$this->request->query('pull-request');
+		$this->set(compact('$transporter_name','pull_request'));
+		if(!empty($transporter_name)){
+			$where['Transporters.transporter_name LIKE']='%'.$transporter_name.'%';
+		}
+		
         $this->set(compact('transporter'));
         $this->set('_serialize', ['transporter']);
 		
-        $transporters = $this->paginate($this->Transporters->find());
+        $transporters = $this->paginate($this->Transporters->find()->where($where));
 
         $this->set(compact('transporters'));
         $this->set('_serialize', ['transporters']);
+		$this->set(compact('url'));
     }
 
     /**

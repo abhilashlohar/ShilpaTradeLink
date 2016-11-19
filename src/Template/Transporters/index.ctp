@@ -54,6 +54,17 @@
 		</div>
 		<div class="col-md-6">
 			<div class="portlet-body">
+			<div class="row">
+			<div class="col-md-12">
+				<form method="GET" >
+				<input type="hidden" name="pull-request" value="<?php echo @$pull_request; ?>">
+				<div class="row">
+									
+									<div class="col-md-6">
+										<input type="text" name="transporter_name" class="form-control input-sm" placeholder="Transporter Name" value="<?php echo @$transporter_name; ?>">
+									</div>
+									<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
+				</div>
 			<div class="table-scrollable">
 			<table class="table table-hover">
 				 <thead>
