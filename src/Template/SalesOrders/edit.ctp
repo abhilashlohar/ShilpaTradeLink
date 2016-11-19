@@ -79,7 +79,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Salesman</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm','value' => @$salesOrder->customer_id]); ?>
+							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm','value' => @$salesOrder->employee_id]); ?>
 						</div>
 					</div>
 				</div>
@@ -150,13 +150,21 @@
 			</table>
 			<table class="table tableitm" id="tbl2">
 				<tr>
+					
 					<td  align="right">
 					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
-					<div class="input-group col-md-2" style="display:none;" id="discount_text">
-						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
-						
-					</div>
+					<?php if($salesOrder->discount_type=='1'){ ?>
+						<div class="input-group col-md-2"  id="discount_text">
+							<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='<?= h($salesOrder->discount_per) ?>'><span class="input-group-addon">%</span>
+						</div>
+					<?php }else{ ?>
+						<div class="input-group col-md-2"  id="discount_text" style="display:none;">
+							<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='0'><span class="input-group-addon">%</span>
+						</div>
+					<?php } ?>
+					
 					</td>
+				
 					<td><?php echo $this->Form->input('discount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
 				</tr>
 				
@@ -170,12 +178,21 @@
 					<td width="20%"><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','value' => 0,'step'=>0.01,'readonly']); ?></td>
 				</tr>
 				<tr>
+				
 					<td  align="right">
 					<b>P&F <label><?php echo $this->Form->input('pnf_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'pnfper']); ?></label>(in %)</b>
-					<div class="input-group col-md-2" style="display:none;" id="pnf_text">
-						<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
-					</div>
+					<?php if($salesOrder->pnf_type=='1'){ ?>
+						<div class="input-group col-md-2"  id="pnf_text">
+							<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='<?= h($salesOrder->pnf_per) ?>'><span class="input-group-addon">%</span>
+						</div>
+					<?php }else{ ?>
+						<div class="input-group col-md-2"  id="pnf_text" style="display:none;">
+							<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='0'><span class="input-group-addon">%</span>
+						</div>
+					<?php } ?>
+					
 					</td>
+				
 					<td><?php echo $this->Form->input('pnf', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01]); ?></td>
 				</tr>
 				<tr>

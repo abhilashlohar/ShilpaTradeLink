@@ -240,7 +240,7 @@ $html.='
 			if($invoice->pnf>0){
 				$html.='
 			<tr>
-				<td style="text-align:right;">'.h($pnf_text).'</td>
+				<td style="text-align:right;">P&F</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->pnf,[ 'places' => 2]).'</td>
 				</tr>
 		

@@ -85,7 +85,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Salesman  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm select2','value' => @$sales_order->customer_id]); ?>
+							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm select2','value' => @$sales_order->employee_id]); ?>
 						</div>
 					</div><br/>
 					

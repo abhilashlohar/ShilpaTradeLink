@@ -727,14 +727,16 @@ $(document).ready(function() {
 			$('select[name="qt3"]').attr('name','so3');
 		});
 		
+		
+		
 		var employee_id=$('select[name="customer_id"] option:selected').attr("employee_id");
-		$("select[name=employee_id]").val(employee_id);
+		$("select[name=employee_id]").val(employee_id).select2();
 		
 		var transporter_id=$('select[name="customer_id"] option:selected').attr("transporter_id");
-		$("select[name=transporter_id]").val(transporter_id);
+		$("select[name=transporter_id]").val(transporter_id).select2();
 		
 		var documents_courier_id=$('select[name="customer_id"] option:selected').attr("documents_courier_id");
-		$("select[name=documents_courier_id]").val(documents_courier_id);
+		$("select[name=documents_courier_id]").val(documents_courier_id).select2();
 		
     });
 	
