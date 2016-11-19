@@ -103,8 +103,15 @@
 						<td><?= h($itemSubGroup->item_group->name) ?></td>
 						<td><?= h($itemSubGroup->name) ?></td>
 						<td class="actions">
-							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $itemSubGroup->id]) ?>
-							<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $itemSubGroup->id], ['confirm' => __('Are you sure you want to delete # {0}?', $itemSubGroup->id)]) ?>
+							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $itemSubGroup->id],array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
+							<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+								['action' => 'delete', $itemSubGroup->id], 
+								[
+									'escape' => false,
+									'class' => 'btn btn-xs btn-danger',
+									'confirm' => __('Are you sure ?', $itemSubGroup->id)
+								]
+							) ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>

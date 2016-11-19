@@ -1,3 +1,12 @@
+<?php 
+
+	if(!empty($status)){
+		$url_excel=$status."/?".$url;
+	}else{
+		$url_excel="/?".$url;
+	}
+
+?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -6,6 +15,20 @@
 		</div>
 	</div>
 	<div class="portlet-body">
+	<div class="row">
+				<div class="col-md-12">
+				<form method="GET" >
+				<div class="row">
+									
+									<div class="col-md-3">
+										<input type="text" name="employee_name" class="form-control input-sm" placeholder="Employee Name" value="<?php echo @$employee_name; ?>">
+									</div>
+									<div class="col-md-3">
+										<input type="text" name="department_name" class="form-control input-sm" placeholder="Department Name" value="<?php echo @$department_name; ?>">
+									</div>
+									<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
+				</div>
+				</form>
 		<div class="table-scrollable">
 			 <table class="table table-hover">
 				 <thead>
@@ -56,4 +79,4 @@
 		</div>
 	</div>
 </div>
-
+</div>

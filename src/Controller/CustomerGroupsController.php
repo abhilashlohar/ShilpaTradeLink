@@ -16,10 +16,13 @@ class CustomerGroupsController extends AppController
      *
      * @return \Cake\Network\Response|null
      */
-    public function index()
+    
+    public function index($status=null)
     {
-		$this->viewBuilder()->layout('index_layout');
+		$url=$this->request->here();
+		 $url=parse_url($url,PHP_URL_QUERY);
 		
+		$this->viewBuilder()->layout('index_layout');
 		$customerGroup = $this->CustomerGroups->newEntity();
         if ($this->request->is('post')) {
             $customerGroup = $this->CustomerGroups->patchEntity($customerGroup, $this->request->data);
@@ -31,13 +34,21 @@ class CustomerGroupsController extends AppController
                 $this->Flash->error(__('The customer group could not be saved. Please, try again.'));
             }
         }
+		$where=[];
+		$customer_group=$this->request->query('customer_group');
+		
+		$this->set(compact('customer_group'));
+		if(!empty($customer_group)){
+			$where['CustomerGroups.name LIKE']='%'.$customer_group.'%';
+		}
         $this->set(compact('customerGroup'));
         $this->set('_serialize', ['customerGroup']);
 		
-        $customerGroups = $this->paginate($this->CustomerGroups);
+        $customerGroups = $this->paginate($this->CustomerGroups->find()->where($where));
 
-        $this->set(compact('customerGroups'));
+        $this->set(compact('customerGroups','status'));
         $this->set('_serialize', ['customerGroups']);
+		$this->set(compact('url'));
     }
 
     /**

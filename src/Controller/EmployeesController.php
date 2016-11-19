@@ -16,16 +16,31 @@ class EmployeesController extends AppController
      *
      * @return \Cake\Network\Response|null
      */
-    public function index()
+    public function index($status=null)
     {
+		$url=$this->request->here();
+		 $url=parse_url($url,PHP_URL_QUERY);
+		
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
             'contain' => ['Departments','Designations']
         ];
-        $employees = $this->paginate($this->Employees->find());
+		$where=[];
+		$employee_name=$this->request->query('employee_name');
+		$department_name=$this->request->query('department_name');
+		
+		$this->set(compact('employee_name','department_name'));
+		if(!empty($employee_name)){
+			$where['Employees.name LIKE']='%'.$employee_name.'%';
+		}
+		if(!empty($department_name)){
+			$where['Departments.name LIKE']='%'.$department_name.'%';
+		}
+		$employees = $this->paginate($this->Employees->find()->where($where));
 
-        $this->set(compact('employees'));
+        $this->set(compact('employees','status'));
         $this->set('_serialize', ['employees']);
+		$this->set(compact('url'));
     }
 
     /**

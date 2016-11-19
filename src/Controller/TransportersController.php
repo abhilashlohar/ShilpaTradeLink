@@ -34,11 +34,11 @@ class TransportersController extends AppController
             }
         }
 		$where=[];
-		$transporter_name=$this->request->query('transporter_name');
-		$pull_request=$this->request->query('pull-request');
-		$this->set(compact('$transporter_name','pull_request'));
-		if(!empty($transporter_name)){
-			$where['Transporters.transporter_name LIKE']='%'.$transporter_name.'%';
+		$transporter_alise=$this->request->query('transporter_alise');
+
+		$this->set(compact('transporter_alise'));
+		if(!empty($transporter_alise)){
+			$where['Transporters.transporter_name LIKE']='%'.$transporter_alise.'%';
 		}
 		
         $this->set(compact('transporter'));
@@ -46,7 +46,7 @@ class TransportersController extends AppController
 		
         $transporters = $this->paginate($this->Transporters->find()->where($where));
 
-        $this->set(compact('transporters'));
+        $this->set(compact('transporters','status'));
         $this->set('_serialize', ['transporters']);
 		$this->set(compact('url'));
     }
