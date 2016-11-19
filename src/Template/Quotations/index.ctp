@@ -17,9 +17,9 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Quotations</span> 
 			<?php if($pull_request=="true"){ ?>
-			: Select a quotation to convert into sales-order
+			: Select a Quotation to convert into sales-order
 			<?php }  elseif($copy_request=="copy"){?>
-			: Select a quotation to Copy
+			: Select a Quotation to Copy
 			<?php } ?>
 		</div>
 		<div class="actions">
@@ -142,14 +142,15 @@
 								<?php if($pull_request=="true"){
 									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Sales Order','/Sales-Orders/Add?quotation='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
-								<?php if($copy_request=="copy"){
-									echo $this->Html->link('<i class="fa fa-repeat"></i>  Copy','/Quotations/Add?copy='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs red tooltips'));
-								} ?>
+								
 								<?php 
 								if($quotation->status=='Pending'){
 									echo $this->Form->postLink('<i class="fa fa-minus-circle"></i> ',['action' =>'close', $quotation->id],['escape' => false,'class' => 'btn btn-xs red tooltips','data-original-title'=>'Close','confirm' => __('Are you sure, you want to close ?', $quotation->id)
 										]
 									);
+								} ?>
+								<?php if($copy_request=="copy"){
+									echo $this->Html->link('<i class="fa fa-files-o"></i>  Copy','/Quotations/Add?copy='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs green tooltips'));
 								} ?>
 							</td>
 						</tr>

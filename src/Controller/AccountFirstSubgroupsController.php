@@ -122,12 +122,18 @@ class AccountFirstSubgroupsController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
+		$AccountSecondSubgroupsexists = $this->AccountFirstSubgroups->AccountSecondSubgroups->exists(['account_first_subgroup_id' => $id]);
+		
+		if(!$AccountSecondSubgroupsexists){
         $accountFirstSubgroup = $this->AccountFirstSubgroups->get($id);
         if ($this->AccountFirstSubgroups->delete($accountFirstSubgroup)) {
             $this->Flash->success(__('The account first subgroup has been deleted.'));
         } else {
             $this->Flash->error(__('The account first subgroup could not be deleted. Please, try again.'));
         }
+		}else{
+			$this->Flash->error(__('Once the account first subgroup has generated with Account Second subgroup, the account first group cannot be deleted.'));
+		}
 
         return $this->redirect(['action' => 'index']);
     }

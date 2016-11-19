@@ -21,6 +21,10 @@ class SalesOrdersController extends AppController
 		$url=$this->request->here();
 		$url=parse_url($url,PHP_URL_QUERY);
 		$this->viewBuilder()->layout('index_layout');
+		
+		$copy_request=$this->request->query('copy-request');
+		// pr ($copy_request);exit;
+		
 		$where=[];
 		$company_alise=$this->request->query('company_alise');
 		$sales_order_no=$this->request->query('sales_order_no');
@@ -80,7 +84,7 @@ class SalesOrdersController extends AppController
 				->order(['SalesOrders.id' => 'DESC'])
 			);
 		
-        $this->set(compact('salesOrders','status'));
+        $this->set(compact('salesOrders','status','copy_request'));
         $this->set('_serialize', ['salesOrders']);
 		$this->set(compact('url'));
     }
@@ -195,9 +199,11 @@ class SalesOrdersController extends AppController
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
+		
+		
 		
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		
@@ -212,8 +218,18 @@ class SalesOrdersController extends AppController
 		}
 		$this->set(compact('quotation','process_status'));
 		
-        $salesOrder = $this->SalesOrders->newEntity();
-        if ($this->request->is('post')) {
+		$id=$this->request->query('copy');
+		if(!empty($id)){
+			$salesOrder = $this->SalesOrders->get($id, [
+				'contain' => ['SalesOrderRows']
+			]);
+		}
+		else{
+			  $salesOrder = $this->SalesOrders->newEntity();
+			}
+		
+      
+        if ($this->request->is(['patch', 'post', 'put'])) {
 			
             $salesOrder = $this->SalesOrders->patchEntity($salesOrder, $this->request->data);
 			

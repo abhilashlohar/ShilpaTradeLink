@@ -120,12 +120,18 @@ class AccountGroupsController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
+		$AccountFirstSubgroupsexists = $this->AccountGroups->AccountFirstSubgroups->exists(['account_group_id' => $id]);
+		
+		if(!$AccountFirstSubgroupsexists){
         $accountGroup = $this->AccountGroups->get($id);
         if ($this->AccountGroups->delete($accountGroup)) {
             $this->Flash->success(__('The account group has been deleted.'));
         } else {
             $this->Flash->error(__('The account group could not be deleted. Please, try again.'));
         }
+		}else{
+			$this->Flash->error(__('Once the account group has generated with Account categories, the account group cannot be deleted.'));
+		}
 
         return $this->redirect(['action' => 'index']);
     }

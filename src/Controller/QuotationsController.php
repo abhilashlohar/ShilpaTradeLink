@@ -208,21 +208,29 @@ class QuotationsController extends AppController
     public function add($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
-        $quotation = $this->Quotations->newEntity();
+        
 		
-		 $copy=$this->request->query('copy');
-		//pr ($copy); exit;
+		$id=$this->request->query('copy');
+		if(!empty($id)){
+			$quotation = $this->Quotations->get($id, [
+				'contain' => ['QuotationRows']
+			]);
+		}else{
+			$quotation = $this->Quotations->newEntity();
+		}
 		
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		
-        if ($this->request->is('post')) {
+        if ($this->request->is(['patch', 'post', 'put'])) {
+			//echo 'hello'; exit;
 			
             $quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
 			$quotation->created_by=$s_employee_id;
 			$quotation->created_on=date("Y-m-d",strtotime($quotation->created_on));
 			$quotation->finalisation_date=date("Y-m-d",strtotime($quotation->finalisation_date));
-			
+			//pr ($quotation); exit;
             if ($this->Quotations->save($quotation)) {
+				
                 return $this->redirect(['action' => 'confirm/'.$quotation->id]);
             } else {
                 $this->Flash->error(__('The quotation could not be saved. Please, try again.'));

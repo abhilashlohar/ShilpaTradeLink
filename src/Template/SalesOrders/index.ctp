@@ -15,6 +15,9 @@
 			<span class="caption-subject font-blue-steel uppercase">Sales Orders</span>
 			<?php if($pull_request=="true"){ ?>
 			: Select a Sales-Order to convert into Invoice
+		
+			<?php }  elseif($copy_request=="copy"){?>
+			: Select a Sales-Order to Copy
 			<?php } ?>
 		</div>
 		<div class="actions">
@@ -114,6 +117,9 @@
 								<?php if($status!='Converted Into Invoice' and in_array(4,$allowed_pages) and $pull_request!="true"){ ?> 
 									<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $salesOrder->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 								<?php } ?>
+								<?php if($copy_request=="copy"){
+									echo $this->Html->link('<i class="fa fa-files-o"></i>  Copy','/SalesOrders/Add?copy='.$salesOrder->id,array('escape'=>false,'class'=>'btn btn-xs green tooltips'));
+								} ?>
 								<?php if($pull_request=="true"){
 									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Invoice','/Invoices/Add?sales-order='.$salesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>

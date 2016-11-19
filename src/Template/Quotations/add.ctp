@@ -6,7 +6,7 @@
 		</div>
 		
 		<div class="actions">
-			<?php echo $this->Html->link('<i class="icon-home"></i> Copy Quotation','/Quotations/index?copy-request=copy',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
+			<?php echo $this->Html->link('<i class="fa fa-files-o"></i> Copy Quotation','/Quotations/index?copy-request=copy',array('escape'=>false,'class'=>'btn btn-xs green')); ?>
 		</div>
 	</div>
 	<div class="portlet-body form">

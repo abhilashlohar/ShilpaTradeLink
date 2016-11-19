@@ -112,12 +112,19 @@ class AccountCategoriesController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
+		$AccountGroupsexists = $this->AccountCategories->AccountGroups->exists(['account_category_id' => $id]);
+		
+		if(!$AccountGroupsexists){
         $accountCategory = $this->AccountCategories->get($id);
         if ($this->AccountCategories->delete($accountCategory)) {
             $this->Flash->success(__('The account category has been deleted.'));
         } else {
             $this->Flash->error(__('The account category could not be deleted. Please, try again.'));
         }
+		}else{
+			$this->Flash->error(__('Once the item groups has generated with item categories, the item categories cannot be deleted.'));
+		}
+        
 
         return $this->redirect(['action' => 'index']);
     }

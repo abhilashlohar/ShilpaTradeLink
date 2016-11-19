@@ -8,6 +8,9 @@
 			<!--<a href="#myModal1" role="button" class="btn blue pull-right" data-toggle="modal">Pull Quotation</a>-->
 			<?php echo $this->Html->link('<i class="icon-home"></i> Pull Quotation','/Quotations/index?pull-request=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
 		</div>
+		<div class="actions">
+			<?php echo $this->Html->link('<i class="fa fa-files-o"></i> Copy Sales Order','/SalesOrders/index?copy-request=copy',array('escape'=>false,'class'=>'btn btn-xs green')); ?>
+		</div>
 	</div>
 	<div class="portlet-body form">
 		<?= $this->Form->create($salesOrder,['id'=>'form_sample_3']) ?>
