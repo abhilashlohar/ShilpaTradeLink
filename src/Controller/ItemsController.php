@@ -93,10 +93,6 @@ class ItemsController extends AppController
                 $this->Flash->error(__('The item could not be saved. Please, try again.'));
             }
         }
-		
-
-		
-		
 		$ItemCategories = $this->Items->ItemCategories->find('list');
         $units = $this->Items->Units->find('list');
 		$Companies = $this->Items->Companies->find('list');

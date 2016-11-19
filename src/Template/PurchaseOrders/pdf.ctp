@@ -78,7 +78,7 @@ $html.='
 
 			<table width="100%" class="table_rows">
 				<tr >
-					<td width="40%" valign="top" ><span>'. h(($purchaseOrder->vendor->company_name)) .'</span><br/>
+					<td width="35%" valign="top" ><span><b>'. h(($purchaseOrder->vendor->company_name)) .'</b></span><br/>
 					<span>'. h(($purchaseOrder->vendor->address)) .'</span><br/>
 					</td>
 					<td valign="top" >
@@ -87,7 +87,7 @@ $html.='
 						<p>Cin No:'. h(($purchaseOrder->company->cin_no)) .'</p>
 						
 					</td>
-					<td width="30%" valign="top">
+					<td width="35%" valign="top">
 						<p>No.'.h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->id, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)).'</p>
 						<p>Date:'. h(date("d-m-Y",strtotime($purchaseOrder->date_created))) .'</p>
 						

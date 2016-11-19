@@ -133,7 +133,7 @@
 							echo $this->Form->input('item_id_display', ['type'=>'text','label' => false,'class' => 'form-control input-sm','value'=>$invoice_rows->item->name,'readonly']);
 							?></td>
 							<td><?php echo $this->Form->input('invoice_rows['.$q.'][quantity]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$invoice_rows->quantity]); ?></td>
-							<td><?php echo $this->Form->input('invoice_rows['.$q.'][rate]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$invoice_rows->rate]); ?></td>
+							<td><?php echo $this->Form->input('invoice_rows['.$q.'][rate]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$invoice_rows->rate,'readonly']); ?></td>
 							<td><?php echo $this->Form->input('invoice_rows['.$q.'][amount]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$invoice_rows->amount]); ?></td>
 							<td>
 							<?php if($invoice->process_status=="New"){ ?>

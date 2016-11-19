@@ -221,11 +221,7 @@
 							
 						</td>
 						<td>
-<<<<<<< HEAD
-						<?php echo $this->Form->input('employee_contact_persons.0.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'landline']); ?>
-=======
 						<?php echo $this->Form->input('employee_contact_persons.0.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Landline']); ?>
->>>>>>> ea4d3c84abe388a135d2169e57ad5b6eaedd7c0f
 						
 						</td>
 						<td>

@@ -137,4 +137,10 @@ class AccountFirstSubgroupsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	public function AccountFirstSubgroupDropdown($accountGroupId = null)
+    {
+        $this->viewBuilder()->layout('');
+		$accountFirstSubgroups = $this->AccountFirstSubgroups->find('list')->where(['account_group_id'=>$accountGroupId]);
+		$this->set(compact('accountFirstSubgroups'));
+    }
 }

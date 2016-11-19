@@ -157,14 +157,11 @@ endforeach;
 	
 if($invoice->discount_type=='1'){ $discount_text='Discount @ '.$invoice->discount_per.'%'; }else{ $discount_text='Discount'; }
 
-$html.='</table>';		
-$html.='
-<table width="100%" class="table_rows">
-	<tbody>';
+
 		if(!empty($invoice->discount)){
 		$html.='<tr>
-					<td style="text-align:right;">'.$discount_text.'</td>
-					<td style="text-align:right;" width="104">'. $this->Number->format($invoice->discount,[ 'places' => 2]).'</td>
+					<td style="text-align:right"; colspan="5">'.$discount_text.'</td>
+					<td style="text-align:right;">'. $this->Number->format($invoice->discount,[ 'places' => 2]).'</td>
 				</tr>';
 		}
 
@@ -176,8 +173,7 @@ if($invoice->exceise_duty>0){
 </tr>';	}
 			
 			
-		$html.='</tbody>
-	</table>'; 
+	
  	
 $html.='</table><br/>';
 
