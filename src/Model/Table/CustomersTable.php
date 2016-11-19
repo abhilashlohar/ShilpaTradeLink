@@ -104,11 +104,11 @@ class CustomersTable extends Table
             'joinType' => 'INNER'
         ]);
 		$this->belongsTo('AccountFirstSubgroups', [
-            'foreignKey' => 'account__first_sub_group_id',
+            'foreignKey' => 'account_first_subgroup_id',
             'joinType' => 'INNER'
         ]);
 		$this->belongsTo('AccountSecondSubgroups', [
-            'foreignKey' => 'account__second_sub_group_id',
+            'foreignKey' => 'account_second_subgroup_id',
             'joinType' => 'INNER'
         ]);
 		

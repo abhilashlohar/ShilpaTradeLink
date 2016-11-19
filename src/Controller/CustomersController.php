@@ -71,6 +71,7 @@ class CustomersController extends AppController
         $customer = $this->Customers->newEntity();
         if ($this->request->is('post')) {
             $customer = $this->Customers->patchEntity($customer, $this->request->data);
+			//pr($customer->account_first_subgroup_id); exit;
             if ($this->Customers->save($customer)) {
 				
                 $this->Flash->success(__('The customer has been saved.'));
@@ -87,7 +88,9 @@ class CustomersController extends AppController
 		$employees = $this->Customers->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
 		$transporters = $this->Customers->Transporters->find('list');
 		$AccountCategories = $this->Customers->AccountCategories->find('list');
+		
         $this->set(compact('customer', 'districts', 'companyGroups', 'customerSegs','employees','transporters','CustomerGroups','AccountCategories'));
+		
         $this->set('_serialize', ['customer']);
     }
 
