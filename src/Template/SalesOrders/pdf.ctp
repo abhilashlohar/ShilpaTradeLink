@@ -235,8 +235,8 @@ $html.='
 	<table width="100%" >
 		<tr  >
 			<td width="5%">Name</td>
-			<td width="30%">: '. h($salesOrder->dispatch_name).'</td>
-			<td width="30%"><td>
+			<td width="20%">: '. h($salesOrder->dispatch_name).'</td>
+			<td width="20%"><td>
 			<td width="5%">Mobile</td>
 			<td width="30%">: '. h($salesOrder->dispatch_mobile).'</td>
 		</tr>
