@@ -418,6 +418,8 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		$('#account_second_subgroup_div').html(response);
 	});
 });	
+	
+	
 	add_row(); $('.default_btn2:first').attr('checked','checked'); $.uniform.update();
 	$('.default_btn2').die().live("click",function() { 
 		$('.default_btn2').removeAttr('checked');

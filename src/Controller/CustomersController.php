@@ -89,9 +89,7 @@ class CustomersController extends AppController
 		$transporters = $this->Customers->Transporters->find('list');
 		$AccountCategories = $this->Customers->AccountCategories->find('list');
         $this->set(compact('customer', 'districts', 'companyGroups', 'customerSegs','employees','transporters','CustomerGroups','AccountCategories'));
-		
-		
-        $this->set('_serialize', ['customer']);
+		$this->set('_serialize', ['customer']);
     }
 
     /**
