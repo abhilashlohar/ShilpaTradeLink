@@ -129,7 +129,7 @@ class InvoicesController extends AppController
      */
     public function view($id = null)
     {
-		$this->viewBuilder()->layout('index_layout');
+		$this->viewBuilder()->layout('');
         $invoice = $this->Invoices->get($id, [
             'contain' => ['Customers', 'Companies', 'InvoiceRows' => ['Items']]
         ]);
@@ -141,7 +141,8 @@ class InvoicesController extends AppController
 	public function pdf($id = null)
     {
 		$this->viewBuilder()->layout('');
-         $invoice = $this->Invoices->get($id, [
+		
+        $invoice = $this->Invoices->get($id, [
             'contain' => ['Customers','Employees','Transporters','Creator'=>['Designations'],'Companies'=> [
 			'CompanyBanks'=> function ($q) {
 				return $q
@@ -150,30 +151,39 @@ class InvoicesController extends AppController
 			]);
 
         $this->set('invoice', $invoice);
-        $this->set('_serialize', ['invoice'=>['Units']]);
+		
+        $this->set('_serialize', ['invoice']);
     }
 	
-	public function pdf2($id = null)
-    {
-		$this->viewBuilder()->layout('');
-         $invoice = $this->Invoices->get($id, [
-            'contain' => ['Customers','Employees','Transporters','Creator'=>['Designations'],'Companies'=> [
-			'CompanyBanks'=> function ($q) {
-				return $q
-				->where(['CompanyBanks.default_bank' => 1]);
-				}], 'InvoiceRows' => ['Items'=>['Units']]]
-			]);
-
-        $this->set('invoice', $invoice);
-        $this->set('_serialize', ['invoice'=>['Units']]);
-    }
 	
 	public function confirm($id = null)
     {
 		$this->viewBuilder()->layout('pdf_layout');
+		$invoice = $this->Invoices->get($id, [
+            'contain' => ['InvoiceRows']
+			]);
 		
-        $this->set('id', $id);
+		/*$qwer=array('orange', 'banana', 'apple', 'pineapple', 'strawberry');;
+		$item = $qwer[ 3 ];
+		$qwer[ 3 ] = $qwer[ 3 - 1 ];
+		$qwer[ 3 - 1 ] = $item;
+		
+		pr($qwer);
+		exit;*/
+		
+		
+		if ($this->request->is(['patch', 'post', 'put'])) {
+            foreach($this->request->data['invoice_rows'] as $invoice_row_id=>$value){
+				$invoiceRow=$this->Invoices->InvoiceRows->get($invoice_row_id);
+				$invoiceRow->height=$value["height"];
+				$this->Invoices->InvoiceRows->save($invoiceRow);
+			}
+			return $this->redirect(['action' => 'confirm/'.$id]);
+        }
+		
+		$this->set(compact('invoice','id'));
     }
+	
 
     /**
      * Add method

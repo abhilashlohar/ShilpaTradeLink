@@ -1,7 +1,7 @@
 <a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">
 						Print <i class="fa fa-print"></i>
 						</a>
-<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 85%;font-size: 14px;" class="maindiv">
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;font-size: 14px;" class="maindiv">
 	<table width="100%" class="divHeader">
 		<tr>
 			<td width="50%"><?php echo $this->Html->image('/logos/'.$invoice->company->logo, ['width' => '40%']); ?></td>
@@ -51,7 +51,7 @@
 			</td>
 		</tr>
 	</table>
-	<table class="table table-bordered table-advance itmtbl itmtbl2">
+	<table class="">
 		<thead>
 		<tr>
 			<th><?= __('S No') ?></th>
@@ -66,8 +66,8 @@
 		</thead>
 		<?php $sr=0; foreach ($invoice->invoice_rows as $invoiceRows): $sr++; ?>
 		<tr>
-			<td rowspan="2" valign="top" width="50"><?= h($sr) ?></td>
-			<td><?= h($invoiceRows->item->name) ?></td>
+			<td valign="top" width="50"><?= h($sr) ?></td>
+			<td><?= $this->Text->autoParagraph(h($invoiceRows->description)) ?></td>
 			<td><?= h($invoiceRows->quantity) ?></td>
 			<td><?= h($invoiceRows->rate) ?></td>
 			<td><?= h($invoiceRows->amount) ?></td>
@@ -75,11 +75,6 @@
 			<td><?= h($invoiceRows->sales_tax) ?></td>
 			<td><?= h($invoiceRows->excise_tax) ?></td>
 		</tr>
-		<tr>
-			<td colspan="7"><b>Description:</b><?= h($invoiceRows->description) ?></td>
-			<td></td>
-		</tr>
-		
 		<?php endforeach; ?>
 		<tfoot>
 			<tr>
