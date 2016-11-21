@@ -40,6 +40,8 @@ class CustomersTable extends Table
         $this->displayField('customer_name');
         $this->primaryKey('id');
 
+		$this->hasOne('LedgerAccounts');
+		
         $this->belongsTo('Districts', [
             'foreignKey' => 'district_id',
             'joinType' => 'INNER'

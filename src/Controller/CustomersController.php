@@ -71,11 +71,19 @@ class CustomersController extends AppController
         $customer = $this->Customers->newEntity();
         if ($this->request->is('post')) {
             $customer = $this->Customers->patchEntity($customer, $this->request->data);
-			//pr($customer->account_first_subgroup_id); exit;
+			//pr($customer); exit;
             if ($this->Customers->save($customer)) {
 				
-                $this->Flash->success(__('The customer has been saved.'));
-                return $this->redirect(['action' => 'index']);
+				$ledgerAccount = $this->Customers->LedgerAccounts->newEntity();
+				
+				$ledgerAccount->account_second_subgroup_id = $customer->account_second_subgroup_id;
+				$ledgerAccount->name = $customer->customer_name;
+				$ledgerAccount->source_model = 'Customers';
+				$ledgerAccount->source_id = $customer->id;
+				if ($this->Customers->LedgerAccounts->save($ledgerAccount)) {
+					$this->Flash->success(__('The customer has been saved.'));
+					return $this->redirect(['action' => 'index']);
+				}
             } else {
                 $this->Flash->error(__('The customer could not be saved. Please, try again.'));
             }
@@ -89,9 +97,7 @@ class CustomersController extends AppController
 		$transporters = $this->Customers->Transporters->find('list');
 		$AccountCategories = $this->Customers->AccountCategories->find('list');
         $this->set(compact('customer', 'districts', 'companyGroups', 'customerSegs','employees','transporters','CustomerGroups','AccountCategories'));
-		
-		
-        $this->set('_serialize', ['customer']);
+		$this->set('_serialize', ['customer']);
     }
 
     /**

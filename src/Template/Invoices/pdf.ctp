@@ -16,17 +16,19 @@ $html = '
 <html>
 <head>
   <style>
-  @page { margin: 150px 15px 200px 30px; }
+  @page { margin: 150px 15px 10px 30px; }
+
+  body{
+    //margin-bottom: 330px;
+	}
+	
     #header { position: fixed; left: 0px; top: -150px; right: 0px; height: 150px;}
     
-    #footer { position: fixed; left: 0px; bottom: -200px; right: 0px; height: 200px;}
-    #footer .page:after { content: content: counter(page); }
+    
 	#content{
     position: relative; 
 	}
-	 #header {
-		display: block;
-	}
+	
 	@font-face {
 		font-family: Lato;
 		src: url("https://fonts.googleapis.com/css?family=Lato");
@@ -144,7 +146,7 @@ $sr=0; foreach ($invoice->invoice_rows as $invoiceRows): $sr++;
 $html.='
 	<tr class="odd">
 		<td valign="top" align="center" width="30">'. h($sr) .'</td>
-		<td>'. $this->Text->autoParagraph(h($invoiceRows->description)) .'<br/></td>
+		<td>'. $this->Text->autoParagraph(h($invoiceRows->description)) .'<div style="height:'.$invoiceRows->height.'"></div></td>
 		<td style="width: 10;" valign="top" align="center">'. h($invoiceRows->item->unit->name) .'</td>
 		<td width="40" valign="top" align="center">'. h($invoiceRows->quantity) .'</td>
 		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($invoiceRows->rate,[ 'places' => 2]) .'</td>
@@ -202,7 +204,11 @@ else{
 	$temp=4;	
 }
 
-$html.='
+ 
+		
+$html .= '<div id="footer">';
+
+	$html.='
 <table width="100%" class="table_rows" >
 	<tbody>
 			<tr>
@@ -284,10 +290,9 @@ $html.='
 				<td colspan="3"><table   width="100%" class="table-amnt"><tr><td valign="top" width="18%"> <b><div style="margin-top:5px;">Amount in words: </div></b></td><td  valign="top">'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td></tr></table></td>
 			</tr>
 		</tbody>
-	</table>'; 
-		
-$html .= '<div id="footer">
-   <table width="100%" class="divFooter">
+	</table>';
+	
+$html.='<table width="100%" class="divFooter">
 			<tr>
 				<td >
 					<table>

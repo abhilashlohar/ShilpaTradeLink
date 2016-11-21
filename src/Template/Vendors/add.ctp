@@ -72,7 +72,63 @@
 						</div>
 					</div>
 				</div>
-			
+				<div class="row">
+					<div class="col-md-4">
+					<h4 style="font-size:13px'">Create Ledger</h4>
+					</div>
+				</div>
+
+				
+				<!--<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Account Category<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('account_category_id', ['options'=>$AccountCategories,'empty' => "--Select Account Category--",'label' => false,'class' => 'form-control input-sm select2me']); ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						<label class="control-label">Account Group <span class="required" aria-required="true">*</span></label>
+							<div id="account_group_div">
+							<?php echo $this->Form->input('account_group_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account Group']); ?>
+							</div>
+						</div>
+					</div>
+				</div>-->
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Account Category<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('account_category_id', ['options'=>$AccountCategories,'empty' => "--Select Account Category--",'label' => false,'class' => 'form-control input-sm select2me']); ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						<label class="control-label">Account Group <span class="required" aria-required="true">*</span></label>
+							<div id="account_group_div">
+							<?php echo $this->Form->input('account_group_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account Group']); ?>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						<label class="control-label">Account First Sub Group <span class="required" aria-required="true">*</span></label>
+							<div id="account_first_subgroup_div">
+							<?php echo $this->Form->input('account_first_subgroup_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account First Sub Group']); ?>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Account Second Sub Group <span class="required" aria-required="true">*</span></label>
+							<div id="account_second_subgroup_div">
+							<?php echo $this->Form->input('account_second_subgroup_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account Second Sub Group']); ?>
+							</div>
+						</div>
+					</div>
+				</div>
 				
 				
 				<h4 style="font-size:13px'">Contact Persons</h4>
@@ -140,6 +196,18 @@ $(document).ready(function() {
 				  required: true,
 			},
 			item_group_id : {
+				  required: true,
+			},
+				account_category_id:{
+				  required: true,
+			},
+			account_group_id:{
+				  required: true,
+			},
+			account_first_subgroup_id:{
+				  required: true,
+			},
+			account_second_subgroup_id:{
 				  required: true,
 			},
 		},
@@ -215,7 +283,46 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+	$('select[name="account_category_id"]').on("change",function() {
+	$('#account_group_div').html('Loading...');
+	var accountCategoryId=$('select[name="account_category_id"] option:selected').val();
+	var url="<?php echo $this->Url->build(['controller'=>'AccountGroups','action'=>'AccountGroupDropdown']); ?>";
+	url=url+'/'+accountCategoryId,
+	$.ajax({
+		url: url,
+		type: 'GET',
+	}).done(function(response) {
+		$('#account_group_div').html(response);
+	});
+});
 	
+	
+$('select[name="account_group_id"]').die().live("change",function() {
+
+	$('#account_first_subgroup_div').html('Loading...');
+	var accountGroupId=$('select[name="account_group_id"] option:selected').val();
+	var url="<?php echo $this->Url->build(['controller'=>'AccountFirstSubgroups','action'=>'AccountFirstSubgroupDropdown']); ?>";
+	url=url+'/'+accountGroupId,
+	$.ajax({
+		url: url,
+		type: 'GET',
+	}).done(function(response) {
+		$('#account_first_subgroup_div').html(response);
+	});
+});
+	
+$('select[name="account_first_subgroup_id"]').die().live("change",function() {
+	$('#account_second_subgroup_div').html('Loading...');
+	var accountFirstSubgroupId=$('select[name="account_first_subgroup_id"] option:selected').val();
+	var url="<?php echo $this->Url->build(['controller'=>'AccountSecondSubgroups','action'=>'AccountSecondSubgroupDropdown']); ?>";
+	url=url+'/'+accountFirstSubgroupId,
+	$.ajax({
+		url: url,
+		type: 'GET',
+	}).done(function(response) {
+		$('#account_second_subgroup_div').html(response);
+	});
+});	
 	add_row(); $('.default_btn:first').attr('checked','checked'); $.uniform.update();
     $('.addrow').die().live("click",function() { 
 		add_row();

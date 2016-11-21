@@ -12,6 +12,16 @@ $Edit_url=$this->Url->build(['controller'=>'Invoices','action'=>'Edit']);
 			<a href="<?php echo $Edit_url.'/'.$id; ?>" class="list-group-item"><i class="fa fa-edit"></i> Edit </a>
 			<a href="#" class="list-group-item" onclick="window.close()"><i class="fa fa-times"></i> Close </a>
 		</div>
+		<div style="padding:5px;">
+		<h4>Adjust height of rows</h4>
+		<?= $this->Form->create($invoice) ?>
+			<?php $sr=0; foreach ($invoice->invoice_rows as $invoiceRows): $sr++;
+				echo $this->Form->input('invoice_rows.'.$invoiceRows->id.'.id');
+				echo $this->Form->input('invoice_rows.'.$invoiceRows->id.'.height',['label' => 'Row-'.$sr,'class' => 'input-sm','value'=>$invoiceRows->height]);				
+			endforeach; ?>
+			<?= $this->Form->button(__('Update'),['class'=>'btn btn-sm default']) ?>
+		<?= $this->Form->end() ?>
+		</div>
 		</td>
 		<td width="80%">
 			<object data="<?php echo $pdf_url.'/'.$id; ?>" type="application/pdf" width="100%" height="613px">
