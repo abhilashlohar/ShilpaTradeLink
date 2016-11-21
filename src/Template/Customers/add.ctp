@@ -199,9 +199,6 @@
 						
 					</tbody>
 				</table>
-                <div class="alert alert-danger" id="row_error" style="display:none;">
-                    Provide Customer's Contacts details.
-                </div>
 				
 				<h4 style="font-size:13px'">Customer's Address</h4>
 				<table class="table table-condensed tableitm" id="main_tb2">
@@ -219,9 +216,6 @@
 						
 					</tbody>
 				</table>
-                <div class="alert alert-danger" id="row_error1" style="display:none;">
-                    Provide Customer Address details
-                </div>
 		</div>
 		
 			<div class="form-actions">
@@ -327,39 +321,9 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			q="ok";
-			$("#main_tb tbody tr").each(function(){
-				var w=$(this).find("td:nth-child(2) input").val();
-				var r=$(this).find("td:nth-child(3) input").val();
-				var x=$(this).find("td:nth-child(4) input").val();
-				var y=$(this).find("td:nth-child(5) input").val();
-				if(w=="" || r=="" || x=="" || y==""){
-					q="e";
-				}
-			});
-			if(q=="e"){
-				$("#row_error").show();
-				return false;
-			}else{
-				$("#row_error").hide();
-				$("#main_tb2 tbody tr").each(function(){
-				var a=$(this).find("td:nth-child(2) input").val();
-				var s=$(this).find("td:nth-child(3) input").val();
-				var d=$(this).find("td:nth-child(4) input").val();
-				var f=$(this).find("td:nth-child(5) input").val();
-				if(a=="" || s=="" || d=="" || f==""){
-					t="x";
-				}
-				});
-				if(t=="x"){
-					$("#row_error1").show();
-					return false;
-				}else{
-					success3.show();
-					error3.hide();
-					form[0].submit(); // submit the form
-				}
-			}
+			success3.show();
+			error3.hide();
+			form[0].submit(); // submit the form
 		}
 
 	});
@@ -440,10 +404,10 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 				var i=0;
 				$("#main_tb tbody tr").each(function(){
 					$(this).find("td:nth-child(1)").html(++i); --i;
-					$(this).find("td:nth-child(2) input").attr("name","customer_contacts["+i+"][contact_person]");
-					$(this).find("td:nth-child(3) input").attr("name","customer_contacts["+i+"][telephone]");
-					$(this).find("td:nth-child(4) input").attr("name","customer_contacts["+i+"][mobile]");
-					$(this).find("td:nth-child(5) input").attr("name","customer_contacts["+i+"][designation]");
+					$(this).find("td:nth-child(2) input").attr("name","customer_contacts["+i+"][contact_person]").attr("id","customer_contacts."+i+".contact_person");
+					$(this).find("td:nth-child(3) input").attr("name","customer_contacts["+i+"][telephone]").attr("id","customer_contacts."+i+".telephone");
+					$(this).find("td:nth-child(4) input").attr("name","customer_contacts["+i+"][mobile]").attr("id","customer_contacts."+i+".mobile");
+					$(this).find("td:nth-child(5) input").attr("name","customer_contacts["+i+"][designation]").attr("id","customer_contacts."+i+".designation");
 					$(this).find("td:nth-child(6) input").attr("name","customer_contacts["+i+"][default_contact]");
 					i++;
 					
@@ -461,10 +425,10 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		$("#main_tb tbody tr").each(function(){
 			
 			$(this).find("td:nth-child(1)").html(++i); --i;
-			$(this).find("td:nth-child(2) input").attr("name","customer_contacts["+i+"][contact_person]");
-			$(this).find("td:nth-child(3) input").attr("name","customer_contacts["+i+"][telephone]");
-			$(this).find("td:nth-child(4) input").attr("name","customer_contacts["+i+"][mobile]");
-			$(this).find("td:nth-child(5) input").attr("name","customer_contacts["+i+"][designation]");
+			$(this).find("td:nth-child(2) input").attr("name","customer_contacts["+i+"][contact_person]").attr("id","customer_contacts."+i+".contact_person").rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr("name","customer_contacts["+i+"][telephone]").attr("id","customer_contacts."+i+".telephone").rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr("name","customer_contacts["+i+"][mobile]").attr("id","customer_contacts."+i+".mobile").rules("add", "required");
+			$(this).find("td:nth-child(5) input").attr("name","customer_contacts["+i+"][designation]").attr("id","customer_contacts."+i+".designation").rules("add", "required");
 			$(this).find("td:nth-child(6) input").attr("name","customer_contacts["+i+"][default_contact]");
 			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
 			if (test) { test.uniform(); }
@@ -514,9 +478,9 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		$("#main_tb2 tbody tr").each(function(){
 			
 			$(this).find("td:nth-child(1)").html(++i); --i;
-			$(this).find("td:nth-child(2) textarea").attr("name","customer_address["+i+"][address]");
-			$(this).find("td:nth-child(3) select").attr("name","customer_address["+i+"][district_id]");
-			$(this).find("td:nth-child(4) input").attr("name","customer_address["+i+"][courier_charge]");
+			$(this).find("td:nth-child(2) textarea").attr("name","customer_address["+i+"][address]").attr("id","customer_address."+i+".address").rules("add", "required");
+			$(this).find("td:nth-child(3) select").attr("name","customer_address["+i+"][district_id]").select2();
+			$(this).find("td:nth-child(4) select").attr("name","customer_address["+i+"][courier_charge]").select2();
 			$(this).find("td:nth-child(5) input").attr("name","customer_address["+i+"][default_address]");
 			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
 			if (test) { test.uniform(); }
@@ -546,8 +510,8 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		<tr>
 			<td>0</td>
 			<td><?php echo $this->Form->input('address', ['label' => false,'type' => 'textarea','rows' => '2','style' => ['resize:none'],'class' => 'form-control input-sm','placeholder' => 'Address']); ?></td>
-			<td><?php echo $this->Form->input('district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm select2me']); ?></td>
-			<td><?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me','placeholder' => 'Courier Charge']); ?></td>
+			<td><?php echo $this->Form->input('district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm']); ?></td>
+			<td><?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Courier Charge']); ?></td>
 			<td width="90"><?php echo $this->Form->input('default_address', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn','value'=>1]); ?></td>
 			<td><a class="btn btn-xs btn-default addrow2" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow2" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
