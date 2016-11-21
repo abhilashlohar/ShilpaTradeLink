@@ -1,3 +1,4 @@
+<?php //echo $quotation;  exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -5,9 +6,9 @@
 			<span class="caption-subject font-blue-steel uppercase">Add Sales Order</span>
 		</div>
 		<div class="actions">
-			<!--<a href="#myModal1" role="button" class="btn blue pull-right" data-toggle="modal">Pull Quotation</a>-->
 			<?php echo $this->Html->link('<i class="icon-home"></i> Pull Quotation','/Quotations/index?pull-request=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
 		</div>
+		
 		<div class="actions">
 			<?php echo $this->Html->link('<i class="fa fa-files-o"></i> Copy Sales Order','/SalesOrders/index?copy-request=copy',array('escape'=>false,'class'=>'btn btn-xs green')); ?>
 		</div>
@@ -129,6 +130,8 @@
 				</thead>
 				<tbody>
 					<?php 
+					if(!empty($process_status) || !empty($quotation)) 
+					{
 					if(!empty($quotation->quotation_rows)){
 					$q=0; foreach ($quotation->quotation_rows as $quotation_rows): ?>
 						<tr class="tr1" row_no='<?php echo @$quotation_rows->id; ?>'>
@@ -154,7 +157,33 @@
 							<td colspan="6"><?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','placeholder'=>'Description','rows'=>'6','value' => @$quotation_rows->description]); ?></td>
 							<td></td>
 						</tr>
-					<?php $q++; endforeach; } ?>
+					<?php $q++; endforeach; } } elseif(!empty($copy)) {
+					if(!empty($salesOrder->sales_order_rows)){
+					$q=0; foreach ($salesOrder->sales_order_rows as $sales_order_rows): ?>
+						<tr class="tr1" row_no='<?php echo @$sales_order_rows->id; ?>'>
+							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
+							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Item','value' => @$sales_order_rows->item->id]); ?></td>
+							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$sales_order_rows->quantity]); ?></td>
+							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate','value' => @$sales_order_rows->rate]); ?></td>
+							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$sales_order_rows->amount]); ?></td>
+							<td><?php 
+							$options=['Yes'=>'Yes','No'=>'No'];
+							echo $this->Form->input('sales_order_rows.'.$q.'.excise_duty', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?></td>
+							<td>
+							<?php $options=[];
+							foreach($SaleTaxes as $SaleTaxe){
+								$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
+							}
+							echo $this->Form->input('sales_order_rows.'.$q.'.so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
+							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_description', ['type'=>'text','label' => false]); ?>
+							</td>
+							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+						</tr>
+						<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
+							<td colspan="6"><?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','placeholder'=>'Description','rows'=>'6','value' => @$sales_order_rows->description]); ?></td>
+							<td></td>
+						</tr>
+					<?php $q++; endforeach; } } ?>
 				</tbody>
 			</table>
 			<table class="table tableitm" id="tbl2">
@@ -504,7 +533,7 @@ $(document).ready(function() {
 	
 
 	
-	<?php if($process_status=="New"){ ?> add_row(); 
+	<?php if($process_status=="New" ){ ?> add_row(); 
 	$("#main_tb tbody tr.tr1").each(function(){
 		var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
 		$(this).closest("td").find('input').val(description);

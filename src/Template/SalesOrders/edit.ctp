@@ -169,7 +169,7 @@
 				</tr>
 				
 				<tr style="background-color:#e6faf9;">
-					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:right']]); ?> </b></td>
+					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'textarea','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:right']]); ?> </b></td>
 					<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty','value' => 0]); ?></td>
 				</tr>
 				
@@ -619,7 +619,59 @@ $(document).ready(function() {
 		});
 	}
 	
-	
+			function calculate_total(){
+			var total=0;
+			$("#main_tb tbody tr.tr1").each(function(){
+				var unit=$(this).find("td:nth-child(3) input").val();
+				var Rate=$(this).find("td:nth-child(4) input").val();
+				var Amount=unit*Rate;
+				$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
+				total=total+Amount;
+			});
+			if($("#discount_per").is(':checked')){
+				var discount_per=parseFloat($('input[name="discount_per"]').val());
+				var discount_amount=(total*discount_per)/100;
+				if(isNaN(discount_amount)) { var discount_amount = 0; }
+				$('input[name="discount"]').val(discount_amount.toFixed(2));
+			}else{
+				var discount_amount=parseFloat($('input[name="discount"]').val());
+				if(isNaN(discount_amount)) { var discount_amount = 0; }
+			}
+			total=total-discount_amount
+			
+			var exceise_duty=parseFloat($('input[name="exceise_duty"]').val());
+			if(isNaN(exceise_duty)) { var exceise_duty = 0; }
+			total=total+exceise_duty
+			$('input[name="total"]').val(total.toFixed(2));
+			
+			if($("#pnfper").is(':checked')){
+				var pnf_per=parseFloat($('input[name="pnf_per"]').val());
+				var pnf_amount=(total*pnf_per)/100;
+				if(isNaN(pnf_amount)) { var pnf_amount = 0; }
+				$('input[name="pnf"]').val(pnf_amount.toFixed(2));
+			}else{
+				var pnf_amount=parseFloat($('input[name="pnf"]').val());
+				if(isNaN(pnf_amount)) { var pnf_amount = 0; }
+			}
+			var total_after_pnf=total+pnf_amount;
+			if(isNaN(total_after_pnf)) { var total_after_pnf = 0; }
+			$('input[name="total_after_pnf"]').val(total_after_pnf.toFixed(2));
+			
+			var sale_tax_per=parseFloat($('select[name="sale_tax_per"] option:selected').val());
+			var sale_tax=(total_after_pnf*sale_tax_per)/100;
+			if(isNaN(sale_tax)) { var sale_tax = 0; }
+			$('input[name="sale_tax_amount"]').val(sale_tax.toFixed(2));
+			
+			var sale_tax_description=$('select[name="sale_tax_per"] option:selected').attr("description");
+			$('input[name="sale_tax_description"]').val(sale_tax_description);
+			
+			var fright_amount=parseFloat($('input[name="fright_amount"]').val());
+			if(isNaN(fright_amount)) { var fright_amount = 0; }
+			
+			grand_total=total_after_pnf+sale_tax+fright_amount;
+			$('input[name="grand_total"]').val(grand_total.toFixed(2));
+			
+		}	
 	
 	
 	$('.deleterow').die().live("click",function() {
@@ -660,46 +712,7 @@ $(document).ready(function() {
 		calculate_total();
     });
 	
-	function calculate_total(){
-		var total=0; var grand_total=0;
-		$("#main_tb tbody tr.tr1").each(function(){
-			var qty=$(this).find("td:nth-child(3) input").val();
-			var Rate=$(this).find("td:nth-child(4) input").val();
-			var Amount=qty*Rate;
-			$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
-			total=total+Amount;
-		});
-		
-			
-		if($("#discount_per").is(':checked')){
-			var discount_per=parseFloat($('input[name="discount_per"]').val());
-			var discount_amount=(total*discount_per)/100;
-			if(isNaN(discount_amount)) { var discount_amount = 0; }
-			$('input[name="discount"]').val(discount_amount.toFixed(2));
-		}else{
-			var discount_amount=parseFloat($('input[name="discount"]').val());
-			if(isNaN(discount_amount)) { var discount_amount = 0; }
-		}
-		total=total-discount_amount;
-		
-		var exceise_duty=parseFloat($('input[name="exceise_duty"]').val());
-		if(isNaN(exceise_duty)) { var exceise_duty = 0; }
-		total=total+exceise_duty
-		$('input[name="total"]').val(total.toFixed(2));
-		
-		if($("#pnfper").is(':checked')){
-			var pnf_per=parseFloat($('input[name="pnf_per"]').val());
-			var pnf_amount=(total*pnf_per)/100;
-			if(isNaN(pnf_amount)) { var pnf_amount = 0; }
-			$('input[name="pnf"]').val(pnf_amount.toFixed(2));
-		}else{
-			var pnf_amount=parseFloat($('input[name="pnf"]').val());
-			if(isNaN(pnf_amount)) { var pnf_amount = 0; }
-		}
-		var total_after_pnf=total+pnf_amount;
-		if(isNaN(total_after_pnf)) { var total_after_pnf = 0; }
-		$('input[name="total_after_pnf"]').val(total_after_pnf.toFixed(2));
-	}
+
 	
 	$('.select_address').on("click",function() { 
 		open_address();

@@ -219,6 +219,7 @@ class SalesOrdersController extends AppController
 		$this->set(compact('quotation','process_status'));
 		
 		$id=$this->request->query('copy');
+		//pr($id); exit;
 		if(!empty($id)){
 			$salesOrder = $this->SalesOrders->get($id, [
 				'contain' => ['SalesOrderRows']
@@ -230,6 +231,7 @@ class SalesOrdersController extends AppController
 		
       
         if ($this->request->is(['patch', 'post', 'put'])) {
+			$salesOrder = $this->SalesOrders->newEntity();
 			
             $salesOrder = $this->SalesOrders->patchEntity($salesOrder, $this->request->data);
 			
@@ -266,6 +268,11 @@ class SalesOrdersController extends AppController
 			return $q
 			->where(['CustomerAddress.default_address'=>1]);
 		}]);
+		$copy=$this->request->query('copy');
+		if(!empty($copy)){
+			$process_status='';
+		}
+		//pr ($copy); exit;
         $companies = $this->SalesOrders->Companies->find('all');
 		$quotationlists = $this->SalesOrders->Quotations->find()->where(['status'=>'Pending'])->order(['Quotations.id' => 'DESC']);
 		$items = $this->SalesOrders->Items->find('list');
@@ -273,7 +280,7 @@ class SalesOrdersController extends AppController
 		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
 		$termsConditions = $this->SalesOrders->TermsConditions->find('all',['limit' => 200]);
 		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all');
-        $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes'));
+        $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','copy','process_status'));
         $this->set('_serialize', ['salesOrder']);
     }
 	

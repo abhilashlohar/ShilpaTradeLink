@@ -23,15 +23,14 @@
 			<?php } ?>
 		</div>
 		<div class="actions">
-				<?php echo $this->Html->link('<i class="fa fa-file-excel-o"></i> Excel','/Quotations/Export-Excel/'.$url_excel,['class' =>'btn  green tooltips','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
-			<div class="btn-group">
+				
 			
 			<?php
 			if($status==null or $status=='Pending'){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
 			if($status=='Converted Into Sales Order'){ $class2='btn btn-primary'; }else{ $class2='btn btn-default'; }
 			if($status=='Closed'){ $class3='btn btn-primary'; }else{ $class3='btn btn-default'; }
 			?>
-			<?php if($pull_request!="true"){ ?>
+			<?php if($pull_request!="true" and $copy_request!="copy"){ ?>
 				<?= $this->Html->link(
 					'Pending',
 					'/Quotations/index/Pending',
@@ -48,6 +47,8 @@
 					'/Quotations/index/Closed',
 					['class' => $class3]
 				); ?>
+				<?php echo $this->Html->link('<i class="fa fa-file-excel-o"></i> Excel','/Quotations/Export-Excel/'.$url_excel,['class' =>'btn  green tooltips','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
+			<div class="btn-group">
 				
 			<?php }  ?>
 			
@@ -150,7 +151,7 @@
 									);
 								} ?>
 								<?php if($copy_request=="copy"){
-									echo $this->Html->link('<i class="fa fa-files-o"></i>  Copy','/Quotations/Add?copy='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs green tooltips'));
+									echo $this->Html->link('<i class="fa fa-repeat"></i>  Copy','/Quotations/Add?copy='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
 							</td>
 						</tr>

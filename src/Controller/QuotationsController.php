@@ -208,7 +208,8 @@ class QuotationsController extends AppController
     public function add($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
-        
+        $copy=$this->request->query('copy');
+		//pr ($copy); exit;
 		
 		$id=$this->request->query('copy');
 		if(!empty($id)){
@@ -223,7 +224,7 @@ class QuotationsController extends AppController
 		
         if ($this->request->is(['patch', 'post', 'put'])) {
 			//echo 'hello'; exit;
-			
+			$quotation = $this->Quotations->newEntity();
             $quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
 			$quotation->created_by=$s_employee_id;
 			$quotation->created_on=date("Y-m-d",strtotime($quotation->created_on));
@@ -236,6 +237,7 @@ class QuotationsController extends AppController
                 $this->Flash->error(__('The quotation could not be saved. Please, try again.'));
             }
         }
+		$copy=$this->request->query('copy');
         $customers = $this->Quotations->Customers->find('all');
 		$companies = $this->Quotations->Companies->find('all');
 		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
@@ -243,7 +245,7 @@ class QuotationsController extends AppController
 		$items = $this->Quotations->Items->find('list');
 		$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);
 		
-        $this->set(compact('quotation', 'customers','companies','employees','ItemGroups','items','termsConditions'));
+        $this->set(compact('quotation', 'customers','companies','employees','ItemGroups','items','termsConditions','copy'));
         $this->set('_serialize', ['quotation']);
     }
 

@@ -1,3 +1,4 @@
+<?php //echo $copy; exit ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -160,9 +161,30 @@
 						<th width="70"></th>
 					</tr>
 				</thead>
-				<tbody id="main_tbody">
-					
+				
+				<?php if(!empty($copy)){ ?>
+				<tbody  id="main_tbody">
+					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_rows): ?>
+					<tr class="tr1" row_no='<?php echo @$quotation_rows->id; ?>'>
+							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
+							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Item','value' => @$quotation_rows->item->id]); ?></td>
+							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$quotation_rows->quantity]); ?></td>
+							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate','value' => @$quotation_rows->rate]); ?></td>
+							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$quotation_rows->amount]); ?></td>
+							<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+					</tr>
+					<tr class="tr2">
+							
+							<td colspan="6"><?php echo $this->Form->textarea('quotation_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','placeholder'=>'Description','rows'=>'3','value' => @$quotation_rows->description]); ?></td>
+							
+					</tr>
+					<?php $q++; endforeach;  ?>
 				</tbody>
+				<?php } elseif(empty($copy)){ ?> 
+				<tbody id="main_tbody">
+				
+				</tbody>
+				<?php } ?>
 				<tfoot>
 					<tr>
 						<td colspan="4" align="right"><b>Total</b></td>
@@ -211,6 +233,7 @@
 
 
 <table id="sample_tb" style="display:none;">
+	
 	<tbody>
 		<tr class="tr1">
 			<td rowspan="2" width="10">0</td>
@@ -245,7 +268,9 @@
 			<td colspan="4"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1']); ?></td>
 			<td></td>
 		</tr>
+		
 	</tbody>
+	
 </table>
 
 <div id="terms_conditions" style="display:none;"></div>

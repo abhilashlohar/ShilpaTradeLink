@@ -119,7 +119,7 @@ With reference to your price list we are pleased to place an order for the follo
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Material to be transported at <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Material to be transported at</label>
 							<?php 
 							echo $this->Form->input('material_to_be_transported',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Material to be transported at']); ?>
 						</div>
@@ -165,7 +165,7 @@ With reference to your price list we are pleased to place an order for the follo
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">LR to be prepared in favour of <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">LR to be prepared in favour of</label>
 							<?php 
 							echo $this->Form->input('lr_to_be_prepared_in_favour_of',['label' => false,'class' => 'form-control input-sm','placeholder'=>'LR to be prepared in favour of']); ?>
 						</div>
