@@ -118,7 +118,7 @@
 								<?php if($copy_request=="copy"){
 									echo $this->Html->link('<i class="fa fa-repeat "></i>  Copy','/SalesOrders/Add?copy='.$salesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
-								<?php if($status!='Converted Into Invoice' and in_array(4,$allowed_pages) and $pull_request!="true"){ ?> 
+								<?php if($status!='Converted Into Invoice' and in_array(4,$allowed_pages) and $pull_request!="true" && $copy_request!="copy"){ ?> 
 									<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $salesOrder->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 								<?php } ?>
 								

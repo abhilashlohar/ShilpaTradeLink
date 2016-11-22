@@ -55,7 +55,7 @@
 					
 			</div>
 		</div>
-	</div>
+	
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
@@ -137,7 +137,7 @@
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $quotation->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
 								
 							
-								<?php if($quotation->status=='Pending' and in_array(2,$allowed_pages) and $pull_request!="true"){
+								<?php if($quotation->status=='Pending' and in_array(2,$allowed_pages) and $pull_request!="true" && $copy_request!="copy"){
 									echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $quotation->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));
 								} ?>
 								<?php if($pull_request=="true"){
@@ -145,7 +145,7 @@
 								} ?>
 								
 								<?php 
-								if($quotation->status=='Pending'){
+								if($quotation->status=='Pending' && $copy_request!="copy"){
 									echo $this->Form->postLink('<i class="fa fa-minus-circle"></i> ',['action' =>'close', $quotation->id],['escape' => false,'class' => 'btn btn-xs red tooltips','data-original-title'=>'Close','confirm' => __('Are you sure, you want to close ?', $quotation->id)
 										]
 									);

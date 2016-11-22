@@ -1,4 +1,10 @@
-<?php //echo $quotation;  exit; ?>
+<?php 
+if(!empty($copy))
+{
+		$salesOrder->po_date=date(("d-m-Y"),strtotime($salesOrder->po_date));
+	
+}
+?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
