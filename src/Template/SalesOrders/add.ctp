@@ -2,6 +2,7 @@
 if(!empty($copy))
 {
 		$salesOrder->po_date=date(("d-m-Y"),strtotime($salesOrder->po_date));
+		$salesOrder->expected_delivery_date=date(("d-m-Y"),strtotime($salesOrder->expected_delivery_date	));
 	
 }
 ?>
@@ -204,7 +205,7 @@ if(!empty($copy))
 				</tr>
 				
 				<tr style="background-color:#e6faf9;">
-					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:right']]); ?> </b></td>
+					<td align="right"><b><?php echo $this->Form->textarea('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:left']]); ?> </b></td>
 					<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty','value' => 0]); ?></td>
 				</tr>
 				
@@ -226,9 +227,9 @@ if(!empty($copy))
 					<td><?php echo $this->Form->input('total_after_pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total after P&F','readonly','step'=>0.01]); ?></td>
 				</tr>
 				<tr>
-					<td  align="right">
+					<td  align="left">
 					<b>Fright Amount </b>
-					<?php echo $this->Form->input('fright_text', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional text for Fright Amount','style'=>['text-align:right']]); ?>
+					<?php echo $this->Form->input('fright_text', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional text for Fright Amount','style'=>['text-align:left']]); ?>
 					</td>
 					<td><?php echo $this->Form->input('fright_amount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01]); ?></td>
 				</tr>
