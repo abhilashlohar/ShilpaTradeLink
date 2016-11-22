@@ -58,7 +58,7 @@ if(!empty($copy))
 							$options=array();
 							foreach($customers as $customer){
 								$merge=$customer->customer_name.'	('.$customer->alias.')';
-								$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id, 'transporter_id' => $customer->transporter_id, 'documents_courier_id' => $customer->customer_address[0]->transporter_id];
+								$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id, 'transporter_id' => $customer->transporter_id, 'documents_courier_id' => $customer->customer_address[0]->transporter_id, 'dispatch_address' => $customer->customer_address[0]->address];
 							}
 							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 						</div>
@@ -773,6 +773,9 @@ $(document).ready(function() {
 		
 		var documents_courier_id=$('select[name="customer_id"] option:selected').attr("documents_courier_id");
 		$("select[name=documents_courier_id]").val(documents_courier_id).select2();
+		
+		var dispatch_address=$('select[name="customer_id"] option:selected').attr("dispatch_address");
+		$("textarea[name=dispatch_address]").val(dispatch_address);
 		
     });
 	
