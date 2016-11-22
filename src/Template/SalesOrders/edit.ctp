@@ -142,7 +142,7 @@
 						<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 					</tr>
 					<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
-						<td colspan="6"><?php echo $this->Form->textarea('sales_order_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'5','value'=>$sales_order_rows->description]); ?></td>
+						<td colspan="6"><?php echo $this->Form->textarea('sales_order_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value'=>$sales_order_rows->description]); ?></td>
 						<td></td>
 					</tr>
 					<?php $q++; endforeach; ?>
@@ -150,7 +150,6 @@
 			</table>
 			<table class="table tableitm" id="tbl2">
 				<tr>
-					
 					<td  align="right">
 					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
 					<?php if($salesOrder->discount_type=='1'){ ?>
@@ -169,7 +168,7 @@
 				</tr>
 				
 				<tr style="background-color:#e6faf9;">
-					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'textarea','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:right']]); ?> </b></td>
+					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'textarea','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:left']]); ?> </b></td>
 					<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty','value' => 0]); ?></td>
 				</tr>
 				
@@ -200,11 +199,11 @@
 					<td><?php echo $this->Form->input('total_after_pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total after P&F','readonly','step'=>0.01]); ?></td>
 				</tr>
 				<tr>
-					<td  align="right">
+					<td  align="left">
 					<b>Fright Amount </b>
-					<?php echo $this->Form->input('fright_text', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional text for Fright Amount','style'=>['text-align:right']]); ?>
+					<?php echo $this->Form->input('fright_text', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional text for Fright Amount','style'=>['text-align:left']]); ?>
 					</td>
-					<td><?php echo $this->Form->input('fright_amount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01]); ?></td>
+					<td><?php echo $this->Form->input('fright_amount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01,'style'=>['text-align:left']]); ?></td>
 				</tr>
 			</table>
 			
@@ -486,6 +485,10 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 	
+		$( window ).load(function() {
+			calculate_total();
+		});
+	
 		$("#pnfper").on('click',function(){
 		if($(this).is(':checked')){
 			$("#pnf_text").show();
@@ -620,7 +623,7 @@ $(document).ready(function() {
 	}
 	
 			function calculate_total(){
-			var total=0;
+			var total=0;  grand_total=0;
 			$("#main_tb tbody tr.tr1").each(function(){
 				var unit=$(this).find("td:nth-child(3) input").val();
 				var Rate=$(this).find("td:nth-child(4) input").val();

@@ -65,7 +65,8 @@ class PurchaseOrdersTable extends Table
             'foreignKey' => 'purchase_order_id'
         ]);
         $this->hasMany('PurchaseOrderRows', [
-            'foreignKey' => 'purchase_order_id'
+            'foreignKey' => 'purchase_order_id',
+			'saveStrategy' => 'replace'
         ]);
 		$this->belongsTo('SaleTaxes');
 		

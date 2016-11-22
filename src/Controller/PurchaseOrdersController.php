@@ -80,6 +80,7 @@ class PurchaseOrdersController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
         $purchaseOrder = $this->PurchaseOrders->newEntity();
         if ($this->request->is('post')) {
+			
             $purchaseOrder = $this->PurchaseOrders->patchEntity($purchaseOrder, $this->request->data);
 			$purchaseOrder->delivery_date=date("Y-m-d",strtotime($purchaseOrder->delivery_date));
 			$purchaseOrder->created_by=$s_employee_id; 
@@ -87,6 +88,7 @@ class PurchaseOrdersController extends AppController
 			
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
             if ($this->PurchaseOrders->save($purchaseOrder)) {
+				//pr($purchaseOrder->discount_per);exit;
                 $this->Flash->success(__('The purchase order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -120,11 +122,15 @@ class PurchaseOrdersController extends AppController
     public function edit($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
+		$s_employee_id=$this->viewVars['s_employee_id'];
         $purchaseOrder = $this->PurchaseOrders->get($id, [
-            'contain' => []
+            'contain' => ['PurchaseOrderRows']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
+			
             $purchaseOrder = $this->PurchaseOrders->patchEntity($purchaseOrder, $this->request->data);
+			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
+			$purchaseOrder->delivery_date=date("Y-m-d",strtotime($purchaseOrder->delivery_date));
             if ($this->PurchaseOrders->save($purchaseOrder)) {
                 $this->Flash->success(__('The purchase order has been saved.'));
 
@@ -133,9 +139,19 @@ class PurchaseOrdersController extends AppController
                 $this->Flash->error(__('The purchase order could not be saved. Please, try again.'));
             }
         }
-        $companies = $this->PurchaseOrders->Companies->find('list', ['limit' => 200]);
-        $vendors = $this->PurchaseOrders->Vendors->find('list', ['limit' => 200]);
-        $this->set(compact('purchaseOrder', 'companies', 'vendors'));
+		$companies = $this->PurchaseOrders->Companies->find();
+		$filenames = $this->PurchaseOrders->Filenames->find('list', ['valueField' => function ($row) {
+				return $row['file1'] . '-' . $row['file2'];
+			},
+			'keyField' => function ($row) {
+				return $row['file1'] . '-' . $row['file2'];
+			}])->where(['file1' => 'BE']);
+		$vendors = $this->PurchaseOrders->Vendors->find('list');
+		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all');
+		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list');
+		$transporters = $this->PurchaseOrders->Transporters->find('list');
+       
+        $this->set(compact('purchaseOrder', 'companies', 'vendors','filenames','SaleTaxes','transporters','items'));
         $this->set('_serialize', ['purchaseOrder']);
     }
 
