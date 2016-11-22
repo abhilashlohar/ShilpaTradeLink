@@ -16,13 +16,13 @@ $html = '
 <html>
 <head>
   <style>
-  @page { margin: 150px 15px 10px 30px; }
+  @page { margin: 120px 15px 10px 30px; }
 
   body{
     //margin-bottom: 330px;
 	}
 	
-    #header { position: fixed; left: 0px; top: -150px; right: 0px; height: 150px;}
+    #header { position: fixed; left: 0px; top: -120px; right: 0px; height: 120px;}
     
     
 	#content{
