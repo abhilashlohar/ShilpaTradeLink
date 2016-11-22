@@ -14,12 +14,15 @@ $html = '
 <html>
 <head>
   <style>
-    @page { margin: 120px 15px 20px 30px; }
+    @page { margin: 120px 15px 120px 30px; }
     #header { position: fixed; left: 0px; top: -120px; right: 0px; height: 120px;}
-	#footer { position: fixed; left: 0px; bottom: 30px; right: 0px; height: 160px;text-align:center;}
+	#footer { position: fixed; left: 0px; bottom: -120px; right: 0px; height: 120px;text-align:center;}
     #footer .page:after { content: content: counter(page); }
+	#content{
+		position: relative; 
+	}
 	.img-height{
-		height:20;
+		height:15;
 		text-align:center;
 	}
 	
@@ -68,33 +71,39 @@ $html = '
   </div>
   <div id="footer">
 	<hr style="width:100%"/>
-	<table width="100%" style="text-align:center;">
+	<table width="100%" style="text-align:center;font-size:10px;">
 		<tr>
-			<td  width="100%" colspan="4" align="center"><b><u>:: Authorised Dealer for Rajasthan ::</u></b><br/><br/></td>
+			<td  width="100%" colspan="7" align="center"><b style="font-size:12px;"><u>:: Authorised Dealer for Rajasthan ::</u></b></td>
 		</tr>
 		<tr>
-			<td width="25%"><img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/tushaco_pumps.png" class="img-height" /></td>
-			<td width="25%"><img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/johnson_pump.png" class="img-height"/></td>
-			<td width="25%"><img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/antico.png" class="img-height" /></td>
-			<td width="25%"><img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/darling_pump.png" class="img-height" /></td>
-		</tr>
-		<tr>
-			<td>Gear / Screw Pumps</td>
-			<td>Centrifugal/Multistage Pumps</td>
-			<td>Non Metallic Pumps</td>
-			<td>Submersible Pumps</td>
-		</tr>
-	</table>
-	<table width="100%" style="text-align:center;">
-		<tr>
-			<td width="33%"><img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/allweler.png" class="img-height"  /></td>
-			<td width="33%"><img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/lightnin.png" class="img-height" /></td>
-			<td width="34%"><img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/positive.png" class="img-height" /></td>
-		</tr>
-		<tr>
-			<td>Screw Pumps</td>
-			<td>Mixers / Agitators</td>
-			<td>Dosing / Diaphragm Pumps</td>
+			<td width="25%">
+				<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/tushaco_pumps.png" class="img-height" />
+				<br/>Gear / Screw Pumps
+			</td>
+			<td width="25%">
+				<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/johnson_pump.png" class="img-height"/>
+				<br/>Centrifugal/Multistage Pumps
+			</td>
+			<td width="25%">
+				<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/antico.png" class="img-height" />
+				<br/>Non Metallic Pumps
+			</td>
+			<td width="25%">
+				<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/darling_pump.png" class="img-height" />
+				<br/>Submersible Pumps
+			</td>
+			<td width="33%">
+				<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/allweler.png" class="img-height"  />
+				<br/>Screw Pumps
+			</td>
+			<td width="33%">
+				<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/lightnin.png" class="img-height" />
+				<br/>Mixers / Agitators
+			</td>
+			<td width="34%">
+				<img src="'.ROOT . DS  . 'webroot' . DS  .'img/quotation/positive.png" class="img-height" />
+				<br/>Dosing / Diaphragm Pumps
+			</td>
 		</tr>
 	</table>
   </div>
@@ -207,25 +216,22 @@ $html.='
 	<div><b>I hope above is to your requirement and in case of any clarification kindly revert back.</b></div><br/>
 	<div class="avoid_break"><b>Thanks and Regards,</b></div><br/>';
 	
-$html.='<table width="100%">
-		<tr><td width="40%" align="left">
-		<div align="left">
+$html.='
+		<div align="left" class="">
 			<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->creator->signature.' height="50px" style="height:50px;"/>
 			<br/>
-			
 			<span>'. h($quotation->employee->name) .'</span><br/>
 			<span>'. h($quotation->employee->designation->name) .'</span><br/>
 			<span>'. h($quotation->employee->mobile) .'</span><br/>
 			<span>'. h($quotation->employee->email) .'</span>
 			</div>
-		</td>';
+		';
 		
 
 
 			
 			
-$html.='</tr>
-	</table>';
+$html.='';
 	
 $html.='</div>'; 
 

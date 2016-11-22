@@ -82,7 +82,7 @@ class VouchersReferencesController extends AppController
 		
 		$this->viewBuilder()->layout('index_layout');
         $vouchersReference = $this->VouchersReferences->get($id, [
-            'contain' => []
+            'contain' => ['AccountGroups']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $vouchersReference = $this->VouchersReferences->patchEntity($vouchersReference, $this->request->data);
