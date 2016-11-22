@@ -243,8 +243,8 @@ class SalesOrdersController extends AppController
 			$salesOrder->created_on=date("Y-m-d",strtotime($salesOrder->created_on));
 			$salesOrder->edited_on=date("Y-m-d",strtotime($salesOrder->edited_on));
 			
-			$salesOrder->created_on_time= date('h:i:sa');
-			$salesOrder->edited_on_time= date('h:i:sa');
+			//$salesOrder->created_on_time= time('h:i:s');
+			$salesOrder->created_on_time= date("Y-m-d h:i:sA");
 			
             if ($this->SalesOrders->save($salesOrder)) {
 				if(!empty($quotation_id)){
@@ -316,8 +316,10 @@ class SalesOrdersController extends AppController
 			$salesOrder->edited_by=$s_employee_id;
 			$salesOrder->edited_on=date("Y-m-d");
 			
-			$salesOrder->edited_on_time= date('h:i:sa');
+			//date_default_timezone_set("India/Delhi");
 			
+			$salesOrder->edited_on_time= date("Y-m-d h:i:sA");
+			//echo $salesOrder->edited_on_time;  exit;
             if ($this->SalesOrders->save($salesOrder)) {
                 $this->Flash->success(__('The sales order has been saved.'));
 
