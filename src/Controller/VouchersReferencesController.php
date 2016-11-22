@@ -18,6 +18,8 @@ class VouchersReferencesController extends AppController
      */
     public function index()
     {
+		
+		$this->viewBuilder()->layout('index_layout');
         $vouchersReferences = $this->paginate($this->VouchersReferences);
 
         $this->set(compact('vouchersReferences'));
@@ -33,6 +35,8 @@ class VouchersReferencesController extends AppController
      */
     public function view($id = null)
     {
+		
+		$this->viewBuilder()->layout('index_layout');
         $vouchersReference = $this->VouchersReferences->get($id, [
             'contain' => ['VouchersReferencesGroups']
         ]);
@@ -48,9 +52,11 @@ class VouchersReferencesController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
         $vouchersReference = $this->VouchersReferences->newEntity();
         if ($this->request->is('post')) {
             $vouchersReference = $this->VouchersReferences->patchEntity($vouchersReference, $this->request->data);
+			
             if ($this->VouchersReferences->save($vouchersReference)) {
                 $this->Flash->success(__('The vouchers reference has been saved.'));
 
@@ -59,7 +65,8 @@ class VouchersReferencesController extends AppController
                 $this->Flash->error(__('The vouchers reference could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('vouchersReference'));
+		$AccountGroups = $this->VouchersReferences->AccountGroups->find('list');
+        $this->set(compact('vouchersReference','AccountGroups'));
         $this->set('_serialize', ['vouchersReference']);
     }
 
@@ -72,6 +79,8 @@ class VouchersReferencesController extends AppController
      */
     public function edit($id = null)
     {
+		
+		$this->viewBuilder()->layout('index_layout');
         $vouchersReference = $this->VouchersReferences->get($id, [
             'contain' => []
         ]);
@@ -85,7 +94,8 @@ class VouchersReferencesController extends AppController
                 $this->Flash->error(__('The vouchers reference could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('vouchersReference'));
+		$AccountGroups = $this->VouchersReferences->AccountGroups->find('list');
+        $this->set(compact('vouchersReference','AccountGroups'));
         $this->set('_serialize', ['vouchersReference']);
     }
 
