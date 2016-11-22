@@ -17,7 +17,7 @@ $Edit_url=$this->Url->build(['controller'=>'Invoices','action'=>'Edit']);
 		<?= $this->Form->create($invoice) ?>
 			<?php $sr=0; foreach ($invoice->invoice_rows as $invoiceRows): $sr++;
 				echo $this->Form->input('invoice_rows.'.$invoiceRows->id.'.id');
-				echo $this->Form->input('invoice_rows.'.$invoiceRows->id.'.height',['label' => 'Row-'.$sr,'class' => 'input-sm','value'=>$invoiceRows->height]);				
+				echo $this->Form->input('invoice_rows.'.$invoiceRows->id.'.height',['label' => 'Row-'.$sr,'class' => 'input-sm quantity','value'=>$invoiceRows->height]);				
 			endforeach; ?>
 			<?= $this->Form->button(__('Update'),['class'=>'btn btn-sm default']) ?>
 		<?= $this->Form->end() ?>
@@ -30,3 +30,25 @@ $Edit_url=$this->Url->build(['controller'=>'Invoices','action'=>'Edit']);
 		</td>
 	</tr>
 </table>
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<script>
+$(document).ready(function() {
+	$('.quantity').die().live("keyup",function() {
+			var asc=$(this).val();
+			var numbers =  /^[0-9]*\.?[0-9]*$/;
+			if(asc==0)
+			{
+				$(this).val('');
+				return false; 
+			}
+			else if(asc.match(numbers))  
+			{  
+			} 
+			else  
+			{  
+				$(this).val('');
+				return false;  
+			}
+	});
+});
+</script>

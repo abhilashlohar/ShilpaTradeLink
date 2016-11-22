@@ -152,9 +152,6 @@ if(!empty($copy))
 				</div>
 			</div>
 			<br/>
-			<div class="alert alert-danger" id="row_error" style="display:none;">
-				All fields are Required.
-			</div>
 			<table class="table tableitm" id="main_tb">
 				<thead>
 					<tr>
@@ -201,9 +198,7 @@ if(!empty($copy))
 			<label class="control-label">Additional Note (Optional): </label>
 			<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control wysihtml5']); ?>
 			<br/>
-			<div class="alert alert-danger" id="terms_conditions_error" style="display:none;">
-				Select Commercial Terms & Conditions.
-			</div>
+			
 			
 			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a> <a  role="button" class="btn btn-xs btn-primary updatetc" >Update </a>
 			<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control','onmousehover'=>'copy_term_condition_to_textarea()']); ?>
@@ -236,16 +231,14 @@ if(!empty($copy))
 }
 </style>
 
-
 <table id="sample_tb" style="display:none;">
-	
 	<tbody>
-		<tr class="tr1">
+		<tr class="tr1 preimp">
 			<td rowspan="2" width="10">0</td>
 			<td>
 				<div class="row">
 					<div class="col-md-11 padding-right-decrease">
-						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen item_box','placeholder' => 'Item']); ?>
+						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_box','placeholder' => 'Item']); ?>
 					</div>
 					<div class="col-md-1 padding-left-decrease">
 						<a href="#" class="btn btn-default btn-sm popup_btn" role="button"> <i class="fa fa-info-circle"></i> </a>
@@ -269,7 +262,7 @@ if(!empty($copy))
 			<td width="130"><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
-		<tr class="tr2">
+		<tr class="tr2 preimp">
 			<td colspan="4"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1']); ?></td>
 			<td></td>
 		</tr>
@@ -403,29 +396,9 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			q="ok";
-			$("#main_tb tbody tr.tr1").each(function(){
-				var it=$(this).find("td:nth-child(2) select").val();
-				var w=$(this).find("td:nth-child(3) input").val();
-				var r=$(this).find("td:nth-child(4) input").val();
-				if(it=="" || w=="" || r==""){
-					q="e";
-				}
-			});
-			$("#main_tb tbody tr.tr2").each(function(){
-				var d=$(this).find("td:nth-child(1) textarea").val();
-				if(d==""){
-					q="e";
-				}
-			});
-			if(q=="e"){
-				$("#row_error").show();
-				return false;
-			}else{
-				success3.show();
-				error3.hide();
-				form[0].submit(); // submit the form
-			}
+			success3.show();
+			error3.hide();
+			form[0].submit(); // submit the form
 		}
 
 	});
@@ -484,18 +457,18 @@ $(document).ready(function() {
 				$("#main_tb tbody tr.tr1").each(function(){
 					i++;
 					$(this).find("td:nth-child(1)").html(i);
-					$(this).find("td:nth-child(2) select").attr("name","quotation_rows["+i+"][item_id]");
+					$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 					$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 					$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 					$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
-					$(this).find("td:nth-child(3) input").attr("name","quotation_rows["+i+"][quantity]");
-					$(this).find("td:nth-child(4) input").attr("name","quotation_rows["+i+"][rate]");
-					$(this).find("td:nth-child(5) input").attr("name","quotation_rows["+i+"][amount]");
+					$(this).find("td:nth-child(3) input").attr({name:"quotation_rows["+i+"][quantity]", id:"quotation_rows-"+i+"-quantity"}).rules("add", "required");
+					$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules("add", "required");
+					$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
 				});
 				var i=0;
 				$("#main_tb tbody tr.tr2").each(function(){
 					i++;
-					$(this).find("td:nth-child(1) textarea").attr("name","quotation_rows["+i+"][description]");
+					$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"});
 				});
 				calculate_total();
 			}
@@ -510,7 +483,7 @@ $(document).ready(function() {
 		$("#main_tb tbody#main_tbody").append(tr2);
 		
 		var w=0; var r=0;
-		$("#main_tb tbody tr").each(function(){
+		$("#main_tb tbody#main_tbody tr.preimp").each(function(){
 			$(this).attr("row_no",w);
 			r++;
 			if(r==2){ w++; r=0; }
@@ -520,19 +493,19 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			i++;
 			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr("name","quotation_rows["+i+"][item_id]").attr("popup_id",i).select2();
+			$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
-			$(this).find("td:nth-child(3) input").attr("name","quotation_rows["+i+"][quantity]");
-			$(this).find("td:nth-child(4) input").attr("name","quotation_rows["+i+"][rate]");
-			$(this).find("td:nth-child(5) input").attr("name","quotation_rows["+i+"][amount]");
+			$(this).find("td:nth-child(3) input").attr({name:"quotation_rows["+i+"][quantity]", id:"quotation_rows-"+i+"-quantity"}).rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules("add", "required");
+			$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
 		});
 		var i=0;
 		
 		$("#main_tb tbody tr.tr2").each(function(){
 			i++;
-			$(this).find("td:nth-child(1) textarea").attr("name","quotation_rows["+i+"][description]");
+			$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"}).rules("add", "required");
 		});
 		
 		
@@ -698,8 +671,15 @@ $(document).ready(function() {
 				url=url+'/'+item_id+'/'+customer_id,
 				$.ajax({
 					url: url,
+					dataType: 'json',
 				}).done(function(response) {
-					$('div[popup_ajax_id='+popup_id+']').html(response);
+					$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
+						min: response.minimum_selling_price,
+						messages: {
+							min: "Enter value greate than minimum selling price"
+						}
+					});
+					$('div[popup_ajax_id='+popup_id+']').html(response.html);
 				});
 			}else{
 				$('div[popup_ajax_id='+popup_id+']').html('Select customer first.');
