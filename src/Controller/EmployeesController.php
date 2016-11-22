@@ -86,16 +86,26 @@ class EmployeesController extends AppController
 				move_uploaded_file($file['tmp_name'], WWW_ROOT . '/signatures/' . $setNewFileName . '.' . $ext);
 			}
             if ($this->Employees->save($employee)) {
+				$ledgerAccount = $this->Employees->LedgerAccounts->newEntity();
+				
+				$ledgerAccount->account_second_subgroup_id = $employee->account_second_subgroup_id;
+				$ledgerAccount->name = $employee->name;
+				$ledgerAccount->source_model = 'Employees';
+				$ledgerAccount->source_id = $employee->id;
+				if ($this->Employees->LedgerAccounts->save($ledgerAccount)) {
+					
                 $this->Flash->success(__('The employee has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else {
+            } 
+			} else {
                 $this->Flash->error(__('The employee could not be saved. Please, try again.'));
             }
         }
         $departments = $this->Employees->Departments->find('list');
 		$designations = $this->Employees->Designations->find('list');
-        $this->set(compact('employee', 'departments','designations'));
+		$AccountCategories = $this->Employees->AccountCategories->find('list');
+        $this->set(compact('employee', 'departments','designations','AccountCategories'));
         $this->set('_serialize', ['employee']);
     }
 
@@ -144,7 +154,12 @@ class EmployeesController extends AppController
         }
         $departments = $this->Employees->Departments->find('list', ['limit' => 200]);
 		$designations = $this->Employees->Designations->find('list', ['limit' => 200]);
-        $this->set(compact('employee', 'departments','designations'));
+		$AccountCategories = $this->Employees->AccountCategories->find('list');
+		$AccountGroups = $this->Employees->AccountGroups->find('list');
+		$AccountFirstSubgroups = $this->Employees->AccountFirstSubgroups->find('list');
+		$AccountSecondSubgroups = $this->Employees->AccountSecondSubgroups->find('list');
+		
+        $this->set(compact('employee', 'departments','designations','AccountCategories','AccountGroups','AccountFirstSubgroups','AccountSecondSubgroups'));
         $this->set('_serialize', ['employee']);
     }
 

@@ -55,9 +55,18 @@ class VendorsController extends AppController
             $vendor = $this->Vendors->patchEntity($vendor, $this->request->data);
 			//pr($vendor); exit;	
             if ($this->Vendors->save($vendor)) {
+				$ledgerAccount = $this->Vendors->LedgerAccounts->newEntity();
+				
+				$ledgerAccount->account_second_subgroup_id = $vendor->account_second_subgroup_id;
+				$ledgerAccount->name = $vendor->company_name;
+				$ledgerAccount->source_model = 'Vendors';
+				$ledgerAccount->source_id = $vendor->id;
+				if ($this->Vendors->LedgerAccounts->save($ledgerAccount)) {
+				
                 $this->Flash->success(__('The vendor has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
+				}
             } else {
                 $this->Flash->error(__('The vendor could not be saved. Please, try again.'));
             }

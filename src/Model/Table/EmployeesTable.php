@@ -36,6 +36,8 @@ class EmployeesTable extends Table
         $this->displayField('name');
         $this->primaryKey('id');
 
+		$this->hasOne('LedgerAccounts');
+		
         $this->belongsTo('Departments', [
             'foreignKey' => 'dipartment_id',
             'joinType' => 'INNER'
@@ -51,6 +53,27 @@ class EmployeesTable extends Table
             'foreignKey' => 'employee_id',
 			'saveStrategy' => 'replace'
         ]);
+		
+		$this->belongsTo('AccountCategories', [
+            'foreignKey' => 'account_category_id',
+            'joinType' => 'INNER'
+        ]);
+		$this->belongsTo('AccountGroups', [
+            'foreignKey' => 'account_group_id',
+            'joinType' => 'INNER'
+        ]);
+		
+		$this->belongsTo('AccountFirstSubgroups', [
+			'foreignKey' => 'account_first_subgroup_id',
+            'joinType' => 'INNER'
+        ]);
+
+		   
+		$this->belongsTo('AccountSecondSubgroups', [
+            'foreignKey' => 'account_second_subgroup_id',
+            'joinType' => 'INNER'
+        ]);
+		
 		
 		$this->belongsTo('Quotations');
 		$this->belongsTo('SalesOrders');
