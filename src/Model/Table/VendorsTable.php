@@ -37,7 +37,9 @@ class VendorsTable extends Table
         $this->table('vendors');
         $this->displayField('company_name');
         $this->primaryKey('id');
-
+		
+		$this->hasOne('LedgerAccounts');
+		
         $this->belongsTo('ItemGroups', [
             'foreignKey' => 'item_group_id',
             'joinType' => 'INNER'

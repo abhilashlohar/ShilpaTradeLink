@@ -1,1 +1,1 @@
-<?php echo $this->Form->input('account_group_id', ['empty'=>'--Select--','options' => $accountGroups,'label' => false,'class' => 'form-control input-sm']); ?>
+<?php echo $this->Form->input('account_group_id', ['empty'=>'--Select--','options' => $accountGroups,'label' => false,'class' => 'form-control input-sm select2me']); ?>

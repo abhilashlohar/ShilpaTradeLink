@@ -35,10 +35,16 @@ class VouchersReferencesTable extends Table
         $this->table('vouchers_references');
         $this->displayField('id');
         $this->primaryKey('id');
-
-        $this->hasMany('VouchersReferencesGroups', [
+	
+		$this->belongsToMany('AccountGroups', [
+            'foreignKey' => 'vouchers_reference_id',
+            'targetForeignKey' => 'account_group_id',
+            'joinTable' => 'vouchers_references_groups'
+        ]);
+		$this->hasMany('VouchersReferencesGroups', [
             'foreignKey' => 'vouchers_reference_id'
         ]);
+		
     }
 
     /**
