@@ -81,12 +81,10 @@ class EmployeesController extends AppController
 			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
 			$arr_ext = array('jpg', 'jpeg', 'png'); //set allowed extensions
 			$setNewFileName = uniqid();
-			
 			$employee->signature=$setNewFileName. '.' . $ext;
 			if (in_array($ext, $arr_ext)) {
 				move_uploaded_file($file['tmp_name'], WWW_ROOT . '/signatures/' . $setNewFileName . '.' . $ext);
 			}
-			//pr($employee); exit;
             if ($this->Employees->save($employee)) {
                 $this->Flash->success(__('The employee has been saved.'));
 
