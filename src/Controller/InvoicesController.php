@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\View\Helper\NumberHelper;
+use Cake\View\Helper\HtmlHelper;
 
 /**
  * Invoices Controller
@@ -379,7 +381,33 @@ class InvoicesController extends AppController
 						return $q->where(['InvoiceRows.item_id' => $item_id]);
 					}
 				);
-			$this->set(compact('Invoices','customer_text','item'));
+			//$this->set(compact('Invoices','customer_text','item'));
+			$Number = new NumberHelper(new \Cake\View\View());
+			$Html = new HtmlHelper(new \Cake\View\View());
+			
+			$html='<span style="font-size: 14px;">Minimum Selling Rate for item "'.$item->name.'" : '. $Number->format($item->dynamic_cost*$item->minimum_selling_price_factor,[ 'places' => 2]).'</span><br/><br/>
+			<div style="font-size: 14px;">'.$customer_text.'</div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Sr. No.</th>
+						<th>Invoice No.</th>
+						<th>Invoice Date</th>
+						<th>Last Selling Rate</th>
+					</tr>
+				</thead>
+				<tbody>';
+				$i=0; foreach($Invoices as $invoice):
+				$html.='<tr>
+						<td>'.h(++$i).'</td>
+						<td>'.$Html->link(($invoice->in1.'/IN'.str_pad($invoice->id, 3, '0', STR_PAD_LEFT).'/'.$invoice->in3.'/'.$invoice->in4),'/Invoices/confirm/'.$invoice->id,array('target'=>'_blank')).'</td>
+						<td>'.h(date('d-m-Y',strtotime($invoice->date_created))).'</td>
+						<td>'.$Number->format($invoice->_matchingData['InvoiceRows']->rate,[ 'places' => 2]).'</td>
+					</tr>';
+				endforeach;
+				$html.='</tbody>
+			</table>';
+			die(json_encode(array("html"=>$html,"minimum_selling_price"=>$item->dynamic_cost*$item->minimum_selling_price_factor)));
 		}
 	}
 }
