@@ -18,10 +18,24 @@ class LeaveTypesController extends AppController
      */
     public function index()
     {
+		
 		$this->viewBuilder()->layout('index_layout');
-        $leaveTypes = $this->paginate($this->LeaveTypes);
+		$leaveType = $this->LeaveTypes->newEntity();
+        if ($this->request->is('post')) {
+            $leaveType = $this->LeaveTypes->patchEntity($leaveType, $this->request->data);
+            if ($this->LeaveTypes->save($leaveType)) {
+                $this->Flash->success(__('The leave type has been saved.'));
 
-        $this->set(compact('leaveTypes'));
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The leave type could not be saved. Please, try again.'));
+            }
+        }
+		
+        $this->set(compact('leaveType'));
+        $this->set('_serialize', ['transporter']);
+		$leaveTypes = $this->paginate($this->LeaveTypes);
+		$this->set(compact('leaveTypes'));
         $this->set('_serialize', ['leaveTypes']);
     }
 

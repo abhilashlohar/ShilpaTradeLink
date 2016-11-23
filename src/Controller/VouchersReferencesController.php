@@ -65,8 +65,7 @@ class VouchersReferencesController extends AppController
                 $this->Flash->error(__('The vouchers reference could not be saved. Please, try again.'));
             }
         }
-		$AccountGroups = $this->VouchersReferences->AccountGroups->find('list');
-        $this->set(compact('vouchersReference','AccountGroups'));
+        $this->set(compact('vouchersReference'));
         $this->set('_serialize', ['vouchersReference']);
     }
 

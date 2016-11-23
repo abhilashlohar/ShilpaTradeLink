@@ -1,24 +1,46 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $leaveType->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $leaveType->id)]
-            )
-        ?></li>
-        <li><?= $this->Html->link(__('List Leave Types'), ['action' => 'index']) ?></li>
-    </ul>
-</nav>
-<div class="leaveTypes form large-9 medium-8 columns content">
-    <?= $this->Form->create($leaveType) ?>
-    <fieldset>
-        <legend><?= __('Edit Leave Type') ?></legend>
-        <?php
-            echo $this->Form->input('leave_name');
-            echo $this->Form->input('maximum_leave_in_month');
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="icon-globe font-blue-steel"></i>
+			<span class="caption-subject font-blue-steel uppercase">Leave Types</span>
+		</div>
+	</div>
+<div class="portlet-body form">
+		<!-- BEGIN FORM-->
+		<div class="row ">
+		<div class="col-md-6">
+		 <?= $this->Form->create($leaveType,array("class"=>"form-horizontal")) ?>
+			<div class="form-body">
+				<div class="form-group">
+					<label class="control-label col-md-5">Leave Type<span class="required" aria-required="true">
+					* </span>
+					</label>
+					<div class="col-md-7">
+						<div class="input-icon right">
+							<i class="fa"></i>
+							 <?php echo $this->Form->input('leave_name', ['label' => false,'class' => 'form-control','placeholder' => 'Leave Type']); ?>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-md-5">Maximum Leave in Month <span class="required" aria-required="true">
+					* </span>
+					</label>
+					<div class="col-md-7">
+						<div class="input-icon right">
+							<i class="fa"></i>
+							 <?php echo $this->Form->input('maximum_leave_in_month', ['label' => false,'class' => 'form-control']); ?>
+						</div>
+					</div>
+				</div>
+			
+				<div class="row">
+					<div class="col-md-offset-4 col-md-8">
+						<button type="submit" class="btn btn-primary">Add Leave Type</button>
+					</div>
+				</div>
+			</div>
+		<?= $this->Form->end() ?>
+		</div>
+</div>
 </div>
