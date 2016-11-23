@@ -18,6 +18,7 @@ class PaymentVouchersController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
         $paymentVouchers = $this->paginate($this->PaymentVouchers);
 		$this->set(compact('paymentVouchers'));
         $this->set('_serialize', ['paymentVouchers']);
