@@ -540,7 +540,7 @@ $(document).ready(function() {
 			rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
 			this.rows = minRows + rows;
 		});
-		
+		calculate_total();
 	}
 	
 	$('#main_tb input').die().live("keyup","blur",function() { 
