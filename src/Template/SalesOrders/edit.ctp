@@ -205,6 +205,10 @@
 					</td>
 					<td><?php echo $this->Form->input('fright_amount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01,'style'=>['text-align:left']]); ?></td>
 				</tr>
+				<tr>
+					<td  align="right"><b>Grand Total </b></td>
+					<td><?php echo $this->Form->input('grand_total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Grand Total','readonly','step'=>0.01]); ?></td>
+				</tr>
 			</table>
 			
 			

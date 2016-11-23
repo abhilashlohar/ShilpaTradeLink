@@ -176,6 +176,11 @@ $html.='
 					<td style="text-align:right;" width="104">'. $this->Number->format($salesOrder->fright_amount,[ 'places' => 2]).'</td>
 				</tr>';
 		}
+		
+		$html.='<tr>
+				<td style="text-align:right;">Grand Total</td>
+				<td style="text-align:right;" width="104">'. $this->Number->format($salesOrder->grand_total,[ 'places' => 2]).'</td>
+			</tr>';
 			
 			
 		$html.='</tbody>
@@ -241,8 +246,8 @@ $html.='
 			<td width="30%">: '. h($salesOrder->dispatch_mobile).'</td>
 		</tr>
 		<tr>
-			<td>Address</td>
-			<td>: '. h($salesOrder->dispatch_address).'</td>
+			<td width="5%">Address</td>
+			<td width="50%">: '. h($salesOrder->dispatch_address).'</td>
 			<td width="30%"><td>
 			<td>Email</td>
 			<td>: '. h($salesOrder->dispatch_email).'</td>
