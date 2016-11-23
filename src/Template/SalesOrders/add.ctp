@@ -233,6 +233,10 @@ if(!empty($copy))
 					</td>
 					<td><?php echo $this->Form->input('fright_amount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01]); ?></td>
 				</tr>
+				<tr>
+					<td  align="right"><b>Grand Total </b></td>
+					<td><?php echo $this->Form->input('grand_total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Grand Total','readonly','step'=>0.01]); ?></td>
+				</tr>
 			</table>
 
 			
@@ -710,6 +714,17 @@ $(document).ready(function() {
 		var total_after_pnf=total+pnf_amount;
 		if(isNaN(total_after_pnf)) { var total_after_pnf = 0; }
 		$('input[name="total_after_pnf"]').val(total_after_pnf.toFixed(2));
+		
+		var sale_tax_per=parseFloat($('input[name="sale_tax_per"]').val());
+		var sale_tax=(total_after_pnf*sale_tax_per)/100;
+		if(isNaN(sale_tax)) { var sale_tax = 0; }
+		$('input[name="sale_tax_amount"]').val(sale_tax.toFixed(2));
+		
+		var fright_amount=parseFloat($('input[name="fright_amount"]').val());
+		if(isNaN(fright_amount)) { var fright_amount = 0; }
+		
+		grand_total=total_after_pnf+sale_tax+fright_amount;
+		$('input[name="grand_total"]').val(grand_total.toFixed(2));
 		
 	}
 	
