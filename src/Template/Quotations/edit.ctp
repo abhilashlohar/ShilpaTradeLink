@@ -153,7 +153,7 @@
 						<th width="70"></th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="main_tbody">
 					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_row): ?>
 						<tr class="tr1 preimp">
 							<td rowspan="2" width="10">
@@ -202,7 +202,7 @@
 				<tfoot>
 					<tr>
 						<td colspan="4" align="right"><b>Total</b></td>
-						<td><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total']); ?></td>
+						<td><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','readonly']); ?></td>
 						<td></td>
 					</tr>
 				</tfoot>
@@ -494,19 +494,20 @@ $(document).ready(function() {
 	
 	function add_row(){
 		var tr1=$("#sample_tb tbody tr.tr1").clone();
-		$("#main_tb tbody").append(tr1);
+		$("#main_tb tbody#main_tbody").append(tr1);
 		var tr2=$("#sample_tb tbody tr.tr2").clone();
-		$("#main_tb tbody").append(tr2);
+		$("#main_tb tbody#main_tbody").append(tr2);
 		
 		var w=0; var r=0;
-		$("#main_tb tbody tr.preimp").each(function(){
+		$("#main_tb tbody#main_tbody tr.preimp").each(function(){
+			alert();
 			$(this).attr("row_no",w);
 			r++;
 			if(r==2){ w++; r=0; }
 		});
 		
 		var i=0;
-		$("#main_tb tbody tr.tr1").each(function(){
+		$("#main_tb tbody#main_tbody tr.tr1").each(function(){
 			i++;
 			$(this).find("td:nth-child(1)").html(i);
 			$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
@@ -706,7 +707,7 @@ $(document).ready(function() {
 					$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
 						min: response.minimum_selling_price,
 						messages: {
-							min: "Enter value greate than minimum selling price"
+							min: "Enter value greate than minimum selling price "+response.minimum_selling_price
 						}
 					});
 					$('div[popup_ajax_id='+popup_id+']').html(response.html);
