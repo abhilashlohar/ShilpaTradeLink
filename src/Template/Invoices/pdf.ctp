@@ -16,13 +16,13 @@ $html = '
 <html>
 <head>
   <style>
-  @page { margin: 130px 15px 10px 30px; }
+  @page { margin: 135px 15px 10px 30px; }
 
   body{
     //margin-bottom: 330px;
 	}
 	
-    #header { position: fixed; left: 0px; top: -130px; right: 0px; height: 130px;}
+    #header { position: fixed; left: 0px; top: -135px; right: 0px; height: 135px;}
     
     
 	#content{
@@ -126,7 +126,6 @@ $html.='
 $html.='<br/>
 <table width="100%" class="table_rows">
 		<tr>
-			
 			<td colspan=6 align="">
 			Your Purchase Order No.'. h($invoice->customer_po_no) .' dated '. h(date("d-m-Y",strtotime($invoice->po_date))) .'
 			</td>
@@ -145,12 +144,12 @@ $html.='<br/>
 $sr=0; foreach ($invoice->invoice_rows as $invoiceRows): $sr++; 
 $html.='
 	<tr class="odd">
-		<td valign="top" align="center" width="30">'. h($sr) .'</td>
-		<td>'. $this->Text->autoParagraph(h($invoiceRows->description)) .'<div style="height:'.$invoiceRows->height.'"></div></td>
-		<td style="width: 10;" valign="top" align="center">'. h($invoiceRows->item->unit->name) .'</td>
-		<td width="40" valign="top" align="center">'. h($invoiceRows->quantity) .'</td>
-		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($invoiceRows->rate,[ 'places' => 2]) .'</td>
-		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($invoiceRows->amount,[ 'places' => 2]) .'</td>
+		<td valign="top" align="center" width="5%">'. h($sr) .'</td>
+		<td width="100%">'. $this->Text->autoParagraph(h($invoiceRows->description)) .'<div style="height:'.$invoiceRows->height.'"></div></td>
+		<td valign="top" align="center">'. h($invoiceRows->item->unit->name) .'</td>
+		<td valign="top" align="center">'. h($invoiceRows->quantity) .'</td>
+		<td align="right" valign="top">'. $this->Number->format($invoiceRows->rate,[ 'places' => 2]) .'</td>
+		<td align="right" valign="top">'. $this->Number->format($invoiceRows->amount,[ 'places' => 2]) .'</td>
 	</tr>';
 endforeach; 
 
@@ -177,7 +176,7 @@ if($invoice->exceise_duty>0){
 			
 	
  	
-$html.='</table><br/>';
+$html.='</table>';
 
 $grand_total=explode('.',$invoice->grand_total);
 $rupees=$grand_total[0];
@@ -292,7 +291,7 @@ $html .= '<div id="footer">';
 		</tbody>
 	</table>';
 	
-$html.='<table width="100%" class="divFooter">
+$html.='<table width="100%" >
 			<tr>
 				<td >
 					<table>

@@ -19,8 +19,7 @@ class PaymentVouchersController extends AppController
     public function index()
     {
         $paymentVouchers = $this->paginate($this->PaymentVouchers);
-
-        $this->set(compact('paymentVouchers'));
+		$this->set(compact('paymentVouchers'));
         $this->set('_serialize', ['paymentVouchers']);
     }
 
@@ -48,6 +47,7 @@ class PaymentVouchersController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
         $paymentVoucher = $this->PaymentVouchers->newEntity();
         if ($this->request->is('post')) {
             $paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
@@ -58,8 +58,9 @@ class PaymentVouchersController extends AppController
             } else {
                 $this->Flash->error(__('The payment voucher could not be saved. Please, try again.'));
             }
+			
         }
-        $this->set(compact('paymentVoucher'));
+        $this->set(compact('paymentVoucher','vouchersReferences'));
         $this->set('_serialize', ['paymentVoucher']);
     }
 
