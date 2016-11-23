@@ -219,7 +219,7 @@ class InvoicesController extends AppController
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 			
 			$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date));
-			pr ($invoice); exit;
+			
 			$invoice->created_by=$s_employee_id;
 			$invoice->company_id=$sales_order->company_id;
 			$invoice->date_created=date("Y-m-d");
