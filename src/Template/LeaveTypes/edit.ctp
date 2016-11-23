@@ -35,7 +35,7 @@
 				</div>
 			
 				<div class="row">
-					<div class="col-md-offset-4 col-md-8">
+					<div class="col-md-offset-6 col-md-6">
 						<button type="submit" class="btn btn-primary">Add Leave Type</button>
 					</div>
 				</div>

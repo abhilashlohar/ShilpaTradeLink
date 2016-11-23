@@ -419,6 +419,8 @@ select
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> List','/VouchersReferences',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
+				
+				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Leave Types','/LeaveTypes',array('escape'=>false)); ?></li>
 			</ul>
 			<!-- END SIDEBAR MENU -->
 		</div>
