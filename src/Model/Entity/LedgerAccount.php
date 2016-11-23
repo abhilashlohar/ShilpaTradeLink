@@ -10,7 +10,7 @@ use Cake\ORM\Entity;
  * @property int $account_second_subgroup_id
  * @property string $name
  * @property string $source_model
- * @property int $customer_id
+ * @property int $source_id
  *
  * @property \App\Model\Entity\AccountSecondSubgroup $account_second_subgroup
  * @property \App\Model\Entity\Source $source

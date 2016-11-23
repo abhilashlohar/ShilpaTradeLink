@@ -76,27 +76,20 @@ With reference to your price list we are pleased to place an order for the follo
 						<tfoot>
 						
 							<tr>
-							<td  colspan="4" align="right">
-							<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
-							<div class="input-group col-md-2" style="display:none;" id="discount_text">
-							<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
-							</div>
-							</td>
-							<td><?php echo $this->Form->input('discount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
-							</tr>
-							
-							<tr style="background-color:#e6faf9;">
-								<td colspan="4" align="right"><b><?php echo $this->Form->textarea('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:left']]); ?> </b></td>
-								<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty','value' => 0]); ?></td>
-							</tr>
-							
-							<tr>
 								<td colspan="4" align="right"><b>Total</b></td>
 								<td><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total']); ?></td>
 								<td></td>
 							</tr>
-							
-
+						
+							<tr>
+								<td  colspan="4" align="right">
+								<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
+								<div class="input-group col-md-2" style="display:none;" id="discount_text">
+								<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
+								</div>
+								</td>
+								<td><?php echo $this->Form->input('discount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
+							</tr>
 							
 							<tr>
 								<td  colspan="4" align="right">
@@ -107,10 +100,7 @@ With reference to your price list we are pleased to place an order for the follo
 								</td>
 								<td><?php echo $this->Form->input('pnf', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01]); ?></td>
 							</tr>
-							<tr>
-							<td  colspan="4" align="right"><b>Grand Total </b></td>
-							<td><?php echo $this->Form->input('grand_total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total after P&F','readonly','step'=>0.01]); ?></td>
-							</tr>
+							
 							
 						</tfoot>
 					</table>
@@ -440,40 +430,7 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
 			total=total+Amount;
 		});
-				if($("#discount_per").is(':checked')){
-			var discount_per=parseFloat($('input[name="discount_per"]').val());
-			var discount_amount=(total*discount_per)/100;
-			if(isNaN(discount_amount)) { var discount_amount = 0; }
-			$('input[name="discount"]').val(discount_amount.toFixed(2));
-		}else{
-			var discount_amount=parseFloat($('input[name="discount"]').val());
-			if(isNaN(discount_amount)) { var discount_amount = 0; }
-		}
-		total=total-discount_amount;
-		
-		var exceise_duty=parseFloat($('input[name="exceise_duty"]').val());
-		if(isNaN(exceise_duty)) { var exceise_duty = 0; }
-		total=total+exceise_duty;
 		$('input[name="total"]').val(total.toFixed(2));
-		
-		if($("#pnfper").is(':checked')){
-			var pnf_per=parseFloat($('input[name="pnf_per"]').val());
-			var pnf_amount=(total*pnf_per)/100;
-			if(isNaN(pnf_amount)) { var pnf_amount = 0; }
-			$('input[name="pnf"]').val(pnf_amount.toFixed(2));
-		}else{
-			var pnf_amount=parseFloat($('input[name="pnf"]').val());
-			if(isNaN(pnf_amount)) { var pnf_amount = 0; }
-		}
-		var grand_total=total+pnf_amount;
-		
-		if(isNaN(grand_total)) { var grand_total = 0; }
-		
-		
-		
-		$('input[name="grand_total"]').val(grand_total.toFixed(2));
-		
-	
 		
 	}
 	$('select[name=sale_tax_per]').die().live("change",function() {

@@ -85,10 +85,11 @@ class PurchaseOrdersController extends AppController
 			$purchaseOrder->delivery_date=date("Y-m-d",strtotime($purchaseOrder->delivery_date));
 			$purchaseOrder->created_by=$s_employee_id; 
 			$purchaseOrder->sale_tax_description=$purchaseOrder->sale_tax_description; 
-			
+			//pr($purchaseOrder->material_to_be_transported);exit;
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
             if ($this->PurchaseOrders->save($purchaseOrder)) {
-				//pr($purchaseOrder->discount_per);exit;
+				//pr($purchaseOrder);exit;
+				
                 $this->Flash->success(__('The purchase order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

@@ -31,7 +31,9 @@ class LedgerAccountsTableTest extends TestCase
         'app.account_categories',
         'app.sources',
         'app.ledgers',
-        'app.payment_vouchers'
+        'app.payment_vouchers',
+        'app.vouchers_references',
+        'app.vouchers_references_groups'
     ];
 
     /**
