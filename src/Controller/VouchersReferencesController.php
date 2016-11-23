@@ -20,8 +20,8 @@ class VouchersReferencesController extends AppController
     {
 		
 		$this->viewBuilder()->layout('index_layout');
-        $vouchersReferences = $this->paginate($this->VouchersReferences);
-
+        $vouchersReferences = $this->paginate($this->VouchersReferences->find()->contain(['VouchersReferencesGroups'=>['AccountGroups']]));
+		
         $this->set(compact('vouchersReferences'));
         $this->set('_serialize', ['vouchersReferences']);
     }
