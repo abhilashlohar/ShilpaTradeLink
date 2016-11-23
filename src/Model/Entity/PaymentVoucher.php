@@ -8,6 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property \Cake\I18n\Time $created_on
+ * @property \Cake\I18n\Time $voucher_date
  * @property int $paid_to
  * @property string $payment_mode
  * @property int $cash_bank_account

@@ -11,6 +11,7 @@
             <tr>
                 <th><?= $this->Paginator->sort('id') ?></th>
                 <th><?= $this->Paginator->sort('created_on') ?></th>
+                <th><?= $this->Paginator->sort('voucher_date') ?></th>
                 <th><?= $this->Paginator->sort('paid_to') ?></th>
                 <th><?= $this->Paginator->sort('payment_mode') ?></th>
                 <th><?= $this->Paginator->sort('cash_bank_account') ?></th>
@@ -22,6 +23,7 @@
             <tr>
                 <td><?= $this->Number->format($paymentVoucher->id) ?></td>
                 <td><?= h($paymentVoucher->created_on) ?></td>
+                <td><?= h($paymentVoucher->voucher_date) ?></td>
                 <td><?= $this->Number->format($paymentVoucher->paid_to) ?></td>
                 <td><?= h($paymentVoucher->payment_mode) ?></td>
                 <td><?= $this->Number->format($paymentVoucher->cash_bank_account) ?></td>

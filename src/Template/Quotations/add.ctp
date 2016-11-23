@@ -232,7 +232,7 @@ if(!empty($copy))
 </style>
 
 <table id="sample_tb" style="display:none;">
-	<tbody>
+	<tbody >
 		<tr class="tr1 preimp">
 			<td rowspan="2" width="10">0</td>
 			<td>

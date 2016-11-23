@@ -30,6 +30,10 @@
             <th><?= __('Created On') ?></th>
             <td><?= h($paymentVoucher->created_on) ?></td>
         </tr>
+        <tr>
+            <th><?= __('Voucher Date') ?></th>
+            <td><?= h($paymentVoucher->voucher_date) ?></td>
+        </tr>
     </table>
     <div class="row">
         <h4><?= __('Narration') ?></h4>
