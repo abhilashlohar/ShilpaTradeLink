@@ -53,6 +53,11 @@ class PaymentVouchersTable extends Table
             ->notEmpty('created_on');
 
         $validator
+            ->date('voucher_date')
+            ->requirePresence('voucher_date', 'create')
+            ->notEmpty('voucher_date');
+
+        $validator
             ->integer('paid_to')
             ->requirePresence('paid_to', 'create')
             ->notEmpty('paid_to');

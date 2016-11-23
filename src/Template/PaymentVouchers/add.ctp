@@ -10,14 +10,9 @@
         <legend><?= __('Add Payment Voucher') ?></legend>
         <?php
             echo $this->Form->input('created_on');
+            echo $this->Form->input('voucher_date');
             echo $this->Form->input('paid_to');
-			echo $this->Form->radio(
-				'payment_mode',
-				[
-					['value' => 'Cheque', 'text' => 'Cheque'],
-					['value' => 'Cash', 'text' => 'Cash'],
-				]
-			);
+            echo $this->Form->input('payment_mode');
             echo $this->Form->input('cash_bank_account');
             echo $this->Form->input('narration');
         ?>

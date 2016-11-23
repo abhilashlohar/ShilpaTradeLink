@@ -16,6 +16,7 @@
         <legend><?= __('Edit Payment Voucher') ?></legend>
         <?php
             echo $this->Form->input('created_on');
+            echo $this->Form->input('voucher_date');
             echo $this->Form->input('paid_to');
             echo $this->Form->input('payment_mode');
             echo $this->Form->input('cash_bank_account');
