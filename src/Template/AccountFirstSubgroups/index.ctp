@@ -8,18 +8,44 @@
 			
 			
 		</div>
-		<div class="actions">
-			<?php echo $this->Html->link('<i class="icon-home"></i> Add Account First SubGroup','/AccountFirstSubgroups/add',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
-
+		<div class="portlet-body form">
+		<!-- BEGIN FORM-->
+		<div class="row ">
+		<div class="col-md-12">
+		<?= $this->Form->create($accountFirstSubgroup) ?>
+			<div class="form-body">
+				<div class="form-group">
+					<div class="col-md-5">
+					<label class="control-label">Account Group <span class="required" aria-required="true">*</span></label>
+						<?php 
+						echo $this->Form->input('account_group_id', ['options' => $accountGroups,'empty' => "--Select--",'label' => false,'class' => 'form-control select2me ','required']); 
+						?>
+					</div>
+					<div class="col-md-5">
+					<label class="control-label">Name <span class="required" aria-required="true">*</span></label>
+						<?php 
+						echo $this->Form->input('name', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Name']); 
+						?>
+					</div>
+					
+					<div class="col-md-2">
+					<label class="control-label"> <span class="required" aria-required="true"></span> </label><br/>
+						<?php 
+						echo $this->Form->button(__('ADD'),['class'=>'btn btn-primary']); 
+						?>
+					</div>
+				</div>
 			</div>
+		<?= $this->Form->end() ?>
 		</div>
-		
-		
-			<div class="portlet-body">
+		<!-- END FORM-->
+		</div>
+	</div>
+	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
 				<form method="GET" >
-					<table class="table table-condensed">
+					<table class="table table-condensed" style="margin-top:20px;">
 						<tbody>
 							<tr>
 								<td><input type="text" name="Account_group" class="form-control input-sm" placeholder="Account Group" value="<?php echo @$Account_group; ?>"></td>

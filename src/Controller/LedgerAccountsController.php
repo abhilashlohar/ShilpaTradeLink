@@ -19,12 +19,8 @@ class LedgerAccountsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $this->paginate = [
-            'contain' => ['AccountSecondSubgroups']
-        ];
-        $ledgerAccounts = $this->paginate($this->LedgerAccounts);
-
-        $this->set(compact('ledgerAccounts'));
+		$ledgerAccounts = $this->paginate($this->LedgerAccounts->find()->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]]));
+		$this->set(compact('ledgerAccounts'));
         $this->set('_serialize', ['ledgerAccounts']);
     }
 

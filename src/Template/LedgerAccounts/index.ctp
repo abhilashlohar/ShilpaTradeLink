@@ -1,40 +1,68 @@
 
-<div class="ledgerAccounts index large-9 medium-8 columns content">
-    <h3><?= __('Ledger Accounts') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th><?= $this->Paginator->sort('id') ?></th>
-                <th><?= $this->Paginator->sort('account_second_subgroup_id') ?></th>
-                <th><?= $this->Paginator->sort('name') ?></th>
-                <th><?= $this->Paginator->sort('source_model') ?></th>
-                <th><?= $this->Paginator->sort('source_id') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($ledgerAccounts as $ledgerAccount): ?>
-            <tr>
-                <td><?= $this->Number->format($ledgerAccount->id) ?></td>
-                <td><?= $ledgerAccount->has('account_second_subgroup') ? $this->Html->link($ledgerAccount->account_second_subgroup->name, ['controller' => 'AccountSecondSubgroups', 'action' => 'view', $ledgerAccount->account_second_subgroup->id]) : '' ?></td>
-                <td><?= h($ledgerAccount->name) ?></td>
-                <td><?= h($ledgerAccount->source_model) ?></td>
-                <td><?= $ledgerAccount->has('source') ? $this->Html->link($ledgerAccount->source->name, ['controller' => 'Sources', 'action' => 'view', $ledgerAccount->source->id]) : '' ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $ledgerAccount->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $ledgerAccount->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $ledgerAccount->id], ['confirm' => __('Are you sure you want to delete # {0}?', $ledgerAccount->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-        </ul>
-        <p><?= $this->Paginator->counter() ?></p>
-    </div>
+
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="icon-globe font-blue-steel"></i>
+			<span class="caption-subject font-blue-steel uppercase">Ledger Account</span>
+		</div>
+		<div class="actions">
+			<?php echo $this->Html->link('<i class="icon-home"></i> Add Account Group','/AccountGroups/',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
+			<?php echo $this->Html->link('<i class="icon-home"></i> Add Account First Sub Group','/AccountFirstSubgroups/add',array('escape'=>false,'class'=>'btn btn-xs default')); ?>
+			<?php echo $this->Html->link('<i class="icon-home"></i> Add Account Second Sub Group','/AccountSecondSubgroups/add',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
+		</div>
+	</div>
+	<div class="portlet-body form">
+		<!-- BEGIN FORM-->
+		<div class="row ">
+		
+		<div class="col-md-12">
+		<div class="table-scrollable">
+		 <?php $page_no=$this->Paginator->current('LedgerAccounts'); $page_no=($page_no-1)*20; ?>
+			<table class="table table-hover">
+				 <thead>
+					<tr>
+						<th>Sr. No.</th>
+						<th>Account Category</th>
+						<th>Account Group</th>
+						<th>Account First Subgroup </th>
+						<th>Account Second Subgroup </th>	
+						<th>Ledger Account </th>	
+						
+					</tr>
+				</thead>
+				<tbody>
+					<?php $i=0;foreach ($ledgerAccounts as $ledgerAccount): $i++; 
+					$secondsubgroup=$ledgerAccount->account_second_subgroup->name;
+					$firstsubgroup=$ledgerAccount->account_second_subgroup->account_first_subgroup->name;
+					$group=$ledgerAccount->account_second_subgroup->account_first_subgroup->account_group->name;
+					$category=$ledgerAccount->account_second_subgroup->account_first_subgroup->account_group->account_category->name;
+					?>
+					<tr>
+						<td><?= h(++$page_no) ?></td>
+						<td><?= h($category) ?></td>
+						<td><?= h($group) ?></td>
+						<td><?= h($firstsubgroup) ?></td>
+						<td><?= h($secondsubgroup) ?></td>
+						<td><?= h($ledgerAccount->name) ?></td>
+               
+					</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+			</div>
+			<div class="paginator">
+				<ul class="pagination">
+					<?= $this->Paginator->prev('<') ?>
+					<?= $this->Paginator->numbers() ?>
+					<?= $this->Paginator->next('>') ?>
+				</ul>
+				<p><?= $this->Paginator->counter() ?></p>
+			</div>
+		</div>
+		
+		
+		<!-- END FORM-->
+	</div>
+</div>
 </div>

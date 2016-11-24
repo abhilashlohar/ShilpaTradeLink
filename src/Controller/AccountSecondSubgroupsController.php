@@ -19,6 +19,21 @@ class AccountSecondSubgroupsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$accountSecondSubgroup = $this->AccountSecondSubgroups->newEntity();
+        if ($this->request->is('post')) {
+            $accountSecondSubgroup = $this->AccountSecondSubgroups->patchEntity($accountSecondSubgroup, $this->request->data);
+            if ($this->AccountSecondSubgroups->save($accountSecondSubgroup)) {
+                $this->Flash->success(__('The account second subgroup has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The account second subgroup could not be saved. Please, try again.'));
+            }
+        }
+        $accountFirstSubgroups = $this->AccountSecondSubgroups->AccountFirstSubgroups->find('list', ['limit' => 200]);
+        $this->set(compact('accountSecondSubgroup', 'accountFirstSubgroups'));
+        $this->set('_serialize', ['accountSecondSubgroup']);
+    
         $this->paginate = [
             'contain' => ['AccountFirstSubgroups']
         ];
