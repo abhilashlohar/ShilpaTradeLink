@@ -8,8 +8,8 @@
 		</div>
 		<div class="actions">
 			<?php echo $this->Html->link('<i class="icon-home"></i> Add Account Group','/AccountGroups/',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
-			<?php echo $this->Html->link('<i class="icon-home"></i> Add Account First Sub Group','/AccountFirstSubgroups/add',array('escape'=>false,'class'=>'btn btn-xs default')); ?>
-			<?php echo $this->Html->link('<i class="icon-home"></i> Add Account Second Sub Group','/AccountSecondSubgroups/add',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
+			<?php echo $this->Html->link('<i class="icon-home"></i> Add Account First Sub Group','/AccountFirstSubgroups/',array('escape'=>false,'class'=>'btn btn-xs default')); ?>
+			<?php echo $this->Html->link('<i class="icon-home"></i> Add Account Second Sub Group','/AccountSecondSubgroups/',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
 		</div>
 	</div>
 	<div class="portlet-body form">
