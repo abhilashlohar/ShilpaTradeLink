@@ -193,9 +193,12 @@ class QuotationsController extends AppController
     {
 		$this->viewBuilder()->layout('');
         $quotation = $this->Quotations->get($id, [
-            'contain' => ['Customers','Companies','Employees'=>['Designations'],'ItemGroups','Creator'=>['Designations'],'Editor'=>['Designations'],'QuotationRows' => ['Items'=>['Units']]]
+            'contain' => ['Customers'=>['CustomerContacts'=>function($q){
+			return $q
+			->where(['CustomerContacts.default_contact'=>1]);
+		}],'Companies','Employees'=>['Designations'],'ItemGroups','Creator'=>['Designations'],'Editor'=>['Designations'],'QuotationRows' => ['Items'=>['Units']]]
         ]);
-
+		//pr($quotation); exit;
         $this->set('quotation', $quotation);
         $this->set('_serialize', ['quotation']);
     }
