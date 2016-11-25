@@ -97,7 +97,7 @@ With reference to your price list we are pleased to place an order for the follo
 							<tr>
 								<td colspan="4" align="right"><b>Discount</b></td>
 								<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount']); ?>
-								<?php echo $this->Form->radio('discount_type',[['value' => '%', 'text' => 'Percent(%)'],['value' => 'Rupees', 'text' => 'Amount']]); ?>
+								<?php echo $this->Form->radio('discount_type',[['value' => '%', 'text' => 'Percent(%)'],['value' => '', 'text' => 'Amount']]); ?>
 								</td>
 								
 							</tr>
@@ -106,7 +106,7 @@ With reference to your price list we are pleased to place an order for the follo
 							<tr>
 								<td colspan="4" align="right"><b>P&F</b></td>
 								<td><?php echo $this->Form->input('pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&f']); ?>
-								<?php echo $this->Form->radio('pnf_type',[['value' => '%', 'text' => 'Percent(%)'],['value' => 'Rupees', 'text' => 'Amount']]); ?>
+								<?php echo $this->Form->radio('pnf_type',[['value' => '%', 'text' => 'Percent(%)'],['value' => '', 'text' => 'Amount']]); ?>
 								</td>
 							</tr>
 							

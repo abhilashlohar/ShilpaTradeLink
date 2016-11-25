@@ -241,14 +241,14 @@ $html.='
 		<tr  >
 			<td width="5%">Name</td>
 			<td width="20%">: '. h($salesOrder->dispatch_name).'</td>
-			<td width="20%"><td>
+			<td width="10%"><td>
 			<td width="5%">Mobile</td>
-			<td width="30%">: '. h($salesOrder->dispatch_mobile).'</td>
+			<td width="60%">: '. h($salesOrder->dispatch_mobile).'</td>
 		</tr>
 		<tr>
 			<td width="5%">Address</td>
 			<td width="50%">: '. h($salesOrder->dispatch_address).'</td>
-			<td width="30%"><td>
+			<td width="20%"><td>
 			<td>Email</td>
 			<td>: '. h($salesOrder->dispatch_email).'</td>
 			

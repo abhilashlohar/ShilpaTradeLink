@@ -61,6 +61,12 @@ class PaymentVouchersController extends AppController
             }
 			
         }
+		
+		$Paidtos = $this->PaymentVouchers->Paidto->find('list');
+		foreach($Paidtos as $Paidto){
+			pr($Paidto);
+		}
+		 exit;
         $this->set(compact('paymentVoucher','vouchersReferences'));
         $this->set('_serialize', ['paymentVoucher']);
     }

@@ -16,13 +16,13 @@ $html = '
 <html>
 <head>
   <style>
-  @page { margin: 135px 15px 10px 30px; }
+  @page { margin: 140px 15px 10px 30px; }
 
   body{
     //margin-bottom: 330px;
 	}
 	
-    #header { position: fixed; left: 0px; top: -135px; right: 0px; height: 135px;}
+    #header { position: fixed; left: 0px; top: -140px; right: 0px; height: 140px;}
     
     
 	#content{
@@ -66,7 +66,7 @@ $html = '
 				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$invoice->company->logo.' height="80px" style="height:80px;"/>
 				</td>
 				<td align="right" width="50%" style="font-size: 12px;">
-				<span style="font-size: 16px;">'. h($invoice->company->name) .'</span><br/>
+				<span style="font-size: 20px;">'. h($invoice->company->name) .'</span><br/>
 				<span>'. $this->Text->autoParagraph(h($invoice->company->address)) .'</span>
 				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/telephone.gif height="11px" style="height:11px;margin-top:5px;"/> '. h($invoice->company->mobile_no).'</span> | 
 				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/email.png height="15px" style="height:15px;margin-top:4px;"/> '. h($invoice->company->email).'</span>
@@ -97,24 +97,24 @@ $html.='
 			<td width="" valign="top" align="right">
 				<table>
 					<tr>
-						<td>Invoice No.</td>
+						<td width="60" valign="top" style="vertical-align: top;">Invoice No.</td>
 						<td width="20" align="center">:</td>
-						<td>'. h(($invoice->in1."/IN-".str_pad($invoice->id, 3, "0", STR_PAD_LEFT)."/".$invoice->in3."/".$invoice->in4)) .'</td>
+						<td valign="top">'. h(($invoice->in1."/IN-".str_pad($invoice->id, 3, "0", STR_PAD_LEFT)."/".$invoice->in3."/".$invoice->in4)) .'</td>
 					</tr>
 					<tr>
-						<td>Date</td>
+						<td valign="top" style="vertical-align: top;">Date</td>
 						<td width="20" align="center">:</td>
-						<td>'. h(date("d-m-Y",strtotime($invoice->date_created))) .'</td>
+						<td valign="top">'. h(date("d-m-Y",strtotime($invoice->date_created))) .'</td>
 					</tr>
 					<tr>
-						<td>LR No.</td>
+						<td valign="top" style="vertical-align: top;">LR No.</td>
 						<td width="20" align="center">:</td>
-						<td>'. h($invoice->lr_no) .'</td>
+						<td valign="top" style="vertical-align: top;">'. h($invoice->lr_no) .'</td>
 					</tr>
 					<tr>
-						<td>Carrier</td>
+						<td valign="top" style="vertical-align: top;">Carrier</td>
 						<td width="20" align="center">:</td>
-						<td>'. h($invoice->transporter->transporter_name) .'</td>
+						<td valign="top">'. h($invoice->transporter->transporter_name) .'</td>
 					</tr>
 				</table>
 			</td>
@@ -181,6 +181,7 @@ $html.='</table>';
 $grand_total=explode('.',$invoice->grand_total);
 $rupees=$grand_total[0];
 if(sizeof($grand_total)==2){
+	$grand_total[1]=str_pad($grand_total[1], 2, '0', STR_PAD_RIGHT);
 	$paisa=(int)$grand_total[1];
 }else{ $paisa=""; }
 

@@ -29,7 +29,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Date</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('date_created', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
+							<?php echo $this->Form->input('date_created', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y",strtotime($invoice->date_created)),'readonly']); ?>
 						</div>
 					</div>
 				</div>

@@ -1,4 +1,7 @@
 <?php
+
+
+
 require_once(ROOT . DS  .'vendor' . DS  . 'dompdf' . DS . 'autoload.inc.php');
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -118,12 +121,14 @@ $html .= '
 					<tr>
 						<td>
 							<span>'. h(($quotation->customer->customer_name)) .'</span>
-							'.$this->Text->autoParagraph(h($quotation->customer_address)) .'
+							'.$this->Text->autoParagraph(h($quotation->customer_address)) .'</span>
+							Email: '. h($quotation->customer->customer_contacts[0]->email) .'
 						</td>
 					</tr>
 					<tr>
 						<td><br/>
 							<table style="margin: 0px 0 0 -2px;">
+								
 								<tr>
 									<td>Kind Attn.</td>
 									<td>: '. h(($quotation->customer_for_attention)) .' ('. h($quotation->customer_contact) .')</td>
