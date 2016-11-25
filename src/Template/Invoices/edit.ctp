@@ -111,6 +111,29 @@
 				</div>
 			</div><br/>
 			
+						<div class="row">
+			<?php if(!empty($invoice->form47)) {?>
+				<div class="col-md-6">
+				<div class="form-group">
+						<label class="col-md-3 control-label">Road Permit No  <span class="required" aria-required="true">*</span></label>
+						<div class="col-md-9">
+							<?php echo $this->Form->input('form47', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Form 47','required']); ?>
+						</div>
+					</div>
+				</div>
+			<?php } ?>
+				<?php if(!empty($invoice->form49)) {?>
+				<div class="col-md-6">
+				<div class="form-group">
+						<label class="col-md-3 control-label">Form 49 <span class="required" aria-required="true">*</span></label>
+						<div class="col-md-9">
+							<?php echo $this->Form->input('form49', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Form 49','required']); ?>
+						</div>
+					</div>
+				</div>
+				<?php } ?>
+			</div><br/>
+			
 		
 			<table class="table tableitm" id="main_tb">
 				<thead>

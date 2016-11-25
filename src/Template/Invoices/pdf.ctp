@@ -270,15 +270,24 @@ $html .= '<div id="footer">';
 				$html.='<tr>
 				<td rowspan="'.$tot.'">
 				<table class="table2">
+<<<<<<< HEAD
+					<tr>';
+					if(!empty($invoice->form47)){
+					$html.='<td><b>Road Permit:</b><br/>
+=======
 					<tr>
 						<td>Road Permit:<br/>
+>>>>>>> 588e4b12ce7f6e6620d9098b6a66dcce7e6444ea
 						'. h($invoice->form47) .'
-						</td>
-						
-						<td>Form 49:<br/>
+						</td>';
+					}
+					if(!empty($invoice->form49)){
+					$html.='<td><b>Form 49:</b><br/>
+							
 						'. h($invoice->form49) .'
-						</td>	
-					</tr>
+						</td>';	
+					}
+					$html.='</tr>
 				</table>
 				
 				</td>';
@@ -306,6 +315,10 @@ $html .= '<div id="footer">';
 			<tr>
 				<td colspan="3"><table   width="100%" class="table-amnt"><tr><td valign="top" width="18%"> <b><div style="margin-top:5px;">Amount in words: </div></b></td><td  valign="top">'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td></tr></table></td>
 			</tr>
+			<tr>
+				<td colspan="3"><table   width="100%" class="table-amnt"><tr><td valign="top" width="18%"> <b><div style="margin-top:5px;">Additional Note: </div></b></td><td  valign="top">'.  h($invoice->additional_note).' </td></tr></table></td>
+			</tr>
+			
 		</tbody>
 	</table>';
 	
