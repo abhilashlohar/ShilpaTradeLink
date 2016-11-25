@@ -1,3 +1,5 @@
+<?php //$grns; exit; ?>
+
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">

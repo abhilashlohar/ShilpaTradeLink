@@ -117,6 +117,29 @@
 				</div>
 			</div><br/>
 			
+			<div class="row">
+			<?php if($sales_order->road_permit_required=='Yes') {?>
+				<div class="col-md-6">
+				<div class="form-group">
+						<label class="col-md-3 control-label">Road Permit No  <span class="required" aria-required="true">*</span></label>
+						<div class="col-md-9">
+							<?php echo $this->Form->input('form47', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Form 47']); ?>
+						</div>
+					</div>
+				</div>
+			<?php } ?>
+				<?php if($sales_order->form49=='Yes'){ ?>
+				<div class="col-md-6">
+				<div class="form-group">
+						<label class="col-md-3 control-label">Form 49 <span class="required" aria-required="true">*</span></label>
+						<div class="col-md-9">
+							<?php echo $this->Form->input('form49', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Form 49']); ?>
+						</div>
+					</div>
+				</div>
+				<?php } ?>
+			</div><br/>
+			
 			<div class="alert alert-danger" id="row_error_item" style="display:none;padding: 5px !important;">
 				Please check at least one row.
 			</div>

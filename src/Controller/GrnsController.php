@@ -62,9 +62,6 @@ class GrnsController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
-		
-		$s_employee_id=$this->viewVars['s_employee_id'];
-		
 		$purchase_order_id=@(int)$this->request->query('purchase-order');
 		
 		$purchase_order=array();
@@ -89,7 +86,9 @@ class GrnsController extends AppController
 			$grn->date_created=date("Y-m-d");
 			$grn->purchase_order_id=$purchase_order_id;
 			$grn->company_id=$purchase_order->company_id;
-			$grn->created_by=$s_employee_id;
+			$grn->created_by=$this->viewVars['s_employee_id'];
+			
+			//pr ($grn->created_by); exit;
 			//pr($grn); exit;
             if ($this->Grns->save($grn)) {
 					if(!empty($purchase_order_id)){

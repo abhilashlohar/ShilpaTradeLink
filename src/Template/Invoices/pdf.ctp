@@ -263,7 +263,20 @@ $html .= '<div id="footer">';
 			$tot=1;
 			if($invoice->fright_amount > 0 ){ $tot=2;}
 				$html.='<tr>
-				<td rowspan="'.$tot.'">'. h($invoice->additional_note) .'</td>';
+				<td rowspan="'.$tot.'">
+				<table border="0">
+					<tr>
+						<td>Road Permit:<br/>
+						'. h($invoice->form47) .'
+						</td>
+						
+						<td>Form 49:<br/>
+						'. h($invoice->form49) .'
+						</td>	
+					</tr>
+				</table>
+				
+				</td>';
 				if($invoice->fright_amount > 0 ){
 				$html.='
 				<td style="text-align:justify;">'. h($invoice->fright_text) .'</td>
