@@ -45,6 +45,9 @@ $html = '
 	.table_rows, .table_rows th, .table_rows td {
 	   border: 1px solid  #000;border-collapse: collapse;padding:2px; 
 	}
+	.itemrow tbody td{
+		border-bottom: none;border-top: none;
+	}
 	.table_rows th{
 		font-size:14px;
 	}
@@ -173,7 +176,7 @@ $html .= '
  
 
 $html.='
-<table width="100%" class="table_rows">
+<table width="100%" class="table_rows itemrow">
 		<tr>
 			<th width="30">S No</th>
 			<th>Item Description</th>
@@ -200,8 +203,8 @@ endforeach;
 $html.='
 	<tfoot>
 			<tr>
-				<td colspan="5" style="text-align:right;border-top: none !important;">Total</td>
-				<td style="text-align:right;border-top: none !important;" width="10">'. $this->Number->format($quotation->total,[ 'places' => 2]) .'</td>
+				<td colspan="5" style="text-align:right;border-top: 1px solid #000;">Total</td>
+				<td style="text-align:right;border-top: 1px solid #000;" width="10">'. $this->Number->format($quotation->total,[ 'places' => 2]) .'</td>
 			</tr>
 		</tfoot>
 	</table>';
