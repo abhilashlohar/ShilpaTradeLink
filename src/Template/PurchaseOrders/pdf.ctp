@@ -120,25 +120,11 @@ endforeach;
 
 
 
-$grand_total=explode('.',$purchaseOrder->grand_total);
-$rupees=$grand_total[0];
-if(sizeof($grand_total)==2){
-	$paisa=(int)$grand_total[1];
+$total=explode('.',$purchaseOrder->total);
+$rupees=$total[0];
+if(sizeof($total)==2){
+	$paisa=(int)$total[1];
 }else{ $paisa=""; }
-
-
-
-$html.='<tr>
-				
-				<td colspan="4" style="text-align:right;">Discount</td>
-				<td style="text-align:right;">'. $this->Number->format($purchaseOrder->discount,[ 'places' => 2]).'</td>
-
-</tr>
-
-				<tr>
-				<td colspan="4" style="text-align:justify;">Exceise Duty</td>
-				<td style="text-align:right;">'. $this->Number->format($purchaseOrder->exceise_duty,[ 'places' => 2]).'</td>
-</tr>';	
 
 $html.='</table><br/>';
 
@@ -148,8 +134,8 @@ $html.='
 	<tbody>
 			<tr>
 				
-				<td width="90%" style="text-align:right;">Total</td>
-				<td width="10%" style="text-align:right;">'. $this->Number->format($purchaseOrder->total,[ 'places' => 2]).'</td>
+				<td width="85%" style="text-align:right;">Total</td>
+				<td width="25%" style="text-align:right;">'. $this->Number->format($purchaseOrder->total,[ 'places' => 2]).'</td>
 			</tr>
 				
 			
@@ -164,13 +150,13 @@ $html .= '	<table width="100%" class="table_rows">
   <tr>
     <td>Material To Be Transported:<br/>'. h(($purchaseOrder->material_to_be_transported)) .'</td>
     <td>Sale Tax:'. h(($purchaseOrder->sale_tax_per)) .'%<br/>'. h(($purchaseOrder->sale_tax_description)) .'</td>
-    <td><p>Discount:'. h(($purchaseOrder->discount)) .'</p>
+    <td><p>Discount:'. h(($purchaseOrder->discount)) .''. h(($purchaseOrder->discount_type)) .'</p>
     <p></p></td>
   </tr>
   <tr>
     <td>LR To Be Prepared In Favour Of:<br/>'. h(($purchaseOrder->lr_to_be_prepared_in_favour_of)) .'</td>
     <td>Payment Terms<br/>'. h(($purchaseOrder->payment_terms)) .'</td>
-    <td>PNF Per	:'. h(($purchaseOrder->pnf_per)) .'</td>
+    <td>PNF Per	:'. h(($purchaseOrder->pnf)) .''. h(($purchaseOrder->pnf_type)) .'</td>
    
   </tr>
   <tr>
