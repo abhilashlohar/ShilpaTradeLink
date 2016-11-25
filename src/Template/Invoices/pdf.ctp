@@ -269,7 +269,7 @@ $html .= '<div id="footer">';
 			if($invoice->fright_amount > 0 ){ $tot=2;}
 				$html.='<tr>
 				<td rowspan="'.$tot.'">
-				<table border="0">
+				<table class="table2">
 					<tr>
 						<td>Road Permit:<br/>
 						'. h($invoice->form47) .'
@@ -351,7 +351,7 @@ $html.='<table width="100%" >
 </body>
 </html>';
 
-//echo $html; exit; 
+echo $html; exit; 
 
 $name='Invoice-'.h(($invoice->in1.'_IN'.str_pad($invoice->id, 3, '0', STR_PAD_LEFT).'_'.$invoice->in3.'_'.$invoice->in4));
 $dompdf->loadHtml($html);
