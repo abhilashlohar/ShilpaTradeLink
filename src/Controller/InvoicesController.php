@@ -38,7 +38,7 @@ class InvoicesController extends AppController
 			$where['Invoices.in1 LIKE']='%'.$company_alise.'%';
 		}
 		if(!empty($invoice_no)){
-			$where['Invoices.id']=$invoice_no;
+			$where['Invoices.in2 LIKE']=$invoice_no;
 		}
 		if(!empty($file)){
 			$where['Invoices.in3 LIKE']='%'.$file.'%';
@@ -216,10 +216,14 @@ class InvoicesController extends AppController
 		
         $invoice = $this->Invoices->newEntity();
         if ($this->request->is('post')) {
+			
+			
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
+			$last_in_no=$this->Invoices->find()->select(['in2'])->where(['company_id' => $sales_order->company_id])->order(['in2' => 'DESC'])->first();
+			
 			
 			$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date));
-
+			$invoice->in2=$last_in_no->in2+1;
 			$invoice->created_by=$s_employee_id;
 			$invoice->company_id=$sales_order->company_id;
 			$invoice->date_created=date("Y-m-d");

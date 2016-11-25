@@ -180,8 +180,20 @@ class QuotationsController extends AppController
 	public function confirm($id = null)
     {
 		$this->viewBuilder()->layout('pdf_layout');
+		$quotation = $this->Quotations->get($id, [
+            'contain' => ['QuotationRows']
+			]);
+		if ($this->request->is(['patch', 'post', 'put'])) {
+            foreach($this->request->data['quotation_rows'] as $quotation_row_id=>$value){
+				$quotationRow=$this->Quotations->QuotationRows->get($quotation_row_id);
+				$quotationRow->height=$value["height"];
+				$this->Quotations->QuotationRows->save($quotationRow);
+			}
+			return $this->redirect(['action' => 'confirm/'.$id]);
+        }
 		
-        $this->set('id', $id);
+		$this->set(compact('quotation','id'));
+        
     }
 	
 	public function email($id = null)

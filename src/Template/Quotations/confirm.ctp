@@ -12,6 +12,16 @@ $edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Edit']);
 			<a href="<?php echo $edit_url.'/'.$id; ?>" class="list-group-item"><i class="fa fa-edit"></i> Edit Quotation </a>
 			<a href="#" class="list-group-item" onclick="window.close()"><i class="fa fa-times"></i> Close </a>
 		</div>
+		<div style="padding:5px;">
+		<h4>Adjust height of rows</h4>
+		<?= $this->Form->create($quotation) ?>
+			<?php $sr=0; foreach ($quotation->quotation_rows as $quotationRows): $sr++;
+				echo $this->Form->input('quotation_rows.'.$quotationRows->id.'.id');
+				echo $this->Form->input('quotation_rows.'.$quotationRows->id.'.height',['label' => 'Row-'.$sr,'class' => 'input-sm quantity','value'=>$quotationRows->height]);				
+			endforeach; ?>
+			<?= $this->Form->button(__('Update'),['class'=>'btn btn-sm default']) ?>
+		<?= $this->Form->end() ?>
+		</div>
 		</td>
 		<td width="80%">
 			<object data="<?php echo $pdf_url.'/'.$id; ?>" type="application/pdf" width="100%" height="613px">

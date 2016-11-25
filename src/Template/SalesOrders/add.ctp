@@ -204,10 +204,6 @@ if(!empty($copy))
 					<td><?php echo $this->Form->input('discount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
 				</tr>
 				
-				<tr style="background-color:#e6faf9;">
-					<td align="right"><b><?php echo $this->Form->textarea('ed_description', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:left']]); ?> </b></td>
-					<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty','value' => 0]); ?></td>
-				</tr>
 				
 				<tr>
 					<td align="right"><b>Total</b></td>
@@ -697,9 +693,6 @@ $(document).ready(function() {
 		}
 		total=total-discount_amount
 		
-		var exceise_duty=parseFloat($('input[name="exceise_duty"]').val());
-		if(isNaN(exceise_duty)) { var exceise_duty = 0; }
-		total=total+exceise_duty
 		$('input[name="total"]').val(total.toFixed(2));
 		
 		if($("#pnfper").is(':checked')){
