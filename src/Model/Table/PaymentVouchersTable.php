@@ -34,8 +34,6 @@ class PaymentVouchersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 		
-		$this->belongsTo('VouchersReferences');
-       
     }
 
     /**
