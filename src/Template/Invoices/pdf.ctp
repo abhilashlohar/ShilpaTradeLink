@@ -45,6 +45,10 @@ $html = '
 	.table_rows, .table_rows th, .table_rows td {
 	   border: 1px solid  #000;border-collapse: collapse;padding:2px; 
 	}
+	.itemrow tbody td{
+		border-bottom: none;border-top: none;
+	}
+	
 	.table2 td{
 		border: 0px solid  #000;font-size: 14px;padding:0px; 
 	}
@@ -124,7 +128,7 @@ $html.='
 ';
  
 $html.='<br/>
-<table width="100%" class="table_rows">
+<table width="100%" class="table_rows itemrow">
 		<tr>
 			<td colspan=6 align="">
 			Your Purchase Order No.'. h($invoice->customer_po_no) .' dated '. h(date("d-m-Y",strtotime($invoice->po_date))) .'
@@ -161,16 +165,16 @@ if($invoice->discount_type=='1'){ $discount_text='Discount @ '.$invoice->discoun
 
 		if(!empty($invoice->discount)){
 		$html.='<tr>
-					<td style="text-align:right"; colspan="5">'.$discount_text.'</td>
-					<td style="text-align:right;">'. $this->Number->format($invoice->discount,[ 'places' => 2]).'</td>
+					<td style="text-align:right;border-top: 1px solid #000;"; colspan="5">'.$discount_text.'</td>
+					<td style="text-align:right;border-top: 1px solid #000">'. $this->Number->format($invoice->discount,[ 'places' => 2]).'</td>
 				</tr>';
 		}
 
 
 if($invoice->exceise_duty>0){
 				$html.='<tr>
-				<td colspan="5" style="text-align:justify;">'. $this->Text->autoParagraph(h($invoice->ed_description)) .'</td>
-				<td style="text-align:right;">'. $this->Number->format($invoice->exceise_duty,[ 'places' => 2]).'</td>
+				<td colspan="5" style="text-align:justify;border-top: 1px solid #000;">'. $this->Text->autoParagraph(h($invoice->ed_description)) .'</td>
+				<td style="text-align:right;border-top: 1px solid #000;">'. $this->Number->format($invoice->exceise_duty,[ 'places' => 2]).'</td>
 </tr>';	}
 			
 			
