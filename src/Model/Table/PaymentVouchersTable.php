@@ -36,6 +36,17 @@ class PaymentVouchersTable extends Table
 		
 		$this->belongsTo('VouchersReferences');
        
+		
+		$this->belongsTo('Paidto', [
+			'className' => 'LedgerAccounts',
+			'foreignKey' => 'paid_to_id',
+			'propertyName' => 'paidto',
+		]);
+		$this->belongsTo('Cashbank', [
+			'className' => 'LedgerAccounts',
+			'foreignKey' => 'cash_bank_account_id',
+			'propertyName' => 'cashbank'
+		]);
     }
 
     /**
