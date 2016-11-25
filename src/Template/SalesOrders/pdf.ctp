@@ -36,6 +36,9 @@ $html = '
 	.table_rows, .table_rows th, .table_rows td {
 	   border: 1px solid  #000;border-collapse: collapse;padding:2px; 
 	}
+	.itemrow tbody td{
+		border-bottom: none;border-top: none;
+	}
 	.table_rows th{
 		font-size:14px;
 	}
@@ -101,7 +104,7 @@ $html.='
 	</table>';
  
 $html.='<br/>
-<table width="100%" class="table_rows">
+<table width="100%" class="table_rows itemrow">
 		<tr>
 			<th>S No</th>
 			<th>Item</th>
@@ -130,7 +133,7 @@ $html.='
 		$html.='
 		<tr class="even">
 			<td></td>
-			<td colspan="7" style="text-align: justify;"><b> </b>'. $this->Text->autoParagraph(h($salesOrderRows->description)) .'</td>
+			<td colspan="7" style="text-align: justify;"><b> </b>'. $this->Text->autoParagraph(h($salesOrderRows->description)).'<div style="height:'.$salesOrderRows->height.'"></div></td>
 		</tr>';
 	}
 endforeach;

@@ -190,8 +190,19 @@ class SalesOrdersController extends AppController
 	public function confirm($id = null)
     {
 		$this->viewBuilder()->layout('pdf_layout');
+		$salesorder = $this->SalesOrders->get($id, [
+            'contain' => ['SalesOrderRows']
+			]);
+		if ($this->request->is(['patch', 'post', 'put'])) {
+            foreach($this->request->data['sales_order_rows'] as $sales_order_row_id=>$value){
+				$salesOrderRow=$this->SalesOrders->SalesOrderRows->get($sales_order_row_id);
+				$salesOrderRow->height=$value["height"];
+				$this->SalesOrders->SalesOrderRows->save($salesOrderRow);
+			}
+			return $this->redirect(['action' => 'confirm/'.$id]);
+        }
 		
-        $this->set('id', $id);
+		$this->set(compact('salesorder','id'));
     }
 	
     /**
