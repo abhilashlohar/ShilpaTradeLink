@@ -16,13 +16,13 @@ $html = '
 <html>
 <head>
   <style>
-  @page { margin: 135px 15px 10px 30px; }
+  @page { margin: 140px 15px 10px 30px; }
 
   body{
     //margin-bottom: 330px;
 	}
 	
-    #header { position: fixed; left: 0px; top: -135px; right: 0px; height: 135px;}
+    #header { position: fixed; left: 0px; top: -140px; right: 0px; height: 140px;}
     
     
 	#content{
@@ -181,6 +181,7 @@ $html.='</table>';
 $grand_total=explode('.',$invoice->grand_total);
 $rupees=$grand_total[0];
 if(sizeof($grand_total)==2){
+	$grand_total[1]=str_pad($grand_total[1], 2, '0', STR_PAD_RIGHT);
 	$paisa=(int)$grand_total[1];
 }else{ $paisa=""; }
 
@@ -333,7 +334,7 @@ $html.='<table width="100%" >
 </body>
 </html>';
 
-//echo $html; exit; 
+echo $html; exit; 
 
 $name='Invoice-'.h(($invoice->in1.'_IN'.str_pad($invoice->id, 3, '0', STR_PAD_LEFT).'_'.$invoice->in3.'_'.$invoice->in4));
 $dompdf->loadHtml($html);
