@@ -103,7 +103,7 @@ $html.='
 					<tr>
 						<td width="60" valign="top" style="vertical-align: top;">Invoice No.</td>
 						<td width="20" align="center">:</td>
-						<td valign="top">'. h(($invoice->in1."/IN-".str_pad($invoice->id, 3, "0", STR_PAD_LEFT)."/".$invoice->in3."/".$invoice->in4)) .'</td>
+						<td valign="top">'. h(($invoice->in1."/IN-".str_pad($invoice->in2, 3, "0", STR_PAD_LEFT)."/".$invoice->in3."/".$invoice->in4)) .'</td>
 					</tr>
 					<tr>
 						<td valign="top" style="vertical-align: top;">Date</td>
@@ -353,7 +353,7 @@ $html.='<table width="100%" >
 
 //echo $html; exit; 
 
-$name='Invoice-'.h(($invoice->in1.'_IN'.str_pad($invoice->id, 3, '0', STR_PAD_LEFT).'_'.$invoice->in3.'_'.$invoice->in4));
+$name='Invoice-'.h(($invoice->in1.'_IN'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'_'.$invoice->in3.'_'.$invoice->in4));
 $dompdf->loadHtml($html);
 
 $dompdf->setPaper('A4', 'portrait');

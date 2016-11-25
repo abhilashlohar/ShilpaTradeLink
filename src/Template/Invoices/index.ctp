@@ -84,7 +84,7 @@ $url_excel="/?".$url;
 						<?php foreach ($invoices as $invoice): ?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
-							<td><?= h(($invoice->in1.'/IN-'.str_pad($invoice->id, 3, '0', STR_PAD_LEFT).'/'.$invoice->in3.'/'.$invoice->in4)) ?></td>
+							<td><?= h(($invoice->in1.'/IN-'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$invoice->in3.'/'.$invoice->in4)) ?></td>
 							<td><?= h($invoice->customer->customer_name) ?></td>
 							<td><?php echo date("d-m-Y",strtotime($invoice->date_created)); ?></td>
 							<td><?= h($invoice->total_after_pnf) ?></td>
