@@ -123,7 +123,7 @@
 				<div class="form-group">
 						<label class="col-md-3 control-label">Road Permit No  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('form47', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Form 47']); ?>
+							<?php echo $this->Form->input('form47', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Form 47','required']); ?>
 						</div>
 					</div>
 				</div>
@@ -133,7 +133,7 @@
 				<div class="form-group">
 						<label class="col-md-3 control-label">Form 49 <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('form49', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Form 49']); ?>
+							<?php echo $this->Form->input('form49', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Form 49','required']); ?>
 						</div>
 					</div>
 				</div>

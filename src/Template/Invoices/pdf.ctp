@@ -269,16 +269,20 @@ $html .= '<div id="footer">';
 			if($invoice->fright_amount > 0 ){ $tot=2;}
 				$html.='<tr>
 				<td rowspan="'.$tot.'">
-				<table border="0">
-					<tr>
-						<td>Road Permit:<br/>
+				<table class="table2">
+					<tr>';
+					if(!empty($invoice->form47)){
+					$html.='<td><b>Road Permit:</b><br/>
 						'. h($invoice->form47) .'
-						</td>
-						
-						<td>Form 49:<br/>
+						</td>';
+					}
+					if(!empty($invoice->form49)){
+					$html.='<td><b>Form 49:</b><br/>
+							
 						'. h($invoice->form49) .'
-						</td>	
-					</tr>
+						</td>';	
+					}
+					$html.='</tr>
 				</table>
 				
 				</td>';
@@ -306,6 +310,10 @@ $html .= '<div id="footer">';
 			<tr>
 				<td colspan="3"><table   width="100%" class="table-amnt"><tr><td valign="top" width="18%"> <b><div style="margin-top:5px;">Amount in words: </div></b></td><td  valign="top">'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td></tr></table></td>
 			</tr>
+			<tr>
+				<td colspan="3"><table   width="100%" class="table-amnt"><tr><td valign="top" width="18%"> <b><div style="margin-top:5px;">Additional Note: </div></b></td><td  valign="top">'.  h($invoice->additional_note).' </td></tr></table></td>
+			</tr>
+			
 		</tbody>
 	</table>';
 	
