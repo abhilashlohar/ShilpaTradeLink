@@ -42,6 +42,7 @@ class LedgerAccountsTable extends Table
             'foreignKey' => 'account_second_subgroup_id',
             'joinType' => 'INNER'
         ]);
+		
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'

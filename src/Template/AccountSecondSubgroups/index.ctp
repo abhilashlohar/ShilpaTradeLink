@@ -1,25 +1,49 @@
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
-		
-		
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Account Second Sub-Group</span> 
-			
-			
 		</div>
-		<div class="actions">
-			<?php echo $this->Html->link('<i class="icon-home"></i> Add Account Second SubGroup','/AccountSecondSubgroups/add',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
-
+		<div class="portlet-body form">
+		<!-- BEGIN FORM-->
+		<div class="row ">
+		<div class="col-md-12">
+		<?= $this->Form->create($accountSecondSubgroup) ?>
+			<div class="form-body">
+				<div class="form-group">
+					<div class="col-md-5">
+					<label class="control-label">Account First Sub-Group <span class="required" aria-required="true">*</span></label>
+						<?php 
+						echo $this->Form->input('account_first_subgroup_id', ['options' => $accountFirstSubgroups,'empty' => "--Select--",'label' => false,'class' => 'form-control select2me ' ,'required']); 
+						?>
+					</div>
+					<div class="col-md-5">
+					<label class="control-label">Name <span class="required" aria-required="true">*</span></label>
+						<?php 
+						echo $this->Form->input('name', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Name']); 
+						?>
+					</div>
+					
+					<div class="col-md-2">
+					<label class="control-label"> <span class="required" aria-required="true"></span> </label><br/>
+						<?php 
+						echo $this->Form->button(__('ADD'),['class'=>'btn btn-primary']); 
+						?>
+					</div>
+				</div>
 			</div>
+		<?= $this->Form->end() ?>
 		</div>
+		<!-- END FORM-->
+		</div>
+	</div>
 		
 		
 			<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
 				<form method="GET" >
-					<table class="table table-condensed">
+					<table class="table table-condensed" style="margin-top:20px;">
 						<tbody>
 							<tr>
 								<td><input type="text" name="Account_first_subgroup" class="form-control input-sm" placeholder="Account First SubGroup" value="<?php echo @$Account_first_subgroup; ?>"></td>
@@ -31,7 +55,7 @@
 				</form>
 				
 				<?php $page_no=$this->Paginator->current('Account Group Name'); $page_no=($page_no-1)*20; ?>
-				<table class="table table-bordered table-striped table-hover">
+				<table class="table table-bordered table-striped table-hover" style="margin-top:20px;">
 						<thead>
 							<tr>
 								<th>S.No</th>
@@ -76,7 +100,7 @@
 		</div>
 	</div>
 </div>
-
+</div>
 
 
 

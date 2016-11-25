@@ -19,6 +19,21 @@ class AccountGroupsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$accountGroup = $this->AccountGroups->newEntity();
+        if ($this->request->is('post')) {
+            $accountGroup = $this->AccountGroups->patchEntity($accountGroup, $this->request->data);
+            if ($this->AccountGroups->save($accountGroup)) {
+                $this->Flash->success(__('The account group has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The account group could not be saved. Please, try again.'));
+            }
+        }
+        $accountCategories = $this->AccountGroups->AccountCategories->find('list', ['limit' => 200]);
+        $this->set(compact('accountGroup', 'accountCategories'));
+        $this->set('_serialize', ['accountGroup']);
+    
         $this->paginate = [
             'contain' => ['AccountCategories']
         ];
