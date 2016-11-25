@@ -30,3 +30,26 @@ $edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Edit']);
 		</td>
 	</tr>
 </table>
+>
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<script>
+$(document).ready(function() {
+	$('.quantity').die().live("keyup",function() {
+			var asc=$(this).val();
+			var numbers =  /^[0-9]*\.?[0-9]*$/;
+			if(asc==0)
+			{
+				$(this).val('');
+				return false; 
+			}
+			else if(asc.match(numbers))  
+			{  
+			} 
+			else  
+			{  
+				$(this).val('');
+				return false;  
+			}
+	});
+});
+</script>
