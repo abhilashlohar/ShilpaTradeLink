@@ -180,6 +180,7 @@
 						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.contact_person', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Contact Person','value'=>$customer_contacts->contact_person]); ?></td>
 						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.telephone', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Telephone','value'=>$customer_contacts->telephone]); ?></td>
 						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile','value'=>$customer_contacts->mobile]); ?></td>
+						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.email', ['type' => 'email','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Email','value'=>$customer_contacts->email]); ?></td>
 						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.designation', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Designation','value'=>$customer_contacts->designation]); ?></td>
 						<td width="90"><?php echo $this->Form->input('customer_contacts.'.$ii.'.default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2','value'=>1,$checked2]); ?></td>
 						<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
@@ -462,8 +463,9 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			$(this).find("td:nth-child(2) input").attr("name","customer_contacts["+i+"][contact_person]");
 			$(this).find("td:nth-child(3) input").attr("name","customer_contacts["+i+"][telephone]");
 			$(this).find("td:nth-child(4) input").attr("name","customer_contacts["+i+"][mobile]");
-			$(this).find("td:nth-child(5) input").attr("name","customer_contacts["+i+"][designation]");
-			$(this).find("td:nth-child(6) input").attr("name","customer_contacts["+i+"][default_contact]");
+			$(this).find("td:nth-child(5) input").attr("name","customer_contacts["+i+"][email]");
+			$(this).find("td:nth-child(6) input").attr("name","customer_contacts["+i+"][designation]");
+			$(this).find("td:nth-child(7) input").attr("name","customer_contacts["+i+"][default_contact]");
 			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
 			if (test) { test.uniform(); }
 			i++;
@@ -531,6 +533,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			<td><?php echo $this->Form->input('contact_person', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Contact Person']); ?></td>
 			<td><?php echo $this->Form->input('telephone', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Telephone']); ?></td>
 			<td><?php echo $this->Form->input('mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?></td>
+			<td><?php echo $this->Form->input('email', ['type' => 'email','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Email']); ?></td>
 			<td><?php echo $this->Form->input('designation', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Designation']); ?></td>
 			<td width="90"><?php echo $this->Form->input('default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2','value'=>1]); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
