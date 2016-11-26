@@ -34,7 +34,7 @@ class PaymentVouchersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 		
-    }
+	}
 
     /**
      * Default validation rules.
