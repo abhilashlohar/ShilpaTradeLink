@@ -104,8 +104,8 @@ $html.='<br/>
 								<span><b>'. h($invoice->customer->customer_name) .'</b></span><br/>
 								<div style="height:5px;"></div>
 								'. $this->Text->autoParagraph(h($invoice->customer_address)) .'
-								<span>TIN :'. h($invoice->customer->tin_no) .'</span><br/>
-								<span>PAN :'. h($invoice->customer->pan_no) .'</span>
+								<span>TIN : '. h($invoice->customer->tin_no) .'</span><br/>
+								<span>PAN : '. h($invoice->customer->pan_no) .'</span>
 							</td>
 							<td width="" valign="top" align="right">
 								<table>
