@@ -157,7 +157,7 @@ $html .= '
 					</tr>
 					<tr>
 						<td>Ref no</td>
-						<td>: '. h(($quotation->qt1.'/QT-'.str_pad($quotation->id, 3, '0', STR_PAD_LEFT).'/'.$quotation->qt3.'/'.$quotation->qt4)) .'</td>
+						<td>: '. h(($quotation->qt1.'/QT-'.str_pad($quotation->qt2, 3, '0', STR_PAD_LEFT).'/'.$quotation->qt3.'/'.$quotation->qt4)) .'</td>
 					</tr>
 				</table>
 			</td>
@@ -249,7 +249,7 @@ $html .= '</div>
 
 //echo $html; exit;
 
-$name='Quotation-';
+$name='Quotation-'.h(($quotation->qt1.'_IN'.str_pad($quotation->qt2, 3, '0', STR_PAD_LEFT).'_'.$quotation->qt3.'_'.$quotation->qt4));
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();

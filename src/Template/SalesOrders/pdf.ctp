@@ -36,6 +36,9 @@ $html = '
 	.table_rows, .table_rows th, .table_rows td {
 	   border: 1px solid  #000;border-collapse: collapse;padding:2px; 
 	}
+	.itemrow tbody td{
+		border-bottom: none;border-top: none;
+	}
 	.table_rows th{
 		font-size:14px;
 	}
@@ -87,7 +90,7 @@ $html.='
 					<tr>
 						<td style="width:110px;" >Sales Order No</td>
 						<td style="width:5px;">:</td>
-						<td>'. h(($salesOrder->so1."/SO-".str_pad($salesOrder->id, 3, "0", STR_PAD_LEFT)."/".$salesOrder->so3."/".$salesOrder->so4)) .'</td>
+						<td>'. h(($salesOrder->so1."/SO-".str_pad($salesOrder->so2, 3, "0", STR_PAD_LEFT)."/".$salesOrder->so3."/".$salesOrder->so4)) .'</td>
 					</tr>
 					<tr>
 						<td>Date</td>
@@ -101,7 +104,7 @@ $html.='
 	</table>';
  
 $html.='<br/>
-<table width="100%" class="table_rows">
+<table width="100%" class="table_rows itemrow">
 		<tr>
 			<th>S No</th>
 			<th>Item</th>
@@ -130,7 +133,7 @@ $html.='
 		$html.='
 		<tr class="even">
 			<td></td>
-			<td colspan="7" style="text-align: justify;"><b> </b>'. $this->Text->autoParagraph(h($salesOrderRows->description)) .'</td>
+			<td colspan="7" style="text-align: justify;"><b> </b>'. $this->Text->autoParagraph(h($salesOrderRows->description)).'<div style="height:'.$salesOrderRows->height.'"></div></td>
 		</tr>';
 	}
 endforeach;
@@ -295,7 +298,7 @@ $html .= '</div>
   
 //echo $html; exit;
  
-$name='Sales_Order-'.h(($salesOrder->so1.'_'.str_pad($salesOrder->id, 3, '0', STR_PAD_LEFT).'_'.$salesOrder->so3.'_'.$salesOrder->so4));
+$name='Sales_Order-'.h(($salesOrder->so1.'_'.str_pad($salesOrder->so2, 3, '0', STR_PAD_LEFT).'_'.$salesOrder->so3.'_'.$salesOrder->so4));
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();

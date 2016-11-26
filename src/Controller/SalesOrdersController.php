@@ -107,7 +107,7 @@ class SalesOrdersController extends AppController
 			$where['SalesOrders.so1 LIKE']='%'.$company_alise.'%';
 		}
 		if(!empty($sales_order_no)){
-			$where['SalesOrders.id']=$sales_order_no;
+			$where['SalesOrders.so2 LIKE']=$sales_order_no;
 		}
 		if(!empty($file)){
 			$where['SalesOrders.so3 LIKE']='%'.$file.'%';
@@ -190,8 +190,19 @@ class SalesOrdersController extends AppController
 	public function confirm($id = null)
     {
 		$this->viewBuilder()->layout('pdf_layout');
+		$salesorder = $this->SalesOrders->get($id, [
+            'contain' => ['SalesOrderRows']
+			]);
+		if ($this->request->is(['patch', 'post', 'put'])) {
+            foreach($this->request->data['sales_order_rows'] as $sales_order_row_id=>$value){
+				$salesOrderRow=$this->SalesOrders->SalesOrderRows->get($sales_order_row_id);
+				$salesOrderRow->height=$value["height"];
+				$this->SalesOrders->SalesOrderRows->save($salesOrderRow);
+			}
+			return $this->redirect(['action' => 'confirm/'.$id]);
+        }
 		
-        $this->set('id', $id);
+		$this->set(compact('salesorder','id'));
     }
 	
     /**
@@ -234,11 +245,12 @@ class SalesOrdersController extends AppController
 			$salesOrder = $this->SalesOrders->newEntity();
 			
             $salesOrder = $this->SalesOrders->patchEntity($salesOrder, $this->request->data);
+			$last_so_no=$this->SalesOrders->find()->select(['so2'])->where(['company_id' => $salesOrder->company_id])->order(['so2' => 'DESC'])->first();
 			
 			$salesOrder->expected_delivery_date=date("Y-m-d",strtotime($salesOrder->expected_delivery_date)); 
 			$salesOrder->po_date=date("Y-m-d",strtotime($salesOrder->po_date)); 
 			$salesOrder->created_by=$s_employee_id; 
-			
+			$salesOrder->so2=$last_so_no->so2+1;
 			
 			$salesOrder->created_on=date("Y-m-d",strtotime($salesOrder->created_on));
 			$salesOrder->edited_on=date("Y-m-d",strtotime($salesOrder->edited_on));

@@ -41,7 +41,7 @@ class QuotationsController extends AppController
 			$where['Quotations.qt1 LIKE']='%'.$company_alise.'%';
 		}
 		if(!empty($id)){
-			$where['Quotations.id LIKE']='%'.$id;
+			$where['Quotations.qt2 LIKE']='%'.$id;
 			//pr($where);exit;
 		}
 		if(!empty($file)){
@@ -241,6 +241,9 @@ class QuotationsController extends AppController
 			//echo 'hello'; exit;
 			$quotation = $this->Quotations->newEntity();
             $quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
+			$last_qt_no=$this->Quotations->find()->select(['qt2'])->where(['company_id' => $quotation->company_id])->order(['qt2' => 'DESC'])->first();
+			
+			$quotation->qt2=$last_qt_no->qt2+1;
 			$quotation->created_by=$s_employee_id;
 			$quotation->created_on=date("Y-m-d",strtotime($quotation->created_on));
 			$quotation->finalisation_date=date("Y-m-d",strtotime($quotation->finalisation_date));

@@ -19,7 +19,7 @@ $html = '
   @page { margin: 140px 15px 10px 30px; }
 
   body{
-    //margin-bottom: 330px;
+    line-height: 20px;
 	}
 	
     #header { position: fixed; left: 0px; top: -140px; right: 0px; height: 140px;}
@@ -88,52 +88,56 @@ $html = '
 
   <div id="content"> ';
   
-$html.='
-	<table width="100%" style="margin-top: 0px;">
-		<tr>
-			<td width="50%">
-				
-				<span><b>'. h($invoice->customer->customer_name) .'</b></span><br/>
-				'. $this->Text->autoParagraph(h($invoice->customer_address)) .'
-				<span>TIN No. :'. h($invoice->customer->tin_no) .'</span><br/>
-				<span>PAN No. :'. h($invoice->customer->pan_no) .'</span>
-			</td>
-			<td width="" valign="top" align="right">
-				<table>
-					<tr>
-						<td width="60" valign="top" style="vertical-align: top;">Invoice No.</td>
-						<td width="20" align="center">:</td>
-						<td valign="top">'. h(($invoice->in1."/IN-".str_pad($invoice->in2, 3, "0", STR_PAD_LEFT)."/".$invoice->in3."/".$invoice->in4)) .'</td>
-					</tr>
-					<tr>
-						<td valign="top" style="vertical-align: top;">Date</td>
-						<td width="20" align="center">:</td>
-						<td valign="top">'. h(date("d-m-Y",strtotime($invoice->date_created))) .'</td>
-					</tr>
-					<tr>
-						<td valign="top" style="vertical-align: top;">LR No.</td>
-						<td width="20" align="center">:</td>
-						<td valign="top" style="vertical-align: top;">'. h($invoice->lr_no) .'</td>
-					</tr>
-					<tr>
-						<td valign="top" style="vertical-align: top;">Carrier</td>
-						<td width="20" align="center">:</td>
-						<td valign="top">'. h($invoice->transporter->transporter_name) .'</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-	
-';
+
  
 $html.='<br/>
 <table width="100%" class="table_rows itemrow">
 		<tr>
-			<td colspan=6 align="">
+			<td colspan=6 align="">';
+				$html.='
+					<table width="100%" style="margin-top: 0px;" class="table2">
+						<tr>
+							<td width="50%">
+								
+								<span><b>'. h($invoice->customer->customer_name) .'</b></span><br/>
+								<div style="height:5px;"></div>
+								'. $this->Text->autoParagraph(h($invoice->customer_address)) .'
+								<span>TIN No. :'. h($invoice->customer->tin_no) .'</span><br/>
+								<span>PAN No. :'. h($invoice->customer->pan_no) .'</span>
+							</td>
+							<td width="" valign="top" align="right">
+								<table>
+									<tr>
+										<td width="60" valign="top" style="vertical-align: top;">Invoice No.</td>
+										<td width="20" align="center">:</td>
+										<td valign="top">'. h(($invoice->in1."/IN-".str_pad($invoice->in2, 3, "0", STR_PAD_LEFT)."/".$invoice->in3."/".$invoice->in4)) .'</td>
+									</tr>
+									<tr>
+										<td valign="top" style="vertical-align: top;">Date</td>
+										<td width="20" align="center">:</td>
+										<td valign="top">'. h(date("d-m-Y",strtotime($invoice->date_created))) .'</td>
+									</tr>
+									<tr>
+										<td valign="top" style="vertical-align: top;">LR No.</td>
+										<td width="20" align="center">:</td>
+										<td valign="top" style="vertical-align: top;">'. h($invoice->lr_no) .'</td>
+									</tr>
+									<tr>
+										<td valign="top" style="vertical-align: top;">Carrier</td>
+										<td width="20" align="center">:</td>
+										<td valign="top">'. h($invoice->transporter->transporter_name) .'</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>';
+			
+			$html.='</td>
+		</tr>
+		<tr>
+			<td colspan=6 style="border-top:1px solid #000;">
 			Your Purchase Order No.'. h($invoice->customer_po_no) .' dated '. h(date("d-m-Y",strtotime($invoice->po_date))) .'
 			</td>
-			
 		</tr>
 		<tr>
 			<th>S No</th>
@@ -270,16 +274,12 @@ $html .= '<div id="footer">';
 				$html.='<tr>
 				<td rowspan="'.$tot.'">
 				<table class="table2">
-<<<<<<< HEAD
 					<tr>';
 					if(!empty($invoice->form47)){
-					$html.='<td><b>Road Permit:</b><br/>
-=======
-					<tr>
-						<td>Road Permit:<br/>
->>>>>>> 588e4b12ce7f6e6620d9098b6a66dcce7e6444ea
+					$html.='<td><b>Road Permit No.:</b><br/>
+							
 						'. h($invoice->form47) .'
-						</td>';
+						</td>';	
 					}
 					if(!empty($invoice->form49)){
 					$html.='<td><b>Form 49:</b><br/>

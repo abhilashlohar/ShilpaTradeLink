@@ -30,7 +30,7 @@ $edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Edit']);
 		</td>
 	</tr>
 </table>
->
+
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
