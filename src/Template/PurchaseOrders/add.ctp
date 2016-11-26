@@ -49,7 +49,7 @@
 							<?php echo $this->Form->input('date_created', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
 						</div>
 					</div>
-				</div>
+				</div>	
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
@@ -176,6 +176,22 @@ With reference to your price list we are pleased to place an order for the follo
 						</div>
 					</div>
 				</div>
+				<div class="row">
+				<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Customer <span class="required" aria-required="true">*</span></label>
+							<?php 
+							foreach($customers as $customer){
+									$merge=$customer->customer_name.'	('.$customer->alias.')';
+									$options[]=['text' =>$merge, 'value' => $customer->id];
+									
+								}
+							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$purchaseOrder->customer_id]); ?>
+						</div>
+						
+					</div>
+				</div>
+				
 			</div>
 			<div class="form-actions">
 				 <button type="submit" class="btn blue-hoki">Add Purchase Order</button>
