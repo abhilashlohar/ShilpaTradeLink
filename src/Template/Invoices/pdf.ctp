@@ -16,13 +16,13 @@ $html = '
 <html>
 <head>
   <style>
-  @page { margin: 140px 15px 10px 30px; }
+  @page { margin: 150px 15px 10px 30px; }
 
   body{
     line-height: 20px;
 	}
 	
-    #header { position: fixed; left: 0px; top: -140px; right: 0px; height: 140px;}
+    #header { position:fixed; left: 0px; top: -150px; right: 0px; height: 150px;}
     
     
 	#content{
@@ -66,10 +66,13 @@ $html = '
   <div id="header" ><br/>	
 		<table width="100%">
 			<tr>
-				<td width="50%">
+				<td width="35%">
 				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$invoice->company->logo.' height="80px" style="height:80px;"/>
 				</td>
-				<td align="right" width="50%" style="font-size: 12px;">
+				<td width="30%" valign="bottom">
+				<div align="center" style="font-size: 28px;font-weight: bold;color: #0685a8;">INVOICE</div>
+				</td>
+				<td align="right" width="35%" style="font-size: 12px;">
 				<span style="font-size: 20px;">'. h($invoice->company->name) .'</span><br/>
 				<span>'. $this->Text->autoParagraph(h($invoice->company->address)) .'</span>
 				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/telephone.gif height="11px" style="height:11px;margin-top:5px;"/> '. h($invoice->company->mobile_no).'</span> | 
@@ -77,8 +80,7 @@ $html = '
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">
-					<div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">INVOICE</div>
+				<td colspan="3" >
 					<div style="border:solid 2px #0685a8;margin-top: 5px; margin-top:15px;"></div>
 				</td>
 			</tr>
