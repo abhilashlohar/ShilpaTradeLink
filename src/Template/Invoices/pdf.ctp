@@ -275,20 +275,22 @@ $html .= '<div id="footer">';
 			if($invoice->fright_amount > 0 ){ $tot=2;}
 				$html.='<tr>
 				<td rowspan="'.$tot.'">
-				<table class="table2">
-					<tr>
-					<td>';if(!empty($invoice->form47)){
-					$html.='<b>Road Permit No.:</b><br/>';}
-					if(!empty($invoice->form49)){
-					$html.='<b>Form 49:</b><br/>';}
-					$html.='</td>';	
+				<table class="table2">';
+					if(!empty($invoice->form47)){
+				
+					$html.='<tr><td>Road Permit No. </td>
+								<td> : </td>
+								<td>'. h($invoice->form47) .'</td>
+								</tr>';	
+								}
 										
-					$html.='<td>'. h($invoice->form47) .'<br/>
-							'. h($invoice->form49) .'
-							</td>';	
-					
-					$html.='</tr>
-				</table>
+					if(!empty($invoice->form49)){
+					$html.='<tr><td>Form 49 No. </td>
+								<td> : </td>
+								<td>'. h($invoice->form49) .'</td>
+								</tr>';	
+					}
+				$html.='</table>
 				
 				</td>';
 				if($invoice->fright_amount > 0 ){
