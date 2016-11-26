@@ -54,19 +54,13 @@ class PaymentVouchersController extends AppController
             $paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
             if ($this->PaymentVouchers->save($paymentVoucher)) {
                 $this->Flash->success(__('The payment voucher has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+				return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The payment voucher could not be saved. Please, try again.'));
             }
 			
         }
 		
-		$Paidtos = $this->PaymentVouchers->Paidto->find('list');
-		foreach($Paidtos as $Paidto){
-			pr($Paidto);
-		}
-		 exit;
         $this->set(compact('paymentVoucher','vouchersReferences'));
         $this->set('_serialize', ['paymentVoucher']);
     }
