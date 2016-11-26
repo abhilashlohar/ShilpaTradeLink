@@ -152,12 +152,12 @@ $html.='<br/>
 $sr=0; foreach ($invoice->invoice_rows as $invoiceRows): $sr++; 
 $html.='
 	<tr class="odd">
-		<td valign="top" align="center" width="5%">'. h($sr) .'</td>
-		<td width="100%">'. $this->Text->autoParagraph(h($invoiceRows->description)) .'<div style="height:'.$invoiceRows->height.'"></div></td>
-		<td valign="top" align="center">'. h($invoiceRows->item->unit->name) .'</td>
-		<td valign="top" align="center">'. h($invoiceRows->quantity) .'</td>
-		<td align="right" valign="top">'. $this->Number->format($invoiceRows->rate,[ 'places' => 2]) .'</td>
-		<td align="right" valign="top">'. $this->Number->format($invoiceRows->amount,[ 'places' => 2]) .'</td>
+		<td style="padding-top:10px;" valign="top" align="center" width="5%">'. h($sr) .'</td>
+		<td style="padding-top:10px;" width="100%">'. $this->Text->autoParagraph(h($invoiceRows->description)) .'<div style="height:'.$invoiceRows->height.'"></div></td>
+		<td style="padding-top:10px;" valign="top" align="center">'. h($invoiceRows->item->unit->name) .'</td>
+		<td style="padding-top:10px;" valign="top" align="center">'. h($invoiceRows->quantity) .'</td>
+		<td style="padding-top:10px;" align="right" valign="top">'. $this->Number->format($invoiceRows->rate,[ 'places' => 2]) .'</td>
+		<td style="padding-top:10px;" align="right" valign="top">'. $this->Number->format($invoiceRows->amount,[ 'places' => 2]) .'</td>
 	</tr>';
 endforeach; 
 
@@ -274,19 +274,17 @@ $html .= '<div id="footer">';
 				$html.='<tr>
 				<td rowspan="'.$tot.'">
 				<table class="table2">
-					<tr>';
-					if(!empty($invoice->form47)){
-					$html.='<td><b>Road Permit No.:</b><br/>
-							
-						'. h($invoice->form47) .'
-						</td>';	
-					}
+					<tr>
+					<td>';if(!empty($invoice->form47)){
+					$html.='<b>Road Permit No.:</b><br/>';}
 					if(!empty($invoice->form49)){
-					$html.='<td><b>Form 49:</b><br/>
-							
-						'. h($invoice->form49) .'
-						</td>';	
-					}
+					$html.='<b>Form 49:</b><br/>';}
+					$html.='</td>';	
+										
+					$html.='<td>'. h($invoice->form47) .'<br/>
+							'. h($invoice->form49) .'
+							</td>';	
+					
 					$html.='</tr>
 				</table>
 				
