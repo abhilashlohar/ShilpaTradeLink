@@ -264,7 +264,7 @@ $html .= '<div id="footer">';
 				$html.='
 			
 			<tr>
-				<td style="text-align:right;">'.h($invoice->sale_tax_description).'('.$this->Number->format($invoice->sale_tax_per,[ 'places' => 2]).'%)</td>
+				<td style="text-align:right;">'.h($invoice->sale_tax_description).'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->sale_tax_amount,[ 'places' => 2]).'</td>
 			</tr>';
 			}
