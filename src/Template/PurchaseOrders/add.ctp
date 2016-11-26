@@ -175,22 +175,22 @@ With reference to your price list we are pleased to place an order for the follo
 							echo $this->Form->input('transporter_id',['empty'=>'--Select--','options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-				<div class="col-md-3">
+					
+					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Customer <span class="required" aria-required="true">*</span></label>
 							<?php 
 							foreach($customers as $customer){
 									$merge=$customer->customer_name.'	('.$customer->alias.')';
-									$options[]=['text' =>$merge, 'value' => $customer->id];
+									$option[]=['text' =>$merge, 'value' => $customer->id];
 									
 								}
-							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$purchaseOrder->customer_id]); ?>
+							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $option,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 						
 					</div>
 				</div>
+				
 				
 			</div>
 			<div class="form-actions">

@@ -1,4 +1,4 @@
-<?php pr($purchaseOrder); exit;
+<?php //pr($purchaseOrder->customer); exit;
 require_once(ROOT . DS  .'vendor' . DS  . 'dompdf' . DS . 'autoload.inc.php');
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -47,25 +47,30 @@ $html = '
 	.avoid_break{
 		page-break-inside: avoid;
 	}
+	.itemrow tbody td{
+		border-bottom: none;border-top: none;
+	}
 	</style>
 <body>
   <div id="header" ><br/>	
 		<table width="100%">
 			<tr>
-				<td width="50%">
+				<td width="35%">
 				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$purchaseOrder->company->logo.' height="80px" style="height:80px;"/>
 				</td>
-				<td align="right" width="50%" style="font-size: 12px;">
-				<span style="font-size: 16px;">'. h($purchaseOrder->company->name) .'</span><br/>
+				<td width="30%" valign="bottom">
+				<div align="center" style="font-size: 22px;font-weight: bold;color: #0685a8;">PURCHASE ORDER</div>
+				</td>
+				<td align="right" width="35%" style="font-size: 12px;">
+				<span style="font-size: 20px;">'. h($purchaseOrder->company->name) .'</span><br/>
 				<span>'. $this->Text->autoParagraph(h($purchaseOrder->company->address)) .'</span>
 				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/telephone.gif height="11px" style="height:11px;margin-top:5px;"/> '. h($purchaseOrder->company->mobile_no).'</span> | 
 				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/email.png height="15px" style="height:15px;margin-top:4px;"/> '. h($purchaseOrder->company->email).'</span>
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">
-					<div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">PURCHASE ORDER</div>
-					<div style="border:solid 2px #0685a8;margin-bottom:35px;margin-top: 5px;"></div>
+				<td colspan="3" >
+					<div style="border:solid 2px #0685a8;margin-top: 5px; margin-top:15px;"></div>
 				</td>
 			</tr>
 		</table>
@@ -82,9 +87,9 @@ $html.='
 					<span>'. h(($purchaseOrder->vendor->address)) .'</span><br/>
 					</td>
 					<td valign="top" >
-						<p>Tin No:'. h(($purchaseOrder->company->tin_no)) .'</p>
-						<p>Pan No:'. h(($purchaseOrder->company->pan_no)) .'</p>
-						<p>Cin No:'. h(($purchaseOrder->company->cin_no)) .'</p>
+						<p>TIN :'. h(($purchaseOrder->company->tin_no)) .'</p>
+						<p>PAN :'. h(($purchaseOrder->company->pan_no)) .'</p>
+						<p>CIN :'. h(($purchaseOrder->company->cin_no)) .'</p>
 						
 					</td>
 					<td width="35%" valign="top">
@@ -96,8 +101,8 @@ $html.='
 				</tr>
 			</table>';
 		
-$html.='<br/>
-<table width="100%" class="table_rows">
+$html.='
+<table width="100%" class="table_rows itemrow">
 		<tr>
 			<th>S No</th>
 			<th>Item Description</th>
@@ -110,11 +115,12 @@ $html.='<br/>
 $sr=0; foreach ($purchaseOrder->purchase_order_rows as $purchase_order_rows): $sr++; 
 $html.='
 	<tr class="odd">
-		<td valign="top" align="center" width="30">'. h($sr) .'</td>
-		<td>'. $this->Text->autoParagraph(h($purchase_order_rows->description)) .'<br/></td>
-		<td width="40" valign="top" align="center">'. h($purchase_order_rows->quantity) .'</td>
-		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($purchase_order_rows->rate,[ 'places' => 2]) .'</td>
-		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($purchase_order_rows->amount,[ 'places' => 2]) .'</td>
+		<td style="padding-top:10px;" valign="top" align="center" width="5%">'. h($sr) .'</td>
+		<td  style="padding-top:10px;" width="100%">'. $this->Text->autoParagraph(h($purchase_order_rows->description)) .
+		'<div style="height:'.$purchase_order_rows->height.'"></div></td>
+		<td style="padding-top:10px;" valign="top" align="center">'. h($purchase_order_rows->quantity) .'</td>
+		<td style="padding-top:10px;" align="right" valign="top">'. $this->Number->format($purchase_order_rows->rate,[ 'places' => 2]) .'</td>
+		<td style="padding-top:10px;" align="right" valign="top">'. $this->Number->format($purchase_order_rows->amount,[ 'places' => 2]) .'</td>
 	</tr>';
 endforeach; 
 
@@ -126,7 +132,7 @@ if(sizeof($total)==2){
 	$paisa=(int)$total[1];
 }else{ $paisa=""; }
 
-$html.='</table><br/>';
+$html.='</table>';
 
 
 $html.='
@@ -148,21 +154,21 @@ $html.='
 		
 $html .= '	<table width="100%" class="table_rows">
   <tr>
-    <td>Material To Be Transported:<br/>'. h(($purchaseOrder->material_to_be_transported)) .'</td>
-    <td>Sale Tax:'. h(($purchaseOrder->sale_tax_per)) .'%<br/>'. h(($purchaseOrder->sale_tax_description)) .'</td>
-    <td><p>Discount:'. h(($purchaseOrder->discount)) .''. h(($purchaseOrder->discount_type)) .'</p>
+    <td valign="top" style="text-align:center;">Material To Be Transported:<br/>'. h(($purchaseOrder->material_to_be_transported)) .'</td>
+    <td valign="top" style="text-align:center;">Sale Tax:'. h(($purchaseOrder->sale_tax_per)) .'%<br/>'. h(($purchaseOrder->sale_tax_description)) .'</td>
+    <td valign="top" style="text-align:center;"> <p>Discount:'. h(($purchaseOrder->discount)) .''. h(($purchaseOrder->discount_type)) .'</p>
     <p></p></td>
   </tr>
   <tr>
-    <td>LR To Be Prepared In Favour Of:<br/>'. h(($purchaseOrder->lr_to_be_prepared_in_favour_of)) .'</td>
-    <td>Payment Terms<br/>'. h(($purchaseOrder->payment_terms)) .'</td>
-    <td>PNF Per	:'. h(($purchaseOrder->pnf)) .''. h(($purchaseOrder->pnf_type)) .'</td>
+    <td valign="top" style="text-align:center;">LR To Be Prepared In Favour Of:<br/>'. h(($purchaseOrder->lr_to_be_prepared_in_favour_of)) .'</td>
+    <td valign="top" style="text-align:center;">Payment Terms<br/>'. h(($purchaseOrder->payment_terms)) .'</td>
+    <td valign="top" style="text-align:center;">PNF Per	:'. h(($purchaseOrder->pnf)) .''. h(($purchaseOrder->pnf_type)) .'</td>
    
   </tr>
   <tr>
-    <td>Road Permit Form:<br/>'. h(($purchaseOrder->road_permit_form47)) .'</td>
-    <td >Transporter Name:<br/>'. h(($purchaseOrder->transporter->transporter_name)) .'</td>
-    <td >Delivery:-		'. h(($purchaseOrder->delivery)) .'</td>
+    <td valign="top" style="text-align:center;">Road Permit Form:<br/>'. h(($purchaseOrder->road_permit_form47)) .'</td>
+    <td valign="top" style="text-align:center;">Transporter Name:<br/>'. h(($purchaseOrder->transporter->transporter_name)) .'</td>
+    <td valign="top" style="text-align:center;">Delivery:-		'. h(($purchaseOrder->delivery)) .'</td>
 	
   </tr>
 
@@ -171,10 +177,11 @@ $html .= '	<table width="100%" class="table_rows">
  $html .= '
 <table width="100%" class="table_rows">
   <tr>
-    <td valign="top">'. h($purchaseOrder->customer->name) .'<br/>
-	'. h($purchaseOrder->customer->name) .'<br/>
-	'. h($purchaseOrder->customer->name) .'<br/>
-	'. h($purchaseOrder->customer->name) .'<br/>
+    <td valign="top">Excise Invoice Required in Favour of Consignee:<br/><br/>
+	Name : '. h($purchaseOrder->customer->customer_name) .'<br/>
+	'. h($purchaseOrder->customer->customer_address[0]->address) .'<br/>
+	ECC : '. h($purchaseOrder->customer->ecc_no) .'<br/>
+	TIN : '. h($purchaseOrder->customer->tin_no) .'<br/>
     </td >
 		<td align="left" width="50%">Please confirm that you have registered this order and request you to return back the duplicate copy duly signed in token of having accepted the order.<br/><br/>
 					<div align="center">

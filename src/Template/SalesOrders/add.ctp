@@ -517,22 +517,28 @@ $(document).ready(function() {
 	
 	
 	$("#pnfper").on('click',function(){
+		
 		if($(this).is(':checked')){
 			$("#pnf_text").show();
 			$('input[name="pnf"]').attr('readonly','readonly');
+			$('input[name="pnfper"]').val('0');
 		}else{
 			$("#pnf_text").hide();
 			$('input[name="pnf"]').removeAttr('readonly');
+			$('input[name="pnf"]').val('0.00');
 		}
+		
 	})
 	
 	$("#discount_per").on('click',function(){
 		if($(this).is(':checked')){
 			$("#discount_text").show();
 			$('input[name="discount"]').attr('readonly','readonly');
+			$('input[name="discount_per"]').val('0');
 		}else{
 			$("#discount_text").hide();
 			$('input[name="discount"]').removeAttr('readonly');
+			$('input[name="discount"]').val('0.00');
 		}
 		calculate_total();
 	})

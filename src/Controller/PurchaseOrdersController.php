@@ -149,10 +149,11 @@ class PurchaseOrdersController extends AppController
 			}])->where(['file1' => 'BE']);
 		$vendors = $this->PurchaseOrders->Vendors->find('list');
 		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all');
+		$customers = $this->PurchaseOrders->Customers->find('all');
 		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list');
 		$transporters = $this->PurchaseOrders->Transporters->find('list');
        
-        $this->set(compact('purchaseOrder', 'companies', 'vendors','filenames','SaleTaxes','transporters','items'));
+        $this->set(compact('purchaseOrder', 'companies', 'vendors','filenames','customers','SaleTaxes','transporters','items'));
         $this->set('_serialize', ['purchaseOrder']);
     }
 
@@ -180,7 +181,7 @@ class PurchaseOrdersController extends AppController
     {
 		$this->viewBuilder()->layout('');
          $purchaseOrder = $this->PurchaseOrders->get($id, [
-            'contain' => ['Companies','Customers','Vendors','PurchaseOrderRows','Transporters','Creator']
+            'contain' => ['Companies','Customers'=>['CustomerAddress'],'Vendors','PurchaseOrderRows','Transporters','Creator']
 			]);
 
         $this->set('purchaseOrder', $purchaseOrder);
@@ -190,7 +191,20 @@ class PurchaseOrdersController extends AppController
 	public function confirm($id = null)
     {
 		$this->viewBuilder()->layout('pdf_layout');
+			$purchaseOrder = $this->PurchaseOrders->get($id, [
+            'contain' => ['PurchaseOrderRows']
+			]);
 		
+		
+			if ($this->request->is(['patch', 'post', 'put'])) {
+				foreach($this->request->data['purchase_order_rows'] as $purchase_order_rows_id=>$value){
+					$purchaseOrderRow=$this->PurchaseOrders->PurchaseOrderRows->get($purchase_order_rows_id);
+					$purchaseOrderRow->height=$value["height"];
+					$this->PurchaseOrders->PurchaseOrderRows->save($purchaseOrderRow);
+			}
+			return $this->redirect(['action' => 'confirm/'.$id]);
+        }
+		$this->set(compact('purchaseOrder','id'));
         $this->set('id', $id);
     }
 

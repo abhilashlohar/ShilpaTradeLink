@@ -131,7 +131,7 @@ With reference to your price list we are pleased to place an order for the follo
 							foreach($SaleTaxes as $SaleTaxe){
 								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 							}
-							echo $this->Form->input('sale_tax_per', ['empty'=>'--Select--','options'=>$options,'label' => false,'class' => 'form-control input-sm select2me','id'=>'saletax']);
+							echo $this->Form->input('sale_tax_per', ['options'=>$options,'label' => false,'class' => 'form-control input-sm select2me','id'=>'saletax']);
 							?>
 							
 							<?php echo $this->Form->input('sale_tax_description', ['label' => false,'class' => 'form-control input-sm ', 'placeholder'=>'Sale Tax Description']);
@@ -190,6 +190,18 @@ With reference to your price list we are pleased to place an order for the follo
 							echo $this->Form->input('transporter_id',['empty'=>'--Select--','options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Customer <span class="required" aria-required="true">*</span></label>
+							<?php 
+							foreach($customers as $customer){
+									$merge=$customer->customer_name.'	('.$customer->alias.')';
+									$option[]=['text' =>$merge, 'value' => $customer->id];
+									
+								}
+							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $option,'class' => 'form-control input-sm select2me']); ?>
+						</div>
+						
 				</div>
 			</div>
 			<div class="form-actions">

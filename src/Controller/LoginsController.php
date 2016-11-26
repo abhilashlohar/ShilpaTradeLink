@@ -45,14 +45,25 @@ class LoginsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$login = $this->Logins->newEntity();
+		//pr ($login->employee_id); exit;
+		
 		
         if ($this->request->is('post')) {
             $login = $this->Logins->patchEntity($login, $this->request->data);
-            if ($this->Logins->save($login)) {
-				$this->Flash->success(__('Login has been saved.'));
-            } else {
-                $this->Flash->error(__('The Login could not be saved. Please, try again.'));
-            }
+			$emp_id=$login->employee_id;
+			$EmployeeIdExist = $this->Logins->exists(['employee_id' => $emp_id]);
+		
+			if(!$EmployeeIdExist)
+				{
+					if ($this->Logins->save($login)) {
+						$this->Flash->success(__('Login has been saved.'));
+					} else {
+						$this->Flash->error(__('The Login could not be saved. Please, try again.'));
+					}
+				}
+			else{
+				$this->Flash->error(__('The Account Is Already created On these User .'));
+				}
         }
 		$employees = $this->Logins->Employees->find('list');
 		$this->paginate = [
