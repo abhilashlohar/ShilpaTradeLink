@@ -316,11 +316,16 @@ $html .= '<div id="footer">';
 			
 			<tr>
 				<td colspan="3"><table   width="100%" class="table-amnt"><tr><td valign="top" width="18%"> <b><div style="margin-top:5px;">Amount in words: </div></b></td><td  valign="top">'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td></tr></table></td>
-			</tr>
+			</tr>';
+			if(!empty($invoice->additional_note)){
+				
+					$html.='
 			<tr>
 				<td colspan="3"><table   width="100%" class="table-amnt"><tr><td valign="top" width="18%"> <b><div style="margin-top:5px;">Additional Note: </div></b></td><td  valign="top">'.  h($invoice->additional_note).' </td></tr></table></td>
-			</tr>
-			<tr>
+			</tr>';
+			}
+			
+			$html.='<tr>
 				<td colspan="3">
 					<table width="100%" class="table2">
 						<tr>
