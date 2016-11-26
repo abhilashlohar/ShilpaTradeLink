@@ -318,45 +318,50 @@ $html .= '<div id="footer">';
 			<tr>
 				<td colspan="3"><table   width="100%" class="table-amnt"><tr><td valign="top" width="18%"> <b><div style="margin-top:5px;">Additional Note: </div></b></td><td  valign="top">'.  h($invoice->additional_note).' </td></tr></table></td>
 			</tr>
+			<tr>
+				<td colspan="3">
+					<table width="100%" class="table2">
+						<tr>
+							<td >
+								<table>
+									<tr>
+										<td >Interest @15% per annum shall be charged if not paid  <br/>with in agreed terms. <br/> Invoice is Subject to Udaipur jurisdiction</td>
+									</tr>
+								</table>
+								<table>
+									<tr>
+										<td>TIN</td>
+										<td>: '. h($invoice->company->tin_no) .'</td>
+									</tr>
+									<tr width="30">
+										<td>PAN</td>
+										<td>: '. h($invoice->company->pan_no) .'</td>
+									</tr>
+									<tr>
+										<td>CIN</td>
+										<td>: '. h($invoice->company->cin_no) .'</td>
+									</tr>
+								</table>
+							</td>
+							<td align="right" >
+								<div align="center">
+									<span>For <b>'. h($invoice->company->name) .'</b></span><br/>
+									<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$invoice->creator->signature.' height="50px" style="height:50px;"/>
+									<br/>
+									<span><b>Authorised Signatory</b></span><br/>
+									<span>'. h($invoice->creator->name) .'</span><br/>
+									
+								</div>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
 			
 		</tbody>
 	</table>';
 	
-$html.='<table width="100%" >
-			<tr>
-				<td >
-					<table>
-						<tr>
-							<td >Interest @15% per annum shall be charged if not paid  <br/>with in agreed terms. <br/> Invoice is Subject to Udaipur jurisdiction</td>
-						</tr>
-					</table>
-					<table>
-						<tr>
-							<td>TIN</td>
-							<td>: '. h($invoice->company->tin_no) .'</td>
-						</tr>
-						<tr width="30">
-							<td>PAN</td>
-							<td>: '. h($invoice->company->pan_no) .'</td>
-						</tr>
-						<tr>
-							<td>CIN</td>
-							<td>: '. h($invoice->company->cin_no) .'</td>
-						</tr>
-					</table>
-				</td>
-				<td align="right" >
-					<div align="center">
-						<span>For <b>'. h($invoice->company->name) .'</b></span><br/>
-						<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$invoice->creator->signature.' height="50px" style="height:50px;"/>
-						<br/>
-						<span><b>Authorised Signatory</b></span><br/>
-						<span>'. h($invoice->creator->name) .'</span><br/>
-						
-					</div>
-				</td>
-			</tr>
-		</table>
+$html.='
   </div>';
   
 
