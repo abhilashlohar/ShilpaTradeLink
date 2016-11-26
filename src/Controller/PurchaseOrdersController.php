@@ -106,10 +106,10 @@ class PurchaseOrdersController extends AppController
 			}])->where(['file1' => 'BE']);
         $vendors = $this->PurchaseOrders->Vendors->find('list');
 		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all');
-		
+		$customers = $this->PurchaseOrders->Customers->find('all');
 		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list');
 		$transporters = $this->PurchaseOrders->Transporters->find('list');
-        $this->set(compact('purchaseOrder', 'companies', 'vendors','filenames','items','SaleTaxes','transporters'));
+        $this->set(compact('purchaseOrder', 'companies', 'vendors','filenames','items','SaleTaxes','transporters','customers'));
         $this->set('_serialize', ['purchaseOrder']);
     }
 
@@ -180,7 +180,7 @@ class PurchaseOrdersController extends AppController
     {
 		$this->viewBuilder()->layout('');
          $purchaseOrder = $this->PurchaseOrders->get($id, [
-            'contain' => ['Companies','Vendors','PurchaseOrderRows','Transporters','Creator']
+            'contain' => ['Companies','Customers','Vendors','PurchaseOrderRows','Transporters','Creator']
 			]);
 
         $this->set('purchaseOrder', $purchaseOrder);

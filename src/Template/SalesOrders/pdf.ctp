@@ -40,6 +40,7 @@ $html = '
 	.table_rows th{
 		font-size:14px;
 	}
+	
 	.table2 td{
 		border: 0px solid  #000;font-size: 13px;padding:0px; 
 	}
@@ -102,7 +103,7 @@ $html.='
 	</table>';
  
 $html.='<br/>
-<table width="100%" class="table_rows itemrow">
+<table width="100%" class="table_rows">
 		<tr>
 			<th>S No</th>
 			<th>Item</th>

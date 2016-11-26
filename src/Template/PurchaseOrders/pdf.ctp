@@ -1,4 +1,4 @@
-<?php 
+<?php pr($purchaseOrder); exit;
 require_once(ROOT . DS  .'vendor' . DS  . 'dompdf' . DS . 'autoload.inc.php');
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -171,8 +171,10 @@ $html .= '	<table width="100%" class="table_rows">
  $html .= '
 <table width="100%" class="table_rows">
   <tr>
-    <td valign="top">Excise Invoice Required in favour of conignee.<br/>
-	Name:-
+    <td valign="top">'. h($purchaseOrder->customer->name) .'<br/>
+	'. h($purchaseOrder->customer->name) .'<br/>
+	'. h($purchaseOrder->customer->name) .'<br/>
+	'. h($purchaseOrder->customer->name) .'<br/>
     </td >
 		<td align="left" width="50%">Please confirm that you have registered this order and request you to return back the duplicate copy duly signed in token of having accepted the order.<br/><br/>
 					<div align="center">
