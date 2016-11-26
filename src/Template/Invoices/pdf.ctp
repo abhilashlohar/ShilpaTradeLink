@@ -246,11 +246,11 @@ $html .= '<div id="footer">';
 			</tr>
 			';
 				
-				
+				if($invoice->pnf_type=='1'){ $pnf_text='P & F @ '.$invoice->pnf_per.'%'; }else{ $pnf_text='P & F'; }
 			if($invoice->pnf>0){
 				$html.='
 			<tr>
-				<td style="text-align:right;">P&F</td>
+				<td style="text-align:right;">'.$pnf_text.'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->pnf,[ 'places' => 2]).'</td>
 				</tr>
 		
@@ -293,7 +293,7 @@ $html .= '<div id="footer">';
 				</td>';
 				if($invoice->fright_amount > 0 ){
 				$html.='
-				<td style="text-align:justify;">'. h($invoice->fright_text) .'</td>
+				<td style="text-align:right;">'. h($invoice->fright_text) .'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->fright_amount,[ 'places' => 2]) .'</td>
 				</tr>';
 				$html.='<tr>
