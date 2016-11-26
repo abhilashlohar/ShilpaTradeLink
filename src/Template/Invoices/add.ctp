@@ -161,8 +161,11 @@
 						$ed_des[]=$sales_order_rows->excise_duty;
 					?>
 						<tr class="tr1" row_no='<?php echo @$sales_order_rows->id; ?>'>
+						
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
-							<td><?php echo $this->Form->input('q', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Item','value' => @$sales_order_rows->item->id,'readonly']); ?></td>
+							<td>
+							<?php echo $this->Form->input('q', ['label' => false,'type' => 'hidden','value' => @$sales_order_rows->item->id,'readonly']); ?>
+							<?php echo $this->Form->input('item_id_display', ['type'=>'text','label' => false,'class' => 'form-control input-sm','value'=>$sales_order_rows->item->name,'readonly']);?></td>
 							<td><?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$sales_order_rows->quantity-$sales_order_rows->processed_quantity,'readonly','min'=>'1','max'=>@$sales_order_rows->quantity-$sales_order_rows->processed_quantity]); ?></td>
 							<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate','value' => @$sales_order_rows->rate,'readonly','step'=>0.01]); ?></td>
 							<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$sales_order_rows->amount,'readonly','step'=>0.01]); ?></td>
