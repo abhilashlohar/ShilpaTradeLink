@@ -79,7 +79,7 @@ $html = '
 			<tr>
 				<td colspan="2">
 					<div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">INVOICE</div>
-					<div style="border:solid 2px #0685a8;margin-top: 5px;"></div>
+					<div style="border:solid 2px #0685a8;margin-top: 5px; margin-top:15px;"></div>
 				</td>
 			</tr>
 		</table>
