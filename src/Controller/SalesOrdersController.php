@@ -214,8 +214,6 @@ class SalesOrdersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		
-		
-		
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		
 		$quotation_id=@(int)$this->request->query('quotation');
