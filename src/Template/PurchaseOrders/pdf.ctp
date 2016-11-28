@@ -156,13 +156,13 @@ $html .= '	<table width="100%" class="table_rows">
   <tr>
     <td valign="top" style="text-align:center;">Material To Be Transported:<br/>'. h(($purchaseOrder->material_to_be_transported)) .'</td>
     <td valign="top" style="text-align:center;">Sale Tax:'. h(($purchaseOrder->sale_tax_per)) .'%<br/>'. h(($purchaseOrder->sale_tax_description)) .'</td>
-    <td valign="top" style="text-align:center;"> <p>Discount:'. h(($purchaseOrder->discount)) .''. h(($purchaseOrder->discount_type)) .'</p>
-    <p></p></td>
+    <td valign="top" style="text-align:center;"> <p>Discount:'. h(($purchaseOrder->discount)) .''. h(($purchaseOrder->discount_type)) .'</p><br/>
+    <p>PNF Per	:'. h(($purchaseOrder->pnf)) .''. h(($purchaseOrder->pnf_type)) .'</p></td>
   </tr>
   <tr>
     <td valign="top" style="text-align:center;">LR To Be Prepared In Favour Of:<br/>'. h(($purchaseOrder->lr_to_be_prepared_in_favour_of)) .'</td>
     <td valign="top" style="text-align:center;">Payment Terms<br/>'. h(($purchaseOrder->payment_terms)) .'</td>
-    <td valign="top" style="text-align:center;">PNF Per	:'. h(($purchaseOrder->pnf)) .''. h(($purchaseOrder->pnf_type)) .'</td>
+    <td valign="top" style="text-align:center;">Excise Duty	:'. h(($purchaseOrder->pnf)) .''. h(($purchaseOrder->pnf_type)) .'</td>
    
   </tr>
   <tr>
