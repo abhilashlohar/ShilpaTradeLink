@@ -1,6 +1,6 @@
 <div class="portlet light bordered">
 	<div class="portlet-title">
-		<div class="caption" >
+		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Add Payment Voucher</span>
 		</div>

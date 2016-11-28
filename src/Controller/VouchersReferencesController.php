@@ -58,6 +58,7 @@ class VouchersReferencesController extends AppController
             $vouchersReference = $this->VouchersReferences->patchEntity($vouchersReference, $this->request->data);
 			
             if ($this->VouchersReferences->save($vouchersReference)) {
+				pr($vouchersReference); exit;
                 $this->Flash->success(__('The vouchers reference has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -65,7 +66,8 @@ class VouchersReferencesController extends AppController
                 $this->Flash->error(__('The vouchers reference could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('vouchersReference'));
+		$accountGroups = $this->VouchersReferences->AccountGroups->find('all');
+        $this->set(compact('vouchersReference','accountGroups'));
         $this->set('_serialize', ['vouchersReference']);
     }
 

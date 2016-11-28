@@ -189,6 +189,14 @@ With reference to your price list we are pleased to place an order for the follo
 						</div>
 						
 					</div>
+					
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Excise Duty <span class="required" aria-required="true">*</span></label>
+							<?php 
+							echo $this->Form->input('excise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Excise Duty']); ?>
+						</div>
+					</div>
 				</div>
 				
 				

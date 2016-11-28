@@ -84,7 +84,8 @@ $html.='
 			<table width="100%" class="table_rows">
 				<tr >
 					<td width="35%" valign="top" ><span><b>'. h(($purchaseOrder->vendor->company_name)) .'</b></span><br/>
-					<span>'. h(($purchaseOrder->vendor->address)) .'</span><br/>
+					<span>'. $this->Text->autoParagraph(h($purchaseOrder->vendor->address)) .'
+					</span><br/>
 					</td>
 					<td valign="top" >
 						<p>TIN :'. h(($purchaseOrder->company->tin_no)) .'</p>
@@ -140,8 +141,8 @@ $html.='
 	<tbody>
 			<tr>
 				
-				<td width="85%" style="text-align:right;">Total</td>
-				<td width="25%" style="text-align:right;">'. $this->Number->format($purchaseOrder->total,[ 'places' => 2]).'</td>
+				<td width="100%" style="text-align:right;">Total</td>
+				<td  style="text-align:right;">'. $this->Number->format($purchaseOrder->total,[ 'places' => 2]).'</td>
 			</tr>
 				
 			
@@ -154,21 +155,24 @@ $html.='
 		
 $html .= '	<table width="100%" class="table_rows">
   <tr>
-    <td valign="top" style="text-align:center;">Material To Be Transported:<br/>'. h(($purchaseOrder->material_to_be_transported)) .'</td>
-    <td valign="top" style="text-align:center;">Sale Tax:'. h(($purchaseOrder->sale_tax_per)) .'%<br/>'. h(($purchaseOrder->sale_tax_description)) .'</td>
-    <td valign="top" style="text-align:center;"> <p>Discount:'. h(($purchaseOrder->discount)) .''. h(($purchaseOrder->discount_type)) .'</p><br/>
-    <p>PNF Per	:'. h(($purchaseOrder->pnf)) .''. h(($purchaseOrder->pnf_type)) .'</p></td>
+    <td valign="top" rowspan="2" style="text-align:center;">Material To Be Transported:<br/>'. h(($purchaseOrder->material_to_be_transported)) .'</td>
+    <td valign="top" rowspan="2" style="text-align:center;">Sale Tax:'. h(($purchaseOrder->sale_tax_per)) .'%<br/>'. h(($purchaseOrder->sale_tax_description)) .'</td>
+    <td valign="top"> <p>Discount:'. h(($purchaseOrder->discount)) .''. h(($purchaseOrder->discount_type)) .'</p>
+    </td>
+  </tr>
+  <tr>
+  <td><p>PNF Per	:'. h(($purchaseOrder->pnf)) .''. h(($purchaseOrder->pnf_type)) .'</p></td>
   </tr>
   <tr>
     <td valign="top" style="text-align:center;">LR To Be Prepared In Favour Of:<br/>'. h(($purchaseOrder->lr_to_be_prepared_in_favour_of)) .'</td>
     <td valign="top" style="text-align:center;">Payment Terms<br/>'. h(($purchaseOrder->payment_terms)) .'</td>
-    <td valign="top" style="text-align:center;">Excise Duty	:'. h(($purchaseOrder->pnf)) .''. h(($purchaseOrder->pnf_type)) .'</td>
+    <td valign="top">Excise Duty	:'. h(($purchaseOrder->excise_duty)) .'</td>
    
   </tr>
   <tr>
     <td valign="top" style="text-align:center;">Road Permit Form:<br/>'. h(($purchaseOrder->road_permit_form47)) .'</td>
     <td valign="top" style="text-align:center;">Transporter Name:<br/>'. h(($purchaseOrder->transporter->transporter_name)) .'</td>
-    <td valign="top" style="text-align:center;">Delivery:-		'. h(($purchaseOrder->delivery)) .'</td>
+    <td valign="top" >Delivery:-		'. h(($purchaseOrder->delivery)) .'</td>
 	
   </tr>
 
@@ -178,7 +182,7 @@ $html .= '	<table width="100%" class="table_rows">
 <table width="100%" class="table_rows">
   <tr>
     <td valign="top">Excise Invoice Required in Favour of Consignee:<br/><br/>
-	Name : '. h($purchaseOrder->customer->customer_name) .'<br/>
+	 '. h($purchaseOrder->customer->customer_name) .'<br/>
 	'. h($purchaseOrder->customer->customer_address[0]->address) .'<br/>
 	ECC : '. h($purchaseOrder->customer->ecc_no) .'<br/>
 	TIN : '. h($purchaseOrder->customer->tin_no) .'<br/>
