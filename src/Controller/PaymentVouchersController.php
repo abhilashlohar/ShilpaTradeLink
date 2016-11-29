@@ -68,8 +68,12 @@ class PaymentVouchersController extends AppController
 			$account_group_ids[]=$data->account_group_id;
 		} 
 		$ledgerAccounts = $this->PaymentVouchers->AccountGroups->find('all')->where(['AccountGroups.id IN'=>$account_group_ids])->contain(['AccountFirstSubgroups'=>['AccountSecondSubgroups'=>['LedgerAccounts']]]);
-		
-		
+		$ledgerAccounts = $this->PaymentVouchers->AccountGroups->find('all')->contain([
+				'SalesOrderRows.Items' => function ($q) {
+				   return $q
+						->where(['SalesOrderRows.quantity > SalesOrderRows.processed_quantity']);
+				},'Companies'
+			]);
 		
         $this->set(compact('paymentVoucher','ledgerAccounts'));
         $this->set('_serialize', ['paymentVoucher']);

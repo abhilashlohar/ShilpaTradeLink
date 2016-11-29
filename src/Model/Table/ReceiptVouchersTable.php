@@ -37,6 +37,7 @@ class ReceiptVouchersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
+		$this->belongsTo('VouchersReferences');
         $this->belongsTo('ReceivedFroms', [
 			'className' => 'LedgerAccounts',
             'foreignKey' => 'received_from_id',
