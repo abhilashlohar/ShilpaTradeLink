@@ -60,19 +60,16 @@ class PaymentVouchersController extends AppController
             }
         }
 		
-		/*$ledgerAccounts=$this->PaymentVouchers->LedgerAccounts->find('list');
-		$ledgerAccounts->innerJoinWith('AccountSecondSubgroups', function ($q) {
-			return $q->where(['AccountSecondSubgroups.id = LedgerAccounts.account_second_subgroup_id']);
-		});
-		$ledgerAccounts->innerJoinWith('AccountFirstSubgroups', function ($q) {
-			return $q->where(['AccountFirstSubgroups.id = AccountSecondSubgroups.account_first_subgroup_id'])->where(['AccountFirstSubgroups.account_group_id' =>1]);
-		});*/
+		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get(1, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		$account_group_ids=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			$account_group_ids[]=$data->account_group_id;
+		} 
+		$ledgerAccounts = $this->PaymentVouchers->AccountGroups->find('all')->where(['AccountGroups.id IN'=>$account_group_ids])->contain(['AccountFirstSubgroups'=>['AccountSecondSubgroups'=>['LedgerAccounts']]]);
 		
-		$ledgerAccounts = $this->PaymentVouchers->AccountGroups->find('all')->where(['AccountGroups.id IN'=>[1]])->contain(['AccountFirstSubgroups'=>['AccountSecondSubgroups'=>['LedgerAccounts']]])->toArray();
 		
-		
-		//pr($ledgerAccounts); exit;
-		//AccountSecondSubgroups.LedgerAccounts
 		
         $this->set(compact('paymentVoucher','ledgerAccounts'));
         $this->set('_serialize', ['paymentVoucher']);
