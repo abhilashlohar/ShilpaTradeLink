@@ -142,6 +142,9 @@ class PurchaseOrdersTable extends Table
 		$validator
             ->requirePresence('transporter_id', 'create')
             ->notEmpty('transporter_id');
+			
+		$validator
+          ->notEmpty('description');
 
         return $validator;
     }

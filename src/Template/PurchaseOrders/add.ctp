@@ -83,14 +83,14 @@ With reference to your price list we are pleased to place an order for the follo
 						
 							<tr>
 								<td colspan="4" align="right"><b>Discount</b></td>
-								<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount']); ?>
+								<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Discount']); ?>
 								<?php echo $this->Form->radio('discount_type',[['value' => '%', 'text' => 'Percent(%)'],['value' => '', 'text' => 'Amount']]); ?>
 								</td>
 							</tr>
 							
 							<tr>
 								<td colspan="4" align="right"><b>P&F</b></td>
-								<td><?php echo $this->Form->input('pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&f']); ?>
+								<td><?php echo $this->Form->input('pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'P&f']); ?>
 								<?php echo $this->Form->radio('pnf_type',[['value' => '%', 'text' => 'Percent(%)'],['value' => '', 'text' => 'Amount']]); ?>
 								</td>
 							</tr>
@@ -257,6 +257,7 @@ $(document).ready(function() {
 				po4:{
 					required: true,
 				},
+				
 			},
 		},
 		messages: { // custom messages for radio buttons and checkboxes
@@ -316,6 +317,25 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+	
+	
+	$('.quantity').die().live("keyup",function() {
+		var asc=$(this).val();
+		var numbers =  /^[0-9]*\.?[0-9]*$/;
+		if(asc==0)
+		{
+			$(this).val('');
+			return false; 
+		}
+		else if(asc.match(numbers))  
+		{  
+		} 
+		else  
+		{  
+			$(this).val('');
+			return false;  
+		}
+	});
 	
 		$("#saletax").on('click',function(){
 			if($(this).is(':click')){ 
@@ -384,7 +404,7 @@ $(document).ready(function() {
 		
 		$("#main_tb tbody tr.tr2").each(function(){
 			i++;
-			$(this).find("td:nth-child(1) textarea").attr("name","purchase_order_rows["+i+"][description]");
+			$(this).find("td:nth-child(1) textarea").attr("name","purchase_order_rows["+i+"][description]").rules("add", "required");
 		});
 		
 		
@@ -462,7 +482,7 @@ $(document).ready(function() {
 		<tr class="tr1">
 			<td rowspan="2" width="10">0</td>
 			<td><?php echo $this->Form->input('q', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen']); ?></td>
-			<td width="100"><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity']); ?></td>
+			<td width="100"><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
 			<td width="130"><?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate']); ?></td>
 			<td width="130"><?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>

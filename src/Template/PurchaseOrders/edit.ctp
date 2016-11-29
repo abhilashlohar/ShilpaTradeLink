@@ -82,7 +82,7 @@ With reference to your price list we are pleased to place an order for the follo
 									<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 								</tr>
 								<tr class="tr2" row_no='<?php echo @$purchase_order_rows->id; ?>'>
-									<td colspan="6"><?php echo $this->Form->textarea('purchase_order_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'5','value'=>$purchase_order_rows->description]); ?></td>
+									<td colspan="6"><?php echo $this->Form->textarea('purchase_order_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'5','value'=>$purchase_order_rows->description,'required']); ?></td>
 									<td></td>
 								</tr>
 						<?php $q++; endforeach; ?>
@@ -96,7 +96,7 @@ With reference to your price list we are pleased to place an order for the follo
 							</tr>
 							<tr>
 								<td colspan="4" align="right"><b>Discount</b></td>
-								<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount']); ?>
+								<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Discount']); ?>
 								<?php echo $this->Form->radio('discount_type',[['value' => '%', 'text' => 'Percent(%)'],['value' => '', 'text' => 'Amount']]); ?>
 								</td>
 								
@@ -105,7 +105,7 @@ With reference to your price list we are pleased to place an order for the follo
 							
 							<tr>
 								<td colspan="4" align="right"><b>P&F</b></td>
-								<td><?php echo $this->Form->input('pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&f']); ?>
+								<td><?php echo $this->Form->input('pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'P&f']); ?>
 								<?php echo $this->Form->radio('pnf_type',[['value' => '%', 'text' => 'Percent(%)'],['value' => '', 'text' => 'Amount']]); ?>
 								</td>
 							</tr>
@@ -329,6 +329,26 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 	
+		$('.quantity').die().live("keyup",function() {
+		var asc=$(this).val();
+		var numbers =  /^[0-9]*\.?[0-9]*$/;
+		if(asc==0)
+		{
+			$(this).val('');
+			return false; 
+		}
+		else if(asc.match(numbers))  
+		{  
+		} 
+		else  
+		{  
+			$(this).val('');
+			return false;  
+		}
+	});
+	
+	
+	
 		<?php if(empty($purchaseOrder->purchase_order_rows)){ ?>
 		add_row();
 		<?php } ?> 
@@ -485,7 +505,7 @@ $(document).ready(function() {
 		<tr class="tr1">
 			<td rowspan="2" width="10">0</td>
 			<td><?php echo $this->Form->input('q', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen']); ?></td>
-			<td width="100"><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity']); ?></td>
+			<td width="100"><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
 			<td width="130"><?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate']); ?></td>
 			<td width="130"><?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
