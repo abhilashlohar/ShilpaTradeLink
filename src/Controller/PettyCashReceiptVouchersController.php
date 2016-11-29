@@ -77,13 +77,14 @@ class PettyCashReceiptVouchersController extends AppController
 				   return $q
 						->where(['AccountGroups.id IN'=>$where]);
 				}]]]);
-					
+			
 		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(6, [
             'contain' => ['VouchersReferencesGroups']
         ]);
 		$where=[];
 		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$where[]=$data->account_group_id;
+			  $where[]=$data->account_group_id;
+			//pr($where); exit;
 		}
 
 		$bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
