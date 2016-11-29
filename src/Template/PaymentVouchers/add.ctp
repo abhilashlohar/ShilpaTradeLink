@@ -1,3 +1,5 @@
+<?php  //pr($ledgerAccounts); exit ?>
+
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -12,9 +14,8 @@
 				<div class="row">
 					<div class="col-md-4" >
 						<div class="form-group">
-						<label class=" control-label">Date <span class="required" aria-required="true">*</span></label>
-						
-							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y")]); ?>
+						<label class=" control-label">Date</label>
+							<?php echo $this->Form->input('voucher_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy']); ?>
 						
 						</div>
 					</div>
@@ -38,33 +39,51 @@
 				
 				<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Mode of Payment<span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Mode of Payment</label>
 							<div class="radio-list">
-								<div class="radio-inline" data-error-container="#mode_of_payment_error">
+								<div class="radio-inline" >
 								<?php echo $this->Form->radio(
-									'mode_of_payment',
+									'payment_mode',
 									[
 										['value' => 'Cheque', 'text' => 'Cheque'],
 										['value' => 'Cash', 'text' => 'Cash']
 									]
 								); ?>
 								</div>
-                                <div id="mode_of_payment_error"></div>
+                                
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="row">
-				<div class="col-md-4">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Cash/Bank<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('cash_bank_account', ['options'=>[],'multiple' => true,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+							<?php 
+							$options=[];
+							foreach($ledgerbankAccounts as $ledgerAccount){
+								foreach($ledgerAccount->account_first_subgroups as $account_first_subgroup){
+									foreach($account_first_subgroup->account_second_subgroups as $account_second_subgroup){
+										foreach($account_second_subgroup->ledger_accounts as $ledger_account){
+											$options[]=['text' => $ledger_account->name, 'value' => $ledger_account->id];
+											
+										}
+									}
+								}
+							}
+							echo $this->Form->input('cash_bank_account_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
-				<div class="col-md-4">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Narration<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('narration', ['label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('narration', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Narration']); ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Amount<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Amount']); ?>
 						</div>
 					</div>
 				</div>
@@ -157,9 +176,35 @@ $(document).ready(function() {
 		}
 
 	});
-	
-
-	
+		$('.quantity').die().live("keyup",function() {
+		var asc=$(this).val();
+		var numbers =  /^[0-9]*\.?[0-9]*$/;
+		if(asc==0)
+		{
+			$(this).val('');
+			return false; 
+		}
+		else if(asc.match(numbers))  
+		{  
+		} 
+		else  
+		{  
+			$(this).val('');
+			return false;  
+		}
+	});
+	$('input[name="amount"]').die().live("keyup",function() { 
+		var asc=$(this).val();
+			var numbers =  /^[0-9]*\.?[0-9]*$/;
+			if(asc.match(numbers))  
+			{  
+			} 
+			else  
+			{  
+				$(this).val('');
+				return false;  
+			}
+	});
 });
 </script>
 

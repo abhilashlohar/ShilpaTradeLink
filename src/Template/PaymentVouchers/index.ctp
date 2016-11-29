@@ -21,14 +21,14 @@
 					</tr>
 					</thead>
 					<tbody>
-						<?php $i=0; foreach($paymentVouchers as $paymentVoucher): $i++; ?>
+						<?php $i=0; foreach($paymentVouchers as $paymentVoucher): $i++; pr($paymentVoucher); exit; ?>
 						<tr>
 							<td><?= $this->Number->format($paymentVoucher->id) ?></td>
 							<td><?= h($paymentVoucher->created_on) ?></td>
 							<td><?= h($paymentVoucher->voucher_date) ?></td>
-							<td><?= $this->Number->format($paymentVoucher->paid_to) ?></td>
+							<td><?= h($paymentVoucher->ledger_account->name) ?></td>
 							<td><?= h($paymentVoucher->payment_mode) ?></td>
-							<td><?= $this->Number->format($paymentVoucher->cash_bank_account) ?></td>
+							<td><?= $this->Number->format($paymentVoucher->cash_bank_account_id) ?></td>
 							<td class="actions">
 								<?= $this->Html->link(__('View'), ['action' => 'view', $paymentVoucher->id]) ?>
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $paymentVoucher->id]) ?>

@@ -51,8 +51,14 @@ class PaymentVouchersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $paymentVoucher = $this->PaymentVouchers->newEntity();
         if ($this->request->is('post')) {
-            $paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
-            if ($this->PaymentVouchers->save($paymentVoucher)) {
+			
+			$paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
+			
+			$paymentVoucher->created_on=date("Y-m-d");
+			//$paymentVoucher->voucher_date=date("Y-m-d",strtotime($paymentVoucher->voucher_date));
+			
+			 if ($this->PaymentVouchers->save($paymentVoucher)) {
+				 
                 $this->Flash->success(__('The payment voucher has been saved.'));
 				return $this->redirect(['action' => 'index']);
             } else {
@@ -68,14 +74,18 @@ class PaymentVouchersController extends AppController
 			$account_group_ids[]=$data->account_group_id;
 		} 
 		$ledgerAccounts = $this->PaymentVouchers->AccountGroups->find('all')->where(['AccountGroups.id IN'=>$account_group_ids])->contain(['AccountFirstSubgroups'=>['AccountSecondSubgroups'=>['LedgerAccounts']]]);
-		$ledgerAccounts = $this->PaymentVouchers->AccountGroups->find('all')->contain([
-				'SalesOrderRows.Items' => function ($q) {
-				   return $q
-						->where(['SalesOrderRows.quantity > SalesOrderRows.processed_quantity']);
-				},'Companies'
-			]);
 		
-        $this->set(compact('paymentVoucher','ledgerAccounts'));
+		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get(2, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		$account_group_bank_ids=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			$account_group_bank_ids[]=$data->account_group_id;
+		} 
+		$ledgerbankAccounts = $this->PaymentVouchers->AccountGroups->find('all')->where(['AccountGroups.id IN'=>$account_group_bank_ids])->contain(['AccountFirstSubgroups'=>['AccountSecondSubgroups'=>['LedgerAccounts']]]);
+		//pr($ledgerbankAccounts); exit;
+		
+        $this->set(compact('paymentVoucher','ledgerAccounts','ledgerbankAccounts'));
         $this->set('_serialize', ['paymentVoucher']);
     }
 

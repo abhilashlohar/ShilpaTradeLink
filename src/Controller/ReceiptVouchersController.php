@@ -18,6 +18,7 @@ class ReceiptVouchersController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
             'contain' => ['ReceivedFroms', 'BankCashes']
         ];
@@ -36,6 +37,7 @@ class ReceiptVouchersController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $receiptVoucher = $this->ReceiptVouchers->get($id, [
             'contain' => ['ReceivedFroms', 'BankCashes']
         ]);
@@ -70,12 +72,11 @@ class ReceiptVouchersController extends AppController
 		foreach($vouchersReferences->vouchers_references_groups as $data){
 			$where[]=$data->account_group_id;
 		}
-
 		$receivedFroms = $this->ReceiptVouchers->ReceivedFroms->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
 				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
+						->where(['AccountGroups.id IN' => $where]);
 				}]]]);
-			
+				
 		$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get(4, [
             'contain' => ['VouchersReferencesGroups']
         ]);
@@ -83,12 +84,12 @@ class ReceiptVouchersController extends AppController
 		foreach($vouchersReferences->vouchers_references_groups as $data){
 			$where[]=$data->account_group_id;
 		}
-
 		$bankCashes = $this->ReceiptVouchers->BankCashes->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
 				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
+						->where(['AccountGroups.id IN' => $where]);
 				}]]]);
 				
+        $bankCashes = $this->ReceiptVouchers->BankCashes->find('list', ['limit' => 200]);
         $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes'));
         $this->set('_serialize', ['receiptVoucher']);
     }

@@ -395,7 +395,17 @@ select
 				</li>
 				
 				<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Ledger Account','/ledgerAccounts',array('escape'=>false)); ?></li>
-			
+				<li>
+					<a href="javascript:;">
+					<i class="fa fa-puzzle-piece"></i>
+					<span class="title">Payment Voucher</span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> Add','/PaymentVouchers/Add',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> List','/PaymentVouchers',array('escape'=>false)); ?></li>
+					</ul>
+				</li>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>

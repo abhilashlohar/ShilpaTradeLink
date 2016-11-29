@@ -36,7 +36,7 @@ class ReceiptVouchersTable extends Table
         $this->table('receipt_vouchers');
         $this->displayField('id');
         $this->primaryKey('id');
-
+		
 		$this->belongsTo('VouchersReferences');
 		
         $this->belongsTo('ReceivedFroms', [
