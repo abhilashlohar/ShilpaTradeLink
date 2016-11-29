@@ -155,7 +155,7 @@ $sr=0; foreach ($invoice->invoice_rows as $invoiceRows): $sr++;
 $html.='
 	<tr class="odd">
 		<td style="padding-top:10px;" valign="top" align="center" width="5%">'. h($sr) .'</td>
-		<td style="padding-top:10px;" width="100%">'. $this->Text->autoParagraph(h($invoiceRows->description)) .'<div style="height:'.$invoiceRows->height.'"></div></td>
+		<td style="padding-top:10px;" width="100%">'.h($invoiceRows->description) .'<div style="height:'.$invoiceRows->height.'"></div></td>
 		<td style="padding-top:10px;" valign="top" align="center">'. h($invoiceRows->item->unit->name) .'</td>
 		<td style="padding-top:10px;" valign="top" align="center">'. h($invoiceRows->quantity) .'</td>
 		<td style="padding-top:10px;" align="right" valign="top">'. $this->Number->format($invoiceRows->rate,[ 'places' => 2]) .'</td>
