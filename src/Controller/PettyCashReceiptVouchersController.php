@@ -18,6 +18,7 @@ class PettyCashReceiptVouchersController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
             'contain' => ['ReceivedFroms', 'BankCashes']
         ];
@@ -51,6 +52,7 @@ class PettyCashReceiptVouchersController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
         $pettyCashReceiptVoucher = $this->PettyCashReceiptVouchers->newEntity();
         if ($this->request->is('post')) {
             $pettyCashReceiptVoucher = $this->PettyCashReceiptVouchers->patchEntity($pettyCashReceiptVoucher, $this->request->data);

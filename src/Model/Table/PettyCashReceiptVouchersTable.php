@@ -37,14 +37,18 @@ class PettyCashReceiptVouchersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
-        $this->belongsTo('ReceivedFroms', [
+		$this->belongsTo('ReceivedFroms', [
+			'className' => 'LedgerAccounts',
             'foreignKey' => 'received_from_id',
-            'joinType' => 'INNER'
+            'propertyName' => 'ReceivedFrom',
         ]);
-        $this->belongsTo('BankCashes', [
+		$this->belongsTo('BankCashes', [
+			'className' => 'LedgerAccounts',
             'foreignKey' => 'bank_cash_id',
-            'joinType' => 'INNER'
+            'propertyName' => 'BankCash',
         ]);
+		
+       
     }
 
     /**
