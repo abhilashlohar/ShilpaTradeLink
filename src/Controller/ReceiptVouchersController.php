@@ -18,6 +18,7 @@ class ReceiptVouchersController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
             'contain' => ['ReceivedFroms', 'BankCashes']
         ];
@@ -36,6 +37,7 @@ class ReceiptVouchersController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $receiptVoucher = $this->ReceiptVouchers->get($id, [
             'contain' => ['ReceivedFroms', 'BankCashes']
         ]);
