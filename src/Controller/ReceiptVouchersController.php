@@ -51,6 +51,7 @@ class ReceiptVouchersController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
         $receiptVoucher = $this->ReceiptVouchers->newEntity();
         if ($this->request->is('post')) {
             $receiptVoucher = $this->ReceiptVouchers->patchEntity($receiptVoucher, $this->request->data);
@@ -62,10 +63,16 @@ class ReceiptVouchersController extends AppController
                 $this->Flash->error(__('The receipt voucher could not be saved. Please, try again.'));
             }
         }
-		
+		$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get(1, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		$account_group_ids=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			$account_group_ids[]=$data->account_group_id;
+		}
 		$receivedFroms = $this->ReceiptVouchers->ReceivedFroms->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) {
 				   return $q
-						->where(['AccountGroups.id IN' => [2]]);
+						->where(['AccountGroups.id IN' => $account_group_ids]);
 				}]]]);
         $bankCashes = $this->ReceiptVouchers->BankCashes->find('list', ['limit' => 200]);
         $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes'));
