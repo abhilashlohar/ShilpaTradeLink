@@ -36,7 +36,8 @@ class PettyCashReceiptVouchersTable extends Table
         $this->table('petty_cash_receipt_vouchers');
         $this->displayField('id');
         $this->primaryKey('id');
-
+		$this->belongsTo('VouchersReferences');
+		
 		$this->belongsTo('ReceivedFroms', [
 			'className' => 'LedgerAccounts',
             'foreignKey' => 'received_from_id',

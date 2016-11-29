@@ -64,8 +64,35 @@ class PettyCashReceiptVouchersController extends AppController
                 $this->Flash->error(__('The petty cash receipt voucher could not be saved. Please, try again.'));
             }
         }
-        $receivedFroms = $this->PettyCashReceiptVouchers->ReceivedFroms->find('list', ['limit' => 200]);
-        $bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list', ['limit' => 200]);
+		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(5, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		
+		$where=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			$where[]=$data->account_group_id;
+		}
+
+		$receivedFroms = $this->PettyCashReceiptVouchers->ReceivedFroms->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN'=>$where]);
+				}]]]);
+					
+		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(6, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		$where=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			$where[]=$data->account_group_id;
+		}
+
+		$bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN'=>$where]);
+				}]]]);
+		
+        //$receivedFroms = $this->PettyCashReceiptVouchers->ReceivedFroms->find('list', ['limit' => 200]);
+        //$bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list', ['limit' => 200]);
         $this->set(compact('pettyCashReceiptVoucher', 'receivedFroms', 'bankCashes'));
         $this->set('_serialize', ['pettyCashReceiptVoucher']);
     }
