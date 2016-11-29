@@ -40,6 +40,11 @@ class AccountSecondSubgroupsTable extends Table
             'foreignKey' => 'account_first_subgroup_id',
             'joinType' => 'INNER'
         ]);
+		
+		
+		$this->hasMany('LedgerAccounts', [
+            'foreignKey' => 'account_second_subgroup_id'
+        ]);
     }
 
     /**

@@ -21,7 +21,18 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Paid To <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('paid_to', ['options'=>[],'multiple' => true,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+							<?php 
+							$options=[];
+							foreach($ledgerAccounts as $ledgerAccount){
+								foreach($ledgerAccount->account_first_subgroups as $account_first_subgroup){
+									foreach($account_first_subgroup->account_second_subgroups as $account_second_subgroup){
+										foreach($account_second_subgroup->ledger_accounts as $ledger_account){
+											$options[]=['text' => $ledger_account->name, 'value' => $ledger_account->id];
+										}
+									}
+								}
+							}
+							echo $this->Form->input('paid_to_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 				

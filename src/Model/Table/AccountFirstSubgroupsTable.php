@@ -42,7 +42,7 @@ class AccountFirstSubgroupsTable extends Table
         ]);
 		
 		$this->hasMany('AccountSecondSubgroups', [
-            'foreignKey' => 'account_second_subgroup_id'
+            'foreignKey' => 'account_first_subgroup_id'
         ]);
     }
 

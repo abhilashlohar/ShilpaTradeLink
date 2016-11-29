@@ -34,6 +34,12 @@ class PaymentVouchersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 		
+		$this->belongsTo('AccountGroups');
+		$this->belongsTo('LedgerAccounts', [
+            'foreignKey' => 'paid_to_id',
+            'joinType' => 'INNER'
+        ]);
+		
 	}
 
     /**
