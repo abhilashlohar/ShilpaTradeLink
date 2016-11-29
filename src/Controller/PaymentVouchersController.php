@@ -55,7 +55,7 @@ class PaymentVouchersController extends AppController
 			$paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
 			
 			$paymentVoucher->created_on=date("Y-m-d");
-			$paymentVoucher->voucher_date=date("Y-m-d",strtotime($paymentVoucher->voucher_date));
+			//$paymentVoucher->voucher_date=date("Y-m-d",strtotime($paymentVoucher->voucher_date));
 			
 			 if ($this->PaymentVouchers->save($paymentVoucher)) {
 				 
