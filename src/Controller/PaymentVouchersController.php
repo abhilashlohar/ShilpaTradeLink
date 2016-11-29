@@ -58,10 +58,20 @@ class PaymentVouchersController extends AppController
             } else {
                 $this->Flash->error(__('The payment voucher could not be saved. Please, try again.'));
             }
-			
         }
 		
-        $this->set(compact('paymentVoucher','vouchersReferences'));
+		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get(1, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		$account_group_ids=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			$account_group_ids[]=$data->account_group_id;
+		} 
+		$ledgerAccounts = $this->PaymentVouchers->AccountGroups->find('all')->where(['AccountGroups.id IN'=>$account_group_ids])->contain(['AccountFirstSubgroups'=>['AccountSecondSubgroups'=>['LedgerAccounts']]]);
+		
+		
+		
+        $this->set(compact('paymentVoucher','ledgerAccounts'));
         $this->set('_serialize', ['paymentVoucher']);
     }
 
