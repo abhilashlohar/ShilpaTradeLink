@@ -31,7 +31,7 @@
 							foreach($accountGroups as $accountGroup){
 								$options[]=['text' => $accountGroup->name, 'value' => $accountGroup->id];
 							}
-							echo $this->Form->input('account_group_id', ['empty'=>'--Select-','options' => $options,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+							echo $this->Form->input('vouchers_references_groups.0.account_group_id', ['empty'=>'--Select-','options' => $options,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						
 						</div>
 					</div>

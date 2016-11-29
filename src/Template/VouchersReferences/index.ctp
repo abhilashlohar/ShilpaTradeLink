@@ -11,10 +11,10 @@
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
-							<th><?= $this->Paginator->sort('id') ?></th>
-							<th><?= $this->Paginator->sort('voucher_entity') ?></th>
-							<th><?= $this->Paginator->sort('discription') ?></th>
-							<th><?= $this->Paginator->sort('Account Group') ?></th>
+							<th>S.No</th>
+							<th>Voucher</th>
+							<th>Discription</th>
+							<th>Account Group</th>
 							<th class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
