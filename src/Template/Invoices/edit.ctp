@@ -14,12 +14,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Company</label>
 						<div class="col-md-9">
-							<?php 
-							$options=array();
-							foreach($companies as $companie){
-								$options[]=['text' => $companie->name, 'value' => $companie->id, 'alias' => $companie->alias];
-							}
-							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me','value' => @$sales_order->company_id] ); ?>
+							<?php echo @$invoice->company->name; ?>
 						</div>
 					</div>
 				</div>
@@ -39,13 +34,8 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Customer</label>
 						<div class="col-md-9">
-							<?php
-							$options=array();
-							foreach($customers as $customer){
-								$merge=$customer->customer_name.'	('.$customer->alias.')';
-								$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
-							}
-							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$sales_order->customer_id]); ?>
+							
+							<?php echo @$invoice->customer->customer_name; ?>
 						</div>
 					</div>
 				</div>
@@ -55,8 +45,8 @@
 						<div class="col-md-3">
 							<?php echo $this->Form->input('in1', ['label' => false,'class' => 'form-control input-sm','readonly','value' => @$sales_order->so1]); ?>
 						</div>
-						<div class="col-md-3" id="in3_div">
-							<?php echo $this->Form->input('in3', ['label' => false,'class' => 'form-control input-sm']); ?>
+						<div class="col-md-3">
+							<?php echo @$invoice->in3; ?>
 						</div>
 						<div class="col-md-3">
 							<?php echo $this->Form->input('in4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
@@ -87,7 +77,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Salesman  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm']); ?>
+							<?php echo @$invoice->employee->name; ?>
 						</div>
 					</div>
 				</div>
@@ -97,7 +87,7 @@
 				<div class="form-group">
 						<label class="col-md-3 control-label">Customer PO NO  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_po_no', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Customer PO NO']); ?>
+							<?php echo $invoice->customer_po_no; ?>
 						</div>
 					</div>
 				</div>
@@ -105,7 +95,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">PO DATE  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('po_date', ['type' => 'text','label' => false,'options' => $employees,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value'=>date("d-m-Y",strtotime($invoice->po_date))]); ?>
+							<?php echo @date("d-m-Y",strtotime($invoice->po_date)); ?>
 						</div>
 					</div>
 				</div>

@@ -222,15 +222,18 @@ class InvoicesController extends AppController
 			$last_in_no=$this->Invoices->find()->select(['in2'])->where(['company_id' => $sales_order->company_id])->order(['in2' => 'DESC'])->first();
 			
 			
-			$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date));
+			//$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date));
 			$invoice->in2=$last_in_no->in2+1;
+			$invoice->in3=$sales_order->so3;
+			
 			$invoice->created_by=$s_employee_id;
 			$invoice->company_id=$sales_order->company_id;
 			$invoice->employee_id=$sales_order->employee_id;
+			$invoice->customer_id=$sales_order->customer_id;
 			$invoice->customer_po_no=$sales_order->customer_po_no;
 			$invoice->po_date=date("Y-m-d",strtotime($sales_order->po_date)); 
 			
-			pr($invoice->po_date); exit;
+				//pr($invoice->in3); exit;
 			
 			$invoice->date_created=date("Y-m-d");
 			
@@ -305,12 +308,20 @@ class InvoicesController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		
         $invoice = $this->Invoices->get($id, [
-            'contain' => ['InvoiceRows' => ['Items']]
+            'contain' => ['InvoiceRows' => ['Items'],'Companies','Customers','Employees']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
-			$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date));
+			
 			$invoice->date_created=date("Y-m-d",strtotime($invoice->date_created));
+			
+			$invoice->company_id=$invoice->company_id;
+			$invoice->employee_id=$invoice->employee_id;
+			$invoice->customer_id=$invoice->customer_id;
+			$invoice->customer_po_no=$invoice->customer_po_no;
+			$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date)); 
+			$invoice->in3=$invoice->in3;
+			//pr($invoice->in3); exit;
 			
             if ($this->Invoices->save($invoice)) {
 				$qq=0; foreach($invoice->invoice_rows as $invoice_rows){

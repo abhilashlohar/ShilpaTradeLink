@@ -48,8 +48,8 @@
 						<div class="col-md-3">
 							<?php echo $this->Form->input('in1', ['label' => false,'class' => 'form-control input-sm','readonly','value' => @$sales_order->so1]); ?>
 						</div>
-						<div class="col-md-3" id="in3_div">
-							<?php echo $this->Form->input('in3', ['label' => false,'class' => 'form-control input-sm']); ?>
+						<div class="col-md-3">
+							<?php echo @$sales_order->so3; ?>
 						</div>
 						<div class="col-md-3">
 							<?php echo $this->Form->input('in4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
@@ -181,7 +181,7 @@
 			<table class="table tableitm" id="tbl2">
 				<tr>
 					<td  align="right">
-					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
+					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per','value'=>@$sales_order->discount]); ?></label>(in %)</b>
 					<div class="input-group col-md-2" style="display:none;" id="discount_text">
 						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
 					</div>
@@ -200,7 +200,7 @@
 				</tr>
 				<tr>
 					<td  align="right">
-					<b>P&F <label><?php echo $this->Form->input('pnf_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'pnfper']); ?></label>(in %)</b>
+					<b>P&F <label><?php echo $this->Form->input('pnf_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'pnfper','value'=>@$sales_order->pnf]); ?></label>(in %)</b>
 					<div class="input-group col-md-2" style="display:none;" id="pnf_text">
 						<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
 					</div>
