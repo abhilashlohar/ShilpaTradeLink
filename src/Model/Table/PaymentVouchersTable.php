@@ -34,8 +34,11 @@ class PaymentVouchersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 		$this->belongsTo('VouchersReferences');
-		
-        $this->belongsTo('Paidtos', [
+		$this->belongsTo('Companies', [
+            'foreignKey' => 'company_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('PaidTos', [
 			'className' => 'LedgerAccounts',
             'foreignKey' => 'paid_to_id',
             'propertyName' => 'PaidTo',
@@ -60,11 +63,6 @@ class PaymentVouchersTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
-
-         $validator
-            ->date('voucher_date')
-            ->requirePresence('voucher_date', 'create')
-            ->notEmpty('voucher_date');
 
         $validator
             ->integer('paid_to_id')
