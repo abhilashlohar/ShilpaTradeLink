@@ -54,8 +54,16 @@ class PettyCashReceiptVouchersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $pettyCashReceiptVoucher = $this->PettyCashReceiptVouchers->newEntity();
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		
         if ($this->request->is('post')) {
             $pettyCashReceiptVoucher = $this->PettyCashReceiptVouchers->patchEntity($pettyCashReceiptVoucher, $this->request->data);
+			
+			
+			$pettyCashReceiptVoucher->created_by=$s_employee_id;
+			$pettyCashReceiptVoucher->created_on=date("Y-m-d");
+			//pr($pettyCashReceiptVoucher); exit;
+			
             if ($this->PettyCashReceiptVouchers->save($pettyCashReceiptVoucher)) {
                 $this->Flash->success(__('The petty cash receipt voucher has been saved.'));
 
