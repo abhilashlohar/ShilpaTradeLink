@@ -89,7 +89,6 @@ class ReceiptVouchersController extends AppController
 						->where(['AccountGroups.id IN' => $where]);
 				}]]]);
 				
-        $bankCashes = $this->ReceiptVouchers->BankCashes->find('list', ['limit' => 200]);
         $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes'));
         $this->set('_serialize', ['receiptVoucher']);
     }
