@@ -37,13 +37,8 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Customer</label>
 						<div class="col-md-9">
-						<?php 
-							$options=array();
-							foreach($customers as $customer){
-								$merge=$customer->customer_name.'	('.$customer->alias.')';
-								$options[]=['text' => $merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
-							}
-							 echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$sales_order->customer_id]); ?>
+						<?php echo @$sales_order->customer->customer_name; ?>
+							
 						</div>
 					</div>
 				</div>
@@ -85,7 +80,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Salesman  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm select2','value' => @$sales_order->employee_id]); ?>
+							<?php echo @$sales_order->employee->name; ?>
 						</div>
 					</div><br/>
 					
@@ -103,7 +98,7 @@
 				<div class="form-group">
 						<label class="col-md-3 control-label">Customer PO NO  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_po_no', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Customer PO NO','value'=>@$sales_order->customer_po_no]); ?>
+								<?php echo $sales_order->customer_po_no; ?>
 						</div>
 					</div>
 				</div>
@@ -111,7 +106,8 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">PO DATE  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('po_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm  date-picker','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d','value' => @date("d-m-Y",strtotime($sales_order->po_date))]); ?>
+						
+							<?php echo @date("d-m-Y",strtotime($sales_order->po_date)); ?>
 						</div>
 					</div>
 				</div>
@@ -190,7 +186,7 @@
 						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
 					</div>
 					</td>
-					<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
+					<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01,'value'=>@$sales_order->discount]); ?></td>
 				</tr>
 				<?php if(in_array('Yes',@$ed_des)) { ?>
 				<tr style="background-color:#e6faf9;">
@@ -209,7 +205,7 @@
 						<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
 					</div>
 					</td>
-					<td><?php echo $this->Form->input('pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01]); ?></td>
+					<td><?php echo $this->Form->input('pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01,'value'=>@$sales_order->pnf]); ?></td>
 				</tr>
 				<tr>
 					<td  align="right"><b>Total after P&F </b></td>
@@ -247,7 +243,7 @@
 					<b>Fright Amount </b>
 					<?php echo $this->Form->input('fright_text', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional text for Fright Amount','style'=>['text-align:right']]); ?>
 					</td>
-					<td><?php echo $this->Form->input('fright_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01]); ?></td>
+					<td><?php echo $this->Form->input('fright_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01,'readonly','value'=>@$sales_order->fright_amount]); ?></td>
 				</tr>
 				<tr>
 					<td  align="right"><b>Grand Total </b></td>

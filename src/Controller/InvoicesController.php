@@ -207,7 +207,7 @@ class InvoicesController extends AppController
 						'SalesOrderRows.Items' => function ($q) {
 						   return $q
 								->where(['SalesOrderRows.quantity > SalesOrderRows.processed_quantity']);
-						},'Companies'
+						},'Companies','Customers','Employees'
 					]
 			]);
 			$process_status='Pulled From Sales-Order';
@@ -226,6 +226,12 @@ class InvoicesController extends AppController
 			$invoice->in2=$last_in_no->in2+1;
 			$invoice->created_by=$s_employee_id;
 			$invoice->company_id=$sales_order->company_id;
+			$invoice->employee_id=$sales_order->employee_id;
+			$invoice->customer_po_no=$sales_order->customer_po_no;
+			$invoice->po_date=date("Y-m-d",strtotime($sales_order->po_date)); 
+			
+			pr($invoice->po_date); exit;
+			
 			$invoice->date_created=date("Y-m-d");
 			
             if ($this->Invoices->save($invoice)) {
@@ -259,8 +265,8 @@ class InvoicesController extends AppController
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Invoices->Customers->find('all');
-        $companies = $this->Invoices->Companies->find('all');
+        //$customers = $this->Invoices->Customers->find('all');
+        //$companies = $this->Invoices->Companies->find('all');
 		
 		$salesOrders = $this->Invoices->SalesOrders->find()->select(['total_rows' => 
 				$this->Invoices->SalesOrders->find()->func()->count('SalesOrderRows.id')])
