@@ -34,12 +34,6 @@
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css'); ?>
 
-
-<!-- BEGIN PAGE LEVEL STYLES -->
-<?php echo $this->Html->css('/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css'); ?>
-<?php echo $this->Html->css('/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css'); ?>
-<?php echo $this->Html->css('/assets/global/plugins/bootstrap-summernote/summernote.css'); ?>
-<!-- END PAGE LEVEL STYLES -->
 <!-- BEGIN THEME STYLES -->
 <?php echo $this->Html->css('/assets/global/css/components.css'); ?>
 <?php echo $this->Html->css('/assets/global/css/plugins.css'); ?>
@@ -525,15 +519,6 @@ select
 <?php echo $this->Html->script('/assets/admin/pages/scripts/form-validation.js'); ?>
 <?php echo $this->Html->script('/assets/admin/pages/scripts/ui-general.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
-
-
-<!-- BEGIN PAGE LEVEL PLUGINS -->
-<?php echo $this->Html->script('/assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/bootstrap-markdown/lib/markdown.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/bootstrap-markdown/js/bootstrap-markdown.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/bootstrap-summernote/summernote.min.js'); ?>
-<!-- END PAGE LEVEL PLUGINS -->
 <script>
 jQuery(document).ready(function() {    
 	Metronic.init(); // init metronic core components

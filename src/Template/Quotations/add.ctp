@@ -201,7 +201,7 @@ if(!empty($copy))
 			
 			
 			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a> <a  role="button" class="btn btn-xs btn-primary updatetc" >Update </a>
-			<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control','onmousehover'=>'copy_term_condition_to_textarea()']); ?>
+			<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control']); ?>
 			<br/>
 			<ol id="sortable">
 			  
