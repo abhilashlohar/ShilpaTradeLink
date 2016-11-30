@@ -18,7 +18,7 @@
 					<div class="col-md-9">
 						<div class="input-icon right">
 							<i class="fa"></i>
-							 <?php echo $this->Form->input('text_line', ['type'=>'text','label' => false,'class' => 'form-control input-sm']); ?>
+							 <?php echo $this->Form->input('text_line', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm']); ?>
 						</div>
 					</div>
 				</div>
@@ -45,7 +45,7 @@
 					 <?php $i=0; foreach ($termsConditions as $termsCondition):  $i++; ?>
 					<tr>
 						<td><?= h($i) ?></td>
-						<td><?= h($termsCondition->text_line) ?></td>
+						<td><?= $this->Text->autoParagraph($termsCondition->text_line) ?></td>
 						<td class="actions">
 							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $termsCondition->id]) ?>
 							<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $termsCondition->id], ['confirm' => __('Are you sure you want to delete # {0}?', $termsCondition->id)]) ?>
