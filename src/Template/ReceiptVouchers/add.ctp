@@ -1,9 +1,16 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Receipt Vouchers'), ['action' => 'index']) ?></li>
-    </ul>
-</nav>
+
+
+<?php 
+$myText = 'For more information
+regarding our world-famous pastries and desserts.
+
+
+
+<br/><br/><br/><br/><br/>
+contact info@example.com';
+echo $formattedText = $this->Text->autoParagraph($myText);
+?>
+<textarea class="wysihtml5 form-control" rows="6"></textarea>
 <div class="receiptVouchers form large-9 medium-8 columns content">
     <?= $this->Form->create($receiptVoucher) ?>
     <fieldset>

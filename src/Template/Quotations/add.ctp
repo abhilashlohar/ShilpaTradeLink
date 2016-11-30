@@ -201,7 +201,7 @@ if(!empty($copy))
 			
 			
 			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a> <a  role="button" class="btn btn-xs btn-primary updatetc" >Update </a>
-			<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control','onmousehover'=>'copy_term_condition_to_textarea()']); ?>
+			<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control']); ?>
 			<br/>
 			<ol id="sortable">
 			  
@@ -523,6 +523,28 @@ $(document).ready(function() {
 			console.log(this.scrollHeight , this.baseScrollHeight);
 			rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
 			this.rows = minRows + rows;
+		});
+		
+		$("textarea").keydown(function(e) {
+			if(e.keyCode === 9) { // tab was pressed
+				// get caret position/selection
+				var start = this.selectionStart;
+				var end = this.selectionEnd;
+
+				var $this = $(this);
+				var value = $this.val();
+
+				// set textarea value to: text before caret + tab + text after caret
+				$this.val(value.substring(0, start)
+							+ "\t"
+							+ value.substring(end));
+
+				// put caret at right position again (add one for the tab)
+				this.selectionStart = this.selectionEnd = start + 1;
+
+				// prevent the focus lose
+				e.preventDefault();
+			}
 		});
 		
 	}
