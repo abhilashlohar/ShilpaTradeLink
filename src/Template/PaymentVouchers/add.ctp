@@ -21,7 +21,7 @@
 							foreach($companies as $companie){
 								$options[]=['text' => $companie->name, 'value' => $companie->id, 'alias' => $companie->alias];
 							}
-							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me','value' => @$quotation->company_id] ); ?>
+							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me'] ); ?>
 						</div>
 					</div>
 				</div>

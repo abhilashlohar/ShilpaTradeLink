@@ -100,9 +100,8 @@ class PettyCashReceiptVouchersController extends AppController
 						->where(['AccountGroups.id IN'=>$where]);
 				}]]]);
 		
-        //$receivedFroms = $this->PettyCashReceiptVouchers->ReceivedFroms->find('list', ['limit' => 200]);
-        //$bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list', ['limit' => 200]);
-        $this->set(compact('pettyCashReceiptVoucher', 'receivedFroms', 'bankCashes'));
+       $companies = $this->PettyCashReceiptVouchers->Companies->find('all');
+        $this->set(compact('pettyCashReceiptVoucher', 'receivedFroms', 'bankCashes','companies'));
         $this->set('_serialize', ['pettyCashReceiptVoucher']);
     }
 
