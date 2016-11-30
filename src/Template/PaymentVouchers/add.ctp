@@ -23,17 +23,7 @@
 						<div class="form-group">
 							<label class="control-label">Paid To <span class="required" aria-required="true">*</span></label>
 							<?php 
-							$options=[];
-							foreach($ledgerAccounts as $ledgerAccount){
-								foreach($ledgerAccount->account_first_subgroups as $account_first_subgroup){
-									foreach($account_first_subgroup->account_second_subgroups as $account_second_subgroup){
-										foreach($account_second_subgroup->ledger_accounts as $ledger_account){
-											$options[]=['text' => $ledger_account->name, 'value' => $ledger_account->id];
-										}
-									}
-								}
-							}
-							echo $this->Form->input('paid_to_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+							echo $this->Form->input('paid_to_id', ['options'=>$paidTos,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 				
@@ -60,18 +50,7 @@
 						<div class="form-group">
 							<label class="control-label">Cash/Bank<span class="required" aria-required="true">*</span></label>
 							<?php 
-							$options=[];
-							foreach($ledgerbankAccounts as $ledgerAccount){
-								foreach($ledgerAccount->account_first_subgroups as $account_first_subgroup){
-									foreach($account_first_subgroup->account_second_subgroups as $account_second_subgroup){
-										foreach($account_second_subgroup->ledger_accounts as $ledger_account){
-											$options[]=['text' => $ledger_account->name, 'value' => $ledger_account->id];
-											
-										}
-									}
-								}
-							}
-							echo $this->Form->input('cash_bank_account_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+							echo $this->Form->input('cash_bank_account_id', ['options'=>$bankCashes,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">

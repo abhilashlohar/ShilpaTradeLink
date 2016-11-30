@@ -65,30 +65,35 @@ class PaymentVouchersController extends AppController
                 $this->Flash->error(__('The payment voucher could not be saved. Please, try again.'));
             }
         }
-		
 		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get(1, [
             'contain' => ['VouchersReferencesGroups']
         ]);
-		$account_group_ids=[];
+		$where=[];
 		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$account_group_ids[]=$data->account_group_id;
-		} 
-		$ledgerAccounts = $this->PaymentVouchers->AccountGroups->find('all')->where(['AccountGroups.id IN'=>$account_group_ids])->contain(['AccountFirstSubgroups'=>['AccountSecondSubgroups'=>['LedgerAccounts']]]);
-		
+			$where[]=$data->account_group_id;
+		}
+		$paidTos = $this->PaymentVouchers->PaidTos->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN' => $where]);
+				}]]]);
+				
 		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get(2, [
             'contain' => ['VouchersReferencesGroups']
         ]);
-		$account_group_bank_ids=[];
+		$where=[];
 		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$account_group_bank_ids[]=$data->account_group_id;
-		} 
-		$ledgerbankAccounts = $this->PaymentVouchers->AccountGroups->find('all')->where(['AccountGroups.id IN'=>$account_group_bank_ids])->contain(['AccountFirstSubgroups'=>['AccountSecondSubgroups'=>['LedgerAccounts']]]);
-		//pr($ledgerbankAccounts); exit;
-		
-        $this->set(compact('paymentVoucher','ledgerAccounts','ledgerbankAccounts'));
+			$where[]=$data->account_group_id;
+		}
+		$bankCashes = $this->PaymentVouchers->BankCashes->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN' => $where]);
+				}]]]);
+				
+        $this->set(compact('paymentVoucher', 'paidTos', 'bankCashes'));
         $this->set('_serialize', ['paymentVoucher']);
     }
 
+		
     /**
      * Edit method
      *

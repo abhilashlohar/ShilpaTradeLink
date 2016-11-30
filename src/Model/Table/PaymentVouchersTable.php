@@ -33,17 +33,19 @@ class PaymentVouchersTable extends Table
         $this->table('payment_vouchers');
         $this->displayField('id');
         $this->primaryKey('id');
-		
 		$this->belongsTo('VouchersReferences');
-		$this->belongsTo('AccountGroups');
-		$this->belongsTo('LedgerAccounts', [
+		
+        $this->belongsTo('Paidtos', [
+			'className' => 'LedgerAccounts',
             'foreignKey' => 'paid_to_id',
-            'joinType' => 'INNER'
+            'propertyName' => 'PaidTo',
         ]);
-		$this->belongsTo('LedgerAccounts', [
+		$this->belongsTo('BankCashes', [
+			'className' => 'LedgerAccounts',
             'foreignKey' => 'cash_bank_account_id',
-            'joinType' => 'INNER'
+            'propertyName' => 'BankCash',
         ]);
+		
 		
 	}
 
