@@ -1,4 +1,6 @@
+<?php //pr($paymentVouchers); exit;?>
 <div class="portlet light bordered">
+
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
@@ -21,18 +23,25 @@
 					</tr>
 					</thead>
 					<tbody>
-						<?php $i=0; foreach($paymentVouchers as $paymentVoucher): $i++; pr($paymentVoucher); exit; ?>
+						<?php $i=0; foreach($paymentVouchers as $paymentVoucher): $i++; ?>
 						<tr>
-							<td><?= $this->Number->format($paymentVoucher->id) ?></td>
-							<td><?= h($paymentVoucher->created_on) ?></td>
-							<td><?= h($paymentVoucher->voucher_date) ?></td>
-							<td><?= h($paymentVoucher->ledger_account->name) ?></td>
+							<td><?= $this->Number->format($i) ?></td>
+							<td><?= h(date("d-M-Y",strtotime($paymentVoucher->created_on)))?></td>
+							<td><?= h(date("d-M-Y",strtotime($paymentVoucher->transaction_date)))?></td>
+							<td><?= h($paymentVoucher->PaidTo->name) ?></td>
 							<td><?= h($paymentVoucher->payment_mode) ?></td>
-							<td><?= $this->Number->format($paymentVoucher->cash_bank_account_id) ?></td>
+							<td><?=  h($paymentVoucher->BankCash->name) ?></td>
 							<td class="actions">
-								<?= $this->Html->link(__('View'), ['action' => 'view', $paymentVoucher->id]) ?>
-								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $paymentVoucher->id]) ?>
-								<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $paymentVoucher->id], ['confirm' => __('Are you sure you want to delete # {0}?', $paymentVoucher->id)]) ?>
+							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $paymentVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View ')); ?>
+							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $paymentVoucher->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?>
+							<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+								['action' => 'delete', $paymentVoucher->id], 
+								[
+									'escape' => false,
+									'class' => 'btn btn-xs btn-danger',
+									'confirm' => __('Are you sure ?', $paymentVoucher->id)
+								]
+							) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

@@ -19,6 +19,10 @@ class PaymentVouchersController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
+		
+		$this->paginate = [
+            'contain' => ['PaidTos','BankCashes']
+        ];
         $paymentVouchers = $this->paginate($this->PaymentVouchers);
 		$this->set(compact('paymentVouchers'));
         $this->set('_serialize', ['paymentVouchers']);
@@ -33,8 +37,10 @@ class PaymentVouchersController extends AppController
      */
     public function view($id = null)
     {
+		
+		$this->viewBuilder()->layout('index_layout');
         $paymentVoucher = $this->PaymentVouchers->get($id, [
-            'contain' => []
+            'contain' => ['PaidTos','BankCashes','Companies']
         ]);
 
         $this->set('paymentVoucher', $paymentVoucher);
@@ -51,11 +57,10 @@ class PaymentVouchersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $paymentVoucher = $this->PaymentVouchers->newEntity();
         if ($this->request->is('post')) {
-			
 			$paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
 			
 			$paymentVoucher->created_on=date("Y-m-d");
-			//$paymentVoucher->voucher_date=date("Y-m-d",strtotime($paymentVoucher->voucher_date));
+			$paymentVoucher->transaction_date=date("Y-m-d",strtotime($paymentVoucher->transaction_date));
 			
 			 if ($this->PaymentVouchers->save($paymentVoucher)) {
 				 
@@ -88,8 +93,9 @@ class PaymentVouchersController extends AppController
 				   return $q
 						->where(['AccountGroups.id IN' => $where]);
 				}]]]);
-				
-        $this->set(compact('paymentVoucher', 'paidTos', 'bankCashes'));
+		
+        $companies = $this->PaymentVouchers->Companies->find('all');		
+        $this->set(compact('paymentVoucher', 'paidTos', 'bankCashes','companies'));
         $this->set('_serialize', ['paymentVoucher']);
     }
 
@@ -103,11 +109,18 @@ class PaymentVouchersController extends AppController
      */
     public function edit($id = null)
     {
+		
+		$this->viewBuilder()->layout('index_layout');
         $paymentVoucher = $this->PaymentVouchers->get($id, [
-            'contain' => []
+            'contain' => ['PaidTos','BankCashes','Companies']
+       
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
+			
+			$paymentVoucher->created_on=date("Y-m-d",strtotime($paymentVoucher->created_on));
+			$paymentVoucher->transaction_date=date("Y-m-d",strtotime($paymentVoucher->transaction_date));
+			//$paymentVoucher->created_on=date("Y-m-d");
             if ($this->PaymentVouchers->save($paymentVoucher)) {
                 $this->Flash->success(__('The payment voucher has been saved.'));
 
@@ -116,8 +129,34 @@ class PaymentVouchersController extends AppController
                 $this->Flash->error(__('The payment voucher could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('paymentVoucher'));
+       $vouchersReferences = $this->PaymentVouchers->VouchersReferences->get(1, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		$where=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			$where[]=$data->account_group_id;
+		}
+		$paidTos = $this->PaymentVouchers->PaidTos->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN' => $where]);
+				}]]]);
+				
+		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get(2, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		$where=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			$where[]=$data->account_group_id;
+		}
+		$bankCashes = $this->PaymentVouchers->BankCashes->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN' => $where]);
+				}]]]);
+		
+        $companies = $this->PaymentVouchers->Companies->find('all');	
+        $this->set(compact('paymentVoucher', 'paidTos', 'bankCashes','companies'));
         $this->set('_serialize', ['paymentVoucher']);
+ 
     }
 
     /**
