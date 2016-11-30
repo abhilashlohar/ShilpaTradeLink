@@ -64,6 +64,11 @@ class PaymentVouchersTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
+		$validator
+            ->integer('transaction_date')
+            ->requirePresence('transaction_date', 'create')
+            ->notEmpty('transaction_date');
+
         $validator
             ->integer('paid_to_id')
             ->requirePresence('paid_to_id', 'create')

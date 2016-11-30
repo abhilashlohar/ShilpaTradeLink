@@ -39,8 +39,8 @@
 				<div class="row" style="margin-top:30px;">
 					<div class="col-md-4" >
 						<div class="form-group">
-						<label class=" control-label">Voucher Date</label>
-							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy']); ?>
+						<label class=" control-label">Voucher Date<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y")]); ?>
 						
 						</div>
 					</div>
@@ -92,9 +92,7 @@
 					</div>
 				</div>
 				</div>
-				<div class="alert alert-danger" id="row_error" style="display:none;">
-                    Fill all fileds.
-                </div>
+				
 			</div>
 		
 			<div class="form-actions">
