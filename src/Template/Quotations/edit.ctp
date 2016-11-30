@@ -515,7 +515,13 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
 			$(this).find("td:nth-child(3) input").attr({name:"quotation_rows["+i+"][quantity]", id:"quotation_rows-"+i+"-quantity"}).rules("add", "required");
-			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
+						required: true,
+						min: 1,
+						messages: {
+							min: "Rate can't be zero."
+						}
+					});
 			$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
 		});
 		var i=0;
@@ -729,12 +735,14 @@ $(document).ready(function() {
 					url: url,
 					dataType: 'json',
 				}).done(function(response) {
-					$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
-						min: response.minimum_selling_price,
-						messages: {
-							min: "Enter value greate than minimum selling price"
-						}
-					});
+					if(response.minimum_selling_price>0){
+						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
+							min: response.minimum_selling_price,
+							messages: {
+								min: "Enter value greate than minimum selling price"
+							}
+						});
+					}
 					$('div[popup_ajax_id='+popup_id+']').html(response.html);
 				});
 			}else{
