@@ -164,12 +164,36 @@ if(!empty($copy))
 					</tr>
 				</thead>
 				
+
+				
 				<?php if(!empty($copy)){ ?>
 				<tbody id="main_tbody">
 					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_rows): ?>
 					<tr class="tr1" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
-							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Item','value' => @$quotation_rows->item->id]); ?></td>
+							<td>
+							<div class="row">
+									<div class="col-md-11 padding-right-decrease">
+										<?php echo $this->Form->input('quotation_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','value' => @$quotation_rows->item->id,'popup_id'=>$q]); ?>
+									</div>
+									<div class="col-md-1 padding-left-decrease">
+										<a href="#" class="btn btn-default btn-sm popup_btn" role="button" popup_id="<?php echo $q; ?>"> <i class="fa fa-info-circle"></i> </a>
+										<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;" popup_div_id="<?php echo $q; ?>"><div class="modal-backdrop fade in" ></div>
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-body" popup_ajax_id="<?php echo $q; ?>">
+														
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn default closebtn">Close</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							
+							</td>
 							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$quotation_rows->quantity]); ?></td>
 							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.rate', ['type'=>'number','label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate', 'min'=>'1','value' => @$quotation_rows->rate]); ?></td>
 							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$quotation_rows->amount]); ?></td>
@@ -196,12 +220,12 @@ if(!empty($copy))
 				</tfoot>
 			</table>
 			<label class="control-label">Additional Note (Optional): </label>
-			<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control wysihtml5']); ?>
+			<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control wysihtml5','value' => @$quotation->additional_note]); ?>
 			<br/>
 			
 			
 			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a> <a  role="button" class="btn btn-xs btn-primary updatetc" >Update </a>
-			<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control']); ?>
+			<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control','value' => @$quotation->terms_conditions]); ?>
 			<br/>
 			<ol id="sortable">
 			  
@@ -677,6 +701,19 @@ $(document).ready(function() {
 	$(".updatetc").die().on("click",function(){
 		copy_term_condition_to_textarea();
 	})
+
+	$("select.item_box").die().live("change",function(){
+		var popup_id=$(this).attr('popup_id');
+		var item_id=$(this).val();
+		last_three_rates(popup_id,item_id);
+	})
+	$("select.item_box").each(function(){
+		var popup_id=$(this).attr('popup_id');
+		var item_id=$(this).val();
+		if(popup_id){
+			last_three_rates_onload(popup_id,item_id);
+		}
+	});
 	
 	$("select.item_box").die().live("change",function(){
 		var popup_id=$(this).attr('popup_id');
@@ -684,6 +721,30 @@ $(document).ready(function() {
 		last_three_rates(popup_id,item_id);
 	})
 	
+	function last_three_rates_onload(popup_id,item_id){
+			var customer_id=$('select[name="customer_id"]').val();
+			//$('.modal[popup_div_id='+popup_id+']').show();
+			$('div[popup_ajax_id='+popup_id+']').html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
+			if(customer_id){
+				var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'RecentRecords']); ?>";
+				url=url+'/'+item_id+'/'+customer_id,
+				$.ajax({
+					url: url,
+					dataType: 'json',
+				}).done(function(response) {
+					$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
+						min: response.minimum_selling_price,
+						messages: {
+							min: "Enter value greate than minimum selling price "+response.minimum_selling_price
+						}
+					});
+					$('div[popup_ajax_id='+popup_id+']').html(response.html);
+				});
+			}else{
+				$('div[popup_ajax_id='+popup_id+']').html('Select customer first.');
+				$(".item_box[popup_id="+popup_id+"]").val('').select2();
+			}
+	}
 	function last_three_rates(popup_id,item_id){
 			var customer_id=$('select[name="customer_id"]').val();
 			$('.modal[popup_div_id='+popup_id+']').show();
@@ -708,6 +769,8 @@ $(document).ready(function() {
 				$(".item_box[popup_id="+popup_id+"]").val('').select2();
 			}
 	}
+	
+	
 });
 
 </script>
