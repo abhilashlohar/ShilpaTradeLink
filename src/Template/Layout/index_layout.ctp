@@ -33,6 +33,13 @@
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css'); ?>
+
+
+<!-- BEGIN PAGE LEVEL STYLES -->
+<?php echo $this->Html->css('/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css'); ?>
+<?php echo $this->Html->css('/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css'); ?>
+<?php echo $this->Html->css('/assets/global/plugins/bootstrap-summernote/summernote.css'); ?>
+<!-- END PAGE LEVEL STYLES -->
 <!-- BEGIN THEME STYLES -->
 <?php echo $this->Html->css('/assets/global/css/components.css'); ?>
 <?php echo $this->Html->css('/assets/global/css/plugins.css'); ?>
@@ -471,6 +478,7 @@ select
 	</div>
 </div>
 <!-- END FOOTER -->
+
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery-migrate.min.js'); ?>
@@ -518,6 +526,14 @@ select
 <?php echo $this->Html->script('/assets/admin/pages/scripts/ui-general.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
 
+
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js'); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js'); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-markdown/lib/markdown.js'); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-markdown/js/bootstrap-markdown.js'); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-summernote/summernote.min.js'); ?>
+<!-- END PAGE LEVEL PLUGINS -->
 <script>
 jQuery(document).ready(function() {    
 	Metronic.init(); // init metronic core components
@@ -562,6 +578,28 @@ $(".nospace").live("keypress",function(e){
  })
 
 $('input').attr('autocomplete','off');
+
+$("textarea").keydown(function(e) {
+    if(e.keyCode === 9) { // tab was pressed
+        // get caret position/selection
+        var start = this.selectionStart;
+        var end = this.selectionEnd;
+
+        var $this = $(this);
+        var value = $this.val();
+
+        // set textarea value to: text before caret + tab + text after caret
+        $this.val(value.substring(0, start)
+                    + "\t"
+                    + value.substring(end));
+
+        // put caret at right position again (add one for the tab)
+        this.selectionStart = this.selectionEnd = start + 1;
+
+        // prevent the focus lose
+        e.preventDefault();
+    }
+});
 </script>         
 
  
