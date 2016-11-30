@@ -4,7 +4,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Add Payment Voucher</span>
+			<span class="caption-subject font-blue-steel uppercase">Update Payment Voucher</span>
 		</div>
 	</div>
 	<div class="portlet-body form">
@@ -31,7 +31,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Date</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
+							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y",strtotime($paymentVoucher->created_on)),'readonly']); ?>
 						</div>
 					</div>
 				</div>
@@ -40,7 +40,7 @@
 					<div class="col-md-4" >
 						<div class="form-group">
 						<label class=" control-label">Voucher Date</label>
-							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy']); ?>
+							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','value' => date("d-m-Y",strtotime($paymentVoucher->transaction_date))]); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -91,13 +91,11 @@
 					</div>
 				</div>
 				</div>
-				<div class="alert alert-danger" id="row_error" style="display:none;">
-                    Fill all fileds.
-                </div>
+				
 			</div>
 		
 			<div class="form-actions">
-				<button type="submit" class="btn btn-primary">ADD PAYMENT VOUCHER</button>
+				<button type="submit" class="btn btn-primary">UPDATE PAYMENT VOUCHER</button>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>
