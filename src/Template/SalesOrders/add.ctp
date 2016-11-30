@@ -1,3 +1,4 @@
+@@ -1,905 +0,0 @@
 <?php 
 if(!empty($copy))
 {
@@ -119,9 +120,6 @@ if(!empty($copy))
 				</div>
 			</div>
 			<br/>
-			<div class="alert alert-danger" id="row_error" style="display:none;">
-				All fields are Required
-			</div>
 			<table class="table tableitm" id="main_tb">
 				<thead>
 					<tr>
@@ -493,23 +491,9 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			q="ok";
-			$("#main_tb tbody tr.tr1").each(function(){
-				var t=$(this).find("td:nth-child(2) select").val();
-				var w=$(this).find("td:nth-child(3) input").val();
-				var r=$(this).find("td:nth-child(4) input").val();
-				if(t=="" || w=="" || r==""){
-					q="e";
-				}
-			});
-			if(q=="e"){
-				$("#row_error").show();
-				return false;
-			}else{
-				success3.show();
-				error3.hide();
-				form[0].submit(); // submit the form
-			}
+			success3.show();
+			error3.hide();
+			form[0].submit(); // submit the form
 		}
 
 	});
@@ -637,10 +621,10 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			i++;
 			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr("name","sales_order_rows["+i+"][item_id]").select2();
-			$(this).find("td:nth-child(3) input").attr("name","sales_order_rows["+i+"][quantity]");
-			$(this).find("td:nth-child(4) input").attr("name","sales_order_rows["+i+"][rate]");
-			$(this).find("td:nth-child(5) input").attr("name","sales_order_rows["+i+"][amount]");
+			$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id"}).select2().rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr({name:"sales_order_rows["+i+"][quantity]", id:"sales_order_rows-"+i+"-quantity"}).rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr({name:"sales_order_rows["+i+"][rate]", id:"sales_order_rows-"+i+"-rate"}).rules("add", "required");
+			$(this).find("td:nth-child(5) input").attr({name:"sales_order_rows["+i+"][amount]", id:"sales_order_rows-"+i+"-amount"}).rules("add", "required");
 			$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
 			$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][so_sale_tax]");
 			$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_description]");
