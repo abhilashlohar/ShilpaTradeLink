@@ -26,9 +26,8 @@ class QuotationsController extends AppController
 		
 		$this->viewBuilder()->layout('index_layout');
 		$where=[];
-		$company_alise=$this->request->query('company_alise');
-		$id=$this->request->query('id');
-		//pr ($id); exit;
+		$company_id=$this->request->query('company_id');
+		$qt2=$this->request->query('qt2');
 		$file=$this->request->query('file');
 		$customer=$this->request->query('customer');
 		$salesman=$this->request->query('salesman');
@@ -36,13 +35,12 @@ class QuotationsController extends AppController
 		$From=$this->request->query('From');
 		$To=$this->request->query('To');
 		$pull_request=$this->request->query('pull-request');
-		$this->set(compact('id','customer','salesman','product','From','To','company_alise','file','pull_request'));
-		if(!empty($company_alise)){
-			$where['Quotations.qt1 LIKE']='%'.$company_alise.'%';
+		$this->set(compact('qt2','customer','salesman','product','From','To','company_id','file','pull_request'));
+		if(!empty($company_id)){
+			$where['company_id']=$company_id;
 		}
-		if(!empty($id)){
-			$where['Quotations.qt2 LIKE']='%'.$id;
-			//pr($where);exit;
+		if(!empty($qt2)){
+			$where['qt2 LIKE']='%1%';
 		}
 		if(!empty($file)){
 			$where['Quotations.qt3 LIKE']='%'.$file.'%';
@@ -74,9 +72,11 @@ class QuotationsController extends AppController
 		}elseif($status=='Closed'){
 			$where['status']='Closed';
 		}
-		
+		//pr($where); exit;
         $quotations = $this->paginate($this->Quotations->find()->where($where)->order(['Quotations.id' => 'DESC']));
-        $this->set(compact('quotations','status','copy_request'));
+		
+		$companies = $this->Quotations->Companies->find('list');
+        $this->set(compact('quotations','status','copy_request','companies'));
         $this->set('_serialize', ['quotations']);
 		$this->set(compact('url'));
 	

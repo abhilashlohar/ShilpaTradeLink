@@ -77,11 +77,11 @@
 							<td>
 								<div class="row">
 									<div class="col-md-4">
-										<input type="text" name="company_alise" class="form-control input-sm" placeholder="Company" value="<?php echo @$company_alise; ?>">
+										<?php echo $this->Form->input('company_id',['options' => $companies,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me','value'=>@$company_id]); ?>
 									</div>
 									<div class="col-md-4">
 										<div class="input-group" style="" id="pnf_text">
-											<span class="input-group-addon">QT-</span><input type="text" name="id" class="form-control input-sm" placeholder="Quotation No" value="<?php echo @$quotation_no; ?>">
+											<span class="input-group-addon">QT-</span><input type="text" name="qt2" class="form-control input-sm" placeholder="Quotation No" value="<?php echo @$qt2; ?>">
 										</div>
 									</div>
 									<div class="col-md-4">
