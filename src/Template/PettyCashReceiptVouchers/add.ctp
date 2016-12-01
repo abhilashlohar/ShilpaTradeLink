@@ -65,6 +65,23 @@
 				<div class="row">
 				<div class="col-md-4">
 						<div class="form-group">
+							<label class="control-label">Mode of Payment</label>
+							<div class="radio-list">
+								<div class="radio-inline" >
+								<?php echo $this->Form->radio(
+									'payment_mode',
+									[
+										['value' => 'Cheque', 'text' => 'Cheque'],
+										['value' => 'Cash', 'text' => 'Cash']
+									]
+								); ?>
+								</div>
+                                
+							</div>
+						</div>
+					</div>
+				<div class="col-md-4">
+						<div class="form-group">
 							<label class="control-label">Amount<span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm']); ?>
 						</div>

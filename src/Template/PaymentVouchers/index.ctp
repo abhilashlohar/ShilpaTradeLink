@@ -12,13 +12,12 @@
 			<div class="col-md-12">
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
-				<tr>
-						<th><?= $this->Paginator->sort('id') ?></th>
-						<th><?= $this->Paginator->sort('created_on') ?></th>
-						<th><?= $this->Paginator->sort('voucher_date') ?></th>
-						<th><?= $this->Paginator->sort('paid_to') ?></th>
-						<th><?= $this->Paginator->sort('payment_mode') ?></th>
-						<th><?= $this->Paginator->sort('cash_bank_account') ?></th>
+				<tr><th>S.No</th>
+							<th>Voucher Date</th>
+							<th>Paid To</th>
+							<th>Bank/Cash</th>
+							<th>Payment Mode</th>
+							<th>Amount</th>
 						<th class="actions"><?= __('Actions') ?></th>
 					</tr>
 					</thead>
@@ -26,11 +25,11 @@
 						<?php $i=0; foreach($paymentVouchers as $paymentVoucher): $i++; ?>
 						<tr>
 							<td><?= $this->Number->format($i) ?></td>
-							<td><?= h(date("d-M-Y",strtotime($paymentVoucher->created_on)))?></td>
 							<td><?= h(date("d-M-Y",strtotime($paymentVoucher->transaction_date)))?></td>
 							<td><?= h($paymentVoucher->PaidTo->name) ?></td>
-							<td><?= h($paymentVoucher->payment_mode) ?></td>
 							<td><?=  h($paymentVoucher->BankCash->name) ?></td>
+							<td><?= h($paymentVoucher->payment_mode) ?></td>
+							<td><?= h($paymentVoucher->amount) ?></td>
 							<td class="actions">
 							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $paymentVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View ')); ?>
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $paymentVoucher->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?>

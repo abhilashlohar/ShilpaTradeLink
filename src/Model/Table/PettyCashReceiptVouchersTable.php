@@ -37,6 +37,7 @@ class PettyCashReceiptVouchersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 		$this->belongsTo('VouchersReferences');
+		$this->belongsTo('Ledgers');
 		$this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
@@ -76,16 +77,11 @@ class PettyCashReceiptVouchersTable extends Table
             ->requirePresence('amount', 'create')
             ->notEmpty('amount');
 
-        $validator
-            ->integer('created_by')
-            ->requirePresence('created_by', 'create')
-            ->notEmpty('created_by');
+		$validator
+            ->requirePresence('payment_mode', 'create')
+            ->notEmpty('payment_mode');
 
-        $validator
-            ->date('created_on')
-            ->requirePresence('created_on', 'create')
-            ->notEmpty('created_on');
-
+        
         return $validator;
     }
 

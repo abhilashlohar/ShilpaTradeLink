@@ -13,8 +13,10 @@
 					<thead>
 						<tr>
 							<th>S.No</th>
+							<th>Voucher Date</th>
 							<th>Received From</th>
 							<th>Bank/Cash</th>
+							<th>Payment Mode</th>
 							<th>Amount</th>
 							<th class="actions"><?= __('Actions') ?></th>
 						</tr>
@@ -33,15 +35,24 @@
 					?>
 						<tr>
 							<td><?= h($i) ?></td>
+							<td><?= h(date("d-M-Y",strtotime($pettyCashReceiptVoucher->transaction_date)))?>
 							<td><?= h($receivedFrom) ?></td>
 							<td><?= h($bankCashes) ?></td>
+							<td><?= h($pettyCashReceiptVoucher->payment_mode) ?></td>
 							<td><?= ($pettyCashReceiptVoucher->amount) ?></td>
 							
-						
 							<td class="actions">
-							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $pettyCashReceiptVoucher->id],array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
+							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $pettyCashReceiptVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View ')); ?>
+							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $pettyCashReceiptVoucher->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?>
+							<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+								['action' => 'delete',$pettyCashReceiptVoucher->id], 
+								[
+									'escape' => false,
+									'class' => 'btn btn-xs btn-danger',
+									'confirm' => __('Are you sure ?', $pettyCashReceiptVoucher->id)
+								]
+							) ?>
 							</td>
-							
 						</tr>
 						<?php endforeach; ?>
 					</tbody>
