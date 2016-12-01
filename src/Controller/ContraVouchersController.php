@@ -20,7 +20,7 @@ class ContraVouchersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['Companies']
+            'contain' => ['CashBankFroms','CashBankTos']
         ];
         $contraVouchers = $this->paginate($this->ContraVouchers);
 
@@ -37,8 +37,10 @@ class ContraVouchersController extends AppController
      */
     public function view($id = null)
     {
+		
+		$this->viewBuilder()->layout('index_layout');
         $contraVoucher = $this->ContraVouchers->get($id, [
-            'contain' => ['Companies']
+            'contain' => ['Companies','CashBankFroms','CashBankTos']
         ]);
 
         $this->set('contraVoucher', $contraVoucher);
