@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 29, 2016 at 10:42 AM
--- Server version: 10.1.16-MariaDB
--- PHP Version: 7.0.9
+-- Generation Time: Dec 01, 2016 at 10:21 AM
+-- Server version: 10.1.19-MariaDB
+-- PHP Version: 5.6.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -23,17 +23,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `petty_cash_receipt_vouchers`
+-- Table structure for table `contra_vouchers`
 --
 
-CREATE TABLE `petty_cash_receipt_vouchers` (
+CREATE TABLE `contra_vouchers` (
   `id` int(10) NOT NULL,
-  `received_from_id` int(10) NOT NULL,
-  `bank_cash_id` int(10) NOT NULL,
+  `created_on` date NOT NULL,
+  `transaction_date` date NOT NULL,
+  `cash_bank_from` int(10) NOT NULL,
+  `payment_mode` varchar(100) NOT NULL,
+  `cash_bank_to` int(10) NOT NULL,
   `narration` text NOT NULL,
   `amount` decimal(15,2) NOT NULL,
-  `created_by` int(10) NOT NULL,
-  `created_on` date NOT NULL
+  `company_id` int(11) NOT NULL,
+  `created_by` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -41,9 +44,9 @@ CREATE TABLE `petty_cash_receipt_vouchers` (
 --
 
 --
--- Indexes for table `petty_cash_receipt_vouchers`
+-- Indexes for table `contra_vouchers`
 --
-ALTER TABLE `petty_cash_receipt_vouchers`
+ALTER TABLE `contra_vouchers`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -51,9 +54,9 @@ ALTER TABLE `petty_cash_receipt_vouchers`
 --
 
 --
--- AUTO_INCREMENT for table `petty_cash_receipt_vouchers`
+-- AUTO_INCREMENT for table `contra_vouchers`
 --
-ALTER TABLE `petty_cash_receipt_vouchers`
+ALTER TABLE `contra_vouchers`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

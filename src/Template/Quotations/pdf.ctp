@@ -191,7 +191,7 @@ $sr=0; foreach ($quotation->quotation_rows as $quotationRows): $sr++;
 $html.='
 	<tr>
 		<td valign="top" align="center">'. h($sr) .'</td>
-		<td width="100%">'. $this->Text->autoParagraph(h($quotationRows->description)) .'<div style="height:'.$quotationRows->height.'"></div></td>
+		<td valign="top" width="100%">'. $this->Text->autoParagraph(h($quotationRows->description)) .'<div style="height:'.$quotationRows->height.'"></div></td>
 		<td align="center" valign="top">'. h($quotationRows->item->unit->name) .'</td>
 		<td align="center" valign="top">'. h($quotationRows->quantity) .'</td>
 		<td align="right" valign="top">'. $this->Number->format($quotationRows->rate,[ 'places' => 2]).'</td>
@@ -204,7 +204,7 @@ $html.='
 	<tfoot>
 			<tr>
 				<td colspan="5" style="text-align:right;border-top: 1px solid #000;">Total</td>
-				<td style="text-align:right;border-top: 1px solid #000;" width="10">'. $this->Number->format($quotation->total,[ 'places' => 2]) .'</td>
+				<td style="text-align:right;border-top: 1px solid #000;" >'. $this->Number->format($quotation->total,[ 'places' => 2]) .'</td>
 			</tr>
 		</tfoot>
 	</table>';

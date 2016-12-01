@@ -31,7 +31,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Date</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
+							<?php echo date("d-m-Y"); ?>
 						</div>
 					</div>
 				</div>
@@ -40,7 +40,7 @@
 					<div class="col-md-4" >
 						<div class="form-group">
 						<label class=" control-label">Voucher Date<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y")]); ?>
+							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Finalisation Date']); ?>
 						
 						</div>
 					</div>
@@ -51,8 +51,17 @@
 							echo $this->Form->input('paid_to_id', ['options'=>$paidTos,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
-				
 				<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Cash/Bank<span class="required" aria-required="true">*</span></label>
+							<?php 
+							echo $this->Form->input('cash_bank_account_id', ['options'=>$bankCashes,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+						</div>
+					</div>
+				
+				</div>
+				<div class="row">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Mode of Payment</label>
 							<div class="radio-list">
@@ -67,15 +76,6 @@
 								</div>
                                 
 							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Cash/Bank<span class="required" aria-required="true">*</span></label>
-							<?php 
-							echo $this->Form->input('cash_bank_account_id', ['options'=>$bankCashes,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">

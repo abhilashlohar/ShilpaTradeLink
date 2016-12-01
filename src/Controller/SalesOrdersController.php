@@ -23,7 +23,6 @@ class SalesOrdersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		
 		$copy_request=$this->request->query('copy-request');
-		// pr ($copy_request);exit;
 		
 		$where=[];
 		$company_alise=$this->request->query('company_alise');
@@ -36,13 +35,13 @@ class SalesOrdersController extends AppController
 		$pull_request=$this->request->query('pull-request');
 		$this->set(compact('sales_order_no','customer','po_no','product','From','To','company_alise','file','pull_request'));
 		if(!empty($company_alise)){
-			$where['SalesOrders.so1 LIKE']='%'.$company_alise.'%';
+			$where['so1 LIKE']='%'.$company_alise.'%';
 		}
 		if(!empty($sales_order_no)){
-			$where['SalesOrders.id']=$sales_order_no;
+			$where['so2 LIKE']='%'.$sales_order_no.'%';
 		}
 		if(!empty($file)){
-			$where['SalesOrders.so3 LIKE']='%'.$file.'%';
+			$where['so3 LIKE']='%'.$file.'%';
 		}
 		if(!empty($customer)){
 			$where['Customers.customer_name LIKE']='%'.$customer.'%';
@@ -228,7 +227,7 @@ class SalesOrdersController extends AppController
 		$this->set(compact('quotation','process_status'));
 		
 		$id=$this->request->query('copy');
-		//pr($id); exit;
+		
 		if(!empty($id)){
 			$salesOrder = $this->SalesOrders->get($id, [
 				'contain' => ['SalesOrderRows']
@@ -248,7 +247,12 @@ class SalesOrdersController extends AppController
 			$salesOrder->expected_delivery_date=date("Y-m-d",strtotime($salesOrder->expected_delivery_date)); 
 			$salesOrder->po_date=date("Y-m-d",strtotime($salesOrder->po_date)); 
 			$salesOrder->created_by=$s_employee_id; 
-			$salesOrder->so2=$last_so_no->so2+1;
+			if($last_so_no){
+				$salesOrder->so2=$last_so_no->so2+1;
+			}else{
+				$salesOrder->so2=1;
+			}
+			
 			
 			$salesOrder->created_on=date("Y-m-d",strtotime($salesOrder->created_on));
 			$salesOrder->edited_on=date("Y-m-d",strtotime($salesOrder->edited_on));

@@ -38,7 +38,11 @@ class ReceiptVouchersTable extends Table
         $this->primaryKey('id');
 		
 		$this->belongsTo('VouchersReferences');
-		
+		$this->belongsTo('Ledgers');
+		$this->belongsTo('Companies', [
+            'foreignKey' => 'company_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('ReceivedFroms', [
 			'className' => 'LedgerAccounts',
             'foreignKey' => 'received_from_id',

@@ -35,13 +35,13 @@ class InvoicesController extends AppController
 		$page=$this->request->query('page');
 		$this->set(compact('ref_no','customer','total_From','total_To','From','To','page','invoice_no','company_alise','file'));
 		if(!empty($company_alise)){
-			$where['Invoices.in1 LIKE']='%'.$company_alise.'%';
+			$where['in1 LIKE']='%'.$company_alise.'%';
 		}
 		if(!empty($invoice_no)){
-			$where['Invoices.in2 LIKE']=$invoice_no;
+			$where['in2 LIKE']='%'.$invoice_no.'%';
 		}
 		if(!empty($file)){
-			$where['Invoices.in3 LIKE']='%'.$file.'%';
+			$where['in3 LIKE']='%'.$file.'%';
 		}
 		if(!empty($customer)){
 			$where['Customers.customer_name LIKE']='%'.$customer.'%';
@@ -220,10 +220,14 @@ class InvoicesController extends AppController
 			
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 			$last_in_no=$this->Invoices->find()->select(['in2'])->where(['company_id' => $sales_order->company_id])->order(['in2' => 'DESC'])->first();
-			
+			if($last_in_no){
+				$invoice->in2=$last_in_no->in2+1;
+			}else{
+				$invoice->in2=1;
+			}
 			
 			//$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date));
-			$invoice->in2=$last_in_no->in2+1;
+			
 			$invoice->in3=$sales_order->so3;
 			
 			$invoice->created_by=$s_employee_id;

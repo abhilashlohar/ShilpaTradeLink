@@ -34,6 +34,7 @@ class PaymentVouchersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 		$this->belongsTo('VouchersReferences');
+		$this->belongsTo('Ledgers');
 		$this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
@@ -65,23 +66,16 @@ class PaymentVouchersTable extends Table
             ->allowEmpty('id', 'create');
 
 		$validator
-            ->integer('transaction_date')
-            ->requirePresence('transaction_date', 'create')
-            ->notEmpty('transaction_date');
-
-        $validator
-            ->integer('paid_to_id')
-            ->requirePresence('paid_to_id', 'create')
-            ->notEmpty('paid_to_id');
+            ->requirePresence('received_from_id','create')
+            ->notEmpty('received_from_id');
 
         $validator
             ->requirePresence('payment_mode', 'create')
             ->notEmpty('payment_mode');
 
         $validator
-            ->integer('cash_bank_account_id')
-            ->requirePresence('cash_bank_account_id', 'create')
-            ->notEmpty('cash_bank_account_id');
+            ->requirePresence('bank_cash_id', 'create')
+            ->notEmpty('bank_cash_id');
 
         $validator
             ->requirePresence('narration', 'create')
