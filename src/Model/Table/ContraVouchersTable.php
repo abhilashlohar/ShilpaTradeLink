@@ -35,10 +35,21 @@ class ContraVouchersTable extends Table
         $this->table('contra_vouchers');
         $this->displayField('id');
         $this->primaryKey('id');
-
+		$this->belongsTo('VouchersReferences');
+		$this->belongsTo('Ledgers');
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
+        ]);
+		$this->belongsTo('CashBankFroms', [
+			'className' => 'LedgerAccounts',
+            'foreignKey' => 'cash_bank_from',
+            'propertyName' => 'CashBankFroms',
+        ]);
+		$this->belongsTo('CashBankTos', [
+			'className' => 'LedgerAccounts',
+            'foreignKey' => 'cash_bank_to',
+            'propertyName' => 'CashBankTos',
         ]);
     }
 
@@ -54,29 +65,10 @@ class ContraVouchersTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->date('created_on')
-            ->requirePresence('created_on', 'create')
-            ->notEmpty('created_on');
-
-        $validator
-            ->date('transaction_date')
-            ->requirePresence('transaction_date', 'create')
-            ->notEmpty('transaction_date');
-
-        $validator
-            ->integer('cash_bank_from')
-            ->requirePresence('cash_bank_from', 'create')
-            ->notEmpty('cash_bank_from');
-
+        
         $validator
             ->requirePresence('payment_mode', 'create')
             ->notEmpty('payment_mode');
-
-        $validator
-            ->integer('cash_bank_to')
-            ->requirePresence('cash_bank_to', 'create')
-            ->notEmpty('cash_bank_to');
 
         $validator
             ->requirePresence('narration', 'create')
