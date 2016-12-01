@@ -37,6 +37,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Customer</label>
 						<div class="col-md-9">
+						<?php echo $this->Form->input('customer_id', ['type'=>'hidden','value' => @$sales_order->customer_id]); ?>
 						<?php echo @$sales_order->customer->customer_name; ?>
 							
 						</div>
@@ -644,7 +645,8 @@ $(document).ready(function() {
 	<?php } ?>
 	
 	function open_address(){
-		var customer_id=$('select[name="customer_id"]').val();
+		var customer_id=$('input[name="customer_id"]').val();
+		
 		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'addressList']); ?>";
 		url=url+'/'+customer_id,

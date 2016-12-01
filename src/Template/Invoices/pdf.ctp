@@ -111,22 +111,22 @@ $html.='<br/>
 								<table>
 									<tr>
 										<td width="60" valign="top" style="vertical-align: top;">Invoice No.</td>
-										<td width="20" align="center">:</td>
+										<td width="20" valign="top">:</td>
 										<td valign="top">'. h(($invoice->in1."/IN-".str_pad($invoice->in2, 3, "0", STR_PAD_LEFT)."/".$invoice->in3."/".$invoice->in4)) .'</td>
 									</tr>
 									<tr>
 										<td valign="top" style="vertical-align: top;">Date</td>
-										<td width="20" align="center">:</td>
+										<td width="20" valign="top">:</td>
 										<td valign="top">'. h(date("d-m-Y",strtotime($invoice->date_created))) .'</td>
 									</tr>
 									<tr>
 										<td valign="top" style="vertical-align: top;">LR No.</td>
-										<td width="20" align="center">:</td>
+										<td width="20" valign="top">:</td>
 										<td valign="top" style="vertical-align: top;">'. h($invoice->lr_no) .'</td>
 									</tr>
 									<tr>
 										<td valign="top" style="vertical-align: top;">Carrier</td>
-										<td width="20" align="center">:</td>
+										<td width="20" valign="top">:</td>
 										<td valign="top">'. h($invoice->transporter->transporter_name) .'</td>
 									</tr>
 								</table>

@@ -191,17 +191,7 @@
 					<td  align="right"><b>Total after P&F </b></td>
 					<td><?php echo $this->Form->input('total_after_pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total after P&F','readonly','step'=>0.01]); ?></td>
 				</tr>
-				<tr>
-					<td  align="left">
-					<b>Fright Amount </b>
-					<?php echo $this->Form->input('fright_text', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional text for Fright Amount','style'=>['text-align:left']]); ?>
-					</td>
-					<td><?php echo $this->Form->input('fright_amount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01,'style'=>['text-align:left']]); ?></td>
-				</tr>
-				<tr>
-					<td  align="right"><b>Grand Total </b></td>
-					<td><?php echo $this->Form->input('grand_total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Grand Total','readonly','step'=>0.01]); ?></td>
-				</tr>
+			
 			</table>
 			
 			
@@ -242,7 +232,7 @@
 				<div class="col-md-3">
 					<div class="form-group">
 						<label class="control-label">Mobile <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('dispatch_mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Mobile','data-date-format'=>'dd-mm-yyyy']); ?>
+						<?php echo $this->Form->input('dispatch_mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Mobile','data-date-format'=>'dd-mm-yyyy']); ?>
 					</div>
 				</div>
 				<div class="col-md-3">
@@ -479,7 +469,11 @@ $(document).ready(function() {
 		}else{
 			$("#pnf_text").hide();
 			$('input[name="pnf"]').removeAttr('readonly');
+			$('input[name="pnf"]').val(0);
+			$('input[name="pnfper"]').val(0);
+			
 		}
+		calculate_total();
 	})
 	
 	$("#discount_per").on('click',function(){
@@ -489,6 +483,8 @@ $(document).ready(function() {
 		}else{
 			$("#discount_text").hide();
 			$('input[name="discount"]').removeAttr('readonly');
+			$('input[name="discount_per"]').val(0);
+			$('input[name="discount"]').val(0);
 		}
 		calculate_total();
 	})
@@ -660,11 +656,7 @@ $(document).ready(function() {
 			var sale_tax_description=$('select[name="sale_tax_per"] option:selected').attr("description");
 			$('input[name="sale_tax_description"]').val(sale_tax_description);
 			
-			var fright_amount=parseFloat($('input[name="fright_amount"]').val());
-			if(isNaN(fright_amount)) { var fright_amount = 0; }
-			
-			grand_total=total_after_pnf+sale_tax+fright_amount;
-			$('input[name="grand_total"]').val(grand_total.toFixed(2));
+
 			
 		}	
 	

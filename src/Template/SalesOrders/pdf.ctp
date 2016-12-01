@@ -172,17 +172,7 @@ $html.='
 					<td style="text-align:right;" width="104">'. $this->Number->format($salesOrder->total_after_pnf,[ 'places' => 2]).'</td>
 				</tr>';
 		}
-		if(!empty($salesOrder->fright_amount)){
-		$html.='<tr>
-					<td style="text-align:right;">'. $this->Text->autoParagraph(h($salesOrder->fright_text)) .'</td>
-					<td style="text-align:right;" width="104">'. $this->Number->format($salesOrder->fright_amount,[ 'places' => 2]).'</td>
-				</tr>';
-		}
-		
-		$html.='<tr>
-				<td style="text-align:right;">Grand Total</td>
-				<td style="text-align:right;" width="104">'. $this->Number->format($salesOrder->grand_total,[ 'places' => 2]).'</td>
-			</tr>';
+$ledger[]=['ledger_account_id'=>$petticash->id];
 			
 			
 		$html.='</tbody>

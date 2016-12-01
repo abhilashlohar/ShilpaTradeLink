@@ -115,7 +115,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Contact No</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_contact', ['label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('customer_contact', ['label' => false,'class' => 'form-control input-sm quantity']); ?>
 						</div>
 					</div>
 				</div>

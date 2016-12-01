@@ -140,9 +140,31 @@ if(!empty($copy))
 					$q=0; foreach ($quotation->quotation_rows as $quotation_rows): ?>
 						<tr class="tr1" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
-							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Item','value' => @$quotation_rows->item->id]); ?></td>
+							<td>
+
+								<div class="row">
+									<div class="col-md-11 padding-right-decrease">
+										<?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','placeholder'=>'Item','value' => @$quotation_rows->item->id]); ?>
+									</div>
+									<div class="col-md-1 padding-left-decrease">
+										<a href="#" class="btn btn-default btn-sm popup_btn" role="button" popup_id="<?php echo $q; ?>"> <i class="fa fa-info-circle"></i> </a>
+										<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;" popup_div_id="<?php echo $q; ?>"><div class="modal-backdrop fade in" ></div>
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-body" popup_ajax_id="<?php echo $q; ?>">
+														
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn default closebtn">Close</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$quotation_rows->quantity]); ?></td>
-							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate','value' => @$quotation_rows->rate]); ?></td>
+							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Rate','value' => @$quotation_rows->rate]); ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$quotation_rows->amount]); ?></td>
 							<td><?php 
 							$options=['Yes'=>'Yes','No'=>'No'];
@@ -166,9 +188,31 @@ if(!empty($copy))
 					$q=0; foreach ($salesOrder->sales_order_rows as $sales_order_rows): ?>
 						<tr class="tr1" row_no='<?php echo @$sales_order_rows->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
-							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Item','value' => @$sales_order_rows->item->id]); ?></td>
+							<td>
+							<div class="row">
+									<div class="col-md-11 padding-right-decrease">
+										<?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','placeholder'=>'Item','value' => @$sales_order_rows->item->id]); ?>
+									</div>
+									<div class="col-md-1 padding-left-decrease">
+										<a href="#" class="btn btn-default btn-sm popup_btn" role="button" popup_id="<?php echo $q; ?>"> <i class="fa fa-info-circle"></i> </a>
+										<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;" popup_div_id="<?php echo $q; ?>"><div class="modal-backdrop fade in" ></div>
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-body" popup_ajax_id="<?php echo $q; ?>">
+														
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn default closebtn">Close</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+							</div>
+							
+							</td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$sales_order_rows->quantity]); ?></td>
-							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate','value' => @$sales_order_rows->rate]); ?></td>
+							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Rate','value' => @$sales_order_rows->rate]); ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$sales_order_rows->amount]); ?></td>
 							<td><?php 
 							$options=['Yes'=>'Yes','No'=>'No'];
@@ -219,17 +263,7 @@ if(!empty($copy))
 					<td  align="right"><b>Total after P&F </b></td>
 					<td><?php echo $this->Form->input('total_after_pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total after P&F','readonly','step'=>0.01]); ?></td>
 				</tr>
-				<tr>
-					<td  align="left">
-					<b>Fright Amount </b>
-					<?php echo $this->Form->input('fright_text', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional text for Fright Amount','style'=>['text-align:left']]); ?>
-					</td>
-					<td><?php echo $this->Form->input('fright_amount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01]); ?></td>
-				</tr>
-				<tr>
-					<td  align="right"><b>Grand Total </b></td>
-					<td><?php echo $this->Form->input('grand_total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Grand Total','readonly','step'=>0.01]); ?></td>
-				</tr>
+
 			</table>
 
 			
@@ -270,7 +304,7 @@ if(!empty($copy))
 				<div class="col-md-3">
 					<div class="form-group">
 						<label class="control-label">Mobile <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('dispatch_mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Mobile','data-date-format'=>'dd-mm-yyyy']); ?>
+						<?php echo $this->Form->input('dispatch_mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Mobile','data-date-format'=>'dd-mm-yyyy']); ?>
 					</div>
 				</div>
 				<div class="col-md-3">
@@ -337,11 +371,33 @@ if(!empty($copy))
 
 <table id="sample_tb" style="display:none;">
 	<tbody>
-		<tr class="tr1">
+		<tr class="tr1 preimp">
 			<td rowspan="2">0</td>
-			<td><?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item']); ?></td>
+			<td>
+				<div class="row">
+					<div class="col-md-11 padding-right-decrease">
+						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_box','placeholder' => 'Item']); ?>
+					</div>
+					<div class="col-md-1 padding-left-decrease">
+						<a href="#" class="btn btn-default btn-sm popup_btn" role="button"> <i class="fa fa-info-circle"></i> </a>
+						<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-body" >
+										
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn default closebtn">Close</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+			</td>
 			<td><?php echo $this->Form->input('unit[]', ['type' => 'type','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
-			<td><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01"]); ?></td>
+			<td><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Rate','step'=>"0.01"]); ?></td>
 			<td><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td><?php 
 			$options=['Yes'=>'Yes','No'=>'No'];
@@ -518,9 +574,12 @@ $(document).ready(function() {
 			$("#discount_text").show();
 			$('input[name="discount"]').attr('readonly','readonly');
 			
+			
 		}else{
 			$("#discount_text").hide();
 			$('input[name="discount"]').removeAttr('readonly');
+			$('input[name="discount_per"]').val(0);
+			$('input[name="discount"]').val(0);
 			
 		}
 		calculate_total();
@@ -621,6 +680,9 @@ $(document).ready(function() {
 			i++;
 			$(this).find("td:nth-child(1)").html(i);
 			$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id"}).select2().rules("add", "required");
+			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
+			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
+			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
 			$(this).find("td:nth-child(3) input").attr({name:"sales_order_rows["+i+"][quantity]", id:"sales_order_rows-"+i+"-quantity"}).rules('add', {
 						required: true,
 						min: 1,
@@ -714,11 +776,7 @@ $(document).ready(function() {
 		if(isNaN(sale_tax)) { var sale_tax = 0; }
 		$('input[name="sale_tax_amount"]').val(sale_tax.toFixed(2));
 		
-		var fright_amount=parseFloat($('input[name="fright_amount"]').val());
-		if(isNaN(fright_amount)) { var fright_amount = 0; }
-		
-		grand_total=total_after_pnf+sale_tax+fright_amount;
-		$('input[name="grand_total"]').val(grand_total.toFixed(2));
+
 		
 	}
 	
@@ -832,6 +890,77 @@ $(document).ready(function() {
 		$('textarea[name="terms_conditions"]').val(terms_conditions);
 		$("#myModal2").hide();
     });
+	
+		$("select.item_box").die().live("change",function(){
+		var popup_id=$(this).attr('popup_id');
+		alert();
+		var item_id=$(this).val();
+		last_three_rates(popup_id,item_id);
+	})
+	$("select.item_box").each(function(){
+		var popup_id=$(this).attr('popup_id');
+		var item_id=$(this).val();
+		if(popup_id){
+			last_three_rates_onload(popup_id,item_id);
+		}
+	});
+	
+	$("select.item_box").die().live("change",function(){
+		var popup_id=$(this).attr('popup_id');
+		var item_id=$(this).val();
+		last_three_rates(popup_id,item_id);
+	})
+	
+	function last_three_rates_onload(popup_id,item_id){
+			var customer_id=$('select[name="customer_id"]').val();
+			//$('.modal[popup_div_id='+popup_id+']').show();
+			$('div[popup_ajax_id='+popup_id+']').html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
+			if(customer_id){
+				var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'RecentRecords']); ?>";
+				url=url+'/'+item_id+'/'+customer_id,
+				$.ajax({
+					url: url,
+					dataType: 'json',
+				}).done(function(response) {
+					$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
+						min: response.minimum_selling_price,
+						messages: {
+							min: "Enter value greate than minimum selling price "+response.minimum_selling_price
+						}
+					});
+					$('div[popup_ajax_id='+popup_id+']').html(response.html);
+				});
+			}else{
+				$('div[popup_ajax_id='+popup_id+']').html('Select customer first.');
+				$(".item_box[popup_id="+popup_id+"]").val('').select2();
+			}
+	}
+	function last_three_rates(popup_id,item_id){
+			var customer_id=$('select[name="customer_id"]').val();
+			$('.modal[popup_div_id='+popup_id+']').show();
+			$('div[popup_ajax_id='+popup_id+']').html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
+			if(customer_id){
+				var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'RecentRecords']); ?>";
+				url=url+'/'+item_id+'/'+customer_id,
+				$.ajax({
+					url: url,
+					dataType: 'json',
+				}).done(function(response) {
+					if(response.minimum_selling_price>0){
+						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
+							min: response.minimum_selling_price,
+							messages: {
+								min: "Enter value greate than minimum selling price: "+response.minimum_selling_price
+							}
+						});
+					}
+					$('div[popup_ajax_id='+popup_id+']').html(response.html);
+				});
+			}else{
+				$('div[popup_ajax_id='+popup_id+']').html('Select customer first.');
+				$(".item_box[popup_id="+popup_id+"]").val('').select2();
+			}
+	}
 	
 	
 });
