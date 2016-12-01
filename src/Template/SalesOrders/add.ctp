@@ -144,7 +144,7 @@ if(!empty($copy))
 
 								<div class="row">
 									<div class="col-md-11 padding-right-decrease">
-										<?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','placeholder'=>'Item','value' => @$quotation_rows->item->id]); ?>
+										<?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','placeholder'=>'Item','value' => @$quotation_rows->item->id ,'popup_id'=>$q]); ?>
 									</div>
 									<div class="col-md-1 padding-left-decrease">
 										<a href="#" class="btn btn-default btn-sm popup_btn" role="button" popup_id="<?php echo $q; ?>"> <i class="fa fa-info-circle"></i> </a>
@@ -191,7 +191,7 @@ if(!empty($copy))
 							<td>
 							<div class="row">
 									<div class="col-md-11 padding-right-decrease">
-										<?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','placeholder'=>'Item','value' => @$sales_order_rows->item->id]); ?>
+										<?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','value' => @$sales_order_rows->item->id,'popup_id'=>$q]); ?>
 									</div>
 									<div class="col-md-1 padding-left-decrease">
 										<a href="#" class="btn btn-default btn-sm popup_btn" role="button" popup_id="<?php echo $q; ?>"> <i class="fa fa-info-circle"></i> </a>
@@ -372,15 +372,15 @@ if(!empty($copy))
 <table id="sample_tb" style="display:none;">
 	<tbody>
 		<tr class="tr1 preimp">
-			<td rowspan="2">0</td>
+			<td rowspan="2" width="10">0</td>
 			<td>
 				<div class="row">
-					<div class="col-md-11 padding-right-decrease">
+					<div class="col-md-10 padding-right-decrease">
 						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_box','placeholder' => 'Item']); ?>
 					</div>
 					<div class="col-md-1 padding-left-decrease">
 						<a href="#" class="btn btn-default btn-sm popup_btn" role="button"> <i class="fa fa-info-circle"></i> </a>
-						<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
+						<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 0px;"><div class="modal-backdrop fade in" ></div>
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-body" >
@@ -396,13 +396,13 @@ if(!empty($copy))
 				</div>
 			
 			</td>
-			<td><?php echo $this->Form->input('unit[]', ['type' => 'type','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
-			<td><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Rate','step'=>"0.01"]); ?></td>
-			<td><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
-			<td><?php 
+			<td width="100"><?php echo $this->Form->input('unit[]', ['type' => 'type','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
+			<td width="100"><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Rate','step'=>"0.01"]); ?></td>
+			<td width="100"><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
+			<td width="100"><?php 
 			$options=['Yes'=>'Yes','No'=>'No'];
 			echo $this->Form->input('excise_duty', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?></td>
-			<td>
+			<td width="100">
 			<?php $options=[];
 			foreach($SaleTaxes as $SaleTaxe){
 				$options[]=['text' => $this->Number->format($SaleTaxe->tax_figure,[ 'places' => 2]).'%', 'value' => $this->Number->format($SaleTaxe->tax_figure,[ 'places' => 2]), 'description' => $SaleTaxe->description];
@@ -410,7 +410,7 @@ if(!empty($copy))
 			echo $this->Form->input('so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
 			echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false]); ?>
 			</td>
-			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+			<td width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 		<tr class="tr2">
 			<td colspan="6"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'4']); ?></td>
@@ -679,7 +679,7 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			i++;
 			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id"}).select2().rules("add", "required");
+			$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
@@ -690,7 +690,7 @@ $(document).ready(function() {
 							min: "Quantity can't be zero."
 						}
 					});
-			$(this).find("td:nth-child(4) input").attr({name:"sales_order_rows["+i+"][rate]", id:"sales_order_rows-"+i+"-rate"}).rules('add', {
+			$(this).find("td:nth-child(4) input").attr({name:"sales_order_rows["+i+"][rate]", id:"sales_order_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
 						required: true,
 						min: 1,
 						messages: {
@@ -784,8 +784,17 @@ $(document).ready(function() {
 		open_address();
     });
 	
+		
+	$('.closebtn').live("click",function() { 
+		$(".modal").hide();
+    });
+	
 	$('.closebtn').on("click",function() { 
 		$("#myModal12").hide();
+    });
+	$('.popup_btn').live("click",function() {
+		var popup_id=$(this).attr('popup_id');
+		$("div[popup_div_id="+popup_id+"]").show();
     });
 	
 	
@@ -893,7 +902,6 @@ $(document).ready(function() {
 	
 		$("select.item_box").die().live("change",function(){
 		var popup_id=$(this).attr('popup_id');
-		alert();
 		var item_id=$(this).val();
 		last_three_rates(popup_id,item_id);
 	})
@@ -905,13 +913,14 @@ $(document).ready(function() {
 		}
 	});
 	
-	$("select.item_box").die().live("change",function(){
+	$("select.item_box").die().live("change",function(){ 
 		var popup_id=$(this).attr('popup_id');
 		var item_id=$(this).val();
 		last_three_rates(popup_id,item_id);
 	})
 	
 	function last_three_rates_onload(popup_id,item_id){
+		
 			var customer_id=$('select[name="customer_id"]').val();
 			//$('.modal[popup_div_id='+popup_id+']').show();
 			$('div[popup_ajax_id='+popup_id+']').html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
