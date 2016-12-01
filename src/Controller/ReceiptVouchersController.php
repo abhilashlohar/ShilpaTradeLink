@@ -39,7 +39,7 @@ class ReceiptVouchersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $receiptVoucher = $this->ReceiptVouchers->get($id, [
-            'contain' => ['ReceivedFroms', 'BankCashes']
+            'contain' => ['ReceivedFroms', 'BankCashes','Companies']
         ]);
 
         $this->set('receiptVoucher', $receiptVoucher);
@@ -55,13 +55,36 @@ class ReceiptVouchersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $receiptVoucher = $this->ReceiptVouchers->newEntity();
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		
         if ($this->request->is('post')) {
             $receiptVoucher = $this->ReceiptVouchers->patchEntity($receiptVoucher, $this->request->data);
+			$receiptVoucher->created_by=$s_employee_id;
+				$receiptVoucher->transaction_date=date("Y-m-d",strtotime($receiptVoucher->transaction_date));
+				$receiptVoucher->created_on=date("Y-m-d");
+				
+					
             if ($this->ReceiptVouchers->save($receiptVoucher)) {
+				
+				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
+				$ledger->ledger_account_id = $receiptVoucher->bank_cash_id;
+				$ledger->debit =$receiptVoucher->amount;
+				$ledger->credit = 0;
+				$ledger->voucher_id = $receiptVoucher->id;
+				$ledger->voucher_source = 'Receipt Voucher';
+				$this->ReceiptVouchers->Ledgers->save($ledger);
+				//Ledger posting for bankcash
+				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
+				$ledger->ledger_account_id = $receiptVoucher->received_from_id;
+				$ledger->debit = 0;
+				$ledger->credit = $receiptVoucher->amount;;
+				$ledger->voucher_id = $receiptVoucher->id;
+				$ledger->voucher_source = 'Receipt Voucher';
+				if ($this->ReceiptVouchers->Ledgers->save($ledger)) {
                 $this->Flash->success(__('The receipt voucher has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            } else {
+				return $this->redirect(['action' => 'index']);
+            } 
+			} else {
                 $this->Flash->error(__('The receipt voucher could not be saved. Please, try again.'));
             }
         }
@@ -88,8 +111,9 @@ class ReceiptVouchersController extends AppController
 				   return $q
 						->where(['AccountGroups.id IN' => $where]);
 				}]]]);
-				
-        $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes'));
+		
+        $companies = $this->ReceiptVouchers->Companies->find('all');		
+        $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies'));
         $this->set('_serialize', ['receiptVoucher']);
     }
 
