@@ -105,28 +105,28 @@ $html.='
 $html.='<br/>
 <table width="100%" class="table_rows">
 		<tr>
-			<th>S No</th>
+			<th style="white-space: nowrap;">S No</th>
 			<th>Item</th>
 			<th>Unit</th>
 			<th>Quantity</th>
 			<th>Rate</th>
 			<th>Amount</th>
-			<th style="width: 80px;">Excise Duty</th>
-			<th style="width: 80px;">Sale Tax(%)</th>
+			<th style="white-space: nowrap;">Excise Duty</th>
+			<th style="white-space: nowrap;">Sale Tax(%)</th>
 		</tr>
 ';
 
 $sr=0; foreach ($salesOrder->sales_order_rows as $salesOrderRows): $sr++; 
 $html.='
 	<tr class="odd">
-		<td valign="top" align="center" style="width: 30;">'. h($sr) .'</td>
-		<td>'. h($salesOrderRows->item->name) .'</td>
-		<td style="width: 10;" align="right" valign="top">'. h($salesOrderRows->item->unit->name) .'</td>
-		<td width="40" valign="top" align="center">'. h($salesOrderRows->quantity) .'</td>
-		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($salesOrderRows->rate,[ 'places' => 2]) .'</td>
-		<td style="width: 10;" align="right" valign="top">'. $this->Number->format($salesOrderRows->amount,[ 'places' => 2]) .'</td>
-		<td align="center" valign="top">'. h($salesOrderRows->excise_duty) .'</td>
-		<td align="center" valign="top">'. $this->Number->format($salesOrderRows->so_sale_tax,[ 'places' => 2]) .'</td>
+		<td valign="top" align="center" style="padding-top:10px;">'. h($sr) .'</td>
+		<td style="padding-top:10px;" width="100%">'. h($salesOrderRows->item->name) .'</td>
+		<td align="right" valign="top"  style="padding-top:10px;">'. h($salesOrderRows->item->unit->name) .'</td>
+		<td valign="top" align="center" style="padding-top:10px;">'. h($salesOrderRows->quantity) .'</td>
+		<td align="right" valign="top" style="padding-top:10px;">'. $this->Number->format($salesOrderRows->rate,[ 'places' => 2]) .'</td>
+		<td align="right" valign="top"  style="padding-top:10px;">'. $this->Number->format($salesOrderRows->amount,[ 'places' => 2]) .'</td>
+		<td align="center" valign="top" style="padding-top:10px;">'. h($salesOrderRows->excise_duty) .'</td>
+		<td align="center" valign="top" style="padding-top:10px;">'. $this->Number->format($salesOrderRows->so_sale_tax,[ 'places' => 2]) .'</td>
 	</tr>';
 	if(!empty($salesOrderRows->description)){
 		$html.='
