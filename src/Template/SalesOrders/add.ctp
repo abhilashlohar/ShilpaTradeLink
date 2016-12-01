@@ -378,9 +378,9 @@ if(!empty($copy))
 					<div class="col-md-10 padding-right-decrease">
 						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_box','placeholder' => 'Item']); ?>
 					</div>
-					<div class="col-md-1 padding-left-decrease">
+					<div class="col-md-1 padding-left-decrease" style="padding-left: 16px;">
 						<a href="#" class="btn btn-default btn-sm popup_btn" role="button"> <i class="fa fa-info-circle"></i> </a>
-						<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 0px;"><div class="modal-backdrop fade in" ></div>
+						<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 16px;"><div class="modal-backdrop fade in" ></div>
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-body" >
@@ -412,9 +412,9 @@ if(!empty($copy))
 			</td>
 			<td width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
-		<tr class="tr2">
+		<tr class="tr2 preimp">
 			<td colspan="6"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'4']); ?></td>
-			<td></td>
+			
 		</tr>
 	</tbody>
 </table>
@@ -643,6 +643,7 @@ $(document).ready(function() {
 					i++;
 					$(this).find("td:nth-child(1)").html(i);
 					$(this).find("td:nth-child(2) select").attr("name","sales_order_rows["+i+"][item_id]");
+					
 					$(this).find("td:nth-child(3) input").attr("name","sales_order_rows["+i+"][quantity]");
 					$(this).find("td:nth-child(4) input").attr("name","sales_order_rows["+i+"][rate]");
 					$(this).find("td:nth-child(5) input").attr("name","sales_order_rows["+i+"][amount]");
