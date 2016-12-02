@@ -29,7 +29,7 @@
 									<?php echo $this->Form->input('grn1', ['label' => false,'class' => 'form-control input-sm','readonly','value'=>@$purchase_order->company->alias]); ?>
 								</div>
 								<div class="col-md-4">
-									<?php echo $this->Form->input('grn3', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'File']); ?>
+									<?php echo $this->Form->input('grn3', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'File', 'value'=>@$purchase_order->po3,'readonly']); ?>
 								</div>
 								<div class="col-md-4">
 									<?php echo $this->Form->input('grn4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
