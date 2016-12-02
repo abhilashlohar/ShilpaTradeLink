@@ -84,6 +84,9 @@ class SalesOrdersTable extends Table
             'foreignKey' => 'sales_order_id',
 			'saveStrategy' => 'replace'
         ]);
+		$this->hasMany('Invoices', [
+            'foreignKey' => 'sales_order_id',
+        ]);
 		$this->belongsTo('Items', [
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'

@@ -13,7 +13,7 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">contra VOUCHER</div>
+				<div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">CONTRA VOUCHER</div>
 				<div style="border:solid 2px #0685a8;margin-bottom:15px;margin-top: 5px;"></div>
 			</td>
 		</tr>
