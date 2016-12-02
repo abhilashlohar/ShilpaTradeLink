@@ -18,8 +18,9 @@ class JournalVouchersController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['Companies']
+            'contain' => ['Ledger1s','Ledger2s']
         ];
         $journalVouchers = $this->paginate($this->JournalVouchers);
 
@@ -36,8 +37,10 @@ class JournalVouchersController extends AppController
      */
     public function view($id = null)
     {
+		
+		$this->viewBuilder()->layout('index_layout');
         $journalVoucher = $this->JournalVouchers->get($id, [
-            'contain' => ['Companies']
+            'contain' => ['Companies','Ledger1s','Ledger2s']
         ]);
 
         $this->set('journalVoucher', $journalVoucher);
@@ -51,19 +54,71 @@ class JournalVouchersController extends AppController
      */
     public function add()
     {
+		
+		$this->viewBuilder()->layout('index_layout');
         $journalVoucher = $this->JournalVouchers->newEntity();
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		
         if ($this->request->is('post')) {
             $journalVoucher = $this->JournalVouchers->patchEntity($journalVoucher, $this->request->data);
-            if ($this->JournalVouchers->save($journalVoucher)) {
+			$journalVoucher->created_by=$s_employee_id;
+			$journalVoucher->transaction_date=date("Y-m-d",strtotime($journalVoucher->transaction_date));
+			$journalVoucher->created_on=date("Y-m-d");
+			
+			if ($this->JournalVouchers->save($journalVoucher)) {
+				$ledger = $this->JournalVouchers->Ledgers->newEntity();
+				$ledger->ledger_account_id = $journalVoucher->ledger1;
+				$ledger->debit = $journalVoucher->amount;
+				$ledger->credit = 0;
+				$ledger->voucher_id = $journalVoucher->id;
+				$ledger->voucher_source = 'Journal Voucher';
+				$this->JournalVouchers->Ledgers->save($ledger);
+				//Ledger posting for bankcash
+				$ledger = $this->JournalVouchers->Ledgers->newEntity();
+				$ledger->ledger_account_id = $journalVoucher->ledger2;
+				$ledger->debit = 0;
+				$ledger->credit = $journalVoucher->amount;
+				$ledger->voucher_id = $journalVoucher->id;
+				$ledger->voucher_source = 'Journal Voucher';
+				if ($this->JournalVouchers->Ledgers->save($ledger)) {
                 $this->Flash->success(__('The journal voucher has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            } else {
+				return $this->redirect(['action' => 'index']);
+				} 
+			}
+           else {
                 $this->Flash->error(__('The journal voucher could not be saved. Please, try again.'));
             }
-        }
-        $companies = $this->JournalVouchers->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('journalVoucher', 'companies'));
+        }$vouchersReferences = $this->JournalVouchers->VouchersReferences->get(9, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		
+		$where=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			$where[]=$data->account_group_id;
+		}
+
+		$ledger1s = $this->JournalVouchers->Ledger1s->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN'=>$where]);
+				}]]]);
+			
+		$vouchersReferences = $this->JournalVouchers->VouchersReferences->get(10, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		$where=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			  $where[]=$data->account_group_id;
+			//pr($where); exit;
+		}
+
+		$ledger2s = $this->JournalVouchers->Ledger2s->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN'=>$where]);
+				}]]]);
+		
+       $companies = $this->JournalVouchers->Companies->find('all');
+        
+        $this->set(compact('journalVoucher', 'ledger1s', 'ledger2s','companies'));
         $this->set('_serialize', ['journalVoucher']);
     }
 

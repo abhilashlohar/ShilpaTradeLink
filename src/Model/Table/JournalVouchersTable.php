@@ -35,10 +35,21 @@ class JournalVouchersTable extends Table
         $this->table('journal_vouchers');
         $this->displayField('id');
         $this->primaryKey('id');
-
+		$this->belongsTo('VouchersReferences');
+		$this->belongsTo('Ledgers');
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
+        ]);
+		$this->belongsTo('Ledger1s', [
+			'className' => 'LedgerAccounts',
+            'foreignKey' => 'ledger1',
+            'propertyName' => 'Ledger1s',
+        ]);
+		$this->belongsTo('Ledger2s', [
+			'className' => 'LedgerAccounts',
+            'foreignKey' => 'ledger2',
+            'propertyName' => 'Ledger2s',
         ]);
     }
 
@@ -53,16 +64,6 @@ class JournalVouchersTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
-
-        $validator
-            ->date('created_on')
-            ->requirePresence('created_on', 'create')
-            ->notEmpty('created_on');
-
-        $validator
-            ->date('transaction_date')
-            ->requirePresence('transaction_date', 'create')
-            ->notEmpty('transaction_date');
 
         $validator
             ->integer('ledger1')
