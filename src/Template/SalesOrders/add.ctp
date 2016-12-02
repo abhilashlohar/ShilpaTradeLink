@@ -366,6 +366,12 @@ if(!empty($copy))
     color: #FFF;
 	background-color: #254b73;
 }
+.padding-right-decrease{
+	padding-right: 0;
+}
+.padding-left-decrease{
+	padding-left: 0;
+}
 </style>
 
 
@@ -375,10 +381,10 @@ if(!empty($copy))
 			<td rowspan="2" width="10">0</td>
 			<td>
 				<div class="row">
-					<div class="col-md-10 padding-right-decrease">
+					<div class="col-md-11 padding-right-decrease">
 						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_box','placeholder' => 'Item']); ?>
 					</div>
-					<div class="col-md-1 padding-left-decrease" style="padding-left: 16px;">
+					<div class="col-md-1 padding-left-decrease">
 						<a href="#" class="btn btn-default btn-sm popup_btn" role="button"> <i class="fa fa-info-circle"></i> </a>
 						<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 16px;"><div class="modal-backdrop fade in" ></div>
 							<div class="modal-dialog">
@@ -793,7 +799,7 @@ $(document).ready(function() {
 	$('.closebtn').on("click",function() { 
 		$("#myModal12").hide();
     });
-	$('.popup_btn').live("click",function() {
+	$('.popup_btn').live("click",function() { alert();
 		var popup_id=$(this).attr('popup_id');
 		$("div[popup_div_id="+popup_id+"]").show();
     });
