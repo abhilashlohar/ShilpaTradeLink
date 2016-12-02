@@ -33,14 +33,6 @@
 					</div>
 				</div>
 			</div><br/>
-
-
-			
-
-			
-			<div class="alert alert-danger" id="row_error_item" style="display:none;padding: 5px !important;">
-				Please check at least one row.
-			</div>
 			<table class="table tableitm" id="main_tb">
 				<thead>
 					<tr>
@@ -57,7 +49,7 @@
 					$q=0; foreach ($sales_order->sales_order_rows as $sales_order_rows): 
 						$ed_des[]=$sales_order_rows->excise_duty;
 					?>
-						<tr class="tr1" row_no='<?php echo @$sales_order_rows->id; ?>'>
+						<tr class="tr1" row_no='<?php echo @$jobCard_rows->id; ?>'>
 						
 							<td><?php echo ++$q; --$q; ?></td>
 							<td>
@@ -96,12 +88,11 @@
 }
 </style>
 
-
 <table id="sample_tb" style="display:none;">
 	<tbody>
-		<tr class="tr1">
+		<tr class="tr1 preimp">
 			<td rowspan="2">0</td>
-			<td><?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me','placeholder' => 'Item']); ?></td>
+			<td><?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item']); ?></td>
 			<td><?php echo $this->Form->input('unit[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
 
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>

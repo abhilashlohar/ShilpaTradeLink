@@ -126,6 +126,8 @@ class AccountGroupsController extends AppController
      */
     public function edit($id = null)
     {
+		
+		$this->viewBuilder()->layout('index_layout');
         $accountGroup = $this->AccountGroups->get($id, [
             'contain' => []
         ]);
