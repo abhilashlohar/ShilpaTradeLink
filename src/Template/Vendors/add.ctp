@@ -24,7 +24,7 @@
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Item Group Id <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Item Group	<span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('item_group_id', ['empty'=>'--Select--','options'=>$ItemGroups,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>

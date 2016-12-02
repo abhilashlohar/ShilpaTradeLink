@@ -20,15 +20,32 @@ class AccountGroupsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$accountGroup = $this->AccountGroups->newEntity();
+		
+		
         if ($this->request->is('post')) {
             $accountGroup = $this->AccountGroups->patchEntity($accountGroup, $this->request->data);
-            if ($this->AccountGroups->save($accountGroup)) {
-                $this->Flash->success(__('The account group has been saved.'));
+			$name=$accountGroup->name;
+			//pr($name); exit;
+			$AccountGroupsNameexists = $this->AccountGroups->exists(['name' => $name]);
+						
+			if(!$AccountGroupsNameexists){
+					if ($this->AccountGroups->save($accountGroup)) {
+					$this->Flash->success(__('The account group has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The account group could not be saved. Please, try again.'));
-            }
+					return $this->redirect(['action' => 'index']);
+					} else {
+					$this->Flash->error(__('The account group could not be saved. Please, try again.'));
+					}
+			
+					}
+					else{
+						$this->Flash->error(__('The Account Group Name Must be Uniqe'));
+					}
+			
+			
+			
+			
+			
         }
         $accountCategories = $this->AccountGroups->AccountCategories->find('list', ['limit' => 200]);
         $this->set(compact('accountGroup', 'accountCategories'));
@@ -82,7 +99,9 @@ class AccountGroupsController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
+		
         $accountGroup = $this->AccountGroups->newEntity();
+
         if ($this->request->is('post')) {
             $accountGroup = $this->AccountGroups->patchEntity($accountGroup, $this->request->data);
             if ($this->AccountGroups->save($accountGroup)) {
