@@ -21,19 +21,29 @@ class CustomerGroupsController extends AppController
     {
 		$url=$this->request->here();
 		 $url=parse_url($url,PHP_URL_QUERY);
-		
 		$this->viewBuilder()->layout('index_layout');
 		$customerGroup = $this->CustomerGroups->newEntity();
         if ($this->request->is('post')) {
             $customerGroup = $this->CustomerGroups->patchEntity($customerGroup, $this->request->data);
+			$name=$customerGroup->name;
+			$cgname=preg_replace('/\s+/','',$name);
+			
+			
+			$AccountGroupsNameexists = $this->CustomerGroups->exists(['name' => $cgname]);
+			if(!$AccountGroupsNameexists){
+				
             if ($this->CustomerGroups->save($customerGroup)) {
                 $this->Flash->success(__('The customer group has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The customer group could not be saved. Please, try again.'));
-            }
+            }}
+			else{
+						$this->Flash->error(__('The Account Group Name Must be Uniqe'));
+					}
         }
+		
 		$where=[];
 		$customer_group=$this->request->query('customer_group');
 		

@@ -58,10 +58,18 @@ class AccountFirstSubgroupsTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
+		$validator
             ->requirePresence('name', 'create')
             ->notEmpty('name');
-
+		
+        $validator->add(
+				'name', 
+				['unique' => [
+					'rule' => 'validateUnique', 
+					'provider' => 'table', 
+					'message' => 'Not unique']
+				]
+			);
         return $validator;
     }
 

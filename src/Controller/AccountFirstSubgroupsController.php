@@ -109,6 +109,8 @@ class AccountFirstSubgroupsController extends AppController
      */
     public function edit($id = null)
     {
+		
+		$this->viewBuilder()->layout('index_layout');
         $accountFirstSubgroup = $this->AccountFirstSubgroups->get($id, [
             'contain' => []
         ]);

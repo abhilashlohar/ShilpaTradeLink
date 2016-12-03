@@ -34,9 +34,8 @@
 				</div>
 			</div><br/>
 
+			<table class="table tableitm" id="main_tb" >
 
-			
-						<table class="table tableitm">
 				<thead>
 					<tr>
 						<th width="50">Sr.No. </th>
@@ -48,33 +47,33 @@
 				</thead>
 				<tr>
 					<td colspan="3">
-					<tbody>
-					<?php $ed_des=[];
+					<tbody id="main_tbody">
+					<?php 
 					if(!empty($sales_order->sales_order_rows)){
 					$q=0; foreach ($sales_order->sales_order_rows as $sales_order_rows): 
 						$ed_des[]=$sales_order_rows->excise_duty;
 						$id= @$sales_order_rows->id;
 					?>
-					<table class="table tableitm " id="main_tb">
+
 						<tr row_no='<?php echo @$sales_order_rows->id; ?>'>
+
 						
 							<td width="10"><?php echo ++$q; --$q; ?></td>
 							<td>
-							<?php echo $this->Form->input('q', ['label' => false,'type' => 'hidden','value' => @$sales_order_rows->item->id,'readonly']); ?>
+							<?php echo $this->Form->input('item_id', ['label' => false,'type' => 'hidden','value' => @$sales_order_rows->item->id,'readonly']); ?>
 							<?php echo $sales_order_rows->item->name; ?></td>
-							<td width="100"><?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control quantity','placeholder'=>'Quantity','value' => @$sales_order_rows->quantity-$sales_order_rows->processed_quantity,'readonly','min'=>'1','max'=>@$sales_order_rows->quantity-$sales_order_rows->processed_quantity]); ?></td>
-							<td width="100"><a class="btn btn-xs btn-default addrow" id="$id" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
-						</tr>
-						
-						
-					</table>
-					<tr class="tr1">
-						
+							<td width="100"><?php echo $this->Form->input('quantity', ['label' => false,'type' => 'text','class' => 'form-control quantity','placeholder'=>'Quantity','value' => @$sales_order_rows->quantity-$sales_order_rows->processed_quantity,'readonly','min'=>'1','max'=>@$sales_order_rows->quantity-$sales_order_rows->processed_quantity]); ?></td>
+							<td width="100"><a class="btn btn-xs btn-default addrow"  href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
 					
-						<?php $q++; endforeach; }?>
+					<?php $q++; endforeach; }?>
 						
-						</tbody>
+					
+					<tr class="tr1" >
+					
+					</tr>
+					
+					</tbody>
 					</td>
 				</tr>
 					
@@ -103,13 +102,14 @@
 }
 </style>
 
-
 <table id="sample_tb" style="display:none;">
 	<tbody>
 		<tr class="tr1 preimp">
+
 			<td>1</td>
 			<td><?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item']); ?></td>
 			<td><?php echo $this->Form->input('quantity[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
+
 
 			<td><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
@@ -312,30 +312,10 @@ $(document).ready(function() {
 		rename_rows(); calculate_total();
     });
 	
-	<?php if($process_status!="New"){ ?>
-	function rename_rows(){
-		$("#main_tb tbody tr.tr1").each(function(){
-			var row_no=$(this).attr('row_no');
-			var val=$(this).find('td:nth-child(6) input[type="checkbox"]:checked').val();
-			if(val){
-				$(this).find('td:nth-child(2) input').attr("name","invoice_rows["+val+"][item_id]").attr("id","invoice_rows-"+val+"-item_id").rules("add", "required");
-								
-				$(this).css('background-color','#fffcda');
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
-			}else{
-				$(this).find('td:nth-child(2) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
-								
-				$(this).css('background-color','#FFF');
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
-			}
-			
-			
-		});
-	}
 	
 	
 	$('.deleterow').die().live("click",function() {
-		alert();
+		
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
 			if(l>2){
@@ -349,19 +329,14 @@ $(document).ready(function() {
 					$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 					
 				});
-				var i=0;
-				$("#main_tb tbody tr.tr2").each(function(){
-					i++;
-					$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"});
-				});
+				
 				calculate_total();
 			}
 		} 
     });
 	
 	$('.addrow').die().live("click",function() {
-		  
-		  
+ 		  
 		add_row();
     });
 	
@@ -372,7 +347,7 @@ $(document).ready(function() {
 		$("#main_tb tbody").append(tr2);*/
 		
 		var w=0; var r=0;
-		$("#main_tb tbody tr").each(function(){
+		$("#main_tb tbody tr.preimp").each(function(){
 			$(this).attr("row_no",w);
 			r++;
 			if(r==2){ w++; r=0; }
@@ -382,8 +357,8 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			i++;
 			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id"}).select2().rules("add", "required");
-			$(this).find("td:nth-child(3) input").attr({name:"sales_order_rows["+i+"][quantity]", id:"sales_order_rows-"+i+"-quantity"}).rules('add', {
+			$(this).find("td:nth-child(2) select").attr({name:"job_card_rows["+i+"][item_id]", id:"job_card_rows-"+i+"-item_id"}).select2().rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr({name:"job_card_rows["+i+"][quantity]", id:"job_card_rows-"+i+"-quantity"}).rules('add', {
 						required: true,
 						min: 1,
 						messages: {
@@ -471,7 +446,6 @@ $(document).ready(function() {
 		grand_total=total_after_pnf+sale_tax+fright_amount;
 		$('input[name="grand_total"]').val(grand_total.toFixed(2));
 	}
-	<?php } ?>
 
 	
 	

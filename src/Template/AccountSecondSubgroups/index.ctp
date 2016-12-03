@@ -73,6 +73,7 @@
 							 <td><?=  h($accountSecondSubgroup->account_first_subgroup->name)?></td>
 							<td><?= h($accountSecondSubgroup->name) ?></td>
 							 <td class="actions">
+							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $accountSecondSubgroup->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 								<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
 								['action' => 'delete', $accountSecondSubgroup->id], 
 								[
