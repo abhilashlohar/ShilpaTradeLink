@@ -136,7 +136,15 @@ class CustomersTable extends Table
             ->notEmpty('customer_name');
 
 
-		
+		$validator->add(
+				'customer_name', 
+				['unique' => [
+					'rule' => 'validateUnique', 
+					'provider' => 'table', 
+					'message' => 'Not unique']
+				]
+			);
+			
 		$validator
 			->integer('payment_terms')
 			->add('payment_terms', [
@@ -148,9 +156,7 @@ class CustomersTable extends Table
             ->requirePresence('payment_terms', 'create')
             ->notEmpty('payment_terms');
 
-
-
-        return $validator;
+		return $validator;
     }
 
     /**

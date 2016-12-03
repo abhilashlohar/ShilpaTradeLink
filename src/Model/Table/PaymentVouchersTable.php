@@ -65,18 +65,18 @@ class PaymentVouchersTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-		$validator
-            ->requirePresence('received_from_id','create')
-            ->notEmpty('received_from_id');
-
         $validator
             ->requirePresence('payment_mode', 'create')
             ->notEmpty('payment_mode');
-
-        $validator
-            ->requirePresence('bank_cash_id', 'create')
-            ->notEmpty('bank_cash_id');
-
+		
+		$validator
+            ->requirePresence('paid_to_id', 'create')
+            ->notEmpty('paid_to_id');
+		
+		$validator
+            ->requirePresence('cash_bank_account_id', 'create')
+            ->notEmpty('cash_bank_account_id');
+       
         $validator
             ->requirePresence('narration', 'create')
             ->notEmpty('narration');

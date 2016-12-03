@@ -39,8 +39,8 @@
 				<div class="row" style="margin-top:30px;">
 					<div class="col-md-4" >
 						<div class="form-group">
-						<label class=" control-label">Voucher Date<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Finalisation Date']); ?>
+						<label class=" control-label">Transaction Date<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Transaction Date']); ?>
 						
 						</div>
 					</div>
@@ -48,14 +48,14 @@
 						<div class="form-group">
 							<label class="control-label">Paid To <span class="required" aria-required="true">*</span></label>
 							<?php 
-							echo $this->Form->input('paid_to_id', ['options'=>$paidTos,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+							echo $this->Form->input('paid_to_id', ['options'=>$paidTos,'empty'=>'--Select-','label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 				<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Cash/Bank<span class="required" aria-required="true">*</span></label>
 							<?php 
-							echo $this->Form->input('cash_bank_account_id', ['options'=>$bankCashes,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+							echo $this->Form->input('cash_bank_account_id', ['options'=>$bankCashes,'empty'=>'--Select-','label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 				
@@ -63,7 +63,7 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Mode of Payment</label>
+							<label class="control-label">Mode of Payment<span class="required" aria-required="true">*</span></label>
 							<div class="radio-list">
 								<div class="radio-inline" >
 								<?php echo $this->Form->radio(
@@ -84,6 +84,7 @@
 							<?php echo $this->Form->input('narration', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Narration']); ?>
 						</div>
 					</div>
+					
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Amount<span class="required" aria-required="true">*</span></label>

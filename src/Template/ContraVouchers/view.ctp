@@ -33,33 +33,31 @@
 	</table>
 	
 	<div style="height:3px;" class="hdrmargin"></div>
-	<table class="table-advance itmtbl">
-		<tfoot>
-				<tr>
-				<td><b>Recieved by Mr./Ms.:</b></td>
-				<td><?= h($contraVoucher->CashBankFroms->name) ?></td>
-			</tr>
+	<table class="table table-advance itmtbl itmtbl2">
+	<thead>
+	<tr>
+	<th>Particulars</th>
+	<th>Dr</th>
+	<th>Cr</th>
+	</tr>
+	</thead>
+		<tfoot>	<tfoot>
 			<tr>
-				<td><b>Amount :</b></td>
+				<td><?= h($contraVoucher->CashBankFroms->name) ?></td>
+				<td>0</td>
+				<td><?= h($contraVoucher->amount) ?></td>
+				</tr>
+				<tr>
+				<td><?= h($contraVoucher->CashBankTos->name) ?> </td>
+				<td><?= h($contraVoucher->amount) ?></td>
+				<td>0</td>
+			</tr>
+			
+			<tr>
+				<td><?= $this->Text->autoParagraph(h($contraVoucher->narration)) ?> </td>
+				<td>Total</td>
 				<td><?= h($contraVoucher->amount) ?></td>
 			</tr>
-			
-			<tr>
-				<td><b>Amount in words: </b> </td>
-				<td><?php echo $this->NumberWords->convert_number_to_words($contraVoucher->amount) ?> </td>
-			</tr>
-			
-			<tr>
-				<td><b>By: </b> </td>
-				<td><?= h($contraVoucher->payment_mode) ?> </td>
-			</tr>
-			<tr>
-				<td><b>On Account Of: </b> </td>
-				<td><?= h($contraVoucher->CashBankTos->name) ?> </td>
-			</tr>
-			<tr>
-				<td><b>Narration: </b> </td>
-				<td><?= $this->Text->autoParagraph(h($contraVoucher->narration)) ?> </td>
 			</tr>
 		</tfoot>
 	</table>

@@ -81,6 +81,14 @@ class PettyCashReceiptVouchersTable extends Table
             ->requirePresence('payment_mode', 'create')
             ->notEmpty('payment_mode');
 
+		 $validator
+            ->requirePresence('received_from_id', 'create')
+            ->notEmpty('received_from_id');
+		
+		$validator
+            ->requirePresence('bank_cash_id', 'create')
+            ->notEmpty('bank_cash_id');
+       
         
         return $validator;
     }

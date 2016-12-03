@@ -51,6 +51,7 @@ class ContraVouchersTable extends Table
             'foreignKey' => 'cash_bank_to',
             'propertyName' => 'CashBankTos',
         ]);
+		 
     }
 
     /**
@@ -80,10 +81,13 @@ class ContraVouchersTable extends Table
             ->notEmpty('amount');
 
         $validator
-            ->integer('created_by')
-            ->requirePresence('created_by', 'create')
-            ->notEmpty('created_by');
-
+            ->requirePresence('cash_bank_from', 'create')
+            ->notEmpty('cash_bank_from');
+		
+		$validator
+            ->requirePresence('cash_bank_to', 'create')
+            ->notEmpty('cash_bank_to');
+       
         return $validator;
     }
 

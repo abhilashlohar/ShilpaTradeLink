@@ -41,12 +41,7 @@ class AccountGroupsController extends AppController
 					else{
 						$this->Flash->error(__('The Account Group Name Must be Uniqe'));
 					}
-			
-			
-			
-			
-			
-        }
+		}
         $accountCategories = $this->AccountGroups->AccountCategories->find('list', ['limit' => 200]);
         $this->set(compact('accountGroup', 'accountCategories'));
         $this->set('_serialize', ['accountGroup']);

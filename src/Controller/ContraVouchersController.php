@@ -67,16 +67,16 @@ class ContraVouchersController extends AppController
 			if ($this->ContraVouchers->save($contraVoucher)) {
 				$ledger = $this->ContraVouchers->Ledgers->newEntity();
 				$ledger->ledger_account_id = $contraVoucher->cash_bank_from;
-				$ledger->debit = $contraVoucher->amount;
-				$ledger->credit = 0;
+				$ledger->debit = 0;
+				$ledger->credit = $contraVoucher->amount;
 				$ledger->voucher_id = $contraVoucher->id;
 				$ledger->voucher_source = 'Contra Voucher';
 				$this->ContraVouchers->Ledgers->save($ledger);
 				//Ledger posting for bankcash
 				$ledger = $this->ContraVouchers->Ledgers->newEntity();
 				$ledger->ledger_account_id = $contraVoucher->cash_bank_to;
-				$ledger->debit = 0;
-				$ledger->credit = $contraVoucher->amount;
+				$ledger->debit =  $contraVoucher->amount;
+				$ledger->credit = 0;
 				$ledger->voucher_id = $contraVoucher->id;
 				$ledger->voucher_source = 'Contra Voucher';
 				if ($this->ContraVouchers->Ledgers->save($ledger)) {

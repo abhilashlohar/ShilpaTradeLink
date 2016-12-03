@@ -76,16 +76,19 @@ class ReceiptVouchersTable extends Table
             ->requirePresence('amount', 'create')
             ->notEmpty('amount');
 
+		 $validator
+            ->requirePresence('payment_mode', 'create')
+            ->notEmpty('payment_mode');
+		
         $validator
-            ->integer('created_by')
-            ->requirePresence('created_by', 'create')
-            ->notEmpty('created_by');
-
-        $validator
-            ->date('created_on')
-            ->requirePresence('created_on', 'create')
-            ->notEmpty('created_on');
-
+            ->requirePresence('received_from_id', 'create')
+            ->notEmpty('received_from_id');
+		
+		$validator
+            ->requirePresence('bank_cash_id', 'create')
+            ->notEmpty('bank_cash_id');
+       
+       
         return $validator;
     }
 
