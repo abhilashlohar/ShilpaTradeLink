@@ -45,7 +45,7 @@
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Recived Form<span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Recived From<span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','label' => false,'class' => 'form-control input-sm select2me']); ?>
 						
 						</div>
@@ -53,8 +53,6 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Bank/Cash<span class="required" aria-required="true">*</span></label>
-							
-							
 							<?php echo $this->Form->input('bank_cash_id', ['empty'=>'--Select-','label' => false,'class' => 'form-control input-sm select2me']); ?>
 						
 						</div>
