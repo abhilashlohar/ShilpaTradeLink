@@ -643,6 +643,7 @@ $(document).ready(function() {
 			if(l>2){
 				var row_no=$(this).closest("tr").attr("row_no");
 				var del="tr[row_no="+row_no+"]";
+				alert(del);
 				$(del).remove();
 				var i=0;
 				$("#main_tb tbody tr.tr1").each(function(){

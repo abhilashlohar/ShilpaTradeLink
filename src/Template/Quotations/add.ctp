@@ -199,9 +199,12 @@ if(!empty($copy))
 							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$quotation_rows->amount]); ?></td>
 							<td  width="70"><a class="btn btn-xs btn-default addrow"  href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 					</tr>
-					<tr class="tr2">
+					<tr class="tr2" row_no='<?php echo @$quotation_rows->id; ?>'>
 							
-							<td colspan="6"><?php echo $this->Form->textarea('quotation_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','placeholder'=>'Description','rows'=>'3','value' => @$quotation_rows->description]); ?></td>
+							<td colspan="6">
+							
+							<?php echo $this->Form->textarea('quotation_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value' => @$quotation_rows->description]); ?>
+							</td>
 							
 					</tr>
 					<?php $q++; endforeach;  ?>

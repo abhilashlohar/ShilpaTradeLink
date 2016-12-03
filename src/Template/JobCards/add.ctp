@@ -1,4 +1,4 @@
-<?php //pr($sales_order->sales_order_rows); exit ?>
+<?php //pr($items); exit ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -11,7 +11,7 @@
 	</div>
 <?php if($process_status!="New"){ ?>
 	<div class="portlet-body form">
-		<?= $this->Form->create($jobCard,['id'=>'form_sample_3']) ?>
+		<?= $this->Form->create($jobCard) ?>
 		<div class="form-body">
 			<div class="row">
 				<div class="col-md-6">
@@ -36,12 +36,7 @@
 
 
 			
-
-			
-			<div class="alert alert-danger" id="row_error_item" style="display:none;padding: 5px !important;">
-				Please check at least one row.
-			</div>
-			<table class="table tableitm" id="main_tb">
+						<table class="table tableitm">
 				<thead>
 					<tr>
 						<th width="50">Sr.No. </th>
@@ -51,26 +46,38 @@
 						<th width="70"></th>
 					</tr>
 				</thead>
-				
+				<tr>
+					<td colspan="3">
+					<tbody>
 					<?php $ed_des=[];
 					if(!empty($sales_order->sales_order_rows)){
 					$q=0; foreach ($sales_order->sales_order_rows as $sales_order_rows): 
 						$ed_des[]=$sales_order_rows->excise_duty;
+						$id= @$sales_order_rows->id;
 					?>
-						<tr class="tr1" row_no='<?php echo @$sales_order_rows->id; ?>'>
+					<table class="table tableitm " id="main_tb">
+						<tr row_no='<?php echo @$sales_order_rows->id; ?>'>
 						
-							<td><?php echo ++$q; --$q; ?></td>
+							<td width="10"><?php echo ++$q; --$q; ?></td>
 							<td>
 							<?php echo $this->Form->input('q', ['label' => false,'type' => 'hidden','value' => @$sales_order_rows->item->id,'readonly']); ?>
 							<?php echo $sales_order_rows->item->name; ?></td>
-							<td><?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$sales_order_rows->quantity-$sales_order_rows->processed_quantity,'readonly','min'=>'1','max'=>@$sales_order_rows->quantity-$sales_order_rows->processed_quantity]); ?></td>
-							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+							<td width="100"><?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control quantity','placeholder'=>'Quantity','value' => @$sales_order_rows->quantity-$sales_order_rows->processed_quantity,'readonly','min'=>'1','max'=>@$sales_order_rows->quantity-$sales_order_rows->processed_quantity]); ?></td>
+							<td width="100"><a class="btn btn-xs btn-default addrow" id="$id" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
-						<tbody id="main_tbody">
-				
-						</tbody>
 						
-					<?php $q++; endforeach; }?>
+						
+					</table>
+					<tr class="tr1">
+						
+						</tr>
+					
+						<?php $q++; endforeach; }?>
+						
+						</tbody>
+					</td>
+				</tr>
+					
 				
 			</table>
 			
@@ -99,17 +106,14 @@
 
 <table id="sample_tb" style="display:none;">
 	<tbody>
-		<tr class="tr1">
-			<td rowspan="2">0</td>
-			<td><?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me','placeholder' => 'Item']); ?></td>
-			<td><?php echo $this->Form->input('unit[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
+		<tr class="tr1 preimp">
+			<td>1</td>
+			<td><?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item']); ?></td>
+			<td><?php echo $this->Form->input('quantity[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
 
-			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+			<td><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
-		<tr class="tr2">
-			<td colspan="4"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1']); ?></td>
-			<td></td>
-		</tr>
+		
 	</tbody>
 </table>
 
@@ -308,51 +312,30 @@ $(document).ready(function() {
 		rename_rows(); calculate_total();
     });
 	
-
-
-	
-	
-	$('.addrow').die().live("click",function() {
-		add_row();
-    });
-	
-	
-    $('.addrow').die().live("click",function() { 
-		add_row();
-    });
-	$('.quantity').die().live("keyup",function() {
-			var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc==0)
-			{
-				$(this).val('');
-				return false; 
+	<?php if($process_status!="New"){ ?>
+	function rename_rows(){
+		$("#main_tb tbody tr.tr1").each(function(){
+			var row_no=$(this).attr('row_no');
+			var val=$(this).find('td:nth-child(6) input[type="checkbox"]:checked').val();
+			if(val){
+				$(this).find('td:nth-child(2) input').attr("name","invoice_rows["+val+"][item_id]").attr("id","invoice_rows-"+val+"-item_id").rules("add", "required");
+								
+				$(this).css('background-color','#fffcda');
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
+			}else{
+				$(this).find('td:nth-child(2) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
+								
+				$(this).css('background-color','#FFF');
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
 			}
-			else if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
-	});
-	$('.rate').die().live("keyup",function() {
-			var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
-	});
-	var terms_conditions=$("#terms_conditions").text();
-	$('textarea[name="terms_conditions"]').val(terms_conditions);
+			
+			
+		});
+	}
+	
 	
 	$('.deleterow').die().live("click",function() {
+		alert();
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
 			if(l>2){
@@ -364,12 +347,7 @@ $(document).ready(function() {
 					i++;
 					$(this).find("td:nth-child(1)").html(i);
 					$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
-					$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
-					$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
-					$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
-					$(this).find("td:nth-child(3) input").attr({name:"quotation_rows["+i+"][quantity]", id:"quotation_rows-"+i+"-quantity"}).rules("add", "required");
-					$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules("add", "required");
-					$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
+					
 				});
 				var i=0;
 				$("#main_tb tbody tr.tr2").each(function(){
@@ -381,15 +359,20 @@ $(document).ready(function() {
 		} 
     });
 	
-	function add_row(){
-		
+	$('.addrow').die().live("click",function() {
+		  
+		  
+		add_row();
+    });
+	
+	function add_row(){ 
 		var tr1=$("#sample_tb tbody tr.tr1").clone();
-		$("#main_tb tbody#main_tbody").append(tr1);
-		var tr2=$("#sample_tb tbody tr.tr2").clone();
-		$("#main_tb tbody#main_tbody").append(tr2);
+		$("#main_tb tbody").append(tr1);
+		/*var tr2=$("#sample_tb tbody tr.tr2").clone();
+		$("#main_tb tbody").append(tr2);*/
 		
 		var w=0; var r=0;
-		$("#main_tb tbody#main_tbody tr.preimp").each(function(){
+		$("#main_tb tbody tr").each(function(){
 			$(this).attr("row_no",w);
 			r++;
 			if(r==2){ w++; r=0; }
@@ -399,33 +382,16 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			i++;
 			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
-			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
-			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
-			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
-			$(this).find("td:nth-child(3) input").attr({name:"quotation_rows["+i+"][quantity]", id:"quotation_rows-"+i+"-quantity"}).rules('add', {
+			$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id"}).select2().rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr({name:"sales_order_rows["+i+"][quantity]", id:"sales_order_rows-"+i+"-quantity"}).rules('add', {
 						required: true,
 						min: 1,
 						messages: {
 							min: "Quantity can't be zero."
 						}
 					});
-			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
-						required: true,
-						min: 1,
-						messages: {
-							min: "Rate can't be zero."
-						}
-					});
-			$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
+			
 		});
-		var i=0;
-		
-		$("#main_tb tbody tr.tr2").each(function(){
-			i++;
-			$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"}).rules("add", "required");
-		});
-		
 		
 		
 		$(document)
@@ -442,34 +408,9 @@ $(document).ready(function() {
 			rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
 			this.rows = minRows + rows;
 		});
-		
-		$("textarea").keydown(function(e) {
-			if(e.keyCode === 9) { // tab was pressed
-				// get caret position/selection
-				var start = this.selectionStart;
-				var end = this.selectionEnd;
-
-				var $this = $(this);
-				var value = $this.val();
-
-				// set textarea value to: text before caret + tab + text after caret
-				$this.val(value.substring(0, start)
-							+ "\t"
-							+ value.substring(end));
-
-				// put caret at right position again (add one for the tab)
-				this.selectionStart = this.selectionEnd = start + 1;
-
-				// prevent the focus lose
-				e.preventDefault();
-			}
-		});
-		
 	}
+
 	
-	$('#main_tb input').die().live("keyup","blur",function() { 
-		calculate_total();
-    });
 
 	
 	function calculate_total(){
@@ -530,7 +471,7 @@ $(document).ready(function() {
 		grand_total=total_after_pnf+sale_tax+fright_amount;
 		$('input[name="grand_total"]').val(grand_total.toFixed(2));
 	}
-
+	<?php } ?>
 
 	
 	
@@ -606,46 +547,3 @@ $(document).ready(function() {
 });
 </script>
 	 
-<div id="myModal12" class="modal fade in" tabindex="-1"  style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-body" id="result_ajax">
-				
-			</div>
-			<div class="modal-footer">
-				<button class="btn default closebtn">Close</button>
-				<button class="btn yellow">Save</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<div id="myModal1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-		<?php echo $this->Form->create('pull_From_Sales_Order', ['url' => ['action' => 'pull_From_Sales_Order']])?>
-			<div class="modal-body">
-				<p>
-					<label>Select Sales Order No.</label>
-					<?php 
-					$options=array();
-					foreach($salesOrders as $salesOrderdata){
-						$options[]=['text' => h(($salesOrderdata->so1.'/SO-'.str_pad($salesOrderdata->id, 3, '0', STR_PAD_LEFT).'/'.$salesOrderdata->so3.'/'.$salesOrderdata->so4)), 'value' => $salesOrderdata->id];
-					}
-					echo $this->Form->input('sales_order_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me']); ?>
-				</p>
-			</div>
-			<div class="modal-footer">
-				<button class="btn default" data-dismiss="modal" aria-hidden="true">Close</button>
-				<button class="btn blue" type="submit" name="pull_submit">GO</button>
-			</div>
-		<?= $this->Form->end() ?>
-		</div>
-	</div>
-</div>
-
-
-
-
-

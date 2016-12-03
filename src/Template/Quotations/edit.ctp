@@ -155,7 +155,7 @@
 				</thead>
 				<tbody id="main_tbody">
 					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_row): ?>
-						<tr class="tr1 preimp">
+						<tr class="tr1 preimp" row_no='<?php echo @$quotation_row->id; ?>'>
 							<td rowspan="2" width="10">
 								<?php echo ++$q; --$q; ?><?php echo $this->Form->input('quotation_rows.'.$q.'.id'); ?>
 							</td>
@@ -193,7 +193,7 @@
 							</td>
 							<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
-						<tr class="tr2 preimp">
+						<tr class="tr2 preimp" row_no='<?php echo @$quotation_row->id; ?>'>
 							<td colspan="4"><?php echo $this->Form->textarea('quotation_rows['.$q.'][description]', ['type' => 'textarea','label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value' => $quotation_row->description,'required']); ?></td>
 							<td></td>
 						</tr>
@@ -500,7 +500,7 @@ $(document).ready(function() {
 		
 		var w=0; var r=0;
 		$("#main_tb tbody#main_tbody tr.preimp").each(function(){
-			alert();
+			
 			$(this).attr("row_no",w);
 			r++;
 			if(r==2){ w++; r=0; }
