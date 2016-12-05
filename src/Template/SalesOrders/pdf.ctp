@@ -172,7 +172,6 @@ $html.='
 					<td style="text-align:right;" width="104">'. $this->Number->format($salesOrder->total_after_pnf,[ 'places' => 2]).'</td>
 				</tr>';
 		}
-$ledger[]=['ledger_account_id'=>$petticash->id];
 			
 			
 		$html.='</tbody>
@@ -230,20 +229,23 @@ $html.='
 	<br/>
 	<b>Dispatch Details</b>
 	<table width="100%" >
-		<tr  >
-			<td width="5%">Name</td>
-			<td width="20%">: '. h($salesOrder->dispatch_name).'</td>
-			<td width="10%"><td>
-			<td width="5%">Mobile</td>
-			<td width="60%">: '. h($salesOrder->dispatch_mobile).'</td>
+		<tr>
+			<td valign="top">Name</td>
+			<td valign="top"> : <td>
+			<td valign="top">'. h($salesOrder->dispatch_name).'</td>
+			<td width="10%"></td>
+			<td valign="top">Mobile</td>
+			<td valign="top"> : <td>
+			<td valign="top">'. h($salesOrder->dispatch_mobile).'</td>
 		</tr>
 		<tr>
-			<td width="5%">Address</td>
-			<td width="50%">: '. h($salesOrder->dispatch_address).'</td>
-			<td width="20%"><td>
-			<td>Email</td>
-			<td>: '. h($salesOrder->dispatch_email).'</td>
-			
+			<td valign="top">Address</td>
+			<td valign="top"> : <td>
+			<td valign="top" width="60%" >'. h($salesOrder->dispatch_address).'</td>
+			<td></td>
+			<td valign="top">Email</td>
+			<td valign="top"> : <td>
+			<td valign="top">'. h($salesOrder->dispatch_email).'</td>
 		</tr>
 	</table>
 ';
@@ -259,9 +261,6 @@ $html.='<div align="center">
 		<span>'. h($salesOrder->editor->name) .'</span><br/>
 		
 		On '. h(date("d-m-Y",strtotime($salesOrder->edited_on))).','. h(date("h:i:s A",strtotime($salesOrder->edited_on_time))).'<br/>
-		
-		
-		
 		</div>';
 }
 			
