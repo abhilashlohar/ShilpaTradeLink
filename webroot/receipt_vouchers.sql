@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2016 at 10:21 AM
+-- Generation Time: Dec 05, 2016 at 01:40 PM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -23,30 +23,37 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `contra_vouchers`
+-- Table structure for table `receipt_vouchers`
 --
 
-CREATE TABLE `contra_vouchers` (
-  `id` int(10) NOT NULL,
-  `created_on` date NOT NULL,
-  `transaction_date` date NOT NULL,
-  `cash_bank_from` int(10) NOT NULL,
-  `payment_mode` varchar(100) NOT NULL,
-  `cash_bank_to` int(10) NOT NULL,
+CREATE TABLE `receipt_vouchers` (
+  `id` int(11) NOT NULL,
+  `received_from_id` int(11) NOT NULL,
+  `bank_cash_id` int(11) NOT NULL,
   `narration` text NOT NULL,
   `amount` decimal(15,2) NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `created_on` date NOT NULL,
+  `payment_mode` varchar(10) NOT NULL,
   `company_id` int(11) NOT NULL,
-  `created_by` int(11) NOT NULL
+  `transaction_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `receipt_vouchers`
+--
+
+INSERT INTO `receipt_vouchers` (`id`, `received_from_id`, `bank_cash_id`, `narration`, `amount`, `created_by`, `created_on`, `payment_mode`, `company_id`, `transaction_date`) VALUES
+(1, 5, 11, 'being received from gopal', '400.00', 1, '2016-12-03', 'Cash', 27, '2016-12-03');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `contra_vouchers`
+-- Indexes for table `receipt_vouchers`
 --
-ALTER TABLE `contra_vouchers`
+ALTER TABLE `receipt_vouchers`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -54,10 +61,10 @@ ALTER TABLE `contra_vouchers`
 --
 
 --
--- AUTO_INCREMENT for table `contra_vouchers`
+-- AUTO_INCREMENT for table `receipt_vouchers`
 --
-ALTER TABLE `contra_vouchers`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `receipt_vouchers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
