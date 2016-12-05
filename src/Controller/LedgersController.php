@@ -18,12 +18,30 @@ class LedgersController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
+		$where=[];
+		$ledger=$this->request->query('ledger');
+		$From=$this->request->query('From');
+		$To=$this->request->query('To');
+		$this->set(compact('ledger','From','To'));
+		if(!empty($ledger)){
+			$where['ledger_account_id']=$ledger;
+		}
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['transaction_date >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['transaction_date <=']=$To;
+		}
         $this->paginate = [
             'contain' => ['LedgerAccounts']
         ];
-        $ledgers = $this->paginate($this->Ledgers);
-
-        $this->set(compact('ledgers'));
+        $ledgers = $this->paginate($this->Ledgers->find()->where($where)->order(['Ledgers.transaction_date' => 'DESC']));
+		
+        $ledgerAccounts = $this->Ledgers->LedgerAccounts->find('list', ['limit' => 200]);
+        $this->set(compact('ledgers','ledgerAccounts'));
         $this->set('_serialize', ['ledgers']);
     }
 

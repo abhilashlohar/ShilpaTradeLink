@@ -1,49 +1,78 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Ledger'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Ledger Accounts'), ['controller' => 'LedgerAccounts', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Ledger Account'), ['controller' => 'LedgerAccounts', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="ledgers index large-9 medium-8 columns content">
-    <h3><?= __('Ledgers') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
+
+
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="icon-globe font-blue-steel"></i>
+			<span class="caption-subject font-blue-steel uppercase">Ledger Account</span>
+		</div>
+		
+	</div>
+	<div class="portlet-body form">
+	<div class="table-scrollable">
+			<form method="GET" >
+				<table class="table table-condensed" style="width:70%;">
+				<tbody>
+					<tr>
+						<td><?php 
+							echo $this->Form->input('ledger', ['options'=>$ledgerAccounts,'empty'=>'-Ledger-','label' => false,'class' => 'form-control input-md select2me','value'=>@$ledger]);  ?></td>
+							<td>
+								<div class="row">
+									<div class="col-md-6">
+										<input type="text" name="From" class="form-control input-md date-picker" placeholder="Transaction From" value="<?php echo @$From; ?>"  data-date-format="dd-mm-yyyy" >
+									</div>
+									<div class="col-md-6">
+										<input type="text" name="To" class="form-control input-md date-picker" placeholder="Transaction To" value="<?php echo @$To; ?>"  data-date-format="dd-mm-yyyy" >
+									</div>
+								</div>
+							</td>
+						<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+					</tr>
+				</tbody>
+			</table>
+			</form>
+		<!-- BEGIN FORM-->
+		<div class="row ">
+		
+		<div class="col-md-12">
+		<div class="table-scrollable">
+		 <?php $page_no=$this->Paginator->current('LedgerAccounts'); $page_no=($page_no-1)*20; ?>
+			<table class="table table-bordered table-striped table-hover">
+				 <thead>
+				<tr>
+				<th>Transaction Date</th>
+                <th>Ledger Account</th>
+                <th>Debit</th>
+                <th>Credit</th>
+						
+				</tr>
+				</thead>
+				<tbody>
+					<?php $i=0; foreach ($ledgers as $ledger): $i++; ?>
             <tr>
-                <th><?= $this->Paginator->sort('id') ?></th>
-                <th><?= $this->Paginator->sort('ledger_account_id') ?></th>
-                <th><?= $this->Paginator->sort('debit') ?></th>
-                <th><?= $this->Paginator->sort('credit') ?></th>
-                <th><?= $this->Paginator->sort('voucher_id') ?></th>
-                <th><?= $this->Paginator->sort('voucher_source') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($ledgers as $ledger): ?>
-            <tr>
-                <td><?= $this->Number->format($ledger->id) ?></td>
-                <td><?= $ledger->has('ledger_account') ? $this->Html->link($ledger->ledger_account->name, ['controller' => 'LedgerAccounts', 'action' => 'view', $ledger->ledger_account->id]) : '' ?></td>
+                
+				<td><?php echo date("d-m-Y",strtotime($ledger->transaction_date)); ?></td>
+                <td><?= h($ledger->ledger_account->name) ?></td>
                 <td><?= $this->Number->format($ledger->debit) ?></td>
                 <td><?= $this->Number->format($ledger->credit) ?></td>
-                <td><?= $this->Number->format($ledger->voucher_id) ?></td>
-                <td><?= h($ledger->voucher_source) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $ledger->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $ledger->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $ledger->id], ['confirm' => __('Are you sure you want to delete # {0}?', $ledger->id)]) ?>
-                </td>
+				
             </tr>
             <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-        </ul>
-        <p><?= $this->Paginator->counter() ?></p>
-    </div>
+				</tbody>
+			</table>
+			</div>
+			<div class="paginator">
+				<ul class="pagination">
+					<?= $this->Paginator->prev('<') ?>
+					<?= $this->Paginator->numbers() ?>
+					<?= $this->Paginator->next('>') ?>
+				</ul>
+				<p><?= $this->Paginator->counter() ?></p>
+			</div>
+		</div>
+		
+		
+		<!-- END FORM-->
+	</div>
+</div>
 </div>
