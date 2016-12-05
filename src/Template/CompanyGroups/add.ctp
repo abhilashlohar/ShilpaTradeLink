@@ -38,7 +38,6 @@
 					<tr>
 						<th>Sr. No.</th>
 						<th>Name</th>
-						<th>Description</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -47,7 +46,6 @@
 					<tr>
 						<td><?= $i ?></td>
 						<td><?= h($companyGroup->name) ?></td>
-						<td><?= h($companyGroup->description) ?></td>
 						<td class="actions">
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $companyGroup->id],array('escape'=>false,'class'=>'btn btn-xs btn-primary')); ?>
 							<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',

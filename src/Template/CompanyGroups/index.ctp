@@ -11,7 +11,6 @@
 					<tr>
 						<th><?= $this->Paginator->sort('id') ?></th>
 						<th><?= $this->Paginator->sort('name') ?></th>
-						<th><?= $this->Paginator->sort('description') ?></th>
 						<th class="actions"><?= __('Actions') ?></th>
 					</tr>
 				</thead>
@@ -20,7 +19,6 @@
 					<tr>
 						<td><?= $this->Number->format($companyGroup->id) ?></td>
 						<td><?= h($companyGroup->name) ?></td>
-						<td><?= h($companyGroup->description) ?></td>
 						<td class="actions">
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $companyGroup->id],array('escape'=>false,'class'=>'btn btn-xs btn-primary')); ?>
 							<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',

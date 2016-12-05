@@ -11,21 +11,23 @@
 	<div class="portlet-body form">
 	<div class="table-scrollable">
 			<form method="GET" >
-				<table class="table table-condensed" style="width:70%;">
+				<table class="table table-condensed" style="width:90%;">
 				<tbody>
 					<tr>
-						<td><?php 
-							echo $this->Form->input('ledger', ['options'=>$ledgerAccounts,'empty'=>'-Ledger-','label' => false,'class' => 'form-control input-md select2me','value'=>@$ledger]);  ?></td>
-							<td>
-								<div class="row">
-									<div class="col-md-6">
-										<input type="text" name="From" class="form-control input-md date-picker" placeholder="Transaction From" value="<?php echo @$From; ?>"  data-date-format="dd-mm-yyyy" >
-									</div>
-									<div class="col-md-6">
-										<input type="text" name="To" class="form-control input-md date-picker" placeholder="Transaction To" value="<?php echo @$To; ?>"  data-date-format="dd-mm-yyyy" >
-									</div>
-								</div>
-							</td>
+					<td>
+						<div class="row">
+							<div class="col-md-6">
+								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @$From; ?>"  data-date-format="dd-mm-yyyy" >
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @$To; ?>"  data-date-format="dd-mm-yyyy" >
+							</div>
+						</div>
+					</td>
+					<td><?php 
+							echo $this->Form->input('ledger', ['options'=>$ledgerAccounts,'empty'=>'-Ledger-','label' => false,'class' => 'form-control input-md select2me','value'=>@$ledger]);  ?>
+					</td>
+							
 						<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
 					</tr>
 				</tbody>

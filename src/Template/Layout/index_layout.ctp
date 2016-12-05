@@ -397,28 +397,75 @@ select
 				
 				<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Ledger Account','/ledgerAccounts',array('escape'=>false)); ?></li>
 				<li>
-					<a href="javascript:;">
-					<i class="fa fa-puzzle-piece"></i>
-					<span class="title">Payment Voucher</span>
-					<span class="arrow "></span>
-					</a>
-					<ul class="sub-menu">
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Add','/PaymentVouchers/Add',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> List','/PaymentVouchers',array('escape'=>false)); ?></li>
-					</ul>
-				</li>
+				<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Ledgers','/ledgers',array('escape'=>false)); ?></li>
+				<li>
+				
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
-					<span class="title">Voucher</span>
+					<span class="title">Vouchers</span>
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Add','/VouchersReferences/Add',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> List','/VouchersReferences',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> Voucher Refrences','/Voucher-Referencess',array('escape'=>false)); ?></li>
+						<li>
+							<a href="javascript:;">
+							<i class="icon-basket"></i>
+							<span class="title">Payment Voucher</span>
+							<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+								<li><?php echo $this->Html->link( 'Add', '/PaymentVouchers/add' ); ?></li>
+								<li><?php echo $this->Html->link( 'View', '/PaymentVouchers' ); ?></li>
+							</ul>
+						</li>
+						<li>
+							<a href="javascript:;">
+							<i class="icon-basket"></i>
+							<span class="title">Receipt Voucher</span>
+							<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+								<li><?php echo $this->Html->link( 'Add', '/ReceiptVouchers/add' ); ?></li>
+								<li><?php echo $this->Html->link( 'View', '/ReceiptVouchers' ); ?></li>
+							</ul>
+						</li>
+						<li>
+							<a href="javascript:;">
+							<i class="icon-basket"></i>
+							<span class="title">Peety Cash Receipt Voucher</span>
+							<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+								<li><?php echo $this->Html->link( 'Add', '/PettyCashReceiptVouchers/add' ); ?></li>
+								<li><?php echo $this->Html->link( 'View', '/PettyCashReceiptVouchers' ); ?></li>
+							</ul>
+						</li>
+						<li>
+							<a href="javascript:;">
+							<i class="icon-basket"></i>
+							<span class="title">Contra Voucher</span>
+							<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+								<li><?php echo $this->Html->link( 'Add', '/ContraVouchers/add' ); ?></li>
+								<li><?php echo $this->Html->link( 'View', '/ContraVouchers' ); ?></li>
+							</ul>
+						</li>
+						<li>
+							<a href="javascript:;">
+							<i class="icon-basket"></i>
+							<span class="title">Journal Voucher</span>
+							<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+								<li><?php echo $this->Html->link( 'Add', '/JournalVouchers/add' ); ?></li>
+								<li><?php echo $this->Html->link( 'View', '/JournalVouchers' ); ?></li>
+							</ul>
+						</li>
 					</ul>
 				</li>
-				
+					
 				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Leave Types','/LeaveTypes',array('escape'=>false)); ?></li>
 			</ul>
 			<!-- END SIDEBAR MENU -->
