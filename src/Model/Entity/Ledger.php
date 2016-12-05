@@ -14,7 +14,6 @@ use Cake\ORM\Entity;
  * @property string $voucher_source
  *
  * @property \App\Model\Entity\LedgerAccount $ledger_account
- * @property \App\Model\Entity\Voucher $voucher
  */
 class Ledger extends Entity
 {
