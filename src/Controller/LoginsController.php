@@ -62,7 +62,7 @@ class LoginsController extends AppController
 					}
 				}
 			else{
-				$this->Flash->error(__('The Account Is Already created On these User .'));
+				$this->Flash->error(__('This user have already login.'));
 				}
         }
 		$employees = $this->Logins->Employees->find('list');

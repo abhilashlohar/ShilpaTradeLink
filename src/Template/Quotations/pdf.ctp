@@ -17,8 +17,8 @@ $html = '
 <html>
 <head>
   <style>
-    @page { margin: 120px 15px 120px 30px; }
-    #header { position: fixed; left: 0px; top: -120px; right: 0px; height: 120px;}
+    @page { margin: 130px 15px 120px 30px; }
+    #header { position: fixed; left: 0px; top: -130px; right: 0px; height: 130px;}
 	#footer { position: fixed; left: 0px; bottom: -120px; right: 0px; height: 120px;text-align:center;}
     #footer .page:after { content: content: counter(page); }
 	#content{
@@ -59,18 +59,26 @@ $html = '
   <div id="header">
 		<table width="100%">
 			<tr>
-				<td width="50%"><img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$quotation->company->logo.' height="70px" style="height:70px;margin-top:5px;"/></td>
-				<td align="right" width="50%" style="font-size: 12px;">
-				<span style="font-size: 16px;">'. h($quotation->company->name) .'</span><br/>
+				<td width="35%" rowspan="2">
+				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$quotation->company->logo.' height="80px" style="height:80px;"/>
+				</td>
+				<td colspan="2" align="right">
+				<span style="font-size: 20px;">'. h($quotation->company->name) .'</span>
+				</td>
+			</tr>
+			<tr>
+				<td width="30%" valign="bottom">
+				<div align="center" style="font-size: 28px;font-weight: bold;color: #0685a8;">QUOTATION</div>
+				</td>
+				<td align="right" width="35%" style="font-size: 12px;">
 				<span>'. $this->Text->autoParagraph(h($quotation->company->address)) .'</span>
-				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/telephone.gif height="11px" style="height:11px;margin-top:5px;"/>'. h($quotation->company->mobile_no).'</span> | 
+				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/telephone.gif height="11px" style="height:11px;margin-top:5px;"/> '. h($quotation->company->mobile_no).'</span> | 
 				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/email.png height="15px" style="height:15px;margin-top:4px;"/> '. h($quotation->company->email).'</span>
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">
-					<div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">QUOTATION</div>
-					<div style="border:solid 2px #0685a8;margin-bottom:15px;margin-top: 5px;"></div>
+				<td colspan="3" >
+					<div style="border:solid 2px #0685a8;margin-top: 5px; margin-top:15px;"></div>
 				</td>
 			</tr>
 		</table>
