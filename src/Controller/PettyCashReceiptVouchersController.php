@@ -73,6 +73,7 @@ class PettyCashReceiptVouchersController extends AppController
 				$ledger->credit = 0;
 				$ledger->voucher_id = $pettyCashReceiptVoucher->id;
 				$ledger->voucher_source = 'PettyCashReceipt Voucher';
+				$ledger->transaction_date = $pettyCashReceiptVoucher->transaction_date;
 				$this->PettyCashReceiptVouchers->Ledgers->save($ledger);
 				//Ledger posting for bankcash
 				$ledger = $this->PettyCashReceiptVouchers->Ledgers->newEntity();
@@ -81,6 +82,7 @@ class PettyCashReceiptVouchersController extends AppController
 				$ledger->credit = $pettyCashReceiptVoucher->amount;;
 				$ledger->voucher_id = $pettyCashReceiptVoucher->id;
 				$ledger->voucher_source = 'PettyCashReceipt Voucher';
+				$ledger->transaction_date = $pettyCashReceiptVoucher->transaction_date;
 				if ($this->PettyCashReceiptVouchers->Ledgers->save($ledger)) {
                 $this->Flash->success(__('The petty cash receipt voucher has been saved.'));
 				return $this->redirect(['action' => 'index']);

@@ -72,6 +72,7 @@ class ReceiptVouchersController extends AppController
 				$ledger->credit = 0;
 				$ledger->voucher_id = $receiptVoucher->id;
 				$ledger->voucher_source = 'Receipt Voucher';
+				$ledger->transaction_date = $receiptVoucher->transaction_date;
 				$this->ReceiptVouchers->Ledgers->save($ledger);
 				//Ledger posting for bankcash
 				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
@@ -80,6 +81,7 @@ class ReceiptVouchersController extends AppController
 				$ledger->credit = $receiptVoucher->amount;;
 				$ledger->voucher_id = $receiptVoucher->id;
 				$ledger->voucher_source = 'Receipt Voucher';
+				$ledger->transaction_date = $receiptVoucher->transaction_date;
 				if ($this->ReceiptVouchers->Ledgers->save($ledger)) {
                 $this->Flash->success(__('The receipt voucher has been saved.'));
 				return $this->redirect(['action' => 'index']);

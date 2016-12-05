@@ -71,6 +71,7 @@ class ContraVouchersController extends AppController
 				$ledger->credit = $contraVoucher->amount;
 				$ledger->voucher_id = $contraVoucher->id;
 				$ledger->voucher_source = 'Contra Voucher';
+				$ledger->transaction_date = $contraVoucher->transaction_date;
 				$this->ContraVouchers->Ledgers->save($ledger);
 				//Ledger posting for bankcash
 				$ledger = $this->ContraVouchers->Ledgers->newEntity();
@@ -79,6 +80,7 @@ class ContraVouchersController extends AppController
 				$ledger->credit = 0;
 				$ledger->voucher_id = $contraVoucher->id;
 				$ledger->voucher_source = 'Contra Voucher';
+				$ledger->transaction_date = $contraVoucher->transaction_date;
 				if ($this->ContraVouchers->Ledgers->save($ledger)) {
                 $this->Flash->success(__('The contra voucher has been saved.'));
 				return $this->redirect(['action' => 'index']);

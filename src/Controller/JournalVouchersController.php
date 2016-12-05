@@ -72,6 +72,7 @@ class JournalVouchersController extends AppController
 				$ledger->credit = 0;
 				$ledger->voucher_id = $journalVoucher->id;
 				$ledger->voucher_source = 'Journal Voucher';
+				$ledger->transaction_date = $journalVoucher->transaction_date;
 				$this->JournalVouchers->Ledgers->save($ledger);
 				//Ledger posting for bankcash
 				$ledger = $this->JournalVouchers->Ledgers->newEntity();
@@ -80,6 +81,7 @@ class JournalVouchersController extends AppController
 				$ledger->credit = $journalVoucher->amount;
 				$ledger->voucher_id = $journalVoucher->id;
 				$ledger->voucher_source = 'Journal Voucher';
+				$ledger->transaction_date = $journalVoucher->transaction_date;
 				if ($this->JournalVouchers->Ledgers->save($ledger)) {
                 $this->Flash->success(__('The journal voucher has been saved.'));
 				return $this->redirect(['action' => 'index']);

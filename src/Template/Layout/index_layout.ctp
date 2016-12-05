@@ -407,7 +407,7 @@ select
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Voucher Refrences','/Voucher-Referencess',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> Voucher Refrences','/VouchersReferences',array('escape'=>false)); ?></li>
 						<li>
 							<a href="javascript:;">
 							<i class="icon-basket"></i>
@@ -433,7 +433,7 @@ select
 						<li>
 							<a href="javascript:;">
 							<i class="icon-basket"></i>
-							<span class="title">Peety Cash Receipt Voucher</span>
+							<span class="title">PeetyCash Voucher</span>
 							<span class="arrow "></span>
 							</a>
 							<ul class="sub-menu">

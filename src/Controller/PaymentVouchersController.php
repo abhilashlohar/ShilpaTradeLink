@@ -71,6 +71,7 @@ class PaymentVouchersController extends AppController
 				$ledger->credit = 0;
 				$ledger->voucher_id = $paymentVoucher->id;
 				$ledger->voucher_source = 'Payment Voucher';
+				$ledger->transaction_date = $paymentVoucher->transaction_date;
 				$this->PaymentVouchers->Ledgers->save($ledger);
 				//Ledger posting for bankcash
 				$ledger = $this->PaymentVouchers->Ledgers->newEntity();
@@ -78,6 +79,7 @@ class PaymentVouchersController extends AppController
 				$ledger->debit = 0;
 				$ledger->credit = $paymentVoucher->amount;;
 				$ledger->voucher_id = $paymentVoucher->id;
+				$ledger->transaction_date = $paymentVoucher->transaction_date;
 				$ledger->voucher_source = 'Payment Voucher';
 				//$ledger[]=('ledger_account_id' = $paymentVoucher->cash_bank_account_id,'debit'=0,'credit'=$paymentVoucher->amount,'voucher_id'=$paymentVoucher->id,'voucher_source'='Payment Voucher';
 				if ($this->PaymentVouchers->Ledgers->save($ledger)) {
