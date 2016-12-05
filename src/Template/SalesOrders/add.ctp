@@ -643,7 +643,6 @@ $(document).ready(function() {
 			if(l>2){
 				var row_no=$(this).closest("tr").attr("row_no");
 				var del="tr[row_no="+row_no+"]";
-				alert(del);
 				$(del).remove();
 				var i=0;
 				$("#main_tb tbody tr.tr1").each(function(){
@@ -800,7 +799,7 @@ $(document).ready(function() {
 	$('.closebtn').on("click",function() { 
 		$("#myModal12").hide();
     });
-	$('.popup_btn').live("click",function() { alert();
+	$('.popup_btn').live("click",function() {
 		var popup_id=$(this).attr('popup_id');
 		$("div[popup_div_id="+popup_id+"]").show();
     });
@@ -953,6 +952,7 @@ $(document).ready(function() {
 			}
 	}
 	function last_three_rates(popup_id,item_id){
+		alert();
 			var customer_id=$('select[name="customer_id"]').val();
 			$('.modal[popup_div_id='+popup_id+']').show();
 			$('div[popup_ajax_id='+popup_id+']').html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
@@ -964,6 +964,7 @@ $(document).ready(function() {
 					dataType: 'json',
 				}).done(function(response) {
 					if(response.minimum_selling_price>0){
+						alert(popup_id);
 						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
 							min: response.minimum_selling_price,
 							messages: {

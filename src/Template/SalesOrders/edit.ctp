@@ -145,7 +145,7 @@
 						
 						</td>
 						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$sales_order_rows->quantity,'min'=>1]); ?></td>
-						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01",'value'=>$sales_order_rows->rate]); ?></td>
+						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01",'value'=>$sales_order_rows->rate,'r_popup_id'=>$q]); ?></td>
 						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value'=>$sales_order_rows->amount]); ?></td>
 						<td><?php 
 							$options=['Yes'=>'Yes','No'=>'No'];
@@ -630,7 +630,7 @@ $(document).ready(function() {
 							min: "Quantity can't be zero."
 						}
 					});
-			$(this).find("td:nth-child(4) input").attr({name:"sales_order_rows["+i+"][rate]", id:"sales_order_rows-"+i+"-rate"}).rules('add', {
+			$(this).find("td:nth-child(4) input").attr({name:"sales_order_rows["+i+"][rate]", id:"sales_order_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
 						required: true,
 						min: 1,
 						messages: {
@@ -768,7 +768,7 @@ $(document).ready(function() {
     });
 	
 
-	$('.popup_btn').live("click",function() { alert();
+	$('.popup_btn').live("click",function() {
 		var popup_id=$(this).attr('popup_id');
 		$("div[popup_div_id="+popup_id+"]").show();
     });
@@ -838,7 +838,7 @@ $(document).ready(function() {
 		$("#myModal2").hide();
     });
 	
-		$("select.item_box").die().live("change",function(){alert();
+	$("select.item_box").die().live("change",function(){
 		var popup_id=$(this).attr('popup_id');
 		var item_id=$(this).val();
 		last_three_rates(popup_id,item_id);
@@ -858,7 +858,6 @@ $(document).ready(function() {
 	})
 	
 	function last_three_rates_onload(popup_id,item_id){
-		
 			var customer_id=$('select[name="customer_id"]').val();
 			//$('.modal[popup_div_id='+popup_id+']').show();
 			$('div[popup_ajax_id='+popup_id+']').html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
@@ -878,6 +877,12 @@ $(document).ready(function() {
 					$('div[popup_ajax_id='+popup_id+']').html(response.html);
 				});
 			}else{
+				$('input[r_popup_id='+popup_id+']').attr({ min:1}).rules('add', {
+						min: 1,
+						messages: {
+							min: "Rate can't be zero."
+						}
+					});
 				$('div[popup_ajax_id='+popup_id+']').html('Select customer first.');
 				$(".item_box[popup_id="+popup_id+"]").val('').select2();
 			}
