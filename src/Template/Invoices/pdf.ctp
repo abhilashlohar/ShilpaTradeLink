@@ -24,7 +24,6 @@ $html = '
 	
     #header { position:fixed; left: 0px; top: -150px; right: 0px; height: 150px;}
     
-    
 	#content{
     position: relative; 
 	}
@@ -66,14 +65,18 @@ $html = '
   <div id="header" ><br/>	
 		<table width="100%">
 			<tr>
-				<td width="35%">
+				<td width="35%" rowspan="2">
 				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$invoice->company->logo.' height="80px" style="height:80px;"/>
 				</td>
+				<td colspan="2" align="right">
+				<span style="font-size: 20px;">'. h($invoice->company->name) .'</span>
+				</td>
+			</tr>
+			<tr>
 				<td width="30%" valign="bottom">
 				<div align="center" style="font-size: 28px;font-weight: bold;color: #0685a8;">INVOICE</div>
 				</td>
 				<td align="right" width="35%" style="font-size: 12px;">
-				<span style="font-size: 20px;">'. h($invoice->company->name) .'</span><br/>
 				<span>'. $this->Text->autoParagraph(h($invoice->company->address)) .'</span>
 				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/telephone.gif height="11px" style="height:11px;margin-top:5px;"/> '. h($invoice->company->mobile_no).'</span> | 
 				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/email.png height="15px" style="height:15px;margin-top:4px;"/> '. h($invoice->company->email).'</span>
