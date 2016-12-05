@@ -7,9 +7,10 @@
 			<span class="caption-subject font-blue-steel uppercase">Ledger Account</span>
 		</div>
 		<div class="actions">
-			<?php echo $this->Html->link('<i class="icon-home"></i> Add Account Group','/AccountGroups/',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
-			<?php echo $this->Html->link('<i class="icon-home"></i> Add Account First Sub Group','/AccountFirstSubgroups/',array('escape'=>false,'class'=>'btn btn-xs default')); ?>
-			<?php echo $this->Html->link('<i class="icon-home"></i> Add Account Second Sub Group','/AccountSecondSubgroups/',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
+			<?php echo $this->Html->link('Ledger Account','/LedgerAccounts/',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+			<?php echo $this->Html->link('Account Group','/AccountGroups/',array('escape'=>false,'class'=>'btn btn-default')); ?>
+			<?php echo $this->Html->link('Account First Sub Group','/AccountFirstSubgroups/',array('escape'=>false,'class'=>'btn btn-default')); ?>
+			<?php echo $this->Html->link('Account Second Sub Group','/AccountSecondSubgroups/',array('escape'=>false,'class'=>'btn btn-default')); ?>
 		</div>
 	</div>
 	<div class="portlet-body form">

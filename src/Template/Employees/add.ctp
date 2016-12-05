@@ -464,6 +464,7 @@ $(document).ready(function() {
 		type: 'GET',
 	}).done(function(response) {
 		$('#account_group_div').html(response);
+		$('select[name="account_group_id"]').select2();
 	});
 });
 	
@@ -479,6 +480,7 @@ $('select[name="account_group_id"]').die().live("change",function() {
 		type: 'GET',
 	}).done(function(response) {
 		$('#account_first_subgroup_div').html(response);
+		$('select[name="account_first_subgroup_id"]').select2();
 	});
 });
 	
@@ -492,6 +494,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		type: 'GET',
 	}).done(function(response) {
 		$('#account_second_subgroup_div').html(response);
+		$('select[name="account_second_subgroup_id"]').select2();
 	});
 });	
 	

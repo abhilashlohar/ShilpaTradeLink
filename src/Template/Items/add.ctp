@@ -282,6 +282,7 @@ $('select[name="item_category_id"]').on("change",function() {
 		type: 'GET',
 	}).done(function(response) {
 		$('#item_group_div').html(response);
+		$('select[name="item_group_id"]').select2();
 	});
 });
 
