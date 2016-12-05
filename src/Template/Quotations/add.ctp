@@ -470,8 +470,7 @@ $(document).ready(function() {
 				return false;  
 			}
 	});
-	var terms_conditions=$("#terms_conditions").text();
-	$('textarea[name="terms_conditions"]').val(terms_conditions);
+	
 	
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
