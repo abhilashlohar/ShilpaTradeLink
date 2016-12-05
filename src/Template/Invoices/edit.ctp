@@ -1,4 +1,3 @@
-<?php //pr($invoice); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -138,7 +137,6 @@
 				</thead>
 				<tbody>
 					<?php 
-					//pr($invoice->sales_order);
 					foreach($invoice->sales_order->invoices as $data){
 						foreach($data->invoice_rows as $data2){
 							$processed_items[$data2->item_id]=@$processed_items[$data2->item_id]+$data2->quantity;
@@ -147,8 +145,6 @@
 					foreach($invoice->sales_order->sales_order_rows as $data3){
 						$total_items[$data3->item_id]=@$total_items[$data3->item_id]+$data3->quantity;
 					}
-					pr($processed_items);
-					pr($total_items);
 					
 					if($invoice->process_status=="New" or 1==1){ 
 					$q=1; foreach ($invoice->invoice_rows as $invoice_rows): ?>
