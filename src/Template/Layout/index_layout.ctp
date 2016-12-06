@@ -162,17 +162,10 @@ select
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 					<!-- <img alt="" class="img-circle" src="/assets/admin/layout/img/avatar3_small.jpg"/> -->
 					<span class="username username-hide-on-mobile" style="color:#F0F0F0;">
-					<strong>WELCOME:User</strong> </span>
+					<strong><?php echo $s_employee_name=$this->viewVars['s_employee_name']; ?></strong> </span>
 					<i class="fa fa-angle-down"></i>
 					</a>
 					<ul class="dropdown-menu dropdown-menu-default">
-						<li>
-							<a href="profile">
-							<i class="icon-user"></i> My Profile </a>
-						</li>
-						<li class="divider">
-						</li>
-					
 						<li>
 							<?php echo $this->Html->link('<i class="icon-key"></i> Log Out','/Logins/logout',array('escape'=>false)); ?>
 						</li>

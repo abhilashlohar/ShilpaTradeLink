@@ -60,6 +60,10 @@ class AppController extends Controller
 				$this->loadModel('Logins');
 				$login=$this->Logins->get($st_login_id);
 				$this->set('s_employee_id',$login->employee_id);
+				
+				$this->loadModel('Employees');
+				$Employee=$this->Employees->get($login->employee_id);
+				$this->set('s_employee_name',$Employee->name);
 			}
 		}
 		if(!empty($st_login_id)){
