@@ -25,14 +25,12 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Account Group<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('account_groups._ids', ['options'=>$AccountGroups,'multiple' => 'checkbox','label' => false,'class' => 'form-control input-sm select2me']); ?>
+							<?php echo $this->Form->input('account_groups._ids', ['options'=>$AccountGroups,'multiple' => 'checkbox','label' => false,'class' => 'form-control input-sm ']); ?>
 						
 						</div>
 					</div>
 				</div>
-				<div class="alert alert-danger" id="row_error" style="display:none;">
-                    Fill all fileds.
-                </div>
+				
 			</div>
 		
 			<div class="form-actions">
@@ -46,6 +44,9 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
+
+
+
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -130,7 +131,7 @@ $(document).ready(function() {
 
 	});
 	
-
+	
 	
 });
 </script>
