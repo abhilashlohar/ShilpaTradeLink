@@ -36,7 +36,7 @@
 					['class' => $class1]
 				); ?>
 				<?= $this->Html->link(
-					'Converted Into Invoice',
+					'Converted in Invoice',
 					'/Sales-Orders/index/Converted Into Invoice',
 					['class' => $class2]
 				); ?>

@@ -12,8 +12,6 @@
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
-		
-		
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Quotations</span> 
 			<?php if($pull_request=="true"){ ?>
@@ -23,8 +21,6 @@
 			<?php } ?>
 		</div>
 		<div class="actions">
-				
-			
 			<?php
 			if($status==null or $status=='Pending'){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
 			if($status=='Converted Into Sales Order'){ $class2='btn btn-primary'; }else{ $class2='btn btn-default'; }
@@ -37,7 +33,7 @@
 					['class' => $class1]
 				); ?>
 				<?= $this->Html->link(
-					'Converted Into Sales Order',
+					'Converted in Sales Order',
 					'/Quotations/index/Converted Into Sales Order',
 					['class' => $class2]
 				); ?>
