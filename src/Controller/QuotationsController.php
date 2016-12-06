@@ -76,7 +76,9 @@ class QuotationsController extends AppController
         $quotations = $this->paginate($this->Quotations->find()->where($where)->order(['Quotations.id' => 'DESC']));
 		
 		$companies = $this->Quotations->Companies->find('list');
-        $this->set(compact('quotations','status','copy_request','companies'));
+		
+		$closeReasons = $this->Quotations->QuotationCloseReasons->find('all',['limit' => 200]);
+        $this->set(compact('quotations','status','copy_request','companies','closeReasons'));
         $this->set('_serialize', ['quotations']);
 		$this->set(compact('url'));
 	
@@ -337,9 +339,9 @@ class QuotationsController extends AppController
 	public function close($id = null,$reason=null)
     {
         $quotation = $this->Quotations->get($id);
-		
 		$quotation->status='Closed';
-		$quotation->reason=$reason;
+		$quotation->reason_id=$reason;
+		
         if ($this->Quotations->save($quotation)) {
             $this->Flash->success(__('The quotation has been closed.'));
         } else {

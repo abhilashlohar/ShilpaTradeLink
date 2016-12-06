@@ -167,3 +167,86 @@
 		</div>
 	</div>
 </div>
+
+<div id="quotation_close_reason" style="display:none;"></div>
+
+<div id="close_reason" style="display:none;"></div>
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<style>
+#sortable li{
+	cursor: -webkit-grab;
+}
+</style>
+<?php echo $this->Html->css('/drag_drop/jquery-ui.css'); ?>
+<?php echo $this->Html->script('/drag_drop/jquery-1.12.4.js'); ?>
+<?php echo $this->Html->script('/drag_drop/jquery-ui.js'); ?>
+<script>
+$( function() {
+$( "#sortable" ).sortable();
+$( "#sortable" ).disableSelection();
+} );
+</script>
+<script>
+$(document).ready(function() {
+	$.uniform.update();
+
+	$('#close_popup_btn').die().live("click",function() {
+		var quote_id=$(this).attr('quote_id');
+		var reason_id=$('.radio_text:checked').val();
+		var url="<?php echo $this->Url->build(['controller'=>'Quotations','action'=>'Close']); 
+		?>";
+		url=url+'/'+quote_id+'/'+reason_id,
+		
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			
+		});		
+		
+    });
+	$('.close_btn').die().live("click",function() {
+		var quote_id=$(this).attr('quote_id');
+		var addr=$(this).text();
+		$("#myModal2").show();
+		$("#close_popup_btn").attr('quote_id',quote_id);
+    });
+	
+	$('.closebtn2').on("click",function() { 
+		$("#myModal2").hide();
+    });
+});	
+</script>
+
+
+<div id="myModal2" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body" id="result_ajax">
+			<h4>Closing Reason</h4>
+				<div style=" overflow: auto; height: 450px;">
+				
+				<table class="table table-hover tabl_tc">
+				
+				<?php foreach ($closeReasons as $closeReason): ?>
+					<tr>
+						<td width="10">
+						<div class="radio-list">
+						<?php echo $this->Form->radio('reason', [
+										['value' => $closeReason->id, 'text' => $closeReason->reason,'class'=>'radio_text']]); ?>
+						</div>
+						</td>
+					</tr>
+					
+				</div>
+				<?php endforeach; ?>
+				</table>
+				</div>
+				
+			</div>
+			<div class="modal-footer">
+				<button class="btn default closebtn2">Close</button>
+				<button class="btn btn-red close_rsn" id="close_popup_btn">Close Quotation</button>
+			</div>
+		</div>
+	</div>
+</div>

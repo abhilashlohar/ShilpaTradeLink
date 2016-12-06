@@ -69,7 +69,9 @@ class QuotationsTable extends Table
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('QuotationRows', [
+		$this->belongsTo('QuotationCloseReasons');
+		
+		$this->hasMany('QuotationRows', [
             'foreignKey' => 'quotation_id',
 			'saveStrategy' => 'replace'
         ]);
