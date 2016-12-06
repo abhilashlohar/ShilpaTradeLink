@@ -41,10 +41,6 @@ class LedgersTable extends Table
             'foreignKey' => 'ledger_account_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Vouchers', [
-            'foreignKey' => 'voucher_id',
-            'joinType' => 'INNER'
-        ]);
     }
 
     /**
@@ -86,8 +82,6 @@ class LedgersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['ledger_account_id'], 'LedgerAccounts'));
-        $rules->add($rules->existsIn(['voucher_id'], 'Vouchers'));
-
         return $rules;
     }
 }
