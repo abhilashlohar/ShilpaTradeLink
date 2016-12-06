@@ -132,7 +132,7 @@ if(!empty($copy))
 						<th width="70"></th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="main_tbody">
 					<?php 
 					if(!empty($process_status) || !empty($quotation)) 
 					{
@@ -671,9 +671,9 @@ $(document).ready(function() {
 	
 	function add_row(){
 		var tr1=$("#sample_tb tbody tr.tr1").clone();
-		$("#main_tb tbody").append(tr1);
+		$("#main_tb tbody#main_tbody").append(tr1);
 		var tr2=$("#sample_tb tbody tr.tr2").clone();
-		$("#main_tb tbody").append(tr2);
+		$("#main_tb tbody#main_tbody").append(tr2);
 		
 		var w=0; var r=0;
 		$("#main_tb tbody tr").each(function(){
