@@ -393,14 +393,14 @@ class InvoicesController extends AppController
 			$customer=$this->Invoices->Customers->get($customer_id);
 			if($customer->customer_group_id!=0){
 				$customerGroup=$this->Invoices->CustomerGroups->get($customer->customer_group_id);
-				$customer_text='Recent Record for customer group - <b>'.$customerGroup->name.'</b>';
+				$customer_text='Past Records of customer group - <b>'.$customerGroup->name.'</b>';
 				$customers=$this->Invoices->Customers->find()->select(['id'])->where(['customer_group_id'=>$customer->customer_group_id]);
 				foreach($customers as $data){
 					$customerIds[]=$data->id;
 				}
 			}else{
 				$customerIds=array($customer_id);
-				 $customer_text='Recent Record for customer - <b>'.$customer->customer_name.'</b>';
+				 $customer_text='Past Records of customer - <b>'.$customer->customer_name.'</b>';
 			}
 			$Invoices=$this->Invoices->find()->where(['customer_id IN' => $customerIds])->matching(
 					'InvoiceRows', function ($q) use($item_id) {
@@ -411,7 +411,7 @@ class InvoicesController extends AppController
 			$Number = new NumberHelper(new \Cake\View\View());
 			$Html = new HtmlHelper(new \Cake\View\View());
 			
-			$html='<span style="font-size: 14px;">Minimum Selling Rate for item "'.$item->name.'" : '. $Number->format($item->dynamic_cost*$item->minimum_selling_price_factor,[ 'places' => 2]).'</span><br/><br/>
+			$html='<span style="font-size: 14px;">Minimum Selling Rate for Item <b>"'.$item->name.'"</b> : '. $Number->format($item->dynamic_cost*$item->minimum_selling_price_factor,[ 'places' => 2]).'</span><br/><br/>
 			<div style="font-size: 14px;">'.$customer_text.'</div>
 			<table class="table">
 				<thead>
