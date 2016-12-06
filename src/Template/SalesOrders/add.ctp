@@ -164,7 +164,7 @@ if(!empty($copy))
 								</div>
 							</td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$quotation_rows->quantity]); ?></td>
-							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Rate','min'=>'0.01','value' => @$quotation_rows->rate]); ?></td>
+							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Rate','min'=>'0.01','value' => @$quotation_rows->rate,'r_popup_id'=>$q]); ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$quotation_rows->amount]); ?></td>
 							<td><?php 
 							$options=['Yes'=>'Yes','No'=>'No'];
@@ -212,7 +212,7 @@ if(!empty($copy))
 							
 							</td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$sales_order_rows->quantity]); ?></td>
-							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Rate','value' => @$sales_order_rows->rate]); ?></td>
+							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Rate','value' => @$sales_order_rows->rate,'r_popup_id'=>$q]); ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$sales_order_rows->amount]); ?></td>
 							<td><?php 
 							$options=['Yes'=>'Yes','No'=>'No'];
@@ -223,7 +223,7 @@ if(!empty($copy))
 								$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 							}
 							echo $this->Form->input('sales_order_rows.'.$q.'.so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
-							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_description', ['type'=>'text','label' => false]); ?>
+							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_description', ['type'=>'hidden','label' => false]); ?>
 							</td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
