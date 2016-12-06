@@ -685,6 +685,7 @@ $(document).ready(function() {
 		});
 		var terms_conditions=$("#terms_conditions").text();
 		$('textarea[name="terms_conditions"]').val(terms_conditions);
+		$("#sortable li").remove();
 	}
 	
 	$(".updatetc").die().on("click",function(){
@@ -707,7 +708,6 @@ $(document).ready(function() {
 	
 	function last_three_rates_onload(popup_id,item_id){
 			var customer_id=$('select[name="customer_id"]').val();
-			//$('.modal[popup_div_id='+popup_id+']').show();
 			$('div[popup_ajax_id='+popup_id+']').html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 			if(customer_id){
 				var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'RecentRecords']); ?>";
@@ -719,10 +719,18 @@ $(document).ready(function() {
 					$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
 						min: response.minimum_selling_price,
 						messages: {
-							min: "Enter value greate than minimum selling price "+response.minimum_selling_price
+							min: "Minimum selling price: "+response.minimum_selling_price
 						}
 					});
 					$('div[popup_ajax_id='+popup_id+']').html(response.html);
+					if(response.minimum_selling_price==0){
+						$('input[r_popup_id='+popup_id+']').attr({ min:0.01}).rules('add', {
+							min: 0.01,
+							messages: {
+								min: "Rate can't be zero."
+							}
+						});
+					}
 				});
 			}else{
 				$('div[popup_ajax_id='+popup_id+']').html('Select customer first.');
@@ -745,7 +753,7 @@ $(document).ready(function() {
 						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
 							min: response.minimum_selling_price,
 							messages: {
-								min: "Enter value greate than minimum selling price"
+								min: "Minimum selling price: "+response.minimum_selling_price
 							}
 						});
 					}
