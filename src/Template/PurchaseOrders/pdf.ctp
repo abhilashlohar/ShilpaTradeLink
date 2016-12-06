@@ -16,11 +16,11 @@ $html = '
 <html>
 <head>
   <style>
-    @page { margin: 150px 15px 200px 30px; }
-    #header { position: fixed; left: 0px; top: -150px; right: 0px; height: 150px;}
-    #footer { position: fixed; left: 0px; bottom: -200px; right: 0px; height: 200px;}
+    @page { margin: 130px 15px 20px 30px; }
+    #header { position: fixed; left: 0px; top: -130px; right: 0px; height: 130px;}
+    #footer { position: fixed; left: 0px; bottom: -20px; right: 0px; height: 20px;text-align:center;}
     #footer .page:after { content: content: counter(page); }
-	
+	#footer { display:none; }
 	
 	@font-face {
 		font-family: Lato;
@@ -38,31 +38,35 @@ $html = '
 	.table_rows, .table_rows th, .table_rows td {
 	   border: 1px solid  #000;border-collapse: collapse;padding:2px; 
 	}
-	.table2 td{
-		border: 0px solid  #000;font-size: 14px;padding:0px; 
-	}
+	
 	.table_rows th{
 		font-size:14px;
+	}
+	
+	.table2 td{
+		border: 0px solid  #000;font-size: 13px;padding:0px; 
 	}
 	.avoid_break{
 		page-break-inside: avoid;
 	}
-	.itemrow tbody td{
-		border-bottom: none;border-top: none;
-	}
 	</style>
+  
 <body>
-  <div id="header" ><br/>	
-		<table width="100%">
+    <div id="header" ><br/>	
+		<table width="100%" >
 			<tr>
-				<td width="35%">
+				<td width="35%" rowspan="2">
 				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$purchaseOrder->company->logo.' height="80px" style="height:80px;"/>
 				</td>
+				<td colspan="2" align="right">
+				<span style="font-size: 20px;">'. h($purchaseOrder->company->name) .'</span>
+				</td>
+			</tr>
+			<tr>
 				<td width="30%" valign="bottom">
-				<div align="center" style="font-size: 22px;font-weight: bold;color: #0685a8;">PURCHASE ORDER</div>
+				<div align="center" style="font-size: 28px;font-weight: bold;color: #0685a8;">PURCHASE ORDER</div>
 				</td>
 				<td align="right" width="35%" style="font-size: 12px;">
-				<span style="font-size: 20px;">'. h($purchaseOrder->company->name) .'</span><br/>
 				<span>'. $this->Text->autoParagraph(h($purchaseOrder->company->address)) .'</span>
 				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/telephone.gif height="11px" style="height:11px;margin-top:5px;"/> '. h($purchaseOrder->company->mobile_no).'</span> | 
 				<span><img src='.ROOT . DS  . 'webroot' . DS  .'img/email.png height="15px" style="height:15px;margin-top:4px;"/> '. h($purchaseOrder->company->email).'</span>
@@ -75,35 +79,62 @@ $html = '
 			</tr>
 		</table>
   </div>
+  
+  
  
 
   <div id="content"> ';
   
-$html.='
+$html.='<br/><br/>
 
-			<table width="100%" class="table_rows">
+			<table width="100%" class="table_rows ">
 				<tr >
 					<td width="35%" valign="top" ><span><b>'. h(($purchaseOrder->vendor->company_name)) .'</b></span><br/>
 					<span>'. $this->Text->autoParagraph(h($purchaseOrder->vendor->address)) .'
 					</span><br/>
 					</td>
 					<td valign="top" >
-						<p>TIN :'. h(($purchaseOrder->company->tin_no)) .'</p>
-						<p>PAN :'. h(($purchaseOrder->company->pan_no)) .'</p>
-						<p>CIN :'. h(($purchaseOrder->company->cin_no)) .'</p>
+						<table class="table2">
+									<tr>
+										<td width="60" valign="top" style="vertical-align: top;">TIN</td>
+										<td width="20" valign="top">:</td>
+										<td valign="top">'. h(($purchaseOrder->company->tin_no)) .'</td>
+									</tr>
+									<tr>
+										<td valign="top" style="vertical-align: top;">PAN</td>
+										<td width="20" valign="top">:</td>
+										<td valign="top">'.h(($purchaseOrder->company->pan_no)).'</td>
+									</tr>
+									<tr>
+										<td valign="top" style="vertical-align: top;">CIN</td>
+										<td width="20" valign="top">:</td>
+										<td valign="top">'. h(($purchaseOrder->company->cin_no)).'</td>
+									</tr>
+									
+								</table>
 						
 					</td>
 					<td width="35%" valign="top">
-						<p>No.'.h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->id, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)).'</p>
-						<p>Date:'. h(date("d-m-Y",strtotime($purchaseOrder->date_created))) .'</p>
-						
+
+						<table class="table2">
+									<tr>
+										<td width="30" valign="top" style="vertical-align: top;">NO</td>
+										<td width="10" valign="top">:</td>
+										<td valign="top">'.h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->id, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)).'</td>
+									</tr>
+									<tr>
+										<td valign="top" style="vertical-align: top;">DATE</td>
+										<td width="20" valign="top">:</td>
+										<td valign="top">'.h(date("d-m-Y",strtotime($purchaseOrder->date_created))) .'</td>
+									</tr>
+						</table>
 						
 					</td>
 				</tr>
 			</table>';
 		
 $html.='
-<table width="100%" class="table_rows itemrow">
+<table width="100%" class="table_rows itemrow ">
 		<tr>
 			<th>S No</th>
 			<th>Item Description</th>
@@ -136,21 +167,21 @@ if(sizeof($total)==2){
 $html.='</table>';
 
 
-$html.='
-<table width="100%" class="table_rows">
-	<tbody>
-			<tr>
+	$html.='
+	<table width="100%" class="table_rows">
+		<tbody>
+				<tr>
+					
+					<td width="100%" style="text-align:right;">Total</td>
+					<td  style="text-align:right;">'. $this->Number->format($purchaseOrder->total,[ 'places' => 2]).'</td>
+				</tr>
+					
 				
-				<td width="100%" style="text-align:right;">Total</td>
-				<td  style="text-align:right;">'. $this->Number->format($purchaseOrder->total,[ 'places' => 2]).'</td>
-			</tr>
-				
-			
-			<tr>
-				<td colspan="2"><b>Amount in words: </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td>
-			</tr>
-		</tbody>
-	</table>';
+				<tr>
+					<td colspan="2"><b>Amount in words: </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td>
+				</tr>
+			</tbody>
+		</table>';
 
 		
 $html .= '	<table width="100%" class="table_rows">
@@ -179,14 +210,14 @@ $html .= '	<table width="100%" class="table_rows">
 </table>';
 
  $html .= '
-<table width="100%" class="table_rows">
+<table width="100%" class="table2 table_rows ">
   <tr>
-    <td valign="top">Excise Invoice Required in Favour of Consignee:<br/><br/>
-	 '. h($purchaseOrder->customer->customer_name) .'<br/>
-	'. h($purchaseOrder->customer->customer_address[0]->address) .'<br/>
-	ECC : '. h($purchaseOrder->customer->ecc_no) .'<br/>
-	TIN : '. h($purchaseOrder->customer->tin_no) .'<br/>
-    </td >
+		<td style="padding-left:5px;" valign="top">Excise Invoice Required in Favour of Consignee:<br/><br/>
+			 '. h($purchaseOrder->customer->customer_name) .'<br/>
+			'. h($purchaseOrder->customer->customer_address[0]->address) .'<br/>
+			ECC : '. h($purchaseOrder->customer->ecc_no) .'<br/>
+			TIN : '. h($purchaseOrder->customer->tin_no) .'<br/>
+		</td >
 		<td align="left" width="50%">Please confirm that you have registered this order and request you to return back the duplicate copy duly signed in token of having accepted the order.<br/><br/>
 					<div align="center">
 						<span>For <b>'. h($purchaseOrder->company->name) .'</b></span><br/>

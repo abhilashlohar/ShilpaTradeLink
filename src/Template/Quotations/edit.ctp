@@ -186,7 +186,7 @@
 								<?php echo $this->Form->input('quotation_rows['.$q.'][quantity]', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value' => $quotation_row->quantity,'required','min'=>1]); ?>
 							</td>
 							<td width="130">
-								<?php echo $this->Form->input('quotation_rows['.$q.'][rate]', ['label' => false,'class' => 'form-control input-sm rate','placeholder' => 'Rate','value' => $quotation_row->rate,'required','r_popup_id'=>$q]); ?>
+								<?php echo $this->Form->input('quotation_rows['.$q.'][rate]', ['label' => false,'class' => 'form-control input-sm rate','placeholder' => 'Rate', 'min'=>'0.01','value' => $quotation_row->rate,'required','r_popup_id'=>$q]); ?>
 							</td>
 							<td width="130">
 								<?php echo $this->Form->input('quotation_rows['.$q.'][amount]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value' => $quotation_row->amount]); ?>
@@ -270,7 +270,7 @@
 				</div>
 			</td>
 			<td width="100"><?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
-			<td width="130"><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm rate','placeholder' => 'Rate']); ?></td>
+			<td width="130"><?php echo $this->Form->input('rate[]', ['type' => 'text', 'min'=>'0.01','label' => false,'class' => 'form-control input-sm rate','placeholder' => 'Rate']); ?></td>
 			<td width="130"><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
@@ -719,7 +719,7 @@ $(document).ready(function() {
 					$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
 						min: response.minimum_selling_price,
 						messages: {
-							min: "Enter value greate than minimum selling price "+response.minimum_selling_price
+							min: "Minimum selling price "+response.minimum_selling_price
 						}
 					});
 					$('div[popup_ajax_id='+popup_id+']').html(response.html);
@@ -745,9 +745,18 @@ $(document).ready(function() {
 						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
 							min: response.minimum_selling_price,
 							messages: {
-								min: "Enter value greate than minimum selling price"
+								min: "Minimum selling price:"+response.minimum_selling_price
 							}
 						});
+					}
+					else{
+						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
+							min: 0.01,
+							messages: {
+								min: "Rate Can't be 0"
+							}
+						});
+						
 					}
 					$('div[popup_ajax_id='+popup_id+']').html(response.html);
 				});

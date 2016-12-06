@@ -164,7 +164,7 @@ if(!empty($copy))
 								</div>
 							</td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$quotation_rows->quantity]); ?></td>
-							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Rate','value' => @$quotation_rows->rate]); ?></td>
+							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Rate','min'=>'0.01','value' => @$quotation_rows->rate]); ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$quotation_rows->amount]); ?></td>
 							<td><?php 
 							$options=['Yes'=>'Yes','No'=>'No'];
@@ -190,7 +190,7 @@ if(!empty($copy))
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 							<td>
 							<div class="row">
-									<div class="col-md-11 padding-right-decrease">
+									<div class="col-md-10 padding-right-decrease">
 										<?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','value' => @$sales_order_rows->item->id,'popup_id'=>$q]); ?>
 									</div>
 									<div class="col-md-1 padding-left-decrease">
@@ -381,7 +381,7 @@ if(!empty($copy))
 			<td rowspan="2" width="10">0</td>
 			<td>
 				<div class="row">
-					<div class="col-md-11 padding-right-decrease">
+					<div class="col-md-10 padding-right-decrease">
 						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_box','placeholder' => 'Item']); ?>
 					</div>
 					<div class="col-md-1 padding-left-decrease">
@@ -966,9 +966,18 @@ $(document).ready(function() {
 						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
 							min: response.minimum_selling_price,
 							messages: {
-								min: "Enter value greater than minimum selling price: "+response.minimum_selling_price
+								min: "Minimum selling price: "+response.minimum_selling_price
 							}
 						});
+					}
+					else{
+						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
+							min: 0.01,
+							messages: {
+								min: "Rate Can't be 0 "
+							}
+						});
+						
 					}
 					$('div[popup_ajax_id='+popup_id+']').html(response.html);
 				});
