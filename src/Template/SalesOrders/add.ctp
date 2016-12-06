@@ -941,7 +941,7 @@ $(document).ready(function() {
 					$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
 						min: response.minimum_selling_price,
 						messages: {
-							min: "Enter value greate than minimum selling price "+response.minimum_selling_price
+							min: "Enter value greater than minimum selling price "+response.minimum_selling_price
 						}
 					});
 					$('div[popup_ajax_id='+popup_id+']').html(response.html);
@@ -966,7 +966,7 @@ $(document).ready(function() {
 						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
 							min: response.minimum_selling_price,
 							messages: {
-								min: "Enter value greate than minimum selling price: "+response.minimum_selling_price
+								min: "Enter value greater than minimum selling price: "+response.minimum_selling_price
 							}
 						});
 					}
