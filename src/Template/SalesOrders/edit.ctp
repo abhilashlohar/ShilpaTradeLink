@@ -145,7 +145,7 @@
 						
 						</td>
 						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$sales_order_rows->quantity,'min'=>1]); ?></td>
-						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01",'value'=>$sales_order_rows->rate,'r_popup_id'=>$q]); ?></td>
+						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate', 'min'=>'0.01','step'=>"0.01",'value'=>$sales_order_rows->rate,'r_popup_id'=>$q]); ?></td>
 						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value'=>$sales_order_rows->amount]); ?></td>
 						<td><?php 
 							$options=['Yes'=>'Yes','No'=>'No'];
@@ -351,7 +351,7 @@
 			
 			</td>
 			<td><?php echo $this->Form->input('unit[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
-			<td><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01"]); ?></td>
+			<td><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate', 'min'=>'0.01','step'=>"0.01"]); ?></td>
 			<td><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td><?php 
 			$options=['Yes'=>'Yes','No'=>'No'];
@@ -878,7 +878,7 @@ $(document).ready(function() {
 				});
 			}else{
 				$('input[r_popup_id='+popup_id+']').attr({ min:1}).rules('add', {
-						min: 1,
+						min: 0.01,
 						messages: {
 							min: "Rate can't be zero."
 						}
@@ -902,9 +902,18 @@ $(document).ready(function() {
 						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
 							min: response.minimum_selling_price,
 							messages: {
-								min: "Enter value greate than minimum selling price: "+response.minimum_selling_price
+								min: "Minimum selling price: "+response.minimum_selling_price
 							}
 						});
+					}
+					else{
+						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
+							min: 0.01,
+							messages: {
+								min: "Rate Can't be 0"
+							}
+						});
+						
 					}
 					$('div[popup_ajax_id='+popup_id+']').html(response.html);
 				});
