@@ -195,7 +195,7 @@ if(!empty($copy))
 							
 							</td>
 							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$quotation_rows->quantity]); ?></td>
-							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.rate', ['type'=>'number','label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate', 'min'=>'1','value' => @$quotation_rows->rate]); ?></td>
+							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.rate', ['type'=>'number','label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate', 'min'=>'1','value' => @$quotation_rows->rate,'r_popup_id'=>$q]); ?></td>
 							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$quotation_rows->amount]); ?></td>
 							<td  width="70"><a class="btn btn-xs btn-default addrow"  href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 					</tr>
@@ -710,6 +710,7 @@ $(document).ready(function() {
 		});
 		var terms_conditions=$("#terms_conditions").text();
 		$('textarea[name="terms_conditions"]').val(terms_conditions);
+		$("#sortable li").remove();
 	}
 	
 	$(".updatetc").die().on("click",function(){
