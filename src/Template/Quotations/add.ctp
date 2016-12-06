@@ -110,6 +110,7 @@ if(!empty($copy))
 				</div>
 			</div>
 			<br/>
+			
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
@@ -118,7 +119,19 @@ if(!empty($copy))
 							<?php echo $this->Form->input('customer_for_attention', ['label' => false,'class' => 'form-control input-sm']); ?>
 						</div>
 					</div>
-					<br/><br/>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="col-md-3 control-label">Contact No</label>
+						<div class="col-md-9">
+							<?php echo $this->Form->input('customer_contact', ['label' => false,'class' => 'form-control input-sm phone_validation']); ?>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br/>
+			<div class="row">
+				<div class="col-md-6">
 					<div class="form-group">
 						<label class="col-md-3 control-label">Reference</label>
 						<div class="col-md-9">
@@ -126,16 +139,7 @@ if(!empty($copy))
 						</div>
 					</div>
 				</div>
-				<div class="col-md-6">
-					<div class="form-group">
-						<label class="col-md-3 control-label">Contact No</label>
-						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_contact', ['label' => false,'class' => 'form-control input-sm quantity']); ?>
-						</div>
-					</div>
-				</div>
-			</div>
-			<br/>
+			</div><br/>
 			<div class="row">
 				<div class="col-md-12">
 					<div class="form-group">
@@ -458,6 +462,18 @@ $(document).ready(function() {
 			else if(asc.match(numbers))  
 			{  
 			} 
+			else  
+			{  
+				$(this).val('');
+				return false;  
+			}
+	});
+	$('.phone_validation').die().live("keyup",function() {
+			var asc=$(this).val();
+			var numbers =  /^[0-9]*\.?[0-9]*$/;
+			if(asc.match(numbers))  
+			{  
+			}
 			else  
 			{  
 				$(this).val('');

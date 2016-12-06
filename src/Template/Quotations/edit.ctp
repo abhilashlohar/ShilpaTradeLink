@@ -108,19 +108,23 @@
 							<?php echo $this->Form->input('customer_for_attention', ['label' => false,'class' => 'form-control input-sm']); ?>
 						</div>
 					</div>
-					<br/><br/>
-					<div class="form-group">
-						<label class="col-md-3 control-label">Reference</label>
-						<div class="col-md-9">
-							<?php echo $this->Form->input('enquiry_no', ['label' => false,'class' => 'form-control input-sm']); ?>
-						</div>
-					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
 						<label class="col-md-3 control-label">Contact No</label>
 						<div class="col-md-9">
 							<?php echo $this->Form->input('customer_contact', ['label' => false,'class' => 'form-control input-sm quantity']); ?>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br/>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="col-md-3 control-label">Reference</label>
+						<div class="col-md-9">
+							<?php echo $this->Form->input('enquiry_no', ['label' => false,'class' => 'form-control input-sm']); ?>
 						</div>
 					</div>
 				</div>
