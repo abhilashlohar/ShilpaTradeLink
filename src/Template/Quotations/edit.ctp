@@ -86,10 +86,10 @@
 					<br/>
 					<div class="form-group">
 						<label class="col-md-4 control-label">Qutote Ref. No.</label>
-						<div class="col-md-2">
+						<div class="col-md-2 padding-right-decrease">
 							<?php echo $this->Form->input('qt1', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
 						</div>
-						<div class="col-md-3" id="qt3_div">
+						<div class="col-md-3 padding-right-decrease" id="qt3_div">
 							<?php echo $this->Form->input('qt3', ['label' => false,'class' => 'form-control input-sm']); ?>
 						</div>
 						<div class="col-md-3">

@@ -72,10 +72,10 @@ if(!empty($copy))
 				<div class="col-md-6">
 					<div class="form-group">
 						<label class="col-md-3 control-label">Sales Order No.</label>
-						<div class="col-md-3">
+						<div class="col-md-3 padding-right-decrease">
 							<?php echo $this->Form->input('so1', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
 						</div>
-						<div class="col-md-3" id="so3_div">
+						<div class="col-md-3 padding-right-decrease" id="so3_div">
 							<?php echo $this->Form->input('so3', ['label' => false,'class' => 'form-control input-sm']); ?>
 						</div>
 						<div class="col-md-3">

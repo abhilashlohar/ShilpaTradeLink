@@ -46,10 +46,10 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label class="col-md-3 control-label">Invoice No.</label>
-						<div class="col-md-3">
+						<div class="col-md-3 padding-right-decrease">
 							<?php echo $this->Form->input('in1', ['label' => false,'class' => 'form-control input-sm','readonly','value' => @$sales_order->so1]); ?>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-3 padding-right-decrease">
 							<?php echo @$sales_order->so3; ?>
 						</div>
 						<div class="col-md-3">
