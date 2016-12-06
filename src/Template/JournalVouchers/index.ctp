@@ -12,7 +12,7 @@
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
-							<th>S.No</th>
+							
 							<th>Voucher Date</th>
 							<th>Received From</th>
 							<th>Bank/Cash</th>
@@ -24,27 +24,26 @@
 					<tbody>
 						
 						<?php $i=0; foreach ($journalVouchers as $journalVoucher): $i++; 
-						$receivedFrom=
-						$bankCashes=$journalVoucher->Ledger1s->name;
-					?>
+						?>
 						<tr>
-							<td><?= h($i) ?></td>
-							<td><?= h(date("d-M-Y",strtotime($journalVoucher->transaction_date)))?>
+							
+							<td><?= h(date("d-m-Y",strtotime($journalVoucher->transaction_date)))?>
 							<td><?= h($journalVoucher->Ledger1s->name) ?></td>
 							<td><?= h($journalVoucher->Ledger2s->name) ?></td>
 							<td><?= h($journalVoucher->payment_mode) ?></td>
 							<td><?= ($journalVoucher->amount) ?></td>
 							
 							<td class="actions">
-							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $journalVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View ')); ?>
-							<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $journalVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View '));
+							/*
+							$this->Form->postLink('<i class="fa fa-trash"></i> ',
 								['action' => 'delete',$journalVoucher->id], 
 								[
 									'escape' => false,
 									'class' => 'btn btn-xs btn-danger',
 									'confirm' => __('Are you sure ?', $journalVoucher->id)
 								]
-							) ?>
+							) */ ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

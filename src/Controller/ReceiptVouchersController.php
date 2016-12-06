@@ -22,7 +22,7 @@ class ReceiptVouchersController extends AppController
         $this->paginate = [
             'contain' => ['ReceivedFroms', 'BankCashes']
         ];
-        $receiptVouchers = $this->paginate($this->ReceiptVouchers);
+        $receiptVouchers = $this->paginate($this->ReceiptVouchers->find()->order(['transaction_date' => 'DESC']));
 
         $this->set(compact('receiptVouchers'));
         $this->set('_serialize', ['receiptVouchers']);

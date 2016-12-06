@@ -22,9 +22,8 @@ class PettyCashReceiptVouchersController extends AppController
         $this->paginate = [
             'contain' => ['ReceivedFroms', 'BankCashes']
         ];
-        $pettyCashReceiptVouchers = $this->paginate($this->PettyCashReceiptVouchers);
-
-        $this->set(compact('pettyCashReceiptVouchers'));
+        $pettyCashReceiptVouchers = $this->paginate($this->PettyCashReceiptVouchers->find()->order(['transaction_date' => 'DESC']));
+		$this->set(compact('pettyCashReceiptVouchers'));
         $this->set('_serialize', ['pettyCashReceiptVouchers']);
     }
 

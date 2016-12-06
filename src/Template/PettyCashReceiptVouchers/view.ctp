@@ -13,19 +13,28 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<div align="center" style="font-size: 14px;font-weight: bold;color: #0685a8;">PETTY CASH VOUCHER</div>
+				<div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">PETTY CASH VOUCHER</div>
 				<div style="border:solid 2px #0685a8;margin-bottom:5px;margin-top: 5px;"></div>
 			</td>
 		</tr>
 	</table>
 	<table width="100%">
 		<tr>
+			<td width="50%" valign="top" align="left">
+				<table>
+					<tr>
+						<td>Voucher No</td>
+						<td width="20" align="center">:</td>
+						<td><?= h(str_pad($pettyCashReceiptVoucher->id, 4, '0', STR_PAD_LEFT)) ?></td>
+					</tr>
+				</table>
+			</td>
 			<td width="50%" valign="top" align="right">
 				<table>
 					<tr>
 						<td>Date.</td>
 						<td width="20" align="center">:</td>
-						<td><?= h(date("d-M-Y",strtotime($pettyCashReceiptVoucher->transaction_date))) ?></td>
+						<td><?= h(date("d-m-Y",strtotime($pettyCashReceiptVoucher->transaction_date))) ?></td>
 					</tr>
 				</table>
 			</td>
@@ -35,9 +44,7 @@
 	<div style="height:3px;" class="hdrmargin"></div>
 	<table class="table-advance itmtbl itmtbl2">
 		<tfoot>
-			<tr>
-				<td>Petty Cash No:<?= h($pettyCashReceiptVoucher->id) ?></td>
-			</tr>
+			
 			<tr>
 				<td>Received From <?= h($pettyCashReceiptVoucher->ReceivedFrom->name) ?></td>
 			</tr>
@@ -56,7 +63,7 @@
 			<td align="left" valign="top">
 				<table>
 					<tr>
-						<td>
+						<td style="font-size: 14px;font-weight: bold;">
 						Rs: <?=h($pettyCashReceiptVoucher->amount) ?>
 					</tr>
 				</table>

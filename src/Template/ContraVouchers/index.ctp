@@ -12,7 +12,7 @@
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
-							<th>S.No</th>
+							
 							<th>Voucher Date</th>
 							<th>Received From</th>
 							<th>Bank/Cash</th>
@@ -28,23 +28,22 @@
 						$bankCashes=$contraVoucher->CashBankTos->name;
 					?>
 						<tr>
-							<td><?= h($i) ?></td>
-							<td><?= h(date("d-M-Y",strtotime($contraVoucher->transaction_date)))?>
+							<td><?= h(date("d-m-Y",strtotime($contraVoucher->transaction_date)))?>
 							<td><?= h($receivedFrom) ?></td>
 							<td><?= h($bankCashes) ?></td>
 							<td><?= h($contraVoucher->payment_mode) ?></td>
 							<td><?= ($contraVoucher->amount) ?></td>
 							
 							<td class="actions">
-							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $contraVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View ')); ?>
-							<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $contraVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View ')); 
+							/* $this->Form->postLink('<i class="fa fa-trash"></i> ',
 								['action' => 'delete',$contraVoucher->id], 
 								[
 									'escape' => false,
 									'class' => 'btn btn-xs btn-danger',
 									'confirm' => __('Are you sure ?', $contraVoucher->id)
 								]
-							) ?>
+							) */ ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

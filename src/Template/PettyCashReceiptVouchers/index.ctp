@@ -12,7 +12,7 @@
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
-							<th>S.No</th>
+							
 							<th>Voucher Date</th>
 							<th>Received From</th>
 							<th>Bank/Cash</th>
@@ -22,35 +22,32 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php /*$i=0; foreach($vouchersReferences as $vouchersReference): $i++;
-							$groups=[];
-							foreach($vouchersReference->vouchers_references_groups as $vouchers_references_groups){
-								$groups[]=$vouchers_references_groups->account_group->name;
-							}
-							*/
-						?>
+						
 						<?php $i=0; foreach ($pettyCashReceiptVouchers as $pettyCashReceiptVoucher): $i++; 
 						$receivedFrom=$pettyCashReceiptVoucher->ReceivedFrom->name;
 						$bankCashes=$pettyCashReceiptVoucher->BankCash->name;
 					?>
 						<tr>
-							<td><?= h($i) ?></td>
-							<td><?= h(date("d-M-Y",strtotime($pettyCashReceiptVoucher->transaction_date)))?>
+							
+							<td><?= h(date("d-m-Y",strtotime($pettyCashReceiptVoucher->transaction_date)))?>
 							<td><?= h($receivedFrom) ?></td>
 							<td><?= h($bankCashes) ?></td>
 							<td><?= h($pettyCashReceiptVoucher->payment_mode) ?></td>
 							<td><?= ($pettyCashReceiptVoucher->amount) ?></td>
 							
 							<td class="actions">
-							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $pettyCashReceiptVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View ')); ?>
-							<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $pettyCashReceiptVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View ')); 
+							
+							/* $this->Form->postLink('<i class="fa fa-trash"></i> ',
 								['action' => 'delete',$pettyCashReceiptVoucher->id], 
 								[
 									'escape' => false,
 									'class' => 'btn btn-xs btn-danger',
 									'confirm' => __('Are you sure ?', $pettyCashReceiptVoucher->id)
 								]
-							) ?>
+							) */ 
+							?>
+							
 							</td>
 						</tr>
 						<?php endforeach; ?>

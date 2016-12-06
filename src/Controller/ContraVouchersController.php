@@ -22,7 +22,7 @@ class ContraVouchersController extends AppController
         $this->paginate = [
             'contain' => ['CashBankFroms','CashBankTos']
         ];
-        $contraVouchers = $this->paginate($this->ContraVouchers);
+        $contraVouchers = $this->paginate($this->ContraVouchers->find()->order(['transaction_date' => 'DESC']));
 
         $this->set(compact('contraVouchers'));
         $this->set('_serialize', ['contraVouchers']);

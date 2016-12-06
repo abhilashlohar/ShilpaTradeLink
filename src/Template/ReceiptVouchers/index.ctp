@@ -12,7 +12,7 @@
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
-							<th>S.No</th>
+							
 							<th>Voucher Date</th>
 							<th>Received From</th>
 							<th>Bank/Cash</th>
@@ -28,8 +28,7 @@
 						$bankCashes=$receiptVoucher->BankCash->name;
 					?>
 						<tr>
-							<td><?= h($i) ?></td>
-							<td><?= h(date("d-M-Y",strtotime($receiptVoucher->transaction_date)))?>
+							<td><?= h(date("d-m-Y",strtotime($receiptVoucher->transaction_date)))?>
 							<td><?= h($receivedFrom) ?></td>
 							<td><?= h($bankCashes) ?></td>
 							<td><?= h($receiptVoucher->payment_mode) ?></td>

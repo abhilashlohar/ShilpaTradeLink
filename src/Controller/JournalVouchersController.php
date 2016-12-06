@@ -22,7 +22,7 @@ class JournalVouchersController extends AppController
         $this->paginate = [
             'contain' => ['Ledger1s','Ledger2s']
         ];
-        $journalVouchers = $this->paginate($this->JournalVouchers);
+        $journalVouchers = $this->paginate($this->JournalVouchers->find()->order(['transaction_date' => 'DESC']));
 
         $this->set(compact('journalVouchers'));
         $this->set('_serialize', ['journalVouchers']);

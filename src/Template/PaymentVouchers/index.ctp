@@ -12,34 +12,35 @@
 			<div class="col-md-12">
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
-				<tr><th>S.No</th>
+						<tr>
 							<th>Voucher Date</th>
 							<th>Paid To</th>
 							<th>Bank/Cash</th>
 							<th>Payment Mode</th>
 							<th>Amount</th>
-						<th class="actions"><?= __('Actions') ?></th>
-					</tr>
+							<th class="actions"><?= __('Actions') ?></th>
+						</tr>
 					</thead>
 					<tbody>
 						<?php $i=0; foreach($paymentVouchers as $paymentVoucher): $i++; ?>
 						<tr>
-							<td><?= $this->Number->format($i) ?></td>
-							<td><?= h(date("d-M-Y",strtotime($paymentVoucher->transaction_date)))?></td>
+							<td><?= h(date("d-m-Y",strtotime($paymentVoucher->transaction_date)))?></td>
 							<td><?= h($paymentVoucher->PaidTo->name) ?></td>
-							<td><?=  h($paymentVoucher->BankCash->name) ?></td>
+							<td><?= h($paymentVoucher->BankCash->name) ?></td>
 							<td><?= h($paymentVoucher->payment_mode) ?></td>
 							<td><?= h($paymentVoucher->amount) ?></td>
 							<td class="actions">
-							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $paymentVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View ')); ?>
-							<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $paymentVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View ')); 
+						/*	
+							 $this->Form->postLink('<i class="fa fa-trash"></i> ',
 								['action' => 'delete', $paymentVoucher->id], 
 								[
 									'escape' => false,
 									'class' => 'btn btn-xs btn-danger',
 									'confirm' => __('Are you sure ?', $paymentVoucher->id)
 								]
-							) ?>
+							) */?>
+							
 							</td>
 						</tr>
 						<?php endforeach; ?>

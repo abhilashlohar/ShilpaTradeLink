@@ -23,7 +23,7 @@ class PaymentVouchersController extends AppController
 		$this->paginate = [
             'contain' => ['PaidTos','BankCashes']
         ];
-        $paymentVouchers = $this->paginate($this->PaymentVouchers);
+        $paymentVouchers = $this->paginate($this->PaymentVouchers->find()->order(['transaction_date' => 'DESC']));
 		$this->set(compact('paymentVouchers'));
         $this->set('_serialize', ['paymentVouchers']);
     }

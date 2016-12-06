@@ -20,12 +20,21 @@
 	</table>
 	<table width="100%">
 		<tr>
+			<td width="50%" valign="top" align="left">
+				<table>
+					<tr>
+						<td>Voucher No</td>
+						<td width="20" align="center">:</td>
+						<td><?= h(str_pad($journalVoucher->id, 4, '0', STR_PAD_LEFT)) ?></td>
+					</tr>
+				</table>
+			</td>
 			<td width="50%" valign="top" align="right">
 				<table>
 					<tr>
 						<td>Date.</td>
 						<td width="20" align="center">:</td>
-						<td><?= h(date("d-M-Y",strtotime($journalVoucher->transaction_date))) ?></td>
+						<td><?= h(date("d-m-Y",strtotime($journalVoucher->transaction_date))) ?></td>
 					</tr>
 				</table>
 			</td>
