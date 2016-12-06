@@ -244,7 +244,7 @@
 
 
 <table id="sample_tb" style="display:none;">
-	<tbody id="main_tbody">
+	<tbody >
 		<tr class="tr1 preimp">
 			<td rowspan="2" width="10">0</td>
 			<td>
@@ -753,11 +753,7 @@ $(document).ready(function() {
 						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
 							min: response.minimum_selling_price,
 							messages: {
-<<<<<<< HEAD
 								min: "Minimum selling price: "+response.minimum_selling_price
-=======
-								min: "Minimum selling price:"+response.minimum_selling_price
->>>>>>> origin/master
 							}
 						});
 					}
