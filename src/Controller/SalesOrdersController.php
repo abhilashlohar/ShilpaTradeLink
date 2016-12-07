@@ -74,16 +74,20 @@ class SalesOrdersController extends AppController
 		$salesOrders=$this->paginate(
 			$this->SalesOrders->find()->select(['total_rows' => 
 				$this->SalesOrders->find()->func()->count('SalesOrderRows.id')])
-				->leftJoinWith('SalesOrderRows', function ($q) {
-					return $q->where(['SalesOrderRows.processed_quantity < SalesOrderRows.quantity']);
-				})
-				->group(['SalesOrders.id'])
-				->autoFields(true)
-				->having($having)
-				->where($where)
-				->order(['SalesOrders.id' => 'DESC'])
+					->leftJoinWith('SalesOrderRows', function ($q) {
+						return $q->where(['SalesOrderRows.processed_quantity < SalesOrderRows.quantity']);
+					})
+					->group(['SalesOrders.id'])
+					->autoFields(true)
+					->having($having)
+					->where($where)
+					->order(['SalesOrders.id' => 'DESC'])
 			);
-		
+		if(!empty($job_card)){
+			$salesOrders=$this->paginate(
+				$this->SalesOrders->find()->where(['job_card'=>'Pending'])
+			);
+		}
         $this->set(compact('salesOrders','status','copy_request','job_card'));
         $this->set('_serialize', ['salesOrders']);
 		$this->set(compact('url'));

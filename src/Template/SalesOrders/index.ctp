@@ -50,6 +50,7 @@
 			<div class="col-md-12">
 				<form method="GET" >
 				<input type="hidden" name="pull-request" value="<?php echo @$pull_request; ?>">
+				<input type="hidden" name="job-card" value="<?php echo @$job_card; ?>">
 				<table class="table table-condensed">
 					<tbody>
 						<tr>

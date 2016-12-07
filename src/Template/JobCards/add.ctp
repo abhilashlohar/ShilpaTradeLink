@@ -8,6 +8,7 @@
 		<?php echo $this->Html->link('<i class="fa fa-files-o"></i> Pull Sales-Order','/Sales-Orders/index?job-card=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
 		</div>
 	</div>
+	<?php if(!empty($salesOrder)){ ?>
 	<div class="portlet-body form">
 		<!-- BEGIN FORM-->
 		 <?= $this->Form->create($jobCard,['id'=>'form_sample_3']) ?>
@@ -26,12 +27,21 @@
 						</div>
 					</div>
 				</div>
-				<div align="center"><h5>Sales-Order : <?= h($salesOrder->so1.'/'.str_pad($salesOrder->so2, 3, '0', STR_PAD_LEFT).'/'.$salesOrder->so3.'/'.$salesOrder->so4) ?></h5></div>
-				<div class="row" >
-					<div class="col-md-12">
-						sd
-					</div>
-				</div>
+				<div align="center"><h4>Sales-Order : <?= h($salesOrder->so1.'/'.str_pad($salesOrder->so2, 3, '0', STR_PAD_LEFT).'/'.$salesOrder->so3.'/'.$salesOrder->so4) ?></h4></div>
+				<table class="table table-bordered">
+					<thead>
+						<th width="30%">In</th>
+						<th>Out</th>
+					</thead>
+					<tbody>
+					<?php foreach($salesOrder->sales_order_rows as $sales_order_row){ ?>
+						<tr>
+							<td><?= h($sales_order_row->item->name) ?></td>
+							<td></td>
+						</tr>
+					<?php } ?>
+					</tbody>
+				</table>
 			</div>
 		
 			<div class="form-actions">
@@ -39,7 +49,7 @@
 			</div>
 		<?= $this->Form->end() ?>
 	</div>
-		
+	<?php } ?>
 		<!-- END FORM-->
 	</div>
 </div>

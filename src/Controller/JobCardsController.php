@@ -59,7 +59,7 @@ class JobCardsController extends AppController
 		$sales_order_id=@(int)$this->request->query('Sales-Order');
 		if(!empty($sales_order_id)){
 			$salesOrder = $this->JobCards->SalesOrders->get($sales_order_id, [
-				'contain' => ['SalesOrderRows']
+				'contain' => ['SalesOrderRows'=>['Items']]
 			]);
 		}
 		
