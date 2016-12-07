@@ -84,7 +84,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Salesman</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm','value' => @$salesOrder->employee_id]); ?>
+							<?php echo $this->Form->input('employee_id', ['empty' => "--Select--",'label' => false,'options' => $employees,'class' => 'form-control input-sm select2me','value' => @$salesOrder->employee_id]); ?>
 						</div>
 					</div>
 				</div>
@@ -226,13 +226,13 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<label class="control-label">Transporter <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('transporter_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm','value' => @$quotation->customer_id]); ?>
+						<?php echo $this->Form->input('transporter_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 						
 					</div>
 					<br/>
 					<div class="form-group">
 						<label class="control-label">Documents Courier <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('documents_courier_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm','value' => @$quotation->customer_id]); ?>
+						<?php echo $this->Form->input('documents_courier_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 					</div>
 				</div>
 				<div class="col-md-4">
@@ -798,6 +798,21 @@ $(document).ready(function() {
 		$('textarea[name="customer_address"]').val(addr);
 		$("#myModal12").hide();
     });
+
+	var customer_id=$('select[name="customer_id"] option:selected').val();
+	$("#so3_div").html('Loading...');
+	var url="<?php echo $this->Url->build(['controller'=>'Filenames','action'=>'listFilename']); ?>";
+	url=url+'/'+customer_id+'/so',
+	$.ajax({
+		url: url,
+	}).done(function(response) {
+		$("#so3_div").html(response);
+		$('select[name="qt3"]').attr('name','so3');
+	});
+
+
+
+
 	
 	$('select[name="customer_id"]').on("change",function() {
 		var customer_id=$('select[name="customer_id"] option:selected').val();
@@ -824,10 +839,10 @@ $(document).ready(function() {
 		$("select[name=employee_id]").val(employee_id);
 		
 		var transporter_id=$('select[name="customer_id"] option:selected').attr("transporter_id");
-		$("select[name=transporter_id]").val(transporter_id);
+		$("select[name=transporter_id]").val(transporter_id).select2();
 		
 		var documents_courier_id=$('select[name="customer_id"] option:selected').attr("documents_courier_id");
-		$("select[name=documents_courier_id]").val(documents_courier_id);
+		$("select[name=documents_courier_id]").val(documents_courier_id).select2();
 		
     });
 	
