@@ -142,13 +142,15 @@
 								<?php 
 								
 								if($quotation->status=='Pending' && $copy_request!="copy" && $pull_request!="true"){
-									echo $this->Form->postLink('<i class="fa fa-minus-circle"></i> ',['action' =>'close', $quotation->id],['escape' => false,'class' => 'btn btn-xs red tooltips','data-original-title'=>'Close','confirm' => __('Are you sure, you want to close ?', $quotation->id)
-										]
-									);
+									
 									echo $this->Html->link('<i class="fa fa-minus-circle"></i> ',['action' => '#'],array('escape'=>false,'class'=>'btn btn-xs red tooltips close_btn','data-original-title'=>'Close','role'=>'button','quote_id'=>$quotation->id));
 								} ?>
 								<?php if($copy_request=="copy"){
 									echo $this->Html->link('<i class="fa fa-repeat"></i>  Copy','/Quotations/Add?copy='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+								} ?>
+								<?php if($quotation->status=='Closed'){
+								echo $this->Form->postLink('<i class="fa fa-minus-circle"></i> ',['action' =>'reopen', $quotation->id],['escape' => false,'class' => 'btn btn-xs green tooltips','data-original-title'=>'Reopen','confirm' => __('Are you sure, you want to reopen ?', $quotation->id)]
+								);
 								} ?>
 							</td>
 						</tr>

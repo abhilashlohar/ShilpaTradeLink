@@ -351,4 +351,19 @@ class QuotationsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 	
+		
+	public function reopen($id = null)
+    {
+        $quotation = $this->Quotations->get($id);
+		$quotation->reason='';
+		$quotation->status='Pending';
+		 if ($this->Quotations->save($quotation)) {
+            $this->Flash->success(__('The quotation has been reopened.'));
+        } else {
+            $this->Flash->error(__('The quotation could not be Reopened. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index']);
+    }
+	
 }
