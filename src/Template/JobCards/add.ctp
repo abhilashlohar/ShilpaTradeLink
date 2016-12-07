@@ -26,7 +26,12 @@
 						</div>
 					</div>
 				</div>
-				
+				<div align="center"><h5>Sales-Order : <?= h($salesOrder->so1.'/'.str_pad($salesOrder->so2, 3, '0', STR_PAD_LEFT).'/'.$salesOrder->so3.'/'.$salesOrder->so4) ?></h5></div>
+				<div class="row" >
+					<div class="col-md-12">
+						sd
+					</div>
+				</div>
 			</div>
 		
 			<div class="form-actions">

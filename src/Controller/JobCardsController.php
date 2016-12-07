@@ -56,6 +56,14 @@ class JobCardsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		
+		$sales_order_id=@(int)$this->request->query('Sales-Order');
+		if(!empty($sales_order_id)){
+			$salesOrder = $this->JobCards->SalesOrders->get($sales_order_id, [
+				'contain' => ['SalesOrderRows']
+			]);
+		}
+		
+		
         $jobCard = $this->JobCards->newEntity();
         if ($this->request->is('post')) {
             $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
@@ -70,9 +78,8 @@ class JobCardsController extends AppController
                 $this->Flash->error(__('The job card could not be saved. Please, try again.'));
             }
         }
-        $salesOrders = $this->JobCards->SalesOrders->find('list', ['limit' => 200]);
         $companies = $this->JobCards->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('jobCard', 'salesOrders', 'companies'));
+        $this->set(compact('jobCard', 'salesOrder', 'companies'));
         $this->set('_serialize', ['jobCard']);
     }
 
