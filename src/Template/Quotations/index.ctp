@@ -1,4 +1,3 @@
-
 <?php 
 
 	if(!empty($status)){
@@ -141,6 +140,7 @@
 								} ?>
 								
 								<?php 
+								
 								if($quotation->status=='Pending' && $copy_request!="copy" && $pull_request!="true"){
 									echo $this->Form->postLink('<i class="fa fa-minus-circle"></i> ',['action' =>'close', $quotation->id],['escape' => false,'class' => 'btn btn-xs red tooltips','data-original-title'=>'Close','confirm' => __('Are you sure, you want to close ?', $quotation->id)
 										]

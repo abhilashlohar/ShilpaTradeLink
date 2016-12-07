@@ -522,6 +522,8 @@ $(document).ready(function() {
 		if($(this).is(':checked')){
 			$("#pnf_text").show();
 			$('input[name="pnf"]').attr('readonly','readonly');
+			$('input[name="pnf_per"]').val(0);
+
 		}else{
 			$("#pnf_text").hide();
 			$('input[name="pnf"]').removeAttr('readonly');
