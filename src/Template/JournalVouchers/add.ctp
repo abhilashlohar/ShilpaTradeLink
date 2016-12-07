@@ -263,5 +263,24 @@ $(document).ready(function() {
 	}
 	
 	
+		$('.deleterow').die().live("click",function() {
+		var l=$(this).closest("table tbody").find("tr").length;
+		if (confirm("Are you sure to remove row ?") == true) {
+			if(l>3){
+				var row_no=$(this).closest("tr").attr("row_no");
+				var del="tr[row_no="+row_no+"]";
+				$(del).remove();
+				var i=0;
+				$("#main_tb tbody tr.tr1").each(function(){
+							i++;
+								$(this).find("td:nth-child(1) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",}).select2().rules("add", "required");
+								$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",}).select2().rules("add", "required");
+								$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate"}).rules("add", "required");
+						});		
+				calculate_total();
+			}
+		} 
+    });	
+	
 });
 </script>
