@@ -16,7 +16,13 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Company Name <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('company_id', ['options' => $companies,'class' => 'form-control input-sm select2me','label'=>false]); ?>
+							<?php echo $this->Form->input('company_id', ['empty'=>'--Select--','options' => $companies,'class' => 'form-control input-sm select2me','label'=>false]); ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Date <span class="required" aria-required="true">*</span></label><br/>
+							<?php echo date("d-m-Y"); ?>
 						</div>
 					</div>
 				</div>
@@ -35,20 +41,7 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-	alert();
+	//alert();
 });
 </script>
-<div class="jobCards form large-9 medium-8 columns content">
-    <?= $this->Form->create($jobCard) ?>
-    <fieldset>
-        <legend><?= __('Add Job Card') ?></legend>
-        <?php
-            echo $this->Form->input('sales_order_id', ['options' => $salesOrders]);
-            echo $this->Form->input('company_id', ['options' => $companies]);
-            echo $this->Form->input('created_by');
-            echo $this->Form->input('created_on');
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
-</div>
+

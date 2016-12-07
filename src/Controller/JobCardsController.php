@@ -54,9 +54,14 @@ class JobCardsController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		
         $jobCard = $this->JobCards->newEntity();
         if ($this->request->is('post')) {
             $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
+			$jobCard->created_by=$s_employee_id; 
+			$jobCard->created_on=date("Y-m-d");
+			
             if ($this->JobCards->save($jobCard)) {
                 $this->Flash->success(__('The job card has been saved.'));
 
