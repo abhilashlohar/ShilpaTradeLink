@@ -36,15 +36,18 @@ class CreditNotesTable extends Table
 
         $this->table('credit_notes');
         $this->displayField('id');
-        $this->primaryKey('id');
-
-        $this->belongsTo('SalesAccs', [
-            'foreignKey' => 'sales_acc_id',
-            'joinType' => 'INNER'
+        $this->primaryKey('id');$this->belongsTo('Ledgers');
+		$this->belongsTo('VouchersReferences');
+		
+		$this->belongsTo('PurchaseAccs', [
+			'className' => 'LedgerAccounts',
+            'foreignKey' => 'purchase_acc_id',
+            'propertyName' => 'PurchaseAccs',
         ]);
-        $this->belongsTo('Parties', [
+		$this->belongsTo('Parties', [
+			'className' => 'LedgerAccounts',
             'foreignKey' => 'party_id',
-            'joinType' => 'INNER'
+            'propertyName' => 'Parties',
         ]);
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
@@ -65,14 +68,13 @@ class CreditNotesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->date('created_on')
-            ->requirePresence('created_on', 'create')
-            ->notEmpty('created_on');
+            
+            ->requirePresence('purchase_acc_id')
+            ->notEmpty('purchase_acc_id');
 
         $validator
-            ->date('transaction_date')
-            ->requirePresence('transaction_date', 'create')
-            ->notEmpty('transaction_date');
+            ->requirePresence('party_id', 'create')
+            ->notEmpty('party_id');
 
         $validator
             ->requirePresence('payment_mode', 'create')
@@ -102,12 +104,5 @@ class CreditNotesTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
-    {
-        $rules->add($rules->existsIn(['sales_acc_id'], 'SalesAccs'));
-        $rules->add($rules->existsIn(['party_id'], 'Parties'));
-        $rules->add($rules->existsIn(['company_id'], 'Companies'));
-
-        return $rules;
-    }
+   
 }

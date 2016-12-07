@@ -242,6 +242,19 @@ select
 				</li>
 				<li>
 					<a href="javascript:;">
+					<i class="fa fa-file-code-o"></i>
+					<span class="title">Job Cards</span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<?php if(in_array(1,$allowed_pages)){
+						echo '<li>'.$this->Html->link( 'Create', '/Job-Cards/Add' ).'</li>';
+						} ?>
+						<li><?php echo $this->Html->link( 'View', '/Job-Cards' ); ?></li>
+					</ul>
+				</li>
+				<li>
+					<a href="javascript:;">
 					<i class="fa fa-university"></i>
 					<span class="title">Companies</span>
 					<span class="arrow "></span>

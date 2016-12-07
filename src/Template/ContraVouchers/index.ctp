@@ -13,7 +13,8 @@
 					<thead>
 						<tr>
 							
-							<th>Voucher Date</th>
+							<th>Transaction Date</th>
+							<th>Voucher No</th>
 							<th>Received From</th>
 							<th>Bank/Cash</th>
 							<th>Payment Mode</th>
@@ -29,6 +30,7 @@
 					?>
 						<tr>
 							<td><?= h(date("d-m-Y",strtotime($contraVoucher->transaction_date)))?>
+							<td><?= h(str_pad($contraVoucher->id, 4, '0', STR_PAD_LEFT))  ?></td>
 							<td><?= h($receivedFrom) ?></td>
 							<td><?= h($bankCashes) ?></td>
 							<td><?= h($contraVoucher->payment_mode) ?></td>

@@ -33,6 +33,29 @@ class SaleTaxesTable extends Table
         $this->table('sale_taxes');
         $this->displayField('tax_figure');
         $this->primaryKey('id');
+		
+		
+		$this->hasOne('LedgerAccounts');
+		
+		$this->belongsTo('AccountCategories', [
+            'foreignKey' => 'account_category_id',
+            'joinType' => 'INNER'
+        ]);
+		$this->belongsTo('AccountGroups', [
+            'foreignKey' => 'account_group_id',
+            'joinType' => 'INNER'
+        ]);
+		
+		$this->belongsTo('AccountFirstSubgroups', [
+			'foreignKey' => 'account_first_subgroup_id',
+            'joinType' => 'INNER'
+        ]);
+
+		   
+		$this->belongsTo('AccountSecondSubgroups', [
+            'foreignKey' => 'account_second_subgroup_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
