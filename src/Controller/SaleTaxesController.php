@@ -24,14 +24,23 @@ class SaleTaxesController extends AppController
         if ($this->request->is('post')) {
             $saleTax = $this->SaleTaxes->patchEntity($saleTax, $this->request->data);
             if ($this->SaleTaxes->save($saleTax)) {
+				$ledgerAccount = $this->SaleTaxes->LedgerAccounts->newEntity();
+				$ledgerAccount->account_second_subgroup_id = $saleTax->account_second_subgroup_id;
+				$ledgerAccount->name = 'SaleTax - '.$saleTax->tax_figure;
+				$ledgerAccount->source_model = 'SaleTax';
+				$ledgerAccount->source_id = $saleTax->id;
+				if ($this->SaleTaxes->LedgerAccounts->save($ledgerAccount)) 
+				{
                 $this->Flash->success(__('The sale tax has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            } else {
+				return $this->redirect(['action' => 'index']);
+				} 
+			}
+                 else {
                 $this->Flash->error(__('The sale tax could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('saleTax'));
+		$AccountCategories = $this->SaleTaxes->AccountCategories->find('list');
+        $this->set(compact('saleTax','AccountCategories'));
         $this->set('_serialize', ['saleTax']);
 		
         $saleTaxes = $this->paginate($this->SaleTaxes);
@@ -67,15 +76,26 @@ class SaleTaxesController extends AppController
         $saleTax = $this->SaleTaxes->newEntity();
         if ($this->request->is('post')) {
             $saleTax = $this->SaleTaxes->patchEntity($saleTax, $this->request->data);
-            if ($this->SaleTaxes->save($saleTax)) {
+            if ($this->SaleTaxes->save($saleTax)) 
+			{
+				$ledgerAccount = $this->SaleTaxes->LedgerAccounts->newEntity();
+				$ledgerAccount->account_second_subgroup_id = $saleTax->account_second_subgroup_id;
+				$ledgerAccount->name = 'SaleTax->'.$saleTax->tax_figure;
+				$ledgerAccount->source_model = 'SaleTax';
+				$ledgerAccount->source_id = $saleTax->id;
+				if ($this->SaleTaxes->LedgerAccounts->save($ledgerAccount)) 
+				{
                 $this->Flash->success(__('The sale tax has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            } else {
+				return $this->redirect(['action' => 'index']);
+				} 
+			}else 
+			{
                 $this->Flash->error(__('The sale tax could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('saleTax'));
+		
+		$AccountCategories = $this->SaleTaxes->AccountCategories->find('list');
+        $this->set(compact('saleTax','AccountCategories'));
         $this->set('_serialize', ['saleTax']);
     }
 
