@@ -7,7 +7,7 @@
 	</div>
 	<div class="portlet-body form">
 		<!-- BEGIN FORM-->
-		<div class="row ">
+	<div class="row ">
 		<div class="col-md-6">
 		 <?= $this->Form->create($quotationCloseReason,array("class"=>"form-horizontal")) ?>
 			<div class="form-body">
@@ -47,9 +47,17 @@
 						<td><?= h($i) ?></td>
 						<td><?= $this->Text->autoParagraph($quotationCloseReason->reason) ?></td>
 						<td class="actions">
-							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $quotationCloseReason->id]) ?>
-							<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $quotationCloseReason->id], ['confirm' => __('Are you sure you want to delete # {0}?', $quotationCloseReason->id)]) ?>
-						</td>
+							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $quotationCloseReason->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
+								<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+								['action' => 'delete', $quotationCloseReason->id], 
+								[
+									'escape' => false,
+									'class' => 'btn btn-xs btn-danger',
+									'confirm' => __('Are you sure ?', $quotationCloseReason->id)
+								]
+							)
+
+							?>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
