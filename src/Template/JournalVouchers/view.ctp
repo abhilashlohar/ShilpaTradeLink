@@ -1,6 +1,4 @@
-<!--
-<a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
--->
+<?php //pr($journalVoucher->journal_voucher_rows); exit; ?>
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 95%;font-size: 14px;" class="maindiv" >	
 <table width="100%" class="divHeader">
 		<tr>
@@ -51,20 +49,31 @@
 	</tr>
 	</thead>
 		<tfoot>
+			<?php $sr=0; $dr=0; $cr=0; foreach ($journalVoucher->journal_voucher_rows as $journal_voucher_row): $sr++; ?>
 			<tr>
-				<td><?= h($journalVoucher->Ledger1s->name) ?></td>
-				<td><?= h($journalVoucher->amount) ?></td>
-				<td>0</td>
+				<td><?= h($journal_voucher_row->ledger_account->name) ?></td>
+				<td><?php if($journal_voucher_row->cr_dr=="Dr")
+					{ 
+					
+					$dr=$dr+$journal_voucher_row->amount;
+					echo $dr ;
+					}else{ echo"-";}
+					?></td>
+				<td><?php if($journal_voucher_row->cr_dr=="Cr")
+					{
+					
+					$cr=$cr+$journal_voucher_row->amount;
+					echo $cr;
+					}else{ echo"-";}
+					?></td>
+				
 			</tr>
+			<?php endforeach ?>
 			<tr>
-				<td><?= h($journalVoucher->Ledger2s->name) ?></td>
-				<td>0</td>
-				<td><?= h($journalVoucher->amount) ?></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>Total</td>
-				<td><?= h($journalVoucher->amount) ?></td>
+			<td align="right"><b>Total</b></td>
+			
+			<td> <?php echo $dr;?></td>
+			<td> <?php echo $cr;?></td>
 			</tr>
 		</tfoot>
 	</table>
@@ -75,7 +84,11 @@
 				<table>
 					<tr>
 						<td align="center">
-						For <?= h($journalVoucher->company->name) ?><br/><br/><br/><span style="    border-top: solid 1px #585757;">Authorised Signatory</span>
+						For <?= h($journalVoucher->company->name) ?><br/><br/><br/><span style="    border-top: solid 1px #585757;">
+						<img src='webroot/signatures/$journalVoucher->creator->signature' height="50px" style="height:50px;"/>
+							<br/>
+						Authorised Signatory</span>
+						
 						</td>
 					</tr>
 				</table>

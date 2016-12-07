@@ -41,16 +41,22 @@ class JournalVouchersTable extends Table
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
-		$this->belongsTo('Ledger1s', [
-			'className' => 'LedgerAccounts',
-            'foreignKey' => 'ledger1',
-            'propertyName' => 'Ledger1s',
+		
+		$this->belongsTo('LedgerAccounts',[
+            'foreignKey' => 'ledger_account_id',
+            'joinType' => 'INNER'
         ]);
-		$this->belongsTo('Ledger2s', [
-			'className' => 'LedgerAccounts',
-            'foreignKey' => 'ledger2',
-            'propertyName' => 'Ledger2s',
+		//$this->belongsTo('JournalVoucherRows');
+		$this->hasMany('JournalVoucherRows', [
+            'foreignKey' => 'journal_voucher_id',
+			'saveStrategy' => 'replace'
         ]);
+		
+		$this->belongsTo('Creator', [
+			'className' => 'Employees',
+			'foreignKey' => 'created_by',
+			'propertyName' => 'creator',
+		]);
     }
 
     /**
@@ -65,34 +71,13 @@ class JournalVouchersTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->integer('ledger1')
-            ->requirePresence('ledger1', 'create')
-            ->notEmpty('ledger1');
-
-        $validator
-            ->requirePresence('payment_mode', 'create')
-            ->notEmpty('payment_mode');
-
-        $validator
-            ->integer('ledger2')
-            ->requirePresence('ledger2', 'create')
-            ->notEmpty('ledger2');
+       
 
         $validator
             ->requirePresence('narration', 'create')
             ->notEmpty('narration');
 
-        $validator
-            ->decimal('amount')
-            ->requirePresence('amount', 'create')
-            ->notEmpty('amount');
-
-        $validator
-            ->integer('created_by')
-            ->requirePresence('created_by', 'create')
-            ->notEmpty('created_by');
-
+                
         return $validator;
     }
 

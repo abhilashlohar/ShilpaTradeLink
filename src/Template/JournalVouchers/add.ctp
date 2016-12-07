@@ -39,7 +39,7 @@
 						<th width="130">Debit/Credit</th>
 						<th width="130"></th>
 						<th width="130">Amount</th>
-						<th width="70"></th>
+						<th><th>
 					</tr>
 				</thead>
 				<tbody id="main_tbody">
@@ -47,11 +47,12 @@
 				</tbody>
 				<tfoot>
 					<tr>
-						<td align="left"><b>Narration</b></td>
-						<td ><?php echo $this->Form->input('narration', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Narration']); ?></td>
-						<td  align="right"><b>Total</b></td>
-						<td><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total']); ?></td>
-						<td></td>
+						<td><?php echo $this->Form->textarea('narration', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Narration']); ?></td>
+						<td  align="right"><b>Total Cr</b></td>
+						<td align="left" id="crAmount" align="right"></td>
+						
+						<td  align="right"><b>Total Dr</b></td>
+						<td id="drAmount" width="80"></td>
 					</tr>
 				</tfoot>
 			</table>
@@ -87,7 +88,7 @@
 			<td>
 				<div class="row">
 					<div class="col-md-11 padding-right-decrease">
-						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $ledgers,'label' => false,'class' => 'form-control input-sm select2me ','placeholder' => 'Item']); ?>
+						<?php echo $this->Form->input('ledger_account_id', ['empty'=>'Select','options' => $ledgers,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item']); ?>
 					</div>
 
 				</div>
@@ -97,7 +98,7 @@
 					<div class="col-md-11 padding-right-decrease">
 						<?php 
 						$options=['Dr'=>'Dr','Cr'=>'Cr'];
-						echo $this->Form->input('dr_cr', ['empty'=>'Select','options' => $options,'label' => false,'class' => 'form-control input-sm select2me ','placeholder' => 'Item']); ?>
+						echo $this->Form->input('dr_cr', ['options' => $options,'label' => false,'class' => 'form-control input-sm  ','placeholder' => 'Item']); ?>
 					</div>
 
 				</div>
@@ -181,61 +182,7 @@ $(document).ready(function() {
 			},
 		},
 
-		messages: { // custom messages for radio buttons and checkboxes
-			membership: {
-				required: "Please select a Membership type"
-			},
-			service: {
-				required: "Please select  at least 2 types of Service",
-				minlength: jQuery.validator.format("Please select  at least {0} types of Service")
-			}
-		},
-
-		errorPlacement: function (error, element) { // render error placement for each input type
-			if (element.parent(".input-group").size() > 0) {
-				error.insertAfter(element.parent(".input-group"));
-			} else if (element.attr("data-error-container")) { 
-				error.appendTo(element.attr("data-error-container"));
-			} else if (element.parents('.radio-list').size() > 0) { 
-				error.appendTo(element.parents('.radio-list').attr("data-error-container"));
-			} else if (element.parents('.radio-inline').size() > 0) { 
-				error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
-			} else if (element.parents('.checkbox-list').size() > 0) {
-				error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
-			} else if (element.parents('.checkbox-inline').size() > 0) { 
-				error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
-			} else {
-				error.insertAfter(element); // for other inputs, just perform default behavior
-			}
-		},
-
-		invalidHandler: function (event, validator) { //display error alert on form submit   
-			success3.hide();
-			error3.show();
-			Metronic.scrollTo(error3, -200);
-		},
-
-		highlight: function (element) { // hightlight error inputs
-		   $(element)
-				.closest('.form-group').addClass('has-error'); // set error class to the control group
-		},
-
-		unhighlight: function (element) { // revert the change done by hightlight
-			$(element)
-				.closest('.form-group').removeClass('has-error'); // set error class to the control group
-		},
-
-		success: function (label) {
-			label
-				.closest('.form-group').removeClass('has-error'); // set success class to the control group
-		},
-
-		submitHandler: function (form) {
-			success3.show();
-			error3.hide();
-			form[0].submit(); // submit the form
-		}
-
+		
 	});
 	//--	 END OF VALIDATION
 	
@@ -253,11 +200,11 @@ $(document).ready(function() {
 		$("#main_tb tbody#main_tbody").append(tr1);
 		
 		var i=0;
-		$("#main_tb tbody").each(function(){
+		$("#main_tb tbody tr").each(function(){
 			i++;
-			$(this).find("td:nth-child(1) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",}).select2().rules("add", "required");
-			$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",}).select2().rules("add", "required");
-			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate"}).rules("add", "required");
+			$(this).find("td:nth-child(1) select").attr({name:"journal_voucher_rows["+i+"][ledger_account_id]", id:"journal_voucher_rows-"+i+"-ledger_account_id",}).select2().rules("add", "required");
+			$(this).find("td:nth-child(2) select").attr({name:"journal_voucher_rows["+i+"][cr_dr]", id:"journal_voucher_rows-"+i+"-cr_dr",}).select2().rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr({name:"journal_voucher_rows["+i+"][amount]", id:"journal_voucher_rows-"+i+"-amount"}).rules("add", "required");
 	
 		});
 	}
@@ -266,21 +213,40 @@ $(document).ready(function() {
 		$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
-			if(l>3){
-				var row_no=$(this).closest("tr").attr("row_no");
-				var del="tr[row_no="+row_no+"]";
-				$(del).remove();
+			if(l>2){
+				var row_no=$(this).closest("tr").remove();
+						
 				var i=0;
-				$("#main_tb tbody tr.tr1").each(function(){
+				$("#main_tb tbody tr").each(function(){
 							i++;
-								$(this).find("td:nth-child(1) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",}).select2().rules("add", "required");
-								$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",}).select2().rules("add", "required");
-								$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate"}).rules("add", "required");
+								$(this).find("td:nth-child(1) select").attr({name:"journal_voucher_rows["+i+"][ledger_account_id]", id:"journal_voucher_rows-"+i+"-ledger_account_id",}).select2().rules("add", "required");
+								$(this).find("td:nth-child(2) select").attr({name:"journal_voucher_rows["+i+"][cr_dr]", id:"journal_voucher_rows-"+i+"-cr_dr",}).select2().rules("add", "required");
+								$(this).find("td:nth-child(4) input").attr({name:"journal_voucher_rows["+i+"][amount]", id:"journal_voucher_rows-"+i+"-amount"}).rules("add", "required");
 						});		
 				calculate_total();
 			}
 		} 
     });	
+	
+	$('#main_tb input').die().live("keyup","blur",function() { 
+	calculate_total();
+		});
+	
+	function calculate_total(){
+		var drAmount=0; var crAmount=0; 
+		$("#main_tb tbody tr").each(function(){
+			var dr_cr=$(this).find("td:nth-child(2) select option:selected").val();
+			var Amount=parseFloat($(this).find("td:nth-child(4) input").val());
+			if(!Amount){ Amount=0; }
+			if(dr_cr=="Dr"){
+				drAmount=drAmount+Amount;
+			}else if(dr_cr=="Cr"){
+				crAmount=crAmount+Amount;
+			}
+		});
+		$('#drAmount').html(drAmount.toFixed(2));
+		$('#crAmount').text(crAmount.toFixed(2));
+	}
 	
 });
 </script>

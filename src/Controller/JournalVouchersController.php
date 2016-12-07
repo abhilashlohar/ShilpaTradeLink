@@ -19,13 +19,15 @@ class JournalVouchersController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $this->paginate = [
-            'contain' => ['Ledger1s','Ledger2s']
+		$this->paginate = [
+            'contain' => ['JournalVoucherRows']
         ];
-        $journalVouchers = $this->paginate($this->JournalVouchers->find()->order(['transaction_date' => 'DESC']));
+		
+        $journalVouchers = $this->paginate($this->JournalVouchers);
 
-        $this->set(compact('journalVouchers'));
-        $this->set('_serialize', ['journalVouchers']);
+        $this->set('journalVoucher');
+		$this->set(compact('journalVouchers'));
+		$this->set('_serialize', ['journalVouchers']);
     }
 
     /**
@@ -40,7 +42,7 @@ class JournalVouchersController extends AppController
 		
 		$this->viewBuilder()->layout('index_layout');
         $journalVoucher = $this->JournalVouchers->get($id, [
-            'contain' => ['Companies','Ledger1s','Ledger2s']
+            'contain' => ['Companies','JournalVoucherRows'=>['LedgerAccounts'],'Companies','Creator']
         ]);
 
         $this->set('journalVoucher', $journalVoucher);
@@ -61,45 +63,31 @@ class JournalVouchersController extends AppController
 		
         if ($this->request->is('post')) {
             $journalVoucher = $this->JournalVouchers->patchEntity($journalVoucher, $this->request->data);
+			
 			$journalVoucher->created_by=$s_employee_id;
 			$journalVoucher->transaction_date=date("Y-m-d",strtotime($journalVoucher->transaction_date));
 			$journalVoucher->created_on=date("Y-m-d");
 			
 			if ($this->JournalVouchers->save($journalVoucher)) {
-				$ledger = $this->JournalVouchers->Ledgers->newEntity();
-				$ledger->ledger_account_id = $journalVoucher->ledger1;
-				$ledger->debit = $journalVoucher->amount;
-				$ledger->credit = 0;
-				$ledger->voucher_id = $journalVoucher->id;
-				$ledger->voucher_source = 'Journal Voucher';
-				$ledger->transaction_date = $journalVoucher->transaction_date;
-				$this->JournalVouchers->Ledgers->save($ledger);
-				//Ledger posting for bankcash
-				$ledger = $this->JournalVouchers->Ledgers->newEntity();
-				$ledger->ledger_account_id = $journalVoucher->ledger2;
-				$ledger->debit = 0;
-				$ledger->credit = $journalVoucher->amount;
-				$ledger->voucher_id = $journalVoucher->id;
-				$ledger->voucher_source = 'Journal Voucher';
-				$ledger->transaction_date = $journalVoucher->transaction_date;
-				if ($this->JournalVouchers->Ledgers->save($ledger)) {
+				
                 $this->Flash->success(__('The journal voucher has been saved.'));
-				return $this->redirect(['action' => 'index']);
+				return $this->redirect(['action' => 'add']);
 				} 
-			}
+			
            else {
                 $this->Flash->error(__('The journal voucher could not be saved. Please, try again.'));
             }
-        }$vouchersReferences = $this->JournalVouchers->VouchersReferences->get(9, [
-            'contain' => ['VouchersReferencesGroups']
+		}
+		$vouchersReferences = $this->JournalVouchers->VouchersReferences->get(9, [
+          'contain' => ['VouchersReferencesGroups']
         ]);
-		
+		//pr($vouchersReferences); exit;
 		$where=[];
 		foreach($vouchersReferences->vouchers_references_groups as $data){
 			$where[]=$data->account_group_id;
 		}
 
-		$ledgers = $this->JournalVouchers->Ledger1s->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+		$ledgers = $this->JournalVouchers->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
 				   return $q
 						->where(['AccountGroups.id IN'=>$where]);
 				}]]]);
