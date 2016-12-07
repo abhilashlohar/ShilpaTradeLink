@@ -37,15 +37,19 @@ class DebitNotesTable extends Table
         $this->table('debit_notes');
         $this->displayField('id');
         $this->primaryKey('id');
-
-        $this->belongsTo('PurchaseAccs', [
-            'foreignKey' => 'purchase_acc_id',
-            'joinType' => 'INNER'
+		$this->belongsTo('Ledgers');
+		$this->belongsTo('VouchersReferences');
+		$this->belongsTo('SalesAccs', [
+			'className' => 'LedgerAccounts',
+            'foreignKey' => 'sales_acc_id',
+            'propertyName' => 'SalesAccs',
         ]);
-        $this->belongsTo('Parties', [
+		$this->belongsTo('Parties', [
+			'className' => 'LedgerAccounts',
             'foreignKey' => 'party_id',
-            'joinType' => 'INNER'
+            'propertyName' => 'Parties',
         ]);
+       
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
@@ -64,16 +68,7 @@ class DebitNotesTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->date('created_on')
-            ->requirePresence('created_on', 'create')
-            ->notEmpty('created_on');
-
-        $validator
-            ->date('transaction_date')
-            ->requirePresence('transaction_date', 'create')
-            ->notEmpty('transaction_date');
-
+        
         $validator
             ->requirePresence('payment_mode', 'create')
             ->notEmpty('payment_mode');
@@ -81,6 +76,14 @@ class DebitNotesTable extends Table
         $validator
             ->requirePresence('narration', 'create')
             ->notEmpty('narration');
+
+		$validator
+            ->requirePresence('sales_acc_id', 'create')
+            ->notEmpty('sales_acc_id');
+
+		$validator
+            ->requirePresence('party_id', 'create')
+            ->notEmpty('party_id');
 
         $validator
             ->decimal('amount')
@@ -102,12 +105,5 @@ class DebitNotesTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
-    {
-        $rules->add($rules->existsIn(['purchase_acc_id'], 'PurchaseAccs'));
-        $rules->add($rules->existsIn(['party_id'], 'Parties'));
-        $rules->add($rules->existsIn(['company_id'], 'Companies'));
-
-        return $rules;
-    }
+    
 }

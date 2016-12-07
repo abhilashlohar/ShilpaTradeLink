@@ -18,8 +18,9 @@ class CreditNotesController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['SalesAccs', 'Parties', 'Companies']
+            'contain' => ['PurchaseAccs', 'Parties', 'Companies']
         ];
         $creditNotes = $this->paginate($this->CreditNotes);
 
@@ -36,8 +37,9 @@ class CreditNotesController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $creditNote = $this->CreditNotes->get($id, [
-            'contain' => ['SalesAccs', 'Parties', 'Companies']
+            'contain' => ['PurchaseAccs', 'Parties', 'Companies']
         ]);
 
         $this->set('creditNote', $creditNote);
@@ -51,10 +53,35 @@ class CreditNotesController extends AppController
      */
     public function add()
     {
+		
+		$this->viewBuilder()->layout('index_layout');
         $creditNote = $this->CreditNotes->newEntity();
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		
         if ($this->request->is('post')) {
-            $creditNote = $this->CreditNotes->patchEntity($creditNote, $this->request->data);
-            if ($this->CreditNotes->save($creditNote)) {
+			$creditNote = $this->CreditNotes->patchEntity($creditNote, $this->request->data);
+            $creditNote->created_by=$s_employee_id;
+			$creditNote->transaction_date=date("Y-m-d",strtotime($creditNote->transaction_date));
+			$creditNote->created_on=date("Y-m-d");
+			if ($this->CreditNotes->save($creditNote)) {
+				$ledger = $this->CreditNotes->Ledgers->newEntity();
+				$ledger->ledger_account_id = $creditNote->purchase_acc_id;
+				$ledger->debit = 0;
+				$ledger->credit = $creditNote->amount;
+				$ledger->voucher_id = $creditNote->id;
+				$ledger->voucher_source = 'Credit Note';
+				$ledger->transaction_date = $creditNote->transaction_date;
+				$this->CreditNotes->Ledgers->save($ledger);
+				//Ledger posting for bankcash
+				$ledger = $this->CreditNotes->Ledgers->newEntity();
+				$ledger->ledger_account_id = $creditNote->party_id;
+				$ledger->debit =  $creditNote->amount;
+				$ledger->credit = 0;
+				$ledger->voucher_id = $creditNote->id;
+				$ledger->voucher_source = 'Credit Note';
+				$ledger->transaction_date = $creditNote->transaction_date;
+				$this->CreditNotes->Ledgers->save($ledger);
+				
                 $this->Flash->success(__('The credit note has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -62,12 +89,38 @@ class CreditNotesController extends AppController
                 $this->Flash->error(__('The credit note could not be saved. Please, try again.'));
             }
         }
-        $salesAccs = $this->CreditNotes->SalesAccs->find('list', ['limit' => 200]);
-        $parties = $this->CreditNotes->Parties->find('list', ['limit' => 200]);
-        $companies = $this->CreditNotes->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('creditNote', 'salesAccs', 'parties', 'companies'));
-        $this->set('_serialize', ['creditNote']);
-    }
+       $vouchersReferences = $this->CreditNotes->VouchersReferences->get(12, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		
+		$where=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			$where[]=$data->account_group_id;
+		}
+
+		$purchaseAccs = $this->CreditNotes->PurchaseAccs->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN'=>$where]);
+				}]]]);
+			
+		$vouchersReferences = $this->CreditNotes->VouchersReferences->get(13, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		$where=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			  $where[]=$data->account_group_id;
+			//pr($where); exit;
+		}
+
+		$parties = $this->CreditNotes->Parties->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN'=>$where]);
+				}]]]);
+		
+		$companies = $this->CreditNotes->Companies->find('all');
+        $this->set(compact('creditNote', 'purchaseAccs', 'parties', 'companies'));
+        $this->set('_serialize', ['debitNote']);
+ }
 
     /**
      * Edit method
@@ -91,10 +144,9 @@ class CreditNotesController extends AppController
                 $this->Flash->error(__('The credit note could not be saved. Please, try again.'));
             }
         }
-        $salesAccs = $this->CreditNotes->SalesAccs->find('list', ['limit' => 200]);
         $parties = $this->CreditNotes->Parties->find('list', ['limit' => 200]);
         $companies = $this->CreditNotes->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('creditNote', 'salesAccs', 'parties', 'companies'));
+        $this->set(compact('creditNote',  'parties', 'companies'));
         $this->set('_serialize', ['creditNote']);
     }
 

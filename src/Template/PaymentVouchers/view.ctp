@@ -46,7 +46,7 @@
 		<tfoot>
 			
 			<tr>
-				<td>Paid To Mr./Ms.
+				<td>Paid To 
 				<?= h($paymentVoucher->PaidTo->name) ?></td>
 			</tr>
 			<tr>
