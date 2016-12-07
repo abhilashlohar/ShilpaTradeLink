@@ -11,3 +11,5 @@ QUOATITON:
 <--------------6/12/2016----------------->
 
 1.QO ADD/EDIT MSP Not Work Properly.
+2. SO Rate Not enter 0.0000000.
+3.	
