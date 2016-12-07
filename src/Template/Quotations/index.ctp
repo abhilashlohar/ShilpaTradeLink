@@ -200,7 +200,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: url,
 		}).done(function(response) {
-			
+			location.reload();
 		});		
 		
     });

@@ -339,10 +339,10 @@ class QuotationsController extends AppController
 	public function close($id = null,$reason=null)
     {
         $quotation = $this->Quotations->get($id);
+		$quotation_reason=$this->Quotations->QuotationCloseReasons->get($reason);
+		$quotation->reason=$quotation_reason->reason;
 		$quotation->status='Closed';
-		$quotation->reason_id=$reason;
-		
-        if ($this->Quotations->save($quotation)) {
+		 if ($this->Quotations->save($quotation)) {
             $this->Flash->success(__('The quotation has been closed.'));
         } else {
             $this->Flash->error(__('The quotation could not be closed. Please, try again.'));
