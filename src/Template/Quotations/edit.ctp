@@ -753,11 +753,9 @@ $(document).ready(function() {
 						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
 							min: response.minimum_selling_price,
 							messages: {
-<<<<<<< HEAD
 								min: "Minimum selling price: "+response.minimum_selling_price
-=======
-								min: "Minimum selling price:"+response.minimum_selling_price
->>>>>>> origin/master
+
+
 							}
 						});
 					}

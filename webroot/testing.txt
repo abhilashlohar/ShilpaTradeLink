@@ -6,3 +6,8 @@ QUOATITON:
 2.Row Can not delete On QO edit.
 3. QO Row Delete but descryption cant.
 4.	QO edit Delete function not working.
+
+
+<--------------6/12/2016----------------->
+
+1.QO ADD/EDIT MSP Not Work Properly.
