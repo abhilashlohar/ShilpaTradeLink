@@ -23,7 +23,7 @@ class SalesOrdersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		
 		$copy_request=$this->request->query('copy-request');
-		$job_request=$this->request->query('job-request');
+		$job_card=$this->request->query('job-card');
 		
 		$where=[];
 		$company_alise=$this->request->query('company_alise');
@@ -84,7 +84,7 @@ class SalesOrdersController extends AppController
 				->order(['SalesOrders.id' => 'DESC'])
 			);
 		
-        $this->set(compact('salesOrders','status','copy_request','job_request'));
+        $this->set(compact('salesOrders','status','copy_request','job_card'));
         $this->set('_serialize', ['salesOrders']);
 		$this->set(compact('url'));
     }

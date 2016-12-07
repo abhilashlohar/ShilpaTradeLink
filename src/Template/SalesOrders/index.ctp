@@ -18,8 +18,8 @@
 		
 			<?php }  elseif($copy_request=="copy"){?>
 			: Select a Sales-Order to Copy
-			<?php }  elseif($job_request=="job"){?>
-			: Select a Sales-Order For Job Card
+			<?php }  elseif($job_card=="true"){?>
+			: Select a Sales-Order to Create Job Card
 			<?php } ?>
 		</div>
 		<div class="actions">
@@ -29,7 +29,7 @@
 			if($status==null or $status=='Pending'){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
 			if($status=='Converted Into Invoice'){ $class2='btn btn-primary'; }else{ $class2='btn btn-default'; }
 			?>
-			<?php if($pull_request!="true" and $copy_request!="copy" and $job_request!="job"){ ?>
+			<?php if($pull_request!="true" and $copy_request!="copy" and $job_card!="true"){ ?>
 				<?= $this->Html->link(
 					'Pending',
 					'/Sales-Orders/index/Pending',
@@ -51,15 +51,6 @@
 				<form method="GET" >
 				<input type="hidden" name="pull-request" value="<?php echo @$pull_request; ?>">
 				<table class="table table-condensed">
-					<thead>
-						<tr>
-							<th>Sales Order No</th>
-							<th>Customer</th>
-							<th>Date</th>
-							<th>PO No.</th>
-							<th></th>
-						</tr>
-					</thead>
 					<tbody>
 						<tr>
 							<td>
@@ -121,10 +112,10 @@
 									echo $this->Html->link('<i class="fa fa-repeat "></i>  Copy','/SalesOrders/Add?copy='.$salesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
 								
-								<?php if($job_request=="job"){
-									echo $this->Html->link('<i class="fa fa-repeat "></i>  Job Card','/JobCards/Add?job='.$salesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+								<?php if($job_card=="true"){
+									echo $this->Html->link('<i class="fa fa-repeat "></i>  Create Job Card','/JobCards/Add?Sales-Order='.$salesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
-								<?php if($status!='Converted Into Invoice' and in_array(4,$allowed_pages) and $pull_request!="true" && $copy_request!="copy"){ ?> 
+								<?php if($status!='Converted Into Invoice' and in_array(4,$allowed_pages) and $pull_request!="true" && $copy_request!="copy" && $job_card!="true"){ ?> 
 									<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $salesOrder->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 								<?php } ?>
 								
