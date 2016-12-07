@@ -334,12 +334,12 @@ class QuotationsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 	
-	public function close($id = null)
+	public function close($id = null,$reason=null)
     {
-        $this->request->allowMethod(['post', 'close']);
         $quotation = $this->Quotations->get($id);
 		
 		$quotation->status='Closed';
+		$quotation->reason=$reason;
         if ($this->Quotations->save($quotation)) {
             $this->Flash->success(__('The quotation has been closed.'));
         } else {

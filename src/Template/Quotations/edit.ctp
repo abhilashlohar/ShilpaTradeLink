@@ -244,7 +244,7 @@
 
 
 <table id="sample_tb" style="display:none;">
-	<tbody id="main_tbody">
+	<tbody >
 		<tr class="tr1 preimp">
 			<td rowspan="2" width="10">0</td>
 			<td>
@@ -754,8 +754,6 @@ $(document).ready(function() {
 							min: response.minimum_selling_price,
 							messages: {
 								min: "Minimum selling price: "+response.minimum_selling_price
-
-
 							}
 						});
 					}
