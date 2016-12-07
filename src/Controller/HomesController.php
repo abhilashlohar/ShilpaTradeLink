@@ -8,7 +8,7 @@ class HomesController extends AppController
     }
 	public function email()
     {
-       $this->viewBuilder()->layout('index_layout');
+       $this->viewBuilder()->layout('Email/text/default');
     }
 }
 

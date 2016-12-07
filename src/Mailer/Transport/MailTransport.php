@@ -8,7 +8,7 @@ class MailTransport extends AbstractTransport
 {
     public function send(Email $email)
     {
-       // $yourInstance = $email->transport('SendGrid')->transportClass();
+        $yourInstance = $email->transport('SendGrid');
 		//$yourInstance->myCustomMethod();
 		$email->send();
     }
