@@ -810,10 +810,6 @@ $(document).ready(function() {
 		$('select[name="qt3"]').attr('name','so3');
 	});
 
-
-
-
-	
 	$('select[name="customer_id"]').on("change",function() {
 		var customer_id=$('select[name="customer_id"] option:selected').val();
 		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'defaultAddress']); ?>";

@@ -280,6 +280,7 @@ class SalesOrdersController extends AppController
 				}
 				
                 $this->Flash->success(__('The sales order has been saved.'));
+return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
 
                 return $this->redirect(['action' => 'index']);
             } else {
