@@ -86,6 +86,7 @@ class QuotationCloseReasonsController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $quotationCloseReason = $this->QuotationCloseReasons->get($id, [
             'contain' => []
         ]);

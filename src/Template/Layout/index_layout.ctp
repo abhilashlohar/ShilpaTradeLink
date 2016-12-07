@@ -458,7 +458,8 @@ select
 						</li>
 					</ul>
 				</li>
-					
+				
+				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Quotation Close Reason','/QuotationCloseReasons',array('escape'=>false)); ?></li>	
 				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Leave Types','/LeaveTypes',array('escape'=>false)); ?></li>
 			</ul>
 			<!-- END SIDEBAR MENU -->
