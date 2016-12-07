@@ -99,28 +99,16 @@ class JournalVouchersController extends AppController
 			$where[]=$data->account_group_id;
 		}
 
-		$ledger1s = $this->JournalVouchers->Ledger1s->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+		$ledgers = $this->JournalVouchers->Ledger1s->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
 				   return $q
 						->where(['AccountGroups.id IN'=>$where]);
 				}]]]);
 			
-		$vouchersReferences = $this->JournalVouchers->VouchersReferences->get(10, [
-            'contain' => ['VouchersReferencesGroups']
-        ]);
-		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			  $where[]=$data->account_group_id;
-			//pr($where); exit;
-		}
-
-		$ledger2s = $this->JournalVouchers->Ledger2s->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		
 		
        $companies = $this->JournalVouchers->Companies->find('all');
         
-        $this->set(compact('journalVoucher', 'ledger1s', 'ledger2s','companies'));
+        $this->set(compact('journalVoucher', 'ledgers','companies'));
         $this->set('_serialize', ['journalVoucher']);
     }
 

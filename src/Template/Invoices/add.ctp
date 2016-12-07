@@ -17,6 +17,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Company</label>
 						<div class="col-md-9">
+							<?php echo $this->Form->input('company_id', ['type'=>'hidden','value' => @$sales_order->company_id]); ?>
 							<?php echo @$sales_order->company->name; ?>
 						</div>
 					</div>
@@ -47,13 +48,16 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Invoice No.</label>
 						<div class="col-md-3 padding-right-decrease">
-							<?php echo $this->Form->input('in1', ['label' => false,'class' => 'form-control input-sm','readonly','value' => @$sales_order->so1]); ?>
+							<?php echo $this->Form->input('in1', ['type'=>'hidden','value' => @$sales_order->so1]); ?>
+							<?php echo @$sales_order->so1; ?>
 						</div>
 						<div class="col-md-3 padding-right-decrease">
+							<?php echo $this->Form->input('in3', ['type'=>'hidden','value' => @$sales_order->so1]); ?>
 							<?php echo @$sales_order->so3; ?>
 						</div>
 						<div class="col-md-3">
-							<?php echo $this->Form->input('in4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
+							<?php echo $this->Form->input('in4', ['type'=>'hidden','value' => '16-17']); ?>
+							<?php echo "16-17"; ?>
 						</div>
 					</div>
 				</div>
