@@ -61,20 +61,19 @@
 				$url_path="";
 				if($ledger->voucher_source=="Journal Voucher"){
 					$url_path="/JournalVouchers/view/".$ledger->voucher_id;
+				}else if($ledger->voucher_source=="Payment Voucher"){
+					$url_path="/PaymentVouchers/view/".$ledger->voucher_id;
 				}
 				
 				?>
 					<tr>
 						<td><?php echo date("d-m-Y",strtotime($ledger->transaction_date)); ?></td>
-						<td><?= h($ledger->ledger_account->name) ?></td>
-						<td><?= h($ledger->voucher_source) ?></td>
+						<td><?= h($ledger->ledger_account->name); ?></td>
+						<td><?= h($ledger->voucher_source); ?></td>
 						<td>
-						<?= if(!empty($url_path))
-							{
-							$this->Html->link(str_pad($ledger->voucher_id,4,'0',STR_PAD_LEFT),$url_path,['target' => '_blank']);
-							} 
-							else
-							{
+						<?php if(!empty($url_path)){
+								echo $this->Html->link(str_pad($ledger->voucher_id,4,'0',STR_PAD_LEFT),$url_path,['target' => '_blank']);
+							}else{
 								echo str_pad($ledger->voucher_id,4,'0',STR_PAD_LEFT);
 							}
 						
