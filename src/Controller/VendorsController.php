@@ -68,7 +68,6 @@ class VendorsController extends AppController
 					$id=$vendor->id;
 					$vendor = $this->Vendors->get($id);
 					$vendor->ledger_account_id=$ledgerAccount->id;
-					
 					$this->Vendors->save($vendor);
 					$this->Flash->success(__('The vendor has been saved.'));
 					return $this->redirect(['action' => 'index']);
