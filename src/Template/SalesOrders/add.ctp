@@ -179,8 +179,9 @@ if(!empty($copy))
 							foreach($SaleTaxes as $SaleTaxe){
 								$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 							}
-							echo $this->Form->input('sales_order_rows.'.$q.'.so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
-							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_description', ['type'=>'text','label' => false]); ?>
+							echo $this->Form->input('sales_order_rows.'.$q.'.so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des change_ledger']);
+							echo $this->Form->input('sales_order_rows.'.$q.'.
+							', ['type'=>'text','label' => false]); ?>
 							</td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
@@ -227,8 +228,10 @@ if(!empty($copy))
 							foreach($SaleTaxes as $SaleTaxe){
 								$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 							}
-							echo $this->Form->input('sales_order_rows.'.$q.'.so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
-							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_description', ['type'=>'hidden','label' => false]); ?>
+							echo $this->Form->input('sales_order_rows.'.$q.'.so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des change_ledger']);
+							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_description', ['type'=>'hidden','label' => false]);
+							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_ledger_account_id', ['type'=>'hidden','label' => false]);
+							?>
 							</td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
@@ -416,10 +419,12 @@ if(!empty($copy))
 			<td width="100">
 			<?php $options=[];
 			foreach($SaleTaxes as $SaleTaxe){
-				$options[]=['text' => $this->Number->format($SaleTaxe->tax_figure,[ 'places' => 2]).'%', 'value' => $this->Number->format($SaleTaxe->tax_figure,[ 'places' => 2]), 'description' => $SaleTaxe->description];
+				$options[]=['text' => $this->Number->format($SaleTaxe->tax_figure,[ 'places' => 2]).'%', 'value' => $this->Number->format($SaleTaxe->tax_figure,[ 'places' => 2]), 'description' => $SaleTaxe->description, 'ledger_account_id' => $SaleTaxe->ledger_account_id];
 			}
-			echo $this->Form->input('so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
-			echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false]); ?>
+			echo $this->Form->input('so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des change_ledger']);
+			echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false]);
+			echo $this->Form->input('sale_tax_ledger_account_id', ['type'=>'hidden','label' => false]);
+			?>
 			</td>
 			<td width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
@@ -614,8 +619,12 @@ $(document).ready(function() {
 	
 	$('.change_des').die().live("change",function() { 
 		var description=$(this).find('option:selected').attr("description");
-		$(this).closest("td").find('input').val(description);
+		$(this).closest("td").find('input:eq(0)').val(description);
+		var ledger_account_id=$(this).find('option:selected').attr("ledger_account_id");
+		$(this).closest("td").find('input:eq(1)').val(ledger_account_id);
     });
+	
+	
 	$("#main_tb tbody tr.tr1").each(function(){
 		var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
 		$(this).find("td:nth-child(7) input").val(description);
@@ -664,6 +673,7 @@ $(document).ready(function() {
 					$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
 					$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][so_sale_tax]");
 					$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_description]");
+					$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_ledger_account_id]");
 					var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
 					$(this).find("td:nth-child(7) input").val(description);
 				});
@@ -715,9 +725,12 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(5) input").attr({name:"sales_order_rows["+i+"][amount]", id:"sales_order_rows-"+i+"-amount"}).rules("add", "required");
 			$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
 			$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][so_sale_tax]");
-			$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_description]");
+			$(this).find("td:nth-child(7) input:eq( 0 )").attr("name","sales_order_rows["+i+"][sale_tax_description]");
 			var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
-			$(this).find("td:nth-child(7) input").val(description);
+			$(this).find("td:nth-child(7) input:eq( 0 )").val(description);
+			$(this).find("td:nth-child(7) input:eq( 1 )").attr("name","sales_order_rows["+i+"][sale_tax_ledger_account_id]");
+			var ledger_account_id=$(this).find("td:nth-child(7) select option:selected").attr("ledger_account_id");
+			$(this).find("td:nth-child(7) input:eq( 1 )").val(ledger_account_id);
 		});
 		var i=0;
 		

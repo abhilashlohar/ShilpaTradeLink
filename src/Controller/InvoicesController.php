@@ -195,11 +195,8 @@ class InvoicesController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
-		
 		$s_employee_id=$this->viewVars['s_employee_id'];
-		
 		$sales_order_id=@(int)$this->request->query('sales-order');
-		
 		$sales_order=array(); $process_status='New';
 		if(!empty($sales_order_id)){
 			$sales_order = $this->Invoices->SalesOrders->get($sales_order_id, [
@@ -242,6 +239,29 @@ class InvoicesController extends AppController
 			$invoice->date_created=date("Y-m-d");
 			
             if ($this->Invoices->save($invoice)) {
+				//ledger posting
+				$ledger = $this->Invoices->Ledgers->newEntity();
+				$ledger->ledger_account_id = $paymentVoucher->paid_to_id;
+				$ledger->debit = $paymentVoucher->amount;
+				$ledger->credit = 0;
+				$ledger->voucher_id = $paymentVoucher->id;
+				$ledger->voucher_source = 'Payment Voucher';
+				$ledger->transaction_date = $paymentVoucher->transaction_date;
+				$this->Invoices->Ledgers->save($ledger);
+				
+				//Ledger posting for bankcash
+				$ledger = $this->Invoices->Ledgers->newEntity();
+				$ledger->ledger_account_id = $paymentVoucher->cash_bank_account_id;
+				$ledger->debit = 0;
+				$ledger->credit = $paymentVoucher->amount;;
+				$ledger->voucher_id = $paymentVoucher->id;
+				$ledger->transaction_date = $paymentVoucher->transaction_date;
+				$ledger->voucher_source = 'Payment Voucher';
+				$this->Invoices->Ledgers->save($ledger); 
+				
+				
+				
+				
 				if(!empty($sales_order_id)){
 					$invoice->check=array_filter($invoice->check);
 					$i=0; 
@@ -263,6 +283,7 @@ class InvoicesController extends AppController
 						$itemLedger->in_out = 'Out';
 						$itemLedger->processed_on = date("Y-m-d");
 						$this->Invoices->ItemLedger->save($itemLedger);
+						
 					}
 				}
                 $this->Flash->success(__('The invoice has been saved.'));

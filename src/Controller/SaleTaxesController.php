@@ -29,10 +29,17 @@ class SaleTaxesController extends AppController
 				$ledgerAccount->name = 'SaleTax - '.$saleTax->tax_figure;
 				$ledgerAccount->source_model = 'SaleTax';
 				$ledgerAccount->source_id = $saleTax->id;
-				if ($this->SaleTaxes->LedgerAccounts->save($ledgerAccount)) 
+				if ($this->SaleTaxes->LedgerAccounts->save($ledgerAccount))					
 				{
-                $this->Flash->success(__('The sale tax has been saved.'));
-				return $this->redirect(['action' => 'index']);
+					$id=$saleTax->id;
+					
+					$saleTax = $this->SaleTaxes->get($id);
+					
+					$saleTax->ledger_account_id=$ledgerAccount->id;
+					//pr($saleTax); exit;
+					$this->SaleTaxes->save($saleTax);
+					$this->Flash->success(__('The sale tax has been saved.'));
+					return $this->redirect(['action' => 'index']);
 				} 
 			}
                  else {
@@ -85,6 +92,7 @@ class SaleTaxesController extends AppController
 				$ledgerAccount->source_id = $saleTax->id;
 				if ($this->SaleTaxes->LedgerAccounts->save($ledgerAccount)) 
 				{
+				
                 $this->Flash->success(__('The sale tax has been saved.'));
 				return $this->redirect(['action' => 'index']);
 				} 

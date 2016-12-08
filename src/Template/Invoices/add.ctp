@@ -174,6 +174,7 @@
 								<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$sales_order_rows->id]); ?></label>
 								<?php echo $this->Form->input('q', ['label' => false,'type' => 'hidden','value' => @$sales_order_rows->so_sale_tax]); ?>
 								<?php echo $this->Form->input('st_description', ['type' => 'hidden','label' => false,'value' => @$sales_order_rows->sale_tax_description]); ?>
+								<?php echo $this->Form->input('sale_tax_ledger_account_id', ['type' => 'hidden','label' => false,'value' => @$sales_order_rows->sale_tax_ledger_account_id]); ?>
 							</td>
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>

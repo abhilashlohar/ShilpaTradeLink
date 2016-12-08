@@ -33,10 +33,7 @@ class SaleTaxesTable extends Table
         $this->table('sale_taxes');
         $this->displayField('tax_figure');
         $this->primaryKey('id');
-		
-		
 		$this->hasOne('LedgerAccounts');
-		
 		$this->belongsTo('AccountCategories', [
             'foreignKey' => 'account_category_id',
             'joinType' => 'INNER'

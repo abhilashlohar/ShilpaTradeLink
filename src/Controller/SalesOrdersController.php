@@ -282,7 +282,7 @@ class SalesOrdersController extends AppController
 						->execute();
 						
 				}
-				
+				//pr($salesOrder);exit;
                 $this->Flash->success(__('The sales order has been saved.'));
 return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
 
