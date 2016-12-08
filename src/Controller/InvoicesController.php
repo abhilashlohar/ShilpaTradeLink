@@ -237,7 +237,7 @@ class InvoicesController extends AppController
 				//pr($invoice->in3); exit;
 			
 			$invoice->date_created=date("Y-m-d");
-			
+			$invoice->due_payment=$invoice->grand_total;
             if ($this->Invoices->save($invoice)) {
 				//ledger posting
 				$ledger = $this->Invoices->Ledgers->newEntity();
