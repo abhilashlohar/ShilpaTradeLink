@@ -213,9 +213,7 @@ class InvoicesController extends AppController
 		
         $invoice = $this->Invoices->newEntity();
         if ($this->request->is('post')) {
-			
-			
-            $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
+			$invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 			$last_in_no=$this->Invoices->find()->select(['in2'])->where(['company_id' => $sales_order->company_id])->order(['in2' => 'DESC'])->first();
 			if($last_in_no){
 				$invoice->in2=$last_in_no->in2+1;
@@ -226,32 +224,33 @@ class InvoicesController extends AppController
 			//$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date));
 			
 			$invoice->in3=$sales_order->so3;
-			
 			$invoice->created_by=$s_employee_id;
 			$invoice->company_id=$sales_order->company_id;
 			$invoice->employee_id=$sales_order->employee_id;
 			$invoice->customer_id=$sales_order->customer_id;
 			$invoice->customer_po_no=$sales_order->customer_po_no;
 			$invoice->po_date=date("Y-m-d",strtotime($sales_order->po_date)); 
-			
-				//pr($invoice->in3); exit;
-			
+			//pr($invoice->in3); exit;
 			$invoice->date_created=date("Y-m-d");
 			$invoice->due_payment=$invoice->grand_total;
             if ($this->Invoices->save($invoice)) {
-				//ledger posting
+				$ledger_grand=$invoice->grand_total;
+				//ledger posting for Customer
 				$ledger = $this->Invoices->Ledgers->newEntity();
-				$ledger->ledger_account_id = $invoice->paid_to_id;
-				$ledger->debit = $invoice->amount;
+				$ledger->ledger_account_id = $sales_order->customer->ledger_account_id;
+				$ledger->debit = $invoice->grand_total;
 				$ledger->credit = 0;
 				$ledger->voucher_id = $invoice->id;
 				$ledger->voucher_source = 'Invoice';
-				$ledger->transaction_date = $invoice->transaction_date;
-				$this->Invoices->Ledgers->save($ledger);
+				$ledger->transaction_date = $invoice->date_created;
 				
-				//Ledger posting for bankcash
+				if($ledger_grand>0)
+				{	$this->Invoices->Ledgers->save($ledger); }
+				
+				//Ledger posting for Account Reference
+				$accountReferences=$this->Invoices->AccountReferences->get(1);
 				$ledger = $this->Invoices->Ledgers->newEntity();
-				$ledger->ledger_account_id = $invoice->cash_bank_account_id;
+				$ledger->ledger_account_id = $accountReferences->ledger_account_id;
 				$ledger->debit = 0;
 				$ledger->credit = $invoice->amount;;
 				$ledger->voucher_id = $invoice->id;
