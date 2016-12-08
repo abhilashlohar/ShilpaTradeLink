@@ -41,7 +41,7 @@ class InvoiceBookingsTable extends Table
             'joinType' => 'INNER'
         ]);
 		
-		        $this->belongsTo('PurchaseOrders', [
+		$this->belongsTo('PurchaseOrders', [
             'foreignKey' => 'purchase_order_id',
             'joinType' => 'INNER'
         ]);
@@ -65,6 +65,9 @@ class InvoiceBookingsTable extends Table
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->belongsTo('AccountReferences');
+		$this->belongsTo('Ledgers');
     }
 
     /**

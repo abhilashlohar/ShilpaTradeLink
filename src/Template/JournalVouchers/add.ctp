@@ -67,7 +67,7 @@
 		<?= $this->Form->end() ?>
 		<!-- END FORM-->
 	</div>
-</div>
+
 
 <style>
 .table thead tr th {

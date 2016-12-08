@@ -113,4 +113,13 @@ class LedgerAccountsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function LedgerAccountDropdown($accountSecondSubgroupId = null)
+    {
+		
+        $this->viewBuilder()->layout('');
+		$ledgerAccount = $this->LedgerAccounts->find('list')->where(['account_second_subgroup_id'=>$accountSecondSubgroupId]);
+		//pr(ledgerAccount); exit;
+		$this->set(compact('ledgerAccount'));
+    }
 }
