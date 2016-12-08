@@ -41,6 +41,7 @@ class InvoicesTable extends Table
 
 		$this->belongsTo('CustomerGroups');
 		$this->belongsTo('ItemLedger');
+		$this->belongsTo('Ledgers');
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'
