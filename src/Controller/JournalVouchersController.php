@@ -69,7 +69,27 @@ class JournalVouchersController extends AppController
 			$journalVoucher->created_on=date("Y-m-d");
 			
 			if ($this->JournalVouchers->save($journalVoucher)) {
-				
+			
+					foreach($journalVoucher->journal_voucher_rows as $journal_voucher_rows){
+					
+					$ledger = $this->JournalVouchers->Ledgers->newEntity();
+					$ledger->ledger_account_id = $journal_voucher_rows->ledger_account_id;
+					
+					if($journal_voucher_rows->cr_dr=='Dr'){
+						$ledger->debit = $journal_voucher_rows->amount;
+						$ledger->credit = 0;
+					}
+					else {
+						$ledger->debit = 0;
+						$ledger->credit = $journal_voucher_rows->amount;
+					}
+					$ledger->voucher_id = $journalVoucher->id;
+					$ledger->voucher_source = 'Journal Voucher';
+					$ledger->transaction_date = $journalVoucher->created_on;
+					//pr($ledger); exit;
+					$this->JournalVouchers->Ledgers->save($ledger);
+					}
+	
                 $this->Flash->success(__('The journal voucher has been saved.'));
 				return $this->redirect(['action' => 'add']);
 				} 

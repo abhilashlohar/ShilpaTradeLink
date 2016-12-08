@@ -62,9 +62,12 @@
             <tr>
                 
 				<td><?php echo date("d-m-Y",strtotime($ledger->transaction_date)); ?></td>
-                <td><?= h(str_pad($ledger->voucher_id,4,'0',STR_PAD_LEFT)); ?></td>
 				<td><?= h($ledger->ledger_account->name) ?></td>
 				<td><?= h($ledger->voucher_source) ?></td>
+                <td>
+				<?php echo $this->Html->link('<i class="fa fa-repeat "></i>' h(str_pad($ledger->voucher_id,4,'0',STR_PAD_LEFT)); ?>
+				
+				<?= h(str_pad($ledger->voucher_id,4,'0',STR_PAD_LEFT)); ?></td>
                 <td><?= $this->Number->format($ledger->debit) ?></td>
                 <td><?= $this->Number->format($ledger->credit) ?></td>
 				
