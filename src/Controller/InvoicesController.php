@@ -222,7 +222,6 @@ class InvoicesController extends AppController
 			}
 			
 			//$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date));
-			
 			$invoice->in3=$sales_order->so3;
 			$invoice->created_by=$s_employee_id;
 			$invoice->company_id=$sales_order->company_id;
@@ -243,20 +242,55 @@ class InvoicesController extends AppController
 				$ledger->voucher_id = $invoice->id;
 				$ledger->voucher_source = 'Invoice';
 				$ledger->transaction_date = $invoice->date_created;
-				
 				if($ledger_grand>0)
-				{	$this->Invoices->Ledgers->save($ledger); }
-				
+				{
+					$this->Invoices->Ledgers->save($ledger); 
+				} 
 				//Ledger posting for Account Reference
+				$ledger_pnf=$invoice->total_after_pnf;
 				$accountReferences=$this->Invoices->AccountReferences->get(1);
 				$ledger = $this->Invoices->Ledgers->newEntity();
 				$ledger->ledger_account_id = $accountReferences->ledger_account_id;
 				$ledger->debit = 0;
-				$ledger->credit = $invoice->amount;;
+				$ledger->credit = $invoice->total_after_pnf;
 				$ledger->voucher_id = $invoice->id;
-				$ledger->transaction_date = $invoice->transaction_date;
+				$ledger->transaction_date = $invoice->date_created;
 				$ledger->voucher_source = 'Invoice';
-				$this->Invoices->Ledgers->save($ledger); 
+				if($ledger_pnf>0)
+				{
+					$this->Invoices->Ledgers->save($ledger); 
+				}
+				
+				//Ledger posting for Sale Tax
+				$ledger_saletax=$invoice->sale_tax_amount;
+				$ledger = $this->Invoices->Ledgers->newEntity();
+				$ledger->ledger_account_id = $invoice->sale_tax_ledger_account_id;
+				$ledger->debit = 0;
+				$ledger->credit = $invoice->sale_tax_amount;
+				$ledger->voucher_id = $invoice->id;
+				$ledger->transaction_date = $invoice->date_created;
+				$ledger->voucher_source = 'Invoice';
+				if($ledger_saletax>0)
+				{
+					$this->Invoices->Ledgers->save($ledger); 
+				}
+				
+				
+				//Ledger posting for Fright Amount
+				
+				$ledger_fright= $invoice->fright_amount;
+				$accountReferences=$this->Invoices->AccountReferences->get(3);
+				$ledger = $this->Invoices->Ledgers->newEntity();
+				$ledger->ledger_account_id = $accountReferences->ledger_account_id;
+				$ledger->debit = 0;
+				$ledger->credit = $invoice->fright_amount;
+				$ledger->voucher_id = $invoice->id;
+				$ledger->transaction_date = $invoice->date_created;
+				$ledger->voucher_source = 'Invoice';
+				if($ledger_fright>0)
+				{
+					$this->Invoices->Ledgers->save($ledger); 
+				}
 				
 				if(!empty($sales_order_id)){
 					$invoice->check=array_filter($invoice->check);

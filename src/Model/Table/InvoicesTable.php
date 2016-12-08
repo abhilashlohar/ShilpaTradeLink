@@ -82,6 +82,9 @@ class InvoicesTable extends Table
 		]);
 		
 		
+		$this->belongsTo('AccountReferences');
+		$this->belongsTo('Ledgers');
+		
     }
 
     /**

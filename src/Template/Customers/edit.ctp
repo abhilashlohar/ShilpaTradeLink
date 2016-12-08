@@ -119,46 +119,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-md-4">
-					<h4 style="font-size:13px'">Create Ledger</h4>
-					</div>
-				</div>
 				
-				<div class="row">
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Account Category<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('account_category_id', ['options'=>$AccountCategories,'label' => false,'class' => 'form-control input-sm']); ?>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-						<label class="control-label">Account Group <span class="required" aria-required="true">*</span></label>
-							<div id="account_group_div">
-							<?php echo $this->Form->input('account_group_id', ['options' => $AccountGroups,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Account Group']); ?>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-						<label class="control-label">Account First Sub Group <span class="required" aria-required="true">*</span></label>
-							<div id="account_first_subgroup_div">
-							<?php echo $this->Form->input('account_first_subgroup_id', ['options' => $AccountFirstSubgroups,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Account First Sub Group']); ?>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Account Second Sub Group <span class="required" aria-required="true">*</span></label>
-							<div id="account_second_subgroup_div">
-							<?php echo $this->Form->input('account_second_subgroup_id', ['options' => $AccountSecondSubgroups,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Account Second Sub Group']); ?>
-							</div>
-						</div>
-					</div>
-				</div>
 				<h4 style="font-size:13px'">Customer's Contacts</h4>
 				<table class="table table-condensed tableitm" id="main_tb">
 					<thead>
