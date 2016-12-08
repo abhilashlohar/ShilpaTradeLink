@@ -14,6 +14,14 @@
 				<table class="table table-condensed" style="width:90%;">
 				<tbody>
 					<tr>
+					<td width="40%">
+						<div class="row">
+							<div class="col-md-12">
+						<?php 
+							echo $this->Form->input('ledger', ['options'=>$ledgerAccounts,'empty'=>'-Ledger-','label' => false,'class' => 'form-control input-md select2me','value'=>@$ledger]);  ?>
+								</div>
+						</div>
+					</td>
 					<td>
 						<div class="row">
 							<div class="col-md-6">
@@ -24,9 +32,7 @@
 							</div>
 						</div>
 					</td>
-					<td><?php 
-							echo $this->Form->input('ledger', ['options'=>$ledgerAccounts,'empty'=>'-Ledger-','label' => false,'class' => 'form-control input-md select2me','value'=>@$ledger]);  ?>
-					</td>
+					
 							
 						<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
 					</tr>
@@ -44,6 +50,8 @@
 				<tr>
 				<th>Transaction Date</th>
                 <th>Ledger Account</th>
+                <th>Source</th>
+                <th>Reference</th>
                 <th>Debit</th>
                 <th>Credit</th>
 						
@@ -54,7 +62,9 @@
             <tr>
                 
 				<td><?php echo date("d-m-Y",strtotime($ledger->transaction_date)); ?></td>
-                <td><?= h($ledger->ledger_account->name) ?></td>
+                <td><?= h(str_pad($ledger->voucher_id,4,'0',STR_PAD_LEFT)); ?></td>
+				<td><?= h($ledger->ledger_account->name) ?></td>
+				<td><?= h($ledger->voucher_source) ?></td>
                 <td><?= $this->Number->format($ledger->debit) ?></td>
                 <td><?= $this->Number->format($ledger->credit) ?></td>
 				

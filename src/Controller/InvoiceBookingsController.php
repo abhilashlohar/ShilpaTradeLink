@@ -87,25 +87,19 @@ class InvoiceBookingsController extends AppController
 				}
 				
 				//Ledger Posting
-				$vouchersReferences = $this->InvoiceBookings->AccountReferences->get(2);
+				$accountReferences = $this->InvoiceBookings->AccountReferences->get(2);
 				 $total=0; 
 				 $sum=0;
 				$q=0; 
 				//pr($grn);exit;
 				foreach ($grn->grn_rows as $grn_rows)
 				{
-					//pr($grn->purchase_order->purchase_order_rows[0]->rate); exit;
+					$sum=$grn_rows->quantity*$grn->purchase_order->purchase_order_rows[$q]->rate ;
+					$q++; $total=$total+$sum; 
+				}; 
 				
-							 
-							$sum=$grn_rows->quantity*$grn->purchase_order->purchase_order_rows[$q]->rate ;
-						
-						
-				$q++; $total=$total+$sum; }; 
-				
-				
-				//pr($total); exit;
 				$ledger = $this->InvoiceBookings->Ledgers->newEntity();
-				$ledger->ledger_account_id = $vouchersReferences->ledger_account_id;
+				$ledger->ledger_account_id = $accountReferences->ledger_account_id;
 				$ledger->debit = $total;
 				$ledger->credit = 0;
 				$ledger->voucher_id = $invoiceBooking->id;
@@ -114,6 +108,17 @@ class InvoiceBookingsController extends AppController
 				$this->InvoiceBookings->Ledgers->save($ledger);
 				
 				//Ledger posting for bankcash
+				
+				$ledger = $this->InvoiceBookings->Ledgers->newEntity();
+				//pr($grn->vendor->ledger_account_id); exit;
+				$ledger->ledger_account_id = $grn->vendor->ledger_account_id;
+				//pr($ledger->ledger_account_id); exit;
+				$ledger->debit = 0;
+				$ledger->credit = $total;
+				$ledger->voucher_id = $invoiceBooking->id;
+				$ledger->transaction_date = $invoiceBooking->created_on;
+				$ledger->voucher_source = 'Invoice Booking';
+				$this->InvoiceBookings->Ledgers->save($ledger);
 				
 				
                 $this->Flash->success(__('The invoice booking has been saved.'));
