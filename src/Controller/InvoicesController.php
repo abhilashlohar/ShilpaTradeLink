@@ -77,7 +77,7 @@ class InvoicesController extends AppController
         $this->paginate = [
             'contain' => []
         ];
-        $invoices = $this->paginate($this->Invoices->find()->where(['customer_id'=>$customer_id])->order(['date_created' => 'ASC']));
+        $invoices = $this->paginate($this->Invoices->find()->where(['customer_id'=>$customer_id,'due_payment !='=>0])->order(['date_created' => 'ASC']));
 		
         $this->set(compact('invoices','Customer'));
         $this->set('_serialize', ['invoices']);
