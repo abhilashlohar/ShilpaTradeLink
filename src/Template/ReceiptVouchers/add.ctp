@@ -108,6 +108,7 @@
 								</div>
 							</div>
 						</div>
+						<?php echo $this->Form->input('new_ref_number', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mention Reference Number']); ?>
 					</div>
 				</div>
 			</div>
