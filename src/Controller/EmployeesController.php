@@ -87,20 +87,23 @@ class EmployeesController extends AppController
 			}
             if ($this->Employees->save($employee)) {
 				$ledgerAccount = $this->Employees->LedgerAccounts->newEntity();
-				
 				$ledgerAccount->account_second_subgroup_id = $employee->account_second_subgroup_id;
 				$ledgerAccount->name = $employee->name;
 				$ledgerAccount->source_model = 'Employees';
 				$ledgerAccount->source_id = $employee->id;
-				if ($this->Employees->LedgerAccounts->save($ledgerAccount)) {
-					
-                $this->Flash->success(__('The employee has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            } 
-			} else {
+				if ($this->Employees->LedgerAccounts->save($ledgerAccount))
+				{
+					$id=$employee->id;
+					$employee = $this->Employees->get($id);
+					$employee->ledger_account_id=$ledgerAccount->id;
+					$this->Employees->save($employee);
+					$this->Flash->success(__('The employee has been saved.'));
+					return $this->redirect(['action' => 'index']);
+				} 
+			} else 
+				{
                 $this->Flash->error(__('The employee could not be saved. Please, try again.'));
-            }
+				}
         }
         $departments = $this->Employees->Departments->find('list');
 		$designations = $this->Employees->Designations->find('list');
