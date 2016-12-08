@@ -44,34 +44,46 @@
 		
 		<div class="col-md-12">
 		<div class="table-scrollable">
-		 <?php $page_no=$this->Paginator->current('LedgerAccounts'); $page_no=($page_no-1)*20; ?>
+		 <?php $page_no=$this->Paginator->current('Ledgers'); $page_no=($page_no-1)*20; ?>
 			<table class="table table-bordered table-striped table-hover">
-				 <thead>
-				<tr>
-				<th>Transaction Date</th>
-                <th>Ledger Account</th>
-                <th>Source</th>
-                <th>Reference</th>
-                <th>Debit</th>
-                <th>Credit</th>
-						
-				</tr>
+				<thead>
+					<tr>
+						<th>Transaction Date</th>
+						<th>Ledger Account</th>
+						<th>Source</th>
+						<th>Reference</th>
+						<th>Debit</th>
+						<th>Credit</th>
+					</tr>
 				</thead>
 				<tbody>
-					<?php $i=0; foreach ($ledgers as $ledger): $i++; ?>
-            <tr>
-                
-				<td><?php echo date("d-m-Y",strtotime($ledger->transaction_date)); ?></td>
-				<td><?= h($ledger->ledger_account->name) ?></td>
-				<td><?= h($ledger->voucher_source) ?></td>
-                <td>
-				<?= $this->Html->link(str_pad($ledger->voucher_id,4,'0',STR_PAD_LEFT),['target' => '_blank']); ?>
+				<?php foreach ($ledgers as $ledger): 
+				$url_path="";
+				if($ledger->voucher_source=="Journal Voucher"){
+					$url_path="/JournalVouchers/view/".$ledger->voucher_id;
+				}
 				
-                <td><?= $this->Number->format($ledger->debit) ?></td>
-                <td><?= $this->Number->format($ledger->credit) ?></td>
-				
-            </tr>
-            <?php endforeach; ?>
+				?>
+					<tr>
+						<td><?php echo date("d-m-Y",strtotime($ledger->transaction_date)); ?></td>
+						<td><?= h($ledger->ledger_account->name) ?></td>
+						<td><?= h($ledger->voucher_source) ?></td>
+						<td>
+						<?= if(!empty($url_path))
+							{
+							$this->Html->link(str_pad($ledger->voucher_id,4,'0',STR_PAD_LEFT),$url_path,['target' => '_blank']);
+							} 
+							else
+							{
+								echo str_pad($ledger->voucher_id,4,'0',STR_PAD_LEFT);
+							}
+						
+						?>
+						</td>
+						<td><?= $this->Number->format($ledger->debit) ?></td>
+						<td><?= $this->Number->format($ledger->credit) ?></td>
+				</tr>
+				<?php endforeach; ?>
 				</tbody>
 			</table>
 			</div>
