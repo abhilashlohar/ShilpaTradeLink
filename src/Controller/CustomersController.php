@@ -216,4 +216,17 @@ class CustomersController extends AppController
 		$result=json_encode(array('contact_person'=>$defaultContact->contact_person,'mobile'=>$defaultContact->mobile));
 		die($result);
     }
+	
+	public function OverDueReport()
+    {
+		$this->viewBuilder()->layout('index_layout');
+		
+        $this->paginate = [
+            'contain' => ['Invoices']
+        ];
+        $customers = $this->paginate($this->Customers->find());
+
+        $this->set(compact('customers'));
+        $this->set('_serialize', ['customers']);
+    }
 }

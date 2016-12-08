@@ -91,8 +91,22 @@ class ReceiptVouchersController extends AppController
 					
 					$Customer=$this->ReceiptVouchers->Customers->find()->where(['ledger_account_id'=>$receiptVoucher->received_from_id])->first();
 					
-					$Invoices=$this->ReceiptVouchers->Invoices->find()->where(['due_payment !='=>0,'customer_id'=>$Customer->id])->toArray();
-					pr($Invoices);
+					$Invoices=$this->ReceiptVouchers->Invoices->find()->where(['due_payment !='=>0,'customer_id'=>$Customer->id])->order(['date_created'=>'ASC']);
+					
+					$remaining_amount=$receiptVoucher->amount;
+					foreach($Invoices as $Invoice){
+						$remaining_amount=$remaining_amount-$Invoice->due_payment>0;
+						if($remaining_amount>=0){
+							$Invoice=$this->ReceiptVouchers->Invoices->get($Invoice->id);
+							$Invoice->due_payment=0;
+							$this->ReceiptVouchers->Invoices->save($Invoice);
+						}else{
+							$Invoice=$this->ReceiptVouchers->Invoices->get($Invoice->id);
+							$Invoice->due_payment=abs($remaining_amount);
+							$this->ReceiptVouchers->Invoices->save($Invoice);
+							break;
+						}
+					}
 				} exit;
 				
 			} else {
