@@ -94,8 +94,9 @@ class ReceiptVouchersController extends AppController
 					$Invoices=$this->ReceiptVouchers->Invoices->find()->where(['due_payment !='=>0,'customer_id'=>$Customer->id])->order(['date_created'=>'ASC']);
 					
 					$remaining_amount=$receiptVoucher->amount;
+					
 					foreach($Invoices as $Invoice){
-						$remaining_amount=$remaining_amount-$Invoice->due_payment>0;
+						$remaining_amount=$remaining_amount-$Invoice->due_payment;
 						if($remaining_amount>=0){
 							$Invoice=$this->ReceiptVouchers->Invoices->get($Invoice->id);
 							$Invoice->due_payment=0;
@@ -107,7 +108,7 @@ class ReceiptVouchersController extends AppController
 							break;
 						}
 					}
-				} exit;
+				} 
 				
 			} else {
                 $this->Flash->error(__('The receipt voucher could not be saved. Please, try again.'));
