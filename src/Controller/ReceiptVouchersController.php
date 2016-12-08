@@ -109,7 +109,8 @@ class ReceiptVouchersController extends AppController
 						}
 					}
 				} 
-				
+				$this->Flash->success(__('The Receipt-Voucher:'.str_pad($receiptVoucher->id, 4, '0', STR_PAD_LEFT)).' has been genereted.');
+				return $this->redirect(['action' => 'index']);
 			} else {
                 $this->Flash->error(__('The receipt voucher could not be saved. Please, try again.'));
             }

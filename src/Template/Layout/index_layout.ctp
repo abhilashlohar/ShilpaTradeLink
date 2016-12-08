@@ -474,6 +474,18 @@ select
 				
 				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Quotation Close Reason','/QuotationCloseReasons',array('escape'=>false)); ?></li>	
 				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Leave Types','/LeaveTypes',array('escape'=>false)); ?></li>
+				<li>
+					<a href="javascript:;">
+					<i class="fa fa-file-code-o"></i>
+					<span class="title">Overdue Report</span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<?php if(in_array(1,$allowed_pages)){
+						echo '<li>'.$this->Html->link( 'Overdue Report for Customers', '/Customers/Over-Due-Report' ).'</li>';
+						} ?>
+					</ul>
+				</li>
 			</ul>
 			<!-- END SIDEBAR MENU -->
 		</div>
