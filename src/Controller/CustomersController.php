@@ -81,6 +81,10 @@ class CustomersController extends AppController
 				$ledgerAccount->source_model = 'Customers';
 				$ledgerAccount->source_id = $customer->id;
 				if ($this->Customers->LedgerAccounts->save($ledgerAccount)) {
+					$id=$customer->id;
+					$customer = $this->Customers->get($id);
+					$customer->ledger_account_id=$ledgerAccount->id;
+					$this->Customers->save($customer);
 					$this->Flash->success(__('The customer has been saved.'));
 					return $this->redirect(['action' => 'index']);
 				}
