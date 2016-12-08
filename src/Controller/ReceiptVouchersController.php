@@ -66,6 +66,7 @@ class ReceiptVouchersController extends AppController
 					
             if ($this->ReceiptVouchers->save($receiptVoucher)) {
 				
+				//Ledger posting for Received From Entity
 				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
 				$ledger->ledger_account_id = $receiptVoucher->bank_cash_id;
 				$ledger->debit =$receiptVoucher->amount;
@@ -74,6 +75,7 @@ class ReceiptVouchersController extends AppController
 				$ledger->voucher_source = 'Receipt Voucher';
 				$ledger->transaction_date = $receiptVoucher->transaction_date;
 				$this->ReceiptVouchers->Ledgers->save($ledger);
+				
 				//Ledger posting for bankcash
 				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
 				$ledger->ledger_account_id = $receiptVoucher->received_from_id;
@@ -82,10 +84,17 @@ class ReceiptVouchersController extends AppController
 				$ledger->voucher_id = $receiptVoucher->id;
 				$ledger->voucher_source = 'Receipt Voucher';
 				$ledger->transaction_date = $receiptVoucher->transaction_date;
-				if ($this->ReceiptVouchers->Ledgers->save($ledger)) {
-                $this->Flash->success(__('The receipt voucher has been saved.'));
-				return $this->redirect(['action' => 'index']);
-            } 
+				$this->ReceiptVouchers->Ledgers->save($ledger); 
+				
+				//Invoice Update 
+				if($receiptVoucher->payment_process=="Against Reference Number"){
+					
+					$Customer=$this->ReceiptVouchers->Customers->find()->where(['ledger_account_id'=>$receiptVoucher->received_from_id])->first();
+					
+					$Invoices=$this->ReceiptVouchers->Invoices->find()->where(['due_payment !='=>0,'customer_id'=>$Customer->id])->toArray();
+					pr($Invoices);
+				} exit;
+				
 			} else {
                 $this->Flash->error(__('The receipt voucher could not be saved. Please, try again.'));
             }

@@ -98,7 +98,7 @@
 							<div class="radio-list">
 								<div class="radio-inline" >
 								<?php echo $this->Form->radio(
-									'payment_mode',
+									'payment_process',
 									[
 										['value' => 'On Account Pay', 'text' => 'On Account Pay'],
 										['value' => 'New Reference Number', 'text' => 'New Reference Number'],
@@ -108,7 +108,9 @@
 								</div>
 							</div>
 						</div>
+						<div id="new_ref_no_div" style="display:none;">
 						<?php echo $this->Form->input('new_ref_number', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mention Reference Number']); ?>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -224,6 +226,15 @@ $(document).ready(function() {
 				$(this).val('');
 				return false;  
 			}
+	});
+	
+	$('input[name="payment_process"]').die().live("click",function() {
+		var payment_process=$(this).val();
+		if(payment_process=="New Reference Number"){
+			$("#new_ref_no_div").show();
+		}else{
+			$("#new_ref_no_div").hide();
+		}
 	});
 });
 </script>

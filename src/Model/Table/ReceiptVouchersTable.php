@@ -39,6 +39,8 @@ class ReceiptVouchersTable extends Table
 		
 		$this->belongsTo('VouchersReferences');
 		$this->belongsTo('Ledgers');
+		$this->belongsTo('Invoices');
+		$this->belongsTo('Customers');
 		$this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
