@@ -241,26 +241,23 @@ class InvoicesController extends AppController
             if ($this->Invoices->save($invoice)) {
 				//ledger posting
 				$ledger = $this->Invoices->Ledgers->newEntity();
-				$ledger->ledger_account_id = $paymentVoucher->paid_to_id;
-				$ledger->debit = $paymentVoucher->amount;
+				$ledger->ledger_account_id = $invoice->paid_to_id;
+				$ledger->debit = $invoice->amount;
 				$ledger->credit = 0;
-				$ledger->voucher_id = $paymentVoucher->id;
-				$ledger->voucher_source = 'Payment Voucher';
-				$ledger->transaction_date = $paymentVoucher->transaction_date;
+				$ledger->voucher_id = $invoice->id;
+				$ledger->voucher_source = 'Invoice';
+				$ledger->transaction_date = $invoice->transaction_date;
 				$this->Invoices->Ledgers->save($ledger);
 				
 				//Ledger posting for bankcash
 				$ledger = $this->Invoices->Ledgers->newEntity();
-				$ledger->ledger_account_id = $paymentVoucher->cash_bank_account_id;
+				$ledger->ledger_account_id = $invoice->cash_bank_account_id;
 				$ledger->debit = 0;
-				$ledger->credit = $paymentVoucher->amount;;
-				$ledger->voucher_id = $paymentVoucher->id;
-				$ledger->transaction_date = $paymentVoucher->transaction_date;
-				$ledger->voucher_source = 'Payment Voucher';
+				$ledger->credit = $invoice->amount;;
+				$ledger->voucher_id = $invoice->id;
+				$ledger->transaction_date = $invoice->transaction_date;
+				$ledger->voucher_source = 'Invoice';
 				$this->Invoices->Ledgers->save($ledger); 
-				
-				
-				
 				
 				if(!empty($sales_order_id)){
 					$invoice->check=array_filter($invoice->check);
