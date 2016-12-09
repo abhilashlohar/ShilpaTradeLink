@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 09, 2016 at 06:18 AM
+-- Generation Time: Dec 09, 2016 at 11:27 AM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -54,7 +54,14 @@ INSERT INTO `vouchers_references_groups` (`id`, `vouchers_reference_id`, `accoun
 (16, 11, 2),
 (17, 12, 1),
 (18, 12, 2),
-(19, 13, 2);
+(19, 13, 2),
+(20, 3, 1),
+(21, 6, 1),
+(22, 6, 3),
+(23, 7, 2),
+(24, 8, 1),
+(25, 8, 3),
+(26, 8, 4);
 
 --
 -- Indexes for dumped tables
@@ -74,7 +81,7 @@ ALTER TABLE `vouchers_references_groups`
 -- AUTO_INCREMENT for table `vouchers_references_groups`
 --
 ALTER TABLE `vouchers_references_groups`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

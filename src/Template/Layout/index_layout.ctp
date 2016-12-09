@@ -473,6 +473,28 @@ select
 						<li>
 							<a href="javascript:;">
 							<i class="icon-basket"></i>
+							<span class="title">Credit Note</span>
+							<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+								<li><?php echo $this->Html->link( 'Add', '/CreditNotes/add' ); ?></li>
+								<li><?php echo $this->Html->link( 'View', '/CreditNotes' ); ?></li>
+							</ul>
+						</li>
+						<li>
+							<a href="javascript:;">
+							<i class="icon-basket"></i>
+							<span class="title">Debit Notes</span>
+							<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+								<li><?php echo $this->Html->link( 'Add', '/DebitNotes/add' ); ?></li>
+								<li><?php echo $this->Html->link( 'View', '/DebitNotes' ); ?></li>
+							</ul>
+						</li>
+						<li>
+							<a href="javascript:;">
+							<i class="icon-basket"></i>
 							<span class="title">Journal Voucher</span>
 							<span class="arrow "></span>
 							</a>
