@@ -635,6 +635,8 @@ $(document).ready(function() {
 	}
 	<?php } ?>
 	
+	<?php if(!empty($sales_order)){ ?>
+	
 	var credit_limit=parseFloat($('input[name="credit_limit"]').val());
 			$('input[name="new_due_payment"]').attr('max',credit_limit).rules('add', {
 						required: true,
@@ -643,6 +645,7 @@ $(document).ready(function() {
 							max: "Credit Limit Exieded ."
 						}
 					});
+	<?php } ?>
 	
     $('.addrow').die().live("click",function() { 
 		add_row();
