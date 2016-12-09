@@ -108,7 +108,8 @@ class EmployeesController extends AppController
         $departments = $this->Employees->Departments->find('list');
 		$designations = $this->Employees->Designations->find('list');
 		$AccountCategories = $this->Employees->AccountCategories->find('list');
-        $this->set(compact('employee', 'departments','designations','AccountCategories'));
+		$Companies = $this->Employees->Companies->find('list');
+        $this->set(compact('employee', 'departments','designations','AccountCategories','Companies'));
         $this->set('_serialize', ['employee']);
     }
 
@@ -123,7 +124,7 @@ class EmployeesController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $employee = $this->Employees->get($id, [
-            'contain' => ['EmployeeContactPersons']
+            'contain' => ['EmployeeContactPersons','Companies']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {		
             $employee = $this->Employees->patchEntity($employee, $this->request->data);
@@ -161,8 +162,8 @@ class EmployeesController extends AppController
 		$AccountGroups = $this->Employees->AccountGroups->find('list');
 		$AccountFirstSubgroups = $this->Employees->AccountFirstSubgroups->find('list');
 		$AccountSecondSubgroups = $this->Employees->AccountSecondSubgroups->find('list');
-		
-        $this->set(compact('employee', 'departments','designations','AccountCategories','AccountGroups','AccountFirstSubgroups','AccountSecondSubgroups'));
+		$Companies = $this->Employees->Companies->find('list');
+        $this->set(compact('employee', 'departments','designations','AccountCategories','AccountGroups','AccountFirstSubgroups','AccountSecondSubgroups','Companies'));
         $this->set('_serialize', ['employee']);
     }
 

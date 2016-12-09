@@ -131,8 +131,14 @@ select
 	<!-- BEGIN HEADER INNER -->
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
-		<div class="page-logo" style="padding-top:10px;">
-			<span style="color: #cd2831;font-weight: bold;font-size: 17px;" class="myshortlogo">SHILPA TRADE LINK</span>
+		<div class="page-logo" style="padding-top:5px;">
+			<span style="color: #cd2831;font-weight: bold;font-size: 17px;" class="myshortlogo">Mogra Group</span>
+			<br/><span style="color: #FFF;font-size: 12px;">
+			<?php 
+			$session = $this->request->session(); 
+			echo $this->viewVars['s_company_name'];
+			?>
+			</span>
 			<div class="menu-toggler sidebar-toggler hide">
 				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
 			</div>
@@ -166,6 +172,12 @@ select
 					<i class="fa fa-angle-down"></i>
 					</a>
 					<ul class="dropdown-menu dropdown-menu-default">
+						<li>
+							<?php 
+							$actual_link = "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+							//$actual_link = 3;
+							echo $this->Html->link('<i class="fa fa-random"></i> Switch Company','/Logins/Switch-Company?next='.$actual_link,array('escape'=>false)); ?>
+						</li>
 						<li>
 							<?php echo $this->Html->link('<i class="icon-key"></i> Log Out','/Logins/logout',array('escape'=>false)); ?>
 						</li>
@@ -514,7 +526,7 @@ select
 					<?= $this->Flash->render() ?>
 					</div>
 					
-					
+					<?php //pr($this->viewVars); ?>
 					<?php echo $this->fetch('content'); ?>
 					<!--here is page content--->
 				</div>

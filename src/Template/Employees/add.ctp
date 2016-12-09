@@ -113,7 +113,7 @@
 					
 				</div>
 				<div class="row">
-				<div class="col-md-4">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Date of Confirmation as Permanent</label>
 							<?php echo $this->Form->input('permanent_join_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Confirmation']); ?>
@@ -136,7 +136,7 @@
 							</div>
 						</div>
 					</div>
-					</div>
+				</div>
 				<div class="row"  id="married_info" style="display:none;">
 					<div class="col-md-4">
 						<div class="form-group">
@@ -325,9 +325,13 @@
 						</td>
 					</tbody>
 				</table>
-				<div class="alert alert-danger" id="row_error" style="display:none;">
-                    Fill all fileds.
-                </div>
+				
+				<div class="row">
+					<div class="col-md-4">
+						<label class="control-label">Used By Companies</label>
+						<?php echo $this->Form->input('companies._ids', ['label' => false,'options' => $Companies,'multiple' => 'checkbox']); ?>
+					</div>
+				</div>
 		</div>
 		
 		

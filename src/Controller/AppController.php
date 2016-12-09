@@ -54,6 +54,7 @@ class AppController extends Controller
 		if (in_array($controller, ['Logins']) and in_array($action, ['index'])) {
 		}else{
 			$st_login_id = $session->read('st_login_id');
+			$st_company_id = $session->read('st_company_id');
 			if(empty($st_login_id)){
 				return $this->redirect("/login");
 			}else{
@@ -62,8 +63,13 @@ class AppController extends Controller
 				$this->set('s_employee_id',$login->employee_id);
 				
 				$this->loadModel('Employees');
-				$Employee=$this->Employees->get($login->employee_id);
-				$this->set('s_employee_name',$Employee->name);
+				$sessionEmployee=$this->Employees->get($login->employee_id);
+				
+				$this->loadModel('Companies');
+				$sessionCompany=$this->Companies->get($st_company_id);
+				
+				$this->set('s_employee_name',$sessionEmployee->name);
+				$this->set('s_company_name',$sessionCompany->name);
 			}
 		}
 		if(!empty($st_login_id)){

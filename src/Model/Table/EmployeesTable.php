@@ -78,6 +78,12 @@ class EmployeesTable extends Table
 		$this->belongsTo('Quotations');
 		$this->belongsTo('SalesOrders');
 		$this->belongsTo('Invoices');
+		
+		$this->belongsToMany('Companies', [
+            'foreignKey' => 'employee_id',
+            'targetForeignKey' => 'company_id',
+            'joinTable' => 'employee_companies'
+        ]);
     }
 
     /**

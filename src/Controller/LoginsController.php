@@ -23,9 +23,17 @@ class LoginsController extends AppController
 			$number = $query->count();
 			foreach ($query as $row) {
 				$login_id=$row["id"];
+				$employee_id=$row["employee_id"];
 			}
 			if($number==1 && !empty($login_id)){
 				$this->request->session()->write('st_login_id',$login_id);
+				$Employee=$this->Logins->Employees->get($employee_id, [
+					'contain' => ['Companies']
+				]);
+				foreach($Employee->companies as $company){
+					$this->request->session()->write('st_company_id',$company->id);
+					break;
+				}
 				return $this->redirect("/Dashboard");
 			}
 		}
@@ -73,6 +81,33 @@ class LoginsController extends AppController
         $this->set(compact('login','employees','Logins'));
         $this->set('_serialize', ['login']);
     }
+	
+	function SwitchCompany($company_id=null){
+		$this->viewBuilder()->layout('index_layout');
+		
+		
+		
+		$next=$this->request->query('next');
+		
+		$session = $this->request->session();
+		$st_login_id = $session->read('st_login_id');
+		$login=$this->Logins->get($st_login_id);
+		
+		if(!empty($company_id)){
+			$this->request->allowMethod(['post', 'delete']);
+			$this->request->session()->write('st_company_id',$company_id);
+			
+			return $this->redirect('http://'.$next);
+		}
+		
+		
+		
+		$Employee=$this->Logins->Employees->get($login->employee_id, [
+						'contain' => ['Companies']
+					]);
+				
+		$this->set(compact('st_login_id','Employee','next'));
+	}
 	
 }
 
