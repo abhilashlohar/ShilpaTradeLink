@@ -38,14 +38,7 @@
 							
 							<td class="actions">
 							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $receiptVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View ')); ?>
-							<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
-								['action' => 'delete',$receiptVoucher->id], 
-								[
-									'escape' => false,
-									'class' => 'btn btn-xs btn-danger',
-									'confirm' => __('Are you sure ?', $receiptVoucher->id)
-								]
-							) ?>
+							 <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $receiptVoucher->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>
