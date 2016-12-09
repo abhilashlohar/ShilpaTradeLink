@@ -238,6 +238,11 @@ class QuotationsController extends AppController
 		}
 		
 		$s_employee_id=$this->viewVars['s_employee_id'];
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$Company = $this->Quotations->Companies->get($st_company_id);
 		
         if ($this->request->is(['patch', 'post', 'put'])) {
 			//echo 'hello'; exit;
@@ -253,7 +258,7 @@ class QuotationsController extends AppController
 			$quotation->created_by=$s_employee_id;
 			$quotation->created_on=date("Y-m-d",strtotime($quotation->created_on));
 			$quotation->finalisation_date=date("Y-m-d",strtotime($quotation->finalisation_date));
-			//pr ($quotation); exit;
+			$quotation->company_id=$st_company_id;
             if ($this->Quotations->save($quotation)) {
 				
                 return $this->redirect(['action' => 'confirm/'.$quotation->id]);
@@ -269,7 +274,7 @@ class QuotationsController extends AppController
 		$items = $this->Quotations->Items->find('list');
 		$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);
 		
-        $this->set(compact('quotation', 'customers','companies','employees','ItemGroups','items','termsConditions','copy'));
+        $this->set(compact('quotation', 'customers','companies','employees','ItemGroups','items','termsConditions','copy','Company'));
         $this->set('_serialize', ['quotation']);
     }
 

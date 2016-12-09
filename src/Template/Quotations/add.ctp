@@ -20,17 +20,6 @@ if(!empty($copy))
 		<div class="form-body">
 			<div class="row">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label class="col-md-3 control-label">Company</label>
-						<div class="col-md-9">
-							<?php 
-							$options=array();
-							foreach($companies as $companie){
-								$options[]=['text' => $companie->name, 'value' => $companie->id, 'alias' => $companie->alias];
-							}
-							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me','required']); ?>
-						</div>
-					</div>
 				</div>
 				<div class="col-md-6" align="right">
 					<div class="form-group">
@@ -97,7 +86,7 @@ if(!empty($copy))
 					<div class="form-group">
 						<label class="col-md-4 control-label">Quotation No.</label>
 						<div class="col-md-2 padding-right-decrease">
-							<?php echo $this->Form->input('qt1', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
+							<?php echo $this->Form->input('qt1', ['label' => false,'class' => 'form-control input-sm','readonly','value'=>$Company->alias]); ?>
 						</div>
 						<div class="col-md-3 padding-right-decrease" id="qt3_div">
 							<?php echo $this->Form->input('qt3', ['label' => false,'class' => 'form-control input-sm']); ?>
