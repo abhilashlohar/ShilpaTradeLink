@@ -19,6 +19,24 @@ class LedgerAccountsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$ledgerAccount = $this->LedgerAccounts->newEntity();
+        if ($this->request->is('post')) {
+            $ledgerAccount = $this->LedgerAccounts->patchEntity($ledgerAccount, $this->request->data);
+			
+            if ($this->LedgerAccounts->save($ledgerAccount)) {
+                $this->Flash->success(__('The ledger account has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The ledger account could not be saved. Please, try again.'));
+            }
+		}	
+		
+        $accountSecondSubgroups = $this->LedgerAccounts->AccountSecondSubgroups->find('list', ['limit' => 200]);
+        //$sources = $this->LedgerAccounts->Sources->find('list', ['limit' => 200]);
+        $this->set(compact('ledgerAccount', 'accountSecondSubgroups'));
+        $this->set('_serialize', ['ledgerAccount']);
+		
 		$ledgerAccounts = $this->paginate($this->LedgerAccounts->find()->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]]));
 		$this->set(compact('ledgerAccounts'));
         $this->set('_serialize', ['ledgerAccounts']);

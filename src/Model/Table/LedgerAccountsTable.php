@@ -68,9 +68,7 @@ class LedgerAccountsTable extends Table
             ->requirePresence('name', 'create')
             ->notEmpty('name');
 
-        $validator
-            ->requirePresence('source_model', 'create')
-            ->notEmpty('source_model');
+       
 
         return $validator;
     }

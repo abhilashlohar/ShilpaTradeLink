@@ -114,14 +114,7 @@ class EmployeesTable extends Table
             ->requirePresence('email', 'create')
             ->notEmpty('email');
 
-        $validator
-            ->requirePresence('permanent_address', 'create')
-            ->notEmpty('permanent_address');
-
-		$validator
-            ->requirePresence('residence_address', 'create')
-            ->notEmpty('residence_address');
-			
+       
 		$validator
             ->requirePresence('marital_status', 'create')
             ->notEmpty('marital_status');
