@@ -56,9 +56,13 @@ class PaymentVouchersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $paymentVoucher = $this->PaymentVouchers->newEntity();
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		
         if ($this->request->is('post')) {
 		
 			$paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
+			
+			$paymentVoucher->created_by=$s_employee_id;
 			$paymentVoucher->created_on=date("Y-m-d");
 			$paymentVoucher->transaction_date=date("Y-m-d",strtotime($paymentVoucher->transaction_date));
 			
@@ -132,27 +136,43 @@ class PaymentVouchersController extends AppController
     {
 		
 		$this->viewBuilder()->layout('index_layout');
+		$s_employee_id=$this->viewVars['s_employee_id'];
         $paymentVoucher = $this->PaymentVouchers->get($id, [
             'contain' => ['PaidTos','BankCashes','Companies']
-       
-        ]);
+		
+		  ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
-			
-			$paymentVoucher->created_on=date("Y-m-d",strtotime($paymentVoucher->created_on));
+			$paymentVoucher->edited_on=date("Y-m-d");
 			$paymentVoucher->transaction_date=date("Y-m-d",strtotime($paymentVoucher->transaction_date));
+			$paymentVoucher->edited_by=$s_employee_id;
 			//$paymentVoucher->created_on=date("Y-m-d");
-            if ($this->PaymentVouchers->save($paymentVoucher)) {
-				$ledger = $this->PaymentVouchers->Ledgers->newEntity();
-				$ledger[]=['ledger_account_id' => $paymentVoucher->paid_to_id,'debit'=>$paymentVoucher->amount,'credit'=>0,'voucher_id'=>$paymentVoucher->id,'voucher_source'=>'Payment Voucher'];
-				pr($paymentVoucher->paid_to_id);
-				exit;
-				//$ledger[]=('ledger_account_id' = $paymentVoucher->cash_bank_account_id,'debit'=0,'credit'=$paymentVoucher->amount,'voucher_id'=$paymentVoucher->id,'voucher_source'='Payment Voucher';
-				if ($this->PaymentVouchers->Ledgers->save($ledger)) {
-                $this->Flash->success(__('The payment voucher has been saved.'));
-				return $this->redirect(['action' => 'index']);
-            } 
-			} else {
+            if ($this->PaymentVouchers->save($paymentVoucher))
+			{
+					$this->PaymentVouchers->Ledgers->deleteAll(['voucher_id' => $paymentVoucher->id, 'voucher_source' => 'Payment Voucher']);
+					$ledger = $this->PaymentVouchers->Ledgers->newEntity();
+					$ledger->ledger_account_id = $paymentVoucher->paid_to_id;
+					$ledger->debit = $paymentVoucher->amount;
+					$ledger->credit = 0;
+					$ledger->voucher_id = $paymentVoucher->id;
+					$ledger->voucher_source = 'Payment Voucher';
+					$ledger->transaction_date = $paymentVoucher->transaction_date;
+					$this->PaymentVouchers->Ledgers->save($ledger);
+					
+					//Ledger posting for bankcash
+					$ledger = $this->PaymentVouchers->Ledgers->newEntity();
+					$ledger->ledger_account_id = $paymentVoucher->cash_bank_account_id;
+					$ledger->debit = 0;
+					$ledger->credit = $paymentVoucher->amount;;
+					$ledger->voucher_id = $paymentVoucher->id;
+					$ledger->transaction_date = $paymentVoucher->transaction_date;
+					$ledger->voucher_source = 'Payment Voucher';
+					$this->PaymentVouchers->Ledgers->save($ledger); 
+					
+					$this->Flash->success(__('The payment voucher has been saved.'));
+					return $this->redirect(['action' => 'index']);
+				} 
+			 else {
                 $this->Flash->error(__('The payment voucher could not be saved. Please, try again.'));
             }
         }

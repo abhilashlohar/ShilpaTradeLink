@@ -60,8 +60,8 @@ class ReceiptVouchersController extends AppController
         if ($this->request->is('post')) {
             $receiptVoucher = $this->ReceiptVouchers->patchEntity($receiptVoucher, $this->request->data);
 			$receiptVoucher->created_by=$s_employee_id;
-				$receiptVoucher->transaction_date=date("Y-m-d",strtotime($receiptVoucher->transaction_date));
-				$receiptVoucher->created_on=date("Y-m-d");
+			$receiptVoucher->transaction_date=date("Y-m-d",strtotime($receiptVoucher->transaction_date));
+			$receiptVoucher->created_on=date("Y-m-d");
 				
 					
             if ($this->ReceiptVouchers->save($receiptVoucher)) {
@@ -153,22 +153,72 @@ class ReceiptVouchersController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		
         $receiptVoucher = $this->ReceiptVouchers->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $receiptVoucher = $this->ReceiptVouchers->patchEntity($receiptVoucher, $this->request->data);
+			$receiptVoucher->edited_by=$s_employee_id;
+				$receiptVoucher->transaction_date=date("Y-m-d",strtotime($receiptVoucher->transaction_date));
+				$receiptVoucher->edited_on=date("Y-m-d");
+				
             if ($this->ReceiptVouchers->save($receiptVoucher)) {
+				
+				//delete old data
+				$this->ReceiptVouchers->Ledgers->deleteAll(['voucher_id' => $receiptVoucher->id, 'voucher_source' => 'Receipt Voucher']);
+				//Ledger posting for Received From Entity
+				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
+				$ledger->ledger_account_id = $receiptVoucher->bank_cash_id;
+				$ledger->debit =$receiptVoucher->amount;
+				$ledger->credit = 0;
+				$ledger->voucher_id = $receiptVoucher->id;
+				$ledger->voucher_source = 'Receipt Voucher';
+				$ledger->transaction_date = $receiptVoucher->transaction_date;
+				$this->ReceiptVouchers->Ledgers->save($ledger);
+				
+				//Ledger posting for bankcash
+				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
+				$ledger->ledger_account_id = $receiptVoucher->received_from_id;
+				$ledger->debit = 0;
+				$ledger->credit = $receiptVoucher->amount;;
+				$ledger->voucher_id = $receiptVoucher->id;
+				$ledger->voucher_source = 'Receipt Voucher';
+				$ledger->transaction_date = $receiptVoucher->transaction_date;
+				$this->ReceiptVouchers->Ledgers->save($ledger);
                 $this->Flash->success(__('The receipt voucher has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+				return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The receipt voucher could not be saved. Please, try again.'));
             }
-        }
-        $receivedFroms = $this->ReceiptVouchers->ReceivedFroms->find('list', ['limit' => 200]);
-        $bankCashes = $this->ReceiptVouchers->BankCashes->find('list', ['limit' => 200]);
-        $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes'));
+        }$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get(3, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		$where=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			$where[]=$data->account_group_id;
+		}
+		$receivedFroms = $this->ReceiptVouchers->ReceivedFroms->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN' => $where]);
+				}]]]);
+				
+		$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get(4, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		$where=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			$where[]=$data->account_group_id;
+		}
+		$bankCashes = $this->ReceiptVouchers->BankCashes->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN' => $where]);
+				}]]]);
+		
+        $companies = $this->ReceiptVouchers->Companies->find('all');		
+        $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies'));
         $this->set('_serialize', ['receiptVoucher']);
     }
 

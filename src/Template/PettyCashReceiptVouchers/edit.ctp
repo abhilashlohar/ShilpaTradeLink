@@ -3,7 +3,7 @@
 	<div class="portlet-title">
 		<div class="caption" >
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Add Petty Cash Receipt Voucher</span>
+			<span class="caption-subject font-blue-steel uppercase">Edit Petty Cash Receipt Voucher</span>
 		</div>
 	</div>
 	<div class="portlet-body form">
@@ -99,7 +99,7 @@
 			</div>
 		
 			<div class="form-actions">
-				<button type="submit" class="btn btn-primary">ADD VOUCHER REFERENCE</button>
+				<button type="submit" class="btn btn-primary">UPDATE PETTYCASH VOUCHER</button>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>

@@ -134,23 +134,76 @@ class PettyCashReceiptVouchersController extends AppController
     {
 		
 		$this->viewBuilder()->layout('index_layout');
+		$s_employee_id=$this->viewVars['s_employee_id'];
         $pettyCashReceiptVoucher = $this->PettyCashReceiptVouchers->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $pettyCashReceiptVoucher = $this->PettyCashReceiptVouchers->patchEntity($pettyCashReceiptVoucher, $this->request->data);
+			$pettyCashReceiptVoucher->edited_by=$s_employee_id;
+			$pettyCashReceiptVoucher->transaction_date=date("Y-m-d",strtotime($pettyCashReceiptVoucher->transaction_date));
+			$pettyCashReceiptVoucher->edited_on=date("Y-m-d");
+			
             if ($this->PettyCashReceiptVouchers->save($pettyCashReceiptVoucher)) {
-                $this->Flash->success(__('The petty cash receipt voucher has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+				
+				
+				$this->PettyCashReceiptVouchers->Ledgers->deleteAll(['voucher_id' => $pettyCashReceiptVoucher->id, 'voucher_source' => 'PettyCashReceipt Voucher']);
+				
+				$ledger = $this->PettyCashReceiptVouchers->Ledgers->newEntity();
+				$ledger->ledger_account_id = $pettyCashReceiptVoucher->bank_cash_id;
+				$ledger->debit = $pettyCashReceiptVoucher->amount;
+				$ledger->credit = 0;
+				$ledger->voucher_id = $pettyCashReceiptVoucher->id;
+				$ledger->voucher_source = 'PettyCashReceipt Voucher';
+				$ledger->transaction_date = $pettyCashReceiptVoucher->transaction_date;
+				$this->PettyCashReceiptVouchers->Ledgers->save($ledger);
+				//Ledger posting for bankcash
+				$ledger = $this->PettyCashReceiptVouchers->Ledgers->newEntity();
+				$ledger->ledger_account_id = $pettyCashReceiptVoucher->received_from_id;
+				$ledger->debit = 0;
+				$ledger->credit = $pettyCashReceiptVoucher->amount;;
+				$ledger->voucher_id = $pettyCashReceiptVoucher->id;
+				$ledger->voucher_source = 'PettyCashReceipt Voucher';
+				$ledger->transaction_date = $pettyCashReceiptVoucher->transaction_date;
+				$this->PettyCashReceiptVouchers->Ledgers->save($ledger);
+                
+				$this->Flash->success(__('The petty cash receipt voucher has been saved.'));
+				return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The petty cash receipt voucher could not be saved. Please, try again.'));
             }
-        }
-        $receivedFroms = $this->PettyCashReceiptVouchers->ReceivedFroms->find('list', ['limit' => 200]);
-        $bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list', ['limit' => 200]);
-        $this->set(compact('pettyCashReceiptVoucher', 'receivedFroms', 'bankCashes'));
+        }$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(5, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		
+		$where=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			$where[]=$data->account_group_id;
+		}
+
+		$receivedFroms = $this->PettyCashReceiptVouchers->ReceivedFroms->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN'=>$where]);
+				}]]]);
+			
+		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(6, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		$where=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			  $where[]=$data->account_group_id;
+			//pr($where); exit;
+		}
+
+		$bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN'=>$where]);
+				}]]]);
+		
+       $companies = $this->PettyCashReceiptVouchers->Companies->find('all');
+        $this->set(compact('pettyCashReceiptVoucher', 'receivedFroms', 'bankCashes','companies'));
         $this->set('_serialize', ['pettyCashReceiptVoucher']);
+ 
     }
 
     /**

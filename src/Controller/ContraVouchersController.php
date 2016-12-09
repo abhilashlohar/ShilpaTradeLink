@@ -89,7 +89,9 @@ class ContraVouchersController extends AppController
            else {
                 $this->Flash->error(__('The contra voucher could not be saved. Please, try again.'));
             }
-        }$vouchersReferences = $this->ContraVouchers->VouchersReferences->get(7, [
+        }
+		
+		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get(7, [
             'contain' => ['VouchersReferencesGroups']
         ]);
 		
@@ -132,12 +134,41 @@ class ContraVouchersController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		
         $contraVoucher = $this->ContraVouchers->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $contraVoucher = $this->ContraVouchers->patchEntity($contraVoucher, $this->request->data);
+			
+			$contraVoucher->edited_by=$s_employee_id;
+			$contraVoucher->transaction_date=date("Y-m-d",strtotime($contraVoucher->transaction_date));
+			$contraVoucher->edited_on=date("Y-m-d");
             if ($this->ContraVouchers->save($contraVoucher)) {
+				
+				$this->ContraVouchers->Ledgers->deleteAll(['voucher_id' => $contraVoucher->id, 'voucher_source' => 'Contra Voucher']);
+				
+				$ledger = $this->ContraVouchers->Ledgers->newEntity();
+				$ledger->ledger_account_id = $contraVoucher->cash_bank_from;
+				$ledger->debit = 0;
+				$ledger->credit = $contraVoucher->amount;
+				$ledger->voucher_id = $contraVoucher->id;
+				$ledger->voucher_source = 'Contra Voucher';
+				$ledger->transaction_date = $contraVoucher->transaction_date;
+				$this->ContraVouchers->Ledgers->save($ledger);
+				
+				//Ledger posting for bankcash
+				$ledger = $this->ContraVouchers->Ledgers->newEntity();
+				$ledger->ledger_account_id = $contraVoucher->cash_bank_to;
+				$ledger->debit =  $contraVoucher->amount;
+				$ledger->credit = 0;
+				$ledger->voucher_id = $contraVoucher->id;
+				$ledger->voucher_source = 'Contra Voucher';
+				$ledger->transaction_date = $contraVoucher->transaction_date;
+				$this->ContraVouchers->Ledgers->save($ledger);
+				
                 $this->Flash->success(__('The contra voucher has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -145,8 +176,38 @@ class ContraVouchersController extends AppController
                 $this->Flash->error(__('The contra voucher could not be saved. Please, try again.'));
             }
         }
-        $companies = $this->ContraVouchers->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('contraVoucher', 'companies'));
+		
+		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get(7, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		
+		$where=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			$where[]=$data->account_group_id;
+		}
+
+		$cashBankFroms = $this->ContraVouchers->CashBankFroms->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN'=>$where]);
+				}]]]);
+			
+		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get(8, [
+            'contain' => ['VouchersReferencesGroups']
+        ]);
+		$where=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			  $where[]=$data->account_group_id;
+			//pr($where); exit;
+		}
+
+		$cashBankTos = $this->ContraVouchers->CashBankTos->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN'=>$where]);
+				}]]]);
+		
+       $companies = $this->ContraVouchers->Companies->find('all');
+        
+        $this->set(compact('contraVoucher', 'cashBankFroms', 'cashBankTos','companies'));
         $this->set('_serialize', ['contraVoucher']);
     }
 
