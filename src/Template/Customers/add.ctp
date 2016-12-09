@@ -501,8 +501,8 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		<tr>
 			<td>0</td>
 			<td><?php echo $this->Form->input('contact_person', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Contact Person']); ?></td>
-			<td><?php echo $this->Form->input('telephone', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Telephone']); ?></td>
-			<td><?php echo $this->Form->input('mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?></td>
+			<td><?php echo $this->Form->input('telephone', ['type' => 'number','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Telephone']); ?></td>
+			<td><?php echo $this->Form->input('mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile']); ?></td>
 			<td><?php echo $this->Form->input('email', ['type' => 'email','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Email']); ?></td>
 			<td><?php echo $this->Form->input('designation', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Designation']); ?></td>
 			<td width="90"><?php echo $this->Form->input('default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2','value'=>1]); ?></td>

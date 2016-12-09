@@ -1,8 +1,4 @@
-<?php
-$this->Form->templates([
-    'inputContainer' => '{{content}}'
-]);
-?>
+
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
@@ -24,7 +20,7 @@ $this->Form->templates([
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Date of Birth<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('dob',['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Birth']); ?>
+							<?php echo $this->Form->input('dob',['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','value' => date("d-m-Y",strtotime($employee->dob)),'placeholder' => 'Date of Birth']); ?>
 						</div>
 					</div>
 					
@@ -111,7 +107,7 @@ $this->Form->templates([
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Date Of Joining</label>
-							<?php echo $this->Form->input('join_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Joining']); ?>
+							<?php echo $this->Form->input('join_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','value' => date("d-m-Y",strtotime($employee->join_date)),'placeholder' => 'Date of Joining']); ?>
 					</div>
 					</div>
 					
@@ -120,7 +116,7 @@ $this->Form->templates([
 				<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Date of Confirmation as Permanent</label>
-							<?php echo $this->Form->input('permanent_join_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Confirmation']); ?>
+							<?php echo $this->Form->input('permanent_join_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','value' => date("d-m-Y",strtotime($employee->permanent_join_date)),'placeholder' => 'Date of Confirmation']); ?>
 					</div>
 					</div>
 					<div class="col-md-4">
@@ -268,13 +264,8 @@ $this->Form->templates([
 							<?php echo $this->Form->input('employee_contact_persons.1.relation', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Relation']); ?>
 						</td>
 					</tr>
-						
-						
 					</tbody>
 				</table>
-				
-				
-				
 				
 				<h4 style="font-size:13px'">Bank's Detail</h4>
 				<table class="table table-condensed tableitm">
@@ -333,35 +324,36 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-			name:{
+			customer_name:{
 				required: true,
 			},
-			dipartment_id : {
+			district_id : {
 				  required: true,
 			},
-			sex : {
+			customer_seg_id : {
 				  required: true,
 			},
-			mobile : {
+			
+			employee_id : {
 				  required: true,
 			},
-			email:{
-				required: true
-			},
-			designation_id:{
-				required: true,
-			},
-			permanent_address:{
-				required: true,
-			},
-			residence_address:{
-				required: true,
-			},
-			signature : {
+			payment_terms : {
 				  required: true,
-			}
-			marital_status:{
-				 required: true,
+			},
+			mode_of_payment : {
+				  required: true,
+			},
+			account_category_id:{
+				  required: true,
+			},
+			account_group_id:{
+				  required: true,
+			},
+			account_first_subgroup_id:{
+				  required: true,
+			},
+			account_second_subgroup_id:{
+				  required: true,
 			}
 		},
 
@@ -415,26 +407,26 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			q="ok";
-			$("#main_tb tbody tr.tr1").each(function(){
-				var w=$(this).find("td:nth-child(3) input").val();
-				var r=$(this).find("td:nth-child(4) input").val();
-				if(w=="" || r==""){
-					q="e";
-				}
-			});
-			if(q=="e"){
-				$("#row_error").show();
-				return false;
-			}else{
-				success3.show();
-				error3.hide();
-				form[0].submit(); // submit the form
-			}
+			success3.show();
+			error3.hide();
+			form[0].submit(); // submit the form
 		}
 
 	});
 	//--	 END OF VALIDATION
+	$('.allLetter').keyup(function(){
+		var inputtxt=  $(this).val();
+		var numbers =  /^[0-9]*\.?[0-9]*$/;
+		
+		if(inputtxt.match(numbers))  
+		{  
+		} 
+		else  
+		{  
+			$(this).val('');
+			return false;  
+		}
+	});
 	
 	$('select[name="account_category_id"]').on("change",function() {
 	$('#account_group_div').html('Loading...');
@@ -481,8 +473,143 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 });	
 	
 	
+	add_row(); $('.default_btn2:first').attr('checked','checked'); $.uniform.update();
+	$('.default_btn2').die().live("click",function() { 
+		$('.default_btn2').removeAttr('checked');
+		$(this).attr('checked','checked');
+		$.uniform.update();
+    });
+	
+    $('.addrow').die().live("click",function() { 
+		add_row();
+    });
+	
+	$('.deleterow').die().live("click",function() {
+		$('input[name="customer_contacts[0][default_address]"]').val("DEFAULT").css('background-color','#DDD');
+		var l=$(this).closest("table tbody").find("tr").length;
+		if (confirm("Are you sure to remove row ?") == true) {
+			if(l>1){
+				$(this).closest("tr").remove();
+				var i=0;
+				$("#main_tb tbody tr").each(function(){
+					$(this).find("td:nth-child(1)").html(++i); --i;
+					$(this).find("td:nth-child(2) input").attr("name","customer_contacts["+i+"][contact_person]").attr("id","customer_contacts."+i+".contact_person");
+					$(this).find("td:nth-child(3) input").attr("name","customer_contacts["+i+"][telephone]").attr("id","customer_contacts."+i+".telephone");
+					$(this).find("td:nth-child(4) input").attr("name","customer_contacts["+i+"][mobile]").attr("id","customer_contacts."+i+".mobile");
+					$(this).find("td:nth-child(5) input").attr("name","customer_contacts["+i+"][designation]").attr("id","customer_contacts."+i+".designation");
+					$(this).find("td:nth-child(6) input").attr("name","customer_contacts["+i+"][default_contact]");
+					i++;
+					
+				});
+				calculate_total();
+			}
+		} 
+    });
+	
+	function add_row(){
+		
+		var tr=$("#sample_tb tbody tr").clone();
+		$("#main_tb tbody").append(tr);
+		var i=0;
+		$("#main_tb tbody tr").each(function(){
+			
+			$(this).find("td:nth-child(1)").html(++i); --i;
+			$(this).find("td:nth-child(2) input").attr("name","customer_contacts["+i+"][contact_person]").attr("id","customer_contacts."+i+".contact_person").rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr("name","customer_contacts["+i+"][telephone]").attr("id","customer_contacts."+i+".telephone").rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr("name","customer_contacts["+i+"][mobile]").attr("id","customer_contacts."+i+".mobile").rules("add", "required");
+			$(this).find("td:nth-child(5) input").attr("name","customer_contacts["+i+"][email]").attr("id","customer_contacts."+i+".email").rules("add", "required");
+			$(this).find("td:nth-child(6) input").attr("name","customer_contacts["+i+"][designation]").attr("id","customer_contacts."+i+".designation").rules("add", "required");
+			$(this).find("td:nth-child(7) input").attr("name","customer_contacts["+i+"][default_contact]");
+			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
+			if (test) { test.uniform(); }
+			i++;
+		});
+	}
+	
+	
+	
+	
+	add_row2(); $('.default_btn:first').attr('checked','checked'); $.uniform.update();
+	$('.default_btn').die().live("click",function() { 
+		$('.default_btn').removeAttr('checked');
+		$(this).attr('checked','checked');
+		$.uniform.update();
+    });
+	
+    $('.addrow2').die().live("click",function() { 
+		add_row2();
+    });
+	
+	$('.deleterow2').die().live("click",function() {
+		$('input[name="customer_address[0][default_address]"]').val("DEFAULT").css('background-color','#DDD');
+		var l=$(this).closest("table tbody").find("tr").length;
+		if (confirm("Are you sure to remove row ?") == true) {
+			if(l>1){
+				$(this).closest("tr").remove();
+				var i=0;
+				$("#main_tb2 tbody tr").each(function(){
+					
+					$(this).find("td:nth-child(1)").html(++i); --i;
+					$(this).find("td:nth-child(2) textarea").attr("name","customer_address["+i+"][address]");
+					$(this).find("td:nth-child(3) select").attr("name","customer_address["+i+"][district_id]");
+					$(this).find("td:nth-child(4) input").attr("name","customer_address["+i+"][courier_charge]");
+					$(this).find("td:nth-child(5) input").attr("name","customer_address["+i+"][default_address]");
+					i++;
+				});
+				calculate_total();
+			}
+		} 
+    });
+	
+	function add_row2(){
+		var tr=$("#sample_tb2 tbody tr").clone();
+		$("#main_tb2 tbody").append(tr);
+		var i=0;
+		$("#main_tb2 tbody tr").each(function(){
+			
+			$(this).find("td:nth-child(1)").html(++i); --i;
+			$(this).find("td:nth-child(2) textarea").attr("name","customer_address["+i+"][address]").attr("id","customer_address."+i+".address").rules("add", "required");
+			$(this).find("td:nth-child(3) select").attr("name","customer_address["+i+"][district_id]").select2();
+			$(this).find("td:nth-child(4) select").attr("name","customer_address["+i+"][courier_charge]").select2();
+			$(this).find("td:nth-child(5) input").attr("name","customer_address["+i+"][default_address]");
+			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
+			if (test) { test.uniform(); }
+			i++;
+		});
+	}
+	
 });
 </script>
+
+<table id="sample_tb" style="display:none;">
+	<tbody>
+		<tr>
+			<td>0</td>
+			<td><?php echo $this->Form->input('contact_person', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Contact Person']); ?></td>
+			<td><?php echo $this->Form->input('telephone', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Telephone']); ?></td>
+			<td><?php echo $this->Form->input('mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?></td>
+			<td><?php echo $this->Form->input('email', ['type' => 'email','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Email']); ?></td>
+			<td><?php echo $this->Form->input('designation', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Designation']); ?></td>
+			<td width="90"><?php echo $this->Form->input('default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2','value'=>1]); ?></td>
+			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+		</tr>
+	</tbody>
+</table>
+
+<table id="sample_tb2" style="display:none;">
+	<tbody>
+		<tr>
+			<td>0</td>
+			<td><?php echo $this->Form->input('address', ['label' => false,'type' => 'textarea','rows' => '2','style' => ['resize:none'],'class' => 'form-control input-sm','placeholder' => 'Address']); ?></td>
+			<td><?php echo $this->Form->input('district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm']); ?></td>
+			<td><?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Courier Charge']); ?></td>
+			<td width="90"><?php echo $this->Form->input('default_address', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn','value'=>1]); ?></td>
+			<td><a class="btn btn-xs btn-default addrow2" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow2" href="#" role='button'><i class="fa fa-times"></i></a></td>
+		</tr>
+	</tbody>
+</table>
+
+
  <script type="text/javascript">
  $(document).ready(function () {
                     $('#id_radio2').click(function () {
