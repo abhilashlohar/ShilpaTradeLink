@@ -221,6 +221,7 @@ class InvoicesController extends AppController
 						},'Companies','Customers','Employees'
 					]
 			]);
+			
 			$process_status='Pulled From Sales-Order';
 		}
 		$this->set(compact('sales_order','process_status','sales_order_id'));
@@ -337,7 +338,9 @@ class InvoicesController extends AppController
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }
         }
-        //$customers = $this->Invoices->Customers->find('all');
+		//($sales_order->customer_id); exit;
+        $creditlimit = $this->Invoices->Customers->find()->where(['id'=>$sales_order->customer_id]);
+		//($credit_limits); exit;
         //$companies = $this->Invoices->Companies->find('all');
 		
 		$salesOrders = $this->Invoices->SalesOrders->find()->select(['total_rows' => 
@@ -353,8 +356,9 @@ class InvoicesController extends AppController
 		$transporters = $this->Invoices->Transporters->find('list', ['limit' => 200]);
 		$termsConditions = $this->Invoices->TermsConditions->find('all',['limit' => 200]);
 		$SaleTaxes = $this->Invoices->SaleTaxes->find('all');
+		$dueInvoices = $this->Invoices->find()->where(['customer_id'=>$sales_order->customer_id,'due_payment !='=>0]);
 		$employees = $this->Invoices->Employees->find('list', ['limit' => 200]);
-        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees'));
+        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoices','creditlimit'));
         $this->set('_serialize', ['invoice']);
     }
 	

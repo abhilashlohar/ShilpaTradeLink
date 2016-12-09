@@ -63,6 +63,12 @@
 					$url_path="/JournalVouchers/view/".$ledger->voucher_id;
 				}else if($ledger->voucher_source=="Payment Voucher"){
 					$url_path="/PaymentVouchers/view/".$ledger->voucher_id;
+				}else if($ledger->voucher_source=="PettyCashReceipt Voucher"){
+					$url_path="/petty-cash-receipt-vouchers/view/".$ledger->voucher_id;
+				}else if($ledger->voucher_source=="Contra Voucher"){
+					$url_path="/contra-vouchers/view/".$ledger->voucher_id;
+				}else if($ledger->voucher_source=="Receipt Voucher"){
+					$url_path="/receipt-vouchers/view/".$ledger->voucher_id;
 				}
 				
 				?>

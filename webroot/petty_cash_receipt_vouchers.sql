@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 30, 2016 at 12:28 PM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 5.6.20
+-- Generation Time: Dec 05, 2016 at 01:40 PM
+-- Server version: 10.1.19-MariaDB
+-- PHP Version: 5.6.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -32,17 +32,19 @@ CREATE TABLE `petty_cash_receipt_vouchers` (
   `bank_cash_id` int(10) NOT NULL,
   `narration` text NOT NULL,
   `amount` decimal(15,2) NOT NULL,
-  `created_by` int(10) NOT NULL,
-  `created_on` date NOT NULL
+  `company_id` int(10) NOT NULL,
+  `created_on` date NOT NULL,
+  `transaction_date` date NOT NULL,
+  `payment_mode` varchar(10) NOT NULL,
+  `created_by` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `petty_cash_receipt_vouchers`
 --
 
-INSERT INTO `petty_cash_receipt_vouchers` (`id`, `received_from_id`, `bank_cash_id`, `narration`, `amount`, `created_by`, `created_on`) VALUES
-(1, 4, 6, 'rfgh', '111.00', 2, '2016-11-29'),
-(2, 10, 9, 'qwertty', '12345.00', 2, '2016-11-30');
+INSERT INTO `petty_cash_receipt_vouchers` (`id`, `received_from_id`, `bank_cash_id`, `narration`, `amount`, `company_id`, `created_on`, `transaction_date`, `payment_mode`, `created_by`) VALUES
+(1, 10, 11, 'being received by amzole india pvt ltd for machine bolt', '600.00', 25, '2016-12-03', '2016-12-03', 'Cash', 1);
 
 --
 -- Indexes for dumped tables
@@ -62,7 +64,7 @@ ALTER TABLE `petty_cash_receipt_vouchers`
 -- AUTO_INCREMENT for table `petty_cash_receipt_vouchers`
 --
 ALTER TABLE `petty_cash_receipt_vouchers`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

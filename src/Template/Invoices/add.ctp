@@ -1,3 +1,8 @@
+<?php $due=0; foreach ($dueInvoices as $invoice){ 
+					
+						$due+=$invoice->due_payment;
+		} 
+?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -265,10 +270,38 @@
 						</div>
 					</div>
 				</div>
+			</div><br/>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-6 control-label">Credit Limits</label>
+						<div class="col-md-6" id="due">
+							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value' => @$sales_order->customer->credit_limit]); ?>
+						</div>
+					</div>
+				</div>
+		
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-6 control-label">Due Payment</label>
+						<div class="col-md-6" id="due">
+							<?php echo $this->Form->input('due_payment', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value'=>$due]); ?>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-6 control-label">New Due Payment</label>
+						<div class="col-md-6" id="due">
+							<?php echo $this->Form->input('total_due_payment', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','max'=>@$sales_order->customer->credit_limit]); ?>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<?php echo $this->Form->input('process_status', ['type' => 'hidden','value' => @$process_status]); ?>
 		<?php echo $this->Form->input('sales_order_id', ['type' => 'hidden','value' => @$sales_order_id]); ?>
+		
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
@@ -586,10 +619,17 @@ $(document).ready(function() {
 		$('input[name="sale_tax_amount"]').val(sale_tax.toFixed(2));
 		
 		var fright_amount=parseFloat($('input[name="fright_amount"]').val());
+		//alert(fright_amount);
 		if(isNaN(fright_amount)) { var fright_amount = 0; }
 		
 		grand_total=total_after_pnf+sale_tax+fright_amount;
 		$('input[name="grand_total"]').val(grand_total.toFixed(2));
+		
+		var due_payment=parseFloat($('input[name="due_payment"]').val());
+		var grand_total=parseFloat($('input[name="grand_total"]').val());
+		var total_due_payment=due_payment+grand_total;
+		//alert(total_due_payment); 
+		$('input[name="total_due_payment"]').val(total_due_payment.toFixed(2));
 	}
 	<?php } ?>
 	
