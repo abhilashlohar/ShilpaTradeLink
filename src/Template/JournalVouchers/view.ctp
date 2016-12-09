@@ -49,7 +49,7 @@
 	</tr>
 	</thead>
 		<tfoot>
-			<?php $sr=0; $dr=0; $cr=0; foreach ($journalVoucher->journal_voucher_rows as $journal_voucher_row): $sr++; echo $journal_voucher_row->amount; ?>
+			<?php $sr=0; $dr=0; $cr=0; foreach ($journalVoucher->journal_voucher_rows as $journal_voucher_row): $sr++; ?>
 			<tr>
 				<td><?= h($journal_voucher_row->ledger_account->name) ?></td>
 				<td><?php if($journal_voucher_row->cr_dr=="Dr")
