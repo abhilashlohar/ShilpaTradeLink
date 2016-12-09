@@ -1,7 +1,9 @@
-<?php $due=0; foreach ($dueInvoices as $invoice){ 
-					
-						$due+=$invoice->due_payment;
+<?php 
+if(!empty($sales_order->customer_id)){
+	$due=0; foreach ($dueInvoices as $invoice){ 
+					$due+=$invoice->due_payment;
 		} 
+}
 ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
@@ -293,7 +295,7 @@
 					<div class="form-group">
 						<label class="col-md-6 control-label">New Due Payment</label>
 						<div class="col-md-6" id="due">
-							<?php echo $this->Form->input('total_due_payment', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','max'=>@$sales_order->customer->credit_limit]); ?>
+							<?php echo $this->Form->input('new_due_payment', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','max'=>@$sales_order->customer->credit_limit]); ?>
 						</div>
 					</div>
 				</div>
@@ -627,14 +629,20 @@ $(document).ready(function() {
 		
 		var due_payment=parseFloat($('input[name="due_payment"]').val());
 		var grand_total=parseFloat($('input[name="grand_total"]').val());
-		var total_due_payment=due_payment+grand_total;
+		var new_due_payment=due_payment+grand_total;
 		//alert(total_due_payment); 
-		$('input[name="total_due_payment"]').val(total_due_payment.toFixed(2));
+		$('input[name="new_due_payment"]').val(new_due_payment.toFixed(2));
 	}
 	<?php } ?>
 	
-	
-	
+	var credit_limit=parseFloat($('input[name="credit_limit"]').val());
+			$('input[name="new_due_payment"]').attr('max',credit_limit).rules('add', {
+						required: true,
+						max: credit_limit,
+						messages: {
+							max: "Credit Limit Exieded ."
+						}
+					});
 	
     $('.addrow').die().live("click",function() { 
 		add_row();
