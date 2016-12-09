@@ -49,7 +49,7 @@ class JournalVouchersTable extends Table
 		//$this->belongsTo('JournalVoucherRows');
 		$this->hasMany('JournalVoucherRows', [
             'foreignKey' => 'journal_voucher_id',
-			'saveStrategy' => 'replace'
+			'saveStrategy' => 'replace'	
         ]);
 		
 		$this->belongsTo('Creator', [

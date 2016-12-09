@@ -148,6 +148,7 @@ class PaymentVouchersController extends AppController
 			//$paymentVoucher->created_on=date("Y-m-d");
             if ($this->PaymentVouchers->save($paymentVoucher))
 			{
+				
 					$this->PaymentVouchers->Ledgers->deleteAll(['voucher_id' => $paymentVoucher->id, 'voucher_source' => 'Payment Voucher']);
 					$ledger = $this->PaymentVouchers->Ledgers->newEntity();
 					$ledger->ledger_account_id = $paymentVoucher->paid_to_id;

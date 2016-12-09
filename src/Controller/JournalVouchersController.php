@@ -91,7 +91,7 @@ class JournalVouchersController extends AppController
 					}
 	
                 $this->Flash->success(__('The journal voucher has been saved.'));
-				return $this->redirect(['action' => 'add']);
+				return $this->redirect(['action' => 'index']);
 				} 
 			
            else {
@@ -129,12 +129,39 @@ class JournalVouchersController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$s_employee_id=$this->viewVars['s_employee_id'];
         $journalVoucher = $this->JournalVouchers->get($id, [
-            'contain' => []
+            'contain' => ['Companies','JournalVoucherRows'=>['LedgerAccounts'],'Companies','Creator']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $journalVoucher = $this->JournalVouchers->patchEntity($journalVoucher, $this->request->data);
+			$journalVoucher->created_by=$s_employee_id;
+			$journalVoucher->transaction_date=date("Y-m-d",strtotime($journalVoucher->transaction_date));
+			$journalVoucher->created_on=date("Y-m-d");
+			
             if ($this->JournalVouchers->save($journalVoucher)) {
+				
+				$this->JournalVouchers->Ledgers->deleteAll(['voucher_id' => $journalVoucher->id, 'voucher_source' => 'Journal Voucher']);
+				
+				foreach($journalVoucher->journal_voucher_rows as $journal_voucher_rows){
+					$ledger = $this->JournalVouchers->Ledgers->newEntity();
+					$ledger->ledger_account_id = $journal_voucher_rows->ledger_account_id;
+					
+					if($journal_voucher_rows->cr_dr=='Dr'){
+						$ledger->debit = $journal_voucher_rows->amount;
+						$ledger->credit = 0;
+					}
+					else {
+						$ledger->debit = 0;
+						$ledger->credit = $journal_voucher_rows->amount;
+					}
+					$ledger->voucher_id = $journalVoucher->id;
+					$ledger->voucher_source = 'Journal Voucher';
+					$ledger->transaction_date = $journalVoucher->created_on;
+					//pr($ledger); exit;
+					$this->JournalVouchers->Ledgers->save($ledger);
+					}
                 $this->Flash->success(__('The journal voucher has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -142,8 +169,20 @@ class JournalVouchersController extends AppController
                 $this->Flash->error(__('The journal voucher could not be saved. Please, try again.'));
             }
         }
-        $companies = $this->JournalVouchers->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('journalVoucher', 'companies'));
+		$vouchersReferences = $this->JournalVouchers->VouchersReferences->get(9, [
+          'contain' => ['VouchersReferencesGroups']
+        ]);
+		$where=[];
+		foreach($vouchersReferences->vouchers_references_groups as $data){
+			$where[]=$data->account_group_id;
+		}
+
+		$ledgers = $this->JournalVouchers->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
+				   return $q
+						->where(['AccountGroups.id IN'=>$where]);
+				}]]]);
+        $companies = $this->JournalVouchers->Companies->find('all');
+        $this->set(compact('journalVoucher', 'companies','ledgers'));
         $this->set('_serialize', ['journalVoucher']);
     }
 
