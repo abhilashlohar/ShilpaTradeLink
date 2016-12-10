@@ -529,6 +529,7 @@ $(document).ready(function() {
 		var i=0;
 		$("#main_tb tbody tr.tr1").each(function(){
 			i++;
+			 
 			$(this).find("td:nth-child(1)").html(i);
 			$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
@@ -541,13 +542,8 @@ $(document).ready(function() {
 							min: "Quantity can't be zero."
 						}
 					});
-			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
-						required: true,
-						min: 1,
-						messages: {
-							min: "Rate can't be zero."
-						}
-					});
+			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules('add', { required: true });
+			
 			$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
 		});
 		var i=0;
@@ -789,15 +785,6 @@ $(document).ready(function() {
 								min: "Minimum selling price: "+response.minimum_selling_price
 							}
 						});
-					}
-					else{
-						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
-							min: 0.01,
-							messages: {
-								min: "Rate Can't be 0"
-							}
-						});
-						
 					}
 					$('div[popup_ajax_id='+popup_id+']').html(response.html);
 				});

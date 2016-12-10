@@ -523,11 +523,7 @@ $(document).ready(function() {
 						}
 					});
 			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
-						required: true,
-						min: 1,
-						messages: {
-							min: "Rate can't be zero."
-						}
+						required: true
 					});
 			$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
 		});
