@@ -85,8 +85,8 @@ class DebitNotesController extends AppController
 				$ledger->voucher_source = 'Debit Note';
 				$ledger->transaction_date = $debitNote->transaction_date;
 				$this->DebitNotes->Ledgers->save($ledger);
-				$this->Flash->success(__('The debit note has been saved.'));
-				return $this->redirect(['action' => 'index']);
+				$this->Flash->success(__('The Debit Notes:'.str_pad($debitNote->id, 4, '0', STR_PAD_LEFT)).' has been genereted.');
+				return $this->redirect(['action' => 'view/'.$debitNote->id]);
             } else {
                 $this->Flash->error(__('The debit note could not be saved. Please, try again.'));
             }

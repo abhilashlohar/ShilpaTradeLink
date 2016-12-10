@@ -64,8 +64,8 @@ class PettyCashReceiptVouchersController extends AppController
 			$pettyCashReceiptVoucher->transaction_date=date("Y-m-d",strtotime($pettyCashReceiptVoucher->transaction_date));
 			$pettyCashReceiptVoucher->created_on=date("Y-m-d");
 			//pr($pettyCashReceiptVoucher); exit;
-			if ($this->PettyCashReceiptVouchers->save($pettyCashReceiptVoucher)) {
-				
+			if ($this->PettyCashReceiptVouchers->save($pettyCashReceiptVoucher)) 
+			{
 				$ledger = $this->PettyCashReceiptVouchers->Ledgers->newEntity();
 				$ledger->ledger_account_id = $pettyCashReceiptVoucher->bank_cash_id;
 				$ledger->debit = $pettyCashReceiptVoucher->amount;
@@ -82,11 +82,12 @@ class PettyCashReceiptVouchersController extends AppController
 				$ledger->voucher_id = $pettyCashReceiptVoucher->id;
 				$ledger->voucher_source = 'PettyCashReceipt Voucher';
 				$ledger->transaction_date = $pettyCashReceiptVoucher->transaction_date;
-				if ($this->PettyCashReceiptVouchers->Ledgers->save($ledger)) {
-                $this->Flash->success(__('The petty cash receipt voucher has been saved.'));
-				return $this->redirect(['action' => 'index']);
+				$this->PettyCashReceiptVouchers->Ledgers->save($ledger);
+				$this->Flash->success(__('The Petty Cash-Voucher:'.str_pad($pettyCashReceiptVoucher->id, 4, '0', STR_PAD_LEFT)).' has been genereted.');
+				return $this->redirect(['action' => 'view/'.$pettyCashReceiptVoucher->id]);
             } 
-			}else {
+			else 
+			{
                 $this->Flash->error(__('The petty cash receipt voucher could not be saved. Please, try again.'));
             }
         }
