@@ -107,7 +107,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Date Of Joining</label>
-							<?php echo $this->Form->input('join_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','value' => date("d-m-Y",strtotime($employee->join_date)),'placeholder' => 'Date of Joining']); ?>
+							<?php echo $this->Form->input('join_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y",strtotime($employee->join_date)),'placeholder' => 'Date of Joining']); ?>
 					</div>
 					</div>
 					
@@ -116,7 +116,7 @@
 				<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Date of Confirmation as Permanent</label>
-							<?php echo $this->Form->input('permanent_join_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','value' => date("d-m-Y",strtotime($employee->permanent_join_date)),'placeholder' => 'Date of Confirmation']); ?>
+							<?php echo $this->Form->input('permanent_join_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y",strtotime($employee->permanent_join_date)),'placeholder' => 'Date of Confirmation']); ?>
 					</div>
 					</div>
 					<div class="col-md-4">
