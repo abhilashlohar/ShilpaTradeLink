@@ -292,9 +292,8 @@ class SalesOrdersController extends AppController
 				}
 				//pr($salesOrder);exit;
                 $this->Flash->success(__('The sales order has been saved.'));
-return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
+				return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
 
-                return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The sales order could not be saved. Please, try again.'));
             }
@@ -363,8 +362,7 @@ return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
 			//echo $salesOrder->edited_on_time;  exit;
             if ($this->SalesOrders->save($salesOrder)) {
                 $this->Flash->success(__('The sales order has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+				return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
             } else {
                 $this->Flash->error(__('The sales order could not be saved. Please, try again.'));
             }

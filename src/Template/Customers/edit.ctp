@@ -99,6 +99,7 @@
 									]
 								); ?>
 								</div>
+								
                                 <div id="mode_of_payment_error"></div>
 							</div>
 						</div>
@@ -128,6 +129,7 @@
 							<th><label class="control-label">Person<label></th>
 							<th><label class="control-label">Telephone<label></th>
 							<th><label class="control-label">Mobile<label></th>
+							<th><label class="control-label">Email<label></th>
 							<th><label class="control-label">Designation<label></th>
 							<th><label class="control-label">Default<label></th>
 							<th></th>
@@ -149,9 +151,7 @@
 					<?php } ?>
 					</tbody>
 				</table>
-                <div class="alert alert-danger" id="row_error" style="display:none;">
-                    Provide Customer's Contacts details.
-                </div>
+                
 				
 				<h4 style="font-size:13px'">Customer's Address</h4>
 				<table class="table table-condensed tableitm" id="main_tb2">
@@ -179,9 +179,7 @@
 					<?php } ?>
 					</tbody>
 				</table>
-                <div class="alert alert-danger" id="row_error1" style="display:none;">
-                    Provide Customer Address details
-                </div>
+                
 		</div>
 		
 			<div class="form-actions">

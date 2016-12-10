@@ -315,7 +315,7 @@ class QuotationsController extends AppController
 				//pr($quotation); exit;
                 $this->Flash->success(__('The quotation has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'confirm/'.$quotation->id]);
             } else {
                 $this->Flash->error(__('The quotation could not be saved. Please, try again.'));
             }
