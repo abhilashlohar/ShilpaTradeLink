@@ -87,7 +87,6 @@ class LoginsController extends AppController
 		
 		
 		
-		$next=$this->request->query('next');
 		
 		$session = $this->request->session();
 		$st_login_id = $session->read('st_login_id');
@@ -97,7 +96,7 @@ class LoginsController extends AppController
 			$this->request->allowMethod(['post', 'delete']);
 			$this->request->session()->write('st_company_id',$company_id);
 			
-			return $this->redirect('/'.$next);
+			return $this->redirect(['action' => 'Switch-Company']);
 		}
 		
 		
@@ -106,7 +105,7 @@ class LoginsController extends AppController
 						'contain' => ['Companies']
 					]);
 				
-		$this->set(compact('st_login_id','Employee','next'));
+		$this->set(compact('st_login_id','Employee'));
 	}
 	
 }

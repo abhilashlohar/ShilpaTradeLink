@@ -25,7 +25,7 @@
 						<td><?= h($i) ?></td>
 						<td><?= h($company->name) ?></td>
 						<td class="actions">
-							<?= $this->Form->postLink(__('Switch'),'/Logins/SwitchCompany/'.$company->id.'?next='.$next, ['confirm' => __('Are you sure you want to switch ?')]) ?>
+							<?= $this->Form->postLink(__('Switch'),'/Logins/SwitchCompany/'.$company->id, ['confirm' => __('Are you sure you want to switch ?')]) ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>

@@ -174,9 +174,8 @@ select
 					<ul class="dropdown-menu dropdown-menu-default">
 						<li>
 							<?php 
-							//$actual_link = "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-							$actual_link = $this->request->here;
-							echo $this->Html->link('<i class="fa fa-random"></i> Switch Company','/Logins/Switch-Company?next='.$actual_link,array('escape'=>false)); ?>
+							//
+							echo $this->Html->link('<i class="fa fa-random"></i> Switch Company','/Logins/Switch-Company',array('escape'=>false)); ?>
 						</li>
 						<li>
 							<?php echo $this->Html->link('<i class="icon-key"></i> Log Out','/Logins/logout',array('escape'=>false)); ?>
