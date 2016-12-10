@@ -57,15 +57,17 @@ class PaymentVouchersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $paymentVoucher = $this->PaymentVouchers->newEntity();
 		$s_employee_id=$this->viewVars['s_employee_id'];
-		
-        if ($this->request->is('post')) {
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        
+		if ($this->request->is('post')) {
 		
 			$paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
 			
 			$paymentVoucher->created_by=$s_employee_id;
 			$paymentVoucher->created_on=date("Y-m-d");
 			$paymentVoucher->transaction_date=date("Y-m-d",strtotime($paymentVoucher->transaction_date));
-			
+			$paymentVoucher->company_id=$st_company_id;
 			 if ($this->PaymentVouchers->save($paymentVoucher)) {
 				
 				//Ledger posting for paidto
@@ -136,12 +138,17 @@ class PaymentVouchersController extends AppController
 		
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        
         $paymentVoucher = $this->PaymentVouchers->get($id, [
             'contain' => ['PaidTos','BankCashes','Companies']
 		
 		  ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
+			
+			$paymentVoucher->company_id=$st_company_id;
 			$paymentVoucher->edited_on=date("Y-m-d");
 			$paymentVoucher->transaction_date=date("Y-m-d",strtotime($paymentVoucher->transaction_date));
 			$paymentVoucher->edited_by=$s_employee_id;
