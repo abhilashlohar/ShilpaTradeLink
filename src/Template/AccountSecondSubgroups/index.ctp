@@ -65,6 +65,8 @@
 						<thead>
 							<tr>
 								<th>S.No</th>
+								<th>Category</th>
+								<th>Account Group</th>
 								<th>First Sub-Group</th>
 								<th>Name</th>
 								
@@ -76,7 +78,9 @@
 					 <?php foreach ($accountSecondSubgroups as $accountSecondSubgroup): ?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
-							 <td><?=  h($accountSecondSubgroup->account_first_subgroup->name)?></td>
+							<td><?=  h($accountSecondSubgroup->account_first_subgroup->account_group->account_category->name)?></td>
+							<td><?=  h($accountSecondSubgroup->account_first_subgroup->account_group->name)?></td>
+							<td><?=  h($accountSecondSubgroup->account_first_subgroup->name)?></td>
 							<td><?= h($accountSecondSubgroup->name) ?></td>
 							 <td class="actions">
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $accountSecondSubgroup->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>

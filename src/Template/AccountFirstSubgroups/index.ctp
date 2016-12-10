@@ -63,6 +63,7 @@
 						<thead>
 							<tr>
 								<th>S.No</th>
+								<th>Account Category</th>
 								<th>Account Group</th>
 								<th>Name</th>
 								<th class="actions"><?= __('Actions') ?></th>
@@ -73,6 +74,7 @@
 					 <?php foreach ($accountFirstSubgroups as $accountFirstSubgroup): ?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
+							<td><?= h($accountFirstSubgroup->account_group->account_category->name) ?></td>
 							<td><?= h($accountFirstSubgroup->account_group->name) ?></td>
 							<td><?= h($accountFirstSubgroup->name) ?></td>
 							

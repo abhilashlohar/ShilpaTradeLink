@@ -35,7 +35,7 @@ class AccountSecondSubgroupsController extends AppController
         $this->set('_serialize', ['accountSecondSubgroup']);
     
         $this->paginate = [
-            'contain' => ['AccountFirstSubgroups']
+            'contain' => ['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]
         ];
 		
 		$where=[];
