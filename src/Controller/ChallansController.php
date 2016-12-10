@@ -92,7 +92,8 @@ class ChallansController extends AppController
     public function edit($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
-		
+		$s_employee_id=$this->viewVars['s_employee_id'];
+
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
@@ -103,7 +104,9 @@ class ChallansController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $challan = $this->Challans->patchEntity($challan, $this->request->data);
 			$challan->company_id=$st_company_id;
-
+			$challan->created_by=$s_employee_id; 
+			$challan->company_id=$st_company_id;
+			$challan->created_on=date("Y-m-d",strtotime($challan->created_on));
             if ($this->Challans->save($challan)) {
 				
                 $this->Flash->success(__('The challan has been saved.'));

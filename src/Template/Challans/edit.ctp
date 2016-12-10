@@ -104,7 +104,27 @@
 					</tr>
 				</thead>
 				<tbody>
-					
+				<?php 	$q=1; foreach ($challan->challan_rows as $challan_rows): ?>
+
+					<tr class="tr1">
+						<td rowspan="2" width="10"><?php echo $q; ?></td>
+						<td>
+							<div class="row">
+								<div class="col-md-11">
+									<?php echo $this->Form->input('challan_rows['.$q.'][item_id]', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me','placeholder' => 'Item','value'=>$challan_rows->item_id]); ?>
+								</div>
+							</div>
+						</td>
+						<td width="100"><?php echo $this->Form->input('challan_rows['.$q.'][quantity]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity','value'=>$challan_rows->quantity]); ?></td>
+						<td width="130"><?php echo $this->Form->input('challan_rows['.$q.'][rate]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','value'=>$challan_rows->rate]); ?></td>
+						<td width="130"><?php echo $this->Form->input('challan_rows['.$q.'][amount]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value'=>$challan_rows->amount]); ?></td>
+						<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+					</tr>
+					<tr class="tr2">
+						<td colspan="4"><?php echo $this->Form->textarea('challan_rows['.$q.'][description]', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value'=>$challan_rows->description]); ?></td>
+						<td></td>
+					</tr>
+					<?php endforeach ?>
 				</tbody>
 				<tfoot>
 					<tr>
@@ -321,7 +341,6 @@ $(document).ready(function() {
 
                
 
-	add_row();
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
