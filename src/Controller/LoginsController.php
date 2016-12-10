@@ -97,7 +97,7 @@ class LoginsController extends AppController
 			$this->request->allowMethod(['post', 'delete']);
 			$this->request->session()->write('st_company_id',$company_id);
 			
-			return $this->redirect('http://'.$next);
+			return $this->redirect('/'.$next);
 		}
 		
 		

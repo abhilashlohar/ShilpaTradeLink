@@ -10,12 +10,6 @@
 		<div class="form-body">
 			<div class="row">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label class="col-md-3 control-label">Company</label>
-						<div class="col-md-9">
-							<?php echo @$invoice->company->name; ?>
-						</div>
-					</div>
 				</div>
 				<div class="col-md-3">
 				</div>

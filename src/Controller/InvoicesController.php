@@ -23,6 +23,10 @@ class InvoicesController extends AppController
 		$url=$this->request->here();
 		$url=parse_url($url,PHP_URL_QUERY);
 		$this->viewBuilder()->layout('index_layout');
+		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
 		$where=[];
 		$company_alise=$this->request->query('company_alise');
 		$invoice_no=$this->request->query('invoice_no');
@@ -63,7 +67,7 @@ class InvoicesController extends AppController
         $this->paginate = [
             'contain' => ['Customers', 'Companies']
         ];
-        $invoices = $this->paginate($this->Invoices->find()->where($where)->order(['Invoices.id' => 'DESC']));
+        $invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
 		
         $this->set(compact('invoices'));
         $this->set('_serialize', ['invoices']);

@@ -21,13 +21,6 @@ if(!empty($sales_order->customer_id)){
 		<div class="form-body">
 			<div class="row">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label class="col-md-3 control-label">Company</label>
-						<div class="col-md-9">
-							<?php echo $this->Form->input('company_id', ['type'=>'hidden','value' => @$sales_order->company_id]); ?>
-							<?php echo @$sales_order->company->name; ?>
-						</div>
-					</div>
 				</div>
 				<div class="col-md-3">
 				</div>
