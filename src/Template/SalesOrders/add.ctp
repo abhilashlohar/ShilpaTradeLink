@@ -148,7 +148,7 @@ if(!empty($copy))
 							<td>
 
 								<div class="row">
-									<div class="col-md-11 padding-right-decrease">
+									<div class="col-md-10 padding-right-decrease">
 										<?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','placeholder'=>'Item','value' => @$quotation_rows->item->id ,'popup_id'=>$q]); ?>
 									</div>
 									<div class="col-md-1 padding-left-decrease">
