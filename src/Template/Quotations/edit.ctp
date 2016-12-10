@@ -10,17 +10,6 @@
 		<div class="form-body">
 			<div class="row">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label class="col-md-3 control-label">Company</label>
-						<div class="col-md-9">
-							<?php 
-							$options=array();
-							foreach($companies as $companie){
-								$options[]=['text' => $companie->name, 'value' => $companie->id, 'alias' => $companie->alias];
-							}
-							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me','required']); ?>
-						</div>
-					</div>
 				</div>
 				<div class="col-md-6" align="right">
 					<div class="form-group">
@@ -203,7 +192,10 @@
 							<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
 						<tr class="tr2 preimp" row_no='<?php echo @$quotation_row->id; ?>'>
-							<td colspan="4"><?php echo $this->Form->textarea('quotation_rows['.$q.'][description]', ['type' => 'textarea','label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value' => $quotation_row->description,'required']); ?></td>
+							<td colspan="4">
+							<?php echo $this->Form->textarea('quotation_rows['.$q.'][description]', ['type' => 'textarea','label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value' => $quotation_row->description,'required']); ?>
+							<?php echo $this->Form->input('quotation_rows['.$q.'][amount]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value' => $quotation_row->amount]); ?>
+							</td>
 							<td></td>
 						</tr>
 					<?php $q++; endforeach; ?>

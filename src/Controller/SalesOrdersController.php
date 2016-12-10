@@ -22,6 +22,9 @@ class SalesOrdersController extends AppController
 		$url=parse_url($url,PHP_URL_QUERY);
 		$this->viewBuilder()->layout('index_layout');
 		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
 		$copy_request=$this->request->query('copy-request');
 		$job_card=$this->request->query('job-card');
 		
@@ -81,6 +84,7 @@ class SalesOrdersController extends AppController
 					->autoFields(true)
 					->having($having)
 					->where($where)
+					->where(['company_id'=>$st_company_id])
 					->order(['SalesOrders.id' => 'DESC'])
 			);
 		if(!empty($job_card)){
@@ -220,6 +224,10 @@ class SalesOrdersController extends AppController
 		
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$Company = $this->SalesOrders->Companies->get($st_company_id);
+		
 		$quotation_id=@(int)$this->request->query('quotation');
 		$quotation=array(); 
 		$process_status='New';
@@ -271,7 +279,7 @@ class SalesOrdersController extends AppController
 			
 			//$salesOrder->created_on_time= time('h:i:s');
 			$salesOrder->created_on_time= date("Y-m-d h:i:sA");
-			
+			$salesOrder->company_id=$st_company_id;
             if ($this->SalesOrders->save($salesOrder)) {
 				if(!empty($quotation_id)){
 					$quotation->status='Converted Into Sales Order';
@@ -307,7 +315,7 @@ return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
 		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
 		$termsConditions = $this->SalesOrders->TermsConditions->find('all',['limit' => 200]);
 		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all');
-        $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','copy','process_status'));
+        $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','copy','process_status','Company'));
         $this->set('_serialize', ['salesOrder']);
     }
 	

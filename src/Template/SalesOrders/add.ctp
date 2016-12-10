@@ -25,17 +25,6 @@ if(!empty($copy))
 		<div class="form-body">
 			<div class="row">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label class="col-md-3 control-label">Company</label>
-						<div class="col-md-9">
-							<?php 
-							$options=array();
-							foreach($companies as $companie){
-								$options[]=['text' => $companie->name, 'value' => $companie->id, 'alias' => $companie->alias];
-							}
-							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me','value' => @$quotation->company_id] ); ?>
-						</div>
-					</div>
 				</div>
 				<div class="col-md-3">
 				</div>
@@ -73,7 +62,7 @@ if(!empty($copy))
 					<div class="form-group">
 						<label class="col-md-3 control-label">Sales Order No.</label>
 						<div class="col-md-3 padding-right-decrease">
-							<?php echo $this->Form->input('so1', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
+							<?php echo $this->Form->input('so1', ['label' => false,'class' => 'form-control input-sm','readonly','value'=>$Company->alias]); ?>
 						</div>
 						<div class="col-md-3 padding-right-decrease" id="so3_div">
 							<?php echo $this->Form->input('so3', ['label' => false,'class' => 'form-control input-sm']); ?>
