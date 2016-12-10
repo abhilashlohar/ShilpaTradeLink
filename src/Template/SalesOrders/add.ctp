@@ -11,6 +11,9 @@ if(!empty($copy))
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Add Sales Order</span>
+			<?php if($process_status=='Pulled From Quotation'){ ?>
+			<br/><span style=" font-size: 13px; ">Converting Quotation: <?= h(($quotation->qt1.'/IN-'.str_pad($quotation->qt2, 3, '0', STR_PAD_LEFT).'/'.$quotation->qt3.'/'.$quotation->qt4)) ?></span>
+			<?php } ?>
 		</div>
 		<div class="actions">
 			<?php echo $this->Html->link('<i class="icon-home"></i> Pull Quotation','/Quotations/index?pull-request=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
