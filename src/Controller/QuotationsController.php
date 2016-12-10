@@ -21,8 +21,11 @@ class QuotationsController extends AppController
 		 $url=$this->request->here();
 		 $url=parse_url($url,PHP_URL_QUERY);
 		 
-		 $copy_request=$this->request->query('copy-request');
-		// pr ($copy_request);exit;
+		$copy_request=$this->request->query('copy-request');
+		
+		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
 		
 		$this->viewBuilder()->layout('index_layout');
 		$where=[];
@@ -73,7 +76,7 @@ class QuotationsController extends AppController
 			$where['status']='Closed';
 		}
 		//pr($where); exit;
-        $quotations = $this->paginate($this->Quotations->find()->where($where)->order(['Quotations.id' => 'DESC']));
+        $quotations = $this->paginate($this->Quotations->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
 		
 		$companies = $this->Quotations->Companies->find('list');
 		

@@ -57,24 +57,11 @@
 				<form method="GET" >
 				<input type="hidden" name="pull-request" value="<?php echo @$pull_request; ?>">
 				<table class="table table-condensed">
-					<thead>
-						<tr>
-							<th>Quotation No.</th>
-							<th>Customer</th>
-							<th>Salesman</th>
-							<th>Product</th>
-							<th>Finalisation Date</th>
-							<th></th>
-						</tr>
-					</thead>
 					<tbody>
 						<tr>
 							<td>
 								<div class="row">
-									<div class="col-md-4">
-										<?php echo $this->Form->input('company_id',['options' => $companies,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me','value'=>@$company_id]); ?>
-									</div>
-									<div class="col-md-4">
+									<div class="col-md-6">
 										<div class="input-group" style="" id="pnf_text">
 											<span class="input-group-addon">QT-</span><input type="text" name="qt2" class="form-control input-sm" placeholder="Quotation No" value="<?php echo @$qt2; ?>">
 										</div>
