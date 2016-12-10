@@ -113,7 +113,8 @@ class ReceiptVouchersController extends AppController
 					}
 				} 
 				$this->Flash->success(__('The Receipt-Voucher:'.str_pad($receiptVoucher->id, 4, '0', STR_PAD_LEFT)).' has been genereted.');
-				return $this->redirect(['action' => 'index']);
+				return $this->redirect(['action' => 'view/'.$receiptVoucher->id]);
+           
 			} else {
                 $this->Flash->error(__('The receipt voucher could not be saved. Please, try again.'));
             }
@@ -195,7 +196,7 @@ class ReceiptVouchersController extends AppController
 				$ledger->transaction_date = $receiptVoucher->transaction_date;
 				$this->ReceiptVouchers->Ledgers->save($ledger);
                 $this->Flash->success(__('The receipt voucher has been saved.'));
-				return $this->redirect(['action' => 'index']);
+				return $this->redirect(['action' => 'view/'.$receiptVoucher->id]);
             } else {
                 $this->Flash->error(__('The receipt voucher could not be saved. Please, try again.'));
             }

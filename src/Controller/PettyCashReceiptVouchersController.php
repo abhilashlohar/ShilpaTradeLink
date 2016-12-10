@@ -175,8 +175,8 @@ class PettyCashReceiptVouchersController extends AppController
 				$this->PettyCashReceiptVouchers->Ledgers->save($ledger);
                 
 				$this->Flash->success(__('The petty cash receipt voucher has been saved.'));
-				return $this->redirect(['action' => 'index']);
-            } else {
+				return $this->redirect(['action' => 'view/'.$pettyCashReceiptVoucher->id]);
+           } else {
                 $this->Flash->error(__('The petty cash receipt voucher could not be saved. Please, try again.'));
             }
         }$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(5, [

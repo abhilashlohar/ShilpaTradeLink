@@ -92,9 +92,9 @@ class JournalVouchersController extends AppController
 					//pr($ledger); exit;
 					$this->JournalVouchers->Ledgers->save($ledger);
 					}
-	
-                $this->Flash->success(__('The journal voucher has been saved.'));
-				return $this->redirect(['action' => 'index']);
+					$this->Flash->success(__('The Journal-Voucher:'.str_pad($journalVoucher->id, 4, '0', STR_PAD_LEFT)).' has been genereted.');
+					return $this->redirect(['action' => 'view/'.$journalVoucher->id]);
+            
 				} 
 			
            else {
@@ -169,10 +169,8 @@ class JournalVouchersController extends AppController
 					//pr($ledger); exit;
 					$this->JournalVouchers->Ledgers->save($ledger);
 					}
-                $this->Flash->success(__('The journal voucher has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            } else {
+					return $this->redirect(['action' => 'view/'.$journalVoucher->id]);
+				} else {
                 $this->Flash->error(__('The journal voucher could not be saved. Please, try again.'));
             }
         }

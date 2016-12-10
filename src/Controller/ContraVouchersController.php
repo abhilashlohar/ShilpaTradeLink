@@ -174,8 +174,10 @@ class ContraVouchersController extends AppController
 				$ledger->voucher_id = $contraVoucher->id;
 				$ledger->voucher_source = 'Contra Voucher';
 				$ledger->transaction_date = $contraVoucher->transaction_date;
-				$this->Flash->success(__('The Contra-Voucher:'.str_pad($contraVoucher->id, 4, '0', STR_PAD_LEFT)).' has been genereted.');
-				return $this->redirect(['action' => 'view/'.$contraVoucher->id]);
+				$this->ContraVouchers->Ledgers->save($ledger);
+				
+				$this->Flash->success(__('The contra voucher has been saved.'));
+					return $this->redirect(['action' => 'view/'.$contraVoucher->id]);
 			} else {
                 $this->Flash->error(__('The contra voucher could not be saved. Please, try again.'));
             }
