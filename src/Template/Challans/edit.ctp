@@ -9,17 +9,7 @@
 		<?= $this->Form->create($challan,['id'=>'form_sample_3']) ?>
 		<div class="form-body">
 				<div class="row">
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Company <span class="required" aria-required="true">*</span></label>
-							<?php 
-							$options=array();
-							foreach($companies as $companie){
-								$options[]=['text' => $companie->name, 'value' => $companie->id, 'alias' => $companie->alias];
-							}
-							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me','required']); ?>
-						</div>
-					</div>
+					
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Customers <span class="required" aria-required="true">*</span></label>

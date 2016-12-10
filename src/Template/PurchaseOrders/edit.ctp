@@ -10,23 +10,13 @@
 		<?= $this->Form->create($purchaseOrder,['id'=>'form_sample_3']) ?>
 			<div class="form-body">
 				<div class="row">
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Company <span class="required" aria-required="true">*</span></label>
-							<?php 
-							$options=array();
-							foreach($companies as $companie){
-								$options[]=['text' => $companie->name, 'value' => $companie->id, 'alias' => $companie->alias];
-							}
-							echo $this->Form->input('company_id', ['empty'=>'--Select-','options' => $options,'label' => false,'class' => 'form-control input-sm select2me']); ?>
-						</div>
-					</div>
+					
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Purchase Order No. <span class="required" aria-required="true">*</span></label>
 							<div class="row">
 								<div class="col-md-4">
-									<?php echo $this->Form->input('po1', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
+									<?php echo $this->Form->input('po1', ['label' => false,'class' => 'form-control input-sm','readonly','value'=>$Company->alias]); ?>
 								</div>
 								<div class="col-md-4">
 									<?php echo $this->Form->input('po3', ['options'=>$filenames,'label' => false,'class' => 'form-control input-sm select2me']); ?>
