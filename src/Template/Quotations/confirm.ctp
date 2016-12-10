@@ -9,7 +9,9 @@ $edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Edit']);
 		<div class="list-group">
 			<a href="<?php echo $list_url; ?>" class="list-group-item"><i class="fa fa-chevron-left"></i> Back to Quotations </a>
 			<a href="#" class="list-group-item"><i class="fa fa-envelope"></i> Email to Customer </a>
+			<?php if($quotation->status=='Pending'){ ?>
 			<a href="<?php echo $edit_url.'/'.$id; ?>" class="list-group-item"><i class="fa fa-edit"></i> Edit Quotation </a>
+			<?php } ?>
 			<a href="#" class="list-group-item" onclick="window.close()"><i class="fa fa-times"></i> Close </a>
 		</div>
 		<div style="padding:5px;">
