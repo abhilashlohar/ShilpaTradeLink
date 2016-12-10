@@ -59,13 +59,16 @@ class DebitNotesController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $debitNote = $this->DebitNotes->newEntity();
 		$s_employee_id=$this->viewVars['s_employee_id'];
-		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        
         if ($this->request->is('post')) {
             $debitNote = $this->DebitNotes->patchEntity($debitNote, $this->request->data);
 			
 			$debitNote->created_by=$s_employee_id;
 			$debitNote->transaction_date=date("Y-m-d",strtotime($debitNote->transaction_date));
 			$debitNote->created_on=date("Y-m-d");
+			$debitNote->company_id=$st_company_id;
 			
             if ($this->DebitNotes->save($debitNote)) {
 				$ledger = $this->DebitNotes->Ledgers->newEntity();
@@ -135,6 +138,9 @@ class DebitNotesController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        
         $debitNote = $this->DebitNotes->get($id, [
             'contain' => []
         ]);
@@ -143,6 +149,7 @@ class DebitNotesController extends AppController
 			$debitNote->edited_by=$s_employee_id;
 			$debitNote->transaction_date=date("Y-m-d",strtotime($debitNote->transaction_date));
 			$debitNote->edited_on=date("Y-m-d");
+			$debitNote->company_id=$st_company_id;
 			
             if ($this->DebitNotes->save($debitNote)) {
 				

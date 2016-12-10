@@ -11,18 +11,7 @@
 		 <?= $this->Form->create($journalVoucher,['type' => 'file','id'=>'form_sample_3']) ?>
 			<div class="form-body">
 			<div class="row">
-				<div class="col-md-4" >
-						<div class="form-group">
-						<label class=" control-label">Company<span class="required" aria-required="true">*</span></label>
-							<?php 
-							$options=array();
-							foreach($companies as $companie){
-								$options[]=['text' => $companie->name, 'value' => $companie->id, 'alias' => $companie->alias];
-							}
-							echo $this->Form->input('company_id',['options' => $options,'empty' => "--Select Company--",'label' => false,'class' => 'form-control input-sm select2me','required'] ); ?>
-						
-						</div>
-				</div>
+				
 				
 				<div class="col-md-4" >
 						<div class="form-group">
@@ -30,6 +19,16 @@
 							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y")]); ?>
 						
 						</div>
+				</div>
+				<div class="col-md-5">
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label class="col-md-3 control-label">Date</label>
+						<div class="col-md-9">
+							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
+						</div>
+					</div>
 				</div>
 			</div>
 			<table class="table tableitm" id="main_tb">

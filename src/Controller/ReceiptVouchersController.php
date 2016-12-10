@@ -56,12 +56,15 @@ class ReceiptVouchersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $receiptVoucher = $this->ReceiptVouchers->newEntity();
 		$s_employee_id=$this->viewVars['s_employee_id'];
-		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        
         if ($this->request->is('post')) {
             $receiptVoucher = $this->ReceiptVouchers->patchEntity($receiptVoucher, $this->request->data);
 			$receiptVoucher->created_by=$s_employee_id;
 			$receiptVoucher->transaction_date=date("Y-m-d",strtotime($receiptVoucher->transaction_date));
 			$receiptVoucher->created_on=date("Y-m-d");
+			$receiptVoucher->company_id=$st_company_id;
 				
 					
             if ($this->ReceiptVouchers->save($receiptVoucher)) {
@@ -155,7 +158,9 @@ class ReceiptVouchersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
-		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        
         $receiptVoucher = $this->ReceiptVouchers->get($id, [
             'contain' => []
         ]);
@@ -164,7 +169,8 @@ class ReceiptVouchersController extends AppController
 			$receiptVoucher->edited_by=$s_employee_id;
 				$receiptVoucher->transaction_date=date("Y-m-d",strtotime($receiptVoucher->transaction_date));
 				$receiptVoucher->edited_on=date("Y-m-d");
-				
+				$receiptVoucher->company_id=$st_company_id;
+			
             if ($this->ReceiptVouchers->save($receiptVoucher)) {
 				
 				//delete old data

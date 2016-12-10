@@ -58,12 +58,16 @@ class ContraVouchersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $contraVoucher = $this->ContraVouchers->newEntity();
 		$s_employee_id=$this->viewVars['s_employee_id'];
-		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        
         if ($this->request->is('post')) {
             $contraVoucher = $this->ContraVouchers->patchEntity($contraVoucher, $this->request->data);
 			$contraVoucher->created_by=$s_employee_id;
 			$contraVoucher->transaction_date=date("Y-m-d",strtotime($contraVoucher->transaction_date));
 			$contraVoucher->created_on=date("Y-m-d");
+			$contraVoucher->company_id=$st_company_id;
+			
 			if ($this->ContraVouchers->save($contraVoucher)) {
 				$ledger = $this->ContraVouchers->Ledgers->newEntity();
 				$ledger->ledger_account_id = $contraVoucher->cash_bank_from;
@@ -135,8 +139,10 @@ class ContraVouchersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
-		
-        $contraVoucher = $this->ContraVouchers->get($id, [
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        
+		$contraVoucher = $this->ContraVouchers->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -145,6 +151,8 @@ class ContraVouchersController extends AppController
 			$contraVoucher->edited_by=$s_employee_id;
 			$contraVoucher->transaction_date=date("Y-m-d",strtotime($contraVoucher->transaction_date));
 			$contraVoucher->edited_on=date("Y-m-d");
+			$contraVoucher->company_id=$st_company_id;
+			
             if ($this->ContraVouchers->save($contraVoucher)) 
 			{
 				$this->ContraVouchers->Ledgers->deleteAll(['voucher_id' => $contraVoucher->id, 'voucher_source' => 'Contra Voucher']);

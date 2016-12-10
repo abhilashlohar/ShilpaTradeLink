@@ -19,7 +19,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Date</label>
 						<div class="col-md-9">
-							<?php echo date("d-m-Y"); ?>
+							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
 						</div>
 					</div>
 				</div>

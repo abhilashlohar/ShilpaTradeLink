@@ -56,13 +56,15 @@ class PettyCashReceiptVouchersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $pettyCashReceiptVoucher = $this->PettyCashReceiptVouchers->newEntity();
 		$s_employee_id=$this->viewVars['s_employee_id'];
-		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        
         if ($this->request->is('post')) {
             $pettyCashReceiptVoucher = $this->PettyCashReceiptVouchers->patchEntity($pettyCashReceiptVoucher, $this->request->data);
 			$pettyCashReceiptVoucher->created_by=$s_employee_id;
-			
 			$pettyCashReceiptVoucher->transaction_date=date("Y-m-d",strtotime($pettyCashReceiptVoucher->transaction_date));
 			$pettyCashReceiptVoucher->created_on=date("Y-m-d");
+			$pettyCashReceiptVoucher->company_id=$st_company_id;
 			//pr($pettyCashReceiptVoucher); exit;
 			if ($this->PettyCashReceiptVouchers->save($pettyCashReceiptVoucher)) 
 			{
@@ -136,6 +138,9 @@ class PettyCashReceiptVouchersController extends AppController
 		
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        
         $pettyCashReceiptVoucher = $this->PettyCashReceiptVouchers->get($id, [
             'contain' => []
         ]);
@@ -144,6 +149,7 @@ class PettyCashReceiptVouchersController extends AppController
 			$pettyCashReceiptVoucher->edited_by=$s_employee_id;
 			$pettyCashReceiptVoucher->transaction_date=date("Y-m-d",strtotime($pettyCashReceiptVoucher->transaction_date));
 			$pettyCashReceiptVoucher->edited_on=date("Y-m-d");
+			$pettyCashReceiptVoucher->company_id=$st_company_id;
 			
             if ($this->PettyCashReceiptVouchers->save($pettyCashReceiptVoucher)) {
 				

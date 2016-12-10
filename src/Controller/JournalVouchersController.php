@@ -60,13 +60,16 @@ class JournalVouchersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $journalVoucher = $this->JournalVouchers->newEntity();
 		$s_employee_id=$this->viewVars['s_employee_id'];
-		
-        if ($this->request->is('post')) {
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        
+		if ($this->request->is('post')) {
             $journalVoucher = $this->JournalVouchers->patchEntity($journalVoucher, $this->request->data);
 			
 			$journalVoucher->created_by=$s_employee_id;
 			$journalVoucher->transaction_date=date("Y-m-d",strtotime($journalVoucher->transaction_date));
 			$journalVoucher->created_on=date("Y-m-d");
+			$journalVoucher->company_id=$st_company_id;
 			
 			if ($this->JournalVouchers->save($journalVoucher)) {
 			
@@ -131,6 +134,9 @@ class JournalVouchersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        
         $journalVoucher = $this->JournalVouchers->get($id, [
             'contain' => ['Companies','JournalVoucherRows'=>['LedgerAccounts'],'Companies','Creator']
         ]);
@@ -139,6 +145,7 @@ class JournalVouchersController extends AppController
 			$journalVoucher->created_by=$s_employee_id;
 			$journalVoucher->transaction_date=date("Y-m-d",strtotime($journalVoucher->transaction_date));
 			$journalVoucher->created_on=date("Y-m-d");
+			$journalVoucher->company_id=$st_company_id;
 			
             if ($this->JournalVouchers->save($journalVoucher)) {
 				

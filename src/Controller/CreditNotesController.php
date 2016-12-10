@@ -57,12 +57,16 @@ class CreditNotesController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $creditNote = $this->CreditNotes->newEntity();
 		$s_employee_id=$this->viewVars['s_employee_id'];
-		
-        if ($this->request->is('post')) {
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        
+		 if ($this->request->is('post')) {
 			$creditNote = $this->CreditNotes->patchEntity($creditNote, $this->request->data);
             $creditNote->created_by=$s_employee_id;
 			$creditNote->transaction_date=date("Y-m-d",strtotime($creditNote->transaction_date));
 			$creditNote->created_on=date("Y-m-d");
+			$creditNote->company_id=$st_company_id;
+			
 			if ($this->CreditNotes->save($creditNote)) {
 				$ledger = $this->CreditNotes->Ledgers->newEntity();
 				$ledger->ledger_account_id = $creditNote->purchase_acc_id;
@@ -132,6 +136,9 @@ class CreditNotesController extends AppController
 		
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        
         $creditNote = $this->CreditNotes->get($id, [
             'contain' => []
         ]);
@@ -140,6 +147,8 @@ class CreditNotesController extends AppController
 			$creditNote->edited_by=$s_employee_id;
 			$creditNote->transaction_date=date("Y-m-d",strtotime($creditNote->transaction_date));
 			$creditNote->edited_on=date("Y-m-d");
+			$creditNote->company_id=$st_company_id;
+			
             if ($this->CreditNotes->save($creditNote)) {
 				
 				$this->CreditNotes->Ledgers->deleteAll(['voucher_id' => $creditNote->id, 'voucher_source' => 'Credit Note']);

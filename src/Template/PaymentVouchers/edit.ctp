@@ -19,7 +19,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Date</label>
 						<div class="col-md-9">
-							<?php echo date("d-m-Y"); ?>
+							<?php echo $this->Form->input('edited_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
 						</div>
 					</div>
 				</div>
@@ -28,8 +28,8 @@
 				<div class="row" style="margin-top:30px;">
 					<div class="col-md-4" >
 						<div class="form-group">
-						<label class=" control-label">Voucher Date</label>
-							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','value' => date("d-m-Y",strtotime($paymentVoucher->transaction_date))]); ?>
+						<label class=" control-label">Transaction Date</label>
+							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y",strtotime($paymentVoucher->transaction_date))]); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
