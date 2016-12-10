@@ -1,6 +1,7 @@
 <?php 
 if(!empty($copy))
 {
+	//pr($Filenames); exit;
 	$quotation->finalisation_date=date("d-m-Y",strtotime($quotation->finalisation_date));
 }
 ?>
@@ -88,8 +89,18 @@ if(!empty($copy))
 						<div class="col-md-2 padding-right-decrease">
 							<?php echo $this->Form->input('qt1', ['label' => false,'class' => 'form-control input-sm','readonly','value'=>$Company->alias]); ?>
 						</div>
+						
+						
+						
 						<div class="col-md-3 padding-right-decrease" id="qt3_div">
-							<?php echo $this->Form->input('qt3', ['label' => false,'class' => 'form-control input-sm']); ?>
+							<?php
+							$options=array();
+							foreach($Filenames as $Filenames){
+								$merge=$Filenames->file1.'-'.$Filenames->file2.'' ;
+								
+								$options[]=['text' =>$merge, 'value' => $merge];
+							}
+							echo $this->Form->input('qt3', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?>
 						</div>
 						<div class="col-md-3 ">
 							<?php echo $this->Form->input('qt4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
@@ -634,6 +645,8 @@ $(document).ready(function() {
 			$("#result_ajax").html(response);
 		});
 	}
+		
+		
 	
 	$('.insert_address').die().live("click",function() { 
 		var addr=$(this).text();
@@ -677,6 +690,9 @@ $(document).ready(function() {
 		var employee_id=$('select[name="customer_id"] option:selected').attr("employee_id");
 		$("select[name=employee_id]").val(employee_id);
     });
+	
+	
+	
 	
 	$('select[name="company_id"]').on("change",function() {
 		var alias=$('select[name="company_id"] option:selected').attr("alias");

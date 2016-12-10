@@ -38,6 +38,7 @@ class SalesOrdersTable extends Table
         $this->table('sales_orders');
         $this->displayField('id');
         $this->primaryKey('id');
+		$this->belongsTo('Filenames');
 
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',

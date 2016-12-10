@@ -68,7 +68,15 @@ if(!empty($copy))
 							<?php echo $this->Form->input('so1', ['label' => false,'class' => 'form-control input-sm','readonly','value'=>$Company->alias]); ?>
 						</div>
 						<div class="col-md-3 padding-right-decrease" id="so3_div">
-							<?php echo $this->Form->input('so3', ['label' => false,'class' => 'form-control input-sm']); ?>
+						<?php
+							$options=array();
+							foreach($Filenames as $Filenames){
+								$merge=$Filenames->file1.'-'.$Filenames->file2.'' ;
+								
+								$options[]=['text' =>$merge, 'value' => $merge];
+							}
+							echo $this->Form->input('so3', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?>
+						
 						</div>
 						<div class="col-md-3">
 							<?php echo $this->Form->input('so4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
@@ -873,19 +881,9 @@ $(document).ready(function() {
 		
     });
 	
-	<?php if($process_status!="New"){ ?> 
-		var customer_id=$('select[name="customer_id"] option:selected').val();
-		
-		$("#so3_div").html('Loading...');
-		var url="<?php echo $this->Url->build(['controller'=>'Filenames','action'=>'listFilename']); ?>";
-		url=url+'/'+customer_id+'/so',
-		$.ajax({
-			url: url,
-		}).done(function(response) {
-			$("#so3_div").html(response);
-			$('select[name="qt3"]').attr('name','so3');
-		});
-	<?php } ?>
+
+	
+	
 	
 	$('select[name="company_id"]').on("change",function() {
 		var alias=$('select[name="company_id"] option:selected').attr("alias");

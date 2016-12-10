@@ -269,6 +269,9 @@ class QuotationsController extends AppController
                 $this->Flash->error(__('The quotation could not be saved. Please, try again.'));
             }
         }
+		$Filenames = $this->Quotations->Filenames->find()->where(['customer_id' => $quotation->customer_id]);
+		//pr($Filenames->file1); exit;
+
 		$copy=$this->request->query('copy');
         $customers = $this->Quotations->Customers->find('all');
 		$companies = $this->Quotations->Companies->find('all');
@@ -277,7 +280,7 @@ class QuotationsController extends AppController
 		$items = $this->Quotations->Items->find('list');
 		$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);
 		
-        $this->set(compact('quotation', 'customers','companies','employees','ItemGroups','items','termsConditions','copy','Company'));
+        $this->set(compact('quotation', 'customers','companies','employees','Filenames','ItemGroups','items','termsConditions','copy','Company'));
         $this->set('_serialize', ['quotation']);
     }
 
@@ -296,16 +299,20 @@ class QuotationsController extends AppController
         ]);
 		
 		$s_employee_id=$this->viewVars['s_employee_id'];
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$Company = $this->Quotations->Companies->get($st_company_id);
 		
         if ($this->request->is(['patch', 'post', 'put'])) {
         	$this->request->data["finalisation_date"]=date("Y-m-d",strtotime($this->request->data["finalisation_date"]));
             $quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
+			$quotation->created_by=$s_employee_id;
 			$quotation->created_on=date("Y-m-d",strtotime($quotation->created_on));
-			$quotation->ref_no=$quotation->alias.'/'.$quotation->ref.'/'.$quotation->yr;
-			$quotation->edited_by=$s_employee_id;
-			$quotation->edited_on=date("Y-m-d");
+			$quotation->finalisation_date=date("Y-m-d",strtotime($quotation->finalisation_date));
+			$quotation->company_id=$st_company_id;
 			
             if ($this->Quotations->save($quotation)) {
+				//pr($quotation); exit;
                 $this->Flash->success(__('The quotation has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -313,6 +320,7 @@ class QuotationsController extends AppController
                 $this->Flash->error(__('The quotation could not be saved. Please, try again.'));
             }
         }
+		$Filenames = $this->Quotations->Filenames->find()->where(['customer_id' => $quotation->customer_id]);
         $customers = $this->Quotations->Customers->find('all');
 		$companies = $this->Quotations->Companies->find('all',['limit' => 200]);
 		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
@@ -320,7 +328,7 @@ class QuotationsController extends AppController
 		$items = $this->Quotations->Items->find('list',['limit' => 200]);
 		$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);
 		
-        $this->set(compact('quotation', 'customers','companies','employees','ItemGroups','items','termsConditions'));
+        $this->set(compact('quotation', 'customers','companies','employees','ItemGroups','items','termsConditions','Filenames'));
         $this->set('_serialize', ['quotation']);
     }
 

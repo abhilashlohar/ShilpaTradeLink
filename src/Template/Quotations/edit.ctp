@@ -1,3 +1,4 @@
+<?php //pr($Filenames); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -79,7 +80,16 @@
 							<?php echo $this->Form->input('qt1', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
 						</div>
 						<div class="col-md-3 padding-right-decrease" id="qt3_div">
-							<?php echo $this->Form->input('qt3', ['label' => false,'class' => 'form-control input-sm']); ?>
+						
+							<?php 
+							$options=array();
+							foreach($Filenames as $Filenames){
+								$merge=$Filenames->file1.'-'.$Filenames->file2.'' ;
+								
+								$options[]=['text' =>$merge, 'value' => $merge];
+							}
+							
+							echo $this->Form->input('qt3', ['options'=>$options,'label' => false,'class' => 'form-control input-sm','value'=>$quotation->qt3]); ?>
 						</div>
 						<div class="col-md-3">
 							<?php echo $this->Form->input('qt4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
@@ -596,6 +606,8 @@ $(document).ready(function() {
 		$('textarea[name="customer_address"]').val(addr);
 		$("#myModal1").hide();
     });
+	
+
 	
 	$('select[name="customer_id"]').on("change",function() {
 		var contact_person=$('select[name="customer_id"] option:selected').attr('contact_person');

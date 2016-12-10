@@ -307,7 +307,13 @@ return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
 		if(!empty($copy)){
 			$process_status='';
 		}
-		//pr ($copy); exit;
+		//pr ($salesOrder->customer_id); exit;
+		if($quotation_id){
+			$Filenames = $this->SalesOrders->Filenames->find()->where(['customer_id' => $quotation->customer_id]);
+		}elseif($id){
+			$Filenames = $this->SalesOrders->Filenames->find()->where(['customer_id' => $salesOrder->customer_id]);
+		}
+		
         $companies = $this->SalesOrders->Companies->find('all');
 		$quotationlists = $this->SalesOrders->Quotations->find()->where(['status'=>'Pending'])->order(['Quotations.id' => 'DESC']);
 		$items = $this->SalesOrders->Items->find('list');
@@ -315,7 +321,7 @@ return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
 		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
 		$termsConditions = $this->SalesOrders->TermsConditions->find('all',['limit' => 200]);
 		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all');
-        $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','copy','process_status','Company'));
+        $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','Filenames','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','copy','process_status','Company'));
         $this->set('_serialize', ['salesOrder']);
     }
 	
@@ -374,7 +380,9 @@ return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
 		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200]);
 		$termsConditions = $this->SalesOrders->TermsConditions->find('all',['limit' => 200]);
 		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all');
-        $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes'));
+		$Filenames = $this->SalesOrders->Filenames->find()->where(['customer_id' => $salesOrder->customer_id]);
+		
+        $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','Filenames'));
         $this->set('_serialize', ['salesOrder']);
     }
 

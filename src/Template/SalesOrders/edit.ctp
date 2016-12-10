@@ -50,7 +50,16 @@
 							<?php echo $this->Form->input('so1', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
 						</div>
 						<div class="col-md-3 padding-right-decrease" id="so3_div">
-							<?php echo $this->Form->input('so3', ['label' => false,'class' => 'form-control input-sm']); ?>
+							<?php 
+							$options=array();
+							foreach($Filenames as $Filenames){
+								$merge=$Filenames->file1.'-'.$Filenames->file2.'' ;
+								
+								$options[]=['text' =>$merge, 'value' => $merge];
+							}
+							echo $this->Form->input('so3', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); 
+							//echo $this->Form->input('so3', ['label' => false,'class' => 'form-control input-sm select2me']); 
+							?>
 						</div>
 						<div class="col-md-3">
 							<?php echo $this->Form->input('so4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
@@ -782,16 +791,7 @@ $(document).ready(function() {
 		$("#myModal12").hide();
     });
 
-	var customer_id=$('select[name="customer_id"] option:selected').val();
-	$("#so3_div").html('Loading...');
-	var url="<?php echo $this->Url->build(['controller'=>'Filenames','action'=>'listFilename']); ?>";
-	url=url+'/'+customer_id+'/so',
-	$.ajax({
-		url: url,
-	}).done(function(response) {
-		$("#so3_div").html(response);
-		$('select[name="qt3"]').attr('name','so3');
-	});
+	
 
 	$('select[name="customer_id"]').on("change",function() {
 		var customer_id=$('select[name="customer_id"] option:selected').val();
