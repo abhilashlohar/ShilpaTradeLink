@@ -315,7 +315,7 @@ class SalesOrdersController extends AppController
 		
         $companies = $this->SalesOrders->Companies->find('all');
 		$quotationlists = $this->SalesOrders->Quotations->find()->where(['status'=>'Pending'])->order(['Quotations.id' => 'DESC']);
-		$items = $this->SalesOrders->Items->find('list')->matching(
+		$items = $this->SalesOrders->Items->find('list')->where(['freeze'=>0])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
 						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
 					}
@@ -380,7 +380,7 @@ class SalesOrdersController extends AppController
 		}]);
         $companies = $this->SalesOrders->Companies->find('all', ['limit' => 200]);
 		$quotationlists = $this->SalesOrders->Quotations->find()->where(['status'=>'Pending'])->order(['Quotations.id' => 'DESC']);
-		$items = $this->SalesOrders->Items->find('list')->matching(
+		$items = $this->SalesOrders->Items->find('list')->where(['freeze'=>0])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
 						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
 					}

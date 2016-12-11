@@ -277,7 +277,7 @@ class QuotationsController extends AppController
 		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
 		$ItemGroups = $this->Quotations->ItemGroups->find('list');
 		$items = $this->Quotations->Items->find('list');
-		$items = $this->Quotations->Items->find('list')->matching(
+		$items = $this->Quotations->Items->find('list')->where(['freeze'=>0])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
 						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
 					}
@@ -329,7 +329,7 @@ class QuotationsController extends AppController
 		$companies = $this->Quotations->Companies->find('all',['limit' => 200]);
 		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
 		$ItemGroups = $this->Quotations->ItemGroups->find('list');
-		$items = $this->Quotations->Items->find('list')->matching(
+		$items = $this->Quotations->Items->find('list')->where(['freeze'=>0])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
 						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
 					}
