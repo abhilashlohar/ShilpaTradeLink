@@ -67,7 +67,7 @@ class ItemsTable extends Table
             'targetForeignKey' => 'company_id',
             'joinTable' => 'item_companies'
         ]);
-        $this->hasMany('ItemUsedByCompanies', [
+        $this->hasMany('ItemCompanies', [
             'foreignKey' => 'item_id'
         ]);
 		$this->hasMany('InvoiceRows', [

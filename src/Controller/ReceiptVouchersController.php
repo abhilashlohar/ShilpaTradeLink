@@ -91,7 +91,7 @@ class ReceiptVouchersController extends AppController
 				
 				//Invoice Update 
 				if($receiptVoucher->payment_process=="Against Reference Number"){
-					
+					echo $receiptVoucher->received_from_id;
 					$Customer=$this->ReceiptVouchers->Customers->find()->where(['ledger_account_id'=>$receiptVoucher->received_from_id])->first();
 					
 					$Invoices=$this->ReceiptVouchers->Invoices->find()->where(['due_payment !='=>0,'customer_id'=>$Customer->id])->order(['date_created'=>'ASC']);

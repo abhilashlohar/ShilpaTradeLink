@@ -248,7 +248,6 @@ class QuotationsController extends AppController
 		$Company = $this->Quotations->Companies->get($st_company_id);
 		
         if ($this->request->is(['patch', 'post', 'put'])) {
-			//echo 'hello'; exit;
 			$quotation = $this->Quotations->newEntity();
             $quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
 			$last_qt_no=$this->Quotations->find()->select(['qt2'])->where(['company_id' => $quotation->company_id])->order(['qt2' => 'DESC'])->first();
@@ -278,6 +277,11 @@ class QuotationsController extends AppController
 		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
 		$ItemGroups = $this->Quotations->ItemGroups->find('list');
 		$items = $this->Quotations->Items->find('list');
+		$items = $this->Quotations->Items->find('list')->matching(
+					'ItemCompanies', function ($q) use($st_company_id) {
+						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+					}
+				);
 		$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);
 		
         $this->set(compact('quotation', 'customers','companies','employees','Filenames','ItemGroups','items','termsConditions','copy','Company'));
@@ -325,7 +329,11 @@ class QuotationsController extends AppController
 		$companies = $this->Quotations->Companies->find('all',['limit' => 200]);
 		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
 		$ItemGroups = $this->Quotations->ItemGroups->find('list');
-		$items = $this->Quotations->Items->find('list',['limit' => 200]);
+		$items = $this->Quotations->Items->find('list')->matching(
+					'ItemCompanies', function ($q) use($st_company_id) {
+						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+					}
+				);
 		$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);
 		
         $this->set(compact('quotation', 'customers','companies','employees','ItemGroups','items','termsConditions','Filenames'));

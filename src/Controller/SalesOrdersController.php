@@ -315,7 +315,11 @@ class SalesOrdersController extends AppController
 		
         $companies = $this->SalesOrders->Companies->find('all');
 		$quotationlists = $this->SalesOrders->Quotations->find()->where(['status'=>'Pending'])->order(['Quotations.id' => 'DESC']);
-		$items = $this->SalesOrders->Items->find('list');
+		$items = $this->SalesOrders->Items->find('list')->matching(
+					'ItemCompanies', function ($q) use($st_company_id) {
+						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+					}
+				);
 		$transporters = $this->SalesOrders->Carrier->find('list');
 		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
 		$termsConditions = $this->SalesOrders->TermsConditions->find('all',['limit' => 200]);
@@ -346,6 +350,9 @@ class SalesOrdersController extends AppController
         ]);
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $salesOrder = $this->SalesOrders->patchEntity($salesOrder, $this->request->data);
 			
@@ -373,7 +380,11 @@ class SalesOrdersController extends AppController
 		}]);
         $companies = $this->SalesOrders->Companies->find('all', ['limit' => 200]);
 		$quotationlists = $this->SalesOrders->Quotations->find()->where(['status'=>'Pending'])->order(['Quotations.id' => 'DESC']);
-		$items = $this->SalesOrders->Items->find('list',['limit' => 200]);
+		$items = $this->SalesOrders->Items->find('list')->matching(
+					'ItemCompanies', function ($q) use($st_company_id) {
+						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+					}
+				);
 		$transporters = $this->SalesOrders->Carrier->find('list', ['limit' => 200]);
 		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200]);
 		$termsConditions = $this->SalesOrders->TermsConditions->find('all',['limit' => 200]);
