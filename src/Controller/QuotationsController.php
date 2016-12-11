@@ -37,8 +37,10 @@ class QuotationsController extends AppController
 		$product=$this->request->query('product');
 		$From=$this->request->query('From');
 		$To=$this->request->query('To');
+		$q_dateFrom=$this->request->query('q_dateFrom');
+		$q_dateTo=$this->request->query('q_dateTo');
 		$pull_request=$this->request->query('pull-request');
-		$this->set(compact('qt2','customer','salesman','product','From','To','company_id','file','pull_request'));
+		$this->set(compact('qt2','customer','salesman','product','From','To','q_dateFrom','q_dateTo','company_id','file','pull_request'));
 		if(!empty($company_id)){
 			$where['company_id']=$company_id;
 		}
@@ -64,6 +66,14 @@ class QuotationsController extends AppController
 		if(!empty($To)){
 			$To=date("Y-m-d",strtotime($this->request->query('To')));
 			$where['finalisation_date <=']=$To;
+		}
+		if(!empty($q_dateFrom)){
+			$q_dateFrom=date("Y-m-d",strtotime($this->request->query('q_dateFrom')));
+			$where['created_on >=']=$q_dateFrom;
+		}
+		if(!empty($q_dateTo)){
+			$q_dateTo=date("Y-m-d",strtotime($this->request->query('q_dateTo')));
+			$where['created_on <=']=$q_dateTo;
 		}
         $this->paginate = [
             'contain' => ['Customers','Employees','ItemGroups']
