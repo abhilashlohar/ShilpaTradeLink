@@ -98,7 +98,11 @@
 							<th>Customer</th>
 							<th>Salesman</th>
 							<th>Product</th>
-							<th>Finalisation Ddate</th>
+							<?php if($pull_request=="true"){ ?>
+							<th>Quotation Date</th>
+							<?php }else{ ?>
+							<th>Finalisation Date</th>
+							<?php } ?>
 							<th class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
@@ -114,7 +118,12 @@
 							<td><?= h($quotation->customer->customer_name) ?></td>
 							<td><?= h($quotation->employee->name) ?></td>
 							<td><?= h($quotation->item_group->name) ?></td>
+							
+							<?php if($pull_request=="true"){ ?>
+							<td><?php echo date("d-m-Y",strtotime($quotation->created_on)); ?></td>
+							<?php }else{ ?>
 							<td><?php echo date("d-m-Y",strtotime($quotation->finalisation_date)); ?></td>
+							<?php } ?>
 							<td class="actions">
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $quotation->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
 								
