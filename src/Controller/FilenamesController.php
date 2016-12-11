@@ -60,7 +60,7 @@ class FilenamesController extends AppController
             'contain' => ['Customers']
         ];
 		
-		$BEfilenames = $this->paginate($this->Filenames->find()->where(['file1' => 'BE'])->where($where));
+		$BEfilenames = $this->paginate($this->Filenames->find()->where(['file1' => 'BE'])->order(['file2' => 'DESC'])->where($where));
         $this->set(compact('BEfilenames'));
         $this->set('_serialize', ['filenames']);
     }
@@ -106,7 +106,7 @@ class FilenamesController extends AppController
             'contain' => ['Customers']
         ];
 		
-		$DCfilenames = $this->paginate($this->Filenames->find()->where(['file1' => 'DC'])->where($where));
+		$DCfilenames = $this->paginate($this->Filenames->find()->where(['file1' => 'DC'])->order(['file2' => 'DESC'])->where($where));
         $this->set(compact('DCfilenames'));
         $this->set('_serialize', ['filenames']);
     }
@@ -177,25 +177,50 @@ class FilenamesController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
+		
+		
         $filename = $this->Filenames->get($id);
-        if ($this->Filenames->delete($filename)) {
+		$merge=$filename->file1.'-'.$filename->file2;
+				//pr($merge); exit;
+		$filenameQuotationsexists = $this->Filenames->Quotations->exists(['qt3' => $merge]);
+		
+		$filenameSalesOrdersexists = $this->Filenames->SalesOrders->exists(['so3' => $merge]);
+		//pr($filenameSalesOrdersexists); exit;
+		$filenameInvoicesexists = $this->Filenames->Invoices->exists(['in3' =>  $merge]);
+		
+		if(!$filenameQuotationsexists && !$filenameSalesOrdersexists && !$filenameInvoicesexists){
+		if ($this->Filenames->delete($filename)) {
             $this->Flash->success(__('The filename has been deleted.'));
         } else {
             $this->Flash->error(__('The filename could not be deleted. Please, try again.'));
         }
+		}else{
+			$this->Flash->error(__('The file Exist in Somewhere.'));
+		}
 
         return $this->redirect(['action' => 'index']);
     }
 	
-	    public function delete2($id = null)
+	public function delete2($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $filename = $this->Filenames->get($id);
+		
+		$merge=$filename->file1.'-'.$filename->file2;
+		$filenameQuotationsexists = $this->Filenames->Quotations->exists(['qt3' => $merge]);
+		//pr($filenameQuotationsexists);exit;
+		$filenameSalesOrdersexists = $this->Filenames->SalesOrders->exists(['so3' => $merge]);
+		$filenameInvoicesexists = $this->Filenames->Invoices->exists(['in3' =>  $merge]);
+		
+		if(!$filenameQuotationsexists && !$filenameSalesOrdersexists && !$filenameInvoicesexists){
         if ($this->Filenames->delete($filename)) {
             $this->Flash->success(__('The filename has been deleted.'));
         } else {
             $this->Flash->error(__('The filename could not be deleted. Please, try again.'));
         }
+		}else{
+			$this->Flash->error(__('The file Exist in Somewhere.'));
+		}
 
         return $this->redirect(['action' => 'index2']);
     }

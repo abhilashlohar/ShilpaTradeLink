@@ -40,7 +40,9 @@ class FilenamesTable extends Table
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'
         ]);
-		
+		$this->belongsTo('SalesOrders');
+		$this->belongsTo('Invoices');
+		$this->belongsTo('Quotations');
 
     }
 

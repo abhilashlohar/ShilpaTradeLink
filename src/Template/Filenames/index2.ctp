@@ -31,10 +31,12 @@
 						echo $this->Form->input('file1', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?>
 					</div>
 					<div class="col-md-2">
-						<?php echo $this->Form->input('file2', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'File Number','value'=>@$file_inc_dc->file2+1]); ?>
+						<?php echo $this->Form->input('file2', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'File Number']); 
+						//,'value'=>@$file_inc_dc->file2+1
+						?>
 					</div>
 					<div class="col-md-3">
-						<?php echo $this->Form->input('customer_id', ['options' => $customers,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+						<?php echo $this->Form->input('customer_id', ['empty' => "--Select--",'options' => $customers,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 					</div>
 					<div class="col-md-3">
 						<?php echo $this->Form->button(__('ADD'),['class'=>'btn btn-primary']); ?>

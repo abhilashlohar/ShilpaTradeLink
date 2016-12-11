@@ -144,7 +144,7 @@
 					<div class="form-group">
 						<label class="col-md-1 control-label">Dear Sir</label>
 						<div class="col-md-11">
-							<?php echo $this->Form->input('text', ['label' => false,'class' => 'form-control','value' => 'With reference to above enquiry we are pleased to submit our quote as follows :-']); ?>
+							<?php echo $this->Form->input('text', ['label' => false,'class' => 'form-control','value' => $quotation->text]); ?>
 						</div>
 					</div>
 				</div>
