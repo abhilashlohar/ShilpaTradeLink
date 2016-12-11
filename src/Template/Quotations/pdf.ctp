@@ -133,7 +133,7 @@ $html .= '
 						<td>
 							<span>'. h(($quotation->customer->customer_name)) .'</span>
 							'.$this->Text->autoParagraph(h($quotation->customer_address)) .'</span>
-							Email: '. h($quotation->customer->customer_contacts[0]->email) .'
+							
 						</td>
 					</tr>
 					<tr>
