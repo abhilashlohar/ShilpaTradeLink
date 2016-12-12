@@ -1,11 +1,10 @@
 <?php 
-
-	if(!empty($status)){
+if(!empty($status)){
 		$url_excel=$status."/?".$url;
 	}else{
 		$url_excel="/?".$url;
 	}
-
+	
 ?>
 
 <div class="portlet light bordered">
@@ -116,6 +115,10 @@
 							<?php }else{ ?>
 							<th>Finalisation Date</th>
 							<?php } ?>
+							<?php if($status=="Closed"){ ?>
+							<th>Closing Reason</th>
+							<th>Closing Date</th>
+							<?php } ?>
 							<th class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
@@ -136,6 +139,10 @@
 							<td><?php echo date("d-m-Y",strtotime($quotation->created_on)); ?></td>
 							<?php }else{ ?>
 							<td><?php echo date("d-m-Y",strtotime($quotation->finalisation_date)); ?></td>
+							<?php } ?>
+							<?php if($quotation->status=='Closed'){ ?>
+							<td><?= h($quotation->reason) ?></td>
+							<td><?php echo date("d-m-Y",strtotime($quotation->closing_date)); ?></td>	
 							<?php } ?>
 							<td class="actions">
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $quotation->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>

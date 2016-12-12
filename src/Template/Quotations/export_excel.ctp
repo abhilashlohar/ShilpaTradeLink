@@ -25,6 +25,7 @@
 			<th>Customer</th>
 			<th>Salesman</th>
 			<th>Product</th>
+			<th>Total</th>
 			<th>Finalisation Date</th>
 			
 		</tr>
@@ -37,6 +38,7 @@
 			<td><?= h($quotation->customer->customer_name) ?></td>
 			<td><?= h($quotation->employee->name) ?></td>
 			<td><?= h($quotation->item_group->name) ?></td>
+			<td><?= h($quotation->total) ?></td>
 			<td><?php echo date("d-m-Y",strtotime($quotation->finalisation_date)); ?></td>
 			
 		</tr>

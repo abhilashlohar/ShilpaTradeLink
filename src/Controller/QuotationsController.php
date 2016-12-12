@@ -383,6 +383,7 @@ class QuotationsController extends AppController
 		$quotation_reason=$this->Quotations->QuotationCloseReasons->get($reason);
 		$quotation->reason=$quotation_reason->reason;
 		$quotation->status='Closed';
+		$quotation->closing_date=date("Y-m-d");
 		 if ($this->Quotations->save($quotation)) {
             $this->Flash->success(__('The quotation has been closed.'));
         } else {
