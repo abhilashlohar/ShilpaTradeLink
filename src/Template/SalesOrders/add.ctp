@@ -1,6 +1,7 @@
 <?php 
 if(!empty($copy))
 {
+	
 		$salesOrder->po_date=date(("d-m-Y"),strtotime($salesOrder->po_date));
 		$salesOrder->expected_delivery_date=date(("d-m-Y"),strtotime($salesOrder->expected_delivery_date	));
 	
@@ -75,7 +76,7 @@ if(!empty($copy))
 								
 								$options[]=['text' =>$merge, 'value' => $merge];
 							}
-							echo $this->Form->input('so3', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?>
+							echo $this->Form->input('so3', ['options'=>$options,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						
 						</div>
 						<div class="col-md-3">
@@ -634,8 +635,7 @@ $(document).ready(function() {
 	var terms_conditions=$("#terms_conditions").text();
 	$('textarea[name="terms_conditions"]').val(terms_conditions);
 	<?php }else{ ?>calculate_total(); 
-		var alias=$('select[name="company_id"] option:selected').attr("alias");
-		$('input[name="so1"]').val(alias);
+		
 	<?php } ?>
 	$('.quantity').die().live("keyup",function() {
 			var asc=$(this).val();
@@ -862,7 +862,7 @@ $(document).ready(function() {
 			url: url,
 		}).done(function(response) {
 			$("#so3_div").html(response);
-			$('select[name="qt3"]').attr('name','so3');
+			$('select[name="qt3"]').attr('name','so3').select2();
 		});
 		
 		

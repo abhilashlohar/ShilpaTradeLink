@@ -311,6 +311,8 @@ class SalesOrdersController extends AppController
 			$Filenames = $this->SalesOrders->Filenames->find()->where(['customer_id' => $quotation->customer_id]);
 		}elseif($id){
 			$Filenames = $this->SalesOrders->Filenames->find()->where(['customer_id' => $salesOrder->customer_id]);
+		}else{
+			$Filenames = $this->SalesOrders->Filenames->find();
 		}
 		
         $companies = $this->SalesOrders->Companies->find('all');

@@ -109,7 +109,7 @@ With reference to your price list we are pleased to place an order for the follo
 							echo $this->Form->input('sale_tax_per', ['empty'=>'--Select--','options'=>$options,'label' => false,'class' => 'form-control input-sm select2me','id'=>'saletax']);
 							?>
 							
-							<?php echo $this->Form->input('sale_tax_description', ['label' => false,'class' => 'form-control input-sm ', 'placeholder'=>'Sale Tax Description']);
+							<?php echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm ', 'placeholder'=>'Sale Tax Description']);
 							?>
 							</div>
 							
@@ -184,7 +184,7 @@ With reference to your price list we are pleased to place an order for the follo
 						<div class="form-group">
 							<label class="control-label">Excise Duty <span class="required" aria-required="true">*</span></label>
 							<?php 
-							echo $this->Form->input('excise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Excise Duty']); ?>
+							echo $this->Form->input('exceise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Excise Duty']); ?>
 						</div>
 					</div>
 				</div>

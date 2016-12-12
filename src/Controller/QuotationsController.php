@@ -241,9 +241,16 @@ class QuotationsController extends AppController
         $copy=$this->request->query('copy');
 		//pr ($copy); exit;
 		
+		$revision=$this->request->query('revision');
+		
 		$id=$this->request->query('copy');
+		
 		if(!empty($id)){
 			$quotation = $this->Quotations->get($id, [
+				'contain' => ['QuotationRows']
+			]);
+		}elseif(!empty($revision)){
+			$quotation = $this->Quotations->get($revision, [
 				'contain' => ['QuotationRows']
 			]);
 		}else{
