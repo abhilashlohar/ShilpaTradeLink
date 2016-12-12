@@ -72,16 +72,26 @@ class DistrictsController extends AppController
         $this->set(compact('district'));
         $this->set('_serialize', ['district']);
 		
-		 $alldistricts = $this->paginate($this->Districts);
-		 $search=$this->request->query('search');
-			if($search){
-				$alldistricts = $this->paginate($this->Districts->find()
-				->where([
-					'state LIKE' => '%'.$search.'%'
-				]));
-       }
+		$where=[];
+		$customer_state=$this->request->query('customer_state');
+		$customer_district=$this->request->query('customer_district');
+		$this->set(compact('customer_state','customer_district'));
+		if(!empty($customer_state)){
+			$where['state LIKE']='%'.$customer_state.'%';
+		}
+		if(!empty($customer_district)){
+			$where['district LIKE']='%'.$customer_district.'%';
+		}
+		 //$alldistricts = $this->paginate($this->Districts);
+		 //$search=$this->request->query('search');
+			//if($search){
+				//$alldistricts = $this->paginate($this->Districts->find()
+				//->where([
+					//'state LIKE' => '%'.$search.'%'
+				//]));
+     //  }
 	   
-	    $listdistricts = $this->paginate($this->Districts->find());
+	    $listdistricts = $this->paginate($this->Districts->find()->where($where));
 		
         $this->set(compact('alldistricts','listdistricts'));
         $this->set('_serialize', ['alldistricts']);

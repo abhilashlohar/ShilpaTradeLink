@@ -43,6 +43,17 @@
 		</div>
 		<div class="col-md-6">
 			<div class="portlet-body">
+			<form method="GET" >
+				<div class="row">
+					<div class="col-md-5">
+						<input type="text" name="customer_state" class="form-control input-sm" placeholder="State" value="<?php echo @$customer_state; ?>">
+					</div>
+					<div class="col-md-5">
+						<input type="text" name="customer_district" class="form-control input-sm" placeholder="District" value="<?php echo @$customer_district; ?>">
+					</div>
+					<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
+				</div>
+				</form>
 			<div class="table-scrollable">
 			<table class="table table-hover">
 				 <thead>
