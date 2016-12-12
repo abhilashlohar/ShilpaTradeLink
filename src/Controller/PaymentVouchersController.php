@@ -152,7 +152,6 @@ class PaymentVouchersController extends AppController
 			$paymentVoucher->edited_on=date("Y-m-d");
 			$paymentVoucher->transaction_date=date("Y-m-d",strtotime($paymentVoucher->transaction_date));
 			$paymentVoucher->edited_by=$s_employee_id;
-			//$paymentVoucher->created_on=date("Y-m-d");
             if ($this->PaymentVouchers->save($paymentVoucher))
 			{
 				
