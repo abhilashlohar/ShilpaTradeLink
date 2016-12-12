@@ -31,6 +31,14 @@
 		</div>
 		<div class="col-md-6">
 			<div class="portlet-body">
+			<form method="GET" >
+				<div class="row">
+					<div class="col-md-6">
+						<input type="text" name="cust_seg" class="form-control input-sm" placeholder="Customer Segment" value="<?php echo @$cust_seg; ?>">
+					</div>
+					<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button>
+				</div>
+			</form>
 			<div class="table-scrollable">
 			<table class="table table-hover">
 				 <thead>

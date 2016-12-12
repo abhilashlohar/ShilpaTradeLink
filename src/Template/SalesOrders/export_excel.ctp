@@ -22,6 +22,7 @@
 							<th>Customer</th>
 							<th>Date</th>
 							<th>PO No.</th>
+							<th>Total</th>
 							
 						</tr>
 					</thead>
@@ -33,6 +34,8 @@
 							<td><?= h($salesOrder->customer->customer_name) ?></td>
 							<td><?php echo date("d-m-Y",strtotime($salesOrder->created_on)); ?></td>
 							<td><?= h($salesOrder->customer_po_no) ?></td>
+							
+							<td><?= h($salesOrder->total_after_pnf) ?></td>
 							
 						</tr>
 						<?php endforeach; ?>

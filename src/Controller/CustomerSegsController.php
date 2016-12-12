@@ -63,7 +63,14 @@ class CustomerSegsController extends AppController
                 $this->Flash->error(__('The Customer Segment could not be saved. Please, try again.'));
             }
         }
-		$customerSegs = $this->paginate($this->CustomerSegs->find());
+		
+		$where=[];
+		$cust_seg=$this->request->query('cust_seg');
+		$this->set(compact('cust_seg'));
+		if(!empty($cust_seg)){
+			$where['name LIKE']='%'.$cust_seg.'%';
+		}
+		$customerSegs = $this->paginate($this->CustomerSegs->find()->where($where));
         $this->set(compact('customerSeg','customerSegs'));
         $this->set('_serialize', ['customerSeg','customerSegs']);
 		
