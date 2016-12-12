@@ -1,11 +1,10 @@
 <?php 
-
-	if(!empty($status)){
+if(!empty($status)){
 		$url_excel=$status."/?".$url;
 	}else{
 		$url_excel="/?".$url;
 	}
-
+	
 ?>
 
 <div class="portlet light bordered">
