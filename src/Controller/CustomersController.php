@@ -229,4 +229,12 @@ class CustomersController extends AppController
         $this->set(compact('customers'));
         $this->set('_serialize', ['customers']);
     }
+	
+	public function CreditLimit($customer_id = null)
+    {
+		$this->viewBuilder()->layout('');
+		
+		$Customer = $this->Customers->get($customer_id);
+		echo $Customer->credit_limit;
+    }
 }

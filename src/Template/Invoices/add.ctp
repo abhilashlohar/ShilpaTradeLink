@@ -266,7 +266,9 @@ if(!empty($sales_order->customer_id)){
 					<div class="form-group">
 						<label class="col-md-6 control-label">Credit Limits</label>
 						<div class="col-md-6" id="due">
-							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value' => @$sales_order->customer->credit_limit]); ?>
+							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value' => @$sales_order->customer->credit_limit]); ?><br/>
+							<a href="#" role="button" id="update_credit_limit">Update Credit Limit</a>
+							<span id="update_credit_limit_wait"></span>
 						</div>
 					</div>
 				</div>
@@ -487,6 +489,28 @@ $(document).ready(function() {
 				return false;  
 			}
 	});
+	
+	$('#update_credit_limit').on("click",function() {
+		var customer_id=$('input[name="customer_id"]').val();
+		$("#update_credit_limit_wait").html('Loading...');
+		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'CreditLimit']); ?>";
+		url=url+'/'+customer_id,
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$('input[name="credit_limit"]').val(response);
+			$("#update_credit_limit_wait").html('');
+			$('input[name="new_due_payment"]').attr('max',response).rules('add', {
+						required: true,
+						max: response,
+						messages: {
+							max: "Credit Limit Exieded ."
+						}
+					});
+		});
+    });
+	
+	
 	$('select[name="company_id"]').on("change",function() {
 		var alias=$('select[name="company_id"] option:selected').attr("alias");
 		$('input[name="in1"]').val(alias);
