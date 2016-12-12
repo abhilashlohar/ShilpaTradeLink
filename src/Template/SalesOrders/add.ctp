@@ -635,7 +635,7 @@ $(document).ready(function() {
 	var terms_conditions=$("#terms_conditions").text();
 	$('textarea[name="terms_conditions"]').val(terms_conditions);
 	<?php }else{ ?>calculate_total(); 
-		
+
 	<?php } ?>
 	$('.quantity').die().live("keyup",function() {
 			var asc=$(this).val();
