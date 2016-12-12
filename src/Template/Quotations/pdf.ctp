@@ -59,7 +59,7 @@ $html = '
   <div id="header">
 		<table width="100%">
 			<tr>
-				<td width="35%" rowspan="2">
+				<td width="35%" rowspan="2" valign="bottom">
 				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$quotation->company->logo.' height="80px" style="height:80px;"/>
 				</td>
 				<td colspan="2" align="right">

@@ -1,3 +1,9 @@
+<?php 
+
+	$due=0; foreach ($dueInvoices as $invoice){ 
+					$due+=$invoice->due_payment;
+		} 
+?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -243,6 +249,33 @@
 						<label class="col-md-3 control-label">Additional Note</label>
 						<div class="col-md-9">
 							<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional Note','rows'=>'5']); ?>
+						</div>
+					</div>
+				</div>
+			</div><br/>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-6 control-label">Credit Limits</label>
+						<div class="col-md-6" id="due">
+							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value' => @$invoice->customer->credit_limit]); ?>
+						</div>
+					</div>
+				</div>
+		
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-6 control-label">Due Payment</label>
+						<div class="col-md-6" id="due">
+							<?php echo $this->Form->input('due_payment', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value'=>$due]); ?>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-6 control-label">New Due Payment</label>
+						<div class="col-md-6" id="due">
+							<?php echo $this->Form->input('new_due_payment', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','max'=>@$sales_order->customer->credit_limit]); ?>
 						</div>
 					</div>
 				</div>
@@ -605,9 +638,26 @@ $(document).ready(function() {
 			grand_total=total_after_pnf+sale_tax+fright_amount;
 			$('input[name="grand_total"]').val(grand_total.toFixed(2));
 			
+			var due_payment=parseFloat($('input[name="due_payment"]').val());
+			var grand_total=parseFloat($('input[name="grand_total"]').val());
+			var new_due_payment=due_payment+grand_total;
+			$('input[name="new_due_payment"]').val(new_due_payment.toFixed(2));
+			
 		}
 		
-		$('.select_address').on("click",function() { 
+		
+	
+			var credit_limit=parseFloat($('input[name="credit_limit"]').val());
+			$('input[name="new_due_payment"]').attr('max',credit_limit).rules('add', {
+						required: true,
+						max: credit_limit,
+						messages: {
+							max: "Credit Limit Exieded ."
+						}
+					});
+		
+		
+	$('.select_address').on("click",function() { 
 		open_address();
     });
 	

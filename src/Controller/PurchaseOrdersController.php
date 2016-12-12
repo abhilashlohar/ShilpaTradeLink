@@ -195,7 +195,7 @@ class PurchaseOrdersController extends AppController
     {
 		$this->viewBuilder()->layout('');
          $purchaseOrder = $this->PurchaseOrders->get($id, [
-            'contain' => ['Companies','Customers'=>['CustomerAddress'],'Vendors','PurchaseOrderRows','Transporters','Creator']
+            'contain' => ['Companies','Customers'=>['CustomerAddress'],'Vendors','PurchaseOrderRows'=> ['Items'=>['Units']],'Transporters','Creator']
 			]);
 
         $this->set('purchaseOrder', $purchaseOrder);

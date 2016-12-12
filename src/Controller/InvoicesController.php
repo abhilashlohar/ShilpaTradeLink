@@ -398,6 +398,7 @@ class InvoicesController extends AppController
 			$invoice->customer_po_no=$invoice->customer_po_no;
 			$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date)); 
 			$invoice->in3=$invoice->in3;
+			$invoice->due_payment=$invoice->grand_total;
 			//pr($invoice->in3); exit;
 			
             if ($this->Invoices->save($invoice)) {
@@ -424,13 +425,13 @@ class InvoicesController extends AppController
 				->group(['SalesOrders.id'])
 				->autoFields(true)
 				->having(['total_rows >' => 0]);
-				
+		$dueInvoices = $this->Invoices->find()->where(['customer_id'=>$invoice->customer_id,'due_payment !='=>0]);
 		$items = $this->Invoices->Items->find('list',['limit' => 200]);
 		$transporters = $this->Invoices->Transporters->find('list', ['limit' => 200]);
 		$termsConditions = $this->Invoices->TermsConditions->find('all',['limit' => 200]);
 		$SaleTaxes = $this->Invoices->SaleTaxes->find('all');
 		$employees = $this->Invoices->Employees->find('list', ['limit' => 200]);
-        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees'));
+        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoices'));
         $this->set('_serialize', ['invoice']);
     }
 

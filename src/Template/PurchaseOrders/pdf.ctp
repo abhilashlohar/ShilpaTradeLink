@@ -55,7 +55,7 @@ $html = '
     <div id="header" ><br/>	
 		<table width="100%" >
 			<tr>
-				<td width="35%" rowspan="2">
+				<td width="35%" rowspan="2" valign="bottom">
 				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$purchaseOrder->company->logo.' height="80px" style="height:80px;"/>
 				</td>
 				<td colspan="2" align="right">
@@ -63,8 +63,8 @@ $html = '
 				</td>
 			</tr>
 			<tr>
-				<td width="30%" valign="bottom">
-				<div align="center" style="font-size: 28px;font-weight: bold;color: #0685a8;">PURCHASE ORDER</div>
+				<td width="35%" valign="bottom">
+				<div align="left" style="font-size: 26px;font-weight: bold;color: #0685a8;">PURCHASE ORDER</div>
 				</td>
 				<td align="right" width="35%" style="font-size: 12px;">
 				<span>'. $this->Text->autoParagraph(h($purchaseOrder->company->address)) .'</span>
@@ -131,6 +131,11 @@ $html.='<br/><br/>
 						
 					</td>
 				</tr>
+			</table>
+			<table class="table_rows">
+				<tr>
+					<td>'. $this->Text->autoParagraph(h($purchaseOrder->descryption)) .'</td>
+				</tr>
 			</table>';
 		
 $html.='
@@ -138,6 +143,7 @@ $html.='
 		<tr>
 			<th>S No</th>
 			<th>Item Description</th>
+			<th>Unit</th>
 			<th>Quantity</th>
 			<th>Rate</th>
 			<th>Amount</th>
@@ -150,6 +156,7 @@ $html.='
 		<td style="padding-top:10px;" valign="top" align="center" width="5%">'. h($sr) .'</td>
 		<td  style="padding-top:10px;" width="100%">'. $this->Text->autoParagraph(h($purchase_order_rows->description)) .
 		'<div style="height:'.$purchase_order_rows->height.'"></div></td>
+		<td style="padding-top:10px;" valign="top" align="center">'. h($purchase_order_rows->item->unit->name) .'</td>
 		<td style="padding-top:10px;" valign="top" align="center">'. h($purchase_order_rows->quantity) .'</td>
 		<td style="padding-top:10px;" align="right" valign="top">'. $this->Number->format($purchase_order_rows->rate,[ 'places' => 2]) .'</td>
 		<td style="padding-top:10px;" align="right" valign="top">'. $this->Number->format($purchase_order_rows->amount,[ 'places' => 2]) .'</td>
@@ -161,6 +168,7 @@ endforeach;
 $total=explode('.',$purchaseOrder->total);
 $rupees=$total[0];
 if(sizeof($total)==2){
+	$total[1]=str_pad($total[1], 2, '0', STR_PAD_RIGHT);
 	$paisa=(int)$total[1];
 }else{ $paisa=""; }
 
@@ -192,7 +200,7 @@ $html .= '	<table width="100%" class="table_rows">
     </td>
   </tr>
   <tr>
-  <td><p>PNF Per	:'. h(($purchaseOrder->pnf)) .''. h(($purchaseOrder->pnf_type)) .'</p></td>
+  <td><p>P & F	:'. h(($purchaseOrder->pnf)) .''. h(($purchaseOrder->pnf_type)) .'</p></td>
   </tr>
   <tr>
     <td valign="top" style="text-align:center;">LR To Be Prepared In Favour Of:<br/>'. h(($purchaseOrder->lr_to_be_prepared_in_favour_of)) .'</td>
@@ -210,7 +218,7 @@ $html .= '	<table width="100%" class="table_rows">
 </table>';
 
  $html .= '
-<table width="100%" class="table2 table_rows ">
+<table width="100%" class="table_rows ">
   <tr>
 		<td style="padding-left:5px;" valign="top">Excise Invoice Required in Favour of Consignee:<br/><br/>
 			 '. h($purchaseOrder->customer->customer_name) .'<br/>
