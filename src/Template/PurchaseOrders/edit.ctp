@@ -123,7 +123,7 @@
 							echo $this->Form->input('sale_tax_per', ['options'=>$options,'label' => false,'class' => 'form-control input-sm select2me','id'=>'saletax']);
 							?>
 							
-							<?php echo $this->Form->input('sale_tax_description', ['label' => false,'class' => 'form-control input-sm ', 'placeholder'=>'Sale Tax Description']);
+							<?php echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm ', 'placeholder'=>'Sale Tax Description']);
 							?>
 							</div>
 							
@@ -191,15 +191,15 @@
 							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $option,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 						
-				</div>
-				
-				<div class="col-md-3">
+					</div>
+					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Excise Duty <span class="required" aria-required="true">*</span></label>
 							<?php 
-							echo $this->Form->input('excise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Excise Duty']); ?>
+							echo $this->Form->input('exceise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Excise Duty']); ?>
 						</div>
-				</div>
+					</div>
+			
 			</div>
 			<div class="form-actions">
 				 <button type="submit" class="btn blue-hoki">Update Purchase Order</button>
