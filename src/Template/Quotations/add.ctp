@@ -449,12 +449,10 @@ $(document).ready(function() {
 	
                 
 
-     <?php if(empty($copy)){ ?>
+     <?php if(empty($copy) && empty($revision)){ ?>
 		add_row();
 	 <?php } ?>        
-	<?php if(empty($revision)){ ?>
-		add_row();
-	 <?php } ?>        
+      
 
 	
     $('.addrow').die().live("click",function() { 
