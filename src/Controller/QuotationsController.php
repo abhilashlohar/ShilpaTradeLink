@@ -253,10 +253,11 @@ class QuotationsController extends AppController
 			$quotation = $this->Quotations->get($revision, [
 				'contain' => ['QuotationRows']
 			]);
+			$add_revision=$quotation->revision+1;
+			
 		}else{
 			$quotation = $this->Quotations->newEntity();
 		}
-		
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		
@@ -272,13 +273,17 @@ class QuotationsController extends AppController
 				$quotation->qt2=$last_qt_no->qt2+1;
 			}else{
 				$quotation->qt2=1;
-			}
+			}	
 			
+		
+			$quotation->revision=$add_revision;
+			$quotation->quotation_id=$revision;
 			$quotation->created_by=$s_employee_id;
 			$quotation->created_on=date("Y-m-d",strtotime($quotation->created_on));
 			$quotation->finalisation_date=date("Y-m-d",strtotime($quotation->finalisation_date));
 			$quotation->company_id=$st_company_id;
             if ($this->Quotations->save($quotation)) {
+				//pr($quotation); exit;
 				
                 return $this->redirect(['action' => 'confirm/'.$quotation->id]);
             } else {
@@ -286,7 +291,6 @@ class QuotationsController extends AppController
             }
         }
 		$Filenames = $this->Quotations->Filenames->find()->where(['customer_id' => $quotation->customer_id]);
-		//pr($Filenames->file1); exit;
 
 		$copy=$this->request->query('copy');
         $customers = $this->Quotations->Customers->find('all');
@@ -301,7 +305,7 @@ class QuotationsController extends AppController
 				);
 		$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);
 		
-        $this->set(compact('quotation', 'customers','companies','employees','Filenames','ItemGroups','items','termsConditions','copy','Company'));
+        $this->set(compact('quotation', 'customers','companies','revision','employees','Filenames','ItemGroups','items','termsConditions','copy','Company'));
         $this->set('_serialize', ['quotation']);
     }
 

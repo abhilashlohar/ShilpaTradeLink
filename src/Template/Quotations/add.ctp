@@ -4,6 +4,12 @@ if(!empty($copy))
 	//pr($Filenames); exit;
 	$quotation->finalisation_date=date("d-m-Y",strtotime($quotation->finalisation_date));
 }
+if(!empty($revision))
+{
+	//pr($Filenames); exit;
+	$quotation->finalisation_date=date("d-m-Y",strtotime($quotation->finalisation_date));
+}
+
 ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
@@ -175,7 +181,7 @@ if(!empty($copy))
 				
 
 				
-				<?php if(!empty($copy)){ ?>
+				<?php if(!empty($copy)|| !empty($revision)){ ?>
 				<tbody id="main_tbody">
 					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_rows): ?>
 					<tr class="tr1" row_no='<?php echo @$quotation_rows->id; ?>'>
@@ -444,6 +450,9 @@ $(document).ready(function() {
                 
 
      <?php if(empty($copy)){ ?>
+		add_row();
+	 <?php } ?>        
+	<?php if(empty($revision)){ ?>
 		add_row();
 	 <?php } ?>        
 
