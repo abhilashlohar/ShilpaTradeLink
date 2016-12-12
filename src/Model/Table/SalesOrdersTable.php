@@ -92,7 +92,10 @@ class SalesOrdersTable extends Table
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'
         ]);
-		$this->belongsTo('SaleTaxes');
+		$this->belongsTo('SaleTaxes', [
+            'foreignKey' => 'sale_tax_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**

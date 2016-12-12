@@ -156,9 +156,9 @@
 						<td>
 						<?php $options=[];
 						foreach($SaleTaxes as $SaleTaxe){
-							$options[]=['text' => $this->Number->format($SaleTaxe->tax_figure,[ 'places' => 2]).'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
+							$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->id, 'description' => $SaleTaxe->description];
 						}
-						echo $this->Form->input('sales_order_rows.'.$q.'.so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des','value'=>$sales_order_rows->so_sale_tax]);
+						echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
 						echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false]); ?>
 						</td>
 						<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
@@ -364,8 +364,8 @@
 			foreach($SaleTaxes as $SaleTaxe){
 				$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 			}
-			echo $this->Form->input('so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
-			echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false]); ?>
+			echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']);
+			?>
 			</td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>

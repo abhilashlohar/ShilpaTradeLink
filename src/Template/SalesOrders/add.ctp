@@ -178,11 +178,11 @@ if(!empty($copy))
 							<td>
 							<?php $options=[];
 							foreach($SaleTaxes as $SaleTaxe){
-								$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
+								$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->id, 'description' => $SaleTaxe->description];
 							}
-							echo $this->Form->input('sales_order_rows.'.$q.'.so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des change_ledger']);
-							echo $this->Form->input('sales_order_rows.'.$q.'.
-							', ['type'=>'text','label' => false]); ?>
+							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
+							//echo $this->Form->input('sales_order_rows.'.$q.'.
+							//', ['type'=>'text','label' => false]); ?>
 							</td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
@@ -229,9 +229,7 @@ if(!empty($copy))
 							foreach($SaleTaxes as $SaleTaxe){
 								$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
 							}
-							echo $this->Form->input('sales_order_rows.'.$q.'.so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des change_ledger']);
-							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_description', ['type'=>'hidden','label' => false]);
-							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_ledger_account_id', ['type'=>'hidden','label' => false]);
+							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']);
 							?>
 							</td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
@@ -420,11 +418,11 @@ if(!empty($copy))
 			<td width="100">
 			<?php $options=[];
 			foreach($SaleTaxes as $SaleTaxe){
-				$options[]=['text' => $this->Number->format($SaleTaxe->tax_figure,[ 'places' => 2]).'%', 'value' => $this->Number->format($SaleTaxe->tax_figure,[ 'places' => 2]), 'description' => $SaleTaxe->description, 'ledger_account_id' => $SaleTaxe->ledger_account_id];
+				$options[]=['text' => $this->Number->format($SaleTaxe->tax_figure,[ 'places' => 2]).'%', 'value' => $this->Number->format($SaleTaxe->id)];
+				
 			}
-			echo $this->Form->input('so_sale_tax', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des change_ledger']);
-			echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false]);
-			echo $this->Form->input('sale_tax_ledger_account_id', ['type'=>'hidden','label' => false]);
+			echo $this->Form->input('sale_tax_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']);
+			
 			?>
 			</td>
 			<td width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>

@@ -46,13 +46,13 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Mobile <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Mobile']); ?>
+							<?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm nospace allLetter','placeholder'=>'Mobile','maxlength'=>10]); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Landline</label>
-							<?php echo $this->Form->input('phone_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Landline']); ?>
+							<?php echo $this->Form->input('phone_no', ['label' => false,'class' => 'form-control input-sm nospace allLetter','placeholder'=>'Landline','maxlength'=>15]); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -256,11 +256,11 @@
 							<?php echo $this->Form->input('employee_contact_persons.0.name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
 						</td>
 						<td>
-							<?php echo $this->Form->input('employee_contact_persons.0.mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?>
+							<?php echo $this->Form->input('employee_contact_persons.0.mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','maxlength'=>10]); ?>
 							
 						</td>
 						<td>
-						<?php echo $this->Form->input('employee_contact_persons.0.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Landline']); ?>
+						<?php echo $this->Form->input('employee_contact_persons.0.landline', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'landline','maxlength'=>15]); ?>
 						
 						</td>
 						<td>
@@ -276,11 +276,11 @@
 							<?php echo $this->Form->input('employee_contact_persons.1.name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
 						</td>
 						<td>
-							<?php echo $this->Form->input('employee_contact_persons.1.mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?>
+							<?php echo $this->Form->input('employee_contact_persons.1.mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter ','placeholder' => 'Mobile','maxlength'=>10]); ?>
 							
 						</td>
 						<td>
-						<?php echo $this->Form->input('employee_contact_persons.1.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'landline']); ?>
+						<?php echo $this->Form->input('employee_contact_persons.1.landline', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'landline','maxlength'=>15]); ?>
 						
 						</td>
 						<td>
@@ -457,7 +457,20 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
-	
+	$('.allLetter').live("keyup",function(){
+		var inputtxt=  $(this).val();
+		var numbers =  /^[0-9]*\.?[0-9]*$/;
+		
+		if(inputtxt.match(numbers))  
+		{  
+		} 
+		else  
+		{  
+			$(this).val('');
+			return false;  
+		}
+	});
+	//account group 
 	$('select[name="account_category_id"]').on("change",function() {
 	$('#account_group_div').html('Loading...');
 	var accountCategoryId=$('select[name="account_category_id"] option:selected').val();
