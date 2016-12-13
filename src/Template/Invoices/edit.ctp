@@ -1,9 +1,3 @@
-<?php 
-
-	$due=0; foreach ($dueInvoices as $invoice){ 
-					$due+=$invoice->due_payment;
-		} 
-?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -164,7 +158,9 @@
 							</td>
 						</tr>
 						<tr class="tr2" row_no="<?= h($q) ?>">
-							<td colspan="4"><?php echo $this->Form->textarea('invoice_rows['.$q.'][description]', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value'=>$invoice_rows->description]); ?></td>
+							<td colspan="4"><?php echo $this->Form->textarea('invoice_rows['.$q.'][description]', ['label' => false,'class' => 'form-control input-sm autoExpand','style'=>['display:none'],'placeholder' => 'Description','rows'=>'1','value'=>$invoice_rows->description]); ?>
+							<div contenteditable="true" id="editor" name="<?php echo 'invoice_rows['.$q.'][description]'; ?>"><?php echo @$invoice_rows->description; ?></div>
+							</td>
 							<td></td>
 						</tr>
 					<?php $q++; endforeach; } ?>
@@ -253,12 +249,15 @@
 					</div>
 				</div>
 			</div><br/>
+			
 			<div class="row">
 				<div class="col-md-4">
 					<div class="form-group">
 						<label class="col-md-6 control-label">Credit Limits</label>
 						<div class="col-md-6" id="due">
-							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value' => @$invoice->customer->credit_limit]); ?>
+							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value' => @$invoice->customer->credit_limit]); ?><br/>
+							<a href="#" role="button" id="update_credit_limit">Update Credit Limit</a>
+							<span id="update_credit_limit_wait"></span>
 						</div>
 					</div>
 				</div>
@@ -267,7 +266,7 @@
 					<div class="form-group">
 						<label class="col-md-6 control-label">Due Payment</label>
 						<div class="col-md-6" id="due">
-							<?php echo $this->Form->input('due_payment', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value'=>$due]); ?>
+							<?php echo $this->Form->input('old_due_payment', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value'=>$old_due_payment]); ?>
 						</div>
 					</div>
 				</div>
@@ -322,6 +321,7 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
+
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -637,15 +637,14 @@ $(document).ready(function() {
 			
 			grand_total=total_after_pnf+sale_tax+fright_amount;
 			$('input[name="grand_total"]').val(grand_total.toFixed(2));
-			
-			var due_payment=parseFloat($('input[name="due_payment"]').val());
-			var grand_total=parseFloat($('input[name="grand_total"]').val());
-			var new_due_payment=due_payment+grand_total;
+
+			var old_due_payment1=parseFloat($('input[name="old_due_payment"]').val());
+			var	new_due_payment=grand_total+old_due_payment1;
 			$('input[name="new_due_payment"]').val(new_due_payment.toFixed(2));
 			
 		}
 		
-		
+			
 	
 			var credit_limit=parseFloat($('input[name="credit_limit"]').val());
 			$('input[name="new_due_payment"]').attr('max',credit_limit).rules('add', {

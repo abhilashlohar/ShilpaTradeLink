@@ -1,4 +1,3 @@
-
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -497,6 +496,7 @@ $(document).ready(function() {
     });
 	
 	
+
 	$('input[name="discount"],input[name="discount_per"],input[name="pnf"],input[name="fright_amount"],input[name="pnf_per"]').die().live("keyup",function() {
 			var asc=$(this).val();
 			var numbers =  /^[0-9]*\.?[0-9]*$/;
@@ -644,6 +644,10 @@ $(document).ready(function() {
 		grand_total=total_after_pnf+sale_tax+fright_amount;
 		$('input[name="grand_total"]').val(grand_total.toFixed(2));
 		
+		var old_due_payment1=parseFloat($('input[name="old_due_payment"]').val());
+		
+		var	new_due_payment=grand_total+old_due_payment1;
+		$('input[name="new_due_payment"]').val(new_due_payment.toFixed(2));
 		
 	}
 	<?php } ?>

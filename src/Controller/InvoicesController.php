@@ -437,13 +437,19 @@ class InvoicesController extends AppController
 				->group(['SalesOrders.id'])
 				->autoFields(true)
 				->having(['total_rows >' => 0]);
-		$dueInvoices = $this->Invoices->find()->where(['customer_id'=>$invoice->customer_id,'due_payment !='=>0]);
+		$dueInvoicespay = $this->Invoices->find()->where(['customer_id'=>$invoice->customer_id,'due_payment !='=>0]);
+		
+			$old_due_payment=0; foreach ($dueInvoicespay as $invoice_data){ 
+				$old_due_payment+=$invoice_data->due_payment;
+		}
+		//pr($old_due_payment); exit;
+		//$dueInvoices = $this->Invoices->find()->where(['customer_id'=>$invoice->customer_id,'due_payment !='=>0]);
 		$items = $this->Invoices->Items->find('list',['limit' => 200]);
 		$transporters = $this->Invoices->Transporters->find('list', ['limit' => 200]);
 		$termsConditions = $this->Invoices->TermsConditions->find('all',['limit' => 200]);
 		$SaleTaxes = $this->Invoices->SaleTaxes->find('all');
 		$employees = $this->Invoices->Employees->find('list', ['limit' => 200]);
-        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoices'));
+        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','old_due_payment','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoices'));
         $this->set('_serialize', ['invoice']);
     }
 
