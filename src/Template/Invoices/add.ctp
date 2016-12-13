@@ -283,7 +283,7 @@ if(!empty($sales_order->customer_id)){
 					<div class="form-group">
 						<label class="col-md-6 control-label">Due Payment</label>
 						<div class="col-md-6" id="due">
-							<?php echo $this->Form->input('due_payment', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value'=>$due]); ?>
+							<?php echo $this->Form->input('due_payment_old', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value'=>$due]); ?>
 						</div>
 					</div>
 				</div>
@@ -650,9 +650,9 @@ $(document).ready(function() {
 		grand_total=total_after_pnf+sale_tax+fright_amount;
 		$('input[name="grand_total"]').val(grand_total.toFixed(2));
 		
-		var due_payment=parseFloat($('input[name="due_payment"]').val());
+		var due_payment_old=parseFloat($('input[name="due_payment_old"]').val());
 		var grand_total=parseFloat($('input[name="grand_total"]').val());
-		var new_due_payment=due_payment+grand_total;
+		var new_due_payment=due_payment_old+grand_total;
 		//alert(total_due_payment); 
 		$('input[name="new_due_payment"]').val(new_due_payment.toFixed(2));
 	}

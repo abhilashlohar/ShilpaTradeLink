@@ -65,7 +65,7 @@ $html = '
   <div id="header" ><br/>	
 		<table width="100%">
 			<tr>
-				<td width="35%" rowspan="2">
+				<td width="35%" rowspan="2" valign="bottom">
 				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$invoice->company->logo.' height="80px" style="height:80px;"/>
 				</td>
 				<td colspan="2" align="right">
@@ -95,12 +95,12 @@ $html = '
   
 
  
-$html.='<br/>
+$html.='
 <table width="100%" class="table_rows itemrow">
 		<tr>
 			<td colspan=6 align="">';
 				$html.='
-					<table width="100%" style="margin-top: 0px;" class="table2">
+					<table  valign="center" width="100%" style="margin-top: 0px;" class="table2">
 						<tr>
 							<td width="50%">
 								
@@ -115,7 +115,7 @@ $html.='<br/>
 									<tr>
 										<td width="60" valign="top" style="vertical-align: top;">Invoice No.</td>
 										<td width="20" valign="top">:</td>
-										<td valign="top">'. h(($invoice->in1."/IN-".str_pad($invoice->in2, 3, "0", STR_PAD_LEFT)."/".$invoice->in3."/".$invoice->in4)) .'</td>
+										<td valign="top">'. h(($invoice->in1." / IN-".str_pad($invoice->in2, 3, "0", STR_PAD_LEFT)." / ".$invoice->in3." / ".$invoice->in4)) .'</td>
 									</tr>
 									<tr>
 										<td valign="top" style="vertical-align: top;">Date</td>

@@ -275,9 +275,12 @@ class QuotationsController extends AppController
 				$quotation->qt2=1;
 			}	
 			
-		
+			if(!empty($revision)){
 			$quotation->revision=$add_revision;
 			$quotation->quotation_id=$revision;
+			}
+			
+			
 			$quotation->created_by=$s_employee_id;
 			$quotation->created_on=date("Y-m-d",strtotime($quotation->created_on));
 			$quotation->finalisation_date=date("Y-m-d",strtotime($quotation->finalisation_date));

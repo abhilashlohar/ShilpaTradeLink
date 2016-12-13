@@ -214,6 +214,7 @@ class InvoicesController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
+		
 		$sales_order_id=@(int)$this->request->query('sales-order');
 		$sales_order=array(); $process_status='New';
 		
@@ -228,13 +229,17 @@ class InvoicesController extends AppController
 			]);
 			//pr($sales_order->sale_tax); exit;
 			$process_status='Pulled From Sales-Order';
+				
+
 		}
+			
 		$this->set(compact('sales_order','process_status','sales_order_id'));
 		
         $invoice = $this->Invoices->newEntity();
         if ($this->request->is('post')) {
 			echo 'hello'; exit;
 			$invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
+					
 			$last_in_no=$this->Invoices->find()->select(['in2'])->where(['company_id' => $sales_order->company_id])->order(['in2' => 'DESC'])->first();
 			if($last_in_no){
 				$invoice->in2=$last_in_no->in2+1;
@@ -256,6 +261,7 @@ class InvoicesController extends AppController
 			pr($invoice);
 			exit;
             if ($this->Invoices->save($invoice)) {
+				//pr($invoice); exit;
 				$ledger_grand=$invoice->grand_total;
 				//ledger posting for Customer
 				$ledger = $this->Invoices->Ledgers->newEntity();

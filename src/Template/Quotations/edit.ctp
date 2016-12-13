@@ -204,7 +204,7 @@
 						<tr class="tr2 preimp" row_no='<?php echo @$quotation_row->id; ?>'>
 							<td colspan="4">
 							<?php echo $this->Form->textarea('quotation_rows['.$q.'][description]', ['type' => 'textarea','label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value' => $quotation_row->description,'required']); ?>
-							<?php echo $this->Form->input('quotation_rows['.$q.'][amount]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value' => $quotation_row->amount]); ?>
+							
 							</td>
 							<td></td>
 						</tr>
