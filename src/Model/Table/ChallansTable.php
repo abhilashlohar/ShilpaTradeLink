@@ -86,10 +86,31 @@ class ChallansTable extends Table
             ->allowEmpty('id', 'create');
 
 
-        $validator
+		$validator
+            ->requirePresence('customer_id', 'create')
+            ->notEmpty('customer_id');
+        
+		$validator
             ->requirePresence('lr_no', 'create')
             ->notEmpty('lr_no');
 
+		$validator
+            ->integer('invoice_id')
+            ->requirePresence('invoice_id', 'create')
+            ->notEmpty('invoice_id');
+
+		$validator
+            ->requirePresence('customer_address', 'create')
+            ->notEmpty('customer_address');
+
+		$validator
+            ->requirePresence('transporter_id', 'create')
+            ->notEmpty('transporter_id');
+		
+		$validator
+            ->requirePresence('challan_type', 'create')
+            ->notEmpty('challan_type');
+		
         $validator
             ->requirePresence('reference_detail', 'create')
             ->notEmpty('reference_detail');

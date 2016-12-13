@@ -249,6 +249,8 @@ if(!empty($revision))
 			<ol id="sortable">
 			  
 			</ol>
+			
+			<div class="editable"></div>
 		</div>
 		<div class="form-actions">
 			<div class="row">
@@ -306,7 +308,9 @@ if(!empty($revision))
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 		<tr class="tr2 preimp">
-			<td colspan="4"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1']); ?></td>
+			<td colspan="4"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','style'=>['display:none']]); ?>
+			<div contenteditable="true" id="editor"></div>
+			</td>
 			<td></td>
 		</tr>
 		
@@ -320,6 +324,14 @@ if(!empty($revision))
 #sortable li{
 	cursor: -webkit-grab;
 }
+div.editable {
+    border: 1px solid #ccc;
+    padding: 5px;white-space: pre;
+	
+}
+[contenteditable] {
+  white-space : pre-wrap;
+}
 </style>
 <?php echo $this->Html->css('/drag_drop/jquery-ui.css'); ?>
 <?php echo $this->Html->script('/drag_drop/jquery-1.12.4.js'); ?>
@@ -332,6 +344,15 @@ $( "#sortable" ).disableSelection();
 </script>
 <script>
 $(document).ready(function() {
+	
+	$('.editable').each(function(){
+		this.contentEditable = true;
+	});
+	$('.editable').on('keyup',function(e){
+		alert(e.keyCode);
+		e.preventDefault();
+	});
+
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -524,6 +545,7 @@ $(document).ready(function() {
 				$("#main_tb tbody tr.tr2").each(function(){
 					i++;
 					$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"});
+					$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
 				});
 				calculate_total();
 			}
@@ -569,6 +591,7 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr2").each(function(){
 			i++;
 			$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"}).rules("add", "required");
+			$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
 		});
 		
 		

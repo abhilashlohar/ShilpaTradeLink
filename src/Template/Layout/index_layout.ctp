@@ -633,7 +633,14 @@ jQuery(document).ready(function() {
 	ComponentsDropdowns.init();
 });
 </script>
- 
+<style>
+div[contenteditable="true"]{
+	border:1px solid #e5e5e5;padding:5px;box-shadow: none;
+}
+div[contenteditable="true"]:active{
+	border:1px solid #000;
+}
+</style>
 <script>
 $("a[role='button']").live('click',function(e){
 		e.preventDefault();
@@ -663,15 +670,46 @@ $(".nospace").live("keypress",function(e){
 
 $('input').attr('autocomplete','off');
 
+$('div[contenteditable="true"]').live('keydown blur',function(e) {
+    if(e.keyCode === 9) { 
+		// now insert four non-breaking spaces for the tab key
+       var editor = document.getElementById("editor");
+        var doc = editor.ownerDocument.defaultView;
+        var sel = doc.getSelection();
+        var range = sel.getRangeAt(0);
+
+        var tabNode = document.createTextNode("\u00a0\u00a0\u00a0\u00a0");
+        range.insertNode(tabNode);
+
+        range.setStartAfter(tabNode);
+        range.setEndAfter(tabNode); 
+        sel.removeAllRanges();
+        sel.addRange(range);
+		
+		e.preventDefault();
+    }
+	var ht=$(this).html();
+	var name=$(this).attr('name');
+	$('textarea[name="'+name+'"]').text(ht);
+});
+
+$('div[contenteditable="true"]').each(function(){
+	var ht=$(this).html();
+	var name=$(this).attr('name');
+	$('textarea[name="'+name+'"]').text(ht);
+});
+
+
+
 $("textarea").keydown(function(e) {
     if(e.keyCode === 9) { // tab was pressed
         // get caret position/selection
         var start = this.selectionStart;
         var end = this.selectionEnd;
+		
 
         var $this = $(this);
         var value = $this.val();
-
         // set textarea value to: text before caret + tab + text after caret
         $this.val(value.substring(0, start)
                     + "\t"

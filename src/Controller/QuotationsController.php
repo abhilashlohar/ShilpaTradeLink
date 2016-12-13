@@ -285,6 +285,7 @@ class QuotationsController extends AppController
 			$quotation->created_on=date("Y-m-d",strtotime($quotation->created_on));
 			$quotation->finalisation_date=date("Y-m-d",strtotime($quotation->finalisation_date));
 			$quotation->company_id=$st_company_id;
+			
             if ($this->Quotations->save($quotation)) {
 				//pr($quotation); exit;
 				
