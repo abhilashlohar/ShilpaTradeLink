@@ -308,7 +308,9 @@ if(!empty($revision))
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 		<tr class="tr2 preimp">
-			<td colspan="4"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1']); ?></td>
+			<td colspan="4"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','style'=>['display:none']]); ?>
+			<div contenteditable="true" id="editor"></div>
+			</td>
 			<td></td>
 		</tr>
 		
@@ -543,6 +545,7 @@ $(document).ready(function() {
 				$("#main_tb tbody tr.tr2").each(function(){
 					i++;
 					$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"});
+					$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
 				});
 				calculate_total();
 			}
@@ -588,6 +591,7 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr2").each(function(){
 			i++;
 			$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"}).rules("add", "required");
+			$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
 		});
 		
 		
