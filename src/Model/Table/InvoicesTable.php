@@ -81,6 +81,10 @@ class InvoicesTable extends Table
 			'propertyName' => 'creator',
 		]);
 		
+		$this->belongsTo('SaleTaxes', [
+            'foreignKey' => 'sale_tax_id',
+            'joinType' => 'INNER'
+        ]);
 		
 		$this->belongsTo('AccountReferences');
 		$this->belongsTo('Ledgers');

@@ -241,7 +241,7 @@ class SalesOrdersController extends AppController
 		
 		$id=$this->request->query('copy');
 		$job_id=$this->request->query('job');
-		//pr($job_id); exit;
+		//
 		
 		if(!empty($id)){
 			$salesOrder = $this->SalesOrders->get($id, [
@@ -276,11 +276,13 @@ class SalesOrdersController extends AppController
 			
 			$salesOrder->created_on=date("Y-m-d",strtotime($salesOrder->created_on));
 			$salesOrder->edited_on=date("Y-m-d",strtotime($salesOrder->edited_on));
-			
+			//pr($salesOrder); exit;
 			//$salesOrder->created_on_time= time('h:i:s');
 			$salesOrder->created_on_time= date("Y-m-d h:i:sA");
 			$salesOrder->company_id=$st_company_id;
             if ($this->SalesOrders->save($salesOrder)) {
+				//pr($salesOrder); exit;
+
 				if(!empty($quotation_id)){
 					$quotation->status='Converted Into Sales Order';
 					$query = $this->SalesOrders->Quotations->query();

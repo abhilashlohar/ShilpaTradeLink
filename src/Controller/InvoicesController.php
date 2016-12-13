@@ -216,22 +216,24 @@ class InvoicesController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$sales_order_id=@(int)$this->request->query('sales-order');
 		$sales_order=array(); $process_status='New';
+		
 		if(!empty($sales_order_id)){
 			$sales_order = $this->Invoices->SalesOrders->get($sales_order_id, [
 				'contain' => [
 						'SalesOrderRows.Items' => function ($q) {
 						   return $q
 								->where(['SalesOrderRows.quantity > SalesOrderRows.processed_quantity']);
-						},'Companies','Customers','Employees'
+						},'SalesOrderRows.SaleTaxes','Companies','Customers','Employees'
 					]
 			]);
-			
+			//pr($sales_order->sale_tax); exit;
 			$process_status='Pulled From Sales-Order';
 		}
 		$this->set(compact('sales_order','process_status','sales_order_id'));
 		
         $invoice = $this->Invoices->newEntity();
         if ($this->request->is('post')) {
+			echo 'hello'; exit;
 			$invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 			$last_in_no=$this->Invoices->find()->select(['in2'])->where(['company_id' => $sales_order->company_id])->order(['in2' => 'DESC'])->first();
 			if($last_in_no){
@@ -251,6 +253,8 @@ class InvoicesController extends AppController
 			//pr($invoice->in3); exit;
 			$invoice->date_created=date("Y-m-d");
 			$invoice->due_payment=$invoice->grand_total;
+			pr($invoice);
+			exit;
             if ($this->Invoices->save($invoice)) {
 				$ledger_grand=$invoice->grand_total;
 				//ledger posting for Customer

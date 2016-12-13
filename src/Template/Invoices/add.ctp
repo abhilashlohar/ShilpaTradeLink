@@ -166,10 +166,12 @@ if(!empty($sales_order->customer_id)){
 							<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate','value' => @$sales_order_rows->rate,'readonly','step'=>0.01]); ?></td>
 							<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$sales_order_rows->amount,'readonly','step'=>0.01]); ?></td>
 							<td>
+								<?php echo @$sales_order_rows->sale_tax->tax_figure; ?>
+								<?php echo $this->Form->input('q', ['label' => false,'type' => 'hidden','value' => @$sales_order_rows->sale_tax->tax_figure]); ?>
+								<?php echo $this->Form->input('sale_tax', ['label' => false,'type' => 'hidden','value' => @$sales_order_rows->sale_tax_id]); ?>
+								<?php echo $this->Form->input('st_description', ['type' => 'hidden','label' => false,'value' => @$sales_order_rows->sale_tax->description]); ?>
 								<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$sales_order_rows->id]); ?></label>
-								<?php echo $this->Form->input('q', ['label' => false,'type' => 'hidden','value' => @$sales_order_rows->so_sale_tax]); ?>
-								<?php echo $this->Form->input('st_description', ['type' => 'hidden','label' => false,'value' => @$sales_order_rows->sale_tax_description]); ?>
-								<?php echo $this->Form->input('sale_tax_ledger_account_id', ['type' => 'hidden','label' => false,'value' => @$sales_order_rows->sale_tax_ledger_account_id]); ?>
+							
 							</td>
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
@@ -215,6 +217,8 @@ if(!empty($sales_order->customer_id)){
 				<tr>
 					<td  align="right">
 						<?php if($process_status!="New"){ ?>
+							
+							<input type="hidden" name="sale_tax_id" class="form-control input-sm"  placeholder="Sale Tax" />
 							<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" />
 							<div class="input-group col-md-2">
 							<div class="input-group">
@@ -223,6 +227,8 @@ if(!empty($sales_order->customer_id)){
 							</div>
 						
 						<?php }else{ ?>
+						
+						<input type="hidden" name="sale_tax_id" class="form-control input-sm"  placeholder="Sale Tax" />
 						<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" />
 						<div class="input-group col-md-2">
 							<div class="input-group">
@@ -593,8 +599,13 @@ $(document).ready(function() {
 				var sale_tax=parseFloat($(this).find("td:nth-child(6) input[type=hidden]").eq(1).val());
 				if(isNaN(sale_tax)) { var sale_tax = 0; }
 				$('input[name="sale_tax_per"]').val(sale_tax);
-				var sale_tax_description=$(this).find("td:nth-child(6) input[type=hidden]").eq(2).val();
+				var sale_tax_description=$(this).find("td:nth-child(6) input[type=hidden]").eq(3).val();
 				$('input[name="sale_tax_description"]').val(sale_tax_description);
+				
+				var sale_tax_id=$(this).find("td:nth-child(6) input[type=hidden]").eq(2).val();
+			
+				$('input[name="sale_tax"]').val(sale_tax_id);
+				
 			}
 		});
 		
