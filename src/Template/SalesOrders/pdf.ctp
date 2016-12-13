@@ -140,7 +140,7 @@ $html.='
 		$html.='
 		<tr class="even">
 			<td></td>
-			<td colspan="7" style="text-align: justify;"><b> </b>'. $this->Text->autoParagraph(h($salesOrderRows->description)).'<div style="height:'.$salesOrderRows->height.'"></div></td>
+			<td colspan="7" style="text-align: justify;"><b> </b>'.$salesOrderRows->description.'<div style="height:'.$salesOrderRows->height.'"></div></td>
 		</tr>';
 	}
 endforeach;
