@@ -169,7 +169,9 @@
 							</td>
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
-							<td colspan="5"><?php echo $this->Form->input('q', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm ','placeholder'=>'Description','value' => @$sales_order_rows->description,'readonly']); ?></td>
+							<td colspan="5"><?php echo $this->Form->input('q', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm ','placeholder'=>'Description','style'=>['display:none'],'value' => @$sales_order_rows->description,'readonly']); ?>
+							<div contenteditable="true" id="editor" ><?php echo @$sales_order_rows->description; ?></div>
+							</td>
 							<td></td>
 						</tr>
 					<?php $q++; endforeach; }?>

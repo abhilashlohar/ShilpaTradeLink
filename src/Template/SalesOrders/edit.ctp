@@ -603,7 +603,9 @@ $(document).ready(function() {
 				$("#main_tb tbody tr.tr2").each(function(){
 					i++;
 					$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
-				});
+					$(this).find('td:nth-child(1) div#editor').attr({name:"sales_order_rows["+i+"][description]"});
+
+					});
 				calculate_total();
 			}
 		} 
@@ -650,6 +652,7 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr2").each(function(){
 			i++;
 			$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
+			$(this).find('td:nth-child(1) div#editor').attr({name:"sales_order_rows["+i+"][description]"});
 		});
 		
 		$(document)
