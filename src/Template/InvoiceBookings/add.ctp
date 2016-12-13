@@ -1,4 +1,4 @@
-<?php //pr($grn); exit; ?>
+<?php //pr($grn->purchase_order->pnf); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -108,6 +108,16 @@
 						<td colspan="3"><?php  ?></td>
 						<td><b> Total Ammount</b> </td>
 						<td><?php echo $total; ?></td>
+					</tr>
+					<tr>
+						<td colspan="3"><?php  ?></td>
+						<td><b> Discount</b> </td>
+						<td><?php echo $grn->purchase_order->discount; echo $grn->purchase_order->discount_type; ?></td>
+					</tr>
+					<tr>
+						<td colspan="3"><?php  ?></td>
+						<td><b> P & F</b> </td>
+						<td><?php echo $grn->purchase_order->pnf; echo $grn->purchase_order->pnf_type; ?></td>
 					</tr>
 				</tbody>
 				

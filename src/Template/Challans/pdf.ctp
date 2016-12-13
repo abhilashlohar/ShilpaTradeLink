@@ -1,4 +1,5 @@
 <?php
+
 require_once(ROOT . DS  .'vendor' . DS  . 'dompdf' . DS . 'autoload.inc.php');
 use Dompdf\Dompdf;
 use Dompdf\Options;

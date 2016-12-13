@@ -9,6 +9,14 @@
 		<?= $this->Form->create($challan,['id'=>'form_sample_3']) ?>
 		<div class="form-body">
 				<div class="row">
+					<div class="col-md-3">
+							<div class="form-group">
+								<div class="radio-list" >
+								<label class="control-label">Challan Type <span class="required" aria-required="true">*</span></label>
+								<?php echo $this->Form->radio('challan_type',[['value' => 'Returnable', 'text' => 'Returnable'],['value' => 'Non Returnable', 'text' => 'Non Returnable']]); ?>
+								</div>
+							</div>
+					</div>
 					
 					<div class="col-md-3">
 						<div class="form-group">
@@ -62,7 +70,7 @@
 						<div class="form-group">
 							<label class="control-label">Lr No. <span class="required" aria-required="true">*</span></label>
 							
-							<?php echo $this->Form->input('lr_no', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'LR No']); ?>
+							<?php echo $this->Form->input('lr_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'LR No']); ?>
 							
 						</div>
 					</div>
@@ -76,15 +84,7 @@
 						</div>
 					</div>
 					
-					<div class="col-md-3">
-						<div class="form-group">
-						<div class="radio-list" data-error-container="#road_permit_required_error">
-						<label class="control-label">Challan Type <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->radio('challan_type',[['value' => 'Returnable', 'text' => 'Returnable'],['value' => 'Non Returnable', 'text' => 'Non Returnable']]); ?>
-						</div>
-						<div id="road_permit_required_error"></div>
-					</div>
-				</div>
+
 
 				</div>
 		

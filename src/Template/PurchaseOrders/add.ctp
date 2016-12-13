@@ -73,15 +73,15 @@ With reference to your price list we are pleased to place an order for the follo
 						
 							<tr>
 								<td colspan="4" align="right"><b>Discount</b></td>
-								<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Discount']); ?>
-								<?php echo $this->Form->radio('discount_type',[['value' => '%', 'text' => 'Percent(%)'],['value' => '', 'text' => 'Amount']]); ?>
+								<td><?php echo $this->Form->input('discount', ['label' => false,'class' => 'form-control input-sm ','required','placeholder' => 'Discount']); ?>
+								<?php echo $this->Form->radio('discount_type',[['value' => '%', 'text' => 'Percent(%)'],['value' => '', 'text' => 'Amount','checked']]); ?>
 								</td>
 							</tr>
 							
 							<tr>
 								<td colspan="4" align="right"><b>P&F</b></td>
-								<td><?php echo $this->Form->input('pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'P&f']); ?>
-								<?php echo $this->Form->radio('pnf_type',[['value' => '%', 'text' => 'Percent(%)'],['value' => '', 'text' => 'Amount']]); ?>
+								<td><?php echo $this->Form->input('pnf', ['label' => false,'class' => 'form-control input-sm ','placeholder' => 'P&f','required']); ?>
+								<?php echo $this->Form->radio('pnf_type',[['value' => '%', 'text' => 'Percent(%)'],['value' => '', 'text' => 'Amount','checked']]); ?>
 								</td>
 							</tr>
 							
@@ -385,10 +385,10 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			i++;
 			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr("name","purchase_order_rows["+i+"][item_id]").select2();
-			$(this).find("td:nth-child(3) input").attr("name","purchase_order_rows["+i+"][quantity]");
-			$(this).find("td:nth-child(4) input").attr("name","purchase_order_rows["+i+"][rate]");
-			$(this).find("td:nth-child(5) input").attr("name","purchase_order_rows["+i+"][amount]");
+			$(this).find("td:nth-child(2) select").attr("name","purchase_order_rows["+i+"][item_id]").select2().rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr("name","purchase_order_rows["+i+"][quantity]").rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr("name","purchase_order_rows["+i+"][rate]").rules("add", "required");
+			$(this).find("td:nth-child(5) input").attr("name","purchase_order_rows["+i+"][amount]").rules("add", "required");
 		});
 		var i=0;
 		

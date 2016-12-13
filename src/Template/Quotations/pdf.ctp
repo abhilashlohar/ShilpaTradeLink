@@ -183,7 +183,7 @@ $html .= '
 ';
  
 
-$html.='
+$html.='<br/>
 <table width="100%" class="table_rows itemrow">
 		<tr>
 			<th style="white-space: nowrap;">S No</th>

@@ -87,7 +87,6 @@ class ChallansTable extends Table
 
 
         $validator
-            ->integer('lr_no')
             ->requirePresence('lr_no', 'create')
             ->notEmpty('lr_no');
 

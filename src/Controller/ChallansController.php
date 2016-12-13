@@ -151,7 +151,7 @@ class ChallansController extends AppController
     {
 		$this->viewBuilder()->layout('');
          $challan = $this->Challans->get($id, [
-            'contain' => ['Companies','Invoices','Transporters','ChallanRows','Creator']
+            'contain' => ['Companies','Customers','Invoices','Transporters','ChallanRows','Creator']
 			]);
 
         $this->set('challan', $challan);

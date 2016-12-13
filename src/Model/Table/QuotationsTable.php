@@ -128,6 +128,10 @@ class QuotationsTable extends Table
             ->requirePresence('terms_conditions', 'create')
             ->notEmpty('terms_conditions');
 		
+		$validator
+            ->requirePresence('qt3', 'create')
+            ->notEmpty('qt3');
+		
 
         return $validator;
     }

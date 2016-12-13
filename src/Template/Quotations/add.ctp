@@ -106,7 +106,7 @@ if(!empty($revision))
 								
 								$options[]=['text' =>$merge, 'value' => $merge];
 							}
-							echo $this->Form->input('qt3', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?>
+							echo $this->Form->input('qt3', ['options'=>$options,'label' => false,'class' => 'form-control input-sm','required']); ?>
 						</div>
 						<div class="col-md-3 ">
 							<?php echo $this->Form->input('qt4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
