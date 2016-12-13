@@ -364,9 +364,12 @@ class InvoicesController extends AppController
 		$SaleTaxes = $this->Invoices->SaleTaxes->find('all');
 		if(!empty($sales_order->customer_id)){
 		$dueInvoicespay = $this->Invoices->find()->where(['customer_id'=>$sales_order->customer_id,'due_payment !='=>0]);
+			$old_due_payment=0; foreach ($dueInvoicespay as $invoice_data){ 
+				$old_due_payment+=$invoice_data->due_payment;
+			}
 		}
 		$employees = $this->Invoices->Employees->find('list', ['limit' => 200]);
-        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoicespay','creditlimit'));
+        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoicespay','creditlimit','old_due_payment'));
         $this->set('_serialize', ['invoice']);
     }
 	

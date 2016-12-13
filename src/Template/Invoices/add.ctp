@@ -261,6 +261,36 @@
 				</div>
 			</div><br/>
 			
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-6 control-label">Credit Limits</label>
+						<div class="col-md-6" id="due">
+							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value' => @$sales_order->customer->credit_limit]); ?><br/>
+							<a href="#" role="button" id="update_credit_limit">Update Credit Limit</a>
+							<span id="update_credit_limit_wait"></span>
+						</div>
+					</div>
+				</div>
+		
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-6 control-label">Due Payment</label>
+						<div class="col-md-6" id="due">
+							<?php echo $this->Form->input('old_due_payment', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value'=>$old_due_payment]); ?>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-6 control-label">New Due Payment</label>
+						<div class="col-md-6" id="due">
+							<?php echo $this->Form->input('new_due_payment', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','max'=>@$sales_order->customer->credit_limit]); ?>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 		</div>
 		<?php echo $this->Form->input('process_status', ['type' => 'hidden','value' => @$process_status]); ?>
 		<?php echo $this->Form->input('sales_order_id', ['type' => 'hidden','value' => @$sales_order_id]); ?>
