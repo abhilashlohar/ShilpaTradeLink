@@ -237,7 +237,6 @@ class InvoicesController extends AppController
 		
         $invoice = $this->Invoices->newEntity();
         if ($this->request->is('post')) {
-			echo 'hello'; exit;
 			$invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 					
 			$last_in_no=$this->Invoices->find()->select(['in2'])->where(['company_id' => $sales_order->company_id])->order(['in2' => 'DESC'])->first();
@@ -258,8 +257,7 @@ class InvoicesController extends AppController
 			//pr($invoice->in3); exit;
 			$invoice->date_created=date("Y-m-d");
 			$invoice->due_payment=$invoice->grand_total;
-			pr($invoice);
-			exit;
+			
             if ($this->Invoices->save($invoice)) {
 				//pr($invoice); exit;
 				$ledger_grand=$invoice->grand_total;
