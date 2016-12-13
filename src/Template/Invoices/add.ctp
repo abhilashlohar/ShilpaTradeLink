@@ -1,6 +1,6 @@
 <?php 
 if(!empty($sales_order->customer_id)){
-	$due=0; foreach ($dueInvoices as $invoice){ 
+	$due=0; foreach ($dueInvoicespay as $invoice){ 
 					$due+=$invoice->due_payment;
 		} 
 }
@@ -167,10 +167,11 @@ if(!empty($sales_order->customer_id)){
 							<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$sales_order_rows->amount,'readonly','step'=>0.01]); ?></td>
 							<td>
 								<?php echo @$sales_order_rows->sale_tax->tax_figure; ?>
-								<?php echo $this->Form->input('q', ['label' => false,'type' => 'hidden','value' => @$sales_order_rows->sale_tax->tax_figure]); ?>
-								<?php echo $this->Form->input('sale_tax', ['label' => false,'type' => 'hidden','value' => @$sales_order_rows->sale_tax_id]); ?>
-								<?php echo $this->Form->input('st_description', ['type' => 'hidden','label' => false,'value' => @$sales_order_rows->sale_tax->description]); ?>
 								<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$sales_order_rows->id]); ?></label>
+								<?php echo $this->Form->input('q', ['label' => false,'type' => 'hidden','value' => @$sales_order_rows->sale_tax->tax_figure]); ?>
+								<?php echo $this->Form->input('st_description', ['type' => 'hidden','label' => false,'value' => @$sales_order_rows->sale_tax->description]); ?>
+								<?php echo $this->Form->input('st_id', ['type' => 'hidden','label' => false,'value' => @$sales_order_rows->sale_tax->id]); ?>
+								
 							
 							</td>
 						</tr>
@@ -241,7 +242,6 @@ if(!empty($sales_order->customer_id)){
 						} ?>
 							</div>
 						</div>
-						
 					</td>
 					<td><?php echo $this->Form->input('sale_tax_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01]); ?></td>
 				</tr>
@@ -342,8 +342,6 @@ if(!empty($sales_order->customer_id)){
 
 <script>
 $(document).ready(function() {
-	
-	
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -599,12 +597,10 @@ $(document).ready(function() {
 				var sale_tax=parseFloat($(this).find("td:nth-child(6) input[type=hidden]").eq(1).val());
 				if(isNaN(sale_tax)) { var sale_tax = 0; }
 				$('input[name="sale_tax_per"]').val(sale_tax);
-				var sale_tax_description=$(this).find("td:nth-child(6) input[type=hidden]").eq(3).val();
+				var sale_tax_description=$(this).find("td:nth-child(6) input[type=hidden]").eq(2).val();
 				$('input[name="sale_tax_description"]').val(sale_tax_description);
-				
-				var sale_tax_id=$(this).find("td:nth-child(6) input[type=hidden]").eq(2).val();
-			
-				$('input[name="sale_tax"]').val(sale_tax_id);
+				var sale_tax_id=$(this).find("td:nth-child(6) input[type=hidden]").eq(3).val();
+				$('input[name="sale_tax_id"]').val(sale_tax_id);
 				
 			}
 		});
@@ -639,6 +635,7 @@ $(document).ready(function() {
 		$('input[name="total_after_pnf"]').val(total_after_pnf.toFixed(2));
 		
 		var sale_tax_per=parseFloat($('input[name="sale_tax_per"]').val());
+		
 		var sale_tax=(total_after_pnf*sale_tax_per)/100;
 		if(isNaN(sale_tax)) { var sale_tax = 0; }
 		$('input[name="sale_tax_amount"]').val(sale_tax.toFixed(2));
@@ -650,25 +647,11 @@ $(document).ready(function() {
 		grand_total=total_after_pnf+sale_tax+fright_amount;
 		$('input[name="grand_total"]').val(grand_total.toFixed(2));
 		
-		var due_payment_old=parseFloat($('input[name="due_payment_old"]').val());
-		var grand_total=parseFloat($('input[name="grand_total"]').val());
-		var new_due_payment=due_payment_old+grand_total;
-		//alert(total_due_payment); 
-		$('input[name="new_due_payment"]').val(new_due_payment.toFixed(2));
+		
 	}
 	<?php } ?>
 	
-	<?php if(!empty($sales_order)){ ?>
 	
-	var credit_limit=parseFloat($('input[name="credit_limit"]').val());
-			$('input[name="new_due_payment"]').attr('max',credit_limit).rules('add', {
-						required: true,
-						max: credit_limit,
-						messages: {
-							max: "Credit Limit Exieded ."
-						}
-					});
-	<?php } ?>
 	
     $('.addrow').die().live("click",function() { 
 		add_row();

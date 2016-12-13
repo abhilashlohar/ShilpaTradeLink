@@ -217,7 +217,6 @@ class InvoicesController extends AppController
 		
 		$sales_order_id=@(int)$this->request->query('sales-order');
 		$sales_order=array(); $process_status='New';
-		
 		if(!empty($sales_order_id)){
 			$sales_order = $this->Invoices->SalesOrders->get($sales_order_id, [
 				'contain' => [
@@ -227,18 +226,16 @@ class InvoicesController extends AppController
 						},'SalesOrderRows.SaleTaxes','Companies','Customers','Employees'
 					]
 			]);
-			//pr($sales_order->sale_tax); exit;
 			$process_status='Pulled From Sales-Order';
-				
-
 		}
-			
+				
+	
 		$this->set(compact('sales_order','process_status','sales_order_id'));
 		
         $invoice = $this->Invoices->newEntity();
-        if ($this->request->is('post')) {
-			$invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
-					
+        if ($this->request->is('patch', 'post', 'put')) {
+		$invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
+			
 			$last_in_no=$this->Invoices->find()->select(['in2'])->where(['company_id' => $sales_order->company_id])->order(['in2' => 'DESC'])->first();
 			if($last_in_no){
 				$invoice->in2=$last_in_no->in2+1;
@@ -246,7 +243,6 @@ class InvoicesController extends AppController
 				$invoice->in2=1;
 			}
 			
-			//$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date));
 			$invoice->in3=$sales_order->so3;
 			$invoice->created_by=$s_employee_id;
 			$invoice->company_id=$sales_order->company_id;
@@ -259,7 +255,7 @@ class InvoicesController extends AppController
 			$invoice->due_payment=$invoice->grand_total;
 			
             if ($this->Invoices->save($invoice)) {
-				//pr($invoice); exit;
+				pr($invoice); exit;
 				$ledger_grand=$invoice->grand_total;
 				//ledger posting for Customer
 				$ledger = $this->Invoices->Ledgers->newEntity();
@@ -366,10 +362,10 @@ class InvoicesController extends AppController
 		$termsConditions = $this->Invoices->TermsConditions->find('all',['limit' => 200]);
 		$SaleTaxes = $this->Invoices->SaleTaxes->find('all');
 		if(!empty($sales_order->customer_id)){
-		$dueInvoices = $this->Invoices->find()->where(['customer_id'=>$sales_order->customer_id,'due_payment !='=>0]);
+		$dueInvoicespay = $this->Invoices->find()->where(['customer_id'=>$sales_order->customer_id,'due_payment !='=>0]);
 		}
 		$employees = $this->Invoices->Employees->find('list', ['limit' => 200]);
-        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoices','creditlimit'));
+        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoicespay','creditlimit'));
         $this->set('_serialize', ['invoice']);
     }
 	
