@@ -270,7 +270,11 @@ class QuotationsController extends AppController
             $quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
 			$last_qt_no=$this->Quotations->find()->select(['qt2'])->where(['company_id' => $st_company_id])->order(['qt2' => 'DESC'])->first();
 			if($last_qt_no){
-				$quotation->qt2=$last_qt_no->qt2+1;
+				if(!empty($revision)){
+					$quotation->qt2=$last_qt_no->qt2;
+				}else{
+					$quotation->qt2=$last_qt_no->qt2+1;
+				}
 			}else{
 				$quotation->qt2=1;
 			}	
