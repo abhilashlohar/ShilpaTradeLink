@@ -473,6 +473,28 @@ $(document).ready(function() {
 			return false;  
 		}
 	});
+	
+	$('#update_credit_limit').on("click",function() {
+		var customer_id=$('input[name="customer_id"]').val();
+		$("#update_credit_limit_wait").html('Loading...');
+		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'CreditLimit']); ?>";
+		url=url+'/'+customer_id,
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$('input[name="credit_limit"]').val(response);
+			$("#update_credit_limit_wait").html('');
+			$('input[name="new_due_payment"]').attr('max',response).rules('add', {
+						required: true,
+						max: response,
+						messages: {
+							max: "Credit Limit Exieded ."
+						}
+					});
+		});
+    });
+	
+	
 	$('input[name="discount"],input[name="discount_per"],input[name="pnf"],input[name="fright_amount"],input[name="pnf_per"]').die().live("keyup",function() {
 			var asc=$(this).val();
 			var numbers =  /^[0-9]*\.?[0-9]*$/;
