@@ -249,6 +249,8 @@ if(!empty($revision))
 			<ol id="sortable">
 			  
 			</ol>
+			
+			<div class="editable"></div>
 		</div>
 		<div class="form-actions">
 			<div class="row">
@@ -320,6 +322,14 @@ if(!empty($revision))
 #sortable li{
 	cursor: -webkit-grab;
 }
+div.editable {
+    border: 1px solid #ccc;
+    padding: 5px;white-space: pre;
+	
+}
+[contenteditable] {
+  white-space : pre-wrap;
+}
 </style>
 <?php echo $this->Html->css('/drag_drop/jquery-ui.css'); ?>
 <?php echo $this->Html->script('/drag_drop/jquery-1.12.4.js'); ?>
@@ -332,6 +342,15 @@ $( "#sortable" ).disableSelection();
 </script>
 <script>
 $(document).ready(function() {
+	
+	$('.editable').each(function(){
+		this.contentEditable = true;
+	});
+	$('.editable').on('keyup',function(e){
+		alert(e.keyCode);
+		e.preventDefault();
+	});
+
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
