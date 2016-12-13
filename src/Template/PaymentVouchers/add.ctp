@@ -45,6 +45,7 @@
 							<?php 
 							echo $this->Form->input('cash_bank_account_id', ['options'=>$bankCashes,'empty'=>'--Select-','label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
+						
 					</div>
 				
 				</div>
@@ -64,6 +65,11 @@
 								</div>
                                 
 							</div>
+						</div>
+						<div class="form-group" id="chq_no">
+							<label class="control-label">Cheque No<span class="required" aria-required="true">*</span></label>
+							<?php 
+							echo $this->Form->input('cheque_no', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Cheque No']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -195,6 +201,16 @@ $(document).ready(function() {
 				$(this).val('');
 				return false;  
 			}
+	});
+	
+	$('input[name="payment_mode"]').die().live("click",function() {
+		var payment_mode=$(this).val();
+		
+		if(payment_mode=="Cheque"){
+			$("#chq_no").show();
+		}else{
+			$("#chq_no").hide();
+		}
 	});
 });
 </script>
