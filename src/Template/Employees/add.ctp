@@ -93,14 +93,14 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Department <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('dipartment_id', ['options' => $departments,'label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('dipartment_id', ['empty' => 'Select Department','options' => $departments,'label' => false,'class' => 'form-control input-sm']); ?>
 						</div>
 					</div>
 					
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Designation <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('designation_id', ['options'=>$designations,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Designation']); ?>
+							<?php echo $this->Form->input('designation_id', ['empty' => 'Select Designation','options'=>$designations,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Designation']); ?>
 						</div>
 					</div>
 					
@@ -214,7 +214,7 @@
 						<div class="form-group">
 						<label class="control-label">Account Group <span class="required" aria-required="true">*</span></label>
 							<div id="account_group_div">
-							<?php echo $this->Form->input('account_group_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account Group']); ?>
+							<?php echo $this->Form->input('account_group_id', ['options' => [],'label' => false,'empty' => "--Select Account Group--",'class' => 'form-control input-sm select2me','placeholder'=>'Account Group']); ?>
 							</div>
 						</div>
 					</div>
@@ -222,7 +222,7 @@
 						<div class="form-group">
 						<label class="control-label">Account First Sub Group <span class="required" aria-required="true">*</span></label>
 							<div id="account_first_subgroup_div">
-							<?php echo $this->Form->input('account_first_subgroup_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account First Sub Group']); ?>
+							<?php echo $this->Form->input('account_first_subgroup_id', ['options' => [],'label' => false,'empty' => "--Select First Sub Group--",'class' => 'form-control input-sm select2me','placeholder'=>'Account First Sub Group']); ?>
 							</div>
 						</div>
 					</div>
@@ -232,7 +232,7 @@
 						<div class="form-group">
 							<label class="control-label">Account Second Sub Group <span class="required" aria-required="true">*</span></label>
 							<div id="account_second_subgroup_div">
-							<?php echo $this->Form->input('account_second_subgroup_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account Second Sub Group']); ?>
+							<?php echo $this->Form->input('account_second_subgroup_id', ['empty' => "--Select Second Sub Group--",'options' => [],'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account Second Sub Group']); ?>
 							</div>
 						</div>
 					</div>
