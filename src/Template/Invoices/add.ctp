@@ -460,9 +460,6 @@ $(document).ready(function() {
 
 	});
 	
-	
-	
-			
 	//--	 END OF VALIDATION
 	$('.quantity').die().live("keyup",function() {
 		var asc=$(this).val();
