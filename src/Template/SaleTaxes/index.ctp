@@ -22,13 +22,22 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-md-3">Description  <span class="required" aria-required="true">
-					* </span>
+					<label class="control-label col-md-3">Description (Quotation)
 					</label>
 					<div class="col-md-9">
 						<div class="input-icon right">
 							<i class="fa"></i>
-							 <?php echo $this->Form->input('description', ['label' => false,'class' => 'form-control','placeholder'=>'Description']); ?>
+							 <?php echo $this->Form->input('quote_description', ['label' => false,'class' => 'form-control','placeholder'=>'Description for Quotation']); ?>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-md-3">Description (Invoice)
+					</label>
+					<div class="col-md-9">
+						<div class="input-icon right">
+							<i class="fa"></i>
+							 <?php echo $this->Form->input('invoice_description', ['label' => false,'class' => 'form-control','placeholder'=>'Description for Invoice']); ?>
 						</div>
 					</div>
 				</div>
@@ -51,7 +60,7 @@
 						<div class="input-icon right">
 							<i class="fa"></i>
 							<div id="account_group_div">
-							<?php echo $this->Form->input('account_group_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account Group']); ?>
+							<?php echo $this->Form->input('account_group_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','empty'=>'--Select Account Group--']); ?>
 							</div>
 						</div>
 					</div>
@@ -64,7 +73,7 @@
 						<div class="input-icon right">
 							<i class="fa"></i>
 							<div id="account_first_subgroup_div">
-							<?php echo $this->Form->input('account_first_subgroup_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account First Sub Group']); ?>
+							<?php echo $this->Form->input('account_first_subgroup_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','empty'=>'--Select Account First Sub Group--']); ?>
 							</div>
 						</div>
 					</div>
@@ -77,7 +86,7 @@
 						<div class="input-icon right">
 							<i class="fa"></i>
 							<div id="account_second_subgroup_div">
-							<?php echo $this->Form->input('account_second_subgroup_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account Second Sub Group']); ?>
+							<?php echo $this->Form->input('account_second_subgroup_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','empty'=>'--Select Account Second Sub Group--']); ?>
 							</div>
 						</div>
 					</div>
@@ -99,7 +108,8 @@
 					<tr>
 						<th>Sr. No.</th>
 						<th>Figure</th>
-						<th>Description</th>
+				
+						
 						<th class="actions"><?= __('Actions') ?></th>
 					</tr>
 				</thead>
@@ -108,7 +118,6 @@
 					<tr>
 						<td><?= h($i) ?></td>
 						<td><?= $this->Number->format($saleTax->tax_figure,[ 'places' => 2]) ?></td>
-						<td><?= h($saleTax->description) ?></td>
 						<td class="actions">
 							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $saleTax->id]) ?>
 							<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $saleTax->id], ['confirm' => __('Are you sure you want to delete # {0}?', $saleTax->id)]) ?>

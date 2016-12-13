@@ -14,7 +14,7 @@
 					<label class="control-label col-md-3">Figure  <span class="required" aria-required="true">
 					* </span>
 					</label>
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<div class="input-icon right">
 							<i class="fa"></i>
 							 <?php echo $this->Form->input('tax_figure', ['label' => false,'class' => 'form-control','placeholder'=>'Figure','value'=>$this->Number->format($saleTax->tax_figure,[ 'places' => 2])]); ?>
@@ -22,13 +22,24 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-md-3">Description  <span class="required" aria-required="true">
+					<label class="control-label col-md-3">Description(Quote)  <span class="required" aria-required="true">
 					* </span>
 					</label>
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<div class="input-icon right">
 							<i class="fa"></i>
-							 <?php echo $this->Form->input('description', ['label' => false,'class' => 'form-control','placeholder'=>'Description']); ?>
+							 <?php echo $this->Form->input('quote_description', ['label' => false,'class' => 'form-control','placeholder'=>'Description']); ?>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-md-3">Description(Invoice)  <span class="required" aria-required="true">
+					* </span>
+					</label>
+					<div class="col-md-4">
+						<div class="input-icon right">
+							<i class="fa"></i>
+							 <?php echo $this->Form->input('invoice_description', ['label' => false,'class' => 'form-control','placeholder'=>'Description']); ?>
 						</div>
 					</div>
 				</div>

@@ -34,6 +34,15 @@ class SaleTaxesTable extends Table
         $this->displayField('tax_figure');
         $this->primaryKey('id');
 		$this->hasOne('LedgerAccounts');
+		
+        $this->hasMany('SalesOrderRows', [
+            'foreignKey' => 'sale_tax_id'
+        ]);
+		
+		$this->hasMany('Invoices', [
+            'foreignKey' => 'sale_tax_id'
+        ]); 
+		
 		$this->belongsTo('AccountCategories', [
             'foreignKey' => 'account_category_id',
             'joinType' => 'INNER'
@@ -71,10 +80,6 @@ class SaleTaxesTable extends Table
             ->decimal('tax_figure')
             ->requirePresence('tax_figure', 'create')
             ->notEmpty('tax_figure');
-
-        $validator
-            ->requirePresence('description', 'create')
-            ->notEmpty('description');
 
         return $validator;
     }
