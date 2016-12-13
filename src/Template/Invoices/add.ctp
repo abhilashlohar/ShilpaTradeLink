@@ -1,10 +1,4 @@
-<?php 
-if(!empty($sales_order->customer_id)){
-	$due=0; foreach ($dueInvoicespay as $invoice){ 
-					$due+=$invoice->due_payment;
-		} 
-}
-?>
+
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -147,6 +141,7 @@ if(!empty($sales_order->customer_id)){
 						<th width="130">Quantity</th>
 						<th width="130">Rate</th>
 						<th width="130">Amount</th>
+						<th width="130">Sale Tax</th>
 						<th width="70"></th>
 					</tr>
 				</thead>
@@ -165,18 +160,16 @@ if(!empty($sales_order->customer_id)){
 							<td><?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$sales_order_rows->quantity-$sales_order_rows->processed_quantity,'readonly','min'=>'1','max'=>@$sales_order_rows->quantity-$sales_order_rows->processed_quantity]); ?></td>
 							<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate','value' => @$sales_order_rows->rate,'readonly','step'=>0.01]); ?></td>
 							<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$sales_order_rows->amount,'readonly','step'=>0.01]); ?></td>
+							<td><?php echo @$sales_order_rows->sale_tax->tax_figure; ?></td>
 							<td>
-								<?php echo @$sales_order_rows->sale_tax->tax_figure; ?>
 								<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$sales_order_rows->id]); ?></label>
 								<?php echo $this->Form->input('q', ['label' => false,'type' => 'hidden','value' => @$sales_order_rows->sale_tax->tax_figure]); ?>
 								<?php echo $this->Form->input('st_description', ['type' => 'hidden','label' => false,'value' => @$sales_order_rows->sale_tax->description]); ?>
 								<?php echo $this->Form->input('st_id', ['type' => 'hidden','label' => false,'value' => @$sales_order_rows->sale_tax->id]); ?>
-								
-							
 							</td>
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
-							<td colspan="4"><?php echo $this->Form->input('q', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm ','placeholder'=>'Description','value' => @$sales_order_rows->description,'readonly']); ?></td>
+							<td colspan="5"><?php echo $this->Form->input('q', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm ','placeholder'=>'Description','value' => @$sales_order_rows->description,'readonly']); ?></td>
 							<td></td>
 						</tr>
 					<?php $q++; endforeach; }?>
@@ -267,35 +260,7 @@ if(!empty($sales_order->customer_id)){
 					</div>
 				</div>
 			</div><br/>
-			<div class="row">
-				<div class="col-md-4">
-					<div class="form-group">
-						<label class="col-md-6 control-label">Credit Limits</label>
-						<div class="col-md-6" id="due">
-							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value' => @$sales_order->customer->credit_limit]); ?><br/>
-							<a href="#" role="button" id="update_credit_limit">Update Credit Limit</a>
-							<span id="update_credit_limit_wait"></span>
-						</div>
-					</div>
-				</div>
-		
-				<div class="col-md-4">
-					<div class="form-group">
-						<label class="col-md-6 control-label">Due Payment</label>
-						<div class="col-md-6" id="due">
-							<?php echo $this->Form->input('due_payment_old', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value'=>$due]); ?>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="form-group">
-						<label class="col-md-6 control-label">New Due Payment</label>
-						<div class="col-md-6" id="due">
-							<?php echo $this->Form->input('new_due_payment', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','max'=>@$sales_order->customer->credit_limit]); ?>
-						</div>
-					</div>
-				</div>
-			</div>
+			
 		</div>
 		<?php echo $this->Form->input('process_status', ['type' => 'hidden','value' => @$process_status]); ?>
 		<?php echo $this->Form->input('sales_order_id', ['type' => 'hidden','value' => @$sales_order_id]); ?>
@@ -491,25 +456,7 @@ $(document).ready(function() {
 			}
 	});
 	
-	$('#update_credit_limit').on("click",function() {
-		var customer_id=$('input[name="customer_id"]').val();
-		$("#update_credit_limit_wait").html('Loading...');
-		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'CreditLimit']); ?>";
-		url=url+'/'+customer_id,
-		$.ajax({
-			url: url,
-		}).done(function(response) {
-			$('input[name="credit_limit"]').val(response);
-			$("#update_credit_limit_wait").html('');
-			$('input[name="new_due_payment"]').attr('max',response).rules('add', {
-						required: true,
-						max: response,
-						messages: {
-							max: "Credit Limit Exieded ."
-						}
-					});
-		});
-    });
+	
 	
 	
 	$('select[name="company_id"]').on("change",function() {
@@ -553,7 +500,7 @@ $(document).ready(function() {
 	function rename_rows(){
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
-			var val=$(this).find('td:nth-child(6) input[type="checkbox"]:checked').val();
+			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
 			if(val){
 				$(this).find('td:nth-child(2) input').attr("name","invoice_rows["+val+"][item_id]").attr("id","invoice_rows-"+val+"-item_id").rules("add", "required");
 				$(this).find('td:nth-child(3) input').removeAttr("readonly").attr("name","invoice_rows["+val+"][quantity]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-quantity").rules("add", "required");
@@ -584,19 +531,19 @@ $(document).ready(function() {
 	function calculate_total(){
 		var total=0; var grand_total=0;
 		$("#main_tb tbody tr.tr1").each(function(){
-			var val=$(this).find('td:nth-child(6) input[type="checkbox"]:checked').val();
+			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
 			if(val){
 				var qty=parseInt($(this).find("td:nth-child(3) input").val());
 				var Rate=parseFloat($(this).find("td:nth-child(4) input").val());
 				var Amount=qty*Rate;
 				$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
 				total=total+Amount;
-				var sale_tax=parseFloat($(this).find("td:nth-child(6) input[type=hidden]").eq(1).val());
+				var sale_tax=parseFloat($(this).find("td:nth-child(7) input[type=hidden]").eq(1).val());
 				if(isNaN(sale_tax)) { var sale_tax = 0; }
 				$('input[name="sale_tax_per"]').val(sale_tax);
-				var sale_tax_description=$(this).find("td:nth-child(6) input[type=hidden]").eq(2).val();
+				var sale_tax_description=$(this).find("td:nth-child(7) input[type=hidden]").eq(2).val();
 				$('input[name="sale_tax_description"]').val(sale_tax_description);
-				var sale_tax_id=$(this).find("td:nth-child(6) input[type=hidden]").eq(3).val();
+				var sale_tax_id=$(this).find("td:nth-child(7) input[type=hidden]").eq(3).val();
 				$('input[name="sale_tax_id"]').val(sale_tax_id);
 				
 			}
@@ -647,13 +594,6 @@ $(document).ready(function() {
 		
 	}
 	<?php } ?>
-	
-	
-	
-    $('.addrow').die().live("click",function() { 
-		add_row();
-    });
-	
 	
 	$('.select_address').on("click",function() { 
 		open_address();
