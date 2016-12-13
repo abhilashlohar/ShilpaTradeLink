@@ -254,11 +254,10 @@ class InvoicesController extends AppController
 			//pr($invoice->in3); exit;
 			$invoice->date_created=date("Y-m-d");
 			$invoice->due_payment=$invoice->grand_total;
-			//pr($invoice); exit;
+		
             if ($this->Invoices->save($invoice)) {
 				
 				$ledger_grand=$invoice->grand_total;
-				//ledger posting for Customer
 				$ledger = $this->Invoices->Ledgers->newEntity();
 				$ledger->ledger_account_id = $sales_order->customer->ledger_account_id;
 				$ledger->debit = $invoice->grand_total;
@@ -266,6 +265,7 @@ class InvoicesController extends AppController
 				$ledger->voucher_id = $invoice->id;
 				$ledger->voucher_source = 'Invoice';
 				$ledger->transaction_date = $invoice->date_created;
+				
 				if($ledger_grand>0)
 				{
 					$this->Invoices->Ledgers->save($ledger); 
@@ -282,13 +282,17 @@ class InvoicesController extends AppController
 				$ledger->voucher_source = 'Invoice';
 				if($ledger_pnf>0)
 				{
+					
 					$this->Invoices->Ledgers->save($ledger); 
 				}
 				
 				//Ledger posting for Sale Tax
+				
+				$SaleTaxe=$this->Invoices->SaleTaxes->get($invoice->sale_tax_id);
+				
 				$ledger_saletax=$invoice->sale_tax_amount;
 				$ledger = $this->Invoices->Ledgers->newEntity();
-				$ledger->ledger_account_id = $invoice->sale_tax_ledger_account_id;
+				$ledger->ledger_account_id = $SaleTaxe->ledger_account_id;
 				$ledger->debit = 0;
 				$ledger->credit = $invoice->sale_tax_amount;
 				$ledger->voucher_id = $invoice->id;
