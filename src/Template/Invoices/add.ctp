@@ -414,7 +414,7 @@ $(document).ready(function() {
 		invalidHandler: function (event, validator) { //display error alert on form submit   
 			success3.hide();
 			error3.show();
-			Metronic.scrollTo(error3, -200);
+			//Metronic.scrollTo(error3, -200);
 		},
 
 		highlight: function (element) { // hightlight error inputs
@@ -445,7 +445,7 @@ $(document).ready(function() {
 				$("#row_error_item").show();
 				success3.hide();
 				error3.show();
-				Metronic.scrollTo(error3, -200);
+				//Metronic.scrollTo(error3, -200);
 				return false;
 			}
 			q="ok"; var count=0;
