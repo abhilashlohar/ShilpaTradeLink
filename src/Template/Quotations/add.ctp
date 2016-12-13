@@ -219,7 +219,8 @@ if(!empty($revision))
 							
 							<td colspan="6">
 							
-							<?php echo $this->Form->textarea('quotation_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value' => @$quotation_rows->description]); ?>
+							<?php echo $this->Form->textarea('quotation_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','style'=>['display:none'],'value' => @$quotation_rows->description]); ?>
+							<div contenteditable="true" id="editor" name="<?php echo 'quotation_rows['.$q.'][description]'; ?>"><?php echo @$quotation_rows->description; ?></div>
 							</td>
 							
 					</tr>

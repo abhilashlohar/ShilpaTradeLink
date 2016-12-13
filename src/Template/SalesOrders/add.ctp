@@ -187,7 +187,9 @@ if(!empty($copy))
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$quotation_rows->id; ?>'>
-							<td colspan="6"><?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','placeholder'=>'Description','rows'=>'6','value' => @$quotation_rows->description]); ?></td>
+							<td colspan="6"><?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','style'=>['display:none'],'placeholder'=>'Description','rows'=>'6','value' => @$quotation_rows->description]); ?>
+							<div contenteditable="true" id="editor" name="<?php echo 'sales_order_rows['.$q.'][description]'; ?>"><?php echo @$quotation_rows->description; ?></div>
+							</td>
 							<td></td>
 						</tr>
 					<?php $q++; endforeach; } } elseif(!empty($copy)) {
@@ -235,7 +237,10 @@ if(!empty($copy))
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
-							<td colspan="6"><?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','placeholder'=>'Description','rows'=>'6','value' => @$sales_order_rows->description]); ?></td>
+							<td colspan="6"><?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','placeholder'=>'Description','style'=>['display:none'],'rows'=>'6','value' => @$sales_order_rows->description]); ?>
+							<div contenteditable="true" id="editor" name="<?php echo 'sales_order_rows['.$q.'][description]'; ?>"><?php echo @$sales_order_rows->description; ?></div>
+							
+							</td>
 							<td></td>
 						</tr>
 					<?php $q++; endforeach; } } ?>
@@ -426,7 +431,10 @@ if(!empty($copy))
 			<td width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 		<tr class="tr2 preimp">
-			<td colspan="6"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'4']); ?></td>
+			<td colspan="6"><?php echo $this->Form->textarea('description', ['label' => false,'style'=>['display:none'],'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'4']); ?>
+			<div contenteditable="true" id="editor"></div>
+			</td>
+			
 			
 		</tr>
 	</tbody>
