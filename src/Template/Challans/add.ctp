@@ -11,7 +11,7 @@
 				<div class="row">
 					
 					<div class="col-md-3">
-						<div class="form-group">
+						<div class="form-group">customer_id
 							<label class="control-label">Customers <span class="required" aria-required="true">*</span></label>
 							
 								<?php
@@ -20,7 +20,7 @@
 										$merge=$customer->customer_name.'	('.$customer->alias.')';
 										$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
 									}
-							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
+							echo $this->Form->input('', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 							
 						</div>
 					</div>
@@ -89,9 +89,7 @@
 				</div>
 		
 			<br/>
-			<div class="alert alert-danger" id="row_error" style="display:none;">
-				All fields are Required.
-			</div>
+			
 			<table class="table tableitm" id="main_tb">
 				<thead>
 					<tr>
