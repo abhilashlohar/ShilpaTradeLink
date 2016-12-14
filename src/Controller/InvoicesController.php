@@ -416,10 +416,11 @@ class InvoicesController extends AppController
             if ($this->Invoices->save($invoice)) {
 				
 				$this->Invoices->Ledgers->deleteAll(['voucher_id' => $invoice->id, 'voucher_source' => 'Invoice']);
+				$customer_ledger=$this->Invoices->Customers->get($invoice->company_id);
 				
 				$ledger_grand=$invoice->grand_total;
 				$ledger = $this->Invoices->Ledgers->newEntity();
-				$ledger->ledger_account_id = $sales_order->customer->ledger_account_id;
+				$ledger->ledger_account_id = $customer_ledger->ledger_account_id;
 				$ledger->debit = $invoice->grand_total;
 				$ledger->credit = 0;
 				$ledger->voucher_id = $invoice->id;
