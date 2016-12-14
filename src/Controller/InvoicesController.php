@@ -163,13 +163,13 @@ class InvoicesController extends AppController
 		$this->viewBuilder()->layout('');
 		
         $invoice = $this->Invoices->get($id, [
-            'contain' => ['Customers','Employees','Transporters','Creator'=>['Designations'],'Companies'=> [
+            'contain' => ['SaleTaxes','Customers','Employees','Transporters','Creator'=>['Designations'],'Companies'=> [
 			'CompanyBanks'=> function ($q) {
 				return $q
 				->where(['CompanyBanks.default_bank' => 1]);
 				}], 'InvoiceRows' => ['Items'=>['Units']]]
 			]);
-
+		
         $this->set('invoice', $invoice);
 		
         $this->set('_serialize', ['invoice']);
@@ -396,7 +396,7 @@ class InvoicesController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		
         $invoice = $this->Invoices->get($id, [
-            'contain' => ['InvoiceRows'=>['Items'],'SalesOrders'=>['SalesOrderRows','Invoices'=>['InvoiceRows']],'Companies','Customers','Employees']
+            'contain' => ['InvoiceRows'=>['Items'],'SalesOrders'=>['SalesOrderRows','Invoices'=>['InvoiceRows']],'Companies','Customers','Employees','SaleTaxes']
         ]);
 		//pr($invoice); exit;
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -414,6 +414,72 @@ class InvoicesController extends AppController
 			//pr($invoice->in3); exit;
 			
             if ($this->Invoices->save($invoice)) {
+				
+				$this->Invoices->Ledgers->deleteAll(['voucher_id' => $invoice->id, 'voucher_source' => 'Invoice']);
+				
+				$ledger_grand=$invoice->grand_total;
+				$ledger = $this->Invoices->Ledgers->newEntity();
+				$ledger->ledger_account_id = $sales_order->customer->ledger_account_id;
+				$ledger->debit = $invoice->grand_total;
+				$ledger->credit = 0;
+				$ledger->voucher_id = $invoice->id;
+				$ledger->voucher_source = 'Invoice';
+				$ledger->transaction_date = $invoice->date_created;
+				
+				if($ledger_grand>0)
+				{
+					$this->Invoices->Ledgers->save($ledger); 
+				} 
+				//Ledger posting for Account Reference
+				$ledger_pnf=$invoice->total_after_pnf;
+				$accountReferences=$this->Invoices->AccountReferences->get(1);
+				$ledger = $this->Invoices->Ledgers->newEntity();
+				$ledger->ledger_account_id = $accountReferences->ledger_account_id;
+				$ledger->debit = 0;
+				$ledger->credit = $invoice->total_after_pnf;
+				$ledger->voucher_id = $invoice->id;
+				$ledger->transaction_date = $invoice->date_created;
+				$ledger->voucher_source = 'Invoice';
+				if($ledger_pnf>0)
+				{
+					
+					$this->Invoices->Ledgers->save($ledger); 
+				}
+				
+				//Ledger posting for Sale Tax
+				
+				$SaleTaxe=$this->Invoices->SaleTaxes->get($invoice->sale_tax_id);
+				
+				$ledger_saletax=$invoice->sale_tax_amount;
+				$ledger = $this->Invoices->Ledgers->newEntity();
+				$ledger->ledger_account_id = $SaleTaxe->ledger_account_id;
+				$ledger->debit = 0;
+				$ledger->credit = $invoice->sale_tax_amount;
+				$ledger->voucher_id = $invoice->id;
+				$ledger->transaction_date = $invoice->date_created;
+				$ledger->voucher_source = 'Invoice';
+				if($ledger_saletax>0)
+				{
+					$this->Invoices->Ledgers->save($ledger); 
+				}
+				
+				
+				//Ledger posting for Fright Amount
+				
+				$ledger_fright= $invoice->fright_amount;
+				$accountReferences=$this->Invoices->AccountReferences->get(3);
+				$ledger = $this->Invoices->Ledgers->newEntity();
+				$ledger->ledger_account_id = $accountReferences->ledger_account_id;
+				$ledger->debit = 0;
+				$ledger->credit = $invoice->fright_amount;
+				$ledger->voucher_id = $invoice->id;
+				$ledger->transaction_date = $invoice->date_created;
+				$ledger->voucher_source = 'Invoice';
+				if($ledger_fright>0)
+				{
+					$this->Invoices->Ledgers->save($ledger); 
+				}
+				
 				$qq=0; foreach($invoice->invoice_rows as $invoice_rows){
 					$salesorderrow=$this->Invoices->SalesOrderRows->find()->where(['sales_order_id'=>$invoice->sales_order_id,'item_id'=>$invoice_rows->item_id])->first();
 					$salesorderrow->processed_quantity=$salesorderrow->processed_quantity-$invoice->getOriginal('invoice_rows')[$qq]->quantity+$invoice_rows->quantity;

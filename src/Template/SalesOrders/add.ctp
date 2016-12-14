@@ -178,7 +178,7 @@ if(!empty($copy))
 							<td>
 							<?php $options=[];
 							foreach($SaleTaxes as $SaleTaxe){ 
-								$options[]=['text' => (string) $SaleTaxe->tax_figure, 'value' => $SaleTaxe->id, 'description' => $SaleTaxe->description];
+								$options[]=['text' => (string) $SaleTaxe->tax_figure, 'value' => $SaleTaxe->id, 'description' => $SaleTaxe->quote_description];
 							} 
 							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
 							//echo $this->Form->input('sales_order_rows.'.$q.'.
@@ -229,7 +229,7 @@ if(!empty($copy))
 							<td>
 							<?php $options=[];
 							foreach($SaleTaxes as $SaleTaxe){ 
-								$options[]=['text' => (string) $SaleTaxe->tax_figure, 'value' => $SaleTaxe->id, 'description' => $SaleTaxe->description];
+								$options[]=['text' => (string) $SaleTaxe->tax_figure, 'value' => $SaleTaxe->id, 'description' => $SaleTaxe->quote_description];
 							} 
 							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
 							?>
@@ -423,7 +423,7 @@ if(!empty($copy))
 			<td width="100">
 			<?php $options=[];
 							foreach($SaleTaxes as $SaleTaxe){ 
-								$options[]=['text' => (string) $SaleTaxe->tax_figure, 'value' => $SaleTaxe->id, 'description' => $SaleTaxe->description];
+								$options[]=['text' => (string) $SaleTaxe->tax_figure, 'value' => $SaleTaxe->id, 'description' => $SaleTaxe->quote_description];
 							} 
 							echo $this->Form->input('sale_tax_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
 			?>
