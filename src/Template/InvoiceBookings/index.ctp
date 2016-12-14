@@ -30,7 +30,7 @@
 					?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
-							<td><?= h(($invoiceBooking->grn->grn1.'/GRN-'.str_pad($invoiceBooking->grn->id, 3, '0', STR_PAD_LEFT).'/'.$invoiceBooking->grn->grn3.'/'.$invoiceBooking->grn->grn4)) ?></td>
+							<td><?= h(($invoiceBooking->grn->grn1.'/GRN-'.str_pad($invoiceBooking->grn->grn2, 3, '0', STR_PAD_LEFT).'/'.$invoiceBooking->grn->grn3.'/'.$invoiceBooking->grn->grn4)) ?></td>
 							<td><?= h($invoiceBooking->invoice_no) ?></td>
 							<td><?php echo date("d-m-Y",strtotime($invoiceBooking->created_on)) ?></td>
 							<td class="actions">
