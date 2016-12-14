@@ -86,7 +86,7 @@
 							<td><?= h($i) ?></td>
 							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Bank Name','value'=>$vendor_contact_person->name]); ?></td>
 							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Branch','value'=>$vendor_contact_person->email]); ?></td>
-							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.mobile', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Account No','value'=>$vendor_contact_person->mobile]); ?></td>
+							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.mobile', ['label' => false,'class' => 'form-control input-sm allLetter','value'=>$vendor_contact_person->mobile,'placeholder'=>'Mobile','maxlength'=>10]); ?></td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
 						<?php } ?>
@@ -229,6 +229,20 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+	$('.allLetter').live("keyup",function(){
+		var inputtxt=  $(this).val();
+		var numbers =  /^[0-9]*\.?[0-9]*$/;
+		
+		if(inputtxt.match(numbers))  
+		{  
+		} 
+		else  
+		{  
+			$(this).val('');
+			return false;  
+		}
+	});
+	
 	$('select[name="account_category_id"]').on("change",function() {
 	$('#account_group_div').html('Loading...');
 	var accountCategoryId=$('select[name="account_category_id"] option:selected').val();

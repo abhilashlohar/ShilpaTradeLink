@@ -211,12 +211,13 @@ $(document).ready(function() {
 			$('input[name="cheque_no"]').val('');
 		}
 	});
+	
 	if ($('#id_radio1').is(':checked')) {
-					$('#chq_no').show('fast');
-                }
-				else{
-					$('#chq_no').hide('fast');
-                }
+			$('#chq_no').show('fast');
+		}
+		else{
+			$('#chq_no').hide('fast');
+            }
 });
 </script>
 

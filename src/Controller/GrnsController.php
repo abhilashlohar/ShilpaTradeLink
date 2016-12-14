@@ -46,6 +46,7 @@ class GrnsController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $grn = $this->Grns->get($id, [
             'contain' => ['PurchaseOrders', 'Companies', 'GrnRows', 'InvoiceBookings']
         ]);

@@ -195,7 +195,7 @@ class FilenamesController extends AppController
             $this->Flash->error(__('The filename could not be deleted. Please, try again.'));
         }
 		}else{
-			$this->Flash->error(__('The file Exist in Somewhere.'));
+			$this->Flash->error(__('Once the Quotation/Sales-order/Invoice has generated with Filename, the Filename cannot be deleted.'));
 		}
 
         return $this->redirect(['action' => 'index']);
@@ -219,7 +219,7 @@ class FilenamesController extends AppController
             $this->Flash->error(__('The filename could not be deleted. Please, try again.'));
         }
 		}else{
-			$this->Flash->error(__('The file Exist in Somewhere.'));
+			$this->Flash->error(__('Once the Quotation/Sales-order/Invoice has generated with Filename, the Filename cannot be deleted.'));
 		}
 
         return $this->redirect(['action' => 'index2']);
