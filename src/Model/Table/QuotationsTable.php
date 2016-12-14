@@ -76,6 +76,13 @@ class QuotationsTable extends Table
 			'saveStrategy' => 'replace'
         ]);
 		
+		
+		$this->belongsTo('Rquotations', [
+			'className' => 'Quotations',
+			'foreignKey' => 'quotation_id',
+			'propertyName' => 'rquotations'
+		]);
+		
     }
 	
 	public $virtualFields = array(

@@ -88,6 +88,18 @@ class QuotationsController extends AppController
 		//pr($where); exit;
         $quotations = $this->paginate($this->Quotations->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
 		
+		
+		
+		$query = $this->Quotations->find();
+		$query->innerJoinWith('Rquotations', function ($q) {
+			return $q->select(['MaxRevision' => $q->func()->max('Rquotations.revision')])->group('quotation_id')->where(['Rquotations.quotation_id=Quotations.quotation_id'])->where(['Rquotations.MaxRevision =Quotations.revision ']);
+		});
+		
+		foreach($query as $data){
+			pr($data);
+		} exit;
+
+
 		$companies = $this->Quotations->Companies->find('list');
 		
 		$closeReasons = $this->Quotations->QuotationCloseReasons->find('all',['limit' => 200]);
