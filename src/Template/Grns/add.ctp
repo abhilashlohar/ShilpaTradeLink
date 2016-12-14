@@ -2,7 +2,12 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Add GRN</span>
+			<span class="caption-subject font-blue-steel uppercase">Add GRN</span><br/>
+			<?php 
+			if($purchase_order){
+				echo '<span style="font-size: 12px;">Converting Purchase-Order: '.$purchase_order->po1.' / PO'.str_pad($purchase_order->po2, 3, '0', STR_PAD_LEFT).' / '.$purchase_order->po3.' / '.$purchase_order->po4.'</span>';
+			}
+			 ?>
 		</div>
 		<div class="actions">
 			<?php echo $this->Html->link('<i class="icon-home"></i> Pull Purchase-Order','/PurchaseOrders/index?pull-request=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
