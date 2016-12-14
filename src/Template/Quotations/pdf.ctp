@@ -224,7 +224,7 @@ if(!empty($quotation->additional_note)){
 	</div><br/>';
 }
 $html.='
-<div class="avoid_break">
+<br/><div class="avoid_break">
 	<div class="avoid_break">
 		<b><u>Commercial Terms & Conditions:</u></b>
 		'. $this->Text->autoParagraph(h($quotation->terms_conditions)) .'
@@ -234,6 +234,7 @@ $html.='
 	
 $html.='
 		<div align="left" class="">
+			<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$quotation->company->logo.' height="80px" style="height:80px;"/>
 			<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->creator->signature.' height="50px" style="height:50px;"/>
 			<br/>
 			<span>'. h($quotation->employee->name) .'</span><br/>
@@ -244,10 +245,6 @@ $html.='
 		';
 		
 
-
-			
-			
-$html.='';
 	
 $html.='</div>'; 
 
