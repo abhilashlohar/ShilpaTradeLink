@@ -216,12 +216,10 @@ if(!empty($revision))
 							<td  width="70"><a class="btn btn-xs btn-default addrow"  href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 					</tr>
 					<tr class="tr2" row_no='<?php echo @$quotation_rows->id; ?>'>
-							
-							<td colspan="6">
-							
-							<?php echo $this->Form->textarea('quotation_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','style'=>['display:none'],'value' => @$quotation_rows->description]); ?>
+						<td colspan="6">
 							<div contenteditable="true" id="editor" name="<?php echo 'quotation_rows['.$q.'][description]'; ?>"><?php echo @$quotation_rows->description; ?></div>
-							</td>
+							<?php echo $this->Form->textarea('quotation_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','required','style'=>['display:none'],'value' => @$quotation_rows->description]); ?>
+						</td>
 							
 					</tr>
 					<?php $q++; endforeach;  ?>
@@ -245,8 +243,9 @@ if(!empty($revision))
 			
 			
 			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a> <a  role="button" class="btn btn-xs btn-primary updatetc" >Update </a>
-			<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control','value' => @$quotation->terms_conditions,'style'=>'display:none']); ?>
 			<div contenteditable="true" id="editor" name="terms_conditions"></div>
+			<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control','value' => @$quotation->terms_conditions,'required','style'=>'display:none']); ?>
+			
 			<br/>
 			<ol id="sortable">
 			  
@@ -309,8 +308,9 @@ if(!empty($revision))
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 		<tr class="tr2 preimp">
-			<td colspan="4"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','style'=>['display:none']]); ?>
-			<div contenteditable="true" id="editor"></div>
+			<td colspan="4">
+				<div contenteditable="true" id="editor"></div>
+				<?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Description','rows'=>'1','required','style'=>['display:none']]); ?>
 			</td>
 			<td></td>
 		</tr>
@@ -344,15 +344,6 @@ $( "#sortable" ).disableSelection();
 </script>
 <script>
 $(document).ready(function() {
-	
-	$('.editable').each(function(){
-		this.contentEditable = true;
-	});
-	$('.editable').on('keyup',function(e){
-		alert(e.keyCode);
-		e.preventDefault();
-	});
-
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -361,6 +352,7 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
+		ignore: "textar:hidden",
 		rules: {
 			rules: {
 				company_id:{

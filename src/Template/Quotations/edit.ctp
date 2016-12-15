@@ -203,7 +203,7 @@
 						</tr>
 						<tr class="tr2 preimp" row_no='<?php echo @$quotation_row->id; ?>'>
 							<td colspan="4">
-							<?php echo $this->Form->textarea('quotation_rows['.$q.'][description]', ['type' => 'textarea','label' => false,'class' => 'form-control input-sm autoExpand','style'=>['display:none'],'placeholder' => 'Description','rows'=>'1','value' => $quotation_row->description,'required']); ?>
+							<?php echo $this->Form->textarea('quotation_rows['.$q.'][description]', ['type' => 'textarea','label' => false,'class' => 'form-control input-sm','style'=>['display:none'],'placeholder' => 'Description','rows'=>'1','value' => $quotation_row->description,'required']); ?>
 							<div contenteditable="true" id="editor" name="<?php echo 'quotation_rows['.$q.'][description]'; ?>"><?php echo @$quotation_row->description; ?></div>
 							</td>
 							<td></td>
@@ -223,7 +223,7 @@
 			<br/>
 			
 			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a><a  role="button" class="btn btn-xs btn-primary updatetc" >Update </a>
-			<?php echo $this->Form->input('terms_conditions', ['label' => false,'class' => 'form-control','onmousehover'=>'copy_term_condition_to_textarea()','style'=>'display:none']); ?>
+			<?php echo $this->Form->input('terms_conditions', ['label' => false,'class' => 'form-control','required','style'=>'display:none']); ?>
 			<div contenteditable="true" id="editor" name="terms_conditions"><?php echo $quotation->terms_conditions; ?></div>
 			<br/>
 			<ol id="sortable">
@@ -314,22 +314,6 @@ $( "#sortable" ).disableSelection();
 </script>
 <script>
 $(document).ready(function() {
-	$(document)
-		.one('focus.textarea', '.autoExpand', function(){
-			var savedValue = this.value;
-			this.value = '';
-			this.baseScrollHeight = this.scrollHeight;
-			this.value = savedValue;
-		})
-		.on('input.textarea', '.autoExpand', function(){
-			var minRows = this.getAttribute('data-min-rows')|0,rows;
-			this.rows = minRows;
-			console.log(this.scrollHeight , this.baseScrollHeight);
-			rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
-			this.rows = minRows + rows;
-		});
-		
-		
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -338,6 +322,7 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
+		ignore: "textar:hidden",
 		rules: {
 			rules: {
 				company_id:{
