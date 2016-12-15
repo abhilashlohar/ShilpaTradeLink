@@ -49,7 +49,11 @@ class PaymentVouchersTable extends Table
             'foreignKey' => 'cash_bank_account_id',
             'propertyName' => 'BankCash',
         ]);
-		
+		$this->belongsTo('Creator', [
+			'className' => 'Employees',
+			'foreignKey' => 'created_by',
+			'propertyName' => 'creator',
+		]);
 		
 	}
 
