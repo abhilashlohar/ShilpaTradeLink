@@ -128,10 +128,11 @@
 				</thead>
 				<tbody id="main_tbody">
 					<?php $item_ar=[];
-					foreach ($salesOrder->invoices[0]->invoice_rows as $invoice_row){
-						$item_ar[$invoice_row->item_id]=$invoice_row->quantity;
+					foreach ($salesOrder->invoices as $invoice){
+						foreach ($invoice->invoice_rows as $invoice_row){
+							$item_ar[$invoice_row->item_id]=$invoice_row->quantity;
+						}
 					}
-					
 					$q=1; foreach ($salesOrder->sales_order_rows as $sales_order_rows): 
 					if(@$item_ar[$sales_order_rows->item_id]==$sales_order_rows->quantity){
 						$disable_class="disabledbutton";

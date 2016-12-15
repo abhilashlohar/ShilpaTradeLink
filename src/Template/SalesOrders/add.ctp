@@ -1,9 +1,3 @@
-<style>
-.disabledbutton {
-    pointer-events: none;
-    opacity: 0.4;
-}
-</style>
 <?php 
 if(!empty($copy))
 {
