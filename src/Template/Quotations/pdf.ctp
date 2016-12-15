@@ -234,7 +234,6 @@ $html.='
 	
 $html.='
 		<div align="left" class="">
-			<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$quotation->company->logo.' height="80px" style="height:80px;"/>
 			<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->creator->signature.' height="50px" style="height:50px;"/>
 			<br/>
 			<span>'. h($quotation->employee->name) .'</span><br/>
