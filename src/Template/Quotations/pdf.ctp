@@ -226,8 +226,8 @@ if(!empty($quotation->additional_note)){
 $html.='
 <br/><div class="avoid_break">
 	<div class="avoid_break">
-		<b><u>Commercial Terms & Conditions:</u></b>
-		'. $this->Text->autoParagraph(h($quotation->terms_conditions)) .'
+		<b><u>Commercial Terms & Conditions:</u></b><br/>
+		'. $quotation->terms_conditions .'
 	</div><br/>
 	<div><b>I hope above is to your requirement and in case of any clarification kindly revert back.</b></div><br/>
 	<div class="avoid_break"><b>Thanks and Regards,</b></div><br/>';

@@ -245,13 +245,13 @@ if(!empty($revision))
 			
 			
 			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a> <a  role="button" class="btn btn-xs btn-primary updatetc" >Update </a>
-			<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control','value' => @$quotation->terms_conditions]); ?>
+			<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control','value' => @$quotation->terms_conditions,'style'=>'display:none']); ?>
+			<div contenteditable="true" id="editor" name="terms_conditions"></div>
 			<br/>
 			<ol id="sortable">
 			  
 			</ol>
 			
-			<div class="editable"></div>
 		</div>
 		<div class="form-actions">
 			<div class="row">
@@ -318,7 +318,6 @@ if(!empty($revision))
 	</tbody>
 	
 </table>
-
 <div id="terms_conditions" style="display:none;"></div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <style>
@@ -611,29 +610,6 @@ $(document).ready(function() {
 			rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
 			this.rows = minRows + rows;
 		});
-		
-		$("textarea").keydown(function(e) {
-			if(e.keyCode === 9) { // tab was pressed
-				// get caret position/selection
-				var start = this.selectionStart;
-				var end = this.selectionEnd;
-
-				var $this = $(this);
-				var value = $this.val();
-
-				// set textarea value to: text before caret + tab + text after caret
-				$this.val(value.substring(0, start)
-							+ "\t"
-							+ value.substring(end));
-
-				// put caret at right position again (add one for the tab)
-				this.selectionStart = this.selectionEnd = start + 1;
-
-				// prevent the focus lose
-				e.preventDefault();
-			}
-		});
-		
 	}
 	
 	$('#main_tb input').die().live("keyup","blur",function() { 
@@ -749,8 +725,8 @@ $(document).ready(function() {
 				$('#sortable').append('<li class="ui-state-default">'+tc+'</li>');
 			}
 		});
-		var terms_conditions=$("#terms_conditions").text();
-		$('textarea[name="terms_conditions"]').val(terms_conditions);
+		var terms_conditions=$("#terms_conditions").html();
+		$('div[name="terms_conditions"]').html(terms_conditions);
 		$("#myModal2").hide();
     });
 	
@@ -760,10 +736,11 @@ $(document).ready(function() {
 		$("#sortable li").each(function(){
 			var tc=$(this).text();
 			++inc;
-			$('#terms_conditions').append(inc+". "+tc+"&#13;&#10;");
+			//$('#terms_conditions').append(inc+". "+tc+"&#13;&#10;");
+			$('#terms_conditions').append(inc+". "+tc+"<br/>");
 		});
-		var terms_conditions=$("#terms_conditions").text();
-		$('textarea[name="terms_conditions"]').val(terms_conditions);
+		var terms_conditions=$("#terms_conditions").html();
+		$('div[name="terms_conditions"]').html(terms_conditions);
 		$("#sortable li").remove();
 	}
 	
