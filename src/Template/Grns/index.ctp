@@ -40,7 +40,7 @@
 							<th>GRN No.</th>
 							<th>Vendor</th>
 							<th>Date Created</th>
-							<th>Actions</th>
+							<th class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -52,11 +52,14 @@
 							<td><?= h($grn->vendor->company_name) ?></td>
 							<td><?php echo date("d-m-Y",strtotime($grn->date_created)); ?></td>
 							<td class="actions">
-								<?php if($pull_request=="true"){
+							<?php if($pull_request=="true"){
 									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Book Invoice','/InvoiceBookings/Add?grn='.$grn->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} else { ?>
 								
-								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $grn->id]) ?>
+								<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $grn->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?>
+                              
+							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $grn->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View '));  ?>	 
+								
 								<?php } ?>
 							</td>
 						</tr>

@@ -193,10 +193,11 @@ $html.='</table>';
 
 $grand_total=explode('.',$invoice->grand_total);
 $rupees=$grand_total[0];
-if(sizeof($grand_total)==2){
+$paisa_text='';
+if(sizeof($grand_total)==2)
+{
 	$grand_total[1]=str_pad($grand_total[1], 2, '0', STR_PAD_RIGHT);
 	$paisa=(int)$grand_total[1];
-	$paisa_text='';
 	$paisa_text='and'. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa';
 }else{ $paisa_text=""; }
 

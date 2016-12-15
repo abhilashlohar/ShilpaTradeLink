@@ -46,14 +46,19 @@ class GrnsController extends AppController
      */
     public function view($id = null)
     {
+	$this->viewBuilder()->layout('index_layout');
         $grn = $this->Grns->get($id, [
-            'contain' => ['PurchaseOrders', 'Companies', 'GrnRows', 'InvoiceBookings']
+            'contain' => ['PurchaseOrders', 'Companies', 'GrnRows'=>['Items'], 'InvoiceBookings','Creator']
         ]);
+		
 
         $this->set('grn', $grn);
         $this->set('_serialize', ['grn']);
     }
 
+	
+	
+	
     /**
      * Add method
      *
@@ -82,7 +87,7 @@ class GrnsController extends AppController
         $grn = $this->Grns->newEntity();
         if ($this->request->is('post')) {
             $grn = $this->Grns->patchEntity($grn, $this->request->data);
-			$grn->vendor_id=$purchase_order->vendor_id;
+			 $grn->vendor_id=$purchase_order->vendor_id;
 			$grn->date_created=date("Y-m-d");
 			$grn->purchase_order_id=$purchase_order_id;
 			$grn->company_id=$purchase_order->company_id;

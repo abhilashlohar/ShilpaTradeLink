@@ -1,108 +1,95 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Grn'), ['action' => 'edit', $grn->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Grn'), ['action' => 'delete', $grn->id], ['confirm' => __('Are you sure you want to delete # {0}?', $grn->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Grns'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Grn'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Purchase Orders'), ['controller' => 'PurchaseOrders', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Purchase Order'), ['controller' => 'PurchaseOrders', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Companies'), ['controller' => 'Companies', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Company'), ['controller' => 'Companies', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Grn Rows'), ['controller' => 'GrnRows', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Grn Row'), ['controller' => 'GrnRows', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Invoice Bookings'), ['controller' => 'InvoiceBookings', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Invoice Booking'), ['controller' => 'InvoiceBookings', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="grns view large-9 medium-8 columns content">
-    <h3><?= h($grn->id) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th><?= __('Purchase Order') ?></th>
-            <td><?= $grn->has('purchase_order') ? $this->Html->link($grn->purchase_order->id, ['controller' => 'PurchaseOrders', 'action' => 'view', $grn->purchase_order->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Company') ?></th>
-            <td><?= $grn->has('company') ? $this->Html->link($grn->company->name, ['controller' => 'Companies', 'action' => 'view', $grn->company->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Grn1') ?></th>
-            <td><?= h($grn->grn1) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Grn3') ?></th>
-            <td><?= h($grn->grn3) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Grn4') ?></th>
-            <td><?= h($grn->grn4) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Id') ?></th>
-            <td><?= $this->Number->format($grn->id) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Date Created') ?></th>
-            <td><?= h($grn->date_created) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Created By') ?></th>
-            <td><?= h($grn->created_by) ?></td>
-        </tr>
-    </table>
-    <div class="related">
-        <h4><?= __('Related Grn Rows') ?></h4>
-        <?php if (!empty($grn->grn_rows)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th><?= __('Id') ?></th>
-                <th><?= __('Grn Id') ?></th>
-                <th><?= __('Item Id') ?></th>
-                <th><?= __('Quantity') ?></th>
-                <th><?= __('Description') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($grn->grn_rows as $grnRows): ?>
-            <tr>
-                <td><?= h($grnRows->id) ?></td>
-                <td><?= h($grnRows->grn_id) ?></td>
-                <td><?= h($grnRows->item_id) ?></td>
-                <td><?= h($grnRows->quantity) ?></td>
-                <td><?= h($grnRows->description) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'GrnRows', 'action' => 'view', $grnRows->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'GrnRows', 'action' => 'edit', $grnRows->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'GrnRows', 'action' => 'delete', $grnRows->id], ['confirm' => __('Are you sure you want to delete # {0}?', $grnRows->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
-    </div>
-    <div class="related">
-        <h4><?= __('Related Invoice Bookings') ?></h4>
-        <?php if (!empty($grn->invoice_bookings)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th><?= __('Id') ?></th>
-                <th><?= __('Grn Id') ?></th>
-                <th><?= __('Invoice No') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($grn->invoice_bookings as $invoiceBookings): ?>
-            <tr>
-                <td><?= h($invoiceBookings->id) ?></td>
-                <td><?= h($invoiceBookings->grn_id) ?></td>
-                <td><?= h($invoiceBookings->invoice_no) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'InvoiceBookings', 'action' => 'view', $invoiceBookings->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'InvoiceBookings', 'action' => 'edit', $invoiceBookings->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'InvoiceBookings', 'action' => 'delete', $invoiceBookings->id], ['confirm' => __('Are you sure you want to delete # {0}?', $invoiceBookings->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
-    </div>
-</div>
+	
+
+<a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
+
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size:14px;" class="maindiv">	
+<table width="100%" class="divHeader">
+		<tr>
+			<td width="35%" rowspan="2" valign="bottom">
+			<?php echo $this->Html->image('/logos/'.$grn->company->logo, ['width' => '40%']); ?>
+			</td>
+			
+			<td align="right" colspan="2" align="right">
+			<span style="font-size: 15px;"><?= h($grn->company->name) ?></span> 
+            </td>
+			
+         </tr>
+         
+		 <tr>
+            <td align="right" width="40%" style="font-size: 12px;" colspan="2">
+            <?= $this->Text->autoParagraph(h($grn->company->address)) ?>  
+			<?= h($grn->company->mobile_no)?></br> 
+			<?= h($grn->company->email) ?> 		 
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="2">
+				<div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">GRN</div>
+				<div style="border:solid 2px #0685a8;margin-bottom:5px;margin-top: 5px;"></div>
+			</td>
+		</tr>
+	</table>
+	<table width="100%">
+
+		<tr>
+			<td width="50%" valign="top" align="left">
+				<table>
+					<tr>
+						<td>GRN No</td>
+						<td width="30" align="left"> : <?= h($grn->grn1)?>
+						</span>
+						</td>
+						 
+					</tr>
+				</table>
+			</td>
+			<td width="50%" valign="top" align="right">
+				<table>
+					<tr>
+						<td>Date</td>
+						<td> : <?= h(date("d-m-Y",strtotime($grn->date_created))) ?> </td>
+						
+					</tr>
+				</table>
+           </td>
+
+    </tr>
+   </table>	
+   </br>
+<?php $page_no=$this->Paginator->current('Grns'); $page_no=($page_no-1)*20; ?>
+<table width="100%" class="table_rows itemrow" border="1">	
+	<thead>
+	<tr>
+		<th style="text-align:center">S.No</th>
+		<th style="text-align:center">Item</th>
+		<th style="text-align:center">Quantity</th>
+	   
+	</tr>
+	</thead>
+
+<tbody align="center">
+<?php foreach ($grn->grn_rows as $grn_row): ?>
+	<tr>
+		<td><?= h(++$page_no) ?></td>
+		<td><?= $grn_row->item->name; ?></td>
+		<td><?= $grn_row->quantity; ?></td>
+	</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
+</br> 
+<table width="100%" class="table_rows ">
+    <tr>
+	   <td align="right" width="50%"> 
+		 <span>For<b><?= h($grn->company->name)?></b></span><br/>
+		 <?php 
+		 echo $this->Html->Image('/signatures/'.$grn->creator->signature,['height'=>'50px','style'=>'height:50px;']); 
+		 ?></br>
+		 <span><b>Authorised Signatory</b></span><br/>
+		 <span><?= h($grn->creator->name) ?></span><br/>
+		</td>
+    </tr>
+</table>
+
+ 
