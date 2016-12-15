@@ -59,15 +59,14 @@ class ChallansController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		$Company = $this->Challans->Companies->get($st_company_id);
 		$challan = $this->Challans->newEntity();
-		
-        if ($this->request->is('post')) {
-			
+        
+		if ($this->request->is('post')) {
             $challan = $this->Challans->patchEntity($challan, $this->request->data);
 
 			$challan->created_by=$s_employee_id; 
 			$challan->company_id=$st_company_id;
 			$challan->created_on=date("Y-m-d",strtotime($challan->created_on));
-			
+			//pr($challan); exit;
             if ($this->Challans->save($challan)) {
                 $this->Flash->success(__('The challan has been saved.'));
 

@@ -6,16 +6,16 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
-		<?= $this->Form->create($challan,['id'=>'form_sample_3']) ?>
+		<?= $this->Form->create() ?>
 		<div class="form-body">
 				<div class="row">
 					<div class="col-md-3">
-							<div class="form-group">
-								<div class="radio-list" >
-								<label class="control-label">Challan Type <span class="required" aria-required="true">*</span></label>
-								<?php echo $this->Form->radio('challan_type',[['value' => 'Returnable', 'text' => 'Returnable'],['value' => 'Non Returnable', 'text' => 'Non Returnable']]); ?>
-								</div>
+						<div class="form-group">
+							<div class="radio-list" >
+							<label class="control-label">Challan Type <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->radio('challan_type',[['value' => 'Returnable', 'text' => 'Returnable'],['value' => 'Non Returnable', 'text' => 'Non Returnable']]); ?>
 							</div>
+						</div>
 					</div>
 					
 					<div class="col-md-3">
@@ -28,7 +28,7 @@
 										$merge=$customer->customer_name.'	('.$customer->alias.')';
 										$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
 									}
-							echo $this->Form->input('', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
+							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 							
 						</div>
 					</div>

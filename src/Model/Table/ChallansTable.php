@@ -71,6 +71,7 @@ class ChallansTable extends Table
 			'foreignKey' => 'created_by',
 			'propertyName' => 'creator',
 		]);
+		
     }
 
     /**
