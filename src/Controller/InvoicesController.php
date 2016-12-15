@@ -214,7 +214,6 @@ class InvoicesController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
-		
 		$sales_order_id=@(int)$this->request->query('sales-order');
 		$sales_order=array(); $process_status='New';
 		if(!empty($sales_order_id)){
@@ -365,7 +364,7 @@ class InvoicesController extends AppController
 		$items = $this->Invoices->Items->find('list');
 		$transporters = $this->Invoices->Transporters->find('list', ['limit' => 200]);
 		$termsConditions = $this->Invoices->TermsConditions->find('all',['limit' => 200]);
-		$SaleTaxes = $this->Invoices->SaleTaxes->find('all');
+		$SaleTaxes = $this->Invoices->SaleTaxes->find('all')->where(['freeze'=>0]);
 		if(!empty($sales_order->customer_id)){
 		$dueInvoicespay = $this->Invoices->find()->where(['customer_id'=>$sales_order->customer_id,'due_payment !='=>0]);
 			$old_due_payment=0; foreach ($dueInvoicespay as $invoice_data){ 
@@ -514,7 +513,7 @@ class InvoicesController extends AppController
 		$items = $this->Invoices->Items->find('list',['limit' => 200]);
 		$transporters = $this->Invoices->Transporters->find('list', ['limit' => 200]);
 		$termsConditions = $this->Invoices->TermsConditions->find('all',['limit' => 200]);
-		$SaleTaxes = $this->Invoices->SaleTaxes->find('all');
+		$SaleTaxes = $this->Invoices->SaleTaxes->find('all')->where(['freeze'=>0]);
 		$employees = $this->Invoices->Employees->find('list', ['limit' => 200]);
         $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','old_due_payment','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoices'));
         $this->set('_serialize', ['invoice']);

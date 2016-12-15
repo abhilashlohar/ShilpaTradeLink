@@ -269,7 +269,7 @@ $(document).ready(function() {
 			</div>
 			<div class="modal-footer">
 				<button class="btn default closebtn2">Close</button>
-				<button class="btn btn-red close_rsn" id="close_popup_btn">Close Quotation</button>
+				<button class="btn red close_rsn" id="close_popup_btn">Close Quotation</button>
 			</div>
 		</div>
 	</div>

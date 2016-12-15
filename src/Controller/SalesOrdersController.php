@@ -327,7 +327,7 @@ class SalesOrdersController extends AppController
 		$transporters = $this->SalesOrders->Carrier->find('list');
 		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
 		$termsConditions = $this->SalesOrders->TermsConditions->find('all',['limit' => 200]);
-		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all');
+		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
         $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','Filenames','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','copy','process_status','Company'));
         $this->set('_serialize', ['salesOrder']);
     }
@@ -393,7 +393,7 @@ class SalesOrdersController extends AppController
 		$transporters = $this->SalesOrders->Carrier->find('list', ['limit' => 200]);
 		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200]);
 		$termsConditions = $this->SalesOrders->TermsConditions->find('all',['limit' => 200]);
-		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all');
+		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
 		$Filenames = $this->SalesOrders->Filenames->find()->where(['customer_id' => $salesOrder->customer_id]);
 		
         $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','Filenames'));

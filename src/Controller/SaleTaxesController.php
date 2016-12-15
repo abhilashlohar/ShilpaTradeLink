@@ -129,7 +129,12 @@ class SaleTaxesController extends AppController
                 $this->Flash->error(__('The sale tax could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('saleTax'));
+		$AccountCategories = $this->Employees->AccountCategories->find('list');
+		$AccountGroups = $this->Employees->AccountGroups->find('list');
+		$AccountFirstSubgroups = $this->Employees->AccountFirstSubgroups->find('list');
+		$AccountSecondSubgroups = $this->Employees->AccountSecondSubgroups->find('list');
+		
+        $this->set(compact('saleTax','AccountCategories','AccountGroups','AccountFirstSubgroups','AccountSecondSubgroups'));
         $this->set('_serialize', ['saleTax']);
     }
 
