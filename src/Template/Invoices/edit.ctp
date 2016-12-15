@@ -158,8 +158,9 @@
 							</td>
 						</tr>
 						<tr class="tr2" row_no="<?= h($q) ?>">
-							<td colspan="4"><?php echo $this->Form->textarea('invoice_rows['.$q.'][description]', ['label' => false,'class' => 'form-control input-sm autoExpand','style'=>['display:none'],'placeholder' => 'Description','rows'=>'1','value'=>$invoice_rows->description]); ?>
+							<td colspan="4">
 							<div contenteditable="true" id="editor" name="<?php echo 'invoice_rows['.$q.'][description]'; ?>"><?php echo @$invoice_rows->description; ?></div>
+							<?php echo $this->Form->textarea('invoice_rows['.$q.'][description]', ['label' => false,'class' => 'form-control input-sm autoExpand','style'=>['display:none'],'placeholder' => 'Description','required','value'=>$invoice_rows->description]); ?>
 							</td>
 							<td></td>
 						</tr>
@@ -331,6 +332,7 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
+		ignore: "textar:hidden",
 		rules: {
 			company_id:{
 				required: true,

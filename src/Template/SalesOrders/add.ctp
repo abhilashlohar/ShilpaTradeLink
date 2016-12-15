@@ -187,8 +187,9 @@ if(!empty($copy))
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$quotation_rows->id; ?>'>
-							<td colspan="6"><?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','style'=>['display:none'],'placeholder'=>'Description','rows'=>'6','value' => @$quotation_rows->description]); ?>
+							<td colspan="6">
 							<div contenteditable="true" id="editor" name="<?php echo 'sales_order_rows['.$q.'][description]'; ?>"><?php echo @$quotation_rows->description; ?></div>
+							<?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','style'=>['display:none'],'placeholder'=>'Description','required','value' => @$quotation_rows->description]); ?>
 							</td>
 							<td></td>
 						</tr>
@@ -237,9 +238,9 @@ if(!empty($copy))
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
-							<td colspan="6"><?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','placeholder'=>'Description','style'=>['display:none'],'rows'=>'6','value' => @$sales_order_rows->description]); ?>
+							<td colspan="6">
 							<div contenteditable="true" id="editor" name="<?php echo 'sales_order_rows['.$q.'][description]'; ?>"><?php echo @$sales_order_rows->description; ?></div>
-							
+							<?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','placeholder'=>'Description','style'=>['display:none'],'required','value' => @$sales_order_rows->description]); ?>
 							</td>
 							<td></td>
 						</tr>
@@ -431,8 +432,9 @@ if(!empty($copy))
 			<td width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 		<tr class="tr2 preimp">
-			<td colspan="6"><?php echo $this->Form->textarea('description', ['label' => false,'style'=>['display:none'],'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'4']); ?>
+			<td colspan="6">
 			<div contenteditable="true" id="editor"></div>
+			<?php echo $this->Form->textarea('description', ['label' => false,'style'=>['display:none'],'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','required']); ?>
 			</td>
 			
 			
@@ -456,6 +458,7 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
+		ignore: "textar:hidden",
 		rules: {
 			company_id:{
 				required: true,
