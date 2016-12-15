@@ -9,8 +9,7 @@
 		
 	</div>
 	<div class="portlet-body form">
-	<div class="table-scrollable">
-			<form method="GET" >
+	<form method="GET" >
 				<table class="table table-condensed" style="width:90%;">
 				<tbody>
 					<tr>
@@ -43,7 +42,7 @@
 		<div class="row ">
 		
 		<div class="col-md-12">
-		<div class="table-scrollable">
+		
 		 <?php $page_no=$this->Paginator->current('Ledgers'); $page_no=($page_no-1)*20; ?>
 			<table class="table table-bordered table-striped table-hover">
 				<thead>
@@ -104,6 +103,6 @@
 		
 		
 		<!-- END FORM-->
-	</div>
-</div>
+
+
 </div>

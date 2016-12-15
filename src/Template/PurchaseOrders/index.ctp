@@ -64,7 +64,7 @@
 						<tr>
 							<td><?= h(++$page_no) ?></td>
 							
-							<td><?= h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->id, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)) ?></td>
+							<td><?= h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->po2, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)) ?></td>
 							
 							<td><?= h($purchaseOrder->company->name) ?></td>
 							<td><?= h(date("d-m-Y",strtotime($purchaseOrder->delivery_date))) ?></td>

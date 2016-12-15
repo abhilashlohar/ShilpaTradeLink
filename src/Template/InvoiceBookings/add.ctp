@@ -38,8 +38,7 @@
 			</div>
 		</div>
 	<?= $this->Form->end() ?>
-				<br/>
-		<div class="form-body">
+			
 			<div class="form-body">		
 			<div class="row">
 					<div class="col-md-3">
@@ -106,7 +105,7 @@
 					<?php $q++; $total=$total+$sum; endforeach; ?>
 					<tr>
 						<td colspan="3"><?php  ?></td>
-						<td><b> Total Ammount</b> </td>
+						<td><b> Total Amount</b> </td>
 						<td><?php echo $total; ?></td>
 					</tr>
 					<tr>

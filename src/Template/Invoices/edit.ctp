@@ -213,13 +213,14 @@
 				</tr>
 				<tr>
 					<td  align="right">
-						<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" value="<?= h($invoice->sale_tax_description) ?>"/>
+						<input type="hidden" name="sale_tax_id" class="form-control input-sm"  placeholder="Sale Tax" value="<?php echo $invoice->sale_tax_id;?>"/>
+						<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" value="<?php echo $invoice->sale_tax->invoice_description;?>"/>
 						<div class="input-group col-md-2">
 							<div class="input-group">
 						<?php						
 							$options=[];
 							foreach($SaleTaxes as $SaleTaxe){
-								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
+								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->invoice_description,'sale_tax_id' => $SaleTaxe->id];
 							}
 							echo $this->Form->input('sale_tax_per', ['options'=>$options,'label' => false,'class' => 'form-control input-sm','value'=>$invoice->sale_tax_per]);  ?>
 							</div>
@@ -631,6 +632,9 @@ $(document).ready(function() {
 			
 			var sale_tax_description=$('select[name="sale_tax_per"] option:selected').attr("description");
 			$('input[name="sale_tax_description"]').val(sale_tax_description);
+			
+			var sale_tax_id=$('select[name="sale_tax_per"] option:selected').attr("sale_tax_id");
+			$('input[name="sale_tax_id"]').val(sale_tax_id);
 			
 			var fright_amount=parseFloat($('input[name="fright_amount"]').val());
 			if(isNaN(fright_amount)) { var fright_amount = 0; }

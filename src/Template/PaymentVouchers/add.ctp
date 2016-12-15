@@ -212,6 +212,8 @@ $(document).ready(function() {
 			$("#chq_no").hide();
 		}
 	});
+	
+	
 });
 </script>
 

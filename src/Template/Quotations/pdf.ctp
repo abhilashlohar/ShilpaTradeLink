@@ -198,12 +198,12 @@ $html.='<br/>
 $sr=0; foreach ($quotation->quotation_rows as $quotationRows): $sr++; 
 $html.='
 	<tr>
-		<td valign="top" align="center">'. h($sr) .'</td>
-		<td valign="top" width="100%">'. $quotationRows->description .'<div style="height:'.$quotationRows->height.'"></div></td>
-		<td align="center" valign="top">'. h($quotationRows->item->unit->name) .'</td>
-		<td align="center" valign="top">'. h($quotationRows->quantity) .'</td>
-		<td align="right" valign="top">'. $this->Number->format($quotationRows->rate,[ 'places' => 2]).'</td>
-		<td align="right" valign="top">'. $this->Number->format($quotationRows->amount,[ 'places' => 2]) .'</td>
+		<td style="padding-top:8px;padding-bottom:5px;" valign="top" align="center">'. h($sr) .'</td>
+		<td style="padding-top:8px;padding-bottom:5px;" valign="top" width="100%">'. $quotationRows->description .'<div style="height:'.$quotationRows->height.'"></div></td>
+		<td style="padding-top:8px;padding-bottom:5px;" align="center" valign="top">'. h($quotationRows->item->unit->name) .'</td>
+		<td style="padding-top:8px;padding-bottom:5px;" align="center" valign="top">'. h($quotationRows->quantity) .'</td>
+		<td style="padding-top:8px;padding-bottom:5px;" align="right" valign="top">'. $this->Number->format($quotationRows->rate,[ 'places' => 2]).'</td>
+		<td style="padding-top:8px;padding-bottom:5px;" align="right" valign="top">'. $this->Number->format($quotationRows->amount,[ 'places' => 2]) .'</td>
 	</tr>';
 endforeach;
 
@@ -224,7 +224,7 @@ if(!empty($quotation->additional_note)){
 	</div><br/>';
 }
 $html.='
-<div class="avoid_break">
+<br/><div class="avoid_break">
 	<div class="avoid_break">
 		<b><u>Commercial Terms & Conditions:</u></b>
 		'. $this->Text->autoParagraph(h($quotation->terms_conditions)) .'
@@ -234,6 +234,7 @@ $html.='
 	
 $html.='
 		<div align="left" class="">
+			<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$quotation->company->logo.' height="80px" style="height:80px;"/>
 			<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->creator->signature.' height="50px" style="height:50px;"/>
 			<br/>
 			<span>'. h($quotation->employee->name) .'</span><br/>
@@ -244,10 +245,6 @@ $html.='
 		';
 		
 
-
-			
-			
-$html.='';
 	
 $html.='</div>'; 
 

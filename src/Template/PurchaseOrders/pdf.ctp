@@ -120,7 +120,7 @@ $html.='<br/><br/>
 									<tr>
 										<td width="30" valign="top" style="vertical-align: top;">NO</td>
 										<td width="10" valign="top">:</td>
-										<td valign="top">'.h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->id, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)).'</td>
+										<td valign="top">'.h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->po2, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)).'</td>
 									</tr>
 									<tr>
 										<td valign="top" style="vertical-align: top;">DATE</td>

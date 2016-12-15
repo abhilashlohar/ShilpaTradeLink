@@ -87,7 +87,12 @@ class PurchaseOrdersController extends AppController
 		
         $purchaseOrder = $this->PurchaseOrders->newEntity();
         if ($this->request->is('post')) {
-			
+			$last_po_no=$this->PurchaseOrders->find()->select(['po2'])->where(['company_id' => $st_company_id])->order(['po2' => 'DESC'])->first();
+			if($last_po_no){
+				$purchaseOrder->po2=$last_po_no->po2+1;
+			}else{
+				$purchaseOrder->po2=1;
+			}
             $purchaseOrder = $this->PurchaseOrders->patchEntity($purchaseOrder, $this->request->data);
 			$purchaseOrder->delivery_date=date("Y-m-d",strtotime($purchaseOrder->delivery_date));
 			$purchaseOrder->created_by=$s_employee_id; 

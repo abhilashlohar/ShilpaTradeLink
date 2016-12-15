@@ -46,8 +46,8 @@ class GrnsController extends AppController
      */
     public function view($id = null)
     {
-	$this->viewBuilder()->layout('index_layout');
-        $grn = $this->Grns->get($id, [
+		$this->viewBuilder()->layout('index_layout');
+		$grn = $this->Grns->get($id, [
             'contain' => ['PurchaseOrders', 'Companies', 'GrnRows'=>['Items'], 'InvoiceBookings','Creator']
         ]);
 		
@@ -82,15 +82,22 @@ class GrnsController extends AppController
 			]);
 		}
 		$this->set(compact('purchase_order'));
-		
-		
-        $grn = $this->Grns->newEntity();
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		 $grn = $this->Grns->newEntity();
         if ($this->request->is('post')) {
             $grn = $this->Grns->patchEntity($grn, $this->request->data);
 			 $grn->vendor_id=$purchase_order->vendor_id;
+			$last_grn_no=$this->Grns->find()->select(['grn2'])->where(['company_id' => $st_company_id])->order(['grn2' => 'DESC'])->first();
+			if($last_grn_no){
+				$grn->grn2=$last_grn_no->grn2+1;
+			}else{
+				$grn->grn2=1;
+			}
+
 			$grn->date_created=date("Y-m-d");
 			$grn->purchase_order_id=$purchase_order_id;
-			$grn->company_id=$purchase_order->company_id;
+			$grn->company_id=$st_company_id ;
 			$grn->created_by=$this->viewVars['s_employee_id'];
 			
 			//pr ($grn->created_by); exit;
@@ -127,8 +134,7 @@ class GrnsController extends AppController
 				}
 			}
 		$items = $this->Grns->Items->find('list');
-
-        $companies = $this->Grns->Companies->find('all');
+		$companies = $this->Grns->Companies->find('all');
         $purchaseOrders = $this->Grns->PurchaseOrders->find('all');
 		
         
@@ -152,7 +158,6 @@ class GrnsController extends AppController
             $grn = $this->Grns->patchEntity($grn, $this->request->data);
             if ($this->Grns->save($grn)) {
                 $this->Flash->success(__('The grn has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The grn could not be saved. Please, try again.'));
