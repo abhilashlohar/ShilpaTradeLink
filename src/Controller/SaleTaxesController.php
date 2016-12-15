@@ -23,6 +23,7 @@ class SaleTaxesController extends AppController
 		$saleTax = $this->SaleTaxes->newEntity();
         if ($this->request->is('post')) {
             $saleTax = $this->SaleTaxes->patchEntity($saleTax, $this->request->data);
+			
             if ($this->SaleTaxes->save($saleTax)) {
 				$ledgerAccount = $this->SaleTaxes->LedgerAccounts->newEntity();
 				$ledgerAccount->account_second_subgroup_id = $saleTax->account_second_subgroup_id;
@@ -141,14 +142,19 @@ class SaleTaxesController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $saleTax = $this->SaleTaxes->get($id);
-        if ($this->SaleTaxes->delete($saleTax)) {
+		$this->request->allowMethod(['post', 'delete']);
+		$SaleTaxquoteexists = $this->SaleTaxes->SalesOrderRows->exists(['sale_tax_id' => $id]);
+		$SaleTaxinvExists =  $this->SaleTaxes->Invoices->exists(['sale_tax_id' => $id]);
+		if((!$SaleTaxquoteexists) AND (!$SaleTaxinvExists)){
+			$saleTax = $this->SaleTaxes->get($id);
+			if ($this->SaleTaxes->delete($saleTax)) {
             $this->Flash->success(__('The sale tax has been deleted.'));
-        } else {
+			} else {
             $this->Flash->error(__('The sale tax could not be deleted. Please, try again.'));
-        }
-
-        return $this->redirect(['action' => 'index']);
+			}
+		} else{
+			$this->Flash->error(__('Once the sales order or invoice has generated with sale tax, the Sale tax cannot be deleted.'));
+		}
+         return $this->redirect(['action' => 'index']);
     }
 }

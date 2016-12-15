@@ -55,20 +55,19 @@ class ChallansController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		
 		$s_employee_id=$this->viewVars['s_employee_id'];
-		
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$Company = $this->Challans->Companies->get($st_company_id);
+		$challan = $this->Challans->newEntity();
 		
-		//$challan = $this->Challans->newEntity();
-		
-     
         if ($this->request->is('post')) {
-        
-			$challan = $this->Challans->patchEntity($challan, $this->request->data);
+			
+            $challan = $this->Challans->patchEntity($challan, $this->request->data);
+
 			$challan->created_by=$s_employee_id; 
 			$challan->company_id=$st_company_id;
 			$challan->created_on=date("Y-m-d",strtotime($challan->created_on));
+			
             if ($this->Challans->save($challan)) {
                 $this->Flash->success(__('The challan has been saved.'));
 
@@ -78,7 +77,7 @@ class ChallansController extends AppController
             }
         }
         $customers = $this->Challans->Customers->find('all');
-        //$companies = $this->Challans->Companies->find('all');
+        $companies = $this->Challans->Companies->find('all');
 		$items = $this->Challans->Items->find('list');
         $invoices = $this->Challans->Invoices->find()->where(['company_id'=>$st_company_id]);
         $transporters = $this->Challans->Transporters->find('list');

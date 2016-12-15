@@ -157,12 +157,12 @@ $html.='
 $sr=0; foreach ($invoice->invoice_rows as $invoiceRows): $sr++; 
 $html.='
 	<tr class="odd">
-		<td style="padding-top:10px;" valign="top" align="center" width="5%">'. h($sr) .'</td>
-		<td style="padding-top:10px;" valign="top" width="100%">'.$invoiceRows->description .'<div style="height:'.$invoiceRows->height.'"></div></td>
-		<td style="padding-top:10px;" valign="top" align="center">'. h($invoiceRows->item->unit->name) .'</td>
-		<td style="padding-top:10px;" valign="top" align="center">'. h($invoiceRows->quantity) .'</td>
-		<td style="padding-top:10px;" align="right" valign="top">'. $this->Number->format($invoiceRows->rate,[ 'places' => 2]) .'</td>
-		<td style="padding-top:10px;" align="right" valign="top">'. $this->Number->format($invoiceRows->amount,[ 'places' => 2]) .'</td>
+		<td style="padding-top:8px;padding-bottom:5px;" valign="top" align="center" width="5%">'. h($sr) .'</td>
+		<td style="padding-top:8px;padding-bottom:5px;" valign="top" width="100%">'.$invoiceRows->description .'<div style="height:'.$invoiceRows->height.'"></div></td>
+		<td style="padding-top:8px;padding-bottom:5px;" valign="top" align="center">'. h($invoiceRows->item->unit->name) .'</td>
+		<td style="padding-top:8px;padding-bottom:5px;" valign="top" align="center">'. h($invoiceRows->quantity) .'</td>
+		<td style="padding-top:8px;padding-bottom:5px;" align="right" valign="top">'. $this->Number->format($invoiceRows->rate,[ 'places' => 2]) .'</td>
+		<td style="padding-top:8px;padding-bottom:5px;" align="right" valign="top">'. $this->Number->format($invoiceRows->amount,[ 'places' => 2]) .'</td>
 	</tr>';
 endforeach; 
 
@@ -193,10 +193,11 @@ $html.='</table>';
 
 $grand_total=explode('.',$invoice->grand_total);
 $rupees=$grand_total[0];
-if(sizeof($grand_total)==2){
+$paisa_text='';
+if(sizeof($grand_total)==2)
+{
 	$grand_total[1]=str_pad($grand_total[1], 2, '0', STR_PAD_RIGHT);
 	$paisa=(int)$grand_total[1];
-	$paisa_text='';
 	$paisa_text='and'. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa';
 }else{ $paisa_text=""; }
 
@@ -271,7 +272,7 @@ $html .= '<div id="footer">';
 				$html.='
 			
 			<tr>
-				<td style="text-align:right;">'.h($invoice->sale_tax_description).'</td>
+				<td style="text-align:right;">'.h($invoice->sale_tax->invoice_description).'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->sale_tax_amount,[ 'places' => 2]).'</td>
 			</tr>';
 			}

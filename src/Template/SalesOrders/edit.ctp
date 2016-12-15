@@ -121,29 +121,39 @@
 					</tr>
 				</thead>
 				<tbody id="main_tbody">
-					<?php $q=1; foreach ($salesOrder->sales_order_rows as $sales_order_rows): ?>
+					<?php $item_ar=[];
+					foreach ($salesOrder->invoices[0]->invoice_rows as $invoice_row){
+						$item_ar[$invoice_row->item_id]=$invoice_row->quantity;
+					}
+					pr($item_ar);
+					$q=1; foreach ($salesOrder->sales_order_rows as $sales_order_rows): ?>
 					<tr class="tr1" row_no='<?php echo @$sales_order_rows->id; ?>'>
 						<td rowspan="2"><?= h($q) ?></td>
 						<td>						
 						<div class="row">
-									<div class="col-md-10 padding-right-decrease">
-										<?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','value' => @$sales_order_rows->item->id,'popup_id'=>$q]); ?>
-									</div>
-									<div class="col-md-1 padding-left-decrease">
-										<a href="#" class="btn btn-default btn-sm popup_btn" role="button" popup_id="<?php echo $q; ?>"> <i class="fa fa-info-circle"></i> </a>
-										<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;" popup_div_id="<?php echo $q; ?>"><div class="modal-backdrop fade in" ></div>
-											<div class="modal-dialog">
-												<div class="modal-content">
-													<div class="modal-body" popup_ajax_id="<?php echo $q; ?>">
-														
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn default closebtn">Close</button>
-													</div>
+							<?php if(@$item_ar[$sales_order_rows->item->id]==$sales_order_rows->quantity){ 
+								echo $sales_order_rows->item->name;
+							}else{ ?>
+								<div class="col-md-10 padding-right-decrease">
+									<?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','value' => @$sales_order_rows->item->id,'popup_id'=>$q]); ?>
+								</div>
+								<div class="col-md-1 padding-left-decrease">
+									<a href="#" class="btn btn-default btn-sm popup_btn" role="button" popup_id="<?php echo $q; ?>"> <i class="fa fa-info-circle"></i> </a>
+									<div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;" popup_div_id="<?php echo $q; ?>"><div class="modal-backdrop fade in" ></div>
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-body" popup_ajax_id="<?php echo $q; ?>">
+													
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn default closebtn">Close</button>
 												</div>
 											</div>
 										</div>
 									</div>
+								</div>
+							<?php } ?>
+									
 							</div>
 						
 						</td>

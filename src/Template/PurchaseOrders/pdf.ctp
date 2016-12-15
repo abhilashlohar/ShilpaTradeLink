@@ -120,7 +120,7 @@ $html.='<br/><br/>
 									<tr>
 										<td width="30" valign="top" style="vertical-align: top;">NO</td>
 										<td width="10" valign="top">:</td>
-										<td valign="top">'.h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->id, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)).'</td>
+										<td valign="top">'.h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->po2, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)).'</td>
 									</tr>
 									<tr>
 										<td valign="top" style="vertical-align: top;">DATE</td>
@@ -167,9 +167,11 @@ endforeach;
 
 $total=explode('.',$purchaseOrder->total);
 $rupees=$total[0];
+$paisa_text="";
 if(sizeof($total)==2){
 	$total[1]=str_pad($total[1], 2, '0', STR_PAD_RIGHT);
 	$paisa=(int)$total[1];
+	$paisa_text=' and'. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa';
 }else{ $paisa=""; }
 
 $html.='</table>';
@@ -186,7 +188,7 @@ $html.='</table>';
 					
 				
 				<tr>
-					<td colspan="2"><b>Amount in words: </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees and '. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa</td>
+					<td colspan="2"><b>Amount in words: </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees  '. h($paisa_text) .'</td>
 				</tr>
 			</tbody>
 		</table>';

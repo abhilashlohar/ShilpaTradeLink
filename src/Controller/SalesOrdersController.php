@@ -350,8 +350,9 @@ class SalesOrdersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $salesOrder = $this->SalesOrders->get($id, [
-            'contain' => ['SalesOrderRows' => ['Items']]
+            'contain' => ['SalesOrderRows' => ['Items'],'Invoices' => ['InvoiceRows']]
         ]);
+		
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		
 		$session = $this->request->session();

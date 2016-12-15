@@ -47,13 +47,13 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Mobile <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Mobile']); ?>
+							<?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm nospace allLetter','placeholder'=>'Mobile','maxlength'=>10]); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Landline</label>
-							<?php echo $this->Form->input('phone_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Landline']); ?>
+							<?php echo $this->Form->input('phone_no', ['label' => false,'class' => 'form-control input-sm nospace allLetter','placeholder'=>'Landline','maxlength'=>15]); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -230,11 +230,11 @@
 							<?php echo $this->Form->input('employee_contact_persons.0.name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
 						</td>
 						<td>
-							<?php echo $this->Form->input('employee_contact_persons.0.mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?>
+							<?php echo $this->Form->input('employee_contact_persons.0.mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','maxlength'=>10]); ?>
 							
 						</td>
 						<td>
-						<?php echo $this->Form->input('employee_contact_persons.0.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?>
+						<?php echo $this->Form->input('employee_contact_persons.0.landline', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'LandLine','maxlength'=>15]); ?>
 						
 						</td>
 						<td>
@@ -250,11 +250,11 @@
 							<?php echo $this->Form->input('employee_contact_persons.1.name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
 						</td>
 						<td>
-							<?php echo $this->Form->input('employee_contact_persons.1.mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?>
+							<?php echo $this->Form->input('employee_contact_persons.1.mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','maxlength'=>10]); ?>
 							
 						</td>
 						<td>
-						<?php echo $this->Form->input('employee_contact_persons.1.landline', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Landline']); ?>
+						<?php echo $this->Form->input('employee_contact_persons.1.landline', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','maxlength'=>15,'placeholder' => 'Landline']); ?>
 						
 						</td>
 						<td>
@@ -586,8 +586,8 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		<tr>
 			<td>0</td>
 			<td><?php echo $this->Form->input('contact_person', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Contact Person']); ?></td>
-			<td><?php echo $this->Form->input('telephone', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Telephone']); ?></td>
-			<td><?php echo $this->Form->input('mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile']); ?></td>
+			<td><?php echo $this->Form->input('telephone', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Telephone','maxlength'=>15]); ?></td>
+			<td><?php echo $this->Form->input('mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','maxlength'=>10]); ?></td>
 			<td><?php echo $this->Form->input('email', ['type' => 'email','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Email']); ?></td>
 			<td><?php echo $this->Form->input('designation', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Designation']); ?></td>
 			<td width="90"><?php echo $this->Form->input('default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2','value'=>1]); ?></td>
@@ -625,5 +625,5 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 				else{
 					$('#married_info').hide('fast');
                 }
-				 });
+	 });
 </script>
