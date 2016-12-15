@@ -648,6 +648,10 @@ $(document).ready(function() {
 			
 		}
 		
+			var grand_total=parseFloat($('input[name="grand_total"]').val());
+			var old_due_payment1=parseFloat($('input[name="old_due_payment"]').val());
+			var	new_due_payment=grand_total+old_due_payment1;
+			$('input[name="new_due_payment"]').val(new_due_payment.toFixed(2));
 			
 	
 			var credit_limit=parseFloat($('input[name="credit_limit"]').val());
