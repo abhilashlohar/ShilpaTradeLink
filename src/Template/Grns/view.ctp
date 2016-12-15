@@ -4,32 +4,13 @@
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size:14px;" class="maindiv">	
 <table width="100%" class="divHeader">
 		<tr>
-
-			<td width="35%" rowspan="2" valign="bottom">
-			<?php echo $this->Html->image('/logos/'.$grn->company->logo, ['width' => '40%']); ?>
-			</td>
-			
-			<td align="right" colspan="2" align="right">
-			<span style="font-size: 15px;"><?= h($grn->company->name) ?></span> 
-            </td>
-			
-         </tr>
-         
-		 <tr>
-            <td align="right" width="40%" style="font-size: 12px;" colspan="2">
-            <?= $this->Text->autoParagraph(h($grn->company->address)) ?>  
-			<?= h($grn->company->mobile_no)?></br> 
-			<?= h($grn->company->email) ?> 		 
-			</td>
-		</tr>
-	<td width="50%"><?php echo $this->Html->image('/logos/'.$grn->company->logo, ['width' => '40%']); ?></td>
+			<td width="50%"><?php echo $this->Html->image('/logos/'.$grn->company->logo, ['width' => '40%']); ?></td>
 			<td align="right" width="50%" style="font-size: 12px;">
 			<span style="font-size: 14px;"><?= h($grn->company->name) ?></span><br/>
 			<span><?= $this->Text->autoParagraph(h($grn->company->address)) ?></span>
 			<span><?= h($grn->company->mobile_no) ?></span>
 			</td>
 		</tr>
-
 		<tr>
 			<td colspan="2">
 				<div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">GRN</div>
