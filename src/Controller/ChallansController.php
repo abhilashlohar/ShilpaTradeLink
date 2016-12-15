@@ -53,15 +53,19 @@ class ChallansController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
+		
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$Company = $this->Challans->Companies->get($st_company_id);
 		
-        $challan = $this->Challans->newEntity();
+		//$challan = $this->Challans->newEntity();
+		
+     
         if ($this->request->is('post')) {
-            $challan = $this->Challans->patchEntity($challan, $this->request->data);
+        
+			$challan = $this->Challans->patchEntity($challan, $this->request->data);
 			$challan->created_by=$s_employee_id; 
 			$challan->company_id=$st_company_id;
 			$challan->created_on=date("Y-m-d",strtotime($challan->created_on));
@@ -81,7 +85,6 @@ class ChallansController extends AppController
         $this->set(compact('challan', 'customers', 'Company', 'invoices', 'transporters','items'));
         $this->set('_serialize', ['challan']);
     }
-
     /**
      * Edit method
      *

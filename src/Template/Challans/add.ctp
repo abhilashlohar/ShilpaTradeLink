@@ -19,7 +19,7 @@
 					</div>
 					
 					<div class="col-md-3">
-						<div class="form-group">customer_id
+						<div class="form-group">
 							<label class="control-label">Customers <span class="required" aria-required="true">*</span></label>
 							
 								<?php
