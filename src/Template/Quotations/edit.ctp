@@ -223,7 +223,8 @@
 			<br/>
 			
 			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a><a  role="button" class="btn btn-xs btn-primary updatetc" >Update </a>
-			<?php echo $this->Form->input('terms_conditions', ['label' => false,'class' => 'form-control','onmousehover'=>'copy_term_condition_to_textarea()']); ?>
+			<?php echo $this->Form->input('terms_conditions', ['label' => false,'class' => 'form-control','onmousehover'=>'copy_term_condition_to_textarea()','style'=>'display:none']); ?>
+			<div contenteditable="true" id="editor" name="terms_conditions"><?php echo $quotation->terms_conditions; ?></div>
 			<br/>
 			<ol id="sortable">
 			  
@@ -686,8 +687,8 @@ $(document).ready(function() {
 				$('#sortable').append('<li class="ui-state-default">'+tc+'</li>');
 			}
 		});
-		var terms_conditions=$("#terms_conditions").text();
-		$('textarea[name="terms_conditions"]').val(terms_conditions);
+		var terms_conditions=$("#terms_conditions").html();
+		$('div[name="terms_conditions"]').html(terms_conditions);
 		$("#myModal2").hide();
     });
 	
@@ -697,10 +698,10 @@ $(document).ready(function() {
 		$("#sortable li").each(function(){
 			var tc=$(this).text();
 			++inc;
-			$('#terms_conditions').append(inc+". "+tc+"&#13;&#10;");
+			$('#terms_conditions').append(inc+". "+tc+"<br/>");
 		});
-		var terms_conditions=$("#terms_conditions").text();
-		$('textarea[name="terms_conditions"]').val(terms_conditions);
+		var terms_conditions=$("#terms_conditions").html();
+		$('div[name="terms_conditions"]').html(terms_conditions);
 		$("#sortable li").remove();
 	}
 	

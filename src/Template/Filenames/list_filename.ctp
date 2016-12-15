@@ -1,1 +1,1 @@
-<?php echo $this->Form->input('qt3', ['options' => $files,'label' => false,'class' => 'form-control input-sm']); ?>
+<?php echo $this->Form->input('qt3', ['options' => $files,'label' => false,'class' => 'form-control input-sm','required']); ?>

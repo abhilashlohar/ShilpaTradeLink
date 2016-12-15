@@ -1,3 +1,9 @@
+<style>
+.disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;
+}
+</style>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -122,18 +128,19 @@
 				</thead>
 				<tbody id="main_tbody">
 					<?php $item_ar=[];
-					foreach ($salesOrder->invoices[0]->invoice_rows as $invoice_row){
-						$item_ar[$invoice_row->item_id]=$invoice_row->quantity;
+					foreach ($salesOrder->invoices as $invoice){
+						foreach ($invoice->invoice_rows as $invoice_row){
+							$item_ar[$invoice_row->item_id]=$invoice_row->quantity;
+						}
 					}
-					pr($item_ar);
-					$q=1; foreach ($salesOrder->sales_order_rows as $sales_order_rows): ?>
-					<tr class="tr1" row_no='<?php echo @$sales_order_rows->id; ?>'>
+					$q=1; foreach ($salesOrder->sales_order_rows as $sales_order_rows): 
+					if(@$item_ar[$sales_order_rows->item_id]==$sales_order_rows->quantity){
+						$disable_class="disabledbutton";
+					}else{ $disable_class=""; } ?>
+					<tr class="tr1 <?php echo $disable_class; ?>" row_no='<?php echo @$sales_order_rows->id; ?>'>
 						<td rowspan="2"><?= h($q) ?></td>
 						<td>						
-						<div class="row">
-							<?php if(@$item_ar[$sales_order_rows->item->id]==$sales_order_rows->quantity){ 
-								echo $sales_order_rows->item->name;
-							}else{ ?>
+							<div class="row">
 								<div class="col-md-10 padding-right-decrease">
 									<?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','value' => @$sales_order_rows->item->id,'popup_id'=>$q]); ?>
 								</div>
@@ -152,10 +159,7 @@
 										</div>
 									</div>
 								</div>
-							<?php } ?>
-									
 							</div>
-						
 						</td>
 						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$sales_order_rows->quantity,'min'=>1]); ?></td>
 						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate', 'min'=>'0.01','step'=>"0.01",'value'=>$sales_order_rows->rate,'r_popup_id'=>$q]); ?></td>

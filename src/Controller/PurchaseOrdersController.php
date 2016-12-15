@@ -118,7 +118,7 @@ class PurchaseOrdersController extends AppController
 				return $row['file1'] . '-' . $row['file2'];
 			}])->where(['file1' => 'BE']);
         $vendors = $this->PurchaseOrders->Vendors->find('list');
-		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all');
+		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
 		$customers = $this->PurchaseOrders->Customers->find('all');
 		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list');
 		$transporters = $this->PurchaseOrders->Transporters->find('list');
@@ -167,7 +167,7 @@ class PurchaseOrdersController extends AppController
 				return $row['file1'] . '-' . $row['file2'];
 			}])->where(['file1' => 'BE']);
 		$vendors = $this->PurchaseOrders->Vendors->find('list');
-		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all');
+		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
 		$customers = $this->PurchaseOrders->Customers->find('all');
 		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list');
 		$transporters = $this->PurchaseOrders->Transporters->find('list');

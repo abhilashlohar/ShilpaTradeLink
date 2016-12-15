@@ -210,6 +210,45 @@
 						</div>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-4">
+					<h4 style="font-size:13px'">Create Ledger</h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Account Category<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('account_category_id', ['options'=>$AccountCategories,'empty' => "--Select Account Category--",'label' => false,'class' => 'form-control input-sm select2me']); ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						<label class="control-label">Account Group <span class="required" aria-required="true">*</span></label>
+							<div id="account_group_div">
+							<?php echo $this->Form->input('account_group_id', ['options' => $AccountGroups,'label' => false,'empty' => "--Select Account Group--",'class' => 'form-control input-sm select2me','placeholder'=>'Account Group']); ?>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						<label class="control-label">Account First Sub Group <span class="required" aria-required="true">*</span></label>
+							<div id="account_first_subgroup_div">
+							<?php echo $this->Form->input('account_first_subgroup_id', ['options' => $AccountFirstSubgroups,'label' => false,'empty' => "--Select First Sub Group--",'class' => 'form-control input-sm select2me','placeholder'=>'Account First Sub Group']); ?>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Account Second Sub Group <span class="required" aria-required="true">*</span></label>
+							<div id="account_second_subgroup_div">
+							<?php echo $this->Form->input('account_second_subgroup_id', ['empty' => "--Select Second Sub Group--",'options' => $AccountSecondSubgroups,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account Second Sub Group']); ?>
+							</div>
+						</div>
+					</div>
+				</div>
 				
 				<h4 style="font-size:13px'">Employee Emergency Contact Persons</h4>
 				<table class="table table-condensed tableitm">
