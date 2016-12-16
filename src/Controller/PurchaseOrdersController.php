@@ -84,7 +84,7 @@ class PurchaseOrdersController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$Company = $this->PurchaseOrders->Companies->get($st_company_id);
-		
+		//pr($Company); exit;
         $purchaseOrder = $this->PurchaseOrders->newEntity();
         if ($this->request->is('post')) {
 			$last_po_no=$this->PurchaseOrders->find()->select(['po2'])->where(['company_id' => $st_company_id])->order(['po2' => 'DESC'])->first();

@@ -1,3 +1,5 @@
+
+
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -141,7 +143,7 @@ With reference to your price list we are pleased to place an order for the follo
 						<div class="form-group">
 							<label class="control-label">LR to be prepared in favour of</label>
 							<?php 
-							echo $this->Form->input('lr_to_be_prepared_in_favour_of',['label' => false,'class' => 'form-control input-sm','placeholder'=>'LR to be prepared in favour of']); ?>
+							echo $this->Form->input('lr_to_be_prepared_in_favour_of',['label' => false,'class' => 'form-control input-sm','placeholder'=>'LR to be prepared in favour of', 'value'=>$Company->name]); ?>
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -184,7 +186,7 @@ With reference to your price list we are pleased to place an order for the follo
 						<div class="form-group">
 							<label class="control-label">Excise Duty <span class="required" aria-required="true">*</span></label>
 							<?php 
-							echo $this->Form->input('exceise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Excise Duty']); ?>
+							echo $this->Form->input('excise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Excise Duty']); ?>
 						</div>
 					</div>
 				</div>
