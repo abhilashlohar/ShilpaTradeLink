@@ -144,9 +144,12 @@ class InvoiceBookingsController extends AppController
      */
     public function edit($id = null)
     {
+	 $this->viewBuilder()->layout('index_layout');
         $invoiceBooking = $this->InvoiceBookings->get($id, [
-            'contain' => []
+            'contain' => ['Grns'=>['Companies','Vendors','GrnRows'=>['Items'],'PurchaseOrders'=>['PurchaseOrderRows']]]
         ]);
+		
+		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $invoiceBooking = $this->InvoiceBookings->patchEntity($invoiceBooking, $this->request->data);
             if ($this->InvoiceBookings->save($invoiceBooking)) {

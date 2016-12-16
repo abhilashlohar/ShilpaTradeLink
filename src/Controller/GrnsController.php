@@ -151,9 +151,16 @@ class GrnsController extends AppController
      */
     public function edit($id = null)
     {
-        $grn = $this->Grns->get($id, [
-            'contain' => []
-        ]);
+	
+		$this->viewBuilder()->layout('index_layout');
+			$grn = $this->Grns->get($id, [
+				'contain' => [
+						'Companies','Vendors','GrnRows'=>['Items']
+					]
+			]);
+
+			//pr($grn);exit;
+       
         if ($this->request->is(['patch', 'post', 'put'])) {
             $grn = $this->Grns->patchEntity($grn, $this->request->data);
             if ($this->Grns->save($grn)) {
