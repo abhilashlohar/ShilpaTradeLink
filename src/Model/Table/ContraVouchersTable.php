@@ -51,6 +51,11 @@ class ContraVouchersTable extends Table
             'foreignKey' => 'cash_bank_to',
             'propertyName' => 'CashBankTos',
         ]);
+		$this->belongsTo('Creator', [
+			'className' => 'Employees',
+			'foreignKey' => 'created_by',
+			'propertyName' => 'creator',
+		]);
 		 
     }
 

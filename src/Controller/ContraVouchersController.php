@@ -40,13 +40,13 @@ class ContraVouchersController extends AppController
 		
 		$this->viewBuilder()->layout('index_layout');
         $contraVoucher = $this->ContraVouchers->get($id, [
-            'contain' => ['Companies','CashBankFroms','CashBankTos']
+            'contain' => ['Companies','CashBankFroms','CashBankTos','Creator']
         ]);
 
         $this->set('contraVoucher', $contraVoucher);
         $this->set('_serialize', ['contraVoucher']);
     }
-
+ 
     /**
      * Add method
      *

@@ -27,10 +27,7 @@
 							</div>
 						</div>
 					</div>
-
-					 
-				  
-			</div>
+            </div>
 			<?= $this->Form->end() ?>
 			
 			<div class="form-body">		
@@ -68,7 +65,7 @@
 				<div class="alert alert-danger" id="row_error_item" style="display:none;padding: 5px !important;">
 					Please check at least one row.
 				</div>
-							<table class="table tableitm" id="main_tb">
+			 <table class="table tableitm" id="main_tb">
 				<thead>
 					<tr>
 						<th width="50">Sr.No. </th>
@@ -77,8 +74,7 @@
 						<th width="150">Rate</th>
 						<th width="150">Ammount</th>
 						<th width="50"></th>
-						
-					</tr>
+					 </tr>
 				</thead>
 				<tbody>
 					<?php $total=0; $sum=0;
@@ -113,17 +109,11 @@
 						<td><?php echo $invoiceBooking->grn->purchase_order->pnf; echo $invoiceBooking->grn->purchase_order->pnf_type; ?></td>
 					</tr>
 				</tbody>
-				
-			</table>
-			
+			 </table>
+		 </div>
+        </div>
+    </div>
 
-			</div>
-			
-			
-		</div>
-	
-	</div>
-	 
 <style>
 .table thead tr th {
     color: #FFF;

@@ -1,4 +1,4 @@
-
+<?php //pr($contraVoucher->creator); exit; ?>
 <a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
 
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size: 12px;" class="maindiv">	
@@ -77,7 +77,13 @@
 				<table>
 					<tr>
 						<td align="center">
-						For <?= h($contraVoucher->company->name) ?><br/><br/><br/><span style="    border-top: solid 1px #585757;">Authorised Signatory</span>
+						For <?= h($contraVoucher->company->name)?><br/>
+						<?php 
+						 echo $this->Html->Image('/signatures/'.$contraVoucher->creator->signature,['height'=>'50px','style'=>'height:50px;']); 
+						 ?></br>
+		                  <span>Authorised Signatory</span>
+						  </br>
+						  <span><?= h($contraVoucher->creator->name) ?></span><br/>
 						</td>
 					</tr>
 				</table>

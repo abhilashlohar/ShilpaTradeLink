@@ -26,10 +26,7 @@
 				<table>
 					<tr>
 						<td>GRN No</td>
-						<td width="30" align="left"> : <?= h($grn->grn1)?>
-						</span>
-						</td>
-						 
+						<td width="30" align="left">:<?= h($grn->grn1)?></td>
 					</tr>
 				</table>
 			</td>
