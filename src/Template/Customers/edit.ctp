@@ -460,12 +460,12 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		$("#main_tb tbody tr").each(function(){
 			
 			$(this).find("td:nth-child(1)").html(++i); --i;
-			$(this).find("td:nth-child(2) input").attr("name","customer_contacts["+i+"][contact_person]");
-			$(this).find("td:nth-child(3) input").attr("name","customer_contacts["+i+"][telephone]");
-			$(this).find("td:nth-child(4) input").attr("name","customer_contacts["+i+"][mobile]");
-			$(this).find("td:nth-child(5) input").attr("name","customer_contacts["+i+"][email]");
-			$(this).find("td:nth-child(6) input").attr("name","customer_contacts["+i+"][designation]");
-			$(this).find("td:nth-child(7) input").attr("name","customer_contacts["+i+"][default_contact]");
+			$(this).find("td:nth-child(2) input").attr({name:"customer_address["+i+"][contact_person]", id:"customer_address-"+i+"-contact_person"}).rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr({name:"customer_address["+i+"][customer_contacts]", id:"customer_address-"+i+"-customer_contacts"}).rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr({name:"customer_address["+i+"][mobile]", id:"customer_address-"+i+"-mobile"}).rules("add", "required");
+			$(this).find("td:nth-child(5) input").attr({name:"customer_address["+i+"][email]", id:"customer_address-"+i+"-email"}).rules("add", "required");
+			$(this).find("td:nth-child(6) input").attr({name:"customer_address["+i+"][designation]", id:"customer_address-"+i+"-designation"}).rules("add", "required");
+			$(this).find("td:nth-child(7) input").attr({name:"customer_address["+i+"][default_contact]", id:"customer_address-"+i+"-default_contact"});
 			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
 			if (test) { test.uniform(); }
 			i++;
@@ -495,11 +495,10 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 				$("#main_tb2 tbody tr").each(function(){
 					
 					$(this).find("td:nth-child(1)").html(++i); --i;
-					$(this).find("td:nth-child(2) textarea").attr("name","customer_address["+i+"][address]");
-					$(this).find("td:nth-child(3) select").attr("name","customer_address["+i+"][district_id]");
-					$(this).find("td:nth-child(4) input").attr("name","customer_address["+i+"][courier_charge]");
-					$(this).find("td:nth-child(5) input").attr("name","customer_address["+i+"][default_address]");
-					i++;
+					$(this).find("td:nth-child(2) textarea").attr({name:"customer_address["+i+"][address]", id:"customer_address-"+i+"-address"});
+					$(this).find("td:nth-child(3) select").attr({name:"customer_address["+i+"][district_id]", id:"customer_address-"+i+"-district_id"});
+					$(this).find("td:nth-child(4) input").attr({name:"customer_address["+i+"][courier_charge]", id:"customer_address-"+i+"-courier_charge"});
+					$(this).find("td:nth-child(5) input").attr({name:"customer_address["+i+"][default_address]", id:"customer_address-"+i+"-default_address"});
 				});
 				calculate_total();
 			}
@@ -513,10 +512,10 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		$("#main_tb2 tbody tr").each(function(){
 			
 			$(this).find("td:nth-child(1)").html(++i); --i;
-			$(this).find("td:nth-child(2) textarea").attr("name","customer_address["+i+"][address]");
-			$(this).find("td:nth-child(3) select").attr("name","customer_address["+i+"][district_id]");
-			$(this).find("td:nth-child(4) input").attr("name","customer_address["+i+"][courier_charge]");
-			$(this).find("td:nth-child(5) input").attr("name","customer_address["+i+"][default_address]");
+			$(this).find("td:nth-child(2) textarea").attr({name:"customer_address["+i+"][address]", id:"customer_address-"+i+"-address"}).rules("add", "required");
+			$(this).find("td:nth-child(3) select").attr({name:"customer_address["+i+"][district_id]", id:"customer_address-"+i+"-district_id"}).rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr({name:"customer_address["+i+"][courier_charge]", id:"customer_address-"+i+"-courier_charge"}).rules("add", "required");
+			$(this).find("td:nth-child(5) input").attr({name:"customer_address["+i+"][default_address]", id:"customer_address-"+i+"-default_address"}).rules("add", "required");
 			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
 			if (test) { test.uniform(); }
 			i++;
