@@ -53,11 +53,11 @@ class ChallansTable extends Table
         ]);
         $this->belongsTo('Invoices', [
             'foreignKey' => 'invoice_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
 		$this->belongsTo('InvoiceBookings', [
             'foreignKey' => 'invoice_booking_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
         $this->belongsTo('Transporters', [
             'foreignKey' => 'transporter_id',
@@ -99,12 +99,6 @@ class ChallansTable extends Table
             ->requirePresence('lr_no', 'create')
             ->notEmpty('lr_no');
 
-		$validator
-            ->integer('invoice_id')
-            ->requirePresence('invoice_id', 'create')
-            ->notEmpty('invoice_id');
-
-		
 		$validator
             ->requirePresence('transporter_id', 'create')
             ->notEmpty('transporter_id');

@@ -26,7 +26,7 @@
 									<?php echo $this->Form->input('ch1', ['label' => false,'class' => 'form-control input-sm','readonly','value'=>$Company->alias]); ?>
 								</div>
 								<div class="col-md-4">
-									<?php echo $this->Form->input('ch3', ['options'=>$filenames,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+									<?php echo $this->Form->input('ch3', ['empty' => "Select",'options'=>$filenames,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 								</div>
 								<div class="col-md-4">
 									<?php echo $this->Form->input('ch4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
@@ -81,7 +81,7 @@
 							echo $this->Form->input('vendor_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-3" id="invoice_div">
 						<div class="form-group">
 							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label>
 							<div class="row">
@@ -96,6 +96,19 @@
 						</div>
 					</div>
 					
+					<div class="col-md-3" id="invoice_booking_div" style="display:none;">
+						<div class="form-group">
+							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label>
+							<div class="row">
+								<?php
+									$options=array();
+									foreach($invoice_bookings as $invoice_booking){
+									$options[]=['text' =>$invoice_booking->invoice_no, 'value' => $invoice_booking->id];
+									}
+									echo $this->Form->input('invoice_booking_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me']); ?>
+							</div>
+						</div>
+					</div>
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Lr No. <span class="required" aria-required="true">*</span></label>
@@ -595,14 +608,18 @@ $(document).ready(function() {
         $('#vendor_div').show('fast');
 		$('#customer_div').hide('fast');
 		$('#vendor_address_div').show('fast');
-		$('#customer_address_div').hide('fast')
+		$('#customer_address_div').hide('fast');
+		$('#invoice_div').hide('fast');
+		$('#invoice_booking_div').show('fast');
 	});
 				 
 	$('#id_radio1').click(function () {
         $('#vendor_div').hide('fast');
 		$('#customer_div').show('fast');    
 		$('#vendor_address_div').hide('fast');
-		$('#customer_address_div').show('fast')
+		$('#customer_address_div').show('fast');
+		$('#invoice_div').show('fast');
+		$('#invoice_booking_div').hide('fast');
 	});
      
 				

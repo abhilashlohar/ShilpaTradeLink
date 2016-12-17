@@ -92,7 +92,7 @@ class ChallansController extends AppController
         $companies = $this->Challans->Companies->find('all');
 		$items = $this->Challans->Items->find('list');
         $invoices = $this->Challans->Invoices->find()->where(['company_id'=>$st_company_id]);
-		$invoice_bookings = $this->Challans->InvoiceBookings->find('list');
+		$invoice_bookings = $this->Challans->InvoiceBookings->find('all');
         $transporters = $this->Challans->Transporters->find('list');
 		$filenames = $this->Challans->Filenames->find('list', ['valueField' => function ($row) {
 				return $row['file1'] . '-' . $row['file2'];
@@ -100,7 +100,7 @@ class ChallansController extends AppController
 			'keyField' => function ($row) {
 				return $row['file1'] . '-' . $row['file2'];
 			}]);
-        $this->set(compact('challan', 'customers', 'Company', 'invoices', 'transporters','items','vendors','filenames'));
+        $this->set(compact('challan', 'customers', 'Company', 'invoices', 'transporters','items','vendors','filenames','invoice_bookings'));
         $this->set('_serialize', ['challan']);
     }
     /**
@@ -172,7 +172,7 @@ class ChallansController extends AppController
     {
 		$this->viewBuilder()->layout('');
          $challan = $this->Challans->get($id, [
-            'contain' => ['Companies','Customers','Invoices','Transporters','ChallanRows','Creator','Vendors']
+            'contain' => ['Companies','Customers','Invoices','Transporters','ChallanRows','Creator','Vendors','InvoiceBookings']
 			]);
 
         $this->set('challan', $challan);

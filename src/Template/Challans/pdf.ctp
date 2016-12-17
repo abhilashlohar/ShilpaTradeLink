@@ -80,8 +80,10 @@ $html = '
   
 $html.='
 	<table width="100%" style="margin-top: 0px;">
+	
 		<tr>
-			<td width="50%">';
+		
+			<td width="50%">Challan No :  '. h(($challan->ch1."/IN-".str_pad($challan->ch2, 3, "0", STR_PAD_LEFT)."/".$challan->ch3."/".$challan->ch4)) .'<br/>';
 				if($challan->customer_id){
 				$html.='<span>'. h($challan->customer->customer_name) .'</span><br/>
 				'. $this->Text->autoParagraph(h($challan->customer_address)) .'</span>';
@@ -90,14 +92,20 @@ $html.='
 				$html.='<span>'. h($challan->vendor->company_name) .'</span><br/>
 				'. $this->Text->autoParagraph(h($challan->vendor_address)) .'</span>';
 				}
+				
 			$html.='</td>
 			<td width="" valign="top" align="right">
 				<table>
 					<tr>
 						<td>Invoice No.</td>
-						<td width="20" align="center">:</td>
-						<td>'. h(($challan->invoice->in1."/IN-".str_pad($challan->invoice->id, 3, "0", STR_PAD_LEFT)."/".$challan->invoice->in3."/".$challan->invoice->in4)) .'</td>
-					</tr>
+						<td width="20" align="center">:</td>';
+						if($challan->invoice_id){
+						$html.='<td>'. h(($challan->invoice->in1."/IN-".str_pad($challan->invoice->id, 3, "0", STR_PAD_LEFT)."/".$challan->invoice->in3."/".$challan->invoice->in4)) .'</td>';
+						}else {
+						$html.='<td>'. h($challan->invoice_booking->invoice_no) .'</td>';
+						}
+						
+					$html.='</tr>
 					<tr>
 						<td>Date</td>
 						<td width="20" align="center">:</td>
