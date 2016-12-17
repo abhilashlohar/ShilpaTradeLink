@@ -41,11 +41,11 @@ class ChallansTable extends Table
 
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
 		 $this->belongsTo('Vendors', [
             'foreignKey' => 'vendor_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',

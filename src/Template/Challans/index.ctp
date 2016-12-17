@@ -1,4 +1,4 @@
-
+<?php //pr($challans); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -34,13 +34,12 @@
 					<tbody>
             <?php foreach ($challans as $challan): ?>
             <tr>
+				<?php $type=$challan->challan_for; ?>
                 <td><?= h(++$page_no) ?></td>
                 <td><?= h($challan->challan_for) ?></td>
-				<td><?= h($challan->customer->customer_name) ?></td>
-                
-				<td><?= h($challan->company->name) ?></td>
+				<td><?php if($challan->customer_id){ echo $challan->customer->customer_name;  }elseif($challan->vendor_id){ echo $challan->vendor->company_name; } ?></td>
+                <td><?= h($challan->company->name) ?></td>
 				<td><?= h($challan->transporter->transporter_name) ?></td>
-                
                 <td><?= $this->Number->format($challan->lr_no) ?></td>
                 <td><?= h($challan->reference_detail) ?></td>
                 <td><?= $this->Number->format($challan->total) ?></td>

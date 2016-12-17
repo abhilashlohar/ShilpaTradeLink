@@ -81,12 +81,16 @@ $html = '
 $html.='
 	<table width="100%" style="margin-top: 0px;">
 		<tr>
-			<td width="50%">
-				<span>'. h(($challan->customer->customer_name)) .'</span><br/>
+			<td width="50%">';
+				if($challan->customer_id){
+				$html.='<span>'. h($challan->customer->customer_name) .'</span><br/>
+				'. $this->Text->autoParagraph(h($challan->customer_address)) .'</span>';
 				
-				'. $this->Text->autoParagraph(h($challan->customer_address)) .'
-			
-			</td>
+				}else {
+				$html.='<span>'. h($challan->vendor->company_name) .'</span><br/>
+				'. $this->Text->autoParagraph(h($challan->vendor_address)) .'</span>';
+				}
+			$html.='</td>
 			<td width="" valign="top" align="right">
 				<table>
 					<tr>

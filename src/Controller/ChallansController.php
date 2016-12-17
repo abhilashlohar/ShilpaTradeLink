@@ -22,8 +22,8 @@ class ChallansController extends AppController
         $this->paginate = [
             'contain' => ['Customers', 'Companies', 'Invoices', 'Transporters','Vendors']
         ];
-        $challans = $this->paginate($this->Challans);
-
+		$challans=$this->paginate($this->Challans);
+        
         $this->set(compact('challans'));
         $this->set('_serialize', ['challans']);
     }
@@ -64,14 +64,18 @@ class ChallansController extends AppController
 			
             $challan = $this->Challans->patchEntity($challan, $this->request->data);
 			$type=$challan->challan_type;
-			$last_ch_no_rt=$this->Challans->find()->select(['ch2'])->where(['company_id' => $st_company_id,'challan_type'=>$type])->order(['ch2' => 'DESC'])->first();
+			
+			$last_ch_no_rt=$this->Challans->find()->select(['ch2'])->where(['company_id' => $st_company_id,'challan_type' => $type])->order(['ch2' => 'DESC'])->first();
 			
 			if($last_ch_no_rt){
-				$challan->ch2=$challan->ch2+1;
+				
+				$challan->ch2=$last_ch_no_rt->ch2+1;
+				
+				
 			}else{
 				$challan->ch2=1;
 			}
-			
+		
 			$challan->created_by=$s_employee_id; 
 			$challan->company_id=$st_company_id;
 			$challan->created_on=date("Y-m-d",strtotime($challan->created_on));
