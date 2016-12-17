@@ -55,6 +55,10 @@ class ChallansTable extends Table
             'foreignKey' => 'invoice_id',
             'joinType' => 'INNER'
         ]);
+		$this->belongsTo('InvoiceBookings', [
+            'foreignKey' => 'invoice_booking_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('Transporters', [
             'foreignKey' => 'transporter_id',
             'joinType' => 'INNER'

@@ -53,7 +53,6 @@ class ChallansController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
-		
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
@@ -93,6 +92,7 @@ class ChallansController extends AppController
         $companies = $this->Challans->Companies->find('all');
 		$items = $this->Challans->Items->find('list');
         $invoices = $this->Challans->Invoices->find()->where(['company_id'=>$st_company_id]);
+		$invoice_bookings = $this->Challans->InvoiceBookings->find('list');
         $transporters = $this->Challans->Transporters->find('list');
 		$filenames = $this->Challans->Filenames->find('list', ['valueField' => function ($row) {
 				return $row['file1'] . '-' . $row['file2'];
