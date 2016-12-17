@@ -20,7 +20,7 @@ class ChallansController extends AppController
     {	
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['Customers', 'Companies', 'Invoices', 'Transporters']
+            'contain' => ['Customers', 'Companies', 'Invoices', 'Transporters','Vendors']
         ];
         $challans = $this->paginate($this->Challans);
 
@@ -38,7 +38,7 @@ class ChallansController extends AppController
     public function view($id = null)
     {
         $challan = $this->Challans->get($id, [
-            'contain' => ['Customers', 'Companies', 'Invoices', 'Transporters']
+            'contain' => ['Customers', 'Companies', 'Invoices', 'Transporters','Vendors']
         ]);
 
         $this->set('challan', $challan);
@@ -59,10 +59,19 @@ class ChallansController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		$Company = $this->Challans->Companies->get($st_company_id);
 		$challan = $this->Challans->newEntity();
-        
+       
 		if ($this->request->is('post')) {
+			
             $challan = $this->Challans->patchEntity($challan, $this->request->data);
-
+			$type=$challan->challan_type;
+			$last_ch_no_rt=$this->Challans->find()->select(['ch2'])->where(['company_id' => $st_company_id,'challan_type'=>$type])->order(['ch2' => 'DESC'])->first();
+			
+			if($last_ch_no_rt){
+				$challan->ch2=$challan->ch2+1;
+			}else{
+				$challan->ch2=1;
+			}
+			
 			$challan->created_by=$s_employee_id; 
 			$challan->company_id=$st_company_id;
 			$challan->created_on=date("Y-m-d",strtotime($challan->created_on));
@@ -76,11 +85,18 @@ class ChallansController extends AppController
             }
         }
         $customers = $this->Challans->Customers->find('all');
+		$vendors = $this->Challans->Vendors->find('all');
         $companies = $this->Challans->Companies->find('all');
 		$items = $this->Challans->Items->find('list');
         $invoices = $this->Challans->Invoices->find()->where(['company_id'=>$st_company_id]);
         $transporters = $this->Challans->Transporters->find('list');
-        $this->set(compact('challan', 'customers', 'Company', 'invoices', 'transporters','items'));
+		$filenames = $this->Challans->Filenames->find('list', ['valueField' => function ($row) {
+				return $row['file1'] . '-' . $row['file2'];
+			},
+			'keyField' => function ($row) {
+				return $row['file1'] . '-' . $row['file2'];
+			}]);
+        $this->set(compact('challan', 'customers', 'Company', 'invoices', 'transporters','items','vendors','filenames'));
         $this->set('_serialize', ['challan']);
     }
     /**
@@ -100,7 +116,7 @@ class ChallansController extends AppController
 		
 		
         $challan = $this->Challans->get($id, [
-            'contain' => ['Companies','Invoices','Transporters','ChallanRows','Creator']
+            'contain' => ['Companies','Invoices','Transporters','ChallanRows','Creator','Vendors']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $challan = $this->Challans->patchEntity($challan, $this->request->data);
@@ -152,7 +168,7 @@ class ChallansController extends AppController
     {
 		$this->viewBuilder()->layout('');
          $challan = $this->Challans->get($id, [
-            'contain' => ['Companies','Customers','Invoices','Transporters','ChallanRows','Creator']
+            'contain' => ['Companies','Customers','Invoices','Transporters','ChallanRows','Creator','Vendors']
 			]);
 
         $this->set('challan', $challan);

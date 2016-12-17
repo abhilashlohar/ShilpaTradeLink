@@ -17,7 +17,8 @@
 						<thead>
 							<tr>
 								<th>S.No</th>
-								<th>Customer Name</th>
+								<th>Type</th>
+								<th>Customer/Vendor Name</th>
 								<th>Company name</th>
 								<th>Transporter Name</th>
 								<th>LR No</th>
@@ -34,7 +35,7 @@
             <?php foreach ($challans as $challan): ?>
             <tr>
                 <td><?= h(++$page_no) ?></td>
-                
+                <td><?= h($challan->challan_for) ?></td>
 				<td><?= h($challan->customer->customer_name) ?></td>
                 
 				<td><?= h($challan->company->name) ?></td>

@@ -43,6 +43,10 @@ class ChallansTable extends Table
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'
         ]);
+		 $this->belongsTo('Vendors', [
+            'foreignKey' => 'vendor_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
@@ -71,7 +75,8 @@ class ChallansTable extends Table
 			'foreignKey' => 'created_by',
 			'propertyName' => 'creator',
 		]);
-		
+			
+		$this->belongsTo('Filenames');
     }
 
     /**
@@ -86,11 +91,6 @@ class ChallansTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-
-		$validator
-            ->requirePresence('customer_id', 'create')
-            ->notEmpty('customer_id');
-        
 		$validator
             ->requirePresence('lr_no', 'create')
             ->notEmpty('lr_no');
@@ -100,10 +100,7 @@ class ChallansTable extends Table
             ->requirePresence('invoice_id', 'create')
             ->notEmpty('invoice_id');
 
-		$validator
-            ->requirePresence('customer_address', 'create')
-            ->notEmpty('customer_address');
-
+		
 		$validator
             ->requirePresence('transporter_id', 'create')
             ->notEmpty('transporter_id');
@@ -124,6 +121,8 @@ class ChallansTable extends Table
         $validator
             ->requirePresence('documents', 'create')
             ->notEmpty('documents');
+		
+	
 
         return $validator;
     }
