@@ -83,7 +83,7 @@ $html.='
 	
 		<tr>
 		
-			<td width="50%">Challan No :  '. h(($challan->ch1."/IN-".str_pad($challan->ch2, 3, "0", STR_PAD_LEFT)."/".$challan->ch3."/".$challan->ch4)) .'<br/>';
+			<td width="50%">Challan No :  '. h(($challan->ch1." /  CH-".str_pad($challan->ch2, 3, "0", STR_PAD_LEFT)." / ".$challan->ch3." / ".$challan->ch4)) .'<br/>';
 				if($challan->customer_id){
 				$html.='<span>'. h($challan->customer->customer_name) .'</span><br/>
 				'. $this->Text->autoParagraph(h($challan->customer_address)) .'</span>';

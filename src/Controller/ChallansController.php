@@ -22,12 +22,22 @@ class ChallansController extends AppController
         $this->paginate = [
             'contain' => ['Customers', 'Companies', 'Invoices', 'Transporters','Vendors']
         ];
-		$challans=$this->paginate($this->Challans);
+		$challans=$this->paginate($this->Challans->find()->where(['challan_type' => 'Returnable']));
         
         $this->set(compact('challans'));
         $this->set('_serialize', ['challans']);
     }
-
+	 public function index2()
+    {	
+		$this->viewBuilder()->layout('index_layout');
+        $this->paginate = [
+            'contain' => ['Customers', 'Companies', 'Invoices', 'Transporters','Vendors']
+        ];
+		$challans=$this->paginate($this->Challans->find()->where(['challan_type' => 'Non Returnable']));
+        
+        $this->set(compact('challans'));
+        $this->set('_serialize', ['challans']);
+    }
     /**
      * View method
      *
