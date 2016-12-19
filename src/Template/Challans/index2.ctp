@@ -24,13 +24,46 @@
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
-				
+			<form method="GET" >
+				<table class="table table-condensed">
+					<tbody>
+						<tr>
+							<td>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="input-group" style="" id="pnf_text">
+											<span class="input-group-addon">CH-</span><input type="text" name="ch2" class="form-control input-sm" placeholder="Challan No" value="<?php echo @$ch2; ?>">
+										</div>
+									</div>
+									<div class="col-md-4">
+										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
+									</div>
+								</div>
+							</td>
+							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
+							<td>
+								<div class="row">
+									<div class="col-md-6">
+										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>"  data-date-format="dd-mm-yyyy" >
+									</div>
+									<div class="col-md-6">
+										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>"  data-date-format="dd-mm-yyyy" >
+									</div>
+								</div>
+							</td>
+							
+							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+						</tr>
+					</tbody>
+				</table>
+				</form>		
 				<?php $page_no=$this->Paginator->current('Challans'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered table-striped table-hover">
 						<thead>
 							<tr>
 								<th>S.No</th>
-								<th>Type</th>
+								<th>Ref. No</th>
+								<th>Challan For</th>
 								<th>Customer/Vendor Name</th>
 								<th>Company name</th>
 								<th>Transporter Name</th>
@@ -49,6 +82,7 @@
             <tr>
 				<?php $type=$challan->challan_for; ?>
                 <td><?= h(++$page_no) ?></td>
+				<td><?= h(($challan->ch1.'/CH-'.str_pad($challan->ch2, 3, '0', STR_PAD_LEFT).'/'.$challan->ch3.'/'.$challan->ch4)) ?></td>
                 <td><?= h($challan->challan_for) ?></td>
 				<td><?php if($challan->customer_id){ echo $challan->customer->customer_name;  }elseif($challan->vendor_id){ echo $challan->vendor->company_name; } ?></td>
                 <td><?= h($challan->company->name) ?></td>

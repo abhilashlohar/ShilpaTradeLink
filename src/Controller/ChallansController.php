@@ -19,21 +19,73 @@ class ChallansController extends AppController
     public function index()
     {	
 		$this->viewBuilder()->layout('index_layout');
+		$where=[];
+		$ch2=$this->request->query('ch2');
+		$file=$this->request->query('file');
+		$customer=$this->request->query('customer');
+		$From=$this->request->query('From');
+		$To=$this->request->query('To');
+		$this->set(compact('ch2','customer','From','To','file'));
         $this->paginate = [
             'contain' => ['Customers', 'Companies', 'Invoices', 'Transporters','Vendors']
         ];
-		$challans=$this->paginate($this->Challans->find()->where(['challan_type' => 'Returnable']));
+		if(!empty($ch2)){
+			$where['ch2 LIKE']='%'.$ch2.'%';
+		}
+		if(!empty($file)){
+			$where['Challans.ch3 LIKE']='%'.$file.'%';
+		}
+		if(!empty($customer)){
+			$where['Customers.customer_name LIKE']='%'.$customer.'%';
+		}
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['created_on >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['created_on <=']=$To;
+		}
+		$challans=$this->paginate($this->Challans->find()->where($where)->where(['challan_type' => 'Returnable']));
         
         $this->set(compact('challans'));
         $this->set('_serialize', ['challans']);
     }
+	 
 	 public function index2()
     {	
 		$this->viewBuilder()->layout('index_layout');
+		$where=[];
+		$ch2=$this->request->query('ch2');
+		$file=$this->request->query('file');
+		$customer=$this->request->query('customer');
+		$From=$this->request->query('From');
+		$To=$this->request->query('To');
+		$this->set(compact('ch2','customer','From','To','file'));
         $this->paginate = [
             'contain' => ['Customers', 'Companies', 'Invoices', 'Transporters','Vendors']
         ];
-		$challans=$this->paginate($this->Challans->find()->where(['challan_type' => 'Non Returnable']));
+		if(!empty($ch2)){
+			$where['ch2 LIKE']='%'.$ch2.'%';
+		}
+		if(!empty($file)){
+			$where['Challans.ch3 LIKE']='%'.$file.'%';
+		}
+		if(!empty($customer)){
+			$where['Customers.customer_name LIKE']='%'.$customer.'%';
+		}
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['created_on >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['created_on <=']=$To;
+		}
+        $this->paginate = [
+            'contain' => ['Customers', 'Companies', 'Invoices', 'Transporters','Vendors']
+        ];
+		$challans=$this->paginate($this->Challans->find()->where($where)->where(['challan_type' => 'Non Returnable']));
         
         $this->set(compact('challans'));
         $this->set('_serialize', ['challans']);
@@ -147,13 +199,21 @@ class ChallansController extends AppController
                 $this->Flash->error(__('The challan could not be saved. Please, try again.'));
             }
         }
-		$Company = $this->Challans->Companies->get($st_company_id);
-		$customers = $this->Challans->Customers->find('all');
-       // $companies = $this->Challans->Companies->find('all');
+		
+        $customers = $this->Challans->Customers->find('all');
+		$vendors = $this->Challans->Vendors->find('all');
+        $companies = $this->Challans->Companies->find('all');
 		$items = $this->Challans->Items->find('list');
         $invoices = $this->Challans->Invoices->find()->where(['company_id'=>$st_company_id]);
+		$invoice_bookings = $this->Challans->InvoiceBookings->find('all');
         $transporters = $this->Challans->Transporters->find('list');
-        $this->set(compact('challan', 'customers', 'companies', 'invoices', 'transporters','items'));
+		$filenames = $this->Challans->Filenames->find('list', ['valueField' => function ($row) {
+				return $row['file1'] . '-' . $row['file2'];
+			},
+			'keyField' => function ($row) {
+				return $row['file1'] . '-' . $row['file2'];
+			}]);
+        $this->set(compact('challan', 'customers', 'Company', 'invoices', 'transporters','items','vendors','filenames','invoice_bookings'));
 	
         $this->set('_serialize', ['challan']);
     }

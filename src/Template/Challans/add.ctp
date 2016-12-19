@@ -9,7 +9,7 @@
 		<?= $this->Form->create() ?>
 		<div class="form-body">
 			<div class="row">
-				<div class="col-md-3">
+				<div class="col-md-2">
 						<div class="form-group">
 							<div class="radio-list" >
 							<label class="control-label">Challan Type <span class="required" aria-required="true">*</span></label>
@@ -17,40 +17,11 @@
 							</div>
 						</div>
 					</div>
-					
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Challan No. <span class="required" aria-required="true">*</span></label>
-							<div class="row">
-								<div class="col-md-4">
-									<?php echo $this->Form->input('ch1', ['label' => false,'class' => 'form-control input-sm','readonly','value'=>$Company->alias]); ?>
-								</div>
-								<div class="col-md-4">
-									<?php echo $this->Form->input('ch3', ['empty' => "Select",'options'=>$filenames,'label' => false,'class' => 'form-control input-sm select2me']); ?>
-								</div>
-								<div class="col-md-4">
-									<?php echo $this->Form->input('ch4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-2">
-					</div>
-					<div class="col-md-2">
-						<div class="form-group">
-							<label class="control-label">Date</label>
-							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					
-					
-					<div class="col-md-3">
+				<div class="col-md-2">
 						<div class="form-group">
 							<div class="radio-list" >
 							<label class="control-label">Challan For<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->radio('challan_for',[['value' => 'Customer', 'text' => 'Customer','id' => 'id_radio1'],['value' => 'Vendor', 'text' => 'Vendor','id' => 'id_radio2']]); ?>
+							<?php echo $this->Form->radio('challan_for',[['value' => 'Customer', 'text' => 'Customer','id' => 'id_radio1','checked'=>'checked'],['value' => 'Vendor', 'text' => 'Vendor','id' => 'id_radio2']]); ?>
 							</div>
 						</div>
 					</div>
@@ -63,9 +34,9 @@
 									$options=array();
 									foreach($customers as $customer){
 										$merge=$customer->customer_name.'	('.$customer->alias.')';
-										$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
+										$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id,'transporter_id' => $customer->transporter_id];
 									}
-							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','checked']); ?>
+							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 					
@@ -81,6 +52,37 @@
 							echo $this->Form->input('vendor_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
+					<div class="col-md-2">
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label class="control-label">Date</label>
+							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Challan No. <span class="required" aria-required="true">*</span></label>
+							<div class="row">
+								<div class="col-md-4">
+									<?php echo $this->Form->input('ch1', ['label' => false,'class' => 'form-control input-sm','readonly','value'=>$Company->alias]); ?>
+								</div>
+								<div class="col-md-4" id="ch3_div">
+									<?php echo $this->Form->input('ch3', ['empty' => "Select",'options'=>$filenames,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+								</div>
+								<div class="col-md-4">
+									<?php echo $this->Form->input('ch4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
+					
+					
 					<div class="col-md-3" id="invoice_div">
 						<div class="form-group">
 							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label>
@@ -122,7 +124,7 @@
 		
 				
 				<div class="row">
-				<div class="col-md-3" id="customer_address_div">
+				<div class="col-md-4" id="customer_address_div">
 						<div class="form-group">
 							<label class="control-label">Address <span class="required" aria-required="true">*</span></label>
 							
@@ -132,7 +134,7 @@
 						
 					</div>
 				</div>
-				<div class="col-md-3" id="vendor_address_div" style="display:none;">
+				<div class="col-md-4" id="vendor_address_div" style="display:none;">
 						<div class="form-group">
 							<label class="control-label">Address <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->textarea('vendor_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address']); ?>
@@ -525,6 +527,9 @@ $(document).ready(function() {
 		var contact_person=$('select[name="customer_id"] option:selected').attr('contact_person');
 		$('input[name="customer_for_attention"]').val(contact_person);
 		
+		var transporter_id=$('select[name="customer_id"] option:selected').attr("transporter_id");
+		$("select[name=transporter_id]").val(transporter_id).select2();	
+		
 		var customer_id=$('select[name="customer_id"] option:selected').val(); 
 		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'defaultAddress']); ?>";
 		url=url+'/'+customer_id,
@@ -545,13 +550,13 @@ $(document).ready(function() {
 			$('input[name="customer_contact"]').val(response.mobile);
 		});
 		
-		$("#qt3_div").html('Loading...');
+		$("#ch3_div").html('Loading...');
 		var url="<?php echo $this->Url->build(['controller'=>'Filenames','action'=>'listFilename']); ?>";
 		url=url+'/'+customer_id,
 		$.ajax({
 			url: url,
 		}).done(function(response) {
-			$("#qt3_div").html(response);
+			$("#ch3_div").html(response);
 		});
 		
 		var employee_id=$('select[name="customer_id"] option:selected').attr("employee_id");
@@ -621,8 +626,7 @@ $(document).ready(function() {
 		$('#invoice_div').show('fast');
 		$('#invoice_booking_div').hide('fast');
 	});
-     
-				
+     		
 	
 });
 
