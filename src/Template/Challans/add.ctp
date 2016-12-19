@@ -8,8 +8,8 @@
 	<div class="portlet-body form">
 		<?= $this->Form->create() ?>
 		<div class="form-body">
-				<div class="row">
-					<div class="col-md-3">
+			<div class="row">
+				<div class="col-md-3">
 						<div class="form-group">
 							<div class="radio-list" >
 							<label class="control-label">Challan Type <span class="required" aria-required="true">*</span></label>
@@ -18,7 +18,44 @@
 						</div>
 					</div>
 					
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Challan No. <span class="required" aria-required="true">*</span></label>
+							<div class="row">
+								<div class="col-md-4">
+									<?php echo $this->Form->input('ch1', ['label' => false,'class' => 'form-control input-sm','readonly','value'=>$Company->alias]); ?>
+								</div>
+								<div class="col-md-4">
+									<?php echo $this->Form->input('ch3', ['empty' => "Select",'options'=>$filenames,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+								</div>
+								<div class="col-md-4">
+									<?php echo $this->Form->input('ch4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-2">
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<label class="control-label">Date</label>
+							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					
+					
 					<div class="col-md-3">
+						<div class="form-group">
+							<div class="radio-list" >
+							<label class="control-label">Challan For<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->radio('challan_for',[['value' => 'Customer', 'text' => 'Customer','id' => 'id_radio1'],['value' => 'Vendor', 'text' => 'Vendor','id' => 'id_radio2']]); ?>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-md-3" id="customer_div">
 						<div class="form-group">
 							<label class="control-label">Customers <span class="required" aria-required="true">*</span></label>
 							
@@ -28,11 +65,23 @@
 										$merge=$customer->customer_name.'	('.$customer->alias.')';
 										$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
 									}
-							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
-							
+							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','checked']); ?>
 						</div>
 					</div>
-					<div class="col-md-3">
+					
+					<div class="col-md-3" id="vendor_div" style="display:none;">
+						<div class="form-group">
+							<label class="control-label">Vendors <span class="required" aria-required="true">*</span></label>
+							
+								<?php
+									$options=array();
+									foreach($vendors as $vendor){
+										$options[]=['text' =>$vendor->company_name, 'value' => $vendor->id, 'v_address'=>$vendor->address];
+									}
+							echo $this->Form->input('vendor_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me']); ?>
+						</div>
+					</div>
+					<div class="col-md-3" id="invoice_div">
 						<div class="form-group">
 							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label>
 							<div class="row">
@@ -46,24 +95,18 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-2">
+					
+					<div class="col-md-3" id="invoice_booking_div" style="display:none;">
 						<div class="form-group">
-							<label class="control-label">Date</label>
-							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
-						</div>
-					</div>
-				</div><br/>
-		
-				
-				<div class="row">
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Address <span class="required" aria-required="true">*</span></label>
-							
-							<?php echo $this->Form->textarea('customer_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address']); ?>
-							<a href="#" role="button" class="pull-right select_address" >
-							Select Address </a>
-						
+							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label>
+							<div class="row">
+								<?php
+									$options=array();
+									foreach($invoice_bookings as $invoice_booking){
+									$options[]=['text' =>$invoice_booking->invoice_no, 'value' => $invoice_booking->id];
+									}
+									echo $this->Form->input('invoice_booking_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me']); ?>
+							</div>
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -74,7 +117,28 @@
 							
 						</div>
 					</div>
-					<div class="col-md-3">
+					
+				</div><br/>
+		
+				
+				<div class="row">
+				<div class="col-md-3" id="customer_address_div">
+						<div class="form-group">
+							<label class="control-label">Address <span class="required" aria-required="true">*</span></label>
+							
+							<?php echo $this->Form->textarea('customer_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address']); ?>
+							<a href="#" role="button" class="pull-right select_address" >
+							Select Address </a>
+						
+					</div>
+				</div>
+				<div class="col-md-3" id="vendor_address_div" style="display:none;">
+						<div class="form-group">
+							<label class="control-label">Address <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->textarea('vendor_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address']); ?>
+						</div>
+				</div>	
+				<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Courier <span class="required" aria-required="true">*</span></label>
 							<div class="row">
@@ -82,11 +146,8 @@
 							echo $this->Form->input('transporter_id',['empty'=>'--Select--','options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 							</div>
 						</div>
-					</div>
-					
-
-
 				</div>
+		</div>
 		
 			<br/>
 			
@@ -454,6 +515,12 @@ $(document).ready(function() {
 		$("#myModal1").hide();
     });
 	
+	
+	$('select[name="vendor_id"]').on("change",function() {
+		var vaddress=$('select[name="vendor_id"] option:selected').attr('v_address');
+		$('textarea[name="vendor_address"]').val(vaddress);
+	});
+	
 	$('select[name="customer_id"]').on("change",function() {
 		var contact_person=$('select[name="customer_id"] option:selected').attr('contact_person');
 		$('input[name="customer_for_attention"]').val(contact_person);
@@ -536,7 +603,26 @@ $(document).ready(function() {
 		copy_term_condition_to_textarea();
 	})
 	
-
+	$('#id_radio2').click(function () {
+		
+        $('#vendor_div').show('fast');
+		$('#customer_div').hide('fast');
+		$('#vendor_address_div').show('fast');
+		$('#customer_address_div').hide('fast');
+		$('#invoice_div').hide('fast');
+		$('#invoice_booking_div').show('fast');
+	});
+				 
+	$('#id_radio1').click(function () {
+        $('#vendor_div').hide('fast');
+		$('#customer_div').show('fast');    
+		$('#vendor_address_div').hide('fast');
+		$('#customer_address_div').show('fast');
+		$('#invoice_div').show('fast');
+		$('#invoice_booking_div').hide('fast');
+	});
+     
+				
 	
 });
 

@@ -332,14 +332,14 @@ class InvoicesController extends AppController
 						$i++;
 						
 						//Insert in Item Ledger//
-						$itemLedger = $this->Invoices->ItemLedger->newEntity();
+						$itemLedger = $this->Invoices->ItemLedgers->newEntity();
 						$itemLedger->item_id = $item_id;
 						$itemLedger->quantity = $qty;
 						$itemLedger->source_model = 'Invoices';
 						$itemLedger->source_id = $invoice->id;
 						$itemLedger->in_out = 'Out';
 						$itemLedger->processed_on = date("Y-m-d");
-						$this->Invoices->ItemLedger->save($itemLedger);
+						$this->Invoices->ItemLedgers->save($itemLedger);
 						
 					}
 				}

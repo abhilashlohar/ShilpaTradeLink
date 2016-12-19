@@ -11,12 +11,12 @@
 			<?= $this->Html->link(
 				'Returnable',
 				'/Challans/Index',
-				['class' => 'btn btn-primary']
+				['class' => 'btn btn-default']
 			); ?>
 			<?= $this->Html->link(
 				'Non Returnable',
 				'/Challans/Index2',
-				['class' => 'btn btn-default']
+				['class' => 'btn btn-primary']
 			); ?>
 			</div>
 		</div>

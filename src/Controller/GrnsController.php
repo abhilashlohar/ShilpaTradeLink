@@ -116,14 +116,14 @@ class GrnsController extends AppController
 							$i++;
 							
 							//Insert in Item Ledger//
-							$itemLedger = $this->Grns->ItemLedger->newEntity();
+							$itemLedger = $this->Grns->ItemLedgers->newEntity();
 							$itemLedger->item_id = $item_id;
 							$itemLedger->quantity = $qty;
 							$itemLedger->source_model = 'Grns';
 							$itemLedger->source_id = $grn->id;
 							$itemLedger->in_out = 'In';
 							$itemLedger->processed_on = date("Y-m-d");
-							$this->Grns->ItemLedger->save($itemLedger);
+							$this->Grns->ItemLedgers->save($itemLedger);
 						} 
 					} 
 					$this->Flash->success(__('The grn has been saved.'));
