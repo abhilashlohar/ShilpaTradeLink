@@ -1,4 +1,4 @@
-<?php //pr($grn->purchase_order->pnf); exit; ?>
+<?php// pr($grn); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -13,11 +13,29 @@
 	<?php if(!empty($grn)) { ?>
 	<div class="portlet-body form">
 		<?= $this->Form->create($invoiceBooking) ?>
-		<div class="form-body">
+		
 			<div class="form-body">
 				<div class="row">
-					
-					<div class="col-md-5">
+					<div class="col-md-4" style="display:none;">
+						<div class="form-group">
+							<label class="control-label">Invoice Booking No. <span class="required" aria-required="true">*</span></label>
+							<div class="row">
+								<div class="col-md-3">
+									<?php echo $this->Form->input('ib1', ['label' => false,'class' => 'form-control input-sm','readonly','value'=>@$grn->company->alias]); ?>
+								</div>
+								<div class="col-md-3">
+									<?php echo $this->Form->input('ib2', ['label' => false,'class' => 'form-control input-sm', 'value'=>str_pad(@$last_ib_no->ib2, 3, '0', STR_PAD_LEFT), 'readonly']); ?>
+								</div>
+								<div class="col-md-3">
+									<?php echo $this->Form->input('ib3', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'File', 'value'=>@$grn->grn3,'readonly']); ?>
+								</div>
+								<div class="col-md-3">
+									<?php echo $this->Form->input('ib4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('invoice_no', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Invoice NO']); ?>
@@ -25,10 +43,17 @@
 							<? ?>
 						</div>
 					</div>
-					
+					<div class="col-md-3 pull-right" >
+						<div class="form-group">
+							<label class="control-label">Invoice Booking No</label></br>
+							<?php echo $grn->grn1.'/IB-'.str_pad($last_ib_no->ib2, 3, '0', STR_PAD_LEFT).'/'.$grn->grn3.'/'.$grn->grn4; ?>
+							<br/>
+							<? ?>
+						</div>
+					</div>
 					<div class="form-actions">
 						<div class="row">
-							<div class="col-md-4">
+							<div class="col-md-3">
 								<button type="submit" class="btn btn-primary">BOOK INVOICE</button>
 							</div>
 						</div>
@@ -52,7 +77,7 @@
 						<div class="form-group">
 							<label class="control-label">GRN No. <span class="required" aria-required="true">*</span></label>
 							<br/>
-							<?= h(($grn->grn1.'/PO-'.str_pad($grn->id, 3, '0', STR_PAD_LEFT).'/'.$grn->grn3.'/'.$grn->grn4)) ?>
+							<?= h(($grn->grn1.'/GRN-'.str_pad($grn->grn2, 3, '0', STR_PAD_LEFT).'/'.$grn->grn3.'/'.$grn->grn4)) ?>
 						</div>
 					</div>
 					<div class="col-md-3">

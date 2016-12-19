@@ -55,7 +55,8 @@ class InvoiceBookingsController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
-		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
 		
 		$grn_id=@(int)$this->request->query('grn');
 		
@@ -65,17 +66,24 @@ class InvoiceBookingsController extends AppController
 				'contain' => ['GrnRows'=>['Items'],'Companies','Vendors','PurchaseOrders'=>['PurchaseOrderRows']]
 			]);
 		}
-		//pr($grn); exit;
+		$last_ib_no=$this->InvoiceBookings->find()->select(['ib2'])->where(['company_id' => $st_company_id])->order(['ib2' => 'DESC'])->first();
+			if($last_ib_no){
+				@$last_ib_no->ib2=$last_ib_no->ib2+1;
+			}else{
+				@$last_ib_no->ib2=1;
+			}
 		
-		$this->set(compact('grn'));
+		$this->set(compact('grn','last_ib_no'));
+		
+		
 		$invoiceBooking = $this->InvoiceBookings->newEntity();
-		
-        
 		if ($this->request->is('post')) {
             $invoiceBooking = $this->InvoiceBookings->patchEntity($invoiceBooking, $this->request->data);
 			$invoiceBooking->grn_id=$grn_id; 
 			$invoiceBooking->created_on=date("Y-m-d");
-			//pr($invoiceBooking); exit;
+			$invoiceBooking->company_id=$st_company_id ;
+			$invoiceBooking->created_by=$this->viewVars['s_employee_id'];
+			
             if ($this->InvoiceBookings->save($invoiceBooking)) {
 				if(!empty($grn_id)){
 					//$grn = $this->InvoiceBookings->Grns->get($grn_id);
