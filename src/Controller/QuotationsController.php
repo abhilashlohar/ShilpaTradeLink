@@ -97,7 +97,7 @@ class QuotationsController extends AppController
 			->where(['revision'=> $query->func()->max('Rquotations.revision')])
 			->toArray();
 		foreach($query as $data){
-			pr($data);
+			//pr($data);
 		}
 		exit;
 		
@@ -218,12 +218,6 @@ class QuotationsController extends AppController
 						}]]
 			]);
 			
-		$emailrecord = $this->Quotations->EmailRecords->newEntity();
-		if ($this->request->is(['patch', 'post', 'put'])) {
-			
-            $emailrecord = $this->Quotations->EmailRecords->patchEntity($emailrecord, $this->request->data);
-			pr($emailrecord); exit;
-		}
 		
 		if ($this->request->is(['patch', 'post', 'put'])) {
             foreach($this->request->data['quotation_rows'] as $quotation_row_id=>$value){

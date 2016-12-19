@@ -60,7 +60,7 @@ $(document).ready(function() {
 
 <div id="myModal2" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" style=" padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
 	<div class="modal-dialog">
-	<form method="post" >
+	<?= $this->Form->create($emailrecord) ?>
 		<div class="modal-content">
 			<div class="modal-body">
 			<h4>Email</h4>
@@ -103,7 +103,7 @@ $(document).ready(function() {
 				<button type="submit" class="btn btn-primary">Send</button>
 			</div>
 		</div>
-	</form>
+	<?= $this->Form->end() ?>
 	</div>
 </div>
 
