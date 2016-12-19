@@ -1,4 +1,4 @@
-	<?php
+<?php
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -91,19 +91,24 @@ class ReceiptVouchersController extends AppController
 				
 				//Invoice Update 
 				if($receiptVoucher->payment_process=="Against Reference Number"){
-					echo $receiptVoucher->received_from_id;
 					$Customer=$this->ReceiptVouchers->Customers->find()->where(['ledger_account_id'=>$receiptVoucher->received_from_id])->first();
 					
+					
 					$Invoices=$this->ReceiptVouchers->Invoices->find()->where(['due_payment !='=>0,'customer_id'=>$Customer->id])->order(['date_created'=>'ASC']);
-					
 					$remaining_amount=$receiptVoucher->amount;
-					
 					foreach($Invoices as $Invoice){
+						
 						$remaining_amount=$remaining_amount-$Invoice->due_payment;
+						pr($remaining_amount); exit;
 						if($remaining_amount>=0){
 							$Invoice=$this->ReceiptVouchers->Invoices->get($Invoice->id);
 							$Invoice->due_payment=0;
 							$this->ReceiptVouchers->Invoices->save($Invoice);
+							$receiptEffect=$this->ReceiptVouchers->ReceiptEffects->newEntity();
+							pr($receiptEffect); exit;
+							$receiptEffect->amount=$receiptVoucher->amount;
+							pr($receiptEffect->amount); exit;
+							
 						}else{
 							$Invoice=$this->ReceiptVouchers->Invoices->get($Invoice->id);
 							$Invoice->due_payment=abs($remaining_amount);

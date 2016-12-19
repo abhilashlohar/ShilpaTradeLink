@@ -82,6 +82,8 @@ class QuotationsTable extends Table
 			'foreignKey' => 'quotation_id',
 			'propertyName' => 'rquotations'
 		]);
+		$this->belongsTo('CustomerContacts');
+		$this->belongsTo('EmailRecords');
 		
     }
 	

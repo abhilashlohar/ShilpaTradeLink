@@ -155,15 +155,16 @@ class GrnsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 			$grn = $this->Grns->get($id, [
 				'contain' => [
-						'Companies','Vendors','GrnRows'=>['Items']
+						'Companies','Vendors','PurchaseOrders'=>['PurchaseOrderRows','Grns'=>['GrnRows']],'GrnRows'=>['Items']
 					]
 			]);
 
-			//pr($grn);exit;
+			//pr();exit;
        
         if ($this->request->is(['patch', 'post', 'put'])) {
             $grn = $this->Grns->patchEntity($grn, $this->request->data);
             if ($this->Grns->save($grn)) {
+				//pr($grn); exit;
                 $this->Flash->success(__('The grn has been saved.'));
                 return $this->redirect(['action' => 'index']);
             } else {

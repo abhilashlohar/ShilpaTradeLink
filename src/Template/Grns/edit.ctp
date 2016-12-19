@@ -1,4 +1,8 @@
-<?php //pr($grn); exit; ?>
+<?php //pr($grn->purchase_order->grns->grn_rows[0]); exit; 
+
+//pr(@$grn->purchase_order->purchase_order_rows[0]->quantity);
+
+?>
 
 <div class="portlet light bordered">
 	<div class="portlet-title">
@@ -69,7 +73,18 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php
+					
+						<?php 
+							foreach($grn->purchase_order->grns as $data){
+								foreach($data->grn_rows as $data2){
+									$processed_items[$data2->item_id]=@$processed_items[$data2->item_id]+$data2->quantity;
+									
+								}
+							}pr($processed_items[$data2->item_id]);
+							foreach($grn->purchase_order->purchase_order_rows as $data3){
+								$total_items[$data3->item_id]=@$total_items[$data3->item_id]+$data3->quantity;
+								//pr($total_items[$data3->item_id]);
+							}
 							$q=0; foreach ($grn->grn_rows as $grn_rows): ?>
 							<tr class="tr1" row_no='<?php echo @$grn_rows->id; ?>'>
 								<td rowspan="2"><?php echo ++$q; --$q; ?></td>
@@ -79,7 +94,7 @@
 									?>								
 								</td>
 								<td>
-									<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$grn_rows->quantity-$grn_rows->processed_quantity,'readonly','min'=>'1','max'=>@$grn_rows->quantity-$grn_rows->processed_quantity]); ?>
+									<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$grn_rows->quantity-$grn_rows->processed_quantity,'readonly','min'=>'1','max'=>$total_items[$grn_rows->item_id]-$processed_items[$grn_rows->item_id]+$grn_rows->quantity]); ?>
 								</td>
 								<td>
 									<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$grn_rows->id]); ?></label>

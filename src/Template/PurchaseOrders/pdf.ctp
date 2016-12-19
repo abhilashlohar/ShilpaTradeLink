@@ -207,7 +207,7 @@ $html .= '	<table width="100%" class="table_rows">
   <tr>
     <td valign="top" style="text-align:center;">LR To Be Prepared In Favour Of:<br/>'. h(($purchaseOrder->lr_to_be_prepared_in_favour_of)) .'</td>
     <td valign="top" style="text-align:center;">Payment Terms<br/>'. h(($purchaseOrder->payment_terms)) .'</td>
-    <td valign="top">Excise Duty	:'. h(($purchaseOrder->exceise_duty)) .'</td>
+    <td valign="top">Excise Duty	:'. h(($purchaseOrder->excise_duty)) .'</td>
    
   </tr>
   <tr>

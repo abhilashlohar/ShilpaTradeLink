@@ -201,10 +201,24 @@ class QuotationsController extends AppController
 	
 	public function confirm($id = null)
     {
+		 
+		$send_to=$this->request->query('send_to');
+		//pr ($send_to); exit;
 		$this->viewBuilder()->layout('pdf_layout');
 		$quotation = $this->Quotations->get($id, [
-            'contain' => ['QuotationRows']
+            'contain' => ['QuotationRows','Customers'=>['CustomerContacts'=>function ($q) {
+						   return $q
+								->where(['CustomerContacts.default_contact'=>1]);
+						}]]
 			]);
+			
+		$emailrecord = $this->Quotations->EmailRecords->newEntity();
+		if ($this->request->is(['patch', 'post', 'put'])) {
+			
+            $emailrecord = $this->Quotations->EmailRecords->patchEntity($emailrecord, $this->request->data);
+			pr($emailrecord); exit;
+		}
+		
 		if ($this->request->is(['patch', 'post', 'put'])) {
             foreach($this->request->data['quotation_rows'] as $quotation_row_id=>$value){
 				$quotationRow=$this->Quotations->QuotationRows->get($quotation_row_id);
@@ -225,6 +239,7 @@ class QuotationsController extends AppController
 	
 	public function pdf($id = null)
     {
+		
 		$this->viewBuilder()->layout('');
         $quotation = $this->Quotations->get($id, [
             'contain' => ['Customers'=>['CustomerContacts'=>function($q){
