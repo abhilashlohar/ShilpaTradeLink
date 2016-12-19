@@ -84,9 +84,12 @@
 				<table>
 					<tr>
 						<td align="center">
-						For <?= h($journalVoucher->company->name) ?><br/><br/><br/><span style="    border-top: solid 1px #585757;">
-						<img src='webroot/signatures/$journalVoucher->creator->signature' height="50px" style="height:50px;"/>
+						For <?= h($journalVoucher->company->name) ?>
 							<br/>
+					 <?php 
+		             echo $this->Html->Image('/signatures/'.$journalVoucher->creator->signature,['height'=>'50px','style'=>'height:50px;']); 
+		             ?></br>		
+							
 						Authorised Signatory</span>
 						
 						</td>
