@@ -86,14 +86,20 @@ class QuotationsController extends AppController
 			$where['status']='Closed';
 		}
 		//pr($where); exit;
-        $quotations = $this->paginate($this->Quotations->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
+        $quotations = $this->paginate($this->Quotations->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC'])->group(['quotation_id']));
 		
 		
-		
-		/*$query = $this->Quotations->find();
-		$query->innerJoinWith('Rquotations', function ($q) {
-			return $q->select(['MaxRevision' => $q->func()->max('Rquotations.revision')])->group('quotation_id')->where(['Rquotations.quotation_id=Quotations.quotation_id'])->where(['Rquotations.MaxRevision =Quotations.revision ']);
-		});*/
+		$query = $this->Quotations->find();
+		$query->select()
+			->leftJoinWith('Rquotations')
+			->group(['Quotations.quotation_id'])
+			->autoFields(true)
+			->where(['revision'=> $query->func()->max('Rquotations.revision')])
+			->toArray();
+		foreach($query as $data){
+			pr($data);
+		}
+		exit;
 		
 		$companies = $this->Quotations->Companies->find('list');
 		
