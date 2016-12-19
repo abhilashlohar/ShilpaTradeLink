@@ -6,7 +6,7 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
-		<?= $this->Form->create() ?>
+		<?= $this->Form->create($challan,['id'=>'form_sample_3']) ?>
 		<div class="form-body">
 			<div class="row">
 				<div class="col-md-2">
@@ -90,7 +90,7 @@
 								<?php
 									$options=array();
 									foreach($invoices as $invoice){
-										$merge=(($invoice->in1.'/PO-'.str_pad($invoice->id, 3, '0', STR_PAD_LEFT).'/'.$invoice->in4.'/'.$invoice->in3));
+										$merge=(($invoice->in1.'/IN-'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$invoice->in4.'/'.$invoice->in3));
 										$options[]=['text' =>$merge, 'value' => $invoice->id];
 									}
 									echo $this->Form->input('invoice_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me']); ?>
@@ -179,16 +179,12 @@
 			<label class="control-label">Documents  </label>
 			<?php echo $this->Form->textarea('documents', ['label' => false,'class' => 'form-control wysihtml5']); ?>
 			<br/>
-			<div class="alert alert-danger" id="terms_conditions_error" style="display:none;">
-				Select Commercial Terms & Conditions.
-			</div>
+			
 			
 			<label class="control-label">Reference Detail  </label>
 			<?php echo $this->Form->textarea('reference_detail', ['label' => false,'class' => 'form-control wysihtml5']); ?>
 			<br/>
-			<div class="alert alert-danger" id="terms_conditions_error" style="display:none;">
-				Select Commercial Terms & Conditions.
-			</div>
+			
 			
 			<br/>
 			
@@ -283,23 +279,23 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		
-		rules: {
+		
 			rules: {
 				company_id:{
 					required: true,
 				},
-				
 				customer_id : {
 					  required: true,
 				},
 				customer_address : {
 					  required: true,
 				},
-				
-				
+				vendor_id : {
+					  required: true,
+				},
 				
 			},
-		},
+	
 
 		messages: { // custom messages for radio buttons and checkboxes
 			membership: {

@@ -90,7 +90,7 @@
 								<?php
 									$options=array();
 									foreach($invoices as $invoice){
-										$merge=(($invoice->in1.'/PO-'.str_pad($invoice->id, 3, '0', STR_PAD_LEFT).'/'.$invoice->in4.'/'.$invoice->in3));
+										$merge=(($invoice->in1.'/PO-'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$invoice->in4.'/'.$invoice->in3));
 										$options[]=['text' =>$merge, 'value' => $invoice->id];
 									}
 									echo $this->Form->input('invoice_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me']); ?>
@@ -302,7 +302,7 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
-		rules: {
+		
 			rules: {
 				company_id:{
 					required: true,
@@ -314,11 +314,13 @@ $(document).ready(function() {
 				customer_address : {
 					  required: true,
 				},
-				
+				vendor_id : {
+					required: true,
+				},
 				
 				
 			},
-		},
+		
 
 		messages: { // custom messages for radio buttons and checkboxes
 			membership: {
