@@ -89,7 +89,7 @@ class QuotationsController extends AppController
         $quotations = $this->paginate($this->Quotations->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC'])->group(['quotation_id']));
 		
 		
-		$query = $this->Quotations->find();
+		/*$query = $this->Quotations->find();
 		$query->select()
 			->leftJoinWith('Rquotations')
 			->group(['Quotations.quotation_id'])
@@ -99,7 +99,7 @@ class QuotationsController extends AppController
 		foreach($query as $data){
 			//pr($data);
 		}
-		exit;
+		exit;*/
 		
 		$companies = $this->Quotations->Companies->find('list');
 		
