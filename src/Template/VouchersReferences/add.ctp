@@ -27,18 +27,45 @@
 							<label class="control-label">Account Group<span class="required" aria-required="true">*</span></label>
 							
 							<?php
+							
+							foreach($accountGroups as $accountGroup){
+							echo $this->Form->input('vouchers_references_groups.0.account_group_id', ['label' => false,'class' => 'form-control input-sm','value' => $accountGroup->name]); 
+							} ?>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+				<div class="panel-group accordion" id="accordion3">
+					<?php
 							$options=array();
 							foreach($accountGroups as $accountGroup){
 								$options[]=['text' => $accountGroup->name, 'value' => $accountGroup->id];
 							}
-							echo $this->Form->input('vouchers_references_groups.0.account_group_id', ['empty'=>'--Select-','options' => $options,'label' => false,'class' => 'form-control input-sm select2me']); ?>
-						
-						</div>
-					</div>
-				</div>
-				<div class="alert alert-danger" id="row_error" style="display:none;">
-                    Fill all fileds.
-                </div>
+					?>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+										<ul>
+										
+										<a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion3" href="#collapse_3_1" aria-expanded="false">
+										
+										
+										<?php echo $this->Form->input('account_groups._ids', ['options'=>$AccountGroups,'multiple' => 'checkbox','label' => false,'class' => 'form-control input-sm ']); ?>
+										
+										</h4>
+									</div>
+									<div id="collapse_3_1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+										<div class="panel-body">
+											<p>
+												 Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut.
+											</p>
+											<p>
+												 Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+											</p>
+										</div>
+									</div>
+								</div>
+								
 			</div>
 		
 			<div class="form-actions">
