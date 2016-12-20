@@ -33,7 +33,7 @@ class EmailRecordsTable extends Table
         $this->table('email_records');
         $this->displayField('id');
         $this->primaryKey('id');
-		 $this->belongsTo('Quotations');
+		$this->belongsTo('Quotations');
     }
 
     /**
