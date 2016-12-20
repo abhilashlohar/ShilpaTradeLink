@@ -32,8 +32,9 @@ class InvoiceBookingRowsTable extends Table
     public function initialize(array $config)
     {
         parent::initialize($config);
-
+		$this->primaryKey('id');
         $this->table('invoice_booking_rows');
+      
 
         $this->belongsTo('InvoiceBookings', [
             'foreignKey' => 'invoice_booking_id',
@@ -53,10 +54,6 @@ class InvoiceBookingRowsTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
-        $validator
-            ->integer('id')
-            ->requirePresence('id', 'create')
-            ->notEmpty('id');
 
         $validator
             ->integer('quantity')

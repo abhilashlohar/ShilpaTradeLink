@@ -74,17 +74,7 @@ class InvoiceBookingsController extends AppController
 			}else{
 				@$last_ib_no->ib2=1;
 			}
-			
-		$invoice_booking_rows = $this->InvoiceBookings->newEntity();	
-		if ($this->request->is('post')) {
-            $invoice_booking_rows = $this->InvoiceBookings->patchEntity($invoice_booking_rows, $this->request->data);
-            if ($this->InvoiceBookings->save($invoice_booking_rows)) {
-                $this->Flash->success(__('Your invoice_booking_rows has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('Unable to add your invoice_booking_rows.'));
-        }
-        $this->set('invoice_booking_rows', $invoice_booking_rows);
+
 		
 		$this->set(compact('grn','last_ib_no'));
 		
@@ -98,8 +88,9 @@ class InvoiceBookingsController extends AppController
 			$invoiceBooking->created_on=date("Y-m-d");
 			$invoiceBooking->company_id=$st_company_id ;
 			$invoiceBooking->created_by=$this->viewVars['s_employee_id'];
-			
+			//pr($invoiceBooking); exit;
             if ($this->InvoiceBookings->save($invoiceBooking)) {
+				//pr($invoiceBooking); exit;
 				if(!empty($grn_id)){
 					//$grn = $this->InvoiceBookings->Grns->get($grn_id);
 					$grn = $this->InvoiceBookings->Grns->get($grn_id, [
