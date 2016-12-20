@@ -2,7 +2,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Create Challan</span>
+			<span class="caption-subject font-blue-steel uppercase">Edit Challan</span>
 		</div>
 	</div>
 	<div class="portlet-body form">
