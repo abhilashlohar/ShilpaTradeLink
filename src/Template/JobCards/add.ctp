@@ -28,16 +28,24 @@
 					</div>
 				</div>
 				<div align="center"><h4>Sales-Order : <?= h($salesOrder->so1.'/'.str_pad($salesOrder->so2, 3, '0', STR_PAD_LEFT).'/'.$salesOrder->so3.'/'.$salesOrder->so4) ?></h4></div>
-				<table class="table table-bordered">
+				<table class="table table-bordered" id="main_tb">
 					<thead>
 						<th width="30%">In</th>
 						<th>Out</th>
 					</thead>
-					<tbody>
+					<tbody >
 					<?php foreach($salesOrder->sales_order_rows as $sales_order_row){ ?>
 						<tr>
-							<td><?= h($sales_order_row->item->name) ?></td>
-							<td></td>
+							<td>
+							<?php echo $this->Form->input('sales_order_id', ['type'=>'text','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->id]); ?>
+							<?= h($sales_order_row->item->name) ?></td>
+							
+								<td><?php echo $this->Form->input('id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen']); ?></td>
+			
+			
+								<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+							
+							
 						</tr>
 					<?php } ?>
 					</tbody>
@@ -55,8 +63,49 @@
 </div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
-$(document).ready(function() {
-	//alert();
+$(document).ready(function() { 
+	
+	
+	
+	
+    $('.addrow').die().live("click",function() { alert();
+		add_row();
+    });
+	
+	function add_row(){
+		var tr1=$("#sample_tb tbody tr.tr1").clone();
+		$("#main_tb tbody tr").append(tr1);
+		
+		
+		var w=0; var r=0;
+		$("#main_tb tbody tr").each(function(){
+			$(this).attr("row_no",w);
+			r++;
+			if(r==2){ w++; r=0; }
+		});
+		
+		var i=0;
+		$("#main_tb tbody tr.tr1").each(function(){
+			i++;
+			$(this).find("td:nth-child(1)").html(i);
+			$(this).find("td:nth-child(2) select").attr("name","purchase_order_rows["+i+"][item_id]").select2().rules("add", "required");
+			
+		});
+		
+	}
 });
 </script>
+
+<table id="sample_tb" style="display:none;">
+	<tbody>
+		<tr class="tr1">
+			<td rowspan="2" width="10">0</td>
+			<td><?php echo $this->Form->input('id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen']); ?></td>
+			
+			
+			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+		</tr>
+		
+	</tbody>
+</table>
 

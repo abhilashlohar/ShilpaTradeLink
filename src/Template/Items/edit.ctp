@@ -125,7 +125,7 @@
 					<div class="col-md-4">
 						<label class="control-label">Source <span class="required" aria-required="true">*</span></label>
 						<div class="checkbox-list">
-							<?php echo $this->Form->input('sources._ids', ['label' => false,'options' => $sources,'multiple' => 'checkbox','class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->radio('source',[['value' => 'Assembled', 'text' => 'Assembled'],['value' => 'Purchessed', 'text' => 'Purchessed'],['value' => 'Manufactured', 'text' => 'Manufactured']]); ?>
 						</div>
 					</div>
 				</div>

@@ -49,6 +49,7 @@ class JobCardsTable extends Table
         $this->hasMany('JobCardRows', [
             'foreignKey' => 'job_card_id'
         ]);
+		$this->belongsTo('Items');
     }
 
     /**

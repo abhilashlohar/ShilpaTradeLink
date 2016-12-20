@@ -59,7 +59,9 @@ class JobCardsController extends AppController
 		$sales_order_id=@(int)$this->request->query('Sales-Order');
 		if(!empty($sales_order_id)){
 			$salesOrder = $this->JobCards->SalesOrders->get($sales_order_id, [
-				'contain' => ['SalesOrderRows'=>['Items']]
+				'contain' => ['SalesOrderRows'=>['Items'=>function ($q){
+					return $q->where(['Items.source !='=>'Purchessed']);
+				}]]
 			]);
 		}
 		
@@ -78,8 +80,9 @@ class JobCardsController extends AppController
                 $this->Flash->error(__('The job card could not be saved. Please, try again.'));
             }
         }
+		$items = $this->JobCards->Items->find('list');
         $companies = $this->JobCards->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('jobCard', 'salesOrder', 'companies'));
+        $this->set(compact('jobCard', 'salesOrder', 'companies','items'));
         $this->set('_serialize', ['jobCard']);
     }
 

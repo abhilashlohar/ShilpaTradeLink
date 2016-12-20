@@ -96,7 +96,7 @@ class ItemsController extends AppController
 		$ItemCategories = $this->Items->ItemCategories->find('list');
         $units = $this->Items->Units->find('list');
 		$Companies = $this->Items->Companies->find('list');
-		$sources = $this->Items->Sources->find('list', ['Sources' => 200]);
+		//$sources = $this->Items->Sources->find('list', ['Sources' => 200]);
         $this->set(compact('item','ItemCategories', 'units', 'Companies','sources'));
         $this->set('_serialize', ['item']);
 
@@ -113,7 +113,7 @@ class ItemsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $item = $this->Items->get($id, [
-            'contain' => ['Companies','Sources']
+            'contain' => ['Companies']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $item = $this->Items->patchEntity($item, $this->request->data);
@@ -130,8 +130,8 @@ class ItemsController extends AppController
 		$ItemSubGroups = $this->Items->ItemSubGroups->find('list')->where(['item_group_id'=>$item->item_group_id]);
         $units = $this->Items->Units->find('list');
 		$Companies = $this->Items->Companies->find('list');
-		$sources = $this->Items->Sources->find('list', ['Sources' => 200]);
-        $this->set(compact('item','ItemCategories','ItemGroups','ItemSubGroups', 'units', 'Companies','sources'));
+		//$sources = $this->Items->Sources->find('list', ['Sources' => 200]);
+        $this->set(compact('item','ItemCategories','ItemGroups','ItemSubGroups', 'units', 'Companies'));
         $this->set('_serialize', ['item']);
     }
 
