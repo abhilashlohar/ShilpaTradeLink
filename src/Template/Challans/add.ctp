@@ -90,7 +90,7 @@
 								<?php
 									$options=array();
 									foreach($invoices as $invoice){
-										$merge=(($invoice->in1.'/IN-'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$invoice->in4.'/'.$invoice->in3));
+										$merge=(($invoice->in1.'/IN-'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$invoice->in3.'/'.$invoice->in4));
 										$options[]=['text' =>$merge, 'value' => $invoice->id];
 									}
 									echo $this->Form->input('invoice_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me']); ?>
@@ -105,7 +105,7 @@
 								<?php
 									$options=array();
 									foreach($invoice_bookings as $invoice_booking){
-									$merge=(($invoice_booking->ib1.'/IB-'.str_pad($invoice_booking->ib2, 3, '0', STR_PAD_LEFT).'/'.$invoice_booking->ib4.'/'.$invoice_booking->ib3));
+									$merge=(($invoice_booking->ib1.'/IB-'.str_pad($invoice_booking->ib2, 3, '0', STR_PAD_LEFT).'/'.$invoice_booking->ib3.'/'.$invoice_booking->ib4));
 									$options[]=['text' =>$merge, 'value' => $invoice_booking->id];
 									}
 									echo $this->Form->input('invoice_booking_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me']); ?>
