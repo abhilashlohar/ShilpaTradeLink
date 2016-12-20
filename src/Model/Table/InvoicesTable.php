@@ -40,7 +40,7 @@ class InvoicesTable extends Table
         $this->primaryKey('id');
 
 		$this->belongsTo('CustomerGroups');
-		$this->belongsTo('ItemLedger');
+		$this->belongsTo('ItemLedgers');
 		$this->belongsTo('Ledgers');
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
