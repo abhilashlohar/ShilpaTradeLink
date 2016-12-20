@@ -19,6 +19,9 @@ class GrnsController extends AppController
     public function index($status=null)
     {
 		$this->viewBuilder()->layout('index_layout');
+		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
         $this->paginate = [
             'contain' => ['PurchaseOrders', 'Companies','Vendors']
         ];
@@ -32,7 +35,7 @@ class GrnsController extends AppController
 			$where['status']='Invoice-Booked';
 		}
 		
-		$grns = $this->paginate($this->Grns->find()->where($where));
+		$grns = $this->paginate($this->Grns->find()->where($where)->where(['grns.company_id'=>$st_company_id]));
         $this->set(compact('grns','pull_request','status'));
         $this->set('_serialize', ['grns']);
     }

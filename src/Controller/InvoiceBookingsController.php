@@ -19,11 +19,13 @@ class InvoiceBookingsController extends AppController
     public function index($status=null)
     {
 		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
         $this->paginate = [
             'contain' => ['Grns']
         ];
 		
-		$invoiceBookings = $this->paginate($this->InvoiceBookings);
+		$invoiceBookings = $this->paginate($this->InvoiceBookings->find()->where(['invoicebookings.company_id'=>$st_company_id]));
 
         $this->set(compact('invoiceBookings','status'));
         $this->set('_serialize', ['invoiceBookings']);
