@@ -19,6 +19,8 @@ class ChallansController extends AppController
     public function index()
     {	
 		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
 		$where=[];
 		$ch2=$this->request->query('ch2');
 		$file=$this->request->query('file');
@@ -46,7 +48,7 @@ class ChallansController extends AppController
 			$To=date("Y-m-d",strtotime($this->request->query('To')));
 			$where['created_on <=']=$To;
 		}
-		$challans=$this->paginate($this->Challans->find()->where($where)->where(['challan_type' => 'Returnable']));
+		$challans=$this->paginate($this->Challans->find()->where($where)->where(['challan_type' => 'Returnable','challans.company_id'=>$st_company_id]));
         
         $this->set(compact('challans'));
         $this->set('_serialize', ['challans']);
@@ -55,6 +57,9 @@ class ChallansController extends AppController
 	 public function index2()
     {	
 		$this->viewBuilder()->layout('index_layout');
+		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
 		$where=[];
 		$ch2=$this->request->query('ch2');
 		$file=$this->request->query('file');
@@ -85,7 +90,7 @@ class ChallansController extends AppController
         $this->paginate = [
             'contain' => ['Customers', 'Companies', 'Invoices', 'Transporters','Vendors']
         ];
-		$challans=$this->paginate($this->Challans->find()->where($where)->where(['challan_type' => 'Non Returnable']));
+		$challans=$this->paginate($this->Challans->find()->where($where)->where(['challan_type' => 'Non Returnable','challans.company_id'=>$st_company_id]));
         
         $this->set(compact('challans'));
         $this->set('_serialize', ['challans']);
