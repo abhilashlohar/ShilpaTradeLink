@@ -123,7 +123,7 @@ if(!empty($status)){
 						</tr>
 					</thead>
 					<tbody>
-						<?php $i=0; foreach ($quotations as $quotation): $i++; pr($quotation->id);
+						<?php $i=0; foreach ($quotations as $quotation): $i++;
 						if($quotation->status=='Converted Into Sales Order'){ $tr_color='#f4f4f4'; }
 						if($quotation->status=='Pending'){ $tr_color='#FFF'; }
 						if($quotation->status=='Closed'){ $tr_color='#FFF'; }
