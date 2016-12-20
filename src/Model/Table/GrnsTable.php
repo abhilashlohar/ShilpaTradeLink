@@ -40,7 +40,7 @@ class GrnsTable extends Table
         $this->primaryKey('id');
 
 		$this->belongsTo('PurchaseOrderRows');
-		$this->belongsTo('ItemLedger');
+		$this->belongsTo('ItemLedgers');
 		
         $this->belongsTo('PurchaseOrders', [
             'foreignKey' => 'purchase_order_id',

@@ -46,6 +46,7 @@ class PurchaseOrdersController extends AppController
 				->group(['PurchaseOrders.id'])
 				->autoFields(true)
 				->having($having)
+				->where(['company_id'=>$st_company_id])
 				->order(['PurchaseOrders.id' => 'DESC'])
 			);
 
