@@ -43,7 +43,7 @@
 						<div class="form-group">
 							<label class="control-label">GRN No. <span class="required" aria-required="true">*</span></label>
 							<br/>
-							<?= h(($invoiceBooking->grn->grn1.'/PO-'.str_pad($invoiceBooking->grn->id, 3, '0', STR_PAD_LEFT).'/'.$invoiceBooking->grn->grn3.'/'.$invoiceBooking->grn->grn4)) ?>
+							<?= h(($invoiceBooking->grn->grn1.'/GRN-'.str_pad($invoiceBooking->grn->grn2, 3, '0', STR_PAD_LEFT).'/'.$invoiceBooking->grn->grn3.'/'.$invoiceBooking->grn->grn4)) ?>
 						</div>
 					</div>
 					<div class="col-md-3">
