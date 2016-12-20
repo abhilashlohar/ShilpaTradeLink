@@ -100,9 +100,9 @@ $html.='
 						<td>Invoice No.</td>
 						<td width="20" align="center">:</td>';
 						if($challan->invoice_id){
-						$html.='<td>'. h(($challan->invoice->in1."/IN-".str_pad($challan->invoice->id, 3, "0", STR_PAD_LEFT)."/".$challan->invoice->in3."/".$challan->invoice->in4)) .'</td>';
+						$html.='<td>'. h(($challan->invoice->in1."/IN-".str_pad($challan->invoice->in2, 3, "0", STR_PAD_LEFT)."/".$challan->invoice->in3."/".$challan->invoice->in4)) .'</td>';
 						}else {
-						$html.='<td>'. h($challan->invoice_booking->invoice_no) .'</td>';
+						$html.='<td>'. h(($challan->invoice_booking->ib1."/IB-".str_pad($challan->invoice_booking->ib2, 3, "0", STR_PAD_LEFT)."/".$challan->invoice_booking->ib3."/".$challan->invoice_booking->ib4)).'</td>';
 						}
 						
 					$html.='</tr>
