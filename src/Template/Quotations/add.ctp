@@ -130,7 +130,7 @@ if(!empty($revision))
 					<div class="form-group">
 						<label class="col-md-3 control-label">Contact No</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_contact', ['label' => false,'maxlength'=>10,'class' => 'form-control input-sm phone_validation']); ?>
+							<?php echo $this->Form->input('customer_contact_no', ['label' => false,'maxlength'=>10,'class' => 'form-control input-sm phone_validation']); ?>
 						</div>
 					</div>
 				</div>
@@ -734,6 +734,7 @@ $(document).ready(function() {
 		var terms_conditions=$("#terms_conditions").html();
 		$('div[name="terms_conditions"]').html(terms_conditions);
 		$("#sortable li").remove();
+		$('textarea[name="terms_conditions"]').val(terms_conditions);
 	}
 	
 	$(".updatetc").die().on("click",function(){

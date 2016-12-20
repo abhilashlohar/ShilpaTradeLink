@@ -121,9 +121,6 @@ class QuotationsTable extends Table
             ->requirePresence('customer_for_attention', 'create')
             ->notEmpty('customer_for_attention');
 
-        $validator
-            ->requirePresence('customer_contact', 'create')
-            ->notEmpty('customer_contact');
 
         $validator
             ->requirePresence('subject', 'create')
