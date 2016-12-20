@@ -74,8 +74,21 @@ class InvoiceBookingsController extends AppController
 			}else{
 				@$last_ib_no->ib2=1;
 			}
+			
+		$invoice_booking_rows = $this->InvoiceBookings->newEntity();	
+		if ($this->request->is('post')) {
+            $invoice_booking_rows = $this->InvoiceBookings->patchEntity($invoice_booking_rows, $this->request->data);
+            if ($this->InvoiceBookings->save($invoice_booking_rows)) {
+                $this->Flash->success(__('Your invoice_booking_rows has been saved.'));
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('Unable to add your invoice_booking_rows.'));
+        }
+        $this->set('invoice_booking_rows', $invoice_booking_rows);
 		
 		$this->set(compact('grn','last_ib_no'));
+		
+	 
 		
 		
 		$invoiceBooking = $this->InvoiceBookings->newEntity();

@@ -61,8 +61,8 @@
 				</div>
 					
 			</div>
-		</div>
-	<?= $this->Form->end() ?>
+ 
+
 			
 			<div class="form-body">		
 			<div class="row">
@@ -96,10 +96,15 @@
 					</div>
 				</div><br/>
 				
+				
 				<div class="alert alert-danger" id="row_error_item" style="display:none;padding: 5px !important;">
 					Please check at least one row.
 				</div>
-							<table class="table tableitm" id="main_tb">
+				
+			
+			 
+				<table class="table tableitm" id="main_tb">
+				
 				<thead>
 					<tr>
 						<th width="50">Sr.No. </th>
@@ -119,8 +124,9 @@
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 							<td><?php echo $grn_rows->item->name; ?></td>
 							<td><?php echo $grn_rows->quantity; ?></td>
-							<td><?php echo $grn->purchase_order->purchase_order_rows[$q]->rate; ?></td>
-							<td><?php echo $sum=$grn_rows->quantity*$grn->purchase_order->purchase_order_rows[$q]->rate ?></td>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.rate',['label' => false,'value'=>$grn->purchase_order->purchase_order_rows[$q]->rate,'class' => 'form-control input-sm']); ?></td>
+							<td><?php echo $this->Form->input('amount',['label' => false,'value'=>$sum=$grn_rows->quantity*$grn->purchase_order->purchase_order_rows[$q]->rate,'class' => 'form-control input-sm']); ?></td>
+							
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$grn_rows->id; ?>'>
 							<td colspan="4"><?php echo $this->Text->autoParagraph(h($grn->purchase_order->purchase_order_rows[$q]->description)); ?>
@@ -129,31 +135,62 @@
 						</tr>
 					<?php $q++; $total=$total+$sum; endforeach; ?>
 					<tr>
-						<td colspan="3"><?php  ?></td>
-						<td><b> Total Amount</b> </td>
-						<td><?php echo $total; ?></td>
+						 
+						<td colspan="4" align="right"><b> Total Amount</b> </td>
+						<td><?php echo $this->Form->input('',['label' => false,'value'=>$total,'class' => 'form-control input-sm']); ?></td>
+						
 					</tr>
 					<tr>
-						<td colspan="3"><?php  ?></td>
-						<td><b> Discount</b> </td>
-						<td><?php echo $grn->purchase_order->discount; echo $grn->purchase_order->discount_type; ?></td>
+						 
+						<td colspan="4" align="right"><b> Discount</b> </td>
+						<td>
+						<?php echo $this->Form->input('discount', ['label' => false,'class' => 'form-control input-sm ','value'=>$grn->purchase_order->discount,'placeholder' => 'Discount']); ?>
+						<?php 
+						if($grn->purchase_order->discount=='%'){
+							$arr1=['value' => '%', 'text' => 'Percent(%)'];
+							$arr2=['value' => '', 'text' => 'Amount','checked'];
+						}else{
+							$arr1=['value' => '%', 'text' => 'Percent(%)','checked'];
+							$arr2=['value' => '', 'text' => 'Amount'];
+						}
+						echo $this->Form->radio('discount_type',[$arr1,$arr2]); 
+						?>
+						</td>
+						
+					
 					</tr>
 					<tr>
-						<td colspan="3"><?php  ?></td>
-						<td><b> P & F</b> </td>
-						<td><?php echo $grn->purchase_order->pnf; echo $grn->purchase_order->pnf_type; ?></td>
+						 
+						<td colspan="4" align="right"><b> P & F</b> </td>
+						
+						<td>
+						<?php echo $this->Form->input('pnf', ['label' => false,'class' => 'form-control input-sm ','value'=>$grn->purchase_order->pnf,'placeholder' => 'P$F']); ?>
+						<?php 
+						if($grn->purchase_order->pnf=='%'){
+							$arr1=['value' => '%', 'text' => 'Percent(%)'];
+							$arr2=['value' => '', 'text' => 'Amount','checked'];
+						}else{
+							$arr1=['value' => '%', 'text' => 'Percent(%)','checked'];
+							$arr2=['value' => '', 'text' => 'Amount'];
+						}
+						echo $this->Form->radio('pnf_type',[$arr1,$arr2]); 
+						?>
+						</td>
+					
+							</br>
+						<td> 
+						<button type="submit" class="btn blue-hoki">Update InvoiceBookings
+						</td>
+				    
 					</tr>
+				
 				</tbody>
 				
 			</table>
-			
-
-			</div>
-			
-			
+		 
 		</div>
-	
-	</div>
+			<?= $this->Form->end() ?>
+</div>
 	<?php } ?>
 </div>	
 <style>
