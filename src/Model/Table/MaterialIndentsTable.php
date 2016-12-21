@@ -37,7 +37,8 @@ class MaterialIndentsTable extends Table
         $this->table('material_indents');
         $this->displayField('id');
         $this->primaryKey('id');
-
+		$this->belongsTo('Customers');
+		$this->belongsTo('Items');
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'

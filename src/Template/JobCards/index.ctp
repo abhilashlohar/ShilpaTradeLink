@@ -15,27 +15,18 @@
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
-				 
+			<?php $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	 
 				<table class="table table-bordered table-striped table-hover" width="100%">
 					<thead>
 						<tr>
 							<th>Sr. No.</th>
-							<th>Sales Order Id</th>
 							<th>Company Id</th>
-							<th>JC1</th>
-							<th>JC2</th>
-							<th>Jc3</th>
-							<th>Jc4</th>
-						    <th>Create By</th>
-							<th>Create On</th>
-							<th>Customer Id</th>
 							<th>Dispatch Name</th>
 							<th>Dispatch Email</th>
 							<th>Dispatch Address</th>
-							<th>Customer Op No</th> 
 							<th>Required Date</th>
 							<th>Packing</th>
-							 
+							<th>Action</th>
 						</tr>
 					</thead>
  
@@ -44,22 +35,28 @@
             <?php foreach ($jobCards as $jobCards): ?>
              
     <tr>
-        <td><?= $jobCards->id ?></td>
-		<td><?= $jobCards->sales_order_id ?></td>
+        <td><?= h(++$page_no) ?></td>
 		<td><?= $jobCards->company->name ?></td>
-		<td><?= $jobCards->jc1 ?></td>
-		<td><?= $jobCards->jc2 ?></td>
-		<td><?= $jobCards->jc3 ?></td>
-		<td><?= $jobCards->jc4 ?></td>
-		<td><?= $jobCards->created_by ?></td>
-		<td><?= $jobCards->created_on ?></td>
 		<td><?= $jobCards->customer_id ?></td>
 		<td><?= $jobCards->dispatch_name ?></td>
 		<td><?= $jobCards->dispatch_email ?></td>
 		<td><?= $jobCards->dispatch_address ?></td>
-		<td><?= $jobCards->customer_po_no ?></td>
-		<td><?= $jobCards->required_date ?></td>
 		<td><?= $jobCards->packing ?></td>
+		<td class="actions">
+							
+								<?php if($material_indent=="true"){
+									echo $this->Html->link('<i class="fa fa-repeat "></i>  Create Material Indent','/MaterialIndents/Add?job-cards='.$jobCards->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+								} ?>
+								
+								<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+									['action' => 'delete', $jobCards->id], 
+									[
+										'escape' => false,
+										'class' => 'btn btn-xs red',
+										'confirm' => __('Are you sure, you want to delete {0}?', $jobCards->id)
+									]
+								) ?>
+							</td>
         
 	</tr>
     <?php endforeach; ?>

@@ -54,15 +54,14 @@ class MaterialIndentsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		
-		$sales_order_id=@(int)$this->request->query('Sales-Order');
-		if(!empty($sales_order_id)){
-			$salesOrder = $this->JobCards->SalesOrders->get($sales_order_id, [
-				'contain' => ['Customers','SalesOrderRows'=>['Items'=>function ($q){
-					return $q->where(['Items.source !='=>'Purchessed']);
-				}]]
+		$job_card_id=@(int)$this->request->query('job-cards');
+		//pr($job_card_id); exit;
+		if(!empty($job_card_id)){
+			$jobCards = $this->MaterialIndents->JobCards->get($job_card_id, [
+				'contain' => ['JobCardRows'=>['Items'],'Customers']
 			]);
 		}
-		
+		//pr($jobCards);exit;
 		
 		
         $materialIndent = $this->MaterialIndents->newEntity();
@@ -77,8 +76,9 @@ class MaterialIndentsController extends AppController
             }
         }
         $companies = $this->MaterialIndents->Companies->find('list', ['limit' => 200]);
-        $jobCards = $this->MaterialIndents->JobCards->find('list', ['limit' => 200]);
-        $this->set(compact('materialIndent', 'companies', 'jobCards'));
+        $items = $this->MaterialIndents->Items->find('list', ['limit' => 200]);
+        //$jobCards = $this->MaterialIndents->JobCards->find('list', ['limit' => 200]);
+        $this->set(compact('materialIndent', 'companies', 'jobCards','items'));
         $this->set('_serialize', ['materialIndent']);
     }
 

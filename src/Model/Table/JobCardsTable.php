@@ -50,7 +50,12 @@ class JobCardsTable extends Table
             'foreignKey' => 'job_card_id',
 			'saveStrategy' => 'replace'
         ]);
-		$this->belongsTo('Items');
+		 $this->belongsTo('Items', [
+            'foreignKey' => 'item_id',
+            'joinType' => 'INNER'
+        ]);
+	
+		$this->belongsTo('Customers');
     }
 
     /**

@@ -25,9 +25,9 @@ class JobCardsController extends AppController
         $jobCards = $this->paginate($this->JobCards);
 		
 		$material_indent=$this->request->query('material-indent');
-		pr($material_indent); exit;
+		//pr($material_indent); exit;
 		if(!empty($material_indent)){
-			$jobCard=$this->paginate(
+			$jobCards=$this->paginate(
 				$this->JobCards->find()->contain(['JobCardRows'])
 			);
 		}
@@ -67,16 +67,16 @@ class JobCardsController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		//pr($st_company_id); exit;
 		$sales_order_id=@(int)$this->request->query('Sales-Order');
+		//pr($job_card_id); exit;
 		if(!empty($sales_order_id)){
 			$salesOrder = $this->JobCards->SalesOrders->get($sales_order_id, [
 				'contain' => ['Customers','SalesOrderRows'=>['Items'=>function ($q){
 					return $q->where(['Items.source !='=>'Purchessed']);
 				}]]
 			]);
-		}
-
+		}//pr($salesOrder); exit;
 		
-        $jobCard = $this->JobCards->newEntity();
+		$jobCard = $this->JobCards->newEntity();
         if ($this->request->is('post')) {
 			$jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
 			//pr($jobCard); exit;
