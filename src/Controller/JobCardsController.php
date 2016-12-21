@@ -23,8 +23,16 @@ class JobCardsController extends AppController
             'contain' => ['SalesOrders', 'Companies']
         ];
         $jobCards = $this->paginate($this->JobCards);
+		
+		$material_indent=$this->request->query('material-indent');
+		pr($material_indent); exit;
+		if(!empty($material_indent)){
+			$jobCard=$this->paginate(
+				$this->JobCards->find()->contain(['JobCardRows'])
+			);
+		}
 
-        $this->set(compact('jobCards'));
+        $this->set(compact('jobCards','material_indent'));
         $this->set('_serialize', ['jobCards']);
     }
 
@@ -66,7 +74,7 @@ class JobCardsController extends AppController
 				}]]
 			]);
 		}
-		
+
 		
         $jobCard = $this->JobCards->newEntity();
         if ($this->request->is('post')) {
@@ -90,6 +98,8 @@ class JobCardsController extends AppController
                 $this->Flash->error(__('The job card could not be saved. Please, try again.'));
             }
         }
+		
+
 		//$customers = $this->JobCards->Customers->find('all');
 		$items = $this->JobCards->Items->find('list');
         $companies = $this->JobCards->Companies->find('list', ['limit' => 200]);

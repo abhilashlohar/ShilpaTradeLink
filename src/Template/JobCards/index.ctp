@@ -13,8 +13,8 @@ if(!empty($status)){
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">JobCard</span> 
-			<?php if($pull_request=="true"){ ?>
-			: Select a Quotation to convert into sales-order
+			<?php if($material_indent=="true"){ ?>
+			: Select a Job Card For Material Indent
 			<?php }  elseif($copy_request=="copy"){?>
 			: Select a Quotation to Copy
 			<?php } ?>

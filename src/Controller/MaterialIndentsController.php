@@ -53,6 +53,18 @@ class MaterialIndentsController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
+		
+		$sales_order_id=@(int)$this->request->query('Sales-Order');
+		if(!empty($sales_order_id)){
+			$salesOrder = $this->JobCards->SalesOrders->get($sales_order_id, [
+				'contain' => ['Customers','SalesOrderRows'=>['Items'=>function ($q){
+					return $q->where(['Items.source !='=>'Purchessed']);
+				}]]
+			]);
+		}
+		
+		
+		
         $materialIndent = $this->MaterialIndents->newEntity();
         if ($this->request->is('post')) {
             $materialIndent = $this->MaterialIndents->patchEntity($materialIndent, $this->request->data);
