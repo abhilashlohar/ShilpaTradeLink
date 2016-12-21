@@ -10,21 +10,3 @@
 		</div>
 	</div>
 
-
-
-
-<div class="materialIndents form large-9 medium-8 columns content">
-    <?= $this->Form->create($materialIndent) ?>
-    <fieldset>
-        <legend><?= __('Add Material Indent') ?></legend>
-        <?php
-            echo $this->Form->input('company_id', ['options' => $companies]);
-            echo $this->Form->input('job_card_id', ['options' => $jobCards]);
-            echo $this->Form->input('required_date');
-            echo $this->Form->input('created_on');
-            echo $this->Form->input('created_by');
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
-</div>
