@@ -59,11 +59,9 @@
 						</div>
 					</div>
 				</div>
-					
+						
 			</div>
- 
-
-			
+		     <?= $this->Form->end() ?>	
 			<div class="form-body">		
 			<div class="row">
 					<div class="col-md-3">
@@ -117,15 +115,17 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php $total=0; $sum=0;
-					$q=0; foreach ($grn->grn_rows as $grn_rows): 
-											?>
+					
+					<?php $total=0; $sum=0; $q=0; foreach ($grn->grn_rows as $grn_rows):?>
 						<tr class="tr1" row_no='<?php echo @$grn_rows->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
-							<td><?php echo $grn_rows->item->name; ?></td>
-							<td><?php echo $grn_rows->quantity; ?></td>
+							
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.item_id',['label' => false,'value'=>$grn_rows->item->name,'type'=>'hidden','class' => 'form-control input-sm']); ?>
+							<?php echo $grn_rows->item->name; ?>
+							</td>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.quantity',['label' => false,'value'=>$grn->purchase_order->purchase_order_rows[$q]->quantity,'class' => 'form-control input-sm']); ?></td>
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.rate',['label' => false,'value'=>$grn->purchase_order->purchase_order_rows[$q]->rate,'class' => 'form-control input-sm']); ?></td>
-							<td><?php echo $this->Form->input('amount',['label' => false,'value'=>$sum=$grn_rows->quantity*$grn->purchase_order->purchase_order_rows[$q]->rate,'class' => 'form-control input-sm']); ?></td>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.amount',['label' => false,'value'=>$sum=$grn->purchase_order->purchase_order_rows[$q]->quantity*$grn->purchase_order->purchase_order_rows[$q]->rate,'class' => 'form-control input-sm']); ?></td>
 							
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$grn_rows->id; ?>'>
@@ -183,15 +183,20 @@
 						</td>
 				    
 					</tr>
-				
+				 
 				</tbody>
 				
 			</table>
 		 
 		</div>
-			<?= $this->Form->end() ?>
+			
+   
+	
+</div>	
+
+		<?php } ?>	
 </div>
-	<?php } ?>
+	
 </div>	
 <style>
 .table thead tr th {

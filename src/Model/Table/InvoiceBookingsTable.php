@@ -41,6 +41,11 @@ class InvoiceBookingsTable extends Table
             'joinType' => 'INNER'
         ]);
 		
+		$this->hasMany('InvoiceBookingRows', [
+            'foreignKey' => 'invoice_booking_id',
+			'saveStrategy' => 'replace'
+        ]);
+		
 		$this->belongsTo('PurchaseOrders', [
             'foreignKey' => 'purchase_order_id',
             'joinType' => 'INNER'

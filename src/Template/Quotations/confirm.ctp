@@ -58,52 +58,128 @@ $(document).ready(function() {
 });
 </script>
 
+
 <div id="myModal2" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" style=" padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
 	<div class="modal-dialog">
-	<?= $this->Form->create($emailrecord) ?>
+	<?= $this->Form->create() ?>
 		<div class="modal-content">
 			<div class="modal-body">
-			<h4>Email</h4>
-				<div style="height: 200px;">
+			<div style="height: 750px;">
 			
 				<div class="row">
-						<div class="col-md-10">
+						<div class="col-md-12">
 							<div class="form-group">
-								<label class="col-md-3 control-label">Send To</label>
-								<div class="col-md-9">
-									<?php echo $this->Form->input('send_to', ['label' => false,'class' => 'form-control input-sm','value' =>$quotation->customer->customer_contacts[0]->email,'readonly']); ?>
-								</div>
-							</div>
-						</div>
-				</div><br/>
+							<br>
+							<table width="100%">
+								<tr>
+									<td>
+									<label class="col-md-2 control-label">Email Id 1:</label>
+									 <div class="col-md-6" id='TextBoxesGroup'>
+										<?php echo $this->Form->input('send_to',['label' => false,'class' => 'form-control input-sm','type'=>'textbox','value' =>$quotation->customer->customer_contacts[0]->email]); ?>
+									</div>
+									
+			                        <button  type="button" class="btn default"  id='addButton'>CC Add</button>
+									<button  type="button" class="btn default"  id='removeButton'>CC Remove</button>
+									</td>
+								
+								</tr>
+								
+							</table>
+						 </div>
+					</div>
+				</div>
+
+				
+				<br/>
 				<div class="row">
-						<div class="col-md-10">
+						<div class="col-md-12">
 							<div class="form-group">
-								<label class="col-md-3 control-label">Subject</label>
-								<div class="col-md-9">
-									<?php echo $this->Form->input('subject', ['label' => false,'class' => 'form-control input-sm','value'=>$quotation->subject,'readonly']); ?>
-								</div>
+							<table width="100%">
+								<tr>
+									<td>
+									<label class="col-md-2 control-label">Subject</label>
+									<div class="col-md-9">
+										<?php echo $this->Form->input('subject', ['label' => false,'class' => 'form-control input-sm','value'=>$quotation->subject]); ?>
+									</div>
+									</td>
+								</tr>
+								
+								<tr>
+									<td><br>
+									<label class="col-md-2 control-label">Message</label>
+									<div class="col-md-9">
+										<?php echo $this->Form->textarea('message', ['label' => false,'class' => 'form-control input-sm']); ?>
+									</div>
+									</td>
+								</tr>
+							
+								<tr>
+							        <td align="center"><br>
+									 <div>
+									 <button type="submit" class="btn btn-primary">Send</button>
+									 <button type="button" class="btn default" data-dismiss="modal">Close</button>
+									<div> 
+									</td>
+								</tr>
+							</table>
+						 
 							</div>
 						</div>
-				</div><br/>
-				<div class="row">
-						<div class="col-md-10">
-							<div class="form-group">
-								<label class="col-md-3 control-label">Message</label>
-								<div class="col-md-9">
-									<?php echo $this->Form->textarea('message', ['label' => false,'class' => 'form-control input-sm']); ?>
-								</div>
-							</div>
-						</div>
-				</div><br/>
+				</div> 
 			</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn default" data-dismiss="modal">Close</button>
-				<button type="submit" class="btn btn-primary">Send</button>
-			</div>
+		
 		</div>
 	<?= $this->Form->end() ?>
 	</div>
 </div>
 
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+    var counter = 2;
+
+    $("#addButton").click(function () {
+
+	if(counter>10){
+            alert("Only 10 textboxes allow");
+            return false;
+	}
+
+	var newTextBoxDiv = $(document.createElement('div'))
+	     .attr("id", 'TextBoxDiv' + counter); 
+
+	newTextBoxDiv.after().html('<label>EMAIL ID'+ counter + '  : </label>' +
+	  '<input type="text" class="form-control input-sm" name="textbox" id="textbox' + counter + '" value="" >');
+	
+	newTextBoxDiv.appendTo("#TextBoxesGroup");
+
+	counter++;
+     });
+
+     $("#removeButton").click(function () {
+	if(counter==1){
+          alert("No more textbox to remove");
+          return false;
+       }
+
+	counter--;
+
+        $("#TextBoxDiv" + counter).remove();
+
+     });
+
+    
+  });
+</script>
+ 
+
+
+
+ 
+
+
+
+
+ 
+ 
