@@ -20,7 +20,7 @@ class JobCardsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['SalesOrders', 'Companies']
+            'contain' => ['Companies']
         ];
         $jobCards = $this->paginate($this->JobCards);
 
