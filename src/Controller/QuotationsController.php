@@ -85,21 +85,20 @@ class QuotationsController extends AppController
 		}elseif($status=='Closed'){
 			$where['status']='Closed';
 		}
-		//pr($where); exit;
-        $quotations = $this->paginate($this->Quotations->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC'])->group(['quotation_id']));
+		
+        $quotations = $this->paginate($this->Quotations->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
+		
+		$subquery=$this->Quotations->find();
+		$subquery->select(['max_id' => $subquery->func()->max('id')])->group('quotation_id');
+		$max_ids=[];
+		foreach($subquery as $data){
+			$max_ids[]=$data->max_id;
+		} 
+		
+		$quotations = $this->paginate($this->Quotations->find()->where(['Quotations.id IN' =>$max_ids])->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
+				
 		
 		
-		/*$query = $this->Quotations->find();
-		$query->select()
-			->leftJoinWith('Rquotations')
-			->group(['Quotations.quotation_id'])
-			->autoFields(true)
-			->where(['revision'=> $query->func()->max('Rquotations.revision')])
-			->toArray();
-		foreach($query as $data){
-			//pr($data);
-		}
-		exit;*/
 		
 		$companies = $this->Quotations->Companies->find('list');
 		
@@ -261,7 +260,6 @@ class QuotationsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $copy=$this->request->query('copy');
-		//pr ($copy); exit;
 		
 		$revision=$this->request->query('revision');
 		
@@ -276,6 +274,7 @@ class QuotationsController extends AppController
 				'contain' => ['QuotationRows']
 			]);
 			$add_revision=$quotation->revision+1;
+			$quotation_id=$quotation->quotation_id;
 			
 		}else{
 			$quotation = $this->Quotations->newEntity();
@@ -303,7 +302,7 @@ class QuotationsController extends AppController
 			
 			if(!empty($revision)){
 			$quotation->revision=$add_revision;
-			$quotation->quotation_id=$revision;
+			$quotation->quotation_id=$quotation_id;
 			}
 			
 			
@@ -313,7 +312,11 @@ class QuotationsController extends AppController
 			$quotation->company_id=$st_company_id;
 			//pr($quotation); exit;
             if ($this->Quotations->save($quotation)) {
-				
+				if(empty($revision)){
+					$lastQuotation=$this->Quotations->get($quotation->id);
+					$lastQuotation->quotation_id=$quotation->id;
+					$this->Quotations->save($lastQuotation);
+				}
 				
                 return $this->redirect(['action' => 'confirm/'.$quotation->id]);
             } else {
