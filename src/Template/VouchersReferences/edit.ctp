@@ -1,3 +1,4 @@
+
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
@@ -22,14 +23,98 @@
 							<?php echo $this->Form->input('description', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Description']); ?>
 						</div>
 					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Account Group<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('account_groups._ids', ['options'=>$AccountGroups,'multiple' => 'checkbox','label' => false,'class' => 'form-control input-sm ']); ?>
-						
-						</div>
-					</div>
+					
 				</div>
+				<div class="row">
+				<div class="panel-group accordion" id="accordion0">
+				
+				<?php foreach($AccountGroups as $accountGroup){ ?>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<table width="100%">
+								<tr>
+									<td ><input type="checkbox" class="checkall_group" /></td>
+									<td width="100%"><a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion0" href="#collapse_<?php echo $accountGroup->id;?>" aria-expanded="false"><?php echo $accountGroup->name; ?></a></td>
+								</tr>
+							</table>
+						</h4>
+					</div>
+					<div id="collapse_<?php echo $accountGroup->id;?>" class="panel-collapse collapse" aria-expanded="false">
+						<div class="panel-body">
+							<!--Account first Sub group Start-->
+							<div class="panel-group accordion" id="accordion<?php echo $accountGroup->id;?>">
+							<?php foreach($accountGroup->account_first_subgroups as $account_first_subgroup){ ?>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<table width="100%">
+											<tr>
+												<td><input type="checkbox" class="checkall_first_subgroup" /></td>
+												<td width="100%"><a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion<?php echo $accountGroup->id;?>" href="#collapse_<?php echo $accountGroup->id;?>_<?php echo $account_first_subgroup->id;?>" aria-expanded="false"><?php echo $account_first_subgroup->name; ?></a></td>
+											</tr>
+										</table>
+									</h4>
+								</div>
+								<div id="collapse_<?php echo $accountGroup->id;?>_<?php echo $account_first_subgroup->id;?>" class="panel-collapse collapse" aria-expanded="false">
+								<div class="panel-body">
+										
+								<!--Account second Sub group Start-->
+								<div class="panel-group accordion" id="accordion<?php echo $accountGroup->id;?>_<?php echo $account_first_subgroup->id;?>">
+								<?php foreach($account_first_subgroup->account_second_subgroups as $account_second_subgroup){ ?>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<table width="100%">
+												<tr>
+													<td ><input type="checkbox" class="checkall_second_subgroup"/></td>
+													<td width="100%"><a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion<?php echo $accountGroup->id;?>_<?php echo $account_first_subgroup->id;?>" href="#collapse_<?php echo $accountGroup->id;?>_<?php echo $account_first_subgroup->id;?>_<?php echo $account_second_subgroup->id;?>" aria-expanded="false"><?php echo $account_second_subgroup->name; ?></a></td>
+												</tr>
+											</table>
+										</h4>
+								</div>
+								<div id="collapse_<?php echo $accountGroup->id;?>_<?php echo $account_first_subgroup->id;?>_<?php echo $account_second_subgroup->id;?>" class="panel-collapse collapse" aria-expanded="false">
+									<div class="panel-body">
+									<!--Account ledger account Start-->
+								<div class="panel-group accordion" id="accordion<?php echo $accountGroup->id;?>_<?php echo $account_first_subgroup->id;?>_<?php echo $account_second_subgroup->id;?>">
+								<?php foreach($account_second_subgroup->ledger_accounts as $ledger_account){ ?>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<table width="100%">
+												<tr>
+													<td ><input type="checkbox" class="checkall_ledger"/></td>
+													<td width="100%"><?php echo $ledger_account->name; ?></td>
+												</tr>
+											</table>
+										</h4>
+								</div>
+								
+							</div>
+							<?php } ?>
+							</div>
+							<!--Account Ledger Sub group End-->	
+								</div>
+								</div>
+							</div>
+							<?php } ?>
+							</div>
+							<!--Account Second Sub group End-->
+	
+									</div>
+								</div>
+							</div>
+							<?php } ?>
+							</div>
+							<!--Account First Sub group End-->	
+								</div>
+								</div>
+							</div>
+							<?php } ?>
+							</div>
+							<!--Account Group Sub group End-->
+						</div>
+					
 				
 			</div>
 		
@@ -131,7 +216,7 @@ $(document).ready(function() {
 
 	});
 	
-	
+	$('.checkall_group').on('click', function(){ $('.checkall_first_subgroup').prop('checked', true); });
 	
 });
 </script>

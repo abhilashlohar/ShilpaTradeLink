@@ -80,10 +80,9 @@ class VouchersReferencesController extends AppController
      */
     public function edit($id = null)
     {
-		
 		$this->viewBuilder()->layout('index_layout');
         $vouchersReference = $this->VouchersReferences->get($id, [
-            'contain' => ['AccountGroups']
+            'contain' => ['AccountGroups'=>['AccountFirstSubgroups'=>['AccountSecondSubgroups']]]
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $vouchersReference = $this->VouchersReferences->patchEntity($vouchersReference, $this->request->data);
@@ -95,7 +94,7 @@ class VouchersReferencesController extends AppController
                 $this->Flash->error(__('The vouchers reference could not be saved. Please, try again.'));
             }
         }
-		$AccountGroups = $this->VouchersReferences->AccountGroups->find('list');
+		$AccountGroups = $this->VouchersReferences->AccountGroups->find('all')->contain(['AccountFirstSubgroups'=>['AccountSecondSubgroups'=>['LedgerAccounts']]]);
         $this->set(compact('vouchersReference','AccountGroups'));
         $this->set('_serialize', ['vouchersReference']);
     }

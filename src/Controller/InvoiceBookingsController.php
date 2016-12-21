@@ -74,7 +74,7 @@ class InvoiceBookingsController extends AppController
 			}else{
 				@$last_ib_no->ib2=1;
 			}
-			
+
 		
 	 $this->set(compact('grn','last_ib_no'));
 		
@@ -89,7 +89,7 @@ class InvoiceBookingsController extends AppController
 			$invoiceBooking->created_on=date("Y-m-d");
 			$invoiceBooking->company_id=$st_company_id ;
 			$invoiceBooking->created_by=$this->viewVars['s_employee_id'];
-			
+			//pr($invoiceBooking); exit;
             if ($this->InvoiceBookings->save($invoiceBooking)) {
 				//pr($invoiceBooking); exit;
 				if(!empty($grn_id)){

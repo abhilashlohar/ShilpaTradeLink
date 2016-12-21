@@ -1,15 +1,4 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Job Card'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Sales Orders'), ['controller' => 'SalesOrders', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Sales Order'), ['controller' => 'SalesOrders', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Companies'), ['controller' => 'Companies', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Company'), ['controller' => 'Companies', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Job Card Rows'), ['controller' => 'JobCardRows', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Job Card Row'), ['controller' => 'JobCardRows', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
+
 <div class="jobCards index large-9 medium-8 columns content">
     <h3><?= __('Job Cards') ?></h3>
     <table cellpadding="0" cellspacing="0">
