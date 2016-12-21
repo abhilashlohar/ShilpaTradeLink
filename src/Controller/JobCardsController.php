@@ -55,11 +55,13 @@ class JobCardsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
-		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		//pr($st_company_id); exit;
 		$sales_order_id=@(int)$this->request->query('Sales-Order');
 		if(!empty($sales_order_id)){
 			$salesOrder = $this->JobCards->SalesOrders->get($sales_order_id, [
-				'contain' => ['SalesOrderRows'=>['Items'=>function ($q){
+				'contain' => ['Customers','SalesOrderRows'=>['Items'=>function ($q){
 					return $q->where(['Items.source !='=>'Purchessed']);
 				}]]
 			]);
@@ -68,21 +70,30 @@ class JobCardsController extends AppController
 		
         $jobCard = $this->JobCards->newEntity();
         if ($this->request->is('post')) {
-            $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
+			$jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
+			//pr($jobCard); exit;
+			$jobCard->required_date=date("Y-m-d",strtotime($jobCard->required_date)); 
 			$jobCard->created_by=$s_employee_id; 
+			$jobCard->sales_order_id=$sales_order_id;
+			$jobCard->company_id=$st_company_id;
+			$jobCard->customer_id=$s_employee_id;
+			$jobCard->customer_po_no=$jobCard->customer_po_no;
 			$jobCard->created_on=date("Y-m-d");
-			pr($jobCard); exit;
-            if ($this->JobCards->save($jobCard)) {
+			
+			//pr($jobCard); exit;
+			if ($this->JobCards->save($jobCard)) {
+		
                 $this->Flash->success(__('The job card has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else {
+            } else { 
                 $this->Flash->error(__('The job card could not be saved. Please, try again.'));
             }
         }
+		//$customers = $this->JobCards->Customers->find('all');
 		$items = $this->JobCards->Items->find('list');
         $companies = $this->JobCards->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('jobCard', 'salesOrder', 'companies','items'));
+        $this->set(compact('jobCard', 'salesOrder', 'companies','items','customers'));
         $this->set('_serialize', ['jobCard']);
     }
 

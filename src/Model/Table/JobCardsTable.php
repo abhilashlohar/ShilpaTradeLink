@@ -47,7 +47,8 @@ class JobCardsTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('JobCardRows', [
-            'foreignKey' => 'job_card_id'
+            'foreignKey' => 'job_card_id',
+			'saveStrategy' => 'replace'
         ]);
 		$this->belongsTo('Items');
     }
@@ -86,7 +87,7 @@ class JobCardsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['sales_order_id'], 'SalesOrders'));
+        //$rules->add($rules->existsIn(['sales_order_id'], 'SalesOrders'));
         $rules->add($rules->existsIn(['company_id'], 'Companies'));
 
         return $rules;
