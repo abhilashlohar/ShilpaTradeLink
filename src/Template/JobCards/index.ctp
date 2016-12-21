@@ -1,4 +1,4 @@
-
+<?//php pr($jobCards); exit; ?>
 
 <div class="portlet light bordered">
 	<div class="portlet-title">
@@ -21,14 +21,14 @@
 						<tr>
 							<th>Sr. No.</th>
 							<th>Sales Order Id</th>
-							<th>Company Id</th>
+							<th>Company Name</th>
 							<th>JC1</th>
 							<th>JC2</th>
 							<th>Jc3</th>
 							<th>Jc4</th>
 						    <th>Create By</th>
 							<th>Create On</th>
-							<th>Customer Id</th>
+							<th>Customer Name</th>
 							<th>Dispatch Name</th>
 							<th>Dispatch Email</th>
 							<th>Dispatch Address</th>
@@ -53,7 +53,7 @@
 		<td><?= $jobCards->jc4 ?></td>
 		<td><?= $jobCards->created_by ?></td>
 		<td><?= $jobCards->created_on ?></td>
-		<td><?= $jobCards->customer_id ?></td>
+		<td><?= $jobCards->customer->customer_name ?></td>
 		<td><?= $jobCards->dispatch_name ?></td>
 		<td><?= $jobCards->dispatch_email ?></td>
 		<td><?= $jobCards->dispatch_address ?></td>

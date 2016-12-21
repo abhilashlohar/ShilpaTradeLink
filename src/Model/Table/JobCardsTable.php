@@ -51,6 +51,7 @@ class JobCardsTable extends Table
 			'saveStrategy' => 'replace'
         ]);
 		$this->belongsTo('Items');
+		$this->belongsTo('Customers');
     }
 
     /**
