@@ -25,7 +25,7 @@ class JobCardsController extends AppController
         $jobCards = $this->paginate($this->JobCards);
 		
 		$material_indent=$this->request->query('material-indent');
-		pr($material_indent); exit;
+		//pr($material_indent); exit;
 		if(!empty($material_indent)){
 			$jobCard=$this->paginate(
 				$this->JobCards->find()->contain(['JobCardRows'])

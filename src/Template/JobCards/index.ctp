@@ -19,7 +19,7 @@
 				<table class="table table-bordered table-striped table-hover" width="100%">
 					<thead>
 						<tr>
-							<th>Sr. No.</th>
+							<th>Sr.No.</th>
 							<th>Sales Order Id</th>
 							<th>Company Name</th>
 							<th>JC1</th>
