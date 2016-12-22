@@ -1,4 +1,4 @@
-
+<?//php pr($jobCards); exit; ?>
 
 <div class="portlet light bordered">
 	<div class="portlet-title">
@@ -20,7 +20,6 @@
 					<thead>
 						<tr>
 							<th>Sr. No.</th>
-							<th>Company Id</th>
 							<th>Dispatch Name</th>
 							<th>Dispatch Email</th>
 							<th>Dispatch Address</th>
@@ -37,7 +36,7 @@
     <tr>
         <td><?= h(++$page_no) ?></td>
 		<td><?= $jobCards->company->name ?></td>
-		<td><?= $jobCards->customer_id ?></td>
+
 		<td><?= $jobCards->dispatch_name ?></td>
 		<td><?= $jobCards->dispatch_email ?></td>
 		<td><?= $jobCards->dispatch_address ?></td>
