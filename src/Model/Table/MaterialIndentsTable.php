@@ -39,6 +39,7 @@ class MaterialIndentsTable extends Table
         $this->primaryKey('id');
 		$this->belongsTo('Customers');
 		$this->belongsTo('Items');
+		$this->belongsTo('ItemLedgers');
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
@@ -65,10 +66,7 @@ class MaterialIndentsTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->date('required_date')
-            ->requirePresence('required_date', 'create')
-            ->notEmpty('required_date');
+        
 
         $validator
             ->date('created_on')

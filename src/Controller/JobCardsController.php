@@ -75,6 +75,15 @@ class JobCardsController extends AppController
 				}]]
 			]);
 		}//pr($salesOrder); exit;
+		$last_jc_no=$this->JobCards->find()->select(['jc2'])->where(['company_id' => $st_company_id])->order(['jc2' => 'DESC'])->first();
+			if($last_jc_no){
+				@$last_jc_no->jc2=$last_jc_no->jc2+1;
+			}else{
+				@$last_jc_no->jc2=1;
+			}
+			//pr($last_jc_no); exit;
+		
+		
 		
 		$jobCard = $this->JobCards->newEntity();
         if ($this->request->is('post')) {
@@ -103,7 +112,7 @@ class JobCardsController extends AppController
 		//$customers = $this->JobCards->Customers->find('all');
 		$items = $this->JobCards->Items->find('list');
         $companies = $this->JobCards->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('jobCard', 'salesOrder', 'companies','items','customers'));
+        $this->set(compact('jobCard', 'salesOrder', 'companies','items','customers','last_jc_no'));
         $this->set('_serialize', ['jobCard']);
     }
 

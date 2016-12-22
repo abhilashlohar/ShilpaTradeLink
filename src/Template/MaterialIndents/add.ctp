@@ -22,10 +22,10 @@
 						<label class="col-md-5 control-label">Job Card No</label>
 						<div class="col-md-7">
 							<?php echo $this->Form->input('mi1', ['type'=>'hidden','value' => @$jobCards->jc1]); ?>
-							<?php echo $this->Form->input('mi2', ['type'=>'hidden','value' => @$jobCards->jc2]); ?>
+							<?php echo $this->Form->input('mi2', ['type'=>'hidden','value' => $last_mi_no->mi2]); ?>
 							<?php echo $this->Form->input('mi3', ['type'=>'hidden','value' => @$jobCards->jc3]); ?>
 							<?php echo $this->Form->input('mi4', ['type'=>'hidden','value' => '16-17']); ?>
-							<?= h($jobCards->jc1.'/'.str_pad($jobCards->jc2, 3, '0', STR_PAD_LEFT).'/'.$jobCards->jc3.'/'.$jobCards->jc4) ?>
+							<?= h($jobCards->jc1.'/JC'.str_pad($jobCards->jc1, 3, '0', STR_PAD_LEFT).'/'.$jobCards->jc3.'/'.$jobCards->jc4) ?>
 							
 						</div>
 					</div>
@@ -56,7 +56,7 @@
 					<tr>
 						<th width="50">Sr.No. </th>
 						<th>Items</th>
-						<th>Quantity</th>
+						<th> Required Quantity</th>
 						<th>Current Stocks</th>
 						<th>Approved Purchased Quantity</th>
 						
@@ -68,8 +68,9 @@
 							<td><?php echo ++$q; --$q; ?></td>
 							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.item_id', ['type'=>'hidden','value' => @$job_card_rows->item->id]); ?>
 							<?php echo $job_card_rows->item->name; ?></td>
-							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$job_card_rows->quantity]); ?></td>
-							<td><?php echo $job_card_rows->item->ob_quantity; ?></td>
+							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','readonly','value' => @$job_card_rows->quantity]); ?></td>
+							
+							<td><?php echo @$current_stock[$job_card_rows->item_id]['total_in']-@$current_stock[$job_card_rows->item_id]['total_out']; ?></td>
 							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.approved_purchased_quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Approved Purchased Quantity']); ?></td>
 							
 							
@@ -79,14 +80,10 @@
 				</tbody>
 				
 			</table>
-			
-			
-			
-			
-			
-			
-			
 		</div>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">CREATE MATERIAL INDENT</button>
+			</div>
 		<?= $this->Form->end() ?>
 	</div>
 	<?php } ?>
@@ -102,3 +99,4 @@
 	padding-left: 0;
 }
 </style>
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>

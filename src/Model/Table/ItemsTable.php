@@ -57,6 +57,8 @@ class ItemsTable extends Table
             'foreignKey' => 'unit_id',
             'joinType' => 'INNER'
         ]);
+		
+		
 		$this->belongsToMany('Sources', [
             'foreignKey' => 'item_id',
             'targetForeignKey' => 'source_id',
@@ -75,7 +77,10 @@ class ItemsTable extends Table
         ]);
 		$this->belongsTo('QuotationRows');
 		$this->belongsTo('SalesOrderRows');
-		//$this->belongsTo('InvoiceRows');
+		
+		$this->hasMany('ItemLedgers', [
+            'foreignKey' => 'item_id'
+        ]);
     }
 
     /**

@@ -9,11 +9,13 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $item_id
  * @property int $quantity
- * @property string $voucher_number
+ * @property string $source_model
+ * @property int $source_id
  * @property string $in_out
  * @property \Cake\I18n\Time $processed_on
  *
  * @property \App\Model\Entity\Item $item
+ * @property \App\Model\Entity\Source $source
  */
 class ItemLedger extends Entity
 {

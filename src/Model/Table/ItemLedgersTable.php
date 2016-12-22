@@ -7,9 +7,10 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * ItemLedger Model
+ * ItemLedgers Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Items
+ * @property \Cake\ORM\Association\BelongsTo $Sources
  *
  * @method \App\Model\Entity\ItemLedger get($primaryKey, $options = [])
  * @method \App\Model\Entity\ItemLedger newEntity($data = null, array $options = [])
@@ -19,7 +20,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\ItemLedger[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\ItemLedger findOrCreate($search, callable $callback = null)
  */
-class ItemLedgerTable extends Table
+class ItemLedgersTable extends Table
 {
 
     /**
@@ -32,12 +33,16 @@ class ItemLedgerTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('item_ledger');
+        $this->table('item_ledgers');
         $this->displayField('id');
         $this->primaryKey('id');
 
         $this->belongsTo('Items', [
             'foreignKey' => 'item_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Sources', [
+            'foreignKey' => 'source_id',
             'joinType' => 'INNER'
         ]);
     }
@@ -60,8 +65,8 @@ class ItemLedgerTable extends Table
             ->notEmpty('quantity');
 
         $validator
-            ->requirePresence('voucher_number', 'create')
-            ->notEmpty('voucher_number');
+            ->requirePresence('source_model', 'create')
+            ->notEmpty('source_model');
 
         $validator
             ->requirePresence('in_out', 'create')
@@ -85,6 +90,7 @@ class ItemLedgerTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['item_id'], 'Items'));
+        $rules->add($rules->existsIn(['source_id'], 'Sources'));
 
         return $rules;
     }

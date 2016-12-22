@@ -158,6 +158,22 @@ class InvoicesController extends AppController
         $this->set('_serialize', ['invoice']);
     }
 	
+	public function PendingItemForInventoryVoucher()
+    {
+		$this->viewBuilder()->layout('index_layout');
+		$invoices = $this->paginate($this->Invoices->InvoiceRows->find()->where(['inventory_voucher'=>'Pending']));
+
+
+        $this->set('invoice', $invoices);
+        $this->set('_serialize', ['invoice']);
+    }
+	
+	
+	
+	
+	
+	
+	
 	public function pdf($id = null)
     {
 		$this->viewBuilder()->layout('');
