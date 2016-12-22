@@ -20,7 +20,7 @@ class JobCardsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['Companies','Customers']
+            'contain' => ['Companies','Customers','SalesOrders']
         ];
         $jobCards = $this->paginate($this->JobCards);
 		
@@ -37,7 +37,7 @@ class JobCardsController extends AppController
     }
 
     /**
-     * View method
+     *   method
      *
      * @param string|null $id Job Card id.
      * @return \Cake\Network\Response|null
@@ -47,7 +47,7 @@ class JobCardsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $jobCard = $this->JobCards->get($id, [
-            'contain' => ['SalesOrders', 'Companies', 'JobCardRows']
+            'contain' => ['SalesOrders', 'Companies', 'JobCardRows'=>['Items'],'Customers']
         ]);
 
         $this->set('jobCard', $jobCard);

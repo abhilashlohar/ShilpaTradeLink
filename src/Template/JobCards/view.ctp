@@ -1,69 +1,174 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Job Card'), ['action' => 'edit', $jobCard->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Job Card'), ['action' => 'delete', $jobCard->id], ['confirm' => __('Are you sure you want to delete # {0}?', $jobCard->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Job Cards'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Job Card'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Sales Orders'), ['controller' => 'SalesOrders', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Sales Order'), ['controller' => 'SalesOrders', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Companies'), ['controller' => 'Companies', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Company'), ['controller' => 'Companies', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Job Card Rows'), ['controller' => 'JobCardRows', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Job Card Row'), ['controller' => 'JobCardRows', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="jobCards view large-9 medium-8 columns content">
-    <h3><?= h($jobCard->id) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th><?= __('Sales Order') ?></th>
-            <td><?= $jobCard->has('sales_order') ? $this->Html->link($jobCard->sales_order->id, ['controller' => 'SalesOrders', 'action' => 'view', $jobCard->sales_order->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Company') ?></th>
-            <td><?= $jobCard->has('company') ? $this->Html->link($jobCard->company->name, ['controller' => 'Companies', 'action' => 'view', $jobCard->company->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Id') ?></th>
-            <td><?= $this->Number->format($jobCard->id) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Created By') ?></th>
-            <td><?= $this->Number->format($jobCard->created_by) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Created On') ?></th>
-            <td><?= h($jobCard->created_on) ?></td>
-        </tr>
-    </table>
-    <div class="related">
-        <h4><?= __('Related Job Card Rows') ?></h4>
-        <?php if (!empty($jobCard->job_card_rows)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th><?= __('Id') ?></th>
-                <th><?= __('Job Card Id') ?></th>
-                <th><?= __('Sales Order Row Id') ?></th>
-                <th><?= __('Item Id') ?></th>
-                <th><?= __('Quantity') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($jobCard->job_card_rows as $jobCardRows): ?>
-            <tr>
-                <td><?= h($jobCardRows->id) ?></td>
-                <td><?= h($jobCardRows->job_card_id) ?></td>
-                <td><?= h($jobCardRows->sales_order_row_id) ?></td>
-                <td><?= h($jobCardRows->item_id) ?></td>
-                <td><?= h($jobCardRows->quantity) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'JobCardRows', 'action' => 'view', $jobCardRows->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'JobCardRows', 'action' => 'edit', $jobCardRows->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'JobCardRows', 'action' => 'delete', $jobCardRows->id], ['confirm' => __('Are you sure you want to delete # {0}?', $jobCardRows->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
-    </div>
-</div>
+<?php //pr($jobCard); exit; ?>
+
+<?php //pr($jobCard->sales_order); exit; ?>
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption" >
+			<i class="icon-globe font-blue-steel"></i>
+			<span class="caption-subject font-blue-steel uppercase">view Job Card</span>
+		</div>
+	</div>
+	
+	
+	<table width="100%" class="divHeader">
+	<tr>
+			<td width="50%"><?php echo $this->Html->image('/logos/'.$jobCard->company->logo, ['width' => '40%']); ?></td>
+			<td align="right" width="50%" style="font-size: 12px;">
+			<span style="font-size: 14px;"><?= h($jobCard->company->name) ?></span><br/>
+			<span><?= $this->Text->autoParagraph(h($jobCard->company->address)) ?></span>
+			<span><?= h($jobCard->company->mobile_no) ?></span>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">RECEIPT VOUCHER</div>
+				<div style="border:solid 2px #0685a8;margin-bottom:5px;margin-top: 5px;"></div>
+			</td>
+		</tr>
+	</table>
+	
+	
+	
+	 
+	<div class="portlet-body form">
+		<div class="form-body">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-5 control-label">SO No</label>
+						<div class="col-md-7">
+						<?= h(($jobCard->sales_order->so1.'/SO-'.str_pad($jobCard->sales_order->so2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->sales_order->so3.'/'.$jobCard	->sales_order->so4))?>
+					   </div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-5 control-label">Customer Name </label>
+						<div class="col-md-7">
+							<?= h($jobCard->customer->customer_name) ?>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-5 control-label">Job Card No</label>
+						<div class="col-md-7">
+						<?= h(($jobCard->jc1.'/JC-'.str_pad($jobCard->jc2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->jc3.'/'.$jobCard->jc4))?>
+					   </div>
+					</div>
+				</div>
+			</div><br/>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-5 control-label">Dispatch Name </label>
+						<div class="col-md-7">
+						<?= h($jobCard->dispatch_name) ?></div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-5 control-label">Dispatch Email</label>
+						<div class="col-md-7">
+							<?= h($jobCard->dispatch_email) ?></div> 
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-5 control-label">Dispatch Address</label>
+						<div class="col-md-7">
+							<?= h($jobCard->dispatch_address)?></div> 
+					</div>
+				</div>
+			</div><br/>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-5 control-label">Customer PO No</label>
+						<div class="col-md-7">
+							<?= h($jobCard->customer_po_no)?></div> 
+						</div>
+					</div>
+				
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-5 control-label">Required Date <span class="required" aria-required="true">*</span></label>
+						<div class="col-md-7">
+							<?= h($jobCard->required_date=date("d-m-Y",strtotime($jobCard->required_date))) ?> 
+						</div>
+					</div>
+				</div>
+			</div> 
+	 
+		</div>
+</div>		
+		
+</br></br>
+		
+		<div class="col-md-14">
+		<?php $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	 
+		<table class="table table-bordered table-striped table-hover" width="100%">
+			<tbody>
+					<tr>
+					<td align="Center" style="font-size:120%;">Sr.No.</td>
+					<td align="Center" style="font-size:120%;">Item Name</td>
+					<td align="Center" style="font-size:120%;">Quantity</td>
+					<td align="Center" style="font-size:120%;">Remark</td>
+					</tr>
+			</tbody>
+		    <tbody>
+			<?php foreach ($jobCard->job_card_rows as $job_card_rows): ?>
+					<tr>
+						<td align="Center"><?= h(++$page_no) ?></td>
+						<td align="Center"><?= $job_card_rows->item->name?></td>
+						<td align="Center"><?= $job_card_rows->quantity?></td>
+						<td align="Center"><?= $job_card_rows->remark?></td>
+					</tr>
+			<?php endforeach; ?>
+					
+		   </tbody>
+		 </table>
+		 </div>
+		 
+		 <div class="form-body">
+			<?php $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
+			 	 <table width="100%" id="main_tb" border="1">
+					<thead>
+						<td align="Center" style="font-size:120%;">Sr.No.</td>
+					<td align="Center" style="font-size:120%;">Item Name</td>
+					<td align="Center" style="font-size:120%;">Quantity</td>
+					<td align="Center" style="font-size:120%;">Remark</td>
+					</thead>
+					<tbody id="maintbody">
+					<?php foreach ($jobCard->job_card_rows as $job_card_rows): ?>
+						<tr class="main_tr">
+						<td align="Center"><?= h(++$page_no) ?></td>
+						<td align="Center"><?= $job_card_rows->item->name?></td>
+						<td align="Center"><?= $job_card_rows->quantity?></td>
+						<td align="Center"><?= $job_card_rows->remark?></td>
+						</tr>
+					<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+		 
+		 
+		 
+		 
+			    <div class="col-md-14">
+				 <tr>
+					<table width="100%" class="divHeader">
+					<tr>
+						<td align="right">
+						For <?= h($jobCard->company->name) ?><br/><br/><br/><span style="    border-top: solid 1px #585757;">Authorised Signatory</span>
+						</td>
+					</tr>
+					</table>
+					</td>
+				  </tr>
+				  </div>
+				  
+
+ 
+		<!-- END FORM-->
+	</div>
