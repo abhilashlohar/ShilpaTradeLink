@@ -19,7 +19,9 @@
 				<table class="table table-bordered table-striped table-hover" width="100%">
 					<thead>
 						<tr>
+
 							<th>Sr. No.</th>
+
 							<th>Dispatch Name</th>
 							<th>Dispatch Email</th>
 							<th>Dispatch Address</th>
