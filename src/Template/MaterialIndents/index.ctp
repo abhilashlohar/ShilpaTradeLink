@@ -1,33 +1,41 @@
+<?php //pr($materialIndents); exit; ?>
 
-<div class="materialIndents index large-9 medium-8 columns content">
-    <h3><?= __('Material Indents') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th><?= $this->Paginator->sort('id') ?></th>
-                <th><?= $this->Paginator->sort('company_id') ?></th>
-                <th><?= $this->Paginator->sort('job_card_id') ?></th>
-                <th><?= $this->Paginator->sort('required_date') ?></th>
-                <th><?= $this->Paginator->sort('created_on') ?></th>
-                <th><?= $this->Paginator->sort('created_by') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="icon-globe font-blue-steel"></i>
+			<span class="caption-subject font-blue-steel uppercase">Material Indents</span> 
+	    </div>
+				 
+<?php $page_no=$this->Paginator->current('MaterialIndentS'); $page_no=($page_no-1)*20; ?>
+	<table class="table table-bordered table-striped table-hover">
+		<tbody>
+				<tr>
+				<td align="Center" style="font-size:120%;">Sr.No.</td>
+				<td align="Center" style="font-size:120%;">Material Indent No</td>
+				<td align="Center" style="font-size:120%;">Job Card</td>
+				<td align="Center" style="font-size:120%;">Require Date</td>
+				<td align="Center" style="font-size:120%;">Action</td>
+				</tr>
+		</tbody>
         <tbody>
             <?php foreach ($materialIndents as $materialIndent): ?>
             <tr>
-                <td><?= $this->Number->format($materialIndent->id) ?></td>
-                <td><?= $materialIndent->has('company') ? $this->Html->link($materialIndent->company->name, ['controller' => 'Companies', 'action' => 'view', $materialIndent->company->id]) : '' ?></td>
-                <td><?= $materialIndent->has('job_card') ? $this->Html->link($materialIndent->job_card->id, ['controller' => 'JobCards', 'action' => 'view', $materialIndent->job_card->id]) : '' ?></td>
-                <td><?= h($materialIndent->required_date) ?></td>
-                <td><?= h($materialIndent->created_on) ?></td>
-                <td><?= $this->Number->format($materialIndent->created_by) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $materialIndent->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $materialIndent->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $materialIndent->id], ['confirm' => __('Are you sure you want to delete # {0}?', $materialIndent->id)]) ?>
+			   <td align="Center"><?= h(++$page_no) ?></td>
+			   <td align="Center">
+				<?= h($materialIndent->mi1.'/MI'.str_pad($materialIndent->mi2, 3, '0', STR_PAD_LEFT).'/'.$materialIndent->mi3.'/'.$materialIndent->mi4) ?>
+			    </td>
+				
+				<td align="Center">
+				<?= h($materialIndent->job_card->jc1.'/JC-'.str_pad($materialIndent->job_card->jc2, 3, '0', STR_PAD_LEFT).'/'.$materialIndent->job_card->jc3.'/'.$materialIndent->job_card->jc4) ?>
+				</td>
+				
+				<td align="Center"><?php echo date("d-m-Y",strtotime($materialIndent->required_date)); ?></td>
+				<td class="actions" align="Center">
+				<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $materialIndent->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips')); ?>
+				 <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $materialIndent->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?>
                 </td>
-            </tr>
+			</tr>
             <?php endforeach; ?>
         </tbody>
     </table>

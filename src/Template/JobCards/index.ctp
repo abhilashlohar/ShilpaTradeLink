@@ -32,7 +32,9 @@
              
 		<tr>
 			<td align="Center"><?= h(++$page_no) ?></td>
+			
 			 <td align="Center"><?= h(($jobCards->sales_order->so1.'/SO-'.str_pad($jobCards->sales_order->so2, 3, '0', STR_PAD_LEFT).'/'.$jobCards->sales_order->so3.'/'.$jobCards->sales_order->so4))?></td> 
+			 
 			 <td align="Center"><?= h(($jobCards->jc1.'/JC-'.str_pad($jobCards->jc2, 3, '0', STR_PAD_LEFT).'/'.$jobCards->jc3.'/'.$jobCards->jc4))?></td>
 			<td align="Center"><?= $jobCards->created_on ?></th>
 			<td align="Center"><?= $jobCards->required_date?></td>

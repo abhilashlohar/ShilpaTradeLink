@@ -81,6 +81,10 @@ class ItemsTable extends Table
 		$this->hasMany('ItemLedgers', [
             'foreignKey' => 'item_id'
         ]);
+		
+		$this->hasMany('JobCardRows', [
+            'foreignKey' => 'item_id'
+        ]);
     }
 
     /**

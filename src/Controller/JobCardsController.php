@@ -47,7 +47,7 @@ class JobCardsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $jobCard = $this->JobCards->get($id, [
-            'contain' => ['SalesOrders', 'Companies', 'JobCardRows'=>['Items'],'Customers']
+            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'=>['JobCardRows'=>['Items']]]], 'Companies', 'JobCardRows'=>['Items'],'Customers']
         ]);
 
         $this->set('jobCard', $jobCard);

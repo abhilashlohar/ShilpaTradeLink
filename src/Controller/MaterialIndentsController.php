@@ -19,16 +19,18 @@ class MaterialIndentsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
+		
         $this->paginate = [
-            'contain' => ['Companies', 'JobCards']
+            'contain' => ['JobCards']
         ];
-        $materialIndents = $this->paginate($this->MaterialIndents);
+		$materialIndents = $this->paginate($this->MaterialIndents);
+       
 
         $this->set(compact('materialIndents'));
         $this->set('_serialize', ['materialIndents']);
     }
-
-    /**
+	
+/**
      * View method
      *
      * @param string|null $id Material Indent id.
