@@ -198,7 +198,7 @@ if(sizeof($grand_total)==2)
 {
 	$grand_total[1]=str_pad($grand_total[1], 2, '0', STR_PAD_RIGHT);
 	$paisa=(int)$grand_total[1];
-	$paisa_text='and'. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa';
+	$paisa_text=' and ' . h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa';
 }else{ $paisa_text=""; }
 
 	
@@ -326,7 +326,7 @@ $html .= '<div id="footer">';
 					<tr>
 					<td valign="top" width="18%">Amount in words</td>
 					<td valign="top" width="1%">:</td>
-					<td  valign="top">'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees '.h($paisa_text).'</td>
+					<td  valign="top">'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees ' .h($paisa_text).'</td>
 					</tr>
 				</table>
 				</td>

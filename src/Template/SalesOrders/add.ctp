@@ -329,7 +329,7 @@ if(!empty($copy))
 				<div class="col-md-3">
 					<div class="form-group">
 						<label class="control-label">Address  <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('dispatch_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Address']); ?>
+						<?php echo $this->Form->input('dispatch_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Address','value' => @$quotation->customer_address]); ?>
 					</div>
 				</div>
 				
