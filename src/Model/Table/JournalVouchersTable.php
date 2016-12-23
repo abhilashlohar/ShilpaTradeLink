@@ -70,14 +70,11 @@ class JournalVouchersTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
-
-       
-
-        $validator
+		
+		$validator
             ->requirePresence('narration', 'create')
             ->notEmpty('narration');
-
-                
+     
         return $validator;
     }
 

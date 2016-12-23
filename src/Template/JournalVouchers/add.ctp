@@ -36,7 +36,7 @@
 					<tr>
 						<th>Ledger Account</th>
 						<th width="130">Debit/Credit</th>
-						<th width="130"></th>
+						<th></th>
 						<th width="130">Amount</th>
 						<th><th>
 					</tr>
@@ -47,11 +47,12 @@
 				<tfoot>
 					<tr>
 						<td><?php echo $this->Form->textarea('narration', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Narration']); ?></td>
-						<td  align="right"><b>Total Cr</b></td>
-						<td align="left" id="crAmount" align="right"></td>
 						
-						<td  align="right"><b>Total Dr</b></td>
-						<td id="drAmount" width="80"></td>
+						<td id="drAmount" width="80"><label>Total Dr</label><?php echo $this->Form->input('debitamount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+					
+						<td align="left" id="crAmount" align="right"><label>Total Cr</label><?php echo $this->Form->input('creditamount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						
+						
 					</tr>
 				</tfoot>
 			</table>
@@ -133,53 +134,17 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-			rules: {
-				company_id:{
-					required: true,
-				},
-				date : {
-					  required: true,
-				},
-				customer_id : {
-					  required: true,
-				},
-				customer_address : {
-					  required: true,
-				},
-				
-				employee_id:{
-					required: true
-				},
-				category_id:{
-					required: true,
-				},
-				
-				finalisation_date:{
-					required: true,
-				},
-				customer_for_attention : {
-					  required: true,
-				},
-				enquiry_no  : {
-					  required: true,
-				},
-				customer_contact: {
-					  required: true,
-				},
-				subject:{
+				debitamount:{
 					required: true,	
 				},
-				qt1:{
+				creditamount:{
 					required: true,	
-				},
-				qt3:{
-					required: true,	
-				},
-				qt4:{
-					required: true,	
+					equalTo: "#debitamount",
+					messages: {
+							creditamount: "Must br equal to Debit Amount ."
+						}
 				}
 			},
-		},
 
 		
 	});
@@ -243,8 +208,8 @@ $(document).ready(function() {
 				crAmount=crAmount+Amount;
 			}
 		});
-		$('#drAmount').html(drAmount.toFixed(2));
-		$('#crAmount').text(crAmount.toFixed(2));
+		$('#debitamount').val(drAmount.toFixed(2));
+		$('#creditamount').val(crAmount.toFixed(2));
 	}
 	
 });
