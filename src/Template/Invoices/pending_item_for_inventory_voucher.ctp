@@ -1,4 +1,4 @@
-
+<?php //pr($invoices); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -6,86 +6,32 @@
 			<span class="caption-subject font-blue-steel uppercase">Invoices</span>
 			
 		</div>
-		<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/Invoices/Export-Excel/'.@$url_excel.'',['class' =>'btn btn-sm green tooltips pull-right','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
+		
 	</div>
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
-				<form method="GET" >
-				<table class="table table-condensed">
-					<thead>
-						<tr>
-							<th>Invoice No</th>
-							<th>Customer</th>
-							<th>Date</th>
-							<th>Total</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>
-								<div class="row">
-									<div class="col-md-4">
-										<input type="text" name="company_alise" class="form-control input-sm" placeholder="Company" value="<?php echo @$company_alise; ?>">
-									</div>
-									<div class="col-md-4">
-										<div class="input-group" style="" id="pnf_text">
-											<span class="input-group-addon">IN-</span><input type="text" name="invoice_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$invoice_no; ?>">
-										</div>
-									</div>
-									<div class="col-md-4">
-										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
-									</div>
-								</div>
-							</td>
-							<td><input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>"></td>
-							<td>
-								<div class="row">
-									<div class="col-md-6">
-										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
-									</div>
-									<div class="col-md-6">
-										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
-									</div>
-								</div>
-							</td>
-							<td>
-							<table>
-								<tr>
-									<td><input type="text" name="total_From" class="form-control input-sm" placeholder="From" value="<?php echo @$total_From; ?>" style="width: 100px;"></td>
-									<td><input type="text" name="total_To" class="form-control input-sm" placeholder="To" value="<?php echo @$total_To; ?>" style="width: 100px;"></td>
-								</tr>
-							</table>
-							</td>
-							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
-						</tr>
-					</tbody>
-				</table>
-				</form>
+				
 				<?php $page_no=$this->Paginator->current('Invoices'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
 							<th>Sr. No.</th>
-							<th>Invoice No.</th>
-							<th>Customer</th>
-							<th>Date</th>
-							<th>Total</th>
-							<th>Actions</th>
+							<th>Inoice No.</th>
+							<th>Item Name</th>
+							<th>Action</th>
+							
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($invoices as $invoice): ?>
+						<?php foreach ($invoices as $invoice_rows): ?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
-							<td><?= h(($invoice->in1.'/IN-'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$invoice->in3.'/'.$invoice->in4)) ?></td>
-							<td><?= h($invoice->customer->customer_name) ?></td>
-							<td><?php echo date("d-m-Y",strtotime($invoice->date_created)); ?></td>
-							<td><?= h($invoice->total_after_pnf) ?></td>
+							
+							<td><?= h(($invoice_rows->invoice->in1.'/IN-'.str_pad($invoice_rows->invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$invoice_rows->invoice->in3.'/'.$invoice_rows->invoice->in4)) ?></td>
+							<td><?= h($invoice_rows->item->name) ?></td>
 							<td class="actions">
-								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $invoice->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
-								<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $invoice->id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
+								<?php echo $this->Html->link('<i class="fa fa-repeat "></i>  Create Inventory Voucher',['controller'=>'InventoryVouchers','action' => '/add', $invoice_rows->invoice->id, $invoice_rows->id ],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'Inventory Voucher')); ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

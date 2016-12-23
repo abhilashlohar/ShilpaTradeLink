@@ -161,10 +161,15 @@ class InvoicesController extends AppController
 	public function PendingItemForInventoryVoucher()
     {
 		$this->viewBuilder()->layout('index_layout');
-		$invoices = $this->paginate($this->Invoices->InvoiceRows->find()->where(['inventory_voucher'=>'Pending']));
-
-
-        $this->set('invoice', $invoices);
+		$invoices=$this->paginate(
+				$this->Invoices->InvoiceRows->find()->contain(['Invoices',
+				'Items'=> function ($q) {
+				return $q->where(['source !='=>'Purchessed']);
+				}])
+				->where(['inventory_voucher'=>'Pending'])
+			);
+	//pr($invoices); exit;
+        $this->set('invoices', $invoices);
         $this->set('_serialize', ['invoice']);
     }
 	
