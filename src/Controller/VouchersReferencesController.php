@@ -20,7 +20,7 @@ class VouchersReferencesController extends AppController
     {
 		
 		$this->viewBuilder()->layout('index_layout');
-        $vouchersReferences = $this->paginate($this->VouchersReferences->find()->contain(['VouchersReferencesGroups'=>['AccountGroups']]));
+        $vouchersReferences = $this->paginate($this->VouchersReferences->find());
 		
         $this->set(compact('vouchersReferences'));
         $this->set('_serialize', ['vouchersReferences']);
@@ -81,11 +81,19 @@ class VouchersReferencesController extends AppController
     public function edit($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
+	
         $vouchersReference = $this->VouchersReferences->get($id, [
-            'contain' => ['AccountGroups'=>['AccountFirstSubgroups'=>['AccountSecondSubgroups']]]
+            'contain' => ['LedgerAccounts']
         ]);
+		$ledger_arr=[];
+		foreach($vouchersReference->ledger_accounts as $ledger_accounts)
+		{
+		@$ledger_arr[]=$ledger_accounts->id;
+		}
+		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $vouchersReference = $this->VouchersReferences->patchEntity($vouchersReference, $this->request->data);
+			//pr($vouchersReference); exit;
             if ($this->VouchersReferences->save($vouchersReference)) {
                 $this->Flash->success(__('The vouchers reference has been saved.'));
 
@@ -95,7 +103,7 @@ class VouchersReferencesController extends AppController
             }
         }
 		$AccountGroups = $this->VouchersReferences->AccountGroups->find('all')->contain(['AccountFirstSubgroups'=>['AccountSecondSubgroups'=>['LedgerAccounts']]]);
-        $this->set(compact('vouchersReference','AccountGroups'));
+        $this->set(compact('vouchersReference','AccountGroups','ledger_arr'));
         $this->set('_serialize', ['vouchersReference']);
     }
 

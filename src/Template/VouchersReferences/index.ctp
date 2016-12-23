@@ -15,24 +15,18 @@
 							<th>S.No</th>
 							<th>Voucher</th>
 							<th>Discription</th>
-							<th>Account Group</th>
 							<th class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php $i=0; foreach($vouchersReferences as $vouchersReference): $i++;
 							$groups=[];
-							foreach($vouchersReference->vouchers_references_groups as $vouchers_references_groups){
-								$groups[]=$vouchers_references_groups->account_group->name;
-							}
-							//foreach($vouchersReference as )
 						?>
 						<tr>
 							<td><?= h($i) ?></td>
 							<td><?= h($vouchersReference->voucher_entity) ?></td>
 							<td><?= h($vouchersReference->description) ?></td>
-							<td><?php echo implode(',',$groups); ?></td>
-						
+							
 							<td class="actions">
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $vouchersReference->id],array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
 							</td>

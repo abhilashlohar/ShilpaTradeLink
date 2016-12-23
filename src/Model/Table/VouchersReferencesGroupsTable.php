@@ -41,8 +41,8 @@ class VouchersReferencesGroupsTable extends Table
             'foreignKey' => 'vouchers_reference_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('AccountGroups', [
-            'foreignKey' => 'account_group_id',
+        $this->belongsTo('LedgerAccounts', [
+            'foreignKey' => 'ledger_accounts_id',
             'joinType' => 'INNER'
         ]);
     }
@@ -72,7 +72,7 @@ class VouchersReferencesGroupsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['vouchers_reference_id'], 'VouchersReferences'));
-        $rules->add($rules->existsIn(['account_group_id'], 'AccountGroups'));
+        $rules->add($rules->existsIn(['account_group_id'], 'LedgerAccounts'));
 
         return $rules;
     }
