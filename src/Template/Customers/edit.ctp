@@ -178,11 +178,11 @@
 					if($customer_contacts->default_contact=='1'){ $checked2="checked"; }else{ $checked2=""; } ?>
 						<tr>
 						<td><?= h($ii) ?></td>
-						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.contact_person', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Contact Person','value'=>$customer_contacts->contact_person]); ?></td>
-						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.telephone', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Telephone','value'=>$customer_contacts->telephone]); ?></td>
-						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','value'=>$customer_contacts->mobile]); ?></td>
-						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.email', ['type' => 'email','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Email','value'=>$customer_contacts->email]); ?></td>
-						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.designation', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Designation','value'=>$customer_contacts->designation]); ?></td>
+						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.contact_person', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Contact Person','value'=>$customer_contacts->contact_person,'required']); ?></td>
+						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.telephone', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Telephone','value'=>$customer_contacts->telephone,'required']); ?></td>
+						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','value'=>$customer_contacts->mobile,'required']); ?></td>
+						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.email', ['type' => 'email','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Email','value'=>$customer_contacts->email,'required']); ?></td>
+						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.designation', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Designation','value'=>$customer_contacts->designation,'required']); ?></td>
 						<td width="90"><?php echo $this->Form->input('customer_contacts.'.$ii.'.default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2','value'=>1,$checked2]); ?></td>
 						<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 					</tr>
@@ -208,9 +208,9 @@
 					if($customer_address->default_address=='1'){ $checked="checked"; }else{ $checked=""; } ?>
 						<tr>
 							<td><?= h($i) ?></td>
-							<td><?php echo $this->Form->input('customer_address.'.$i.'.address', ['label' => false,'type' => 'textarea','rows' => '2','style' => ['resize:none'],'class' => 'form-control input-sm','placeholder' => 'Address','value'=>$customer_address->address]); ?></td>
-							<td><?php echo $this->Form->input('customer_address.'.$i.'.district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm','value'=>$customer_address->district_id]); ?></td>
-							<td><?php echo $this->Form->input('customer_address.'.$i.'.transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Courier Charge','value'=>$customer_address->transporter_id]); ?></td>
+							<td><?php echo $this->Form->input('customer_address.'.$i.'.address', ['label' => false,'type' => 'textarea','rows' => '2','style' => ['resize:none'],'class' => 'form-control input-sm','placeholder' => 'Address','value'=>$customer_address->address,'required']); ?></td>
+							<td><?php echo $this->Form->input('customer_address.'.$i.'.district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm','value'=>$customer_address->district_id,'required']); ?></td>
+							<td><?php echo $this->Form->input('customer_address.'.$i.'.transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Courier Charge','value'=>$customer_address->transporter_id,'required']); ?></td>
 							<td width="90"><?php echo $this->Form->input('customer_address.'.$i.'.default_address', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn','value'=>1,$checked]); ?></td>
 							<td><a class="btn btn-xs btn-default addrow2" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow2" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
@@ -460,12 +460,12 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		$("#main_tb tbody tr").each(function(){
 			
 			$(this).find("td:nth-child(1)").html(++i); --i;
-			$(this).find("td:nth-child(2) input").attr({name:"customer_address["+i+"][contact_person]", id:"customer_address-"+i+"-contact_person"}).rules("add", "required");
-			$(this).find("td:nth-child(3) input").attr({name:"customer_address["+i+"][customer_contacts]", id:"customer_address-"+i+"-customer_contacts"}).rules("add", "required");
-			$(this).find("td:nth-child(4) input").attr({name:"customer_address["+i+"][mobile]", id:"customer_address-"+i+"-mobile"}).rules("add", "required");
-			$(this).find("td:nth-child(5) input").attr({name:"customer_address["+i+"][email]", id:"customer_address-"+i+"-email"}).rules("add", "required");
-			$(this).find("td:nth-child(6) input").attr({name:"customer_address["+i+"][designation]", id:"customer_address-"+i+"-designation"}).rules("add", "required");
-			$(this).find("td:nth-child(7) input").attr({name:"customer_address["+i+"][default_contact]", id:"customer_address-"+i+"-default_contact"});
+			$(this).find("td:nth-child(2) input").attr({name:"customer_contacts["+i+"][contact_person]", id:"customer_contacts-"+i+"-contact_person"}).rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr({name:"customer_contacts["+i+"][customer_contacts]", id:"customer_contacts-"+i+"-customer_contacts"}).rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr({name:"customer_contacts["+i+"][mobile]", id:"customer_contacts-"+i+"-mobile"}).rules("add", "required");
+			$(this).find("td:nth-child(5) input").attr({name:"customer_contacts["+i+"][email]", id:"customer_contacts-"+i+"-email"}).rules("add", "required");
+			$(this).find("td:nth-child(6) input").attr({name:"customer_contacts["+i+"][designation]", id:"customer_contacts-"+i+"-designation"}).rules("add", "required");
+			$(this).find("td:nth-child(7) input").attr({name:"customer_contacts["+i+"][default_contact]", id:"customer_contacts-"+i+"-default_contact"});
 			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
 			if (test) { test.uniform(); }
 			i++;
@@ -530,9 +530,9 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		<tr>
 			<td>0</td>
 			<td><?php echo $this->Form->input('contact_person', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Contact Person']); ?></td>
-			<td><?php echo $this->Form->input('telephone', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Telephone','maxlength'=>15]); ?></td>
-			<td><?php echo $this->Form->input('mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Mobile','maxlength'=>10]); ?></td>
-			<td><?php echo $this->Form->input('email', ['type' => 'email','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Email']); ?></td>
+			<td><?php echo $this->Form->input('telephone', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Telephone','maxlength'=>15]); ?></td>
+			<td><?php echo $this->Form->input('mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','maxlength'=>10]); ?></td>
+			<td><?php echo $this->Form->input('email', ['type' => 'email','label' => false,'class' => 'form-control input-sm','placeholder' => 'Email']); ?></td>
 			<td><?php echo $this->Form->input('designation', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Designation']); ?></td>
 			<td width="90"><?php echo $this->Form->input('default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2','value'=>1]); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>

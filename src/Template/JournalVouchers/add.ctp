@@ -34,11 +34,10 @@
 			<table class="table tableitm" id="main_tb">
 				<thead>
 					<tr>
-						<th>Ledger Account</th>
-						<th width="130">Debit/Credit</th>
+						<th width="400">Ledger Account</th>
+						<th width="200">Debit/Credit</th>
+						<th width="200">Amount</th>
 						<th></th>
-						<th width="130">Amount</th>
-						<th><th>
 					</tr>
 				</thead>
 				<tbody id="main_tbody">
@@ -48,7 +47,7 @@
 					<tr>
 						<td><?php echo $this->Form->textarea('narration', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Narration']); ?></td>
 						
-						<td id="drAmount" width="80"><label>Total Dr</label><?php echo $this->Form->input('debitamount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						<td id="drAmount"><label>Total Dr</label><?php echo $this->Form->input('debitamount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
 					
 						<td align="left" id="crAmount" align="right"><label>Total Cr</label><?php echo $this->Form->input('creditamount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
 						
@@ -85,7 +84,7 @@
 <table id="sample_tb" style="display:none;">
 	<tbody >
 		<tr>
-			<td>
+			<td width="400">
 				<div class="row">
 					<div class="col-md-11 padding-right-decrease">
 						<?php echo $this->Form->input('ledger_account_id', ['empty'=>'Select','options' => $ledgers,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item']); ?>
@@ -93,7 +92,7 @@
 
 				</div>
 			</td>
-			<td>
+			<td width="200">
 				<div class="row">
 					<div class="col-md-11 padding-right-decrease">
 						<?php 
@@ -103,9 +102,11 @@
 
 				</div>
 			</td>
-			<td></td>
-			<td width="130"><?php echo $this->Form->input('amount', ['type' => 'number','label' => false,'class' => 'form-control input-sm rate', 'min'=>'0.01','placeholder' => 'Rate']); ?></td>
-			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+			
+			<td width="200"><?php echo $this->Form->input('amount', ['type' => 'number','label' => false,'class' => 'form-control input-sm rate', 'min'=>'0.01','placeholder' => 'Rate']); ?></td>
+			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+			
+			
 		</tr>
 	
 	</tbody>
@@ -140,11 +141,15 @@ $(document).ready(function() {
 				creditamount:{
 					required: true,	
 					equalTo: "#debitamount",
-					messages: {
-							creditamount: "Must br equal to Debit Amount ."
-						}
+					
 				}
 			},
+		messages: {
+			creditamount:{
+					equalTo: "Must be equal to Debit Amount",
+					
+				}
+		}
 
 		
 	});
@@ -168,7 +173,7 @@ $(document).ready(function() {
 			i++;
 			$(this).find("td:nth-child(1) select").attr({name:"journal_voucher_rows["+i+"][ledger_account_id]", id:"journal_voucher_rows-"+i+"-ledger_account_id",}).select2().rules("add", "required");
 			$(this).find("td:nth-child(2) select").attr({name:"journal_voucher_rows["+i+"][cr_dr]", id:"journal_voucher_rows-"+i+"-cr_dr",}).select2().rules("add", "required");
-			$(this).find("td:nth-child(4) input").attr({name:"journal_voucher_rows["+i+"][amount]", id:"journal_voucher_rows-"+i+"-amount"}).rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr({name:"journal_voucher_rows["+i+"][amount]", id:"journal_voucher_rows-"+i+"-amount"}).rules("add", "required");
 	
 		});
 	}
@@ -185,7 +190,7 @@ $(document).ready(function() {
 							i++;
 								$(this).find("td:nth-child(1) select").attr({name:"journal_voucher_rows["+i+"][ledger_account_id]", id:"journal_voucher_rows-"+i+"-ledger_account_id",}).select2().rules("add", "required");
 								$(this).find("td:nth-child(2) select").attr({name:"journal_voucher_rows["+i+"][cr_dr]", id:"journal_voucher_rows-"+i+"-cr_dr",}).select2().rules("add", "required");
-								$(this).find("td:nth-child(4) input").attr({name:"journal_voucher_rows["+i+"][amount]", id:"journal_voucher_rows-"+i+"-amount"}).rules("add", "required");
+								$(this).find("td:nth-child(3) input").attr({name:"journal_voucher_rows["+i+"][amount]", id:"journal_voucher_rows-"+i+"-amount"}).rules("add", "required");
 						});		
 				calculate_total();
 			}
@@ -195,12 +200,14 @@ $(document).ready(function() {
 	$('#main_tb input').die().live("keyup","blur",function() { 
 	calculate_total();
 		});
-	
+	$('#main_tb select').die().live("change",function() { 
+	calculate_total();
+		});
 	function calculate_total(){
 		var drAmount=0; var crAmount=0; 
 		$("#main_tb tbody tr").each(function(){
 			var dr_cr=$(this).find("td:nth-child(2) select option:selected").val();
-			var Amount=parseFloat($(this).find("td:nth-child(4) input").val());
+			var Amount=parseFloat($(this).find("td:nth-child(3) input").val());
 			if(!Amount){ Amount=0; }
 			if(dr_cr=="Dr"){
 				drAmount=drAmount+Amount;
