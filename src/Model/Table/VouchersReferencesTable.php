@@ -37,7 +37,10 @@ class VouchersReferencesTable extends Table
         $this->primaryKey('id');
 		
 		$this->belongsTo('AccountGroups');
-		
+		$this->hasMany('VoucherLedgerAccounts', [
+            'foreignKey' => 'vouchers_reference_id',
+            'joinType' => 'INNER'
+        ]);
 		$this->belongsToMany('LedgerAccounts', [
             'foreignKey' => 'vouchers_reference_id',
             'targetForeignKey' => 'ledger_account_id',

@@ -24,7 +24,6 @@
 							<?php echo $this->Form->input('description', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Description']); ?>
 						</div>
 					</div>
-					
 				</div>
 				<div class="row">
 				<div class="panel-group accordion" id="accordion0">

@@ -92,33 +92,26 @@ class CreditNotesController extends AppController
                 $this->Flash->error(__('The credit note could not be saved. Please, try again.'));
             }
         }
-       $vouchersReferences = $this->CreditNotes->VouchersReferences->get(12, [
-            'contain' => ['VouchersReferencesGroups']
+		$vouchersReferences = $this->CreditNotes->VouchersReferences->get(12, [
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$where[]=$data->account_group_id;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			  $where[]=$data->ledger_account_id;
 		}
 
-		$purchaseAccs = $this->CreditNotes->PurchaseAccs->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$purchaseAccs = $this->CreditNotes->PurchaseAccs->find('list')->where(['PurchaseAccs.id IN' => $where]);
 			
 		$vouchersReferences = $this->CreditNotes->VouchersReferences->get(13, [
-            'contain' => ['VouchersReferencesGroups']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			  $where[]=$data->account_group_id;
-			//pr($where); exit;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			  $where[]=$data->ledger_account_id;
 		}
 
-		$parties = $this->CreditNotes->Parties->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$parties = $this->CreditNotes->Parties->find('list')->where(['Parties.id IN' => $where]);
 		
 		$companies = $this->CreditNotes->Companies->find('all');
         $this->set(compact('creditNote', 'purchaseAccs', 'parties', 'companies'));
@@ -177,33 +170,27 @@ class CreditNotesController extends AppController
             } else {
                 $this->Flash->error(__('The credit note could not be saved. Please, try again.'));
             }
-        } $vouchersReferences = $this->CreditNotes->VouchersReferences->get(12, [
-            'contain' => ['VouchersReferencesGroups']
+        } 
+		$vouchersReferences = $this->CreditNotes->VouchersReferences->get(12, [
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$where[]=$data->account_group_id;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			  $where[]=$data->ledger_account_id;
 		}
 
-		$purchaseAccs = $this->CreditNotes->PurchaseAccs->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$purchaseAccs = $this->CreditNotes->PurchaseAccs->find('list')->where(['PurchaseAccs.id IN' => $where]);
 			
 		$vouchersReferences = $this->CreditNotes->VouchersReferences->get(13, [
-            'contain' => ['VouchersReferencesGroups']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			  $where[]=$data->account_group_id;
-			//pr($where); exit;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			  $where[]=$data->ledger_account_id;
 		}
 
-		$parties = $this->CreditNotes->Parties->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$parties = $this->CreditNotes->Parties->find('list')->where(['Parties.id IN' => $where]);
 		
 		$companies = $this->CreditNotes->Companies->find('all');
         $this->set(compact('creditNote', 'purchaseAccs', 'parties', 'companies'));

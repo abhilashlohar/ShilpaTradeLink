@@ -95,32 +95,26 @@ class DebitNotesController extends AppController
             }
         }
 		$vouchersReferences = $this->DebitNotes->VouchersReferences->get(10, [
-            'contain' => ['VouchersReferencesGroups']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$where[]=$data->account_group_id;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			$where[]=$data->ledger_account_id;
 		}
 
-		$salesAccs = $this->DebitNotes->SalesAccs->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$salesAccs = $this->DebitNotes->SalesAccs->find('list')->where(['SalesAccs.id IN' => $where]);
 			
 		$vouchersReferences = $this->DebitNotes->VouchersReferences->get(11, [
-            'contain' => ['VouchersReferencesGroups']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			  $where[]=$data->account_group_id;
-			//pr($where); exit;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			  $where[]=$data->ledger_account_id;
+		
 		}
 
-		$parties = $this->DebitNotes->Parties->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$parties = $this->DebitNotes->Parties->find('list')->where(['Parties.id IN' => $where]);
 		
 		$companies = $this->DebitNotes->Companies->find('all');
         $this->set(compact('debitNote', 'salesAccs', 'parties', 'companies'));
@@ -180,32 +174,26 @@ class DebitNotesController extends AppController
         }
         
 		$vouchersReferences = $this->DebitNotes->VouchersReferences->get(10, [
-            'contain' => ['VouchersReferencesGroups']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$where[]=$data->account_group_id;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			$where[]=$data->ledger_account_id;
 		}
 
-		$salesAccs = $this->DebitNotes->SalesAccs->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$salesAccs = $this->DebitNotes->SalesAccs->find('list')->where(['SalesAccs.id IN' => $where]);
 			
 		$vouchersReferences = $this->DebitNotes->VouchersReferences->get(11, [
-            'contain' => ['VouchersReferencesGroups']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			  $where[]=$data->account_group_id;
-			//pr($where); exit;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			  $where[]=$data->ledger_account_id;
+		
 		}
 
-		$parties = $this->DebitNotes->Parties->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$parties = $this->DebitNotes->Parties->find('list')->where(['Parties.id IN' => $where]);
 		
 		$companies = $this->DebitNotes->Companies->find('all');
         $this->set(compact('debitNote', 'salesAccs', 'parties', 'companies'));

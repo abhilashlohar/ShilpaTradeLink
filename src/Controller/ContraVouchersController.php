@@ -95,34 +95,29 @@ class ContraVouchersController extends AppController
         }
 		
 		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get(7, [
-            'contain' => ['VouchersReferencesGroups']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$where[]=$data->account_group_id;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			$where[]=$data->ledger_account_id;
 		}
 
-		$cashBankFroms = $this->ContraVouchers->CashBankFroms->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$cashBankFroms = $this->ContraVouchers->CashBankFroms->find('list')->where(['cashBankFroms.id IN' => $where]);
+		
 			
 		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get(8, [
-            'contain' => ['VouchersReferencesGroups']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			  $where[]=$data->account_group_id;
-			//pr($where); exit;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			  $where[]=$data->ledger_account_id;
+		
 		}
 
-		$cashBankTos = $this->ContraVouchers->CashBankTos->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$cashBankTos = $this->ContraVouchers->CashBankTos->find('list')->where(['cashBankTos.id IN' => $where]);
 		
-       $companies = $this->ContraVouchers->Companies->find('all');
+		$companies = $this->ContraVouchers->Companies->find('all');
         
         $this->set(compact('contraVoucher', 'cashBankFroms', 'cashBankTos','companies'));
         $this->set('_serialize', ['contraVoucher']);
@@ -184,34 +179,29 @@ class ContraVouchersController extends AppController
         }
 		
 		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get(7, [
-            'contain' => ['VouchersReferencesGroups']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$where[]=$data->account_group_id;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			$where[]=$data->ledger_account_id;
 		}
 
-		$cashBankFroms = $this->ContraVouchers->CashBankFroms->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$cashBankFroms = $this->ContraVouchers->CashBankFroms->find('list')->where(['cashBankFroms.id IN' => $where]);
+		
 			
 		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get(8, [
-            'contain' => ['VouchersReferencesGroups']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			  $where[]=$data->account_group_id;
-			//pr($where); exit;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			  $where[]=$data->ledger_account_id;
+		
 		}
 
-		$cashBankTos = $this->ContraVouchers->CashBankTos->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$cashBankTos = $this->ContraVouchers->CashBankTos->find('list')->where(['cashBankTos.id IN' => $where]);
 		
-       $companies = $this->ContraVouchers->Companies->find('all');
+		$companies = $this->ContraVouchers->Companies->find('all');
         
         $this->set(compact('contraVoucher', 'cashBankFroms', 'cashBankTos','companies'));
         $this->set('_serialize', ['contraVoucher']);

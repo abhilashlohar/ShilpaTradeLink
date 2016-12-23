@@ -125,28 +125,22 @@ class ReceiptVouchersController extends AppController
             }
         }
 		$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get(3, [
-            'contain' => ['VouchersReferencesGroups']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$where[]=$data->account_group_id;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			$where[]=$data->ledger_account_id;
 		}
-		$receivedFroms = $this->ReceiptVouchers->ReceivedFroms->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN' => $where]);
-				}]]]);
+		$receivedFroms = $this->ReceiptVouchers->ReceivedFroms->find('list')->where(['ReceivedFroms.id IN' => $where]);
 				
 		$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get(4, [
-            'contain' => ['VouchersReferencesGroups']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$where[]=$data->account_group_id;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			$where[]=$data->ledger_account_id;
 		}
-		$bankCashes = $this->ReceiptVouchers->BankCashes->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN' => $where]);
-				}]]]);
+		$bankCashes = $this->ReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
 		
         $companies = $this->ReceiptVouchers->Companies->find('all');		
         $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies'));
@@ -205,29 +199,25 @@ class ReceiptVouchersController extends AppController
             } else {
                 $this->Flash->error(__('The receipt voucher could not be saved. Please, try again.'));
             }
-        }$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get(3, [
-            'contain' => ['VouchersReferencesGroups']
+        }
+		
+		$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get(3, [
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$where[]=$data->account_group_id;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			$where[]=$data->ledger_account_id;
 		}
-		$receivedFroms = $this->ReceiptVouchers->ReceivedFroms->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN' => $where]);
-				}]]]);
+		$receivedFroms = $this->ReceiptVouchers->ReceivedFroms->find('list')->where(['ReceivedFroms.id IN' => $where]);
 				
 		$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get(4, [
-            'contain' => ['VouchersReferencesGroups']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$where[]=$data->account_group_id;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			$where[]=$data->ledger_account_id;
 		}
-		$bankCashes = $this->ReceiptVouchers->BankCashes->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN' => $where]);
-				}]]]);
+		$bankCashes = $this->ReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
 		
         $companies = $this->ReceiptVouchers->Companies->find('all');		
         $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies'));

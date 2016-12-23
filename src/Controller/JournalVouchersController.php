@@ -102,22 +102,17 @@ class JournalVouchersController extends AppController
             }
 		}
 		$vouchersReferences = $this->JournalVouchers->VouchersReferences->get(9, [
-          'contain' => ['VouchersReferencesGroups']
+          'contain' => ['VoucherLedgerAccounts']
         ]);
 		//pr($vouchersReferences); exit;
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$where[]=$data->account_group_id;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			$where[]=$data->ledger_account_id;
 		}
 
-		$ledgers = $this->JournalVouchers->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$ledgers = $this->JournalVouchers->LedgerAccounts->find('list')->where(['LedgerAccounts.id IN' => $where]);
 			
-		
-		
-       $companies = $this->JournalVouchers->Companies->find('all');
+		$companies = $this->JournalVouchers->Companies->find('all');
         
         $this->set(compact('journalVoucher', 'ledgers','companies'));
         $this->set('_serialize', ['journalVoucher']);
@@ -174,18 +169,17 @@ class JournalVouchersController extends AppController
                 $this->Flash->error(__('The journal voucher could not be saved. Please, try again.'));
             }
         }
+		
 		$vouchersReferences = $this->JournalVouchers->VouchersReferences->get(9, [
-          'contain' => ['VouchersReferencesGroups']
+          'contain' => ['VoucherLedgerAccounts']
         ]);
+		//pr($vouchersReferences); exit;
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$where[]=$data->account_group_id;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			$where[]=$data->ledger_account_id;
 		}
 
-		$ledgers = $this->JournalVouchers->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$ledgers = $this->JournalVouchers->LedgerAccounts->find('list')->where(['LedgerAccounts.id IN' => $where]);
         $companies = $this->JournalVouchers->Companies->find('all');
         $this->set(compact('journalVoucher', 'companies','ledgers'));
         $this->set('_serialize', ['journalVoucher']);

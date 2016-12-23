@@ -94,32 +94,25 @@ class PettyCashReceiptVouchersController extends AppController
             }
         }
 		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(5, [
-            'contain' => ['VouchersReferencesGroups']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$where[]=$data->account_group_id;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			$where[]=$data->ledger_account_id;
 		}
 
-		$receivedFroms = $this->PettyCashReceiptVouchers->ReceivedFroms->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$receivedFroms = $this->PettyCashReceiptVouchers->ReceivedFroms->find('list')->where(['ReceivedFroms.id IN' => $where]);
 			
 		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(6, [
-            'contain' => ['VouchersReferencesGroups']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			  $where[]=$data->account_group_id;
-			//pr($where); exit;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			  $where[]=$data->ledger_account_id;
+			
 		}
-
-		$bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
 		
        $companies = $this->PettyCashReceiptVouchers->Companies->find('all');
         $this->set(compact('pettyCashReceiptVoucher', 'receivedFroms', 'bankCashes','companies'));
@@ -179,35 +172,29 @@ class PettyCashReceiptVouchersController extends AppController
            } else {
                 $this->Flash->error(__('The petty cash receipt voucher could not be saved. Please, try again.'));
             }
-        }$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(5, [
-            'contain' => ['VouchersReferencesGroups']
+        }
+		
+		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(5, [
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			$where[]=$data->account_group_id;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			$where[]=$data->ledger_account_id;
 		}
 
-		$receivedFroms = $this->PettyCashReceiptVouchers->ReceivedFroms->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
+		$receivedFroms = $this->PettyCashReceiptVouchers->ReceivedFroms->find('list')->where(['ReceivedFroms.id IN' => $where]);
 			
 		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(6, [
-            'contain' => ['VouchersReferencesGroups']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
-		foreach($vouchersReferences->vouchers_references_groups as $data){
-			  $where[]=$data->account_group_id;
-			//pr($where); exit;
+		foreach($vouchersReferences->voucher_ledger_accounts as $data){
+			  $where[]=$data->ledger_account_id;
+			
 		}
-
-		$bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups' => function ($q) use($where) {
-				   return $q
-						->where(['AccountGroups.id IN'=>$where]);
-				}]]]);
-		
-       $companies = $this->PettyCashReceiptVouchers->Companies->find('all');
+		$bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
+		$companies = $this->PettyCashReceiptVouchers->Companies->find('all');
         $this->set(compact('pettyCashReceiptVoucher', 'receivedFroms', 'bankCashes','companies'));
         $this->set('_serialize', ['pettyCashReceiptVoucher']);
  
