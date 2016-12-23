@@ -4,17 +4,19 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * ReceiptEffect Entity
+ * ReceiptBreakup Entity
  *
  * @property int $id
- * @property int $receipt_voucher_id
+ * @property string $type
+ * @property string $new_ref_no
  * @property int $invoice_id
- * @property int $amount
+ * @property int $receipt_voucher_id
+ * @property float $amount
  *
- * @property \App\Model\Entity\ReceiptVoucher $receipt_voucher
  * @property \App\Model\Entity\Invoice $invoice
+ * @property \App\Model\Entity\ReceiptVoucher $receipt_voucher
  */
-class ReceiptEffect extends Entity
+class ReceiptBreakup extends Entity
 {
 
     /**

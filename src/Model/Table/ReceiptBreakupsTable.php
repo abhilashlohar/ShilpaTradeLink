@@ -7,20 +7,20 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * ReceiptEffects Model
+ * ReceiptBreakups Model
  *
- * @property \Cake\ORM\Association\BelongsTo $ReceiptVouchers
  * @property \Cake\ORM\Association\BelongsTo $Invoices
+ * @property \Cake\ORM\Association\BelongsTo $ReceiptVouchers
  *
- * @method \App\Model\Entity\ReceiptEffect get($primaryKey, $options = [])
- * @method \App\Model\Entity\ReceiptEffect newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\ReceiptEffect[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\ReceiptEffect|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\ReceiptEffect patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\ReceiptEffect[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\ReceiptEffect findOrCreate($search, callable $callback = null)
+ * @method \App\Model\Entity\ReceiptBreakup get($primaryKey, $options = [])
+ * @method \App\Model\Entity\ReceiptBreakup newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\ReceiptBreakup[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\ReceiptBreakup|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\ReceiptBreakup patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\ReceiptBreakup[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\ReceiptBreakup findOrCreate($search, callable $callback = null)
  */
-class ReceiptEffectsTable extends Table
+class ReceiptBreakupsTable extends Table
 {
 
     /**
@@ -33,16 +33,16 @@ class ReceiptEffectsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('receipt_effects');
+        $this->table('receipt_breakups');
         $this->displayField('id');
         $this->primaryKey('id');
 
-        $this->belongsTo('ReceiptVouchers', [
-            'foreignKey' => 'receipt_voucher_id',
-            'joinType' => 'INNER'
-        ]);
         $this->belongsTo('Invoices', [
             'foreignKey' => 'invoice_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('ReceiptVouchers', [
+            'foreignKey' => 'receipt_voucher_id',
             'joinType' => 'INNER'
         ]);
     }
@@ -60,7 +60,15 @@ class ReceiptEffectsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->integer('amount')
+            ->requirePresence('type', 'create')
+            ->notEmpty('type');
+
+        $validator
+            ->requirePresence('new_ref_no', 'create')
+            ->notEmpty('new_ref_no');
+
+        $validator
+            ->decimal('amount')
             ->requirePresence('amount', 'create')
             ->notEmpty('amount');
 
@@ -76,8 +84,8 @@ class ReceiptEffectsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['receipt_voucher_id'], 'ReceiptVouchers'));
         $rules->add($rules->existsIn(['invoice_id'], 'Invoices'));
+        $rules->add($rules->existsIn(['receipt_voucher_id'], 'ReceiptVouchers'));
 
         return $rules;
     }

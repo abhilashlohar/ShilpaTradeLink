@@ -55,9 +55,8 @@ class ReceiptVouchersTable extends Table
             'foreignKey' => 'bank_cash_id',
             'propertyName' => 'BankCash',
         ]);
-		$this->belongsTo('ReceiptEffects', [
-            'foreignKey' => 'receipt_effect_id',
-            'joinType' => 'INNER'
+		$this->hasMany('ReceiptBreakups', [
+            'foreignKey' => 'receipt_voucher_id'
         ]);
     }
 
