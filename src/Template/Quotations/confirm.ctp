@@ -61,32 +61,29 @@ $(document).ready(function() {
 
 <div id="myModal2" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" style=" padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
 	<div class="modal-dialog">
-	<?= $this->Form->create() ?>
+	<?= $this->Form->create($email, ['id'=>'form_sample_3','url' => ['action' => 'email']]) ?>
 		<div class="modal-content">
 			<div class="modal-body">
-			<div style="height: 750px;">
-			
 				<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-							<br>
-							<table width="100%">
-								<tr>
-									<td>
-									<label class="col-md-2 control-label">Email Id 1:</label>
-									 <div class="col-md-6" id='TextBoxesGroup'>
-										<?php echo $this->Form->input('send_to',['label' => false,'class' => 'form-control input-sm','type'=>'textbox','value' =>$quotation->customer->customer_contacts[0]->email]); ?>
-									</div>
-									
-			                        <button  type="button" class="btn default"  id='addButton'>CC Add</button>
-									<button  type="button" class="btn default"  id='removeButton'>CC Remove</button>
-									</td>
+					<div class="col-md-12">
+						<div class="form-group">
+						<br>
+						<table width="100%">
+							<tr>
+								<td>
+								<label class="col-md-2 control-label">Email Id</label>
+								 <div class="col-md-8" id='TextBoxesGroup'>
+								 <?php echo $this->Form->input('quotation_id',['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value' =>$quotation->id]); ?>
+									<?php echo $this->Form->input('send_to[]',['label' => false,'class' => 'form-control input-sm','type'=>'email','Placeholder'=>"Email ID",'style'=>'margin-bottom:5px','value' =>$quotation->customer->customer_contacts[0]->email]); ?>
+								</div>
+								<a class="btn btn-xs btn-default" href="#" role='button'><i class="fa fa-plus" id='addButton'></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times" id='removeButton'></i></a>
 								
-								</tr>
-								
-							</table>
-						 </div>
-					</div>
+								</td>
+							</tr>
+							
+						</table>
+					 </div>
+				</div>
 				</div>
 
 				
@@ -130,16 +127,35 @@ $(document).ready(function() {
 		
 		</div>
 	<?= $this->Form->end() ?>
-	</div>
 </div>
 
 <script type="text/javascript">
 
 $(document).ready(function(){
 
-    var counter = 2;
+var form3 = $('#form_sample_3');
+	var error3 = $('.alert-danger', form3);
+	var success3 = $('.alert-success', form3);
+	form3.validate({
+		errorElement: 'span', //default input error message container
+		errorClass: 'help-block help-block-error', // default input error message class
+		focusInvalid: true, // do not focus the last invalid input
+		rules: {
+				send_to:{
+					required: true,	
+				},
+				message:{
+					required: true,	
+				}
+			},
+		messages: {
+			
+		}
 
-    $("#addButton").click(function () {
+		
+	});
+    var counter = 2;
+	$("#addButton").click(function () {
 
 	if(counter>10){
             alert("Only 10 textboxes allow");
@@ -149,8 +165,8 @@ $(document).ready(function(){
 	var newTextBoxDiv = $(document.createElement('div'))
 	     .attr("id", 'TextBoxDiv' + counter); 
 
-	newTextBoxDiv.after().html('<label>EMAIL ID'+ counter + '  : </label>' +
-	  '<input type="text" class="form-control input-sm" name="textbox" id="textbox' + counter + '" value="" >');
+	newTextBoxDiv.after().html(
+	  '<input type="email" class="form-control input-sm" name="send_to[]" id="textbox' + counter + '" value="" style="margin-bottom:5px;" Placeholder="Email ID">');
 	
 	newTextBoxDiv.appendTo("#TextBoxesGroup");
 

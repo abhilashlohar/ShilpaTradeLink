@@ -93,7 +93,7 @@ class VouchersReferencesController extends AppController
 		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $vouchersReference = $this->VouchersReferences->patchEntity($vouchersReference, $this->request->data);
-			pr($vouchersReference); exit;
+			//pr($vouchersReference); exit;
             if ($this->VouchersReferences->save($vouchersReference)) {
                 $this->Flash->success(__('The vouchers reference has been saved.'));
 

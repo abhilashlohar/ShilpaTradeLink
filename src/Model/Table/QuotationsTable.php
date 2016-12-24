@@ -63,6 +63,7 @@ class QuotationsTable extends Table
             'foreignKey' => 'item_group_id',
             'joinType' => 'INNER'
         ]);
+		
 		$this->belongsTo('TermsConditions');
 		$this->belongsTo('Filenames');
 		$this->belongsTo('Items', [
@@ -70,7 +71,7 @@ class QuotationsTable extends Table
             'joinType' => 'INNER'
         ]);
 		$this->belongsTo('QuotationCloseReasons');
-		
+		$this->belongsTo('EmailRecords');
 		$this->hasMany('QuotationRows', [
             'foreignKey' => 'quotation_id',
 			'saveStrategy' => 'replace'

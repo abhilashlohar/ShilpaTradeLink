@@ -9,6 +9,8 @@ use Cake\Validation\Validator;
 /**
  * EmailRecords Model
  *
+ * @property \Cake\ORM\Association\BelongsTo $Quotations
+ *
  * @method \App\Model\Entity\EmailRecord get($primaryKey, $options = [])
  * @method \App\Model\Entity\EmailRecord newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\EmailRecord[] newEntities(array $data, array $options = [])
@@ -33,7 +35,11 @@ class EmailRecordsTable extends Table
         $this->table('email_records');
         $this->displayField('id');
         $this->primaryKey('id');
-		$this->belongsTo('Quotations');
+
+        $this->belongsTo('Quotations', [
+            'foreignKey' => 'quotation_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
@@ -61,5 +67,19 @@ class EmailRecordsTable extends Table
             ->notEmpty('message');
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['quotation_id'], 'Quotations'));
+
+        return $rules;
     }
 }

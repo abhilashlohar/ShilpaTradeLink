@@ -206,10 +206,8 @@ class QuotationsController extends AppController
 	
 	public function confirm($id = null)
     {
-		 
-		$send_to=$this->request->query('send_to');
-		//pr ($send_to); exit;
 		$this->viewBuilder()->layout('pdf_layout');
+		
 		$quotation = $this->Quotations->get($id, [
             'contain' => ['QuotationRows','Customers'=>['CustomerContacts'=>function ($q) {
 						   return $q
@@ -217,7 +215,6 @@ class QuotationsController extends AppController
 						}]]
 			]);
 			
-		
 		if ($this->request->is(['patch', 'post', 'put'])) {
             foreach($this->request->data['quotation_rows'] as $quotation_row_id=>$value){
 				$quotationRow=$this->Quotations->QuotationRows->get($quotation_row_id);
@@ -227,14 +224,33 @@ class QuotationsController extends AppController
 			return $this->redirect(['action' => 'confirm/'.$id]);
         }
 		
-		$this->set(compact('quotation','id'));
+		$email = $this->Quotations->EmailRecords->newEntity();
+		
+		$this->set(compact('quotation','id','email'));
         
     }
 	
 	public function email($id = null)
     {
-		$this->viewBuilder()->layout('');
-    }
+		if ($this->request->is(['post'])) {
+			
+			$send_to=implode(',',$this->request->data('send_to'));
+			$email = $this->Quotations->EmailRecords->newEntity();
+			$email = $this->Quotations->EmailRecords->patchEntity($email, $this->request->data);
+			$email->send_to=$send_to;
+			
+			 if ($this->Quotations->EmailRecords->save($email)) {
+				 
+                $this->Flash->success(__('The Email has been saved.'));
+				return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The Email not sent. Please, try again.'));
+            }
+        }
+        $this->set(compact('email'));
+        $this->set('_serialize', ['email']);
+			
+	}
 	
 	public function pdf($id = null)
     {
@@ -279,7 +295,6 @@ class QuotationsController extends AppController
 		}else{
 			$quotation = $this->Quotations->newEntity();
 		}
-		$s_employee_id=$this->viewVars['s_employee_id'];
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		
 		$session = $this->request->session();
