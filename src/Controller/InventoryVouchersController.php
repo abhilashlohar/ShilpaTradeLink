@@ -102,9 +102,9 @@ class InventoryVouchersController extends AppController
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
-    {
+    { 	$this->viewBuilder()->layout('index_layout');
         $inventoryVoucher = $this->InventoryVouchers->get($id, [
-            'contain' => []
+            'contain' => ['Items','Invoices','InventoryVoucherRows']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);
@@ -116,9 +116,10 @@ class InventoryVouchersController extends AppController
                 $this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
             }
         }
+		
         $invoices = $this->InventoryVouchers->Invoices->find('list', ['limit' => 200]);
-        $invoiceRows = $this->InventoryVouchers->InvoiceRows->find('list', ['limit' => 200]);
-        $this->set(compact('inventoryVoucher', 'invoices', 'invoiceRows'));
+        $items = $this->InventoryVouchers->Items->find('list', ['limit' => 200]);
+        $this->set(compact('inventoryVoucher', 'invoices', 'invoiceRows','items'));
         $this->set('_serialize', ['inventoryVoucher']);
     }
 
