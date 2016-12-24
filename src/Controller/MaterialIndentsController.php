@@ -39,7 +39,8 @@ class MaterialIndentsController extends AppController
      */
     public function view($id = null)
     {
-        $materialIndent = $this->MaterialIndents->get($id, [
+        $this->viewBuilder()->layout('index_layout');
+		$materialIndent = $this->MaterialIndents->get($id, [
             'contain' => ['Companies', 'JobCards', 'MaterialIndentRows']
         ]);
 

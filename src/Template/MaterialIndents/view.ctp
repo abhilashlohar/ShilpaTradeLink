@@ -1,4 +1,4 @@
-<?php pr($materialIndent); exit; ?>
+<?php //pr($materialIndent); exit; ?>
  
 <div class="materialIndents view large-9 medium-8 columns content">
     <h3><?= h($materialIndent->id) ?></h3>

@@ -4,7 +4,7 @@
 <table width="100%" class="divHeader">
 	<tr>
 		<td width="40%"><?php echo $this->Html->image('/logos/'.$jobCard->company->logo, ['width' => '47%']); ?></td>
-		<td align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">JOB CARD</td>
+		<td valign="bottom" align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">JOB CARD</td>
 		<td align="right" width="50%" style="font-size: 14px;">
 		<span style="font-size: 14px;"><?= h($jobCard->company->name) ?></span><br/>
 		<span><?= $this->Text->autoParagraph(h($jobCard->company->address)) ?></span>
@@ -99,6 +99,7 @@
 			<b><?= $sales_order_row->item->name?></b>
 			</td>
 			<td>
+			<?php $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
 				<table>
 					<tr>
 						<td align="center">Sr no.</td>
@@ -107,12 +108,12 @@
 					</tr>
 					<?php foreach($sales_order_row->item->job_card_rows as $job_card_row): ?>
 					<tr>
-						<td align="center"><?php  echo $table2;?></td>
+						<td align="center"><?= h(++$page_no) ?></td>
 						<td align="center"><?= $job_card_row->item->name?></td>
 						<td align="center"><?= $job_card_row->quantity?></td>
-						
 					</tr>
-					<?php $table2++; endforeach; ?>
+			        <?php endforeach; ?>
+				 
 				</table>
 			</td>
 		</tr>
