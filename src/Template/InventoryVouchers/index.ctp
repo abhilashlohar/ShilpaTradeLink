@@ -1,78 +1,57 @@
-<?php //pr($inventoryVouchers); exit; ?>
+
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Inventory Vouchers</span>
+			<span class="caption-subject font-blue-steel uppercase">Inventory Vouchers</span> 
 		</div>
-	</div>
-	<div class="portlet-body form">
-		<!-- BEGIN FORM-->
-		
-			<div class="form-body">
-				<div class="row">
-					
-					
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Invoice No <span class="required" aria-required="true">*</span></label>
+	<div class="portlet-body">
+		<div class="row">
+			<div class="col-md-12">
+				<?php $page_no=$this->Paginator->current('materialIndents'); $page_no=($page_no-1)*20; ?>
+				<table class="table table-bordered table-striped table-hover">
+					<thead>
+						<tr>
+							<th>Sr. No.</th>
+							<th>Inventory Voucher No</th>
+							<th>Customer</th>
 							
-							<?php echo $inventoryVouchers->iv1.'/IN-'.str_pad($$inventoryVouchers->iv2, 3, '0', STR_PAD_LEFT).'/'. $$inventoryVouchers->iv1.'/'. $$inventoryVouchers->iv4; ?>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Item Name</label>
-							<?php echo $this->Form->input('item_id', ['label' => false,'type'=>'hidden','value'=>$invoiceRows->item_id]); ?>
-							<?php echo $inventoryVouchers->invoice_row->item->name; ?>
-						</div>
-					</div>
-				</div>	
-				
-				<div class="table-scrollable">
-					<table class="table tableitm" id="main_tb">
-						<thead>
-							<tr>
-								<th width="50">Sr.No. </th>
-								<th>Items</th>
-								<th width="130">Quantity</th>
-								
-								<th width="70"></th>
-							</tr>
-						</thead>
-						<tbody>
+							<th class="actions"><?= __('Actions') ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php $i=0; foreach ($inventoryVouchers as $inventoryVoucher): $i++; ?>
+						<tr>
+							<td><?= h(++$page_no) ?></td>
+							<td><?= h(($inventoryVoucher->iv1.'/IV-'.str_pad($inventoryVoucher->iv2, 3, '0', STR_PAD_LEFT).'/'.$inventoryVoucher->iv3.'/'.$inventoryVoucher->iv4)) ?></td>
+							<td><?= h($inventoryVoucher->invoice_row->item->name) ?></td>
+							<td>
+							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $inventoryVoucher->id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
+								<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+									['action' => 'delete', $inventoryVoucher->id], 
+									[
+										'escape' => false,
+										'class' => 'btn btn-xs red',
+										'confirm' => __('Are you sure, you want to delete {0}?', $inventoryVoucher->id)
+									]
+								) ?>
 							
-						</tbody>
-						
-					</table>
+							</td>
+							
+						</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+				<div class="paginator">
+					<ul class="pagination">
+						<?= $this->Paginator->prev('< ' . __('previous')) ?>
+						<?= $this->Paginator->numbers() ?>
+						<?= $this->Paginator->next(__('next') . ' >') ?>
+					</ul>
+					<p><?= $this->Paginator->counter() ?></p>
 				</div>
-				
-	
 			</div>
 		</div>
-
-		<!-- END FORM-->
 	</div>
 </div>
 
-<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
-<style>
-#sortable li{
-	cursor: -webkit-grab;
-}
- 
-.table thead tr th {
-    color: #FFF;
-	background-color: #254b73;
-}
-</style>
-<?php echo $this->Html->css('/drag_drop/jquery-ui.css'); ?>
-<?php echo $this->Html->script('/drag_drop/jquery-1.12.4.js'); ?>
-<?php echo $this->Html->script('/drag_drop/jquery-ui.js'); ?>
-
-<script>
-$( function() {
-$( "#sortable" ).sortable();
-$( "#sortable" ).disableSelection();
-} );
-</script>

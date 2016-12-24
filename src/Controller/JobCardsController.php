@@ -127,7 +127,7 @@ class JobCardsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $jobCard = $this->JobCards->get($id, [
-            'contain' => []
+            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'],'Customers'],'Companies','JobCardRows'=>['Items']]
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
@@ -139,9 +139,10 @@ class JobCardsController extends AppController
                 $this->Flash->error(__('The job card could not be saved. Please, try again.'));
             }
         }
-        $salesOrders = $this->JobCards->SalesOrders->find('list', ['limit' => 200]);
-        $companies = $this->JobCards->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('jobCard', 'salesOrders', 'companies'));
+        //$salesOrders = $this->JobCards->SalesOrders->find('list', ['limit' => 200]);
+        //$companies = $this->JobCards->Companies->find('list', ['limit' => 200]);
+		$items = $this->JobCards->Items->find('list');
+        $this->set(compact('jobCard', 'salesOrders', 'companies','items'));
         $this->set('_serialize', ['jobCard']);
     }
 

@@ -44,7 +44,7 @@
 								 <?php if($material_indent=="true"){
 									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Material Indents','/MaterialIndents/Add?job-cards='.$jobCards->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
-								 
+								 <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $jobCards->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 								 <?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $jobCards->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips')); ?>
 								 
 								<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',

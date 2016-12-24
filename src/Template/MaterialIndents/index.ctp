@@ -1,4 +1,4 @@
-<?php //pr($materialIndents); exit; ?>
+<?php pr($materialIndents); exit; ?>
 
 <div class="portlet light bordered">
 	<div class="portlet-title">
