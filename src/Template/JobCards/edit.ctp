@@ -1,4 +1,4 @@
-<?php //pr($jobCard); exit; ?>
+<?php //pr($jobCard->job_card_rows); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
@@ -123,24 +123,32 @@
 							<?php echo $this->Form->input('sales_order_id', ['type'=>'text','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->id,'type'=>'hidden']); ?>
 							<b><?= h($sales_order_row->item->name) ?></b>
 							</td>
-							<?php foreach($jobCard->job_card_rows as $job_card_rows){ ?>
+							
 							<td>
-								<table>
-									<tbody>
+								<?php $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
+									<table>
 										<tr>
-											<td>0</td>
-											<td>
+											<td align="center">Sr no.</td>
+											<td align="center">item name</td>
+											<td align="center">quantity</td>
+										</tr>
+										<?php foreach($jobCard->job_card_rows as $job_card_row): ?>
+										<tr>
+											<td align="center"><?= h(++$page_no) ?></td>
 											
-											<?php echo $this->Form->input('item_id',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm','label'=>false,'value'=>$job_card_rows->item->name]); ?>
+											<td>
+											<?php echo $this->Form->input('sales_order_row_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
+											<?php echo $this->Form->input('item_id',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm','label'=>false,'value'=>$job_card_row->item->name]); ?>
 											</td>
-											<td><?php echo $this->Form->input('quantity',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_rows->quantity]); ?></td>
+											<td><?php echo $this->Form->input('quantity',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
+											<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 											
 										</tr>
-										
-									</tbody>
-								</table>
+										<?php endforeach; ?>
+									 
+									</table>
 							</td>
-							<?php } ?>
+							
 						</tr>
 					<?php } ?>
 					</tbody>
@@ -159,7 +167,7 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() { 
-	onload_add_row();
+	
 	function onload_add_row(){
 		var tr1=$("#onload_sample_tb").html();
 		$("#main_tb tbody#maintbody tr.main_tr").each(function(){

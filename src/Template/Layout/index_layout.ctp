@@ -249,6 +249,7 @@ select
 					<ul class="sub-menu">
 						<li><?php echo $this->Html->link( 'Create', '/Invoices/add' ); ?></li>
 						<li><?php echo $this->Html->link( 'View', '/Invoices' ); ?></li>
+						
 					</ul>
 				</li>
 				<li>
@@ -277,6 +278,7 @@ select
 						<li><?php echo $this->Html->link( 'View', '/MaterialIndents' ); ?></li>
 					</ul>
 				</li>
+				<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Inventory Voucher','/Invoices/PendingItemForInventoryVoucher',array('escape'=>false)); ?></li>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-university"></i>
