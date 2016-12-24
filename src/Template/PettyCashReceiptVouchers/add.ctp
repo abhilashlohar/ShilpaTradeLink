@@ -56,13 +56,17 @@
 								<?php echo $this->Form->radio(
 									'payment_mode',
 									[
-										['value' => 'Cheque', 'text' => 'Cheque'],
+										['value' => 'Cheque', 'text' => 'Cheque','checked'],
 										['value' => 'Cash', 'text' => 'Cash']
 									]
 								); ?>
 								</div>
-                                
-							</div>
+                            </div>
+						</div>
+						<div class="form-group" id="chq_no">
+							<label class="control-label">Cheque No<span class="required" aria-required="true">*</span></label>
+							<?php 
+							echo $this->Form->input('cheque_no', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Cheque No','checked']); ?>
 						</div>
 					</div>
 				<div class="col-md-4">

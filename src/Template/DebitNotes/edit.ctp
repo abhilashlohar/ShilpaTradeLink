@@ -54,15 +54,19 @@
 								<?php echo $this->Form->radio(
 									'payment_mode',
 									[
-										['value' => 'Cheque', 'text' => 'Cheque'],
-										['value' => 'Cash', 'text' => 'Cash']
+										['value' => 'Cheque', 'text' => 'Cheque','id'=>'id_radio1'],
+										['value' => 'Cash', 'text' => 'Cash','id'=>'id_radio2']
 									]
 								); ?>
 								</div>
-                                
-							</div>
+                            </div>
 						</div>
-					</div>
+						<div class="form-group" id="chq_no">
+							<label class="control-label">Cheque No<span class="required" aria-required="true">*</span></label>
+							<?php 
+							echo $this->Form->input('cheque_no', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Cheque No','checked']); ?>
+						</div>
+				</div>
 				<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Amount<span class="required" aria-required="true">*</span></label>
@@ -192,5 +196,22 @@ $(document).ready(function() {
 				return false;  
 			}
 	});
+	
+	$('input[name="payment_mode"]').die().live("click",function() {
+		var payment_mode=$(this).val();
+		if(payment_mode=="Cheque"){
+			$("#chq_no").show();
+		}else{
+			$("#chq_no").hide();
+			$('input[name="cheque_no"]').val('');
+		}
+	});
+	
+	if ($('#id_radio1').is(':checked')) {
+			$('#chq_no').show('fast');
+	}
+	else{
+		$('#chq_no').hide('fast');
+	}
 });
 </script>
