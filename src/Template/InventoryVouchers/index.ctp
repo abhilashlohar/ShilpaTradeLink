@@ -1,4 +1,4 @@
-<?php pr($inventoryVouchers); exit; ?>
+<?php //pr($inventoryVouchers); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
