@@ -148,7 +148,9 @@
 							echo $this->Form->input('invoice_rows['.$q.'][item_id]', ['type'=>'hidden','value'=>$invoice_rows->item_id]);
 							echo $this->Form->input('item_id_display', ['type'=>'text','label' => false,'class' => 'form-control input-sm','value'=>$invoice_rows->item->name,'readonly']);
 							?></td>
-							<td><?php echo $this->Form->input('invoice_rows['.$q.'][quantity]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$invoice_rows->quantity,'max'=>$total_items[$invoice_rows->item_id]-$processed_items[$invoice_rows->item_id]+$invoice_rows->quantity]); ?></td>
+							<td>
+							<?php echo $this->Form->input('invoice_rows['.$q.'][height]', ['type' => 'hidden','value' => @$invoice_rows->height]); ?>
+							<?php echo $this->Form->input('invoice_rows['.$q.'][quantity]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$invoice_rows->quantity,'max'=>$total_items[$invoice_rows->item_id]-$processed_items[$invoice_rows->item_id]+$invoice_rows->quantity]); ?></td>
 							<td><?php echo $this->Form->input('invoice_rows['.$q.'][rate]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$invoice_rows->rate,'readonly']); ?></td>
 							<td><?php echo $this->Form->input('invoice_rows['.$q.'][amount]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$invoice_rows->amount]); ?></td>
 							<td>

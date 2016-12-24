@@ -20,7 +20,7 @@ class InventoryVouchersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['Invoices', 'InvoiceRows']
+            'contain' => ['InventoryVoucherRows','InvoiceRows'=>['Items']]
         ];
         $inventoryVouchers = $this->paginate($this->InventoryVouchers);
 

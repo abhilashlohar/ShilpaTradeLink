@@ -1,55 +1,78 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Inventory Voucher'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Invoices'), ['controller' => 'Invoices', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Invoice'), ['controller' => 'Invoices', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Invoice Rows'), ['controller' => 'InvoiceRows', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Invoice Row'), ['controller' => 'InvoiceRows', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Inventory Voucher Rows'), ['controller' => 'InventoryVoucherRows', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Inventory Voucher Row'), ['controller' => 'InventoryVoucherRows', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="inventoryVouchers index large-9 medium-8 columns content">
-    <h3><?= __('Inventory Vouchers') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th><?= $this->Paginator->sort('id') ?></th>
-                <th><?= $this->Paginator->sort('invoice_id') ?></th>
-                <th><?= $this->Paginator->sort('invoice_row_id') ?></th>
-                <th><?= $this->Paginator->sort('iv1') ?></th>
-                <th><?= $this->Paginator->sort('iv2') ?></th>
-                <th><?= $this->Paginator->sort('iv3') ?></th>
-                <th><?= $this->Paginator->sort('iv4') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($inventoryVouchers as $inventoryVoucher): ?>
-            <tr>
-                <td><?= $this->Number->format($inventoryVoucher->id) ?></td>
-                <td><?= $inventoryVoucher->has('invoice') ? $this->Html->link($inventoryVoucher->invoice->id, ['controller' => 'Invoices', 'action' => 'view', $inventoryVoucher->invoice->id]) : '' ?></td>
-                <td><?= $inventoryVoucher->has('invoice_row') ? $this->Html->link($inventoryVoucher->invoice_row->id, ['controller' => 'InvoiceRows', 'action' => 'view', $inventoryVoucher->invoice_row->id]) : '' ?></td>
-                <td><?= h($inventoryVoucher->iv1) ?></td>
-                <td><?= h($inventoryVoucher->iv2) ?></td>
-                <td><?= h($inventoryVoucher->iv3) ?></td>
-                <td><?= h($inventoryVoucher->iv4) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $inventoryVoucher->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $inventoryVoucher->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $inventoryVoucher->id], ['confirm' => __('Are you sure you want to delete # {0}?', $inventoryVoucher->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-        </ul>
-        <p><?= $this->Paginator->counter() ?></p>
-    </div>
+<?php //pr($inventoryVouchers); exit; ?>
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="icon-globe font-blue-steel"></i>
+			<span class="caption-subject font-blue-steel uppercase">Inventory Vouchers</span>
+		</div>
+	</div>
+	<div class="portlet-body form">
+		<!-- BEGIN FORM-->
+		
+			<div class="form-body">
+				<div class="row">
+					
+					
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Invoice No <span class="required" aria-required="true">*</span></label>
+							
+							<?php echo $inventoryVouchers->iv1.'/IN-'.str_pad($$inventoryVouchers->iv2, 3, '0', STR_PAD_LEFT).'/'. $$inventoryVouchers->iv1.'/'. $$inventoryVouchers->iv4; ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Item Name</label>
+							<?php echo $this->Form->input('item_id', ['label' => false,'type'=>'hidden','value'=>$invoiceRows->item_id]); ?>
+							<?php echo $inventoryVouchers->invoice_row->item->name; ?>
+						</div>
+					</div>
+				</div>	
+				
+				<div class="table-scrollable">
+					<table class="table tableitm" id="main_tb">
+						<thead>
+							<tr>
+								<th width="50">Sr.No. </th>
+								<th>Items</th>
+								<th width="130">Quantity</th>
+								
+								<th width="70"></th>
+							</tr>
+						</thead>
+						<tbody>
+							
+						</tbody>
+						
+					</table>
+				</div>
+				
+	
+			</div>
+		</div>
+
+		<!-- END FORM-->
+	</div>
 </div>
+
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<style>
+#sortable li{
+	cursor: -webkit-grab;
+}
+ 
+.table thead tr th {
+    color: #FFF;
+	background-color: #254b73;
+}
+</style>
+<?php echo $this->Html->css('/drag_drop/jquery-ui.css'); ?>
+<?php echo $this->Html->script('/drag_drop/jquery-1.12.4.js'); ?>
+<?php echo $this->Html->script('/drag_drop/jquery-ui.js'); ?>
+
+<script>
+$( function() {
+$( "#sortable" ).sortable();
+$( "#sortable" ).disableSelection();
+} );
+</script>

@@ -40,6 +40,7 @@ class MaterialIndentsTable extends Table
 		$this->belongsTo('Customers');
 		$this->belongsTo('Items');
 		$this->belongsTo('ItemLedgers');
+	
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
@@ -52,6 +53,11 @@ class MaterialIndentsTable extends Table
             'foreignKey' => 'material_indent_id',
 			'saveStrategy' => 'replace'
         ]);
+		$this->belongsTo('Creator', [
+			'className' => 'Employees',
+			'foreignKey' => 'created_by',
+			'propertyName' => 'creator',
+		]);
     }
 
     /**
