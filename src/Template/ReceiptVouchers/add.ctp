@@ -1,4 +1,15 @@
-
+<style>
+.table thead tr th {
+    color: #FFF;
+	background-color: #254b73;
+}
+.padding-right-decrease{
+	padding-right: 0;
+}
+.padding-left-decrease{
+	padding-left: 0;
+}
+</style>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
@@ -56,7 +67,7 @@
 								<?php echo $this->Form->radio(
 									'payment_mode',
 									[
-										['value' => 'Cheque', 'text' => 'Cheque'],
+										['value' => 'Cheque', 'text' => 'Cheque','checked'],
 										['value' => 'Cash', 'text' => 'Cash']
 									]
 								); ?>
@@ -77,27 +88,30 @@
 						</div>
 					</div>
 				</div>
+				
 				<br/>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<div class="radio-list">
-								<div class="radio-inline" >
-								<?php echo $this->Form->radio(
-									'payment_process',
-									[
-										['value' => 'On Account Pay', 'text' => 'On Account Pay'],
-										['value' => 'New Reference Number', 'text' => 'New Reference Number'],
-										['value' => 'Against Reference Number', 'text' => 'Against Reference Number']
-									]
-								); ?>
-								</div>
-							</div>
-						</div>
-						<div id="new_ref_no_div" style="display:none;">
-						<?php echo $this->Form->input('new_ref_number', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mention Reference Number']); ?>
-						</div>
-					</div>
+				<div style="width: 70%;">
+				<table class="table tableitm" id="main_tb" >
+					<thead>
+						<tr>
+							<th width="3%">Sr.No. </th>
+							<th width="30%">Type</th>
+							<th width="37%">Reference</th>
+							<th width="20%">Amount</th>
+							<th width="10%"></th>
+						</tr>
+					</thead>
+					<tbody id="main_tbody">
+					
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="3" align="right"><b>Total</b></td>
+							<td><?php echo $this->Form->input('total_of_breakups', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total']); ?></td>
+							<td></td>
+						</tr>
+					</tfoot>
+				</table>
 				</div>
 			</div>
 		
@@ -120,6 +134,7 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
+		ignore: [],
 		rules: {
 			
 		},
@@ -164,23 +179,9 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			q="ok";
-			$("#main_tb tbody tr").each(function(){
-				var t=$(this).find("td:nth-child(2) input").val();
-				var w=$(this).find("td:nth-child(3) input").val();
-				var r=$(this).find("td:nth-child(4) input").val();
-				if(t=="" || w=="" || r==""){
-					q="e";
-				}
-			});
-			if(q=="e"){
-				$("#row_error").show();
-				return false;
-			}else{
-				success3.show();
-				error3.hide();
-				form[0].submit(); // submit the form
-			}
+			success3.show();
+			error3.hide();
+			form[0].submit(); // submit the form
 		}
 
 	});
@@ -214,13 +215,106 @@ $(document).ready(function() {
 			}
 	});
 	
-	$('input[name="payment_process"]').die().live("click",function() {
-		var payment_process=$(this).val();
-		if(payment_process=="New Reference Number"){
-			$("#new_ref_no_div").show();
+	
+	$('.addrow').die().live("click",function() { 
+		add_row();
+    });
+	
+	add_row();
+	function add_row(){
+		var tr1=$("#sample_tb tbody tr").clone();
+		$("#main_tb tbody#main_tbody").append(tr1);
+		rename_rows();
+	}
+	
+	$('.deleterow').die().live("click",function() {
+		var l=$(this).closest("table tbody").find("tr").length;
+		if (confirm("Are you sure to remove row ?") == true) {
+			if(l>1){
+				var row_no=$(this).closest("tr").remove();
+				rename_rows();
+			}
+		} 
+    });
+	
+	function rename_rows(){
+		var i=0;
+		$("#main_tb tbody tr").each(function(){
+			i++;
+			$(this).find("td:nth-child(1)").html(i);
+			$(this).find("td:nth-child(2) select").attr({name:"receipt_breakups["+i+"][type]", id:"receipt_breakups-"+i+"-type"}).rules("add", "required");
+			var type=$(this).find("td:nth-child(2) option:selected").val();
+			if(type=='Against Ref'){
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"receipt_breakups["+i+"][invoice_id]", id:"receipt_breakups-"+i+"-invoice_id"}).rules("add", "required");
+				$(this).find("td:nth-child(3) input:eq(1)").attr({name:"receipt_breakups["+i+"][q]", id:"receipt_breakups-"+i+"-q"}).rules("remove", "required");
+				$(this).find("td:nth-child(3) span[for=receipt_breakups-"+i+"-new_ref_no]").remove();
+				
+			}else if(type=='On Account' || type==''){
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"receipt_breakups["+i+"][q]", id:"receipt_breakups-"+i+"-q"}).rules("remove", "required");
+				$(this).find("td:nth-child(3) input:eq(1)").attr({name:"receipt_breakups["+i+"][q]", id:"receipt_breakups-"+i+"-q"}).rules("remove", "required");
+			}else{
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"receipt_breakups["+i+"][q]", id:"receipt_breakups-"+i+"-q"}).rules("remove", "required");
+				$(this).find("td:nth-child(3) input:eq(1)").attr({name:"receipt_breakups["+i+"][new_ref_no]", id:"receipt_breakups-"+i+"-new_ref_no"}).rules("add", "required");
+				$(this).find("td:nth-child(3) span[for=receipt_breakups-"+i+"-invoice_id]").remove();
+			}
+			
+			$(this).find("td:nth-child(4) input").attr({name:"receipt_breakups["+i+"][amount]", id:"receipt_breakups-"+i+"-amount"}).rules("add", "required");
+		})
+	}
+	
+	
+	$('.type').die().live("change",function() {
+		var type=$(this).find('option:selected').val();
+		if(type=='Against Ref'){
+			$(this).closest('tr').find('td:nth-child(3)').find('a').show();
+			$(this).closest('tr').find('td:nth-child(3)').find('input:eq(1)').hide();
+		}else if(type=='On Account' || type==''){
+			$(this).closest('tr').find('td:nth-child(3)').find('a').hide();
+			$(this).closest('tr').find('td:nth-child(3)').find('input:eq(1)').hide();
 		}else{
-			$("#new_ref_no_div").hide();
+			$(this).closest('tr').find('td:nth-child(3)').find('a').hide();
+			$(this).closest('tr').find('td:nth-child(3)').find('input:eq(1)').show();
 		}
+		
+		rename_rows();
 	});
+	
+	$('.select_ref').die().live("click",function() {
+		$('#myModal1').show();
+	});
+	
 });
 </script>
+
+<table id="sample_tb" style="display:none;">
+	<tbody >
+		<tr>
+			<td>0</td>
+			<td><?php 
+			$options=['Against Ref'=>'Against Ref','New Ref'=>'New Ref','On Account'=>'On Account','Advance'=>'Advance'];
+			echo $this->Form->input('type', ['empty'=>'--select--','options' => $options,'label' => false,'class' => 'form-control input-sm type','placeholder' => 'Rate']); ?></td>
+			<td>
+				<a href="#" role="button" class="select_ref" style="display:none;">Select Ref</a>
+				<?php echo $this->Form->input('invoice_id', ['type' => 'hidden','class' => 'my_item']); ?>
+				<?php echo $this->Form->input('new_ref', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Type New Ref','style'=>'display:none']); ?>
+			</td>
+			<td><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
+			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+<div id="myModal1" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body" id="result_ajax">
+				
+			</div>
+			<div class="modal-footer">
+				<button class="btn default closebtn">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -314,9 +314,7 @@ if(!empty($revision))
 			</td>
 			<td></td>
 		</tr>
-		
 	</tbody>
-	
 </table>
 <div id="terms_conditions" style="display:none;"></div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
