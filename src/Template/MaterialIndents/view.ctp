@@ -44,7 +44,7 @@
 	</div>
 </div>
 <br/><br/>
-<?php $page_no=$this->Paginator->current('MaterialIndents'); $page_no=($page_no-1)*20; ?>	
+<?php $page_no=0; ?>	
 	<table class="table tableitm">
 		<thead>
 			<tr>

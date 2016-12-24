@@ -37,11 +37,12 @@ class InventoryVouchersController extends AppController
      */
     public function view($id = null)
     {
-        $inventoryVoucher = $this->InventoryVouchers->get($id, [
-            'contain' => ['Invoices', 'InvoiceRows', 'InventoryVoucherRows']
+		$this->viewBuilder()->layout('index_layout');
+	   $inventoryVoucher = $this->InventoryVouchers->get($id, [
+            'contain' => ['Invoices','Items','InvoiceRows','InventoryVoucherRows'=>['Items']]
         ]);
-
-        $this->set('inventoryVoucher', $inventoryVoucher);
+		
+		 $this->set('inventoryVoucher', $inventoryVoucher);
         $this->set('_serialize', ['inventoryVoucher']);
     }
 

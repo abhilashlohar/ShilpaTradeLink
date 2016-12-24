@@ -35,6 +35,8 @@
 										'confirm' => __('Are you sure, you want to delete {0}?', $inventoryVoucher->id)
 									]
 								) ?>
+								
+								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $inventoryVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips')); ?>
 							
 							</td>
 							
