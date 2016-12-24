@@ -77,6 +77,7 @@ class InventoryVouchersController extends AppController
 			$inventoryVoucher->invoice_id=$invoice_id;
 			//pr($inventoryVoucher->invoice_id); 
 			$inventoryVoucher->created_by=$s_employee_id; 
+			$inventoryVoucher->company_id=$st_company_id; 
 			$inventoryVoucher->invoice_row_id=$invoice_row_id;
 			//pr($inventoryVoucher->invoice_row_id); exit;
             if ($this->InventoryVouchers->save($inventoryVoucher)) {
