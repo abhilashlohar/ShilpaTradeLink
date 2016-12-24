@@ -164,6 +164,24 @@ $(document).ready(function() {
 		$(this).closest('tr').remove();
     });
 	
+	$('.quantity').die().live("keyup",function() {
+		var asc=$(this).val();
+		var numbers =  /^[0-9]*\.?[0-9]*$/;
+		if(asc==0)
+		{
+			$(this).val('');
+			return false; 
+		}
+		else if(asc.match(numbers))  
+		{  
+		} 
+		else  
+		{  
+			$(this).val('');
+			return false;  
+		}
+	});
+	
 	function rename_rows_name(){
 		var i=0; 
 		$("#main_tb tbody#maintbody tr.main_tr").each(function(){
@@ -204,7 +222,7 @@ $(document).ready(function() {
 			<?php echo $this->Form->input('sales_order_row_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
 			<?php echo $this->Form->input('item_id',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm','label'=>false]); ?>
 			</td>
-			<td><?php echo $this->Form->input('quantity',['class' => 'form-control input-sm','label'=>false,'placeholder'=>'Quantity']); ?></td>
+			<td><?php echo $this->Form->input('quantity',['class' => 'form-control input-sm quantity','label'=>false,'placeholder'=>'Quantity','required']); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 		
@@ -218,9 +236,9 @@ $(document).ready(function() {
 			<td>0</td>
 			<td>
 			<?php echo $this->Form->input('sales_order_row_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
-			<?php echo $this->Form->input('item_id',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm','label'=>false]); ?>
+			<?php echo $this->Form->input('item_id',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm','label'=>false,'required']); ?>
 			</td>
-			<td><?php echo $this->Form->input('quantity',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false]); ?></td>
+			<td><?php echo $this->Form->input('quantity',['class' => 'form-control input-sm quantity','placeholder'=>'Quantity','label'=>false,'required']); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 		

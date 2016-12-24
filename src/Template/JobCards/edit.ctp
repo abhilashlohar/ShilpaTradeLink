@@ -142,7 +142,7 @@
 									<th width="10%"></th>
 								</thead>
 								<tbody>
-									<?php  foreach($sales_order_row->item->job_card_rows as $job_card_row): ?>
+									<?php $q=0;  foreach($sales_order_row->item->job_card_rows as $job_card_row): ?>
 										<tr>
 											<td align="center"><?= h(++$page_no) ?></td>
 											
