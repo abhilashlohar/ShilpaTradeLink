@@ -116,7 +116,7 @@
 						<th width="30%">In</th>
 						<th>Out</th>
 					</thead>
-					<tbody id="maintbody">
+					<tbody id="maintbody"><?php $q=0; ?>
 					<?php foreach($jobCard->sales_order->sales_order_rows as $sales_order_row){ ?>
 						<tr class="main_tr">
 							<td valign="top">
@@ -125,28 +125,40 @@
 							</td>
 							
 							<td>
-								<?php $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
-									<table>
-										<tr>
-											<td align="center">Sr no.</td>
-											<td align="center">item name</td>
-											<td align="center">quantity</td>
-										</tr>
-										<?php foreach($jobCard->job_card_rows as $job_card_row): ?>
+								<?php  $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
+								<div>
+								<div class="form-group">
+										<label class="col-md-3 control-label">Remarks </label>
+										<?php   foreach($jobCard->job_card_rows as $job_card_row): ?>
+										<div class="col-md-9">
+											<?php echo $this->Form->textarea('job_card_row['.$q.'][remark]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks','value'=>$job_card_row->remark]); ?>
+										</div><?php break; endforeach; ?>
+								</div>
+							<table>
+								<thead>
+									<th>Sr</th>
+									<th width="70%">Item</th>
+									<th>Quantity</th>
+									<th width="10%"></th>
+								</thead>
+								<tbody>
+									<?php  foreach($sales_order_row->item->job_card_rows as $job_card_row): ?>
 										<tr>
 											<td align="center"><?= h(++$page_no) ?></td>
 											
 											<td>
 											<?php echo $this->Form->input('sales_order_row_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
-											<?php echo $this->Form->input('item_id',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm','label'=>false,'value'=>$job_card_row->item->name]); ?>
+											<?php echo $this->Form->input('job_card_row['.$q.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm select2me','label'=>false,'value'=>$job_card_row->item_id]); ?>
 											</td>
-											<td><?php echo $this->Form->input('quantity',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
+											<td><?php echo $this->Form->input('job_card_row['.$q.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
 											<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 											
 										</tr>
-										<?php endforeach; ?>
-									 
-									</table>
+									<?php $q++; endforeach; ?>
+									
+								</tbody>
+							</table>
+							</div>	
 							</td>
 							
 						</tr>

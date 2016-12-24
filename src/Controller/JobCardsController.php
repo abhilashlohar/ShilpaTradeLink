@@ -126,9 +126,14 @@ class JobCardsController extends AppController
     public function edit($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
-        $jobCard = $this->JobCards->get($id, [
-            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'],'Customers'],'Companies','JobCardRows'=>['Items']]
+        //$jobCard = $this->JobCards->get($id, [
+        //    'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'],'Customers'],'Companies','JobCardRows'=>['Items']]
+        //]);
+		$jobCard = $this->JobCards->get($id, [
+            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'=>['JobCardRows'=>['Items']]]], 'Companies', 'JobCardRows'=>['Items'],'Customers']
         ]);
+
+		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
             if ($this->JobCards->save($jobCard)) {
