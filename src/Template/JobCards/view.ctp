@@ -1,5 +1,3 @@
-<?php //pr($jobCard->sales_order->sales_order_rows); exit; ?>
-
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 100%;font-size:14px;">
 <table width="100%" class="divHeader">
 	<tr>
@@ -99,7 +97,7 @@
 			<b><?= $sales_order_row->item->name?></b>
 			</td>
 			<td>
-			<?php $page_no=0; ?>	
+			<?php $i=0; ?>	
 				<table>
 					<tr>
 						<td align="center">Sr no.</td>
@@ -108,9 +106,9 @@
 					</tr>
 					<?php foreach($sales_order_row->item->job_card_rows as $job_card_row): ?>
 					<tr>
-						<td align="center"><?= h(++$page_no) ?></td>
-						<td align="center"><?= $job_card_row->item->name?></td>
-						<td align="center"><?= $job_card_row->quantity?></td>
+						<td align="center"><?= h(++$i) ?></td>
+						<td align="center"><?= h($job_card_row->item->name) ?></td>
+						<td align="center"><?= h($job_card_row->quantity) ?></td>
 					</tr>
 			        <?php endforeach; ?>
 				 
@@ -123,9 +121,3 @@
 </div>
 <?php } ?>
 </div>
-
-				
-
-
-
-	 
