@@ -40,6 +40,10 @@
 			<td align="Center"><?= $jobCards->required_date?></td>
 			<td class="actions" align="Center">
 								
+								 <?php if($material_indent=="true"){
+									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Material Indents','/MaterialIndents/Add?job-cards='.$jobCards->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+								} ?>
+								 
 								 <?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $jobCards->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips')); ?>
 								 
 								<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
