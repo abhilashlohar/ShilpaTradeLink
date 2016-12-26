@@ -109,13 +109,13 @@
 					</div>
 				</div>
 				
-			</div>			
+			</div>	<br/>		
 				
 				
-				<table width="100%" id="main_tb" border="1">
+				<table class="table table-bordered " width="100%" id="main_tb" border="1">
 					<thead>
-						<th width="30%">In</th>
-						<th>Out</th>
+						<th valign="right" width="30%">IN</th>
+						<th align="center">OUT</th>
 					</thead>
 					<tbody id="maintbody">
 					<?php foreach($salesOrder->sales_order_rows as $sales_order_row){ ?>
@@ -202,15 +202,17 @@ $(document).ready(function() {
 });
 </script>
 <div id="onload_sample_tb" style="display:none;">
-	<div class="form-group">
-			<label class="col-md-3 control-label">Remarks </label>
-			<div class="col-md-9">
-				<?php echo $this->Form->textarea('remark', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks']); ?>
-			</div>
+	
+	<div class="col-md-10">
+					<div class="form-group">
+						<label class="control-label">Remarks <span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->textarea('remark', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks' ,'rows'=>1]); ?>
+					</div>
 	</div>
+	
 <table class="table">
 	<thead>
-		<th>Sr</th>
+		<th>S.No</th>
 		<th width="70%">Item</th>
 		<th>Quantity</th>
 		<th width="10%"></th>

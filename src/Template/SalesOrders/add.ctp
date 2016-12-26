@@ -670,8 +670,8 @@ $(document).ready(function() {
 				$(del).remove();
 				var i=0;
 				$("#main_tb tbody tr.tr1").each(function(){
-					i++;
-					$(this).find("td:nth-child(1)").html(i);
+					 
+					$(this).find("td:nth-child(1)").html(++i); i--;
 					$(this).find("td:nth-child(2) select").attr("name","sales_order_rows["+i+"][item_id]");
 					
 					$(this).find("td:nth-child(3) input").attr("name","sales_order_rows["+i+"][quantity]");
@@ -683,14 +683,14 @@ $(document).ready(function() {
 					$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_ledger_account_id]");
 					var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
 					$(this).find("td:nth-child(7) input").val(description);
-				});
+				i++; });
 				var i=0;
 				$("#main_tb tbody tr.tr2").each(function(){
 					i++;
 					$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
 					$(this).find('td:nth-child(1) div#editor').attr({name:"sales_order_rows["+i+"][description]"});
 
-					});
+				i++; });
 				calculate_total();
 			}
 		} 
@@ -711,8 +711,8 @@ $(document).ready(function() {
 		
 		var i=0;
 		$("#main_tb tbody tr.tr1").each(function(){
-			i++;
-			$(this).find("td:nth-child(1)").html(i);
+			
+			$(this).find("td:nth-child(1)").html(++i); i--;
 			$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
@@ -734,15 +734,15 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(7) input:eq( 1 )").attr("name","sales_order_rows["+i+"][sale_tax_ledger_account_id]");
 			var ledger_account_id=$(this).find("td:nth-child(7) select option:selected").attr("ledger_account_id");
 			$(this).find("td:nth-child(7) input:eq( 1 )").val(ledger_account_id);
-		});
+		i++; });
 		var i=0;
 		
 		$("#main_tb tbody tr.tr2").each(function(){
-			i++;
+			
 			$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
 			$(this).find('td:nth-child(1) div#editor').attr({name:"sales_order_rows["+i+"][description]"});
 
-		});
+		i++; });
 		
 		$(document)
 		.one('focus.textarea', '.autoExpand', function(){
