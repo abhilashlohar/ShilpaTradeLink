@@ -99,7 +99,7 @@
 			<b><?= $sales_order_row->item->name?></b>
 			</td>
 			<td>
-			<?php $page_no=0; ?>	
+				<?php $page_no=0; ?>	
 				<table>
 					<tr>
 						<td align="center">Sr no.</td>

@@ -1,4 +1,4 @@
-<?php //pr($salesOrder->so1); exit; ?>
+<?php //pr($salesOrder->sales_order_rows); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
