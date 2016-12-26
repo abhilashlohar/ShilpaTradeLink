@@ -709,6 +709,7 @@ $(document).ready(function() {
 		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'addressList']); ?>";
 		url=url+'/'+customer_id,
+		alert(url);
 		$("#myModal12").show();
 		$.ajax({
 			url: url,

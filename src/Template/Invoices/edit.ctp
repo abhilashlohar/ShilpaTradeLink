@@ -27,7 +27,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Customer</label>
 						<div class="col-md-9">
-							
+							<?php echo $this->Form->input('customer_id', ['type'=>'hidden','value' => @$invoice->customer->id]); ?>
 							<?php echo @$invoice->customer->customer_name; ?>
 						</div>
 					</div>
@@ -53,7 +53,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Address</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address','value' => @$sales_order->customer_address]); ?>
+							<?php echo $this->Form->input('customer_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address','value' => @$invoice->customer_address]); ?>
 							<a href="#" role="button" class="pull-right select_address" >
 							Select Address </a>
 						</div>
@@ -652,7 +652,7 @@ $(document).ready(function() {
 		
 		
 	$('.select_address').on("click",function() { 
-		open_address();
+		open_address(); 
     });
 	
 	$('.closebtn').on("click",function() { 
@@ -686,10 +686,11 @@ $(document).ready(function() {
     });
 	
 	function open_address(){
-		var customer_id=$('select[name="customer_id"]').val();
+		var customer_id=$('input[name="customer_id"]').val();
 		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'addressList']); ?>";
 		url=url+'/'+customer_id,
+		//alert(url);
 		$("#myModal12").show();
 		$.ajax({
 			url: url,
