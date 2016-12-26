@@ -567,12 +567,12 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
 			$(this).find("td:nth-child(3) input").attr({name:"quotation_rows["+i+"][quantity]", id:"quotation_rows-"+i+"-quantity"}).rules('add', {
 						required: true,
-						min: 1,
+						min: 0.01,
 						messages: {
 							min: "Quantity can't be zero."
 						}
 					});
-			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules('add', { required: true });
+			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i});
 			
 			$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
 		});
@@ -582,23 +582,6 @@ $(document).ready(function() {
 			i++;
 			$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"}).rules("add", "required");
 			$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
-		});
-		
-		
-		
-		$(document)
-		.one('focus.textarea', '.autoExpand', function(){
-			var savedValue = this.value;
-			this.value = '';
-			this.baseScrollHeight = this.scrollHeight;
-			this.value = savedValue;
-		})
-		.on('input.textarea', '.autoExpand', function(){
-			var minRows = this.getAttribute('data-min-rows')|0,rows;
-			this.rows = minRows;
-			console.log(this.scrollHeight , this.baseScrollHeight);
-			rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
-			this.rows = minRows + rows;
 		});
 	}
 	
@@ -794,6 +777,7 @@ $(document).ready(function() {
 					dataType: 'json',
 				}).done(function(response) {
 					if(response.minimum_selling_price>0){
+						alert(popup_id);
 						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
 							min: response.minimum_selling_price,
 							messages: {
