@@ -777,7 +777,6 @@ $(document).ready(function() {
 					dataType: 'json',
 				}).done(function(response) {
 					if(response.minimum_selling_price>0){
-						alert(popup_id);
 						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
 							min: response.minimum_selling_price,
 							messages: {
