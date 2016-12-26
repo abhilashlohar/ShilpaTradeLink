@@ -81,6 +81,9 @@ class InventoryVouchersController extends AppController
 			$inventoryVoucher->invoice_row_id=$invoice_row_id;
 			//pr($inventoryVoucher->invoice_row_id); exit;
             if ($this->InventoryVouchers->save($inventoryVoucher)) {
+				$InvoiceRow=$this->InventoryVouchers->InvoiceRows->get($invoice_row_id);
+				$InvoiceRow->inventory_voucher='Done';
+				$this->InventoryVouchers->InvoiceRows->save($InvoiceRow);
                 $this->Flash->success(__('The inventory voucher has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
