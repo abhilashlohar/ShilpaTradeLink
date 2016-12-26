@@ -413,7 +413,6 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
-		ignore: "textarea:hidden",
 		rules: {
 			company_id:{
 				required: true,
