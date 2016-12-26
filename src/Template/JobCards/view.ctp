@@ -1,5 +1,3 @@
-<?php //pr($jobCard->sales_order->sales_order_rows); exit; ?>
-
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 100%;font-size:14px;">
 <table width="100%" class="divHeader">
 	<tr>
@@ -99,6 +97,7 @@
 			<b><?= $sales_order_row->item->name?></b>
 			</td>
 			<td>
+ 
 			<?php $page_no=0; ?>	
 				<table width="97%" align="center">
 					<tr>
@@ -122,6 +121,7 @@
 					   </table>
 					   </td>
 					 </tr>
+
 				</table>
 			</td>
 		</tr>
@@ -151,9 +151,3 @@
 </div>
 <?php } ?>
 </div>
-
-				
-
-
-
-	 

@@ -93,7 +93,7 @@ class JobCardsController extends AppController
 			$jobCard->created_by=$s_employee_id; 
 			$jobCard->sales_order_id=$sales_order_id;
 			$jobCard->company_id=$st_company_id;
-			$jobCard->customer_id=$s_employee_id;
+			//$jobCard->customer_id=$s_employee_id;
 			$jobCard->customer_po_no=$jobCard->customer_po_no;
 			$jobCard->created_on=date("Y-m-d");
 			
