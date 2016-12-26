@@ -2,7 +2,7 @@
 <table width="100%" class="divHeader">
 	<tr>
 		<td width="40%"><?php echo $this->Html->image('/logos/'.$jobCard->company->logo, ['width' => '35%']); ?></td>
-		<td valign="bottom" width="20%" align="center" style="font-size: 25px;font-weight: bold;color: #0685a8;">JOB CARD</td>
+		<td valign="bottom" width="20%" align="center" style="font-size:28px;font-weight: bold;color: #0685a8;">JOB CARD</td>
 		<td align="right" width="50%" style="font-size: 14px;">
 		<span style="font-size: 20px;"><?= h($jobCard->company->name) ?></span><br/>
 		<span style="font-size: 15px;"><?= $this->Text->autoParagraph(h($jobCard->company->address)) ?></span>
@@ -10,6 +10,7 @@
 		</td>
 	</tr>
 </table>
+<br>
 <div style="border:solid 3px #0685a8;margin-bottom:5px;margin-top: 5px;"></div></br>
 	<div class="portlet-body form">
 		<div class="form-body">

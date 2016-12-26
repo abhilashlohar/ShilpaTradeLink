@@ -1,49 +1,58 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Company'), ['action' => 'edit', $company->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Company'), ['action' => 'delete', $company->id], ['confirm' => __('Are you sure you want to delete # {0}?', $company->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Companies'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Company'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Item Used By Companies'), ['controller' => 'ItemUsedByCompanies', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Item Used By Company'), ['controller' => 'ItemUsedByCompanies', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="companies view large-9 medium-8 columns content">
-    <h3><?= h($company->name) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th><?= __('Name') ?></th>
-            <td><?= h($company->name) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Id') ?></th>
-            <td><?= $this->Number->format($company->id) ?></td>
-        </tr>
-    </table>
-    <div class="related">
-        <h4><?= __('Related Item Used By Companies') ?></h4>
-        <?php if (!empty($company->item_used_by_companies)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th><?= __('Id') ?></th>
-                <th><?= __('Item Id') ?></th>
-                <th><?= __('Company Id') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($company->item_used_by_companies as $itemUsedByCompanies): ?>
-            <tr>
-                <td><?= h($itemUsedByCompanies->id) ?></td>
-                <td><?= h($itemUsedByCompanies->item_id) ?></td>
-                <td><?= h($itemUsedByCompanies->company_id) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'ItemUsedByCompanies', 'action' => 'view', $itemUsedByCompanies->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'ItemUsedByCompanies', 'action' => 'edit', $itemUsedByCompanies->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'ItemUsedByCompanies', 'action' => 'delete', $itemUsedByCompanies->id], ['confirm' => __('Are you sure you want to delete # {0}?', $itemUsedByCompanies->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
-    </div>
+ <?php //pr($company); exit;?>
+ <style>
+.control-label1{
+font-weight: 600;
+font-size: 12px;
+text-transform: titlecase;
+color: #113775;
+}
+</style>
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 80%;font-size:14px;">
+<h3>Company Details</h3>
+	<table class="table table-bordered table-striped table-hover">
+		<tbody>
+			<tr>
+			<td width="16%"><label class="control-label1">Name</label></td>
+			<td width="16%"><?= h($company->name) ?></td>
+			<td width="16%"><label class="control-label1">Alias</label></td>
+			<td width="16%"><?= h($company->alias) ?></td>
+			</tr>
+			
+			<tr>
+			<td><label class="control-label1">Pan No</label></td>
+			<td><?= h($company->pan_no) ?></td>
+			<td><label class="control-label1">Tin No</label></td>
+			<td><?= h($company->tin_no) ?></td>
+			</tr>
+			
+			<tr>
+			<td><label class="control-label1">Tan No</label></td>
+			<td><?= h($company->tan_no) ?></td>
+			<td><label class="control-label1">Cin No</label></td>
+			<td><?= h($company->cin_no) ?></td>
+			</tr>
+			
+			<tr>
+			<td><label class="control-label1">Service Tax No</label></td>
+			<td><?= h($company->mobile) ?></td>
+			<td><label class="control-label1">Landline No'</label></td>
+			<td><?= h($company->landline_no) ?></td>
+			</tr>
+			
+			<tr>
+			<td><label class="control-label1">'Mobile No</label></td>
+			<td><?= h($company->mobile_no) ?></td>
+			<td><label class="control-label1">Email</label></td>
+			<td><?= h($company->email) ?></td>
+			</tr>
+			
+			<tr>
+			<td><label class="control-label1">Address</label></td>
+			<td><?= h($company->address) ?></td>
+			<td><label class="control-label1">Website</label></td>
+			<td><?= h($company->website) ?></td>
+			</tr>
+		</tbody>
+</table>
 </div>
+ 

@@ -37,7 +37,8 @@ class CompaniesController extends AppController
 		$this->paginate = [
             'contain' => ['CompanyGroups']
         ];
-        $companies = $this->paginate($this->Companies);
+		
+	    $companies = $this->paginate($this->Companies->find()->where($where));
 
         $this->set(compact('companies'));
         $this->set('_serialize', ['companies']);
@@ -51,16 +52,20 @@ class CompaniesController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
-    {
+    {   
+	    $this->viewBuilder()->layout('index_layout');
         $company = $this->Companies->get($id, [
-            'contain' => ['ItemUsedByCompanies']
+            'contain' => ['CompanyGroups']
         ]);
 
         $this->set('company', $company);
         $this->set('_serialize', ['company']);
     }
-
-    /**
+	
+  /**
+      $employee = $this->Employees->get($id, [
+            'contain' => ['Departments','Designations','EmployeeContactPersons']
+        ]);
      * Add method
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.

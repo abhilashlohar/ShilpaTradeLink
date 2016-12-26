@@ -31,7 +31,7 @@
 				</td>
 				
 				<td><?php echo date("d-m-Y",strtotime($materialIndent->required_date)); ?></td>
-				<td class="actions" align="Center">
+				<td class="actions">
 				<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $materialIndent->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips')); ?>
 				 <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $materialIndent->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?>
                 </td>
