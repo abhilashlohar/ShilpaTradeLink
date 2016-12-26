@@ -86,7 +86,7 @@
 <br>	
 <?php if(!empty($jobCard)){ ?>
 <div class="portlet-body form">
-<table width="96%" id="main_tb" border="1" align="center">
+<table class="table table-bordered" width="96%" id="main_tb" border="1" align="center">
 	<thead> 
 		<th width="30%">IN</th>
 		<th>OUT</th>
@@ -104,7 +104,7 @@
 					<tr>
 				       <td align="center">
 					   <br>
-					   <table border="1" class="table tableitm">
+					   <table class="table table-bordered" border="1">
 					   <thead>
 					   <tr>
 					   	<th width="10%" style="font-size: 15px;font-weight: bold;">Sr No.</th>

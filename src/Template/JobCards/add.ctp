@@ -53,6 +53,25 @@
 			<div class="row">
 				<div class="col-md-4">
 					<div class="form-group">
+						<label class="col-md-5 control-label">Customer PO No</label>
+						<div class="col-md-7">
+							<?php echo $this->Form->input('customer_po_no', ['type'=>'hidden','value' => @$salesOrder->customer_po_no]); ?>
+							<?php echo $salesOrder->customer_po_no; ?>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-5 control-label">Required Date <span class="required" aria-required="true">*</span></label>
+						<div class="col-md-7">
+							<?php echo $this->Form->input('required_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Required Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d']); ?>
+						</div>
+					</div>
+				</div>
+			</div><br/>
+						<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
 						<label class="col-md-5 control-label">Dispatch Name </label>
 						<div class="col-md-7">
 							
@@ -76,25 +95,6 @@
 						<div class="col-md-7">
 							<?php echo $this->Form->input('dispatch_address', ['type'=>'hidden','value' => @$salesOrder->dispatch_address]); ?>
 							<?php echo $salesOrder->dispatch_address; ?>
-						</div>
-					</div>
-				</div>
-			</div><br/>
-			<div class="row">
-				<div class="col-md-4">
-					<div class="form-group">
-						<label class="col-md-5 control-label">Customer PO No</label>
-						<div class="col-md-7">
-							<?php echo $this->Form->input('customer_po_no', ['type'=>'hidden','value' => @$salesOrder->customer_po_no]); ?>
-							<?php echo $salesOrder->customer_po_no; ?>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="form-group">
-						<label class="col-md-5 control-label">Required Date <span class="required" aria-required="true">*</span></label>
-						<div class="col-md-7">
-							<?php echo $this->Form->input('required_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Required Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d']); ?>
 						</div>
 					</div>
 				</div>
