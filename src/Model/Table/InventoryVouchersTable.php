@@ -49,6 +49,16 @@ class InventoryVouchersTable extends Table
         $this->hasMany('InventoryVoucherRows', [
             'foreignKey' => 'inventory_voucher_id'
         ]);
+		$this->belongsTo('Creator', [
+			'className' => 'Employees',
+			'foreignKey' => 'created_by',
+			'propertyName' => 'creator',
+		]);
+		
+		$this->belongsTo('Companies', [
+			'foreignKey' => 'company_id',
+			'joinType' => 'INNER'
+		]);
     }
 
     /**

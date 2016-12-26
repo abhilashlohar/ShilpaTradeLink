@@ -22,7 +22,7 @@ class JobCardsController extends AppController
         $this->paginate = [
             'contain' => ['Companies','Customers','SalesOrders']
         ];
-        $jobCards = $this->paginate($this->JobCards);
+        $jobCards = $this->paginate($this->JobCards->find()->order(['JobCards.id' => 'DESC']));
 		
 		$material_indent=$this->request->query('material-indent');
 		//pr($material_indent); exit;
@@ -47,9 +47,9 @@ class JobCardsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $jobCard = $this->JobCards->get($id, [
-            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'=>['JobCardRows'=>['Items']]]], 'Companies', 'JobCardRows'=>['Items'],'Customers']
+            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'=>['JobCardRows'=>['Items']]]],'Creator', 'Companies', 'JobCardRows'=>['Items'],'Customers']
         ]);
-
+ 
         $this->set('jobCard', $jobCard);
         $this->set('_serialize', ['jobCard']);
     }

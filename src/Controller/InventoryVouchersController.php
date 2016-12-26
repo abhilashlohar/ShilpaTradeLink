@@ -39,7 +39,7 @@ class InventoryVouchersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 	   $inventoryVoucher = $this->InventoryVouchers->get($id, [
-            'contain' => ['Invoices','Items','InvoiceRows','InventoryVoucherRows'=>['Items']]
+            'contain' => ['Companies','Invoices','Items','Creator','InvoiceRows','InventoryVoucherRows'=>['Items']]
         ]);
 		
 		 $this->set('inventoryVoucher', $inventoryVoucher);

@@ -58,7 +58,7 @@ $html = '
 				<img src='.ROOT . DS  . 'webroot' . DS  .'logos/'.$salesOrder->company->logo.' height="80px" style="height:80px;"/>
 				</td>
 				<td colspan="2" align="right">
-				<span style="font-size: 20px;">'. h($salesOrder->company->name) .'</span>
+				<+>'. h($salesOrder->company->name) .'</span>
 				</td>
 			</tr>
 			<tr>
