@@ -149,8 +149,9 @@
 							echo $this->Form->input('item_id_display', ['type'=>'text','label' => false,'class' => 'form-control input-sm','value'=>$invoice_rows->item->name,'readonly']);
 							?></td>
 							<td>
+							<?php echo $this->Form->input('invoice_rows['.$q.'][quantity]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$invoice_rows->quantity,'max'=>$total_items[$invoice_rows->item_id]-$processed_items[$invoice_rows->item_id]+$invoice_rows->quantity]); ?>
 							<?php echo $this->Form->input('invoice_rows['.$q.'][height]', ['type' => 'hidden','value' => @$invoice_rows->height]); ?>
-							<?php echo $this->Form->input('invoice_rows['.$q.'][quantity]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$invoice_rows->quantity,'max'=>$total_items[$invoice_rows->item_id]-$processed_items[$invoice_rows->item_id]+$invoice_rows->quantity]); ?></td>
+							</td>
 							<td><?php echo $this->Form->input('invoice_rows['.$q.'][rate]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$invoice_rows->rate,'readonly']); ?></td>
 							<td><?php echo $this->Form->input('invoice_rows['.$q.'][amount]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$invoice_rows->amount]); ?></td>
 							<td>
@@ -483,16 +484,14 @@ $(document).ready(function() {
 	
 	
 	
-	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
+	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() {
 		calculate_total();
     });
 	$('#main_tb input,#tbl2 select').die().live("change",function() { 
 		calculate_total();
     });
 	
-	$('.rename_check').die().live("click",function() {
-		rename_rows(); calculate_total();
-    });
+	
 	
 	$('.addrow').die().live("click",function() { 
 		add_row();
@@ -572,21 +571,6 @@ $(document).ready(function() {
 			$("#main_tb tbody tr.tr2").each(function(){
 				i++;
 				$(this).find("td:nth-child(1) textarea").attr("name","invoice_rows["+i+"][description]");
-			});
-			
-			$(document)
-			.one('focus.textarea', '.autoExpand', function(){
-				var savedValue = this.value;
-				this.value = '';
-				this.baseScrollHeight = this.scrollHeight;
-				this.value = savedValue;
-			})
-			.on('input.textarea', '.autoExpand', function(){
-				var minRows = this.getAttribute('data-min-rows')|0,rows;
-				this.rows = minRows;
-				console.log(this.scrollHeight , this.baseScrollHeight);
-				rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
-				this.rows = minRows + rows;
 			});
 		}
 		
