@@ -39,34 +39,54 @@ color: #113775;
 			<tr>
 				<td><label class="control-label1">Customer Seg</label></td>
 				<td><?= h($customer->customer_seg->name) ?></td>
+			    <td><label class="control-label1">Payment Terms </label></td>
+				<td><?= h($customer->payment_terms) ?></td>
 			</tr>
+			<tr>
+				<td><label class="control-label1">Credit Limit</label></td>
+				<td><?= h($customer->credit_limit) ?></td>
+			</tr>
+			 
 		</tbody>
 	</table>
 <h3>Customer's Contacts</h3>	 
 	<table class="table table-bordered table-striped table-hover">
 		<tbody>		
 			<tr>
-				<td><label class="control-label1">Sr.No.<label></td>
-				<td><label class="control-label1">Name<label></td>
-				<td><label class="control-label1">Contact Person<label></td>
-				<td><label class="control-label1">Designation<label></td>
+			<td><label class="control-label1">Sr.No.<label></td>
+				<td><label class="control-label1">Person<label></td>
 				<td><label class="control-label1">Telephone<label></td>
-				<td><label class="control-label1">Email<label></td>
 				<td><label class="control-label1">Mobile<label></td>
+				<td><label class="control-label1">Email<label></td>
+				<td><label class="control-label1">Designation<label></td>
 				<td><label class="control-label1">Default Contact<label></td>
 			</tr>
-			<?php $i=0; foreach ($customer->customer_contacts as $customer):$i++; ?>
+			<?php $i=0; foreach ($customer->customer_contacts as $customer_contact): $i++; ?>
 			<tr>
 				<td><?= h($i) ?></td>
-			    <td><?= h($customer->customer_id) ?></td>
-				<td><?= h($customer->contact_person) ?></td>
-				<td><?= h($customer->designation) ?></td>
-				<td><?= h($customer->telephone) ?></td>
-				<td><?= h($customer->email) ?></td>
-				<td><?= h($customer->mobile) ?></td>
-				<td><?= h($customer->default_contact) ?></td>
-				<?php endforeach; ?>
+			    <td><?= h($customer_contact->contact_person) ?></td>
+				<td><?= h($customer_contact->telephone) ?></td>
+				<td><?= h($customer_contact->mobile) ?></td>
+				<td><?= h($customer_contact->email) ?></td>
+				<td><?= h($customer_contact->designation) ?></td>
+				<td><?= h($customer_contact->default_contact) ?></td>
 			</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+<h3>Customer's Address</h3>	
+<table class="table table-bordered table-striped table-hover">
+		<tbody>		
+			<tr>
+			<td><label class="control-label1">Sr.No.<label></td>
+			<td><label class="control-label1">Address<label></td>
+			</tr>
+			<?php $i=0; foreach ($customer->customer_address as $customer_addres):$i++; ?>
+			<tr>
+				<td><?= h($i) ?></td>
+			    <td><?= h($customer_addres->address) ?></td>
+			</tr>
+			<?php endforeach; ?>
 		</tbody>
 	</table>
 </div>
