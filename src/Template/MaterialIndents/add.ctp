@@ -72,8 +72,6 @@
 							
 							<td><?php echo @$current_stock[$job_card_rows->item_id]['total_in']-@$current_stock[$job_card_rows->item_id]['total_out']; ?></td>
 							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.approved_purchased_quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Approved Purchased Quantity']); ?></td>
-							
-							
 					</tr>
 					
 					<?php $q++; endforeach;  ?>
