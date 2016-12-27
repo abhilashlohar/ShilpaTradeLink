@@ -63,18 +63,25 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php $q=0; foreach ($jobCards->job_card_rows as $job_card_rows): ?>
+					<?php 
+					$req_quantity=[]; 
+					foreach ($jobCards->job_card_rows as $job_card_rows){
+						$req_quantity[$job_card_rows->item_id]['item']=$job_card_rows['item'];
+						$req_quantity[$job_card_rows->item_id]['required_qty']=@$req_quantity[$job_card_rows->item_id]['required_qty']+$job_card_rows->quantity;
+					} ?>
+					
+					<?php $q=0; foreach($req_quantity as  $item_id=>$required_qty): ?>
 					<tr class="tr1" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td><?php echo ++$q; --$q; ?></td>
 							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.item_id', ['type'=>'hidden','value' => @$job_card_rows->item->id]); ?>
-							<?php echo $job_card_rows->item->name; ?></td>
-							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','readonly','value' => @$job_card_rows->quantity]); ?></td>
+							<?php echo $required_qty['item']->name; ?></td>
+							<td><?php echo $required_qty['required_qty']; ?></td>
 							
 							<td><?php echo @$current_stock[$job_card_rows->item_id]['total_in']-@$current_stock[$job_card_rows->item_id]['total_out']; ?></td>
 							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.approved_purchased_quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Approved Purchased Quantity']); ?></td>
 					</tr>
-					
 					<?php $q++; endforeach;  ?>
+					
 				</tbody>
 				
 			</table>
