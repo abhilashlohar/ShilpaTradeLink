@@ -3,7 +3,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Inventory Vouchers</span>
+			<span class="caption-subject font-blue-steel uppercase">Edit Inventory Vouchers</span>
 		</div>
 	</div>
 	<div class="portlet-body form">
@@ -11,7 +11,12 @@
 		<?= $this->Form->create($inventoryVoucher,['id'=>'form_sample_3']) ?>
 			<div class="form-body">
 				<div class="row">
-					
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Invoice No :  <span class="required" aria-required="true"></span></label>
+							<?php echo $inventoryVoucher->invoice->in1.'/IN-'.str_pad($inventoryVoucher->invoice->in2, 3, '0', STR_PAD_LEFT).'/'. $inventoryVoucher->invoice->in3.'/'. $inventoryVoucher->invoice->in4; ?>
+						</div>
+					</div>
 				</div>	
 				
 				<div class="table-scrollable">
@@ -29,8 +34,9 @@
 						<?php $q=0; foreach ($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row): ?>
 						<tr class="tr1 preimp" row_no='<?php echo @$inventory_voucher_row->id; ?>'>
 							<td width="10"><?php echo ++$q; --$q; ?><?php echo $this->Form->input('inventory_voucher_row.'.$q.'.id'); ?></td>
-							<td><?php echo $this->Form->input('inventory_voucher_row['.$q.'][item_id]', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen']); ?></td>
-							<td width="100"><?php echo $this->Form->input('inventory_voucher_row['.$q.'][quantity]', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
+							<td><?php echo $this->Form->input('inventory_voucher_row['.$q.'][item_id]', ['options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','value' => $inventory_voucher_row->item_id]); ?></td>
+							<td width="100"><?php echo $this->Form->input('inventory_voucher_row['.$q.'][quantity]', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value' => $inventory_voucher_row->quantity]); ?></td>
+							<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>	
 						<?php $q++; endforeach; ?>
 						</tbody>
@@ -41,13 +47,25 @@
 			</div>
 		</div>
 			<div class="form-actions">
-				 <button type="submit" class="btn blue-hoki">Add Inventory Vouchers</button>
+				 <button type="submit" class="btn blue-hoki">Update Inventory Vouchers</button>
 			</div>
 		<?= $this->Form->end() ?>
 		<!-- END FORM-->
 	</div>
 </div>
 
+<table id="sample_tb" style="display:none;">
+	<tbody>
+		<tr class="tr1 preimp">
+			<td width="10">0</td>
+			<td><?php echo $this->Form->input('q', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen']); ?></td>
+			<td width="100"><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
+			
+			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+		</tr>
+		
+	</tbody>
+</table>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <style>
 #sortable li{
@@ -177,8 +195,6 @@ $(document).ready(function() {
 	});
 	
 
-	
-	add_row();
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
@@ -211,23 +227,9 @@ $(document).ready(function() {
 					$(this).find("td:nth-child(3) input").attr("name","inventory_voucher_rows["+i+"][quantity]");
 					
 				});
-				
-				
-			
 		} 
     });
 	
 });
 </script>
-<table id="sample_tb" style="display:none;">
-	<tbody>
-		<tr class="tr1">
-			<td width="10">0</td>
-			<td><?php echo $this->Form->input('q', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen']); ?></td>
-			<td width="100"><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
-			
-			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
-		</tr>
-		
-	</tbody>
-</table>
+
