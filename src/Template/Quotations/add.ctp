@@ -72,7 +72,7 @@ if(!empty($revision))
 					<div class="form-group">
 						<label class="col-md-4 control-label">Salesman</label>
 						<div class="col-md-8">
-							<?php echo $this->Form->input('employee_id', ['options'=>$employees,'empty' => "--Select Salesman--",'label' => false,'class' => 'form-control input-sm ','required']); ?>
+							<?php echo $this->Form->input('employee_id', ['options'=>$employees,'empty' => "--Select Salesman--",'label' => false,'class' => 'form-control input-sm select2me','required']); ?>
 						</div>
 					</div>
 					<br/>

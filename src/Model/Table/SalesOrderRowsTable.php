@@ -49,6 +49,10 @@ class SalesOrderRowsTable extends Table
             'foreignKey' => 'sale_tax_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->hasMany('JobCardRows', [
+            'foreignKey' => 'sales_order_row_id',
+        ]);
     }
 
     /**
