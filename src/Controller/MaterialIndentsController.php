@@ -103,11 +103,14 @@ class MaterialIndentsController extends AppController
 			$materialIndent->job_card_id=$job_card_id;
 			$materialIndent->created_on=date("Y-m-d");
 			$materialIndent->company_id=$st_company_id;
-			
-			$materialIndent->required_date=date("Y-m-d",strtotime($materialIndent->required_date));  
+			$materialIndent->required_date=date("Y-m-d",strtotime($materialIndent->required_date)); 
+					
 			//pr($materialIndent->required_date); exit;
 			
             if ($this->MaterialIndents->save($materialIndent)) {
+				
+				
+				
                 $this->Flash->success(__('The material indent has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
