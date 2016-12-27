@@ -150,7 +150,7 @@ $(document).ready(function() {
 					
 				}
 		}
-		
+	
 		
 	});
 	//--	 END OF VALIDATION

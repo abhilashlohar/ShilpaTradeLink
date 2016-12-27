@@ -240,9 +240,9 @@ class QuotationsController extends AppController
 			$email->send_to=$send_to;
 			
 			 if ($this->Quotations->EmailRecords->save($email)) {
-				 
+				$id=$email->quotation_id;
                 $this->Flash->success(__('The Email has been saved.'));
-				return $this->redirect(['action' => 'index']);
+				return $this->redirect(['action' => 'pdf/'.$id]);
             } else {
                 $this->Flash->error(__('The Email not sent. Please, try again.'));
             }
