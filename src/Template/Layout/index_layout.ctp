@@ -278,7 +278,20 @@ select
 						<li><?php echo $this->Html->link( 'View', '/MaterialIndents' ); ?></li>
 					</ul>
 				</li>
-				<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Inventory Voucher','/Invoices/PendingItemForInventoryVoucher',array('escape'=>false)); ?></li>
+				<li>
+					<a href="javascript:;">
+					<i class="fa fa-file-code-o"></i>
+					<span class="title">Inventory Voucher</span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<?php if(in_array(1,$allowed_pages)){
+						echo '<li>'.$this->Html->link( 'Create', '/Invoices/PendingItemForInventoryVoucher' ).'</li>';
+						} ?>
+						<li><?php echo $this->Html->link( 'View', '/InventoryVouchers' ); ?></li>
+					</ul>
+				</li>
+				
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-university"></i>

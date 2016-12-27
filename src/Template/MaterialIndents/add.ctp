@@ -73,7 +73,7 @@
 					<?php $q=0; foreach($req_quantity as  $item_id=>$required_qty): ?>
 					<tr class="tr1" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td><?php echo ++$q; --$q; ?></td>
-							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.item_id', ['type'=>'hidden','value' => @$job_card_rows->item->id]); ?>
+							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.item_id', ['type'=>'hidden','value' => @$item_id]); ?>
 							<?php echo $required_qty['item']->name; ?></td>
 							<td>
 							<?php echo $this->Form->input('material_indent_rows.'.$q.'.quantity', ['type'=>'hidden','value' => @$required_qty['required_qty']]); ?>

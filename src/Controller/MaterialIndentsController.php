@@ -23,7 +23,7 @@ class MaterialIndentsController extends AppController
         $this->paginate = [
             'contain' => ['JobCards']
         ];
-		$materialIndents = $this->paginate($this->MaterialIndents);
+		$materialIndents = $this->paginate($this->MaterialIndents->find()->order(['MaterialIndents.id' => 'DESC']));
        
 
         $this->set(compact('materialIndents'));
@@ -94,22 +94,18 @@ class MaterialIndentsController extends AppController
 			
 		}
 		
-		
-		//pr($jobCards);exit;job-cards
-		
-		
-        $materialIndent = $this->MaterialIndents->newEntity();
+		$materialIndent = $this->MaterialIndents->newEntity();
         if ($this->request->is('post')) {
 			//pr($this->request->data);
             $materialIndent = $this->MaterialIndents->patchEntity($materialIndent, $this->request->data);
-			
+			//pr($materialIndent); exit;
 			$materialIndent->created_by=$s_employee_id; 
 			$materialIndent->job_card_id=$job_card_id;
 			$materialIndent->created_on=date("Y-m-d");
 			$materialIndent->company_id=$st_company_id;
 			
 			$materialIndent->required_date=date("Y-m-d",strtotime($materialIndent->required_date));  
-			//pr($materialIndent); exit;
+			//pr($materialIndent->required_date); exit;
 			
             if ($this->MaterialIndents->save($materialIndent)) {
                 $this->Flash->success(__('The material indent has been saved.'));

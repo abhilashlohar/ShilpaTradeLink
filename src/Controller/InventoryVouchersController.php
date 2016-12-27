@@ -22,7 +22,7 @@ class InventoryVouchersController extends AppController
         $this->paginate = [
             'contain' => ['InventoryVoucherRows','InvoiceRows'=>['Items']]
         ];
-        $inventoryVouchers = $this->paginate($this->InventoryVouchers);
+        $inventoryVouchers = $this->paginate($this->InventoryVouchers->find()->order(['InventoryVouchers.id' => 'DESC']));
 
         $this->set(compact('inventoryVouchers'));
         $this->set('_serialize', ['inventoryVouchers']);

@@ -178,8 +178,11 @@ $(document).ready(function() {
 	
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
-		alert(l);
-		$(this).closest('tr').remove();
+		if (confirm("Are you sure to remove row ?") == true) {
+			if(l>1){  
+			 $(this).closest('tr').remove(); 
+			}
+		} 
     });
 	
 	$('.quantity').die().live("keyup",function() {

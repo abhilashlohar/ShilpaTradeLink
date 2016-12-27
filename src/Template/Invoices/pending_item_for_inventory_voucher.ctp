@@ -31,7 +31,7 @@
 							<td><?= h(($invoice_rows->invoice->in1.'/IN-'.str_pad($invoice_rows->invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$invoice_rows->invoice->in3.'/'.$invoice_rows->invoice->in4)) ?></td>
 							<td><?= h($invoice_rows->item->name) ?></td>
 							<td class="actions">
-								<?php echo $this->Html->link('<i class="fa fa-repeat "></i>  Create Inventory Voucher',['controller'=>'InventoryVouchers','action' => '/add', $invoice_rows->invoice->id, $invoice_rows->id ],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'Inventory Voucher')); ?>
+								<?php echo $this->Html->link('<i class=" "></i>  Create Inventory Voucher',['controller'=>'InventoryVouchers','action' => '/add', $invoice_rows->invoice->id, $invoice_rows->id ],array('escape'=>false,'class'=>'','data-original-title'=>'Inventory Voucher')); ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

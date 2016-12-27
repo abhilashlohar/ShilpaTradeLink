@@ -167,6 +167,7 @@ class InvoicesController extends AppController
 				return $q->where(['source !='=>'Purchessed']);
 				}])
 				->where(['inventory_voucher'=>'Pending'])
+				->order(['InvoiceRows.id' => 'DESC'])
 			);
 	//pr($invoices); exit;
         $this->set('invoices', $invoices);
