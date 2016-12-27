@@ -47,10 +47,15 @@
 						<td><?= $this->Number->format($department->id) ?></td>
 						<td><?= h($department->name) ?></td>
 						<td class="actions">
-							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $department->id]) ?>
-							<?php if($department->id!=1){ ?>
-							<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $department->id], ['confirm' => __('Are you sure you want to delete # {0}?', $department->id)]) ?>
-							<?php } ?>
+							 <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $department->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
+							<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+									['action' => 'delete', $department->id], 
+									[
+										'escape' => false,
+										'class' => 'btn btn-xs red',
+										'confirm' => __('Are you sure, you want to delete {0}?', $department->id)
+									]
+								) ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>
