@@ -1,6 +1,6 @@
 <?php
 
-
+use Cake\Mailer\Email;
 
 require_once(ROOT . DS  .'vendor' . DS  . 'dompdf' . DS . 'autoload.inc.php');
 use Dompdf\Dompdf;
@@ -257,6 +257,33 @@ $name='Quotation-'.h(($quotation->qt1.'_IN'.str_pad($quotation->qt2, 3, '0', STR
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
+//$output = $dompdf->output();
+//file_put_contents($name, $output);
+
+if($send_email=='true'){
+$to=$emailRecord->send_to;
+$subject=$emailRecord->subject;
+$message=$emailRecord->message;
+$email = new Email();
+        $email->transport('SendGrid');
+
+        try {
+            $res = $email->from(['ashishbohara1008@gmail.com' => 'ashish'])
+                  ->to([$to])
+                  ->subject($subject)
+                  ->attachments([
+			   $name.'.pdf' => [
+			       'file' => $name
+			   ]
+			])
+                  ->send($message);
+                  
+        } catch (Exception $e) {
+
+            echo 'Exception : ',  $e->getMessage(), "\n";
+
+        }
+}		
 $dompdf->stream($name,array('Attachment'=>0));
-exit(0);
+
 ?>

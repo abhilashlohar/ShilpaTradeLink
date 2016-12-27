@@ -96,10 +96,6 @@ class QuotationsController extends AppController
 		} 
 		
 		$quotations = $this->paginate($this->Quotations->find()->where(['Quotations.id IN' =>$max_ids])->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
-				
-		
-		
-		
 		$companies = $this->Quotations->Companies->find('list');
 		
 		$closeReasons = $this->Quotations->QuotationCloseReasons->find('all',['limit' => 200]);
@@ -240,30 +236,53 @@ class QuotationsController extends AppController
 			$email->send_to=$send_to;
 			
 			 if ($this->Quotations->EmailRecords->save($email)) {
-				$id=$email->quotation_id;
-                $this->Flash->success(__('The Email has been saved.'));
-				return $this->redirect(['action' => 'pdf/'.$id]);
+				$email_id=$email->id;
+				$quotation_id=$email->quotation_id;
+				
+				return $this->redirect(['action' => 'pdf?emailid='.$email_id.'&quotaionid='.$quotation_id.'&sendemail=true']);
             } else {
                 $this->Flash->error(__('The Email not sent. Please, try again.'));
             }
         }
-        $this->set(compact('email'));
+        $this->set(compact('email','id','quotation_id','send_email'));
         $this->set('_serialize', ['email']);
 			
 	}
 	
 	public function pdf($id = null)
     {
-		
 		$this->viewBuilder()->layout('');
-        $quotation = $this->Quotations->get($id, [
+		$email_id=$this->request->query('emailid');
+		$send_email=$this->request->query('sendemail');
+		$quotation_id=$this->request->query('quotaionid');
+		
+		if(!empty($email_id)){
+			$emailRecord = $this->Quotations->EmailRecords->get($email_id);
+		}
+		if(!empty($send_email))
+		{
+		$send_email='true';	
+		}else{
+		$send_email='false';	
+		}
+        $this->set(compact('send_email','email_id','emailRecord','quotation_id'));
+		if(!empty($quotation_id)){
+		$quotation = $this->Quotations->get($quotation_id, [
             'contain' => ['Customers'=>['CustomerContacts'=>function($q){
 			return $q
 			->where(['CustomerContacts.default_contact'=>1]);
 		}],'Companies','Employees'=>['Designations'],'ItemGroups','Creator'=>['Designations'],'Editor'=>['Designations'],'QuotationRows' => ['Items'=>['Units']]]
         ]);
-		//pr($quotation); exit;
-        $this->set('quotation', $quotation);
+		}
+		else{
+		$quotation = $this->Quotations->get($id, [
+            'contain' => ['Customers'=>['CustomerContacts'=>function($q){
+			return $q
+			->where(['CustomerContacts.default_contact'=>1]);
+		}],'Companies','Employees'=>['Designations'],'ItemGroups','Creator'=>['Designations'],'Editor'=>['Designations'],'QuotationRows' => ['Items'=>['Units']]]
+        ]);	
+		}
+		$this->set('quotation', $quotation);
         $this->set('_serialize', ['quotation']);
     }
 
