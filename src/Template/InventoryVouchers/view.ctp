@@ -3,8 +3,7 @@
 <table width="100%" class="divHeader">
 <tr>
 	<td width="40%"><?php echo $this->Html->image('/logos/'.$inventoryVoucher->company->logo, ['width' => '38%']); ?></td>
-    <td width="22%" valign="bottom">
-	<div align="center" style="font-size: 25px;font-weight: bold;color: #0685a8;">MATERIAL INDENT</div></td>
+    <td valign="bottom" width="16%" align="center" style="font-size:20px;font-weight: bold;color: #0685a8;">INVENTORY VOUCHER</td>
 	<td align="right" width="50%" style="font-size: 14px;"> 
 	<span style="font-size: 20px;"><?= h($inventoryVoucher->company->name) ?></span><br/>
 	<span style="font-size: 15px;"><?= $this->Text->autoParagraph(h($inventoryVoucher->company->address)) ?></span>

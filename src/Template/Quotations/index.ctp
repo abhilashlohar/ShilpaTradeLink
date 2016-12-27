@@ -145,35 +145,19 @@ if(!empty($status)){
 							<td><?php echo date("d-m-Y",strtotime($quotation->closing_date)); ?></td>	
 							<?php } ?>
 							<td class="actions">
-								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $quotation->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
+								 <?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $quotation->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
+								 
+								<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $quotation->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 								
-								
-							
-								<?php if($quotation->status=='Pending' and in_array(2,$allowed_pages) and $pull_request!="true" && $copy_request!="copy"){
+								<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+								['action' => 'delete', $quotation->id], 
+								[
+									'escape' => false,
+									'class'=>'btn btn-xs red tooltips','data-original-title'=>'Delete',
 									
-									echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>','/Quotations/Add?revision='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs blue tooltips'));
-									
-									//echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>','/Quotations/index?revision-request=true',array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); 
-									
-									//echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $quotation->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));
-								} ?>
-								<?php if($pull_request=="true"){
-									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Sales Order','/Sales-Orders/Add?quotation='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
-								} ?>
-								
-								<?php 
-								
-								if($quotation->status=='Pending' && $copy_request!="copy" && $pull_request!="true"){
-									
-									echo $this->Html->link('<i class="fa fa-minus-circle"></i> ',['action' => '#'],array('escape'=>false,'class'=>'btn btn-xs red tooltips close_btn','data-original-title'=>'Close','role'=>'button','quote_id'=>$quotation->id));
-								} ?>
-								<?php if($copy_request=="copy"){
-									echo $this->Html->link('<i class="fa fa-repeat"></i>  Copy','/Quotations/Add?copy='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
-								} ?>
-								<?php if($quotation->status=='Closed'){
-								echo $this->Form->postLink('<i class="fa fa-minus-circle"></i> ',['action' =>'reopen', $quotation->id],['escape' => false,'class' => 'btn btn-xs green tooltips','data-original-title'=>'Reopen','confirm' => __('Are you sure, you want to reopen ?', $quotation->id)]
-								);
-								} ?>
+									'confirm' => __('Are you sure ?', $quotation->id)
+								]
+							) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>
