@@ -58,7 +58,7 @@
 								<?php echo $this->Form->radio(
 									'payment_mode',
 									[
-										['value' => 'Cheque', 'text' => 'Cheque'],
+										['value' => 'Cheque', 'text' => 'Cheque', 'checked'],
 										['value' => 'Cash', 'text' => 'Cash']
 									]
 								); ?>

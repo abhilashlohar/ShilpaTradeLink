@@ -17,6 +17,8 @@
 							<?php echo $inventoryVoucher->invoice->in1.'/IN-'.str_pad($inventoryVoucher->invoice->in2, 3, '0', STR_PAD_LEFT).'/'. $inventoryVoucher->invoice->in3.'/'. $inventoryVoucher->invoice->in4; ?>
 						</div>
 					</div>
+					
+					
 				</div>	
 				
 				<div class="table-scrollable">

@@ -197,5 +197,15 @@ $(document).ready(function() {
 				return false;  
 			}
 	});
+	
+	$('input[name="payment_mode"]').die().live("click",function() {
+		var payment_mode=$(this).val();
+		
+		if(payment_mode=="Cheque"){
+			$("#chq_no").show();
+		}else{
+			$("#chq_no").hide();
+		}
+	});
 });
 </script>
