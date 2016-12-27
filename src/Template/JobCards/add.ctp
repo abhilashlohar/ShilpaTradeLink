@@ -104,7 +104,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label">Packing: <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-10">
-							<?php echo $this->Form->textarea('packing', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Packing']); ?>
+							<?php echo $this->Form->textarea('packing', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Packing','required']); ?>
 						</div>
 					</div>
 				</div>
