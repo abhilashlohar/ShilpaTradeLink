@@ -9,7 +9,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<?php $page_no=$this->Paginator->current('materialIndents'); $page_no=($page_no-1)*20; ?>
-				<table class="table table-bordered table-striped table-hover">
+				<table class="table table-bordered">
 					<thead>
 						<tr>
 							<th>Sr. No.</th>
@@ -58,4 +58,11 @@
 		</div>
 	</div>
 </div>
+<style>
+#sortable li{
+	cursor: -webkit-grab;
+}
+</style>
+<?php echo $this->Html->css('/drag_drop/jquery-ui.css'); ?>
+
 

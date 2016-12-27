@@ -116,8 +116,8 @@
 						<th width="30%">In</th>
 						<th>Out</th>
 					</thead>
-					<tbody id="maintbody"><?php $q=0; ?>
-					<?php foreach($jobCard->sales_order->sales_order_rows as $sales_order_row){ ?>
+					<tbody id="maintbody"><?php $q=0; $r=0; ?>
+					<?php foreach ($jobCard->sales_order->sales_order_rows as $sales_order_row): ?>
 						<tr class="main_tr">
 							<td valign="top">
 							<?php echo $this->Form->input('sales_order_id', ['type'=>'text','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->id,'type'=>'hidden']); ?>
@@ -129,10 +129,10 @@
 								<div>
 								<div class="form-group">
 										<label class="col-md-3 control-label">Remarks </label>
-										<?php   foreach($jobCard->job_card_rows as $job_card_row): ?>
+										<?php   foreach($sales_order_row->job_card_rows as $job_card_row): ?>
 										<div class="col-md-9">
-											<?php echo $this->Form->textarea('job_card_row['.$q.'][remark]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks','value'=>$job_card_row->remark]); ?>
-										</div><?php break; endforeach; ?>
+											<?php echo $this->Form->textarea('job_card_row['.$r.'][remark]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks','value'=>$job_card_row->remark]); ?>
+										</div><?php $r++; break; endforeach; ?>
 								</div>
 							<table>
 								<thead>
@@ -142,7 +142,7 @@
 									<th width="10%"></th>
 								</thead>
 								<tbody>
-									<?php $q=0;  foreach($sales_order_row->item->job_card_rows as $job_card_row): ?>
+									<?php  foreach($sales_order_row->job_card_rows as $job_card_row): ?> 
 										<tr>
 											<td align="center"><?= h(++$page_no) ?></td>
 											
@@ -162,7 +162,7 @@
 							</td>
 							
 						</tr>
-					<?php } ?>
+						<?php endforeach; ?>
 					</tbody>
 				</table>
 			</div>

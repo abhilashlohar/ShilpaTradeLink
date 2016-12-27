@@ -3,7 +3,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Invoices</span>
+			<span class="caption-subject font-blue-steel uppercase">Pending Item For Inventory Voucher</span>
 			
 		</div>
 		

@@ -128,11 +128,12 @@ class JobCardsController extends AppController
     public function edit($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
-        //$jobCard = $this->JobCards->get($id, [
-        //    'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'],'Customers'],'Companies','JobCardRows'=>['Items']]
-        //]);
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
 		$jobCard = $this->JobCards->get($id, [
-            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'=>['JobCardRows'=>['Items']]]], 'Companies', 'JobCardRows'=>['Items'],'Customers']
+            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items','JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
         ]);
 
 		
