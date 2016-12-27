@@ -47,7 +47,7 @@ class JobCardsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $jobCard = $this->JobCards->get($id, [
-            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'=>['JobCardRows'=>['Items']]]],'Creator', 'Companies', 'JobCardRows'=>['Items'],'Customers']
+            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items','JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
         ]);
  
         $this->set('jobCard', $jobCard);
@@ -65,23 +65,23 @@ class JobCardsController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		//pr($st_company_id); exit;
+		
 		$sales_order_id=@(int)$this->request->query('Sales-Order');
-		//pr($job_card_id); exit;
+		
 		if(!empty($sales_order_id)){
 			$salesOrder = $this->JobCards->SalesOrders->get($sales_order_id, [
 				'contain' => ['Customers','SalesOrderRows'=>['Items'=>function ($q){
 					return $q->where(['Items.source !='=>'Purchessed']);
 				}]]
 			]);
-		}//pr($salesOrder); exit;
+		}
 		$last_jc_no=$this->JobCards->find()->select(['jc2'])->where(['company_id' => $st_company_id])->order(['jc2' => 'DESC'])->first();
 			if($last_jc_no){
 				@$last_jc_no->jc2=$last_jc_no->jc2+1;
 			}else{
 				@$last_jc_no->jc2=1;
 			}
-			//pr($last_jc_no); exit;
+			
 		
 		
 		
