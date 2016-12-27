@@ -28,7 +28,7 @@
 					<div class="col-md-4" >
 						<div class="form-group">
 						<label class=" control-label">Transaction Date<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Transaction Date']); ?>
+							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Transaction Date','value' => date("d-m-Y")]); ?>
 						
 						</div>
 					</div>
@@ -110,7 +110,9 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-			
+			cheque_no :{
+				required: true,
+			},
 		},
 
 		errorPlacement: function (error, element) { // render error placement for each input type

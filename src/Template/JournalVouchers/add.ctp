@@ -136,10 +136,10 @@ $(document).ready(function() {
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
 				debitamount:{
-					required: true,	
+					
 				},
 				creditamount:{
-					required: true,	
+					
 					equalTo: "#debitamount",
 					
 				}
@@ -150,7 +150,7 @@ $(document).ready(function() {
 					
 				}
 		}
-
+		
 		
 	});
 	//--	 END OF VALIDATION

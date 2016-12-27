@@ -71,7 +71,7 @@
 			<td align="left" valign="top">
 				<table>
 					<tr>
-						<td style="font-size: 14px;font-weight: bold;">
+						<td style="font-size: 16px;font-weight: bold;">
 						Rs: <?=h($paymentVoucher->amount) ?>
 					</tr>
 				</table>

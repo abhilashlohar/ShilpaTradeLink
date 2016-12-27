@@ -62,21 +62,30 @@
 			<td align="left" valign="top">
 				<table>
 					<tr>
-						<td style="font-size: 14px;font-weight: bold;">
+						<td style="font-size: 16px;font-weight: bold;">
 						Rs: <?=h($debitNote->amount) ?>
 					</tr>
 				</table>
 			</td>
-			<td align="right">
-				<table>
-					<tr>
-						<td align="center">
-						For <?= h($debitNote->company->name) ?><br/><br/><br/><span style="    border-top: solid 1px #585757;">Authorised Signatory</span>
-						</td>
-					</tr>
-				</table>
-			</td>
+			
 		</tr>
-	</table>	
+	</table>
+	<br/>
+	<table width="100%" class="table_rows ">
+    <tr>
+	<td align="center" width="25%"> 
+	
+	</td>
+	   <td align="right" width="15%"> 
+	
+		 <?php 
+		 echo $this->Html->Image('/signatures/'.$debitNote->creator->signature,['height'=>'50px','style'=>'height:50px;']); 
+		 ?></br>
+		 </hr>
+		 <span><b>Prepared By</b></span><br/>
+		 <span><?= h($debitNote->creator->name) ?></span><br/>
+		</td>
+	 </tr>
+</table>
 </div>
 </div>

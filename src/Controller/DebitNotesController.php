@@ -38,10 +38,9 @@ class DebitNotesController extends AppController
      */
     public function view($id = null)
     {
-		
 		$this->viewBuilder()->layout('index_layout');
         $debitNote = $this->DebitNotes->get($id, [
-            'contain' => ['SalesAccs', 'Parties', 'Companies']
+            'contain' => ['SalesAccs', 'Parties', 'Companies','Creator']
         ]);
 
         $this->set('debitNote', $debitNote);

@@ -63,32 +63,29 @@
 			</tr>
 			
 			<tr>
-				<td><?= $this->Text->autoParagraph(h($contraVoucher->narration)) ?> </td>
-				<td>Total</td>
-				<td><?= h($contraVoucher->amount) ?></td>
+				<td style="font-size: 14px;" ><?= $this->Text->autoParagraph(h($contraVoucher->narration)) ?> </td>
+				<td style="font-size: 14px;font-weight: bold;">Total</td>
+				<td style="font-size: 14px;font-weight: bold;"><?= h($contraVoucher->amount) ?></td>
 			</tr>
 			</tr>
 		</tfoot>
 	</table>
-	<table width="100%" class="divFooter">
-		<tr>
-			<td></td>
-			<td align="right">
-				<table>
-					<tr>
-						<td align="center">
-						For <?= h($contraVoucher->company->name)?><br/>
-						<?php 
-						 echo $this->Html->Image('/signatures/'.$contraVoucher->creator->signature,['height'=>'50px','style'=>'height:50px;']); 
-						 ?></br>
-		                  <span>Authorised Signatory</span>
-						  </br>
-						  <span><?= h($contraVoucher->creator->name) ?></span><br/>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>	
+	<br/>
+	<table width="100%" class="table_rows ">
+    <tr>
+	<td align="center" width="25%"> 
+	
+	</td>
+	   <td align="right" width="15%"> 
+	
+		 <?php 
+		 echo $this->Html->Image('/signatures/'.$contraVoucher->creator->signature,['height'=>'50px','style'=>'height:50px;']); 
+		 ?></br>
+		 </hr>
+		 <span><b>Prepared By</b></span><br/>
+		 <span><?= h($contraVoucher->creator->name) ?></span><br/>
+		</td>
+	 </tr>
+</table>
 </div>
 </div>
