@@ -53,12 +53,14 @@
 						<td><?= h($customer->pan_no) ?></td>
 						<td><?= h($customer->ecc_no) ?></td>
 						<td class="actions">
-							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $customer->id],array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
-							<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+						 	<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $customer->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
+							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $customer->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
+							 <?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
 								['action' => 'delete', $customer->id], 
 								[
 									'escape' => false,
-									'class' => 'btn btn-xs btn-danger',
+									'class'=>'btn btn-xs red tooltips','data-original-title'=>'Delete',
+									
 									'confirm' => __('Are you sure ?', $customer->id)
 								]
 							) ?>

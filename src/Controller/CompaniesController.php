@@ -55,7 +55,7 @@ class CompaniesController extends AppController
     {   
 	    $this->viewBuilder()->layout('index_layout');
         $company = $this->Companies->get($id, [
-            'contain' => ['CompanyGroups']
+            'contain' => ['CompanyGroups','CompanyBanks']
         ]);
 
         $this->set('company', $company);

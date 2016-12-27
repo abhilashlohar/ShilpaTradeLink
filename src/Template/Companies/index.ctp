@@ -1,30 +1,25 @@
- <?php //pr($company); exit;?>
-<div class="portlet light bordered;margin: auto;width: 95%;">
-   <div class="portlet-title">
+<div class="portlet light bordered">
+	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Companies</span>
 		</div>
 	</div>
-<div class="portlet-body form">
-	<div class="row ">
+<div class="portlet-body">
+	<div class="row">
 		<div class="col-md-12">
-		   <div class="portlet-body">
-			<div class="table-scrollable">
-			<table class="table table-condensed">
-				 <thead>
+			<table class="table table-bordered table-striped table-hover">
+				<thead>
 					<tr>
-					   <th><?= $this->Paginator->sort('Sr. No.') ?></th>
-						<th><?= $this->Paginator->sort('Name') ?></th> 
-						<th><?= $this->Paginator->sort('Pan No') ?></th>
-						<th><?= $this->Paginator->sort('Tin No') ?></th>
-						<th><?= $this->Paginator->sort('Tan No') ?></th>
-						<th><?= $this->Paginator->sort('Service Tax No') ?></th>
-						<th><?= $this->Paginator->sort('Landline No') ?></th>
-						<th><?= $this->Paginator->sort('Mobile No') ?></th>
-						<th><?= $this->Paginator->sort('Email ID') ?></th>
-						<th><?= $this->Paginator->sort('Actions') ?></th>
-					 </tr>
+						<th>Sr.No.</th>
+						<th>Name</th> 
+						<th>Pan No</th>
+						<th>Tin No</th>
+						<th>Tan No</th>
+						<th>Landline No</th>
+						<th>Mobile No</th>
+						<th> Actions</th>
+					</tr>
 				</thead>
 				<tbody>
 					<?php $i=0; foreach ($companies as $company): $i++; ?>
@@ -34,43 +29,34 @@
 						<td><?= h($company->pan_no) ?></td>
 						<td><?= h($company->tin_no) ?></td>
 						<td><?= h($company->tan_no) ?></td>
-						<td><?= h($company->service_tax_no) ?></td>
 						<td><?= h($company->landline_no) ?></td>
 						<td><?= h($company->mobile_no) ?></td>
-						<td><?= h($company->email) ?></td>
 						<td class="actions">
-						    <?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $company->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
-							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $company->id],array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
-							<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $company->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
+							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $company->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
+							 <?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
 								['action' => 'delete', $company->id], 
 								[
 									'escape' => false,
-									'class' => 'btn btn-xs btn-danger',
+									'class'=>'btn btn-xs red tooltips','data-original-title'=>'Delete',
+									
 									'confirm' => __('Are you sure ?', $company->id)
 								]
 							) ?>
 						</td>
 					</tr>
-				<?php endforeach; ?>
+					<?php endforeach; ?>
 				</tbody>
 			</table>
-			</div>
 			<div class="paginator">
-				<ul class="pagination pagination-sm pull-right">
-					<?= $this->Paginator->prev('< ' . __('previous')) ?>
-					<?= $this->Paginator->numbers() ?>
-					<?= $this->Paginator->next(__('next') . ' >') ?>
-				</ul>
-				<p class="pull-left"><?= $this->Paginator->counter() ?></p>
-			</div>
+			<ul class="pagination">
+			<?= $this->Paginator->prev('< ' . __('previous')) ?>
+			<?= $this->Paginator->numbers() ?>
+			<?= $this->Paginator->next(__('next') . ' >') ?>
+			</ul>
+			<p><?= $this->Paginator->counter() ?></p>
 			</div>
 		</div>
-		<!-- END FORM-->
 	</div>
 </div>
 </div>
-<style>
-.th{
-	font-family: -webkit-pictograph !important;
-}
-</style>
