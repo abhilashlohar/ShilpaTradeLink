@@ -1,8 +1,5 @@
 <style>
-.table thead tr th {
-    color: #FFF;
-	background-color: #254b73;
-}
+
 .padding-right-decrease{
 	padding-right: 0;
 }
@@ -283,6 +280,21 @@ $(document).ready(function() {
 		$('#myModal1').show();
 	});
 	
+	$('.closebtn').live("click",function() { 
+		$(".modal").hide();
+    });
+	
+	$('select[name="received_from_id"]').die().live("change",function() {
+		var received_from_id=$(this).find('option:selected').val();
+		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
+		var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'DueInvoicesForReceipt']); ?>";
+		url=url+'/'+received_from_id,
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$("#result_ajax").html(response);
+		});
+	});
 });
 </script>
 
