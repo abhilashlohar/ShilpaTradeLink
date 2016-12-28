@@ -2,9 +2,9 @@
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 100%;font-size: 12px;" class="maindiv">
 <table width="100%" class="divHeader">
 <tr>
-	<td width="40%"><?php echo $this->Html->image('/logos/'.$inventoryVoucher->company->logo, ['width' => '38%']); ?></td>
-    <td valign="bottom" width="16%" align="center" style="font-size:20px;font-weight: bold;color: #0685a8;">INVENTORY VOUCHER</td>
-	<td align="right" width="50%" style="font-size: 14px;"> 
+	<td width="30%"><?php echo $this->Html->image('/logos/'.$inventoryVoucher->company->logo, ['width' => '38%']); ?></td>
+    <td valign="bottom"  align="center" style="font-size:20px;font-weight: bold;color: #0685a8;">INVENTORY VOUCHER</td>
+	<td align="right" width="30%" style="font-size: 14px;"> 
 	<span style="font-size: 20px;"><?= h($inventoryVoucher->company->name) ?></span><br/>
 	<span style="font-size: 15px;"><?= $this->Text->autoParagraph(h($inventoryVoucher->company->address)) ?></span>
 	<span><?= h($inventoryVoucher->company->mobile_no) ?></span>
@@ -37,7 +37,7 @@
 		<div class="form-group">
 			<label class="col-md-4" style="font-size: 14px;font-weight: bold;">Inventory Voucher No</label>
 			 <div class="col-md-7">
-			  <?= h($inventoryVoucher->iv1.'/IV'.str_pad($inventoryVoucher->iv2, 3, '0', STR_PAD_LEFT).'/'.$inventoryVoucher->iv3.'/'.$inventoryVoucher->iv4) ?>
+			  <?= h($inventoryVoucher->iv1.'/IV-'.str_pad($inventoryVoucher->iv2, 3, '0', STR_PAD_LEFT).'/'.$inventoryVoucher->iv3.'/'.$inventoryVoucher->iv4) ?>
 			</div>
 		</div>
 	</div>
