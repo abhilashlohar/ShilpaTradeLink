@@ -23,7 +23,10 @@ class PaymentVouchersController extends AppController
 		$this->paginate = [
             'contain' => ['PaidTos','BankCashes']
         ];
-        $paymentVouchers = $this->paginate($this->PaymentVouchers->find()->order(['transaction_date' => 'DESC']));
+		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        $paymentVouchers = $this->paginate($this->PaymentVouchers->find()->where(['company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
 		$this->set(compact('paymentVouchers'));
         $this->set('_serialize', ['paymentVouchers']);
     }
@@ -95,7 +98,7 @@ class PaymentVouchersController extends AppController
 				$ledger->voucher_source = 'Payment Voucher';
 				$this->PaymentVouchers->Ledgers->save($ledger); 
 				
-				$this->Flash->success(__('The Payment-Voucher:'.str_pad($paymentVoucher->id, 4, '0', STR_PAD_LEFT)).' has been genereted.');
+				$this->Flash->success(__('The Payment-Voucher:'.str_pad($paymentVoucher->voucher_no, 4, '0', STR_PAD_LEFT)).' has been genereted.');
 				return $this->redirect(['action' => 'view/'.$paymentVoucher->id]);
             } else {
                 $this->Flash->error(__('The payment voucher could not be saved. Please, try again.'));

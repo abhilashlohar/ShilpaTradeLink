@@ -14,7 +14,7 @@
 					<thead>
 						<tr>
 							<th>Transaction Date</th>
-							<th>voucher No</th>
+							<th>Voucher No</th>
 							<th>Paid To</th>
 							<th>Bank/Cash</th>
 							<th>Payment Mode</th>
@@ -26,7 +26,7 @@
 						<?php $i=0; foreach($paymentVouchers as $paymentVoucher): $i++; ?>
 						<tr>
 							<td><?= h(date("d-m-Y",strtotime($paymentVoucher->transaction_date)))?></td>
-							<td><?= h(str_pad($paymentVoucher->id, 4, '0', STR_PAD_LEFT)) ?></td>
+							<td><?= h(str_pad($paymentVoucher->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
 							<td><?= h($paymentVoucher->PaidTo->name) ?></td>
 							<td><?= h($paymentVoucher->BankCash->name) ?></td>
 							<td><?= h($paymentVoucher->payment_mode) ?></td>

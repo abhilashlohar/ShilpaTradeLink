@@ -22,7 +22,10 @@ class ContraVouchersController extends AppController
         $this->paginate = [
             'contain' => ['CashBankFroms','CashBankTos']
         ];
-        $contraVouchers = $this->paginate($this->ContraVouchers->find()->order(['transaction_date' => 'DESC']));
+		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        $contraVouchers = $this->paginate($this->ContraVouchers->find()->where(['company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
 
         $this->set(compact('contraVouchers'));
         $this->set('_serialize', ['contraVouchers']);
@@ -62,6 +65,12 @@ class ContraVouchersController extends AppController
 		$st_company_id = $session->read('st_company_id');
         
         if ($this->request->is('post')) {
+			$last_ref_no=$this->ContraVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
+			if($last_ref_no){
+				$contraVoucher->voucher_no=$last_ref_no->voucher_no+1;
+			}else{
+				$contraVoucher->voucher_no=1;
+			}
             $contraVoucher = $this->ContraVouchers->patchEntity($contraVoucher, $this->request->data);
 			$contraVoucher->created_by=$s_employee_id;
 			$contraVoucher->transaction_date=date("Y-m-d",strtotime($contraVoucher->transaction_date));
@@ -86,7 +95,7 @@ class ContraVouchersController extends AppController
 				$ledger->voucher_source = 'Contra Voucher';
 				$ledger->transaction_date = $contraVoucher->transaction_date;
 				$this->ContraVouchers->Ledgers->save($ledger);
-				$this->Flash->success(__('The Contra-Voucher:'.str_pad($contraVoucher->id, 4, '0', STR_PAD_LEFT)).' has been genereted.');
+				$this->Flash->success(__('The Contra-Voucher:'.str_pad($contraVoucher->voucher_no, 4, '0', STR_PAD_LEFT)).' has been genereted.');
 				return $this->redirect(['action' => 'view/'.$contraVoucher->id]);
 			}
            else {

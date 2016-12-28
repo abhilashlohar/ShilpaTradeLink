@@ -23,7 +23,7 @@
 					<tr>
 						<td>Voucher No</td>
 						<td width="20" align="center">:</td>
-						<td><?= h(str_pad($journalVoucher->id, 4, '0', STR_PAD_LEFT)) ?></td>
+						<td><?= h(str_pad($journalVoucher->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
 					</tr>
 				</table>
 			</td>

@@ -28,7 +28,7 @@
 					?>
 						<tr>
 							<td><?= h(date("d-m-Y",strtotime($debitNote->transaction_date)))?>
-							<td><?= h(str_pad($debitNote->id, 4, '0', STR_PAD_LEFT)) ?></td>
+							<td><?= h(str_pad($debitNote->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
 							<td><?= h($debitNote->SalesAccs->name) ?></td>
 							<td><?= h($debitNote->Parties->name) ?></td>
 							<td><?= h($debitNote->payment_mode) ?></td>

@@ -22,7 +22,9 @@ class PettyCashReceiptVouchersController extends AppController
         $this->paginate = [
             'contain' => ['ReceivedFroms', 'BankCashes']
         ];
-        $pettyCashReceiptVouchers = $this->paginate($this->PettyCashReceiptVouchers->find()->order(['transaction_date' => 'DESC']));
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+        $pettyCashReceiptVouchers = $this->paginate($this->PettyCashReceiptVouchers->find()->where(['company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
 		$this->set(compact('pettyCashReceiptVouchers'));
         $this->set('_serialize', ['pettyCashReceiptVouchers']);
     }
@@ -60,6 +62,12 @@ class PettyCashReceiptVouchersController extends AppController
 		$st_company_id = $session->read('st_company_id');
         
         if ($this->request->is('post')) {
+			$last_ref_no=$this->PettyCashReceiptVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
+			if($last_ref_no){
+				$pettyCashReceiptVoucher->voucher_no=$last_ref_no->voucher_no+1;
+			}else{
+				$pettyCashReceiptVoucher->voucher_no=1;
+			}
             $pettyCashReceiptVoucher = $this->PettyCashReceiptVouchers->patchEntity($pettyCashReceiptVoucher, $this->request->data);
 			$pettyCashReceiptVoucher->created_by=$s_employee_id;
 			$pettyCashReceiptVoucher->transaction_date=date("Y-m-d",strtotime($pettyCashReceiptVoucher->transaction_date));
@@ -85,7 +93,7 @@ class PettyCashReceiptVouchersController extends AppController
 				$ledger->voucher_source = 'PettyCashReceipt Voucher';
 				$ledger->transaction_date = $pettyCashReceiptVoucher->transaction_date;
 				$this->PettyCashReceiptVouchers->Ledgers->save($ledger);
-				$this->Flash->success(__('The Petty Cash-Voucher:'.str_pad($pettyCashReceiptVoucher->id, 4, '0', STR_PAD_LEFT)).' has been genereted.');
+				$this->Flash->success(__('The Petty Cash-Voucher:'.str_pad($pettyCashReceiptVoucher->voucher_no, 4, '0', STR_PAD_LEFT)).' has been genereted.');
 				return $this->redirect(['action' => 'view/'.$pettyCashReceiptVoucher->id]);
             } 
 			else 

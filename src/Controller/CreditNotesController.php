@@ -22,7 +22,11 @@ class CreditNotesController extends AppController
         $this->paginate = [
             'contain' => ['PurchaseAccs', 'Parties', 'Companies']
         ];
-        $creditNotes = $this->paginate($this->CreditNotes);
+		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+        $creditNotes = $this->paginate($this->CreditNotes->find()->where(['company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
 
         $this->set(compact('creditNotes'));
         $this->set('_serialize', ['creditNotes']);
@@ -61,6 +65,12 @@ class CreditNotesController extends AppController
 		$st_company_id = $session->read('st_company_id');
         
 		 if ($this->request->is('post')) {
+			$last_ref_no=$this->CreditNotes->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
+			if($last_ref_no){
+				$creditNote->voucher_no=$last_ref_no->voucher_no+1;
+			}else{
+				$creditNote->voucher_no=1;
+			}
 			$creditNote = $this->CreditNotes->patchEntity($creditNote, $this->request->data);
             $creditNote->created_by=$s_employee_id;
 			$creditNote->transaction_date=date("Y-m-d",strtotime($creditNote->transaction_date));
@@ -86,7 +96,7 @@ class CreditNotesController extends AppController
 				$ledger->transaction_date = $creditNote->transaction_date;
 				$this->CreditNotes->Ledgers->save($ledger);
 				
-				$this->Flash->success(__('The Credit Notes:'.str_pad($creditNote->id, 4, '0', STR_PAD_LEFT)).' has been genereted.');
+				$this->Flash->success(__('The Credit Notes:'.str_pad($creditNote->voucher_no, 4, '0', STR_PAD_LEFT)).' has been genereted.');
 				return $this->redirect(['action' => 'view/'.$creditNote->id]);
             } else {
                 $this->Flash->error(__('The credit note could not be saved. Please, try again.'));

@@ -14,7 +14,7 @@
 						<tr>
 							<th>Sr.No</th>
 							<th>Transaction Date</th>
-							<th>JV No</th>
+							<th>Voucher No</th>
 							
 							<th class="actions"><?= __('Actions') ?></th>
 						</tr>
@@ -26,7 +26,7 @@
 						<tr>
 							<td><?= h($i) ?></td>
 							<td><?= h(date("d-m-Y",strtotime($journalVoucher->transaction_date)))?>
-							<td><?= h(str_pad($journalVoucher->id,4,'0',STR_PAD_LEFT)); ?></td>
+							<td><?= h(str_pad($journalVoucher->voucher_no,4,'0',STR_PAD_LEFT)); ?></td>
 							
 							<td class="actions">
 							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $journalVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View '));?>

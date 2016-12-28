@@ -22,8 +22,10 @@ class JournalVouchersController extends AppController
 		$this->paginate = [
             'contain' => ['JournalVoucherRows']
         ];
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
 		
-        $journalVouchers = $this->paginate($this->JournalVouchers);
+       $journalVouchers = $this->paginate($this->JournalVouchers->find()->where(['company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
 
         $this->set('journalVoucher');
 		$this->set(compact('journalVouchers'));
@@ -64,6 +66,12 @@ class JournalVouchersController extends AppController
 		$st_company_id = $session->read('st_company_id');
         
 		if ($this->request->is('post')) {
+			$last_ref_no=$this->JournalVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
+			if($last_ref_no){
+				$journalVoucher->voucher_no=$last_ref_no->voucher_no+1;
+			}else{
+				$journalVoucher->voucher_no=1;
+			}
             $journalVoucher = $this->JournalVouchers->patchEntity($journalVoucher, $this->request->data);
 			
 			$journalVoucher->created_by=$s_employee_id;
@@ -92,7 +100,7 @@ class JournalVouchersController extends AppController
 					//pr($ledger); exit;
 					$this->JournalVouchers->Ledgers->save($ledger);
 					}
-					$this->Flash->success(__('The Journal-Voucher:'.str_pad($journalVoucher->id, 4, '0', STR_PAD_LEFT)).' has been genereted.');
+					$this->Flash->success(__('The Journal-Voucher:'.str_pad($journalVoucher->voucher_no, 4, '0', STR_PAD_LEFT)).' has been genereted.');
 					return $this->redirect(['action' => 'view/'.$journalVoucher->id]);
             
 				} 

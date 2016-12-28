@@ -23,7 +23,10 @@ class DebitNotesController extends AppController
         $this->paginate = [
             'contain' => ['SalesAccs', 'Parties', 'Companies']
         ];
-        $debitNotes = $this->paginate($this->DebitNotes->find()->order(['transaction_date' => 'DESC']));
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+        $debitNotes = $this->paginate($this->DebitNotes->find()->where(['company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
 
         $this->set(compact('debitNotes'));
         $this->set('_serialize', ['debitNotes']);
@@ -62,6 +65,12 @@ class DebitNotesController extends AppController
 		$st_company_id = $session->read('st_company_id');
         
         if ($this->request->is('post')) {
+			$last_ref_no=$this->DebitNotes->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
+			if($last_ref_no){
+				$debitNote->voucher_no=$last_ref_no->voucher_no+1;
+			}else{
+				$debitNote->voucher_no=1;
+			}
             $debitNote = $this->DebitNotes->patchEntity($debitNote, $this->request->data);
 			
 			$debitNote->created_by=$s_employee_id;
@@ -87,7 +96,7 @@ class DebitNotesController extends AppController
 				$ledger->voucher_source = 'Debit Note';
 				$ledger->transaction_date = $debitNote->transaction_date;
 				$this->DebitNotes->Ledgers->save($ledger);
-				$this->Flash->success(__('The Debit Notes:'.str_pad($debitNote->id, 4, '0', STR_PAD_LEFT)).' has been genereted.');
+				$this->Flash->success(__('The Debit Notes:'.str_pad($debitNote->voucher_no, 4, '0', STR_PAD_LEFT)).' has been genereted.');
 				return $this->redirect(['action' => 'view/'.$debitNote->id]);
             } else {
                 $this->Flash->error(__('The debit note could not be saved. Please, try again.'));

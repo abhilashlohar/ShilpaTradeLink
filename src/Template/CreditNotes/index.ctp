@@ -27,7 +27,7 @@
 					?>
 						<tr>
 							<td><?= h(date("d-m-Y",strtotime($creditNote->transaction_date)))?>
-							<td><?= h(str_pad($creditNote->id, 4, '0', STR_PAD_LEFT)) ?></td>
+							<td><?= h(str_pad($creditNote->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
 							<td><?= h($creditNote->PurchaseAccs->name) ?></td>
 							<td><?= h($creditNote->Parties->name) ?></td>
 							<td><?= h($creditNote->payment_mode) ?></td>
