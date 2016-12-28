@@ -138,7 +138,16 @@ class JobCardsController extends AppController
 
 		
         if ($this->request->is(['patch', 'post', 'put'])) {
+			//pr($this->request->data); exit;
             $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
+			$jobCard->required_date=date("Y-m-d",strtotime($jobCard->required_date)); 
+			$jobCard->created_by=$s_employee_id; 
+			$jobCard->sales_order_id=$jobCard->sales_order_id;
+			//pr($jobCard->sales_order_id); exit;
+			$jobCard->company_id=$st_company_id;
+			$jobCard->customer_po_no=$jobCard->customer_po_no;
+			$jobCard->created_on=date("Y-m-d");
+			pr($jobCard); exit;
             if ($this->JobCards->save($jobCard)) {
                 $this->Flash->success(__('The job card has been saved.'));
 
