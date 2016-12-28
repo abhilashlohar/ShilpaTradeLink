@@ -16,25 +16,25 @@ color: #113775;
 				<td><?= h($customer->customer_name) ?></td>
 				<td><label class="control-label1">Alias</label></td>
 				<td><?= h($customer->alias) ?></td>
-				<td> </td>
 			</tr>
 			<tr>
 			    <td><label class="control-label1">District</label></td>
-				<td><?= $customer->has('district') ? $this->Html->link($customer->district->district, ['controller' => 'Districts', 'action' => 'view', $customer->district->id]) : '' ?></td>
+				<td><?= h($customer->district->district,$customer->district->id) ?></td>
+				
 				<td><label class="control-label1">Company Group</label></td>
-				<td><?= $customer->has('company_group') ? $this->Html->link($customer->company_group->name, ['controller' => 'CompanyGroups', 'action' => 'view', $customer->company_group->id]) : '' ?></td>
+				<td><?= h($customer->company_group->name,$customer->company_group->id) ?></td>
 			</tr>
 			<tr>
-			   <td><label class="control-label1">Tin No</label></td>
+			    <td><label class="control-label1">Tin No</label></td>
 				<td><?= h($customer->tin_no) ?></td>
 				<td><label class="control-label1">Gst No</label></td>
 				<td><?= h($customer->gst_no) ?></td>
 			</tr>
 			<tr>
-			<td><label class="control-label1">Pan No</label></td>
-			<td><?= h($customer->pan_no) ?></td>
-			<td><label class="control-label1">Ecc No</label></td>
-			<td><?= h($customer->ecc_no) ?></td>
+				<td><label class="control-label1">Pan No</label></td>
+				<td><?= h($customer->pan_no) ?></td>
+				<td><label class="control-label1">Ecc No</label></td>
+				<td><?= h($customer->ecc_no) ?></td>
 			</tr>
 			<tr>
 				<td><label class="control-label1">Customer Seg</label></td>
@@ -59,7 +59,6 @@ color: #113775;
 				<td><label class="control-label1">Mobile<label></td>
 				<td><label class="control-label1">Email<label></td>
 				<td><label class="control-label1">Designation<label></td>
-				<td><label class="control-label1">Default Contact<label></td>
 			</tr>
 			<?php $i=0; foreach ($customer->customer_contacts as $customer_contact): $i++; ?>
 			<tr>
@@ -69,7 +68,6 @@ color: #113775;
 				<td><?= h($customer_contact->mobile) ?></td>
 				<td><?= h($customer_contact->email) ?></td>
 				<td><?= h($customer_contact->designation) ?></td>
-				<td><?= h($customer_contact->default_contact) ?></td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>
