@@ -166,9 +166,7 @@ $this->Form->templates([
 					<?php } ?>
 					</tbody>
 				</table>
-                <div class="alert alert-danger" id="row_error" style="display:none;">
-                    Provide your Bank Details.
-                </div>
+                
 			</div>
 		
 			<div class="form-actions">

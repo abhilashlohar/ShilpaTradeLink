@@ -786,9 +786,11 @@ $(document).ready(function() {
 				<table class="table table-hover tabl_tc">
 				<?php foreach ($termsConditions as $termsCondition): ?>
 					 <tr>
-						<td width="10"><label><?php echo $this->Form->input('dummy', ['type' => 'checkbox','label' => false,'class' => '']); ?></label></td>
-						<td><p><?= h($termsCondition->text_line) ?></p></td>
-					</tr>
+						<td width="100%">
+						<label>
+						<span><?php echo $this->Form->input('dummy', ['type' => 'checkbox','label' => false,'class' => '']); ?></span> <?= h($termsCondition->text_line) ?> </label>
+						 </td></div>
+						</tr>
 				<?php endforeach; ?>
 				</table>
 				</div>
