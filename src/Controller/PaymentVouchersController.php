@@ -23,7 +23,6 @@ class PaymentVouchersController extends AppController
 		$this->paginate = [
             'contain' => ['PaidTos','BankCashes']
         ];
-		
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
         $paymentVouchers = $this->paginate($this->PaymentVouchers->find()->where(['company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
