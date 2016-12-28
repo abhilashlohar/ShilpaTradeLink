@@ -92,7 +92,7 @@ class MaterialIndentsController extends AppController
 				$current_stock[$data->item_id]=['total_in'=>$data->total_in,'total_out'=>$data->total_out];
 				
 			} 
-			pr($current_stock); exit;
+			//pr($current_stock); exit;
 		}
 		
 		$materialIndent = $this->MaterialIndents->newEntity();

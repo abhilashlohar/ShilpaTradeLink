@@ -44,7 +44,7 @@
 					<div class="form-group">
 						<label class="col-md-5 control-label">Required Date <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-7">
-							<?php echo $this->Form->input('required_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Required Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d']); ?>
+							<?php echo $this->Form->input('required_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Required Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d','required']); ?>
 						</div>
 					</div>
 				</div>
@@ -80,7 +80,7 @@
 							<?php echo $required_qty['required_qty']; ?></td>
 							<?php //pr(@$current_stock[$job_card_rows->item_id]['total_in']); exit; ?>
 							<td><?php echo @$current_stock[$item_id]['total_in']-@$current_stock[$item_id]['total_out']; ?></td>
-							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.approved_purchased_quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Approved Purchased Quantity']); ?></td>
+							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.approved_purchased_quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Approved Purchased Quantity','required']); ?></td>
 					</tr>
 					<?php $q++; endforeach;  ?>
 					
@@ -107,3 +107,51 @@
 }
 </style>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+
+<script>
+
+$(document).ready(function() { 
+//--------- FORM VALIDATION
+	var form3 = $('#form_sample_3');
+	var error3 = $('.alert-danger', form3);
+	var success3 = $('.alert-success', form3);
+	form3.validate({
+		errorElement: 'span', //default input error message container
+		errorClass: 'help-block help-block-error', // default input error message class
+		focusInvalid: true, // do not focus the last invalid input
+		
+		rules: {
+			rules: {
+				packing:{
+					required: true,
+				},
+				required_date : {
+					  required: true,
+				},
+				remark : {
+					  required: true,
+				},
+			},
+		},
+	});
+	
+	$('.quantity').die().live("keyup",function() {
+			var asc=$(this).val();
+			var numbers =  /^[0-9]*\.?[0-9]*$/;
+			if(asc==0)
+			{
+				$(this).val('');
+				return false; 
+			}
+			else if(asc.match(numbers))  
+			{  
+			} 
+			else  
+			{  
+				$(this).val('');
+				return false;  
+			}
+	});
+
+});
+</script>	
