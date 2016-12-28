@@ -63,9 +63,9 @@ class PaymentVouchersController extends AppController
 		if ($this->request->is('post')) {
 			$last_ref_no=$this->PaymentVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_ref_no){
-				$purchaseOrder->voucher_no=$last_ref_no->voucher_no+1;
+				$paymentVoucher->voucher_no=$last_ref_no->voucher_no+1;
 			}else{
-				$purchaseOrder->voucher_no=1;
+				$paymentVoucher->voucher_no=1;
 			}
 			$paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
 			
