@@ -84,9 +84,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="alert alert-danger" id="row_error" style="display:none;">
-                    Fill all fileds.
-                </div>
+				
 			</div>
 		
 			<div class="form-actions">
@@ -111,7 +109,9 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-			
+			cheque_no :{
+				required: true,
+			},
 		},
 
 		errorPlacement: function (error, element) { // render error placement for each input type

@@ -40,6 +40,7 @@ class CompaniesController extends AppController
 		
 	    $companies = $this->paginate($this->Companies);
 
+
         $this->set(compact('companies'));
         $this->set('_serialize', ['companies']);
     }

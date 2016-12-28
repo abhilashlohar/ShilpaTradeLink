@@ -23,13 +23,7 @@
 							<?php echo $invoiceRows->invoice->in1.'/IN-'.str_pad($invoiceRows->invoice->in2, 3, '0', STR_PAD_LEFT).'/'. $invoiceRows->invoice->in3.'/'. $invoiceRows->invoice->in4; ?>
 						</div>
 					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Item Name</label>
-							<?php echo $this->Form->input('item_id', ['label' => false,'type'=>'hidden','value'=>$invoiceRows->item_id]); ?>
-							<?php echo $invoiceRows->item->name; ?>
-						</div>
-					</div>
+					
 				</div>	
 				
 				<div class="table-scrollable">

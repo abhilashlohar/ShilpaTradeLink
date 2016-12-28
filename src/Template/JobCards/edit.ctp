@@ -1,4 +1,4 @@
-<?php //pr($sales_order_row->item->job_card_rows); exit; ?>
+<?php //pr($jobCard->customer->customer_name); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
@@ -18,7 +18,7 @@
 					<div class="form-group">
 						<label class="col-md-5 control-label">Sales Order No</label>
 						<div class="col-md-7">
-							
+							<?php echo $this->Form->input('sales_order_id', ['type'=>'hidden','value' => @$jobCard->sales_order_id]); ?>
 							<?= h($jobCard->sales_order->so1.'/'.str_pad($jobCard->sales_order->so2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->sales_order->so3.'/'.$jobCard->sales_order->so4) ?>
 							
 						</div>
@@ -28,8 +28,8 @@
 					<div class="form-group">
 						<label class="col-md-5 control-label">Customer Name </label>
 						<div class="col-md-7">
-						<?php echo $this->Form->input('customer_id', ['type'=>'hidden','value' => @$salesOrder->customer_id]); ?>
-						<?php echo $jobCard->sales_order->customer->customer_name; ?>
+							<?php echo $this->Form->input('customer_id', ['type'=>'hidden','value' => @$salesOrder->customer_id]); ?>
+							<?php echo $jobCard->customer->customer_name; ?>
 						</div>
 					</div>
 				</div>

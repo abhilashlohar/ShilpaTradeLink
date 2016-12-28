@@ -39,7 +39,7 @@ class CreditNotesController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $creditNote = $this->CreditNotes->get($id, [
-            'contain' => ['PurchaseAccs', 'Parties', 'Companies']
+            'contain' => ['PurchaseAccs', 'Parties', 'Companies','Creator']
         ]);
 
         $this->set('creditNote', $creditNote);

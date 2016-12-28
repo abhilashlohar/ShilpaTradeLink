@@ -47,7 +47,8 @@ class InventoryVouchersTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('InventoryVoucherRows', [
-            'foreignKey' => 'inventory_voucher_id'
+            'foreignKey' => 'inventory_voucher_id',
+			'saveStrategy' => 'replace'	
         ]);
 		$this->belongsTo('Creator', [
 			'className' => 'Employees',

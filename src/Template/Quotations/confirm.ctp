@@ -68,13 +68,13 @@ $(document).ready(function() {
 					<div class="col-md-12">
 						<div class="form-group">
 						<br>
-						<table width="100%">
+						<table width="100%" id="form_sample_3">
 							<tr>
 								<td>
 								<label class="col-md-2 control-label">Email Id</label>
 								 <div class="col-md-8" id='TextBoxesGroup'>
 								 <?php echo $this->Form->input('quotation_id',['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value' =>$quotation->id]); ?>
-									<?php echo $this->Form->input('send_to[]',['label' => false,'class' => 'form-control input-sm','type'=>'email','Placeholder'=>"Email ID",'style'=>'margin-bottom:5px','value' =>$quotation->customer->customer_contacts[0]->email]); ?>
+									<?php echo $this->Form->input('send_to[]',['label' => false,'class' => 'form-control input-sm','type'=>'email','Placeholder'=>"Email ID",'style'=>'margin-bottom:5px','required','value' =>$quotation->customer->customer_contacts[0]->email]); ?>
 								</div>
 								<a class="btn btn-xs btn-default" href="#" role='button'><i class="fa fa-plus" id='addButton'></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times" id='removeButton'></i></a>
 								
@@ -91,7 +91,7 @@ $(document).ready(function() {
 				<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-							<table width="100%">
+							<table width="100%" >
 								<tr>
 									<td>
 									<label class="col-md-2 control-label">Subject</label>
@@ -144,6 +144,7 @@ var form3 = $('#form_sample_3');
 				send_to:{
 					required: true,	
 				},
+				
 				message:{
 					required: true,	
 				}
@@ -166,10 +167,10 @@ var form3 = $('#form_sample_3');
 	     .attr("id", 'TextBoxDiv' + counter); 
 
 	newTextBoxDiv.after().html(
-	  '<input type="email" class="form-control input-sm" name="send_to[]" id="textbox' + counter + '" value="" style="margin-bottom:5px;" Placeholder="Email ID">');
+	  '<input type="email" class="form-control input-sm" name="send_to[]" id="textbox' + counter + '" value="" style="margin-bottom:5px;" Placeholder="Email ID" required>');
 	
 	newTextBoxDiv.appendTo("#TextBoxesGroup");
-
+	
 	counter++;
      });
 
