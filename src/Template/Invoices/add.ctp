@@ -520,14 +520,20 @@ $(document).ready(function() {
 		$('input[name="in1"]').val(alias);
     });
 	
-	$("#pnfper").on('click',function(){
+		$("#pnfper").on('click',function(){
 		if($(this).is(':checked')){
 			$("#pnf_text").show();
 			$('input[name="pnf"]').attr('readonly','readonly');
+			$('input[name="pnf_per"]').val(0);
+
 		}else{
 			$("#pnf_text").hide();
 			$('input[name="pnf"]').removeAttr('readonly');
+			$('input[name="pnf"]').val(0);
+			$('input[name="pnfper"]').val(0);
+			
 		}
+		calculate_total();
 	})
 	
 	$("#discount_per").on('click',function(){
@@ -537,6 +543,8 @@ $(document).ready(function() {
 		}else{
 			$("#discount_text").hide();
 			$('input[name="discount"]').removeAttr('readonly');
+			$('input[name="discount_per"]').val(0);
+			$('input[name="discount"]').val(0);
 		}
 		calculate_total();
 	})
@@ -709,6 +717,7 @@ $(document).ready(function() {
 		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'addressList']); ?>";
 		url=url+'/'+customer_id,
+		alert(url);
 		$("#myModal12").show();
 		$.ajax({
 			url: url,

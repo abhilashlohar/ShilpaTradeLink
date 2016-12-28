@@ -50,6 +50,16 @@ class InventoryVouchersTable extends Table
             'foreignKey' => 'inventory_voucher_id',
 			'saveStrategy' => 'replace'	
         ]);
+		$this->belongsTo('Creator', [
+			'className' => 'Employees',
+			'foreignKey' => 'created_by',
+			'propertyName' => 'creator',
+		]);
+		
+		$this->belongsTo('Companies', [
+			'foreignKey' => 'company_id',
+			'joinType' => 'INNER'
+		]);
     }
 
     /**

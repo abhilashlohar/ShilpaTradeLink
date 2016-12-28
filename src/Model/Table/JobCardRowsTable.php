@@ -50,6 +50,7 @@ class JobCardRowsTable extends Table
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'
         ]);
+		
     }
 
     /**

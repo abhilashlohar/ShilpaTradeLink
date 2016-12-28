@@ -22,7 +22,7 @@ class InventoryVouchersController extends AppController
         $this->paginate = [
             'contain' => ['InventoryVoucherRows','InvoiceRows'=>['Items']]
         ];
-        $inventoryVouchers = $this->paginate($this->InventoryVouchers);
+        $inventoryVouchers = $this->paginate($this->InventoryVouchers->find()->order(['InventoryVouchers.id' => 'DESC']));
 
         $this->set(compact('inventoryVouchers'));
         $this->set('_serialize', ['inventoryVouchers']);
@@ -39,7 +39,7 @@ class InventoryVouchersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 	   $inventoryVoucher = $this->InventoryVouchers->get($id, [
-            'contain' => ['Invoices','Items','InvoiceRows','InventoryVoucherRows'=>['Items']]
+            'contain' => ['Companies','Invoices','Items','Creator','InvoiceRows','InventoryVoucherRows'=>['Items']]
         ]);
 		
 		 $this->set('inventoryVoucher', $inventoryVoucher);
@@ -54,6 +54,7 @@ class InventoryVouchersController extends AppController
     public function add($invoice_id = null,$invoice_row_id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
+		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$inventoryVoucher = $this->InventoryVouchers->newEntity();
@@ -75,9 +76,14 @@ class InventoryVouchersController extends AppController
             $inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);
 			$inventoryVoucher->invoice_id=$invoice_id;
 			//pr($inventoryVoucher->invoice_id); 
+			$inventoryVoucher->created_by=$s_employee_id; 
+			$inventoryVoucher->company_id=$st_company_id; 
 			$inventoryVoucher->invoice_row_id=$invoice_row_id;
 			//pr($inventoryVoucher->invoice_row_id); exit;
             if ($this->InventoryVouchers->save($inventoryVoucher)) {
+				$InvoiceRow=$this->InventoryVouchers->InvoiceRows->get($invoice_row_id);
+				$InvoiceRow->inventory_voucher='Done';
+				$this->InventoryVouchers->InvoiceRows->save($InvoiceRow);
                 $this->Flash->success(__('The inventory voucher has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

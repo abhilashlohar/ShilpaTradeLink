@@ -22,13 +22,13 @@ class JobCardsController extends AppController
         $this->paginate = [
             'contain' => ['Companies','Customers','SalesOrders']
         ];
-        $jobCards = $this->paginate($this->JobCards);
+        $jobCards = $this->paginate($this->JobCards->find()->order(['JobCards.id' => 'DESC']));
 		
 		$material_indent=$this->request->query('material-indent');
 		//pr($material_indent); exit;
 		if(!empty($material_indent)){
 			$jobCards=$this->paginate(
-				$this->JobCards->find()->contain(['JobCardRows'])
+				$this->JobCards->find()->contain(['JobCardRows'])->order(['JobCards.id' => 'DESC'])
 			);
 		}
 
@@ -47,9 +47,9 @@ class JobCardsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $jobCard = $this->JobCards->get($id, [
-            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'=>['JobCardRows'=>['Items']]]], 'Companies', 'JobCardRows'=>['Items'],'Customers']
+            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items','JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
         ]);
-
+ 
         $this->set('jobCard', $jobCard);
         $this->set('_serialize', ['jobCard']);
     }
@@ -65,23 +65,23 @@ class JobCardsController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		//pr($st_company_id); exit;
+		
 		$sales_order_id=@(int)$this->request->query('Sales-Order');
-		//pr($job_card_id); exit;
+		
 		if(!empty($sales_order_id)){
 			$salesOrder = $this->JobCards->SalesOrders->get($sales_order_id, [
 				'contain' => ['Customers','SalesOrderRows'=>['Items'=>function ($q){
 					return $q->where(['Items.source !='=>'Purchessed']);
 				}]]
 			]);
-		}//pr($salesOrder); exit;
+		}
 		$last_jc_no=$this->JobCards->find()->select(['jc2'])->where(['company_id' => $st_company_id])->order(['jc2' => 'DESC'])->first();
 			if($last_jc_no){
 				@$last_jc_no->jc2=$last_jc_no->jc2+1;
 			}else{
 				@$last_jc_no->jc2=1;
 			}
-			//pr($last_jc_no); exit;
+			
 		
 		
 		
@@ -90,12 +90,14 @@ class JobCardsController extends AppController
 			$jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
 			//pr($jobCard); exit;
 			$jobCard->required_date=date("Y-m-d",strtotime($jobCard->required_date)); 
+			//pr($jobCard->required_date); exit;
 			$jobCard->created_by=$s_employee_id; 
 			$jobCard->sales_order_id=$sales_order_id;
 			$jobCard->company_id=$st_company_id;
-			$jobCard->customer_id=$s_employee_id;
+			//$jobCard->customer_id=$s_employee_id;
 			$jobCard->customer_po_no=$jobCard->customer_po_no;
 			$jobCard->created_on=date("Y-m-d");
+			
 			
 			//pr($jobCard); exit;
 			if ($this->JobCards->save($jobCard)) {
@@ -126,11 +128,12 @@ class JobCardsController extends AppController
     public function edit($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
-        //$jobCard = $this->JobCards->get($id, [
-        //    'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'],'Customers'],'Companies','JobCardRows'=>['Items']]
-        //]);
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
 		$jobCard = $this->JobCards->get($id, [
-            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'=>['JobCardRows'=>['Items']]]], 'Companies', 'JobCardRows'=>['Items'],'Customers']
+            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items','JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
         ]);
 
 		

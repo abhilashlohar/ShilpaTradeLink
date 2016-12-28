@@ -1,4 +1,4 @@
-<?php //pr($salesOrder->so1); exit; ?>
+<?php //pr($salesOrder->sales_order_rows); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
@@ -53,6 +53,25 @@
 			<div class="row">
 				<div class="col-md-4">
 					<div class="form-group">
+						<label class="col-md-5 control-label">Customer PO No</label>
+						<div class="col-md-7">
+							<?php echo $this->Form->input('customer_po_no', ['type'=>'hidden','value' => @$salesOrder->customer_po_no]); ?>
+							<?php echo $salesOrder->customer_po_no; ?>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-5 control-label">Required Date <span class="required" aria-required="true">*</span></label>
+						<div class="col-md-7">
+							<?php echo $this->Form->input('required_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Required Date','data-date-format'=>'dd-mm-yyyy','required']); ?>
+						</div>
+					</div>
+				</div>
+			</div><br/>
+						<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
 						<label class="col-md-5 control-label">Dispatch Name </label>
 						<div class="col-md-7">
 							
@@ -81,41 +100,22 @@
 				</div>
 			</div><br/>
 			<div class="row">
-				<div class="col-md-4">
-					<div class="form-group">
-						<label class="col-md-5 control-label">Customer PO No</label>
-						<div class="col-md-7">
-							<?php echo $this->Form->input('customer_po_no', ['type'=>'hidden','value' => @$salesOrder->customer_po_no]); ?>
-							<?php echo $salesOrder->customer_po_no; ?>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="form-group">
-						<label class="col-md-5 control-label">Required Date <span class="required" aria-required="true">*</span></label>
-						<div class="col-md-7">
-							<?php echo $this->Form->input('required_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Required Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d']); ?>
-						</div>
-					</div>
-				</div>
-			</div><br/>
-			<div class="row">
 				<div class="col-md-12">
 					<div class="form-group">
 						<label class="col-md-2 control-label">Packing: <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-10">
-							<?php echo $this->Form->textarea('packing', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Packing']); ?>
+							<?php echo $this->Form->textarea('packing', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Packing','required']); ?>
 						</div>
 					</div>
 				</div>
 				
-			</div>			
+			</div>	<br/>		
 				
 				
-				<table width="100%" id="main_tb" border="1">
+				<table class="table table-bordered " width="100%" id="main_tb" border="1">
 					<thead>
-						<th width="30%">In</th>
-						<th>Out</th>
+						<th valign="right" width="30%">IN</th>
+						<th align="center">OUT</th>
 					</thead>
 					<tbody id="maintbody">
 					<?php foreach($salesOrder->sales_order_rows as $sales_order_row){ ?>
@@ -142,7 +142,107 @@
 </div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
+
 $(document).ready(function() { 
+//--------- FORM VALIDATION
+	var form3 = $('#form_sample_3');
+	var error3 = $('.alert-danger', form3);
+	var success3 = $('.alert-success', form3);
+	form3.validate({
+		errorElement: 'span', //default input error message container
+		errorClass: 'help-block help-block-error', // default input error message class
+		focusInvalid: true, // do not focus the last invalid input
+		
+		rules: {
+			rules: {
+				packing:{
+					required: true,
+				},
+				required_date : {
+					  required: true,
+				},
+				remark : {
+					  required: true,
+				},
+			},
+		},
+
+		messages: { // custom messages for radio buttons and checkboxes
+			membership: {
+				required: "Please select a Membership type"
+			},
+			service: {
+				required: "Please select  at least 2 types of Service",
+				minlength: jQuery.validator.format("Please select  at least {0} types of Service")
+			}
+		},
+
+		errorPlacement: function (error, element) { // render error placement for each input type
+			if (element.parent(".input-group").size() > 0) {
+				error.insertAfter(element.parent(".input-group"));
+			} else if (element.attr("data-error-container")) { 
+				error.appendTo(element.attr("data-error-container"));
+			} else if (element.parents('.radio-list').size() > 0) { 
+				error.appendTo(element.parents('.radio-list').attr("data-error-container"));
+			} else if (element.parents('.radio-inline').size() > 0) { 
+				error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
+			} else if (element.parents('.checkbox-list').size() > 0) {
+				error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
+			} else if (element.parents('.checkbox-inline').size() > 0) { 
+				error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
+			} else {
+				error.insertAfter(element); // for other inputs, just perform default behavior
+			}
+		},
+
+		invalidHandler: function (event, validator) { //display error alert on form submit   
+			success3.hide();
+			error3.show();
+			//Metronic.scrollTo(error3, -200);
+		},
+
+		highlight: function (element) { // hightlight error inputs
+		   $(element)
+				.closest('.form-group').addClass('has-error'); // set error class to the control group
+		},
+
+		unhighlight: function (element) { // revert the change done by hightlight
+			$(element)
+				.closest('.form-group').removeClass('has-error'); // set error class to the control group
+		},
+
+		success: function (label) {
+			label
+				.closest('.form-group').removeClass('has-error'); // set success class to the control group
+		},
+
+		submitHandler: function (form) {
+			success3.show();
+			error3.hide();
+			form[0].submit(); // submit the form
+		}
+
+	});
+	//--	 END OF VALIDATION
+	
+		$('.quantity').die().live("keyup",function() {
+			var asc=$(this).val();
+			var numbers =  /^[0-9]*\.?[0-9]*$/;
+			if(asc==0)
+			{
+				$(this).val('');
+				return false; 
+			}
+			else if(asc.match(numbers))  
+			{  
+			} 
+			else  
+			{  
+				$(this).val('');
+				return false;  
+			}
+	});
+
 	onload_add_row();
 	function onload_add_row(){
 		var tr1=$("#onload_sample_tb").html();
@@ -160,8 +260,27 @@ $(document).ready(function() {
 	
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
-		alert(l);
-		$(this).closest('tr').remove();
+		if (confirm("Are you sure to remove row ?") == true) {
+			if(l>1){  
+			 $(this).closest('tr').remove(); 
+				var i=0; 
+				$("#main_tb tbody#maintbody tr.main_tr").each(function(){
+					var sales_order_row_id=$(this).find("td:nth-child(1) input").val();
+					i++;
+					$(this).find("td:nth-child(2) textarea").attr({name:"job_card_rows["+i+"][remark]", id:"job_card_rows-"+i+"-remark"});
+					i--;
+					var sr=0;
+					$(this).find("td:nth-child(2) table tbody tr").each(function(){
+						i++; sr++;
+						$(this).find('td:nth-child(1)').html(sr);
+						$(this).find("td:nth-child(2) input").attr({name:"job_card_rows["+i+"][sales_order_row_id]", id:"job_card_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
+						
+						$(this).find("td:nth-child(2) select").attr({name:"job_card_rows["+i+"][item_id]", id:"job_card_rows-"+i+"-item_id"}).select2();
+						$(this).find("td:nth-child(3) input").attr({name:"job_card_rows["+i+"][quantity]", id:"job_card_rows-"+i+"-quantity"});
+					});
+				});
+			}
+		} 
     });
 	
 	$('.quantity').die().live("keyup",function() {
@@ -194,6 +313,7 @@ $(document).ready(function() {
 				i++; sr++;
 				$(this).find('td:nth-child(1)').html(sr);
 				$(this).find("td:nth-child(2) input").attr({name:"job_card_rows["+i+"][sales_order_row_id]", id:"job_card_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
+				
 				$(this).find("td:nth-child(2) select").attr({name:"job_card_rows["+i+"][item_id]", id:"job_card_rows-"+i+"-item_id"}).select2();
 				$(this).find("td:nth-child(3) input").attr({name:"job_card_rows["+i+"][quantity]", id:"job_card_rows-"+i+"-quantity"});
 			});
@@ -202,15 +322,17 @@ $(document).ready(function() {
 });
 </script>
 <div id="onload_sample_tb" style="display:none;">
-	<div class="form-group">
-			<label class="col-md-3 control-label">Remarks </label>
-			<div class="col-md-9">
-				<?php echo $this->Form->textarea('remark', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks']); ?>
-			</div>
+	
+	<div class="col-md-10">
+					<div class="form-group">
+						<label class="control-label">Remarks <span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->textarea('remark', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks','required','rows'=>1]); ?>
+					</div>
 	</div>
+	
 <table class="table">
 	<thead>
-		<th>Sr</th>
+		<th>S.No</th>
 		<th width="70%">Item</th>
 		<th>Quantity</th>
 		<th width="10%"></th>
@@ -220,7 +342,7 @@ $(document).ready(function() {
 			<td>0</td>
 			<td>
 			<?php echo $this->Form->input('sales_order_row_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
-			<?php echo $this->Form->input('item_id',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm','label'=>false]); ?>
+			<?php echo $this->Form->input('item_id',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm','label'=>false,'required']); ?>
 			</td>
 			<td><?php echo $this->Form->input('quantity',['class' => 'form-control input-sm quantity','label'=>false,'placeholder'=>'Quantity','required']); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>

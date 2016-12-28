@@ -1,4 +1,3 @@
-
 <?php 
 
 	if(!empty($status)){
@@ -6,13 +5,12 @@
 	}else{
 		$url_excel="/?".$url;
 	}
-
 ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Sales Orders</span>
+			<span class="caption-subject font-blue-steel uppercase">Sales Order</span>
 			<?php if($pull_request=="true"){ ?>
 			: Select a Sales-Order to convert into Invoice
 		

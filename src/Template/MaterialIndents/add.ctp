@@ -1,4 +1,4 @@
-<?php pr($jobCards); exit; ?>
+<?php //pr($jobCards); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
@@ -44,7 +44,7 @@
 					<div class="form-group">
 						<label class="col-md-5 control-label">Required Date <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-7">
-							<?php echo $this->Form->input('required_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Required Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d']); ?>
+							<?php echo $this->Form->input('required_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Required Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d','required']); ?>
 						</div>
 					</div>
 				</div>
@@ -63,20 +63,27 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php $q=0; foreach ($jobCards->job_card_rows as $job_card_rows): ?>
+					<?php 
+					$req_quantity=[]; 
+					foreach ($jobCards->job_card_rows as $job_card_rows){
+						$req_quantity[$job_card_rows->item_id]['item']=$job_card_rows['item'];
+						$req_quantity[$job_card_rows->item_id]['required_qty']=@$req_quantity[$job_card_rows->item_id]['required_qty']+$job_card_rows->quantity;
+					} ?>
+					
+					<?php $q=0; foreach($req_quantity as  $item_id=>$required_qty): ?>
 					<tr class="tr1" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td><?php echo ++$q; --$q; ?></td>
-							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.item_id', ['type'=>'hidden','value' => @$job_card_rows->item->id]); ?>
-							<?php echo $job_card_rows->item->name; ?></td>
-							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','readonly','value' => @$job_card_rows->quantity]); ?></td>
-							
-							<td><?php echo @$current_stock[$job_card_rows->item_id]['total_in']-@$current_stock[$job_card_rows->item_id]['total_out']; ?></td>
-							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.approved_purchased_quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Approved Purchased Quantity']); ?></td>
-							
-							
+							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.item_id', ['type'=>'hidden','value' => @$item_id]); ?>
+							<?php echo $required_qty['item']->name; ?></td>
+							<td>
+							<?php echo $this->Form->input('material_indent_rows.'.$q.'.quantity', ['type'=>'hidden','value' => @$required_qty['required_qty']]); ?>
+							<?php echo $required_qty['required_qty']; ?></td>
+							<?php //pr(@$current_stock[$job_card_rows->item_id]['total_in']); exit; ?>
+							<td><?php echo @$current_stock[$item_id]['total_in']-@$current_stock[$item_id]['total_out']; ?></td>
+							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.approved_purchased_quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Approved Purchased Quantity','required']); ?></td>
 					</tr>
-					
 					<?php $q++; endforeach;  ?>
+					
 				</tbody>
 				
 			</table>
@@ -100,3 +107,51 @@
 }
 </style>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+
+<script>
+
+$(document).ready(function() { 
+//--------- FORM VALIDATION
+	var form3 = $('#form_sample_3');
+	var error3 = $('.alert-danger', form3);
+	var success3 = $('.alert-success', form3);
+	form3.validate({
+		errorElement: 'span', //default input error message container
+		errorClass: 'help-block help-block-error', // default input error message class
+		focusInvalid: true, // do not focus the last invalid input
+		
+		rules: {
+			rules: {
+				packing:{
+					required: true,
+				},
+				required_date : {
+					  required: true,
+				},
+				remark : {
+					  required: true,
+				},
+			},
+		},
+	});
+	
+	$('.quantity').die().live("keyup",function() {
+			var asc=$(this).val();
+			var numbers =  /^[0-9]*\.?[0-9]*$/;
+			if(asc==0)
+			{
+				$(this).val('');
+				return false; 
+			}
+			else if(asc.match(numbers))  
+			{  
+			} 
+			else  
+			{  
+				$(this).val('');
+				return false;  
+			}
+	});
+
+});
+</script>	

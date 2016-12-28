@@ -61,7 +61,12 @@ class PaymentVouchersController extends AppController
 		$st_company_id = $session->read('st_company_id');
         
 		if ($this->request->is('post')) {
-		
+			$last_ref_no=$this->PaymentVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
+			if($last_ref_no){
+				$purchaseOrder->voucher_no=$last_ref_no->voucher_no+1;
+			}else{
+				$purchaseOrder->voucher_no=1;
+			}
 			$paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
 			
 			$paymentVoucher->created_by=$s_employee_id;

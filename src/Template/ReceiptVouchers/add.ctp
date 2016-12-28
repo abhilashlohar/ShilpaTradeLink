@@ -1,8 +1,5 @@
 <style>
-.table thead tr th {
-    color: #FFF;
-	background-color: #254b73;
-}
+
 .padding-right-decrease{
 	padding-right: 0;
 }
@@ -248,6 +245,7 @@ $(document).ready(function() {
 			i++;
 			$(this).find("td:nth-child(1)").html(i);
 			$(this).find("td:nth-child(2) select").attr({name:"receipt_breakups["+i+"][type]", id:"receipt_breakups-"+i+"-type"}).rules("add", "required");
+			$(this).find("td:nth-child(3) a").attr({row_no:i});
 			var type=$(this).find("td:nth-child(2) option:selected").val();
 			if(type=='Against Ref'){
 				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"receipt_breakups["+i+"][invoice_id]", id:"receipt_breakups-"+i+"-invoice_id"}).rules("add", "required");
@@ -285,9 +283,67 @@ $(document).ready(function() {
 	});
 	
 	$('.select_ref').die().live("click",function() {
+		var row_no=$(this).attr('row_no');
+		$('#myModal1').attr('row_no',row_no);
 		$('#myModal1').show();
 	});
 	
+	$('.closebtn').live("click",function() { 
+		$(".modal").hide();
+    });
+	
+	$('select[name="received_from_id"]').die().live("change",function() {
+		var received_from_id=$(this).find('option:selected').val();
+		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
+		var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'DueInvoicesForReceipt']); ?>";
+		url=url+'/'+received_from_id,
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$("#result_ajax").html(response);
+		});
+	});
+	
+	$('input').die().live("click",function() {
+		adjust_invoice();
+	});
+	
+	$('.invoice_tr').die().live("click",function() {
+		var invoice_id=$(this).attr('invoice_id');
+		var row_no=$('#myModal1').attr('row_no');
+		$('input[name="receipt_breakups['+row_no+'][invoice_id]"]').val(invoice_id);
+		$('#myModal1').hide();
+		adjust_invoice();
+	});
+	
+	
+	function adjust_invoice(){
+		var receipt_amount=parseFloat($('input[name="amount"]').val());
+		if(!receipt_amount){ receipt_amount=0; }
+		$('#main_tb tbody#main_tbody tr').each(function(){
+			var type=$(this).find('td:nth-child(2) select option:selected').val();
+			//
+			
+			if(type=="Against Ref"){
+				var invoice_id=$(this).find('td:nth-child(3) input:eq(0)').val();
+				if(invoice_id){
+					var invoice_amount=parseFloat($('tr.invoice_tr[invoice_id="'+invoice_id+'"]').find('td:nth-child(3)').text());
+					if(!invoice_amount){ invoice_amount=0; }
+					$(this).find('td:nth-child(4) input').val(invoice_amount);
+					var remaining_amount=receipt_amount-invoice_amount;
+					
+					if(remaining_amount>=0){
+						$('tr.invoice_tr[invoice_id="'+invoice_id+'"]').remove();
+					}
+				}
+			}else{
+				var amount=parseFloat($(this).find('td:nth-child(4) input').val());
+				remaining_amount=receipt_amount-amount;
+				receipt_amount=remaining_amount;
+			}
+			
+		})
+	}
 });
 </script>
 
@@ -315,7 +371,7 @@ $(document).ready(function() {
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-body" id="result_ajax">
-				
+				Please select received from
 			</div>
 			<div class="modal-footer">
 				<button class="btn default closebtn">Close</button>

@@ -12,7 +12,6 @@
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
-							
 							<th>Voucher Date</th>
 							<th>Received From</th>
 							<th>Bank/Cash</th>

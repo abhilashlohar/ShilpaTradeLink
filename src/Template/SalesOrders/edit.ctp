@@ -163,8 +163,10 @@
 						</td>
 						
 						<td>
+						
+						<?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$sales_order_rows->quantity,'min'=>1]); ?>
 						<?php echo $this->Form->input('sales_order_rows.'.$q.'.height', ['type' => 'hidden','value' => @$sales_order_rows->height]); ?>
-						<?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$sales_order_rows->quantity,'min'=>1]); ?></td>
+						</td>
 						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate', 'min'=>'0.01','step'=>"0.01",'value'=>$sales_order_rows->rate,'r_popup_id'=>$q]); ?></td>
 						<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value'=>$sales_order_rows->amount]); ?></td>
 						<td><?php 
@@ -413,7 +415,6 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
-		ignore: "textarea:hidden",
 		rules: {
 			company_id:{
 				required: true,
@@ -690,12 +691,21 @@ $(document).ready(function() {
 		});
 	}
 	
-			function calculate_total(){
+		
+		$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
+			calculate_total();
+		});
+		$('#main_tb select').die().live("change",function() {
+			calculate_total();
+		});
+		
+	
+		function calculate_total(){ 
 			var total=0;  grand_total=0;
 			$("#main_tb tbody tr.tr1").each(function(){
 				var unit=$(this).find("td:nth-child(3) input").val();
-				var Rate=$(this).find("td:nth-child(4) input").val();
-				var Amount=unit*Rate;
+ 				var Rate=$(this).find("td:nth-child(4) input").val();
+ 				var Amount=unit*Rate; 
 				$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
 				total=total+Amount;
 			});
@@ -733,8 +743,6 @@ $(document).ready(function() {
 			var sale_tax_description=$('select[name="sale_tax_per"] option:selected').attr("description");
 			$('input[name="sale_tax_description"]').val(sale_tax_description);
 			
-
-			
 		}	
 	
 	
@@ -764,18 +772,11 @@ $(document).ready(function() {
 					i++;
 					$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
 				});
-				calculate_total();
+				
 			}
 		} 
     });
-	
-	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
-		calculate_total();
-    });
-	$('#main_tb select').die().live("change",function() {
-		calculate_total();
-    });
-	
+
 
 	
 	$('.select_address').on("click",function() { 

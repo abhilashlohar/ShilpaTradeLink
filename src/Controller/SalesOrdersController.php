@@ -90,7 +90,7 @@ class SalesOrdersController extends AppController
 		if(!empty($job_card)){
 			$salesOrders=$this->paginate(
 				$this->SalesOrders->find()->contain(['SalesOrderRows'])
-				->where(['job_card'=>'Pending'])
+				->where(['job_card'=>'Pending'])->order(['SalesOrders.id' => 'DESC'])
 			);
 		}
         $this->set(compact('salesOrders','status','copy_request','job_card'));

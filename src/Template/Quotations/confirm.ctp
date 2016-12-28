@@ -1,7 +1,7 @@
 <?php //pr($quotation->customer->customer_contacts[0]->email); exit;
 $pdf_url=$this->Url->build(['controller'=>'Quotations','action'=>'pdf']);
 $list_url=$this->Url->build(['controller'=>'Quotations','action'=>'index']);
-$edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Edit']);
+$edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Add']);
 ?>
 <table width="100%">
 	<tr>
@@ -10,7 +10,7 @@ $edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Edit']);
 			<a href="<?php echo $list_url; ?>" class="list-group-item"><i class="fa fa-chevron-left"></i> Back to Quotations </a>
 			<a  data-toggle="modal" class="list-group-item" href="#myModal2"><i class="fa fa-envelope"></i> Email to Customer </a>
 			<?php if($quotation->status=='Pending'){ ?>
-			<a href="<?php echo $edit_url.'/'.$id; ?>" class="list-group-item"><i class="fa fa-edit"></i> Edit Quotation </a>
+			<a href="<?php echo $edit_url.'?revision='.$id; ?>" class="list-group-item"><i class="fa fa-edit"></i> Edit Quotation </a>
 			<?php } ?>
 			<a href="#" class="list-group-item" onclick="window.close()"><i class="fa fa-times"></i> Close </a>
 		</div>

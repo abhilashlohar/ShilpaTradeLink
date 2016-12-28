@@ -253,7 +253,7 @@ $html .= '</div>
 
 //echo $html; exit;
 
-$name='Quotation-'.h(($quotation->qt1.'_IN'.str_pad($quotation->qt2, 3, '0', STR_PAD_LEFT).'_'.$quotation->qt3.'_'.$quotation->qt4));
+$name='Quotation-'.h(($quotation->qt1.'_QO'.str_pad($quotation->qt2, 3, '0', STR_PAD_LEFT).'_'.$quotation->qt3.'_'.$quotation->qt4));
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();

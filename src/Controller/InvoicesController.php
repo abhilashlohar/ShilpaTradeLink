@@ -167,6 +167,7 @@ class InvoicesController extends AppController
 				return $q->where(['source !='=>'Purchessed']);
 				}])
 				->where(['inventory_voucher'=>'Pending'])
+				->order(['InvoiceRows.id' => 'DESC'])
 			);
 	//pr($invoices); exit;
         $this->set('invoices', $invoices);
@@ -618,5 +619,15 @@ class InvoicesController extends AppController
 			</table>';
 			die(json_encode(array("html"=>$html,"minimum_selling_price"=>$item->dynamic_cost*$item->minimum_selling_price_factor)));
 		}
+	}
+	
+	function DueInvoicesForReceipt($received_from_id=null){
+		$this->viewBuilder()->layout('');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$Customer=$this->Invoices->Customers->find()->where(['ledger_account_id'=>$received_from_id])->first();
+		$Invoices = $this->Invoices->find()->where(['company_id'=>$st_company_id,'customer_id'=>$Customer->id,'due_payment >'=>0]);
+		 $this->set(compact('Invoices'));
 	}
 }

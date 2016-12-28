@@ -142,7 +142,9 @@ class ReceiptVouchersController extends AppController
 		}
 		$bankCashes = $this->ReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
 		
-        $companies = $this->ReceiptVouchers->Companies->find('all');		
+        $companies = $this->ReceiptVouchers->Companies->find('all');
+
+		$Invoices = $this->ReceiptVouchers->Invoices->find()->where(['company_id'=>$st_company_id,'due_payment >'=>0]);		
         $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies'));
         $this->set('_serialize', ['receiptVoucher']);
     }

@@ -27,7 +27,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Customer</label>
 						<div class="col-md-9">
-							
+							<?php echo $this->Form->input('customer_id', ['type'=>'hidden','value' => @$invoice->customer->id]); ?>
 							<?php echo @$invoice->customer->customer_name; ?>
 						</div>
 					</div>
@@ -53,7 +53,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Address</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address','value' => @$sales_order->customer_address]); ?>
+							<?php echo $this->Form->input('customer_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address','value' => @$invoice->customer_address]); ?>
 							<a href="#" role="button" class="pull-right select_address" >
 							Select Address </a>
 						</div>
@@ -133,6 +133,7 @@
 					<?php 
 					foreach($invoice->sales_order->invoices as $data){
 						foreach($data->invoice_rows as $data2){
+							
 							$processed_items[$data2->item_id]=@$processed_items[$data2->item_id]+$data2->quantity;
 						}
 					}
@@ -149,8 +150,9 @@
 							echo $this->Form->input('item_id_display', ['type'=>'text','label' => false,'class' => 'form-control input-sm','value'=>$invoice_rows->item->name,'readonly']);
 							?></td>
 							<td>
+							<?php  echo $this->Form->input('invoice_rows['.$q.'][quantity]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$invoice_rows->quantity,'max'=>$total_items[$invoice_rows->item_id]-$processed_items[$invoice_rows->item_id]+$invoice_rows->quantity]); ?>
 							<?php echo $this->Form->input('invoice_rows['.$q.'][height]', ['type' => 'hidden','value' => @$invoice_rows->height]); ?>
-							<?php echo $this->Form->input('invoice_rows['.$q.'][quantity]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$invoice_rows->quantity,'max'=>$total_items[$invoice_rows->item_id]-$processed_items[$invoice_rows->item_id]+$invoice_rows->quantity]); ?></td>
+							</td>
 							<td><?php echo $this->Form->input('invoice_rows['.$q.'][rate]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$invoice_rows->rate,'readonly']); ?></td>
 							<td><?php echo $this->Form->input('invoice_rows['.$q.'][amount]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$invoice_rows->amount]); ?></td>
 							<td>
@@ -483,29 +485,34 @@ $(document).ready(function() {
 	
 	
 	
-	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
+	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() {
 		calculate_total();
     });
 	$('#main_tb input,#tbl2 select').die().live("change",function() { 
 		calculate_total();
     });
 	
-	$('.rename_check').die().live("click",function() {
-		rename_rows(); calculate_total();
-    });
+	
 	
 	$('.addrow').die().live("click",function() { 
 		add_row();
     });
-	$("#pnfper").on('click',function(){
+	
+		$("#pnfper").on('click',function(){
 		if($(this).is(':checked')){
 			$("#pnf_text").show();
 			$('input[name="pnf"]').attr('readonly','readonly');
+			$('input[name="pnf_per"]').val(0);
+
 		}else{
 			$("#pnf_text").hide();
 			$('input[name="pnf"]').removeAttr('readonly');
+			$('input[name="pnf"]').val(0);
+			$('input[name="pnfper"]').val(0);
+			
 		}
-	});
+		calculate_total();
+	})
 	$("#discount_per").on('click',function(){
 		if($(this).is(':checked')){
 			$("#discount_text").show();
@@ -513,9 +520,11 @@ $(document).ready(function() {
 		}else{
 			$("#discount_text").hide();
 			$('input[name="discount"]').removeAttr('readonly');
+			$('input[name="discount_per"]').val(0);
+			$('input[name="discount"]').val(0);
 		}
 		calculate_total();
-	});
+	})
 	
 	$('.deleterow').die().live("click",function() {
 			var l=$(this).closest("table tbody").find("tr").length;
@@ -572,21 +581,6 @@ $(document).ready(function() {
 			$("#main_tb tbody tr.tr2").each(function(){
 				i++;
 				$(this).find("td:nth-child(1) textarea").attr("name","invoice_rows["+i+"][description]");
-			});
-			
-			$(document)
-			.one('focus.textarea', '.autoExpand', function(){
-				var savedValue = this.value;
-				this.value = '';
-				this.baseScrollHeight = this.scrollHeight;
-				this.value = savedValue;
-			})
-			.on('input.textarea', '.autoExpand', function(){
-				var minRows = this.getAttribute('data-min-rows')|0,rows;
-				this.rows = minRows;
-				console.log(this.scrollHeight , this.baseScrollHeight);
-				rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
-				this.rows = minRows + rows;
 			});
 		}
 		
@@ -668,7 +662,7 @@ $(document).ready(function() {
 		
 		
 	$('.select_address').on("click",function() { 
-		open_address();
+		open_address(); 
     });
 	
 	$('.closebtn').on("click",function() { 
@@ -702,10 +696,11 @@ $(document).ready(function() {
     });
 	
 	function open_address(){
-		var customer_id=$('select[name="customer_id"]').val();
+		var customer_id=$('input[name="customer_id"]').val();
 		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'addressList']); ?>";
 		url=url+'/'+customer_id,
+		//alert(url);
 		$("#myModal12").show();
 		$.ajax({
 			url: url,

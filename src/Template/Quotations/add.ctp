@@ -72,7 +72,7 @@ if(!empty($revision))
 					<div class="form-group">
 						<label class="col-md-4 control-label">Salesman</label>
 						<div class="col-md-8">
-							<?php echo $this->Form->input('employee_id', ['options'=>$employees,'empty' => "--Select Salesman--",'label' => false,'class' => 'form-control input-sm ','required']); ?>
+							<?php echo $this->Form->input('employee_id', ['options'=>$employees,'empty' => "--Select Salesman--",'label' => false,'class' => 'form-control input-sm select2me','required']); ?>
 						</div>
 					</div>
 					<br/>
@@ -184,7 +184,7 @@ if(!empty($revision))
 				<?php if(!empty($copy)|| !empty($revision)){ ?>
 				<tbody id="main_tbody">
 					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_rows): ?>
-					<tr class="tr1" row_no='<?php echo @$quotation_rows->id; ?>'>
+					<tr class="tr1 preimp" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 							<td>
 							<div class="row">
@@ -215,7 +215,7 @@ if(!empty($revision))
 							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$quotation_rows->amount]); ?></td>
 							<td  width="70"><a class="btn btn-xs btn-default addrow"  href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 					</tr>
-					<tr class="tr2" row_no='<?php echo @$quotation_rows->id; ?>'>
+					<tr class="tr2 preimp" row_no='<?php echo @$quotation_rows->id; ?>'>
 						<td colspan="6">
 							<div contenteditable="true" id="editor" name="<?php echo 'quotation_rows['.$q.'][description]'; ?>"><?php echo @$quotation_rows->description; ?></div>
 							<?php echo $this->Form->textarea('quotation_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','required','style'=>['display:none'],'value' => @$quotation_rows->description]); ?>
@@ -521,8 +521,8 @@ $(document).ready(function() {
 				$(del).remove();
 				var i=0;
 				$("#main_tb tbody tr.tr1").each(function(){
-					i++;
-					$(this).find("td:nth-child(1)").html(i);
+					
+					$(this).find("td:nth-child(1)").html(++i); i--;
 					$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 					$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 					$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
@@ -530,13 +530,13 @@ $(document).ready(function() {
 					$(this).find("td:nth-child(3) input").attr({name:"quotation_rows["+i+"][quantity]", id:"quotation_rows-"+i+"-quantity"}).rules("add", "required");
 					$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules("add", "required");
 					$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
-				});
+				i++; });
 				var i=0;
 				$("#main_tb tbody tr.tr2").each(function(){
-					i++;
+					
 					$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"});
 					$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
-				});
+				i++; });
 				calculate_total();
 			}
 		} 
@@ -558,9 +558,9 @@ $(document).ready(function() {
 		
 		var i=0;
 		$("#main_tb tbody tr.tr1").each(function(){
-			i++;
+			
 			 
-			$(this).find("td:nth-child(1)").html(i);
+			$(this).find("td:nth-child(1)").html(++i); i--;
 			$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
@@ -572,34 +572,16 @@ $(document).ready(function() {
 							min: "Quantity can't be zero."
 						}
 					});
-			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules('add', { required: true });
+			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i});
 			
 			$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
-		});
+		i++; });
 		var i=0;
 		
 		$("#main_tb tbody tr.tr2").each(function(){
-			i++;
 			$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"}).rules("add", "required");
 			$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
-		});
-		
-		
-		
-		$(document)
-		.one('focus.textarea', '.autoExpand', function(){
-			var savedValue = this.value;
-			this.value = '';
-			this.baseScrollHeight = this.scrollHeight;
-			this.value = savedValue;
-		})
-		.on('input.textarea', '.autoExpand', function(){
-			var minRows = this.getAttribute('data-min-rows')|0,rows;
-			this.rows = minRows;
-			console.log(this.scrollHeight , this.baseScrollHeight);
-			rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
-			this.rows = minRows + rows;
-		});
+		i++; });
 	}
 	
 	$('#main_tb input').die().live("keyup","blur",function() { 

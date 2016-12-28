@@ -1,3 +1,4 @@
+<?php //pr($employee); exit;?>
 <style>
 .control-label1{
 font-weight: 600;

@@ -94,7 +94,13 @@ class QuotationsController extends AppController
 		foreach($subquery as $data){
 			$max_ids[]=$data->max_id;
 		} 
+		if(sizeof($max_ids)>0){
+			$quotations = $this->paginate($this->Quotations->find()->where(['Quotations.id IN' =>$max_ids])->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
+		}else{
+			$quotations = $this->paginate($this->Quotations->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
+		}
 		
+
 		$quotations = $this->paginate($this->Quotations->find()->where(['Quotations.id IN' =>$max_ids])->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
 		$companies = $this->Quotations->Companies->find('list');
 		

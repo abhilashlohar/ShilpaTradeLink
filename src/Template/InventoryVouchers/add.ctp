@@ -207,7 +207,7 @@ $(document).ready(function() {
 		$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
-			
+			if(l>1){
 				var del=$(this).closest("tr");
 				$(del).remove();
 				var i=0;
@@ -219,7 +219,7 @@ $(document).ready(function() {
 					
 				});
 				
-				
+			}
 			
 		} 
     });

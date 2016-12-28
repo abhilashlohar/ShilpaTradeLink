@@ -23,7 +23,7 @@ class MaterialIndentsController extends AppController
         $this->paginate = [
             'contain' => ['JobCards']
         ];
-		$materialIndents = $this->paginate($this->MaterialIndents);
+		$materialIndents = $this->paginate($this->MaterialIndents->find()->order(['MaterialIndents.id' => 'DESC']));
        
 
         $this->set(compact('materialIndents'));
@@ -90,33 +90,34 @@ class MaterialIndentsController extends AppController
 			$current_stock=[];
 			foreach($query as $data){
 				$current_stock[$data->item_id]=['total_in'=>$data->total_in,'total_out'=>$data->total_out];
+				
 			} 
-			
+			//pr($current_stock); exit;
 		}
 		
-		
-		//pr($jobCards);exit;job-cards
-		
-		
-        $materialIndent = $this->MaterialIndents->newEntity();
+		$materialIndent = $this->MaterialIndents->newEntity();
         if ($this->request->is('post')) {
-			pr($this->request->data);
+			//pr($this->request->data);
             $materialIndent = $this->MaterialIndents->patchEntity($materialIndent, $this->request->data);
-			pr($materialIndent); exit;
+			//pr($materialIndent); exit;
 			$materialIndent->created_by=$s_employee_id; 
 			$materialIndent->job_card_id=$job_card_id;
 			$materialIndent->created_on=date("Y-m-d");
 			$materialIndent->company_id=$st_company_id;
-			$materialIndent->required_date=date("Y-m-d",strtotime($materialIndent->required_date));  
+			$materialIndent->required_date=date("Y-m-d",strtotime($materialIndent->required_date)); 
+					
 			//pr($materialIndent->required_date); exit;
 			
             if ($this->MaterialIndents->save($materialIndent)) {
+				
+				
+				
                 $this->Flash->success(__('The material indent has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             } else { 
                 $this->Flash->error(__('The material indent could not be saved. Please, try again.'));
-            }pr($materialIndent); exit;
+            }
         }
 		$last_mi_no=$this->MaterialIndents->find()->select(['mi2'])->where(['company_id' => $st_company_id])->order(['mi2' => 'DESC'])->first();
 			if($last_mi_no){
