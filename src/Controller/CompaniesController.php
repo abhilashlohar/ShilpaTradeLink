@@ -38,7 +38,7 @@ class CompaniesController extends AppController
             'contain' => ['CompanyGroups']
         ];
 		
-	    $companies = $this->paginate($this->Companies->find()->where($where));
+	    $companies = $this->paginate($this->Companies->find());
 
         $this->set(compact('companies'));
         $this->set('_serialize', ['companies']);

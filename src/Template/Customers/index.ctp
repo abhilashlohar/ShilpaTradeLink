@@ -36,8 +36,6 @@
 						<th>Customer Seg</th>
 						<th>Tin No</th>
 						<th>Gst No</th>
-						<th>Pan No</th>
-						<th>Ecc No</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -50,8 +48,6 @@
 						<td><?= h($customer->customer_seg->name) ?></td>
 						<td><?= h($customer->tin_no) ?></td>
 						<td><?= h($customer->gst_no) ?></td>
-						<td><?= h($customer->pan_no) ?></td>
-						<td><?= h($customer->ecc_no) ?></td>
 						<td class="actions">
 						 	<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $customer->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $customer->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
