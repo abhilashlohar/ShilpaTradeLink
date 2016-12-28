@@ -667,7 +667,7 @@ $(document).ready(function() {
 		});
 		
 		var employee_id=$('select[name="customer_id"] option:selected').attr("employee_id");
-		$("select[name=employee_id]").val(employee_id);
+		$("select[name=employee_id]").val(employee_id).select2();
     });
 	
 	
