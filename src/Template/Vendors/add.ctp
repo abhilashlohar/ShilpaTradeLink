@@ -146,9 +146,7 @@
 						
 					</tbody>
 				</table>
-                <div class="alert alert-danger" id="row_error" style="display:none;">
-                    Fill all fileds.
-                </div>
+              
 			</div>
 		
 			<div class="form-actions">
@@ -208,6 +206,15 @@ $(document).ready(function() {
 				  required: true,
 			},
 			account_second_subgroup_id:{
+				  required: true,
+			},
+			name:{
+				   required: true,
+			},
+			email:{
+				  required: true,
+			},
+			mobile:{
 				  required: true,
 			},
 		},
@@ -397,9 +404,9 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 	<tbody>
 		<tr>
 			<td>0</td>
-			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Name']); ?></td>
-			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email']); ?></td>
-			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm allLetter','placeholder'=>'Mobile','maxlength'=>10]); ?></td>
+			<td><?php echo $this->Form->input('name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Name']); ?></td>
+			<td><?php echo $this->Form->input('email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email']); ?></td>
+			<td><?php echo $this->Form->input('moble', ['label' => false,'class' => 'form-control input-sm allLetter','placeholder'=>'Mobile','maxlength'=>10]); ?></td>
 			<td width="90"><?php echo $this->Form->input('q', ['type'=>'checkbox','label' => false,'class' => 'form-control default_btn','value'=>1]); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>

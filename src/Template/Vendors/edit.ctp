@@ -122,17 +122,15 @@
 						<?php $i=0; foreach($vendor->vendor_contact_persons as $vendor_contact_person){ $i++; ?>
 						<tr>
 							<td><?= h($i) ?></td>
-							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Bank Name','value'=>$vendor_contact_person->name]); ?></td>
-							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Branch','value'=>$vendor_contact_person->email]); ?></td>
-							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.mobile', ['label' => false,'class' => 'form-control input-sm allLetter','value'=>$vendor_contact_person->mobile,'placeholder'=>'Mobile','maxlength'=>10]); ?></td>
+							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Bank Name','value'=>$vendor_contact_person->name,'required']); ?></td>
+							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Branch','value'=>$vendor_contact_person->email,'required']); ?></td>
+							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.mobile', ['label' => false,'class' => 'form-control input-sm allLetter','value'=>$vendor_contact_person->mobile,'placeholder'=>'Mobile','maxlength'=>10,'required']); ?></td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
 						<?php } ?>
 					</tbody>
 				</table>
-                <div class="alert alert-danger" id="row_error" style="display:none;">
-                    Fill all fileds.
-                </div>
+
 			</div>
 		
 			<div class="form-actions">
@@ -192,6 +190,16 @@ $(document).ready(function() {
 				  required: true,
 			},
 			account_second_subgroup_id:{
+				  required: true,
+			},
+			
+			name:{
+				   required: true,
+			},
+			email:{
+				  required: true,
+			},
+			mobile:{
 				  required: true,
 			},
 		},
@@ -382,9 +390,9 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 	<tbody>
 		<tr>
 			<td>0</td>
-			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Name']); ?></td>
-			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email']); ?></td>
-			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mobile']); ?></td>
+			<td><?php echo $this->Form->input('name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Name','required']); ?></td>
+			<td><?php echo $this->Form->input('email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email','required']); ?></td>
+			<td><?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mobile','required']); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 	</tbody>
