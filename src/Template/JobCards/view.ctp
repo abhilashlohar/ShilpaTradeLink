@@ -1,4 +1,3 @@
-<?php //pr($jobCard); exit;?>
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 80%;font-size:14px;">
 <table width="100%">
 	<tr>

@@ -350,7 +350,6 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
-		ignore: "textarea",
 		rules: {
 			rules: {
 				company_id:{
@@ -667,7 +666,7 @@ $(document).ready(function() {
 		});
 		
 		var employee_id=$('select[name="customer_id"] option:selected').attr("employee_id");
-		$("select[name=employee_id]").val(employee_id);
+		$("select[name=employee_id]").val(employee_id).select2();
     });
 	
 	

@@ -39,7 +39,7 @@ class PettyCashReceiptVouchersController extends AppController
 		
 		$this->viewBuilder()->layout('index_layout');
         $pettyCashReceiptVoucher = $this->PettyCashReceiptVouchers->get($id, [
-            'contain' => ['ReceivedFroms', 'BankCashes','Companies']
+            'contain' => ['ReceivedFroms', 'BankCashes','Companies','Creator']
         ]);
 
         $this->set('pettyCashReceiptVoucher', $pettyCashReceiptVoucher);

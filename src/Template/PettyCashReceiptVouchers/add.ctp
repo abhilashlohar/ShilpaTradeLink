@@ -105,7 +105,9 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-			
+			cheque_no :{
+				required: true,
+			},
 		},
 
 		errorPlacement: function (error, element) { // render error placement for each input type
@@ -196,6 +198,16 @@ $(document).ready(function() {
 				$(this).val('');
 				return false;  
 			}
+	});
+	
+	$('input[name="payment_mode"]').die().live("click",function() {
+		var payment_mode=$(this).val();
+		
+		if(payment_mode=="Cheque"){
+			$("#chq_no").show();
+		}else{
+			$("#chq_no").hide();
+		}
 	});
 });
 </script>

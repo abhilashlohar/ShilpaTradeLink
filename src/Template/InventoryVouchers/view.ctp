@@ -2,9 +2,10 @@
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 70%;font-size: 12px;" class="maindiv">
 <table width="100%" class="divHeader" border="0">
 <tr>
-	<td><?php echo $this->Html->image('/logos/'.$inventoryVoucher->company->logo, ['width' => '48%']); ?></td>
+    <td><?php echo $this->Html->image('/logos/'.$inventoryVoucher->company->logo, ['width' => '48%']); ?></td>
     <td valign="bottom" width="30%" align="center" style="font-size:23px;font-weight: bold;color: #0685a8;">INVENTORY VOUCHER</td>
 	<td align="right" style="font-size: 14px;" width="36%"> 
+ 
 	<span style="font-size: 20px;"><?= h($inventoryVoucher->company->name) ?></span><br/>
 	<span style="font-size: 15px;"><?= $this->Text->autoParagraph(h($inventoryVoucher->company->address)) ?></span>
 	<span><?= h($inventoryVoucher->company->mobile_no) ?></span>

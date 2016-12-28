@@ -54,6 +54,12 @@ class DebitNotesTable extends Table
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->belongsTo('Creator', [
+			'className' => 'Employees',
+			'foreignKey' => 'created_by',
+			'propertyName' => 'creator',
+		]);
     }
 
     /**

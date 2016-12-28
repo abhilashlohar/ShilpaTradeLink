@@ -35,7 +35,7 @@ class GrnsController extends AppController
 			$where['status']='Invoice-Booked';
 		}
 		
-		$grns = $this->paginate($this->Grns->find()->where($where)->where(['grns.company_id'=>$st_company_id]));
+		$grns = $this->paginate($this->Grns->find()->where($where)->where(['Grns.company_id'=>$st_company_id]));
         $this->set(compact('grns','pull_request','status'));
         $this->set('_serialize', ['grns']);
     }

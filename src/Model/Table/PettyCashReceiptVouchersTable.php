@@ -53,7 +53,11 @@ class PettyCashReceiptVouchersTable extends Table
             'propertyName' => 'BankCash',
         ]);
 		
-       
+     $this->belongsTo('Creator', [
+			'className' => 'Employees',
+			'foreignKey' => 'created_by',
+			'propertyName' => 'creator',
+		]);
     }
 
     /**
