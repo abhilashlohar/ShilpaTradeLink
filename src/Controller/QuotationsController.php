@@ -273,7 +273,6 @@ class QuotationsController extends AppController
 			->where(['CustomerContacts.default_contact'=>1]);
 		}],'Companies','Employees'=>['Designations'],'ItemGroups','Creator'=>['Designations'],'Editor'=>['Designations'],'QuotationRows' => ['Items'=>['Units']]]
         ]);
-		
 		}
 		else{
 		$quotation = $this->Quotations->get($id, [
