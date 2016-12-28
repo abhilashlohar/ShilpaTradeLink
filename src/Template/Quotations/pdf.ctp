@@ -262,6 +262,8 @@ $dompdf->render();
 
 if($send_email=='true'){
 $to=$emailRecord->send_to;
+$send_to_array=explode(',',$to);
+
 $subject=$emailRecord->subject;
 $message=$emailRecord->message;
 $email = new Email();
@@ -269,7 +271,7 @@ $email = new Email();
 
         try {
             $res = $email->from(['ashishbohara1008@gmail.com' => 'ashish'])
-                  ->to([$to])
+                  ->to($send_to_array)
                   ->subject($subject)
                   ->attachments([
 			   $name.'.pdf' => [
