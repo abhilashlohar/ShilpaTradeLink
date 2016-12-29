@@ -51,18 +51,18 @@
 					</div>
 					
 				</div>
-				<div class="col-md-6" align="right">
+				<div class="col-md-6">
 					<div class="form-group">
 						<label class="col-md-4 control-label">Salesman</label>
 						<div class="col-md-8">
-							<?php echo $this->Form->input('employee_id', ['options'=>$employees,'label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('employee_id', ['options'=>$employees,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 					<br/>
 					<div class="form-group">
 						<label class="col-md-4 control-label">Product</label>
 						<div class="col-md-8">
-							<?php echo $this->Form->input('item_group_id', ['empty'=>'--Select--','options' => $ItemGroups,'label' => false,'class' => 'form-control input-sm','required']); ?>
+							<?php echo $this->Form->input('item_group_id', ['empty'=>'--Select--','options' => $ItemGroups,'label' => false,'class' => 'form-control input-sm select2me','required']); ?>
 						</div>
 					</div>
 					<br/>

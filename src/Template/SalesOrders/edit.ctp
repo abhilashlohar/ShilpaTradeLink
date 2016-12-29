@@ -174,11 +174,10 @@
 							echo $this->Form->input('sales_order_rows.'.$q.'.excise_duty', ['options'=>$options,'label' => false,'class' => 'form-control input-sm' ,'value'=>$sales_order_rows->excise_duty]); ?></td>
 						<td>
 						<?php $options=[];
-						foreach($SaleTaxes as $SaleTaxe){
+						foreach($SaleTaxes as $SaleTaxe){ 
 							$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->id, 'description' => $SaleTaxe->description];
 						}
-						echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
-						echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false]); ?>
+						echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des','value'=>$sales_order_rows->sale_tax_id]);?>
 						</td>
 						<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 					</tr>
@@ -322,6 +321,7 @@
 			<br/>
 		</div>
 		<?php echo $this->Form->input('process_status', ['type' => 'hidden','value' => @$process_status]); ?>
+		<?php echo $this->Form->input('quotation_id', ['type' => 'hidden','value' => @$quotation_id]); ?>
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
@@ -383,9 +383,9 @@
 			echo $this->Form->input('excise_duty', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?></td>
 			<td>
 			<?php $options=[];
-			foreach($SaleTaxes as $SaleTaxe){
-				$options[]=['text' => (string)$SaleTaxe->tax_figure, 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
-			}
+			foreach($SaleTaxes as $SaleTaxe){  //pr($SaleTaxe->id);
+								$options[]=['text' => (string) $SaleTaxe->tax_figure, 'value' => $SaleTaxe->id, 'description' => $SaleTaxe->quote_description];
+							} 
 			echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']);
 			?>
 			</td>
@@ -615,7 +615,6 @@ $(document).ready(function() {
 					$(this).find("td:nth-child(5) input").attr("name","sales_order_rows["+i+"][amount]");
 					$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
 					$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][so_sale_tax]");
-					$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_description]");
 					var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
 					$(this).find("td:nth-child(7) input").val(description);
 				});
@@ -662,8 +661,8 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(4) input").attr({name:"sales_order_rows["+i+"][rate]", id:"sales_order_rows-"+i+"-rate",r_popup_id:i}).rules('add', { required: true });
 			$(this).find("td:nth-child(5) input").attr({name:"sales_order_rows["+i+"][amount]", id:"sales_order_rows-"+i+"-amount"}).rules("add", "required");
 			$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
+			$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][sale_tax_id]");
 			$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][so_sale_tax]");
-			$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_description]");
 			var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
 			$(this).find("td:nth-child(7) input").val(description);
 		});
@@ -740,8 +739,7 @@ $(document).ready(function() {
 			if(isNaN(sale_tax)) { var sale_tax = 0; }
 			$('input[name="sale_tax_amount"]').val(sale_tax.toFixed(2));
 			
-			var sale_tax_description=$('select[name="sale_tax_per"] option:selected').attr("description");
-			$('input[name="sale_tax_description"]').val(sale_tax_description);
+
 			
 		}	
 	
@@ -762,8 +760,8 @@ $(document).ready(function() {
 					$(this).find("td:nth-child(4) input").attr("name","sales_order_rows["+i+"][rate]");
 					$(this).find("td:nth-child(5) input").attr("name","sales_order_rows["+i+"][amount]");
 					$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
+					$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][sale_tax_id]");
 					$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][so_sale_tax]");
-					$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_description]");
 					var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
 					$(this).find("td:nth-child(7) input").val(description);
 				});

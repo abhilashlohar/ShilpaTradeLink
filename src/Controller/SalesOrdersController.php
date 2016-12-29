@@ -237,6 +237,7 @@ class SalesOrdersController extends AppController
 				'contain' => ['QuotationRows' => ['Items']]
 			]);
 			$process_status='Pulled From Quotation';
+			
 		}
 		$this->set(compact('quotation','process_status'));
 		
@@ -277,8 +278,7 @@ class SalesOrdersController extends AppController
 			
 			$salesOrder->created_on=date("Y-m-d",strtotime($salesOrder->created_on));
 			$salesOrder->edited_on=date("Y-m-d",strtotime($salesOrder->edited_on));
-			//pr($salesOrder); exit;
-			//$salesOrder->created_on_time= time('h:i:s');
+			$salesOrder->quotation_id=$quotation_id;
 			$salesOrder->created_on_time= date("Y-m-d h:i:sA");
 			$salesOrder->company_id=$st_company_id;
             if ($this->SalesOrders->save($salesOrder)) {
@@ -364,16 +364,14 @@ class SalesOrdersController extends AppController
 			
 			$salesOrder->expected_delivery_date=date("Y-m-d",strtotime($salesOrder->expected_delivery_date));
 			$salesOrder->po_date=date("Y-m-d",strtotime($salesOrder->po_date)); 
-			//$salesOrder->created_on=date("Y-m-d",strtotime($salesOrder->created_on));
 			$salesOrder->date=date("Y-m-d",strtotime($salesOrder->date));
 			$salesOrder->edited_by=$s_employee_id;
 			$salesOrder->edited_on=date("Y-m-d");
-			
-			//date_default_timezone_set("India/Delhi");
-			
 			$salesOrder->edited_on_time= date("Y-m-d h:i:sA");
-			//echo $salesOrder->edited_on_time;  exit;
+			
+			pr($salesOrder); exit;
             if ($this->SalesOrders->save($salesOrder)) {
+				//pr($salesOrder); exit;
                 $this->Flash->success(__('The sales order has been saved.'));
 				return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
             } else {
