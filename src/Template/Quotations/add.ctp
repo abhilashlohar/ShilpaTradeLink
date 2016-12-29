@@ -1,3 +1,8 @@
+<style>
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+	vertical-align: top !important;
+}
+</style>
 <?php 
 if(!empty($copy))
 {
@@ -219,8 +224,8 @@ if(!empty($revision))
 								</div>
 							
 							</td>
-							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$quotation_rows->quantity]); ?></td>
-							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.rate', ['type'=>'number','label' => false,'class' => 'form-control input-sm','placeholder'=>'Rate', 'min'=>'1','value' => @$quotation_rows->rate,'r_popup_id'=>$q]); ?></td>
+							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm mask_number','placeholder'=>'Quantity','value' => @$quotation_rows->quantity]); ?></td>
+							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm mask_decimal','placeholder'=>'Rate', 'min'=>'1','value' => @$quotation_rows->rate,'r_popup_id'=>$q]); ?></td>
 
 							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$quotation_rows->amount]); ?></td>
 							<td  width="70"><a class="btn btn-xs btn-default addrow"  href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
@@ -313,8 +318,8 @@ if(!empty($revision))
 					</div>
 				</div>
 			</td>
-			<td width="100"><?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm mask_number','placeholder' => 'Quantity']); ?></td>
-			<td width="130"><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm mask_decimal', 'min'=>'0.01','placeholder' => 'Rate']); ?></td>
+			<td width="100"><?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Quantity']); ?></td>
+			<td width="130"><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm', 'min'=>'0.01','placeholder' => 'Rate']); ?></td>
 			<td width="130"><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
@@ -362,7 +367,6 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-			rules: {
 				company_id:{
 					required: true,
 				},
@@ -392,8 +396,11 @@ $(document).ready(function() {
 				enquiry_no  : {
 					  required: true,
 				},
-				customer_contact: {
+				customer_contact_no: {
 					  required: true,
+					  integer: true,
+					  minlength: 10,
+					  min: 0
 				},
 				subject:{
 					required: true,	
@@ -408,7 +415,6 @@ $(document).ready(function() {
 					required: true,	
 				}
 			},
-		},
 
 		messages: { // custom messages for radio buttons and checkboxes
 			membership: {
@@ -441,6 +447,7 @@ $(document).ready(function() {
 		invalidHandler: function (event, validator) { //display error alert on form submit   
 			success3.hide();
 			error3.show();
+			
 			//Metronic.scrollTo(error3, -200);
 		},
 
@@ -475,51 +482,10 @@ $(document).ready(function() {
 	 <?php } ?>        
       
 
-	
+	rename_rows();
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
-	$('.quantity').die().live("keyup",function() {
-			var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc==0)
-			{
-				$(this).val('');
-				return false; 
-			}
-			else if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				//$(this).val('');
-				return false;  
-			}
-	});
-	$('.phone_validation').die().live("keyup",function() {
-			var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc.match(numbers))  
-			{  
-			}
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
-	});
-	$('.rate').die().live("keyup",function() {
-			var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
-	});
 	
 	
 	$('.deleterow').die().live("click",function() {
@@ -529,25 +495,8 @@ $(document).ready(function() {
 				var row_no=$(this).closest("tr").attr("row_no");
 				var del="tr[row_no="+row_no+"]";
 				$(del).remove();
-				var i=0;
-				$("#main_tb tbody tr.tr1").each(function(){
-					
-					$(this).find("td:nth-child(1)").html(++i); i--;
-					$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
-					$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
-					$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
-					$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
-					$(this).find("td:nth-child(3) input").attr({name:"quotation_rows["+i+"][quantity]", id:"quotation_rows-"+i+"-quantity"}).rules("add", "required");
-					$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules("add", "required");
-					$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
-				i++; });
-				var i=0;
-				$("#main_tb tbody tr.tr2").each(function(){
-					
-					$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"});
-					$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
-				i++; });
-				calculate_total();
+				
+				rename_rows();
 			}
 		} 
     });
@@ -558,18 +507,19 @@ $(document).ready(function() {
 		$("#main_tb tbody#main_tbody").append(tr1);
 		var tr2=$("#sample_tb tbody tr.tr2").clone();
 		$("#main_tb tbody#main_tbody").append(tr2);
-		
+
 		var w=0; var r=0;
 		$("#main_tb tbody#main_tbody tr.preimp").each(function(){
 			$(this).attr("row_no",w);
 			r++;
 			if(r==2){ w++; r=0; }
 		});
-		
+		rename_rows();
+	}
+	
+	function rename_rows(){
 		var i=0;
 		$("#main_tb tbody tr.tr1").each(function(){
-			
-			 
 			$(this).find("td:nth-child(1)").html(++i); i--;
 			$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
@@ -577,23 +527,26 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
 			$(this).find("td:nth-child(3) input").attr({name:"quotation_rows["+i+"][quantity]", id:"quotation_rows-"+i+"-quantity"}).rules('add', {
 						required: true,
+						integer: true,
 						min: 1,
 						messages: {
 							min: "Quantity can't be zero."
 						}
 					});
-			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i});
+			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
+						required: true,
+						min: 0.01
+					});
 			
 			$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
 		i++; });
-		var i=0;
 		
+		var i=0;
 		$("#main_tb tbody tr.tr2").each(function(){
 			$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"}).rules("add", "required");
 			$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
 		i++; });
-		
-		ComponentsFormTools.init();
+		calculate_total();
 	}
 	
 	$('#main_tb input').die().live("keyup","blur",function() { 
@@ -646,17 +599,16 @@ $(document).ready(function() {
     });
 	
 	$('select[name="customer_id"]').on("change",function() {
-		//var contact_person=$('select[name="customer_id"] option:selected').attr('contact_person');
-		//$('input[name="customer_for_attention"]').val(contact_person);
-		
 		var customer_id=$('select[name="customer_id"] option:selected').val();
 		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'defaultAddress']); ?>";
 		url=url+'/'+customer_id,
+		
 		$.ajax({
 			url: url,
 		}).done(function(response) {
 			$('textarea[name="customer_address"]').val(response);
 		});
+		
 		
 		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'defaultContact']); ?>";
 		url=url+'/'+customer_id,

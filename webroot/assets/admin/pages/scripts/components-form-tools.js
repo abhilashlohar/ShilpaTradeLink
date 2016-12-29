@@ -392,7 +392,7 @@ var ComponentsFormTools = function () {
             "greedy": false
         }); // ~ mask "9" or mask "99" or ... mask "9999999999"
         $(".mask_decimal").inputmask('decimal', {
-            rightAlignNumerics: false
+            rightAlignNumerics: true
         }); //disables the right alignment of the decimal input
         $("#mask_currency").inputmask('€ 999.999.999,99', {
             numericInput: true
