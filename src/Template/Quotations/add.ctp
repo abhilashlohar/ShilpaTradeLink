@@ -129,7 +129,7 @@ if(!empty($revision))
 					<div class="form-group">
 						<label class="col-md-3 control-label">Contact No</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_contact_no', ['label' => false,'maxlength'=>10,'class' => 'form-control input-sm phone_validation']); ?>
+							<?php echo $this->Form->input('customer_contact_no', ['label' => false,'maxlength'=>10,'class' => 'form-control input-sm mask_number']); ?>
 						</div>
 					</div>
 				</div>
@@ -313,8 +313,8 @@ if(!empty($revision))
 					</div>
 				</div>
 			</td>
-			<td width="100"><?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
-			<td width="130"><?php echo $this->Form->input('rate[]', ['type' => 'number','label' => false,'class' => 'form-control input-sm rate', 'min'=>'0.01','placeholder' => 'Rate']); ?></td>
+			<td width="100"><?php echo $this->Form->input('quantity[]', ['label' => false,'class' => 'form-control input-sm mask_number','placeholder' => 'Quantity']); ?></td>
+			<td width="130"><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm mask_decimal', 'min'=>'0.01','placeholder' => 'Rate']); ?></td>
 			<td width="130"><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
@@ -492,7 +492,7 @@ $(document).ready(function() {
 			} 
 			else  
 			{  
-				$(this).val('');
+				//$(this).val('');
 				return false;  
 			}
 	});
@@ -592,6 +592,8 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"}).rules("add", "required");
 			$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
 		i++; });
+		
+		ComponentsFormTools.init();
 	}
 	
 	$('#main_tb input').die().live("keyup","blur",function() { 
