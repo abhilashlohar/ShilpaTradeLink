@@ -77,11 +77,13 @@
 						<?php 
 							foreach($grn->purchase_order->grns as $data){
 								foreach($data->grn_rows as $data2){
+									//pr(@$data2->quantity);
 									$processed_items[$data2->item_id]=@$processed_items[$data2->item_id]+$data2->quantity;
 									
 								}
-							}pr($processed_items[$data2->item_id]);
+							}
 							foreach($grn->purchase_order->purchase_order_rows as $data3){
+								//pr($data3->quantity);
 								$total_items[$data3->item_id]=@$total_items[$data3->item_id]+$data3->quantity;
 								//pr($total_items[$data3->item_id]);
 							}
@@ -94,7 +96,8 @@
 									?>								
 								</td>
 								<td>
-									<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$grn_rows->quantity-$grn_rows->processed_quantity,'readonly','min'=>'1','max'=>$total_items[$grn_rows->item_id]-$processed_items[$grn_rows->item_id]+$grn_rows->quantity]); ?>
+								
+								<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$grn_rows->quantity-$grn_rows->processed_quantity,'readonly','min'=>'1','max'=>$total_items[$grn_rows->item_id]-$processed_items[$grn_rows->item_id]+$grn_rows->quantity]); ?>
 								</td>
 								<td>
 									<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$grn_rows->id]); ?></label>

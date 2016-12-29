@@ -161,13 +161,14 @@ class GrnsController extends AppController
 						'Companies','Vendors','PurchaseOrders'=>['PurchaseOrderRows','Grns'=>['GrnRows']],'GrnRows'=>['Items']
 					]
 			]);
+		
+		
 
-			//pr();exit;
        
         if ($this->request->is(['patch', 'post', 'put'])) {
             $grn = $this->Grns->patchEntity($grn, $this->request->data);
             if ($this->Grns->save($grn)) {
-				//pr($grn); exit;
+				
                 $this->Flash->success(__('The grn has been saved.'));
                 return $this->redirect(['action' => 'index']);
             } else {

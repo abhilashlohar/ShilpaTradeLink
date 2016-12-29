@@ -1,12 +1,10 @@
 <?php 
 if(!empty($copy))
 {
-	//pr($Filenames); exit;
 	$quotation->finalisation_date=date("d-m-Y",strtotime($quotation->finalisation_date));
 }
 if(!empty($revision))
 {
-	//pr($Filenames); exit;
 	$quotation->finalisation_date=date("d-m-Y",strtotime($quotation->finalisation_date));
 }
 
@@ -53,6 +51,7 @@ if(!empty($revision))
 								}
 								
 								$options[]=['text' =>$merge, 'value' => $customer->id, 'employee_id' => $customer->employee_id];
+
 							}
 							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 						</div>
@@ -157,6 +156,16 @@ if(!empty($revision))
 				</div>
 			</div><br/>
 			<div class="row">
+			<?php if(!empty($revision)) { ?>
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="col-md-1 control-label">Dear Sir</label>
+						<div class="col-md-11">
+							<?php echo $this->Form->input('text', ['label' => false,'class' => 'form-control','value' => $quotation->text]); ?>
+						</div>
+					</div>
+				</div>
+			<?php } else { ?>
 				<div class="col-md-12">
 					<div class="form-group">
 						<label class="col-md-1 control-label">Dear Sir</label>
@@ -165,6 +174,7 @@ if(!empty($revision))
 						</div>
 					</div>
 				</div>
+			<?php }  ?>
 			</div>
 			<br/>
 			<table class="table tableitm" id="main_tb">
@@ -633,8 +643,8 @@ $(document).ready(function() {
     });
 	
 	$('select[name="customer_id"]').on("change",function() {
-		var contact_person=$('select[name="customer_id"] option:selected').attr('contact_person');
-		$('input[name="customer_for_attention"]').val(contact_person);
+		//var contact_person=$('select[name="customer_id"] option:selected').attr('contact_person');
+		//$('input[name="customer_for_attention"]').val(contact_person);
 		
 		var customer_id=$('select[name="customer_id"] option:selected').val();
 		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'defaultAddress']); ?>";
@@ -667,6 +677,8 @@ $(document).ready(function() {
 		
 		var employee_id=$('select[name="customer_id"] option:selected').attr("employee_id");
 		$("select[name=employee_id]").val(employee_id).select2();
+		
+		
     });
 	
 	

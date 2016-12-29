@@ -18,12 +18,10 @@ class QuotationsController extends AppController
      */
     public function index($status=null)
     {
-		 $url=$this->request->here();
-		 $url=parse_url($url,PHP_URL_QUERY);
+		$url=$this->request->here();
+		$url=parse_url($url,PHP_URL_QUERY);
 		 
 		$copy_request=$this->request->query('copy-request');
-		
-		
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
@@ -108,9 +106,7 @@ class QuotationsController extends AppController
         $this->set(compact('quotations','status','copy_request','companies','closeReasons'));
         $this->set('_serialize', ['quotations']);
 		$this->set(compact('url'));
-	
-		 
-    }
+	}
 	
 	 public function exportExcel($status=null)
     {
@@ -197,13 +193,8 @@ class QuotationsController extends AppController
         $quotation = $this->Quotations->get($id, [
             'contain' => ['Customers','Companies','Employees','ItemGroups','QuotationRows' => ['Items']]
         ]);
-		
-		
-		
-
-        $this->set('quotation', $quotation);
-	
-        $this->set('_serialize', ['quotation']);
+		$this->set('quotation', $quotation);
+		$this->set('_serialize', ['quotation']);
     }
 	
 	public function confirm($id = null)
