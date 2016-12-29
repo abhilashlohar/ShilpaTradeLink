@@ -253,6 +253,7 @@ if(!empty($revision))
 			
 			
 			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a> <a  role="button" class="btn btn-xs btn-primary updatetc" >Update </a>
+			<div name="summernote1" class="summernote"></div>
 			<div contenteditable="true" id="editor" name="terms_conditions"><?php echo $quotation->terms_conditions; ?></div>
 			<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control','value' => @$quotation->terms_conditions,'required','style'=>'display:none']); ?>
 			
