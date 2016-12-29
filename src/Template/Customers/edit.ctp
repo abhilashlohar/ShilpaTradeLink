@@ -305,7 +305,7 @@ $(document).ready(function() {
 		invalidHandler: function (event, validator) { //display error alert on form submit   
 			success3.hide();
 			error3.show();
-			Metronic.scrollTo(error3, -200);
+			//Metronic.scrollTo(error3, -200);
 		},
 
 		highlight: function (element) { // hightlight error inputs
@@ -376,18 +376,18 @@ $(document).ready(function() {
 	});
 	
 	$('select[name="account_category_id"]').on("change",function() {
-	$('#account_group_div').html('Loading...');
-	var accountCategoryId=$('select[name="account_category_id"] option:selected').val();
-	var url="<?php echo $this->Url->build(['controller'=>'AccountGroups','action'=>'AccountGroupDropdown']); ?>";
-	url=url+'/'+accountCategoryId,
-	$.ajax({
-		url: url,
-		type: 'GET',
-	}).done(function(response) {
-		$('#account_group_div').html(response);
-		$('select[name="account_group_id"]').select2();
+		$('#account_group_div').html('Loading...');
+		var accountCategoryId=$('select[name="account_category_id"] option:selected').val();
+		var url="<?php echo $this->Url->build(['controller'=>'AccountGroups','action'=>'AccountGroupDropdown']); ?>";
+		url=url+'/'+accountCategoryId,
+		$.ajax({
+			url: url,
+			type: 'GET',
+		}).done(function(response) {
+			$('#account_group_div').html(response);
+			$('select[name="account_group_id"]').select2();
+		});
 	});
-});
 	
 	
 $('select[name="account_group_id"]').die().live("change",function() {
@@ -492,14 +492,15 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		if (confirm("Are you sure to remove row ?") == true) {
 			if(l>1){
 				$(this).closest("tr").remove();
-				var i=0;
+				var i=1;
 				$("#main_tb2 tbody tr").each(function(){
-					
-					$(this).find("td:nth-child(1)").html(++i); --i;
-					$(this).find("td:nth-child(2) textarea").attr({name:"customer_address["+i+"][address]", id:"customer_address-"+i+"-address"});
-					$(this).find("td:nth-child(3) select").attr({name:"customer_address["+i+"][district_id]", id:"customer_address-"+i+"-district_id"});
-					$(this).find("td:nth-child(4) input").attr({name:"customer_address["+i+"][courier_charge]", id:"customer_address-"+i+"-courier_charge"});
+					$(this).find("td:nth-child(1)").html(i);
+					$(this).find("td:nth-child(2) textarea").attr({name:"customer_address["+i+"][address]", id:"customer_address-"+i+"-address"}).rules("add", "required");
+					$(this).find("td:nth-child(3) select").attr({name:"customer_address["+i+"][district_id]", id:"customer_address-"+i+"-district_id"}).rules("add", "required");
+					$(this).find("td:nth-child(4) select").attr({name:"customer_address["+i+"][courier_charge]", id:"customer_address-"+i+"-courier_charge"}).rules("add", "required");
 					$(this).find("td:nth-child(5) input").attr({name:"customer_address["+i+"][default_address]", id:"customer_address-"+i+"-default_address"});
+					var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
+					if (test) { test.uniform(); }
 					i++;
 				});
 				
@@ -510,14 +511,13 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 	function add_row2(){
 		var tr=$("#sample_tb2 tbody tr").clone();
 		$("#main_tb2 tbody").append(tr);
-		var i=0; 
+		var i=1; 
 		$("#main_tb2 tbody tr").each(function(){
-			$(this).find("td:nth-child(1)").html(++i); --i;
-			
+			$(this).find("td:nth-child(1)").html(i);
 			$(this).find("td:nth-child(2) textarea").attr({name:"customer_address["+i+"][address]", id:"customer_address-"+i+"-address"}).rules("add", "required");
 			$(this).find("td:nth-child(3) select").attr({name:"customer_address["+i+"][district_id]", id:"customer_address-"+i+"-district_id"}).rules("add", "required");
-			$(this).find("td:nth-child(4) input").attr({name:"customer_address["+i+"][courier_charge]", id:"customer_address-"+i+"-courier_charge"}).rules("add", "required");
-			$(this).find("td:nth-child(5) input").attr({name:"customer_address["+i+"][default_address]", id:"customer_address-"+i+"-default_address"}).rules("add", "required");
+			$(this).find("td:nth-child(4) select").attr({name:"customer_address["+i+"][courier_charge]", id:"customer_address-"+i+"-courier_charge"}).rules("add", "required");
+			$(this).find("td:nth-child(5) input").attr({name:"customer_address["+i+"][default_address]", id:"customer_address-"+i+"-default_address"});
 			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
 			if (test) { test.uniform(); }
 			i++;
