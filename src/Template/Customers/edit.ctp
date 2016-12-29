@@ -447,7 +447,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 					i++;
 					
 				});
-				calculate_total();
+				
 			}
 		} 
     });
@@ -457,6 +457,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		var tr=$("#sample_tb tbody tr").clone();
 		$("#main_tb tbody").append(tr);
 		var i=0;
+		
 		$("#main_tb tbody tr").each(function(){
 			
 			$(this).find("td:nth-child(1)").html(++i); --i;
@@ -499,8 +500,9 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 					$(this).find("td:nth-child(3) select").attr({name:"customer_address["+i+"][district_id]", id:"customer_address-"+i+"-district_id"});
 					$(this).find("td:nth-child(4) input").attr({name:"customer_address["+i+"][courier_charge]", id:"customer_address-"+i+"-courier_charge"});
 					$(this).find("td:nth-child(5) input").attr({name:"customer_address["+i+"][default_address]", id:"customer_address-"+i+"-default_address"});
+					i++;
 				});
-				calculate_total();
+				
 			}
 		} 
     });
@@ -508,10 +510,10 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 	function add_row2(){
 		var tr=$("#sample_tb2 tbody tr").clone();
 		$("#main_tb2 tbody").append(tr);
-		var i=0;
+		var i=0; 
 		$("#main_tb2 tbody tr").each(function(){
-			
 			$(this).find("td:nth-child(1)").html(++i); --i;
+			
 			$(this).find("td:nth-child(2) textarea").attr({name:"customer_address["+i+"][address]", id:"customer_address-"+i+"-address"}).rules("add", "required");
 			$(this).find("td:nth-child(3) select").attr({name:"customer_address["+i+"][district_id]", id:"customer_address-"+i+"-district_id"}).rules("add", "required");
 			$(this).find("td:nth-child(4) input").attr({name:"customer_address["+i+"][courier_charge]", id:"customer_address-"+i+"-courier_charge"}).rules("add", "required");

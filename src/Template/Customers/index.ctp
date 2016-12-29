@@ -27,6 +27,7 @@
 				</tbody>
 			</table>
 			</form>
+			<?php $page_no=$this->Paginator->current('Customers'); $page_no=($page_no-1)*20; ?>
 			 <table class="table table-hover">
 				 <thead>
 					<tr>
@@ -42,7 +43,7 @@
 				<tbody>
 					<?php $i=0; foreach ($customers as $customer): $i++; ?>
 					<tr>
-						<td><?= h($i) ?></td>
+						<td><?= h(++$page_no) ?></td>
 						<td><?= h($customer->customer_name) ?></td>
 						<td><?= h($customer->district->district) ?></td>
 						<td><?= h($customer->customer_seg->name) ?></td>
