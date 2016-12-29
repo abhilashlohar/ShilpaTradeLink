@@ -52,7 +52,7 @@ if(!empty($revision))
 									$merge=$customer->customer_name.'	('.$customer->alias.')';
 								}
 								
-								$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
+								$options[]=['text' =>$merge, 'value' => $customer->id, 'employee_id' => $customer->employee_id];
 							}
 							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 						</div>
@@ -653,7 +653,7 @@ $(document).ready(function() {
 			dataType: 'json'
 		}).done(function(response) {
 			$('input[name="customer_for_attention"]').val(response.contact_person);
-			$('input[name="customer_contact"]').val(response.mobile);
+			$('input[name="customer_contact_no"]').val(response.mobile);
 		});
 		
 		$("#qt3_div").html('Loading...');
