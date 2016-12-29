@@ -144,26 +144,22 @@ if(!empty($status)){
 							<td><?php echo date("d-m-Y",strtotime($quotation->closing_date)); ?></td>	
 							<?php } ?>
 							<td class="actions">
-								 <?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $quotation->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
+								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $quotation->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
 								 
-								 	<?php if($quotation->status=='Pending' and in_array(2,$allowed_pages) and $pull_request!="true" && $copy_request!="copy"){?>
-										
-										<div class="btn-group">
-													
-														<button type="button" class="btn btn-xs blue dropdown-toggle" data-toggle="dropdown"><i class="fa fa-pencil-square-o"></i></button>
-														<ul class="dropdown-menu" role="menu">
-															<li>
-																<?php	echo $this->Html->link('<i class=""></i>Save as Revision ','/Quotations/Add?revision='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs'));
-																 ?>
-															</li>
-															<li>
-																<?php echo $this->Html->link('<i class=""></i>Save as old version ',['action' => 'edit', $quotation->id],array('escape'=>false,'class'=>'btn btn-xs')); ?>
-															</li>
-														
-														</ul>
-										</div>
-										
-									<?php } ?>
+								<?php if($quotation->status=='Pending' and in_array(2,$allowed_pages) and $pull_request!="true" && $copy_request!="copy"){ ?>
+								<div class="btn-group dropup" >
+									<button type="button" class="btn btn-xs blue dropdown-toggle" data-toggle="dropdown"><i class="fa fa-pencil-square-o"></i></button>
+									<ul class="dropdown-menu" role="menu" style=" margin-left: -82px; ">
+										<li>
+											<?php	echo $this->Html->link('<i class="fa fa-file-o"></i>Save as Revision ','/Quotations/Add?revision='.$quotation->id,array('escape'=>false,'class'=>''));
+											 ?>
+										</li>
+										<li>
+											<?php echo $this->Html->link('<i class="fa fa-repeat"></i>Save as old version ',['action' => 'edit', $quotation->id],array('escape'=>false,'class'=>'')); ?>
+										</li>
+									</ul>
+								</div>
+								<?php } ?>
 								
 								<?php if($pull_request=="true"){
 									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Sales Order','/Sales-Orders/Add?quotation='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
