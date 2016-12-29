@@ -40,10 +40,7 @@
 							<th>GRN No.</th>
 							<th>Vendor</th>
 							<th>Date Created</th>
-
-								 <th class="actions"><?= __('Actions') ?></th>
-
-							
+							<th class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
 					<tbody>
