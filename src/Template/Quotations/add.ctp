@@ -1,12 +1,10 @@
 <?php 
 if(!empty($copy))
 {
-	//pr($Filenames); exit;
 	$quotation->finalisation_date=date("d-m-Y",strtotime($quotation->finalisation_date));
 }
 if(!empty($revision))
 {
-	//pr($Filenames); exit;
 	$quotation->finalisation_date=date("d-m-Y",strtotime($quotation->finalisation_date));
 }
 
@@ -52,7 +50,8 @@ if(!empty($revision))
 									$merge=$customer->customer_name.'	('.$customer->alias.')';
 								}
 								
-								$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id, 'customer_contact' => $customer->mobile];
+								$options[]=['text' =>$merge, 'value' => $customer->id, 'employee_id' => $customer->employee_id];
+
 							}
 							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 						</div>
@@ -254,6 +253,7 @@ if(!empty($revision))
 			
 			
 			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a> <a  role="button" class="btn btn-xs btn-primary updatetc" >Update </a>
+			<div name="summernote1" class="summernote"></div>
 			<div contenteditable="true" id="editor" name="terms_conditions"><?php echo $quotation->terms_conditions; ?></div>
 			<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control','value' => @$quotation->terms_conditions,'required','style'=>'display:none']); ?>
 			
@@ -664,7 +664,7 @@ $(document).ready(function() {
 			dataType: 'json'
 		}).done(function(response) {
 			$('input[name="customer_for_attention"]').val(response.contact_person);
-			$('input[name="customer_contact"]').val(response.mobile);
+			$('input[name="customer_contact_no"]').val(response.mobile);
 		});
 		
 		$("#qt3_div").html('Loading...');

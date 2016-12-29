@@ -120,7 +120,6 @@ class CustomersController extends AppController
 		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $customer = $this->Customers->patchEntity($customer, $this->request->data);
-			//pr($customer); exit;
             if ($this->Customers->save($customer)) {
                 $this->Flash->success(__('The customer has been saved.'));
 
