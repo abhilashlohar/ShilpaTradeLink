@@ -170,9 +170,6 @@ $(document).ready(function() {
 			item_sub_group_id    : {
 				  required: true,
 			},
-			source :{
-					required: true,
-			},
 			
 			minimum_quantity  : {
 				  required: true,
