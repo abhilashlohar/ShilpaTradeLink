@@ -55,7 +55,15 @@ class DistrictsTable extends Table
         $validator
             ->requirePresence('district', 'create')
             ->notEmpty('district');
-
+		
+		$validator->add(
+				'district', 
+				['unique' => [
+					'rule' => 'validateUnique', 
+					'provider' => 'table', 
+					'message' => 'Not unique']
+				]
+			);
         return $validator;
     }
 }

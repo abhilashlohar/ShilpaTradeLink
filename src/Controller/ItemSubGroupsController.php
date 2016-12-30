@@ -127,8 +127,10 @@ class ItemSubGroupsController extends AppController
                 $this->Flash->error(__('The item sub group could not be saved. Please, try again.'));
             }
         }
-        $itemGroups = $this->ItemSubGroups->ItemGroups->find('list', ['limit' => 200]);
-        $this->set(compact('itemSubGroup', 'itemGroups'));
+
+		$itemCategories = $this->ItemSubGroups->ItemGroups->ItemCategories->find('list');
+        $itemGroups = $this->ItemSubGroups->ItemGroups->find('list');
+        $this->set(compact('itemSubGroup', 'itemGroups','itemCategories'));
         $this->set('_serialize', ['itemSubGroup']);
     }
 

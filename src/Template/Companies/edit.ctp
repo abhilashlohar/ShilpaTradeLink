@@ -160,7 +160,7 @@ $this->Form->templates([
 						<td><?php echo $this->Form->input('company_banks.'.$i.'.branch', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Branch','value'=>$company_bank->branch]); ?></td>
 						<td><?php echo $this->Form->input('company_banks.'.$i.'.account_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Account No','value'=>$company_bank->account_no]); ?></td>
 						<td><?php echo $this->Form->input('company_banks.'.$i.'.ifsc_code', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'IFSC Code','value'=>$company_bank->ifsc_code]); ?></td>
-						<td width="90"><?php echo $this->Form->input('company_banks.'.$i.'.default_bank', ['type'=>'checkbox','label' => false,'class' => 'form-control default_btn','value'=>1,$checked]); ?></td>
+						<td width="90"><?php echo $this->Form->input('company_banks.'.$i.'.default_bank', ['type'=>'checkbox','label' => false,'class' => 'form-control default_btn','checked'=>$checked]); ?></td>
 						<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 					</tr>
 					<?php } ?>
@@ -180,6 +180,7 @@ $this->Form->templates([
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
+	
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -207,6 +208,10 @@ $(document).ready(function() {
 			},
 			inventory_status :{
 				required: true,
+			},
+			logo   :{
+				
+				accept: "image/png"
 			},
 			address : {
 				  required: true,
@@ -251,7 +256,7 @@ $(document).ready(function() {
 		invalidHandler: function (event, validator) { //display error alert on form submit   
 			success3.hide();
 			error3.show();
-			Metronic.scrollTo(error3, -200);
+			//Metronic.scrollTo(error3, -200);
 		},
 
 		highlight: function (element) { // hightlight error inputs
@@ -270,27 +275,14 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			q="ok";
-			$("#main_tb tbody tr").each(function(){
-				var w=$(this).find("td:nth-child(3) input").val();
-				var r=$(this).find("td:nth-child(4) input").val();
-				if(w=="" || r==""){
-					q="e";
-				}
-			});
-			if(q=="e"){
-				$("#row_error").show();
-				return false;
-			}else{
-				success3.show();
-				error3.hide();
-				form[0].submit(); // submit the form
-			}
+			success3.show();
+			error3.hide();
+			form[0].submit(); // submit the form
 		}
 
 	});
 	//--	 END OF VALIDATION
-	$('.allLetter').keyup(function(){
+		$('.allLetter').live("keyup",function(){
 		var inputtxt=  $(this).val();
 		var numbers =  /^[0-9]*\.?[0-9]*$/;
 		
@@ -303,11 +295,12 @@ $(document).ready(function() {
 			return false;  
 		}
 	});
+
 	
-	//$('.default_btn:first').attr('checked','checked'); $.uniform.update();
-    $('.addrow').die().live("click",function() { 
+    $('.addrow').die().live("click",function() {
 		add_row();
     });
+	
 	
 	$('.default_btn').die().live("click",function() { 
 		$('.default_btn').removeAttr('checked');
@@ -321,40 +314,40 @@ $(document).ready(function() {
 		if (confirm("Are you sure to remove row ?") == true) {
 			if(l>1){
 				$(this).closest("tr").remove();
-				var i=0;
-				$("#main_tb tbody tr").each(function(){
-					
-					$(this).find("td:nth-child(1)").html(++i); --i;
-					$(this).find("td:nth-child(2) input").attr("name","company_banks["+i+"][bank_name]");
-					$(this).find("td:nth-child(3) input").attr("name","company_banks["+i+"][branch]");
-					$(this).find("td:nth-child(4) input").attr("name","company_banks["+i+"][account_no]");
-					$(this).find("td:nth-child(5) input").attr("name","company_banks["+i+"][ifsc_code]");
-					$(this).find("td:nth-child(6) input[type=checkbox]").attr("name","company_banks["+i+"][default_bank]");
-					i++;
-					
-				});
+				rename_rows();
 				calculate_total();
 			}
 		} 
     });
 	
+	
 	function add_row(){
 		var tr=$("#sample_tb tbody tr").clone();
 		$("#main_tb tbody").append(tr);
-		var i=0;
+		rename_rows();
+		calculate_total();
+	}
+	
+	function rename_rows(){
+		var i=1;
 		$("#main_tb tbody tr").each(function(){
-			
-			$(this).find("td:nth-child(1)").html(++i); --i;
-			$(this).find("td:nth-child(2) input").attr("name","company_banks["+i+"][bank_name]");
-			$(this).find("td:nth-child(3) input").attr("name","company_banks["+i+"][branch]");
-			$(this).find("td:nth-child(4) input").attr("name","company_banks["+i+"][account_no]");
-			$(this).find("td:nth-child(5) input").attr("name","company_banks["+i+"][ifsc_code]");
+			$(this).find("td:nth-child(1)").html(i);
+			$(this).find("td:nth-child(2) input").attr({name:"company_banks["+i+"][bank_name]", id:"company_banks-"+i+"-bank_name"}).rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr({name:"company_banks["+i+"][branch]", id:"company_banks-"+i+"-branch"}).rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr({name:"company_banks["+i+"][account_no]", id:"company_banks-"+i+"-account_no"}).rules('add', {
+						required: true,
+						integer: true,
+						min: 0
+					});
+			$(this).find("td:nth-child(5) input").attr({name:"company_banks["+i+"][ifsc_code]", id:"company_banks-"+i+"-ifsc_code"}).rules("add", "required");
 			$(this).find("td:nth-child(6) input[type=checkbox]").attr("name","company_banks["+i+"][default_bank]");
 			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
 			if (test) { test.uniform(); }
 			i++;
 		});
 	}
+	
+	
 	
 });
 </script>

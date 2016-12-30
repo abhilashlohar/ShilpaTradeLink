@@ -253,7 +253,21 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+		$('.allLetter').live("keyup",function(){
+		var inputtxt=  $(this).val();
+		var numbers =  /^[0-9]*\.?[0-9]*$/;
+		
+		if(inputtxt.match(numbers))  
+		{  
+		} 
+		else  
+		{  
+			$(this).val('');
+			return false;  
+		}
+	});
 
+	
     $('.addrow').die().live("click",function() {
 		add_row();
     });

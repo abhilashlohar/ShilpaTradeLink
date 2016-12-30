@@ -289,7 +289,7 @@
 							<?php echo $this->Form->input('employee_contact_persons.1.name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
 						</td>
 						<td>
-							<?php echo $this->Form->input('employee_contact_persons.1.mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','maxlength'=>10]); ?>
+							<?php echo $this->Form->input('employee_contact_persons.1.mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','maxlength'=>10,'minlength'=>10]); ?>
 							
 						</td>
 						<td>
@@ -565,9 +565,6 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		});
 	}
 	
-	
-	
-	
 	add_row2(); $('.default_btn:first').attr('checked','checked'); $.uniform.update();
 	$('.default_btn').die().live("click",function() { 
 		$('.default_btn').removeAttr('checked');
@@ -626,10 +623,10 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			<td>0</td>
 			<td><?php echo $this->Form->input('contact_person', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Contact Person']); ?></td>
 			<td><?php echo $this->Form->input('telephone', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Telephone','maxlength'=>15]); ?></td>
-			<td><?php echo $this->Form->input('mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','maxlength'=>10]); ?></td>
+			<td><?php echo $this->Form->input('mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','maxlength'=>10,'minlength'=>10]); ?></td>
 			<td><?php echo $this->Form->input('email', ['type' => 'email','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Email']); ?></td>
 			<td><?php echo $this->Form->input('designation', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Designation']); ?></td>
-			<td width="90"><?php echo $this->Form->input('default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2','value'=>1]); ?></td>
+			<td width="90"><?php echo $this->Form->input('default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2']); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 	</tbody>
@@ -642,7 +639,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			<td><?php echo $this->Form->input('address', ['label' => false,'type' => 'textarea','rows' => '2','style' => ['resize:none'],'class' => 'form-control input-sm','placeholder' => 'Address']); ?></td>
 			<td><?php echo $this->Form->input('district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm']); ?></td>
 			<td><?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Courier Charge']); ?></td>
-			<td width="90"><?php echo $this->Form->input('default_address', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn','value'=>1]); ?></td>
+			<td width="90"><?php echo $this->Form->input('default_address', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn']); ?></td>
 			<td><a class="btn btn-xs btn-default addrow2" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow2" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 	</tbody>

@@ -25,7 +25,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">District <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+							<?php echo $this->Form->input('district_id', ['empty' => "--Select District --",'options' => $districts,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 				</div>
@@ -34,7 +34,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Customer Seg <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('customer_seg_id', ['options' => $customerSegs,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Customer Seg']); ?>
+							<?php echo $this->Form->input('customer_seg_id', ['empty' => "--Select Segment --",'options' => $customerSegs,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Customer Seg']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -388,7 +388,8 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 });	
 	
 	
-	add_row(); $('.default_btn2:first').attr('checked','checked'); $.uniform.update();
+	add_row(); 
+	$('.default_btn2:first').attr('checked','checked'); $.uniform.update();
 	$('.default_btn2').die().live("click",function() { 
 		$('.default_btn2').removeAttr('checked');
 		$(this).attr('checked','checked');
@@ -403,46 +404,19 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		$('input[name="customer_contacts[0][default_address]"]').val("DEFAULT").css('background-color','#DDD');
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
-			if(l>1){
-				$(this).closest("tr").remove();
-				var i=0;
-				$("#main_tb tbody tr").each(function(){
-					$(this).find("td:nth-child(1)").html(++i); --i;
-					$(this).find("td:nth-child(2) input").attr("name","customer_contacts["+i+"][contact_person]").attr("id","customer_contacts."+i+".contact_person");
-					$(this).find("td:nth-child(3) input").attr("name","customer_contacts["+i+"][telephone]").attr("id","customer_contacts."+i+".telephone");
-					$(this).find("td:nth-child(4) input").attr("name","customer_contacts["+i+"][mobile]").attr("id","customer_contacts."+i+".mobile");
-					$(this).find("td:nth-child(5) input").attr("name","customer_contacts["+i+"][designation]").attr("id","customer_contacts."+i+".designation");
-					$(this).find("td:nth-child(6) input").attr("name","customer_contacts["+i+"][default_contact]");
-					i++;
-					
-				});
+			if(l>1){$(this).closest("tr").remove();
+				rename_rows();
 				calculate_total();
 			}
 		} 
     });
 	
 	function add_row(){
-		
 		var tr=$("#sample_tb tbody tr").clone();
 		$("#main_tb tbody").append(tr);
-		var i=0;
-		$("#main_tb tbody tr").each(function(){
-			
-			$(this).find("td:nth-child(1)").html(++i); --i;
-			$(this).find("td:nth-child(2) input").attr("name","customer_contacts["+i+"][contact_person]").attr("id","customer_contacts."+i+".contact_person").rules("add", "required");
-			$(this).find("td:nth-child(3) input").attr("name","customer_contacts["+i+"][telephone]").attr("id","customer_contacts."+i+".telephone").rules("add", "required");
-			$(this).find("td:nth-child(4) input").attr("name","customer_contacts["+i+"][mobile]").attr("id","customer_contacts."+i+".mobile").rules("add", "required");
-			$(this).find("td:nth-child(5) input").attr("name","customer_contacts["+i+"][email]").attr("id","customer_contacts."+i+".email").rules("add", "required");
-			$(this).find("td:nth-child(6) input").attr("name","customer_contacts["+i+"][designation]").attr("id","customer_contacts."+i+".designation").rules("add", "required");
-			$(this).find("td:nth-child(7) input").attr("name","customer_contacts["+i+"][default_contact]");
-			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
-			if (test) { test.uniform(); }
-			i++;
-		});
+		rename_rows();
+		
 	}
-	
-	
-	
 	
 	add_row2(); $('.default_btn:first').attr('checked','checked'); $.uniform.update();
 	$('.default_btn').die().live("click",function() { 
@@ -461,16 +435,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		if (confirm("Are you sure to remove row ?") == true) {
 			if(l>1){
 				$(this).closest("tr").remove();
-				var i=0;
-				$("#main_tb2 tbody tr").each(function(){
-					
-					$(this).find("td:nth-child(1)").html(++i); --i;
-					$(this).find("td:nth-child(2) textarea").attr("name","customer_address["+i+"][address]");
-					$(this).find("td:nth-child(3) select").attr("name","customer_address["+i+"][district_id]");
-					$(this).find("td:nth-child(4) input").attr("name","customer_address["+i+"][courier_charge]");
-					$(this).find("td:nth-child(5) input").attr("name","customer_address["+i+"][default_address]");
-					i++;
-				});
+				rename_rows2();
 				calculate_total();
 			}
 		} 
@@ -479,14 +444,38 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 	function add_row2(){
 		var tr=$("#sample_tb2 tbody tr").clone();
 		$("#main_tb2 tbody").append(tr);
+		rename_rows2();
+		
+	}
+	
+	function rename_rows(){
 		var i=0;
-		$("#main_tb2 tbody tr").each(function(){
+		
+		$("#main_tb tbody tr").each(function(){
 			
 			$(this).find("td:nth-child(1)").html(++i); --i;
-			$(this).find("td:nth-child(2) textarea").attr("name","customer_address["+i+"][address]").attr("id","customer_address."+i+".address").rules("add", "required");
-			$(this).find("td:nth-child(3) select").attr("name","customer_address["+i+"][district_id]").select2();
-			$(this).find("td:nth-child(4) select").attr("name","customer_address["+i+"][courier_charge]").select2();
-			$(this).find("td:nth-child(5) input").attr("name","customer_address["+i+"][default_address]");
+			$(this).find("td:nth-child(2) input").attr({name:"customer_contacts["+i+"][contact_person]", id:"customer_contacts-"+i+"-contact_person"}).rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr({name:"customer_contacts["+i+"][telephone]", id:"customer_contacts-"+i+"-customer_contacts"}).rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr({name:"customer_contacts["+i+"][mobile]", id:"customer_contacts-"+i+"-mobile"}).rules("add", "required");
+			$(this).find("td:nth-child(5) input").attr({name:"customer_contacts["+i+"][email]", id:"customer_contacts-"+i+"-email"}).rules("add", "required");
+			$(this).find("td:nth-child(6) input").attr({name:"customer_contacts["+i+"][designation]", id:"customer_contacts-"+i+"-designation"}).rules("add", "required");
+			$(this).find("td:nth-child(7) input").attr({name:"customer_contacts["+i+"][default_contact]", id:"customer_contacts-"+i+"-default_contact"});
+			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
+			if (test) { test.uniform(); }
+			i++;
+		});
+	}
+	
+	function rename_rows2(){
+		var i=1;
+		
+		$("#main_tb2 tbody tr").each(function(){
+			
+			$(this).find("td:nth-child(1)").html(i);
+			$(this).find("td:nth-child(2) textarea").attr({name:"customer_address["+i+"][address]", id:"customer_address-"+i+"-address"}).rules("add", "required");
+			$(this).find("td:nth-child(3) select").attr({name:"customer_address["+i+"][district_id]", id:"customer_address-"+i+"-district_id"}).rules("add", "required");
+			$(this).find("td:nth-child(4) select").attr({name:"customer_address["+i+"][courier_charge]", id:"customer_address-"+i+"-courier_charge"}).rules("add", "required");
+			$(this).find("td:nth-child(5) input").attr({name:"customer_address["+i+"][default_address]", id:"customer_address-"+i+"-default_address"});
 			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
 			if (test) { test.uniform(); }
 			i++;
@@ -502,7 +491,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			<td>0</td>
 			<td><?php echo $this->Form->input('contact_person', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Contact Person']); ?></td>
 			<td><?php echo $this->Form->input('telephone', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Telephone','maxlength'=>15]); ?></td>
-			<td><?php echo $this->Form->input('mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','maxlength'=>10]); ?></td>
+			<td><?php echo $this->Form->input('mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','maxlength'=>10,'minlength'=>10]); ?></td>
 			<td><?php echo $this->Form->input('email', ['type' => 'email','label' => false,'class' => 'form-control input-sm','placeholder' => 'Email']); ?></td>
 			<td><?php echo $this->Form->input('designation', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Designation']); ?></td>
 			<td width="90"><?php echo $this->Form->input('default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2','value'=>1]); ?></td>
@@ -516,8 +505,8 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		<tr>
 			<td>0</td>
 			<td><?php echo $this->Form->input('address', ['label' => false,'type' => 'textarea','rows' => '2','style' => ['resize:none'],'class' => 'form-control input-sm','placeholder' => 'Address']); ?></td>
-			<td><?php echo $this->Form->input('district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm']); ?></td>
-			<td><?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Courier Charge']); ?></td>
+			<td><?php echo $this->Form->input('district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm select2me']); ?></td>
+			<td><?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Courier Charge select2me']); ?></td>
 			<td width="90"><?php echo $this->Form->input('default_address', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn','value'=>1]); ?></td>
 			<td><a class="btn btn-xs btn-default addrow2" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow2" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>

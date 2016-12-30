@@ -56,6 +56,15 @@ class CustomerSegsTable extends Table
             ->integer('flag')
             ->requirePresence('flag', 'create')
             ->notEmpty('flag');
+			
+		$validator->add(
+				'name', 
+				['unique' => [
+					'rule' => 'validateUnique', 
+					'provider' => 'table', 
+					'message' => 'Not unique']
+				]
+			);
 
         return $validator;
     }

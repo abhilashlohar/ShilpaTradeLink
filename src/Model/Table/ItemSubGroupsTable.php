@@ -36,7 +36,10 @@ class ItemSubGroupsTable extends Table
         $this->table('item_sub_groups');
         $this->displayField('name');
         $this->primaryKey('id');
-		$this->belongsTo('ItemCategories');
+		$this->belongsTo('ItemCategories', [
+            'foreignKey' => 'item_category_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('ItemGroups', [
             'foreignKey' => 'item_group_id',
             'joinType' => 'INNER'

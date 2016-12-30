@@ -25,7 +25,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">District <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 				</div>
@@ -34,7 +34,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Customer Seg <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('customer_seg_id', ['options' => $customerSegs,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Customer Seg']); ?>
+							<?php echo $this->Form->input('customer_seg_id', ['options' => $customerSegs,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Customer Seg']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -67,7 +67,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Salesman <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('employee_id', ['options'=>$employees,'label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('employee_id', ['options'=>$employees,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 				</div>
@@ -82,7 +82,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Customer Group</label>
-							<?php echo $this->Form->input('customer_group_id', ['options'=>$CustomerGroups,'empty' => "--Select Company Group--",'label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('customer_group_id', ['options'=>$CustomerGroups,'empty' => "--Select Company Group--",'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -116,7 +116,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Transporter</label>
-							<?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Transporter']); ?>
+							<?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Transporter']); ?>
 						</div>
 					</div>
 				</div>
@@ -175,15 +175,16 @@
 					</thead>
 					<tbody>
 					<?php $ii=0; foreach($customer->customer_contacts as $customer_contacts){ $ii++; 
-					if($customer_contacts->default_contact=='1'){ $checked2="checked"; }else{ $checked2=""; } ?>
+					
+					if($customer_contacts->default_contact=='1'){ $checked2="checked"; } else{ $checked2=""; } ?>
 						<tr>
 						<td><?= h($ii) ?></td>
 						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.contact_person', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Contact Person','value'=>$customer_contacts->contact_person,'required']); ?></td>
-						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.telephone', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Telephone','value'=>$customer_contacts->telephone,'required']); ?></td>
-						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','value'=>$customer_contacts->mobile,'required']); ?></td>
+						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.telephone', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Telephone','value'=>$customer_contacts->telephone,'maxlength'=>15]); ?></td>
+						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','value'=>$customer_contacts->mobile,'maxlength'=>10,'minlength'=>10,'required']); ?></td>
 						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.email', ['type' => 'email','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Email','value'=>$customer_contacts->email,'required']); ?></td>
 						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.designation', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Designation','value'=>$customer_contacts->designation,'required']); ?></td>
-						<td width="90"><?php echo $this->Form->input('customer_contacts.'.$ii.'.default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2','value'=>1,$checked2]); ?></td>
+						<td width="90"><?php echo $this->Form->input('customer_contacts.'.$ii.'.default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2',"checked"=>$checked2]); ?></td>
 						<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 					</tr>
 					<?php } ?>
@@ -209,9 +210,9 @@
 						<tr>
 							<td><?= h($i) ?></td>
 							<td><?php echo $this->Form->input('customer_address.'.$i.'.address', ['label' => false,'type' => 'textarea','rows' => '2','style' => ['resize:none'],'class' => 'form-control input-sm','placeholder' => 'Address','value'=>$customer_address->address,'required']); ?></td>
-							<td><?php echo $this->Form->input('customer_address.'.$i.'.district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm','value'=>$customer_address->district_id,'required']); ?></td>
-							<td><?php echo $this->Form->input('customer_address.'.$i.'.transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Courier Charge','value'=>$customer_address->transporter_id,'required']); ?></td>
-							<td width="90"><?php echo $this->Form->input('customer_address.'.$i.'.default_address', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn','value'=>1,$checked]); ?></td>
+							<td><?php echo $this->Form->input('customer_address.'.$i.'.district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm select2me','value'=>$customer_address->district_id,'required']); ?></td>
+							<td><?php echo $this->Form->input('customer_address.'.$i.'.transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me','placeholder' => 'Courier Charge','value'=>$customer_address->transporter_id,'required']); ?></td>
+							<td width="90"><?php echo $this->Form->input('customer_address.'.$i.'.default_address', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn',"checked"=>$checked]); ?></td>
 							<td><a class="btn btn-xs btn-default addrow2" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow2" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
 					<?php } ?>
@@ -271,7 +272,6 @@ $(document).ready(function() {
 			account_second_subgroup_id:{
 				  required: true,
 			}
-			
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
@@ -305,7 +305,7 @@ $(document).ready(function() {
 		invalidHandler: function (event, validator) { //display error alert on form submit   
 			success3.hide();
 			error3.show();
-			//Metronic.scrollTo(error3, -200);
+			Metronic.scrollTo(error3, -200);
 		},
 
 		highlight: function (element) { // hightlight error inputs
@@ -324,44 +324,14 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			q="ok";
-			$("#main_tb tbody tr").each(function(){
-				var w=$(this).find("td:nth-child(2) input").val();
-				var r=$(this).find("td:nth-child(3) input").val();
-				var x=$(this).find("td:nth-child(4) input").val();
-				var y=$(this).find("td:nth-child(5) input").val();
-				if(w=="" || r=="" || x=="" || y==""){
-					q="e";
-				}
-			});
-			if(q=="e"){
-				$("#row_error").show();
-				return false;
-			}else{
-				$("#row_error").hide();
-				$("#main_tb2 tbody tr").each(function(){
-				var a=$(this).find("td:nth-child(2) input").val();
-				var s=$(this).find("td:nth-child(3) input").val();
-				var d=$(this).find("td:nth-child(4) input").val();
-				var f=$(this).find("td:nth-child(5) input").val();
-				if(a=="" || s=="" || d=="" || f==""){
-					t="x";
-				}
-				});
-				if(t=="x"){
-					$("#row_error1").show();
-					return false;
-				}else{
-					success3.show();
-					error3.hide();
-					form[0].submit(); // submit the form
-				}
-			}
+			success3.show();
+			error3.hide();
+			form[0].submit(); // submit the form
 		}
 
 	});
 	//--	 END OF VALIDATION
-		$('.allLetter').live("keyup",function(){
+	$('.allLetter').live("keyup",function(){
 		var inputtxt=  $(this).val();
 		var numbers =  /^[0-9]*\.?[0-9]*$/;
 		
@@ -376,18 +346,18 @@ $(document).ready(function() {
 	});
 	
 	$('select[name="account_category_id"]').on("change",function() {
-		$('#account_group_div').html('Loading...');
-		var accountCategoryId=$('select[name="account_category_id"] option:selected').val();
-		var url="<?php echo $this->Url->build(['controller'=>'AccountGroups','action'=>'AccountGroupDropdown']); ?>";
-		url=url+'/'+accountCategoryId,
-		$.ajax({
-			url: url,
-			type: 'GET',
-		}).done(function(response) {
-			$('#account_group_div').html(response);
-			$('select[name="account_group_id"]').select2();
-		});
+	$('#account_group_div').html('Loading...');
+	var accountCategoryId=$('select[name="account_category_id"] option:selected').val();
+	var url="<?php echo $this->Url->build(['controller'=>'AccountGroups','action'=>'AccountGroupDropdown']); ?>";
+	url=url+'/'+accountCategoryId,
+	$.ajax({
+		url: url,
+		type: 'GET',
+	}).done(function(response) {
+		$('#account_group_div').html(response);
+		$('select[name="account_group_id"]').select2();
 	});
+});
 	
 	
 $('select[name="account_group_id"]').die().live("change",function() {
@@ -419,7 +389,6 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 	});
 });	
 	
-	
 	$('.default_btn2').die().live("click",function() { 
 		$('.default_btn2').removeAttr('checked');
 		$(this).attr('checked','checked');
@@ -434,47 +403,19 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		$('input[name="customer_contacts[0][default_address]"]').val("DEFAULT").css('background-color','#DDD');
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
-			if(l>1){
-				$(this).closest("tr").remove();
-				var i=0;
-				$("#main_tb tbody tr").each(function(){
-					$(this).find("td:nth-child(1)").html(++i); --i;
-					$(this).find("td:nth-child(2) input").attr("name","customer_contacts["+i+"][contact_person]");
-					$(this).find("td:nth-child(3) input").attr("name","customer_contacts["+i+"][telephone]");
-					$(this).find("td:nth-child(4) input").attr("name","customer_contacts["+i+"][mobile]");
-					$(this).find("td:nth-child(5) input").attr("name","customer_contacts["+i+"][designation]");
-					$(this).find("td:nth-child(6) input").attr("name","customer_contacts["+i+"][default_contact]");
-					i++;
-					
-				});
-				
+			if(l>1){$(this).closest("tr").remove();
+				rename_rows();
+				calculate_total();
 			}
 		} 
     });
 	
 	function add_row(){
-		
 		var tr=$("#sample_tb tbody tr").clone();
 		$("#main_tb tbody").append(tr);
-		var i=0;
+		rename_rows();
 		
-		$("#main_tb tbody tr").each(function(){
-			
-			$(this).find("td:nth-child(1)").html(++i); --i;
-			$(this).find("td:nth-child(2) input").attr({name:"customer_contacts["+i+"][contact_person]", id:"customer_contacts-"+i+"-contact_person"}).rules("add", "required");
-			$(this).find("td:nth-child(3) input").attr({name:"customer_contacts["+i+"][customer_contacts]", id:"customer_contacts-"+i+"-customer_contacts"}).rules("add", "required");
-			$(this).find("td:nth-child(4) input").attr({name:"customer_contacts["+i+"][mobile]", id:"customer_contacts-"+i+"-mobile"}).rules("add", "required");
-			$(this).find("td:nth-child(5) input").attr({name:"customer_contacts["+i+"][email]", id:"customer_contacts-"+i+"-email"}).rules("add", "required");
-			$(this).find("td:nth-child(6) input").attr({name:"customer_contacts["+i+"][designation]", id:"customer_contacts-"+i+"-designation"}).rules("add", "required");
-			$(this).find("td:nth-child(7) input").attr({name:"customer_contacts["+i+"][default_contact]", id:"customer_contacts-"+i+"-default_contact"});
-			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
-			if (test) { test.uniform(); }
-			i++;
-		});
 	}
-	
-	
-	
 	
 	$('.default_btn').die().live("click",function() { 
 		$('.default_btn').removeAttr('checked');
@@ -492,18 +433,8 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		if (confirm("Are you sure to remove row ?") == true) {
 			if(l>1){
 				$(this).closest("tr").remove();
-				var i=1;
-				$("#main_tb2 tbody tr").each(function(){
-					$(this).find("td:nth-child(1)").html(i);
-					$(this).find("td:nth-child(2) textarea").attr({name:"customer_address["+i+"][address]", id:"customer_address-"+i+"-address"}).rules("add", "required");
-					$(this).find("td:nth-child(3) select").attr({name:"customer_address["+i+"][district_id]", id:"customer_address-"+i+"-district_id"}).rules("add", "required");
-					$(this).find("td:nth-child(4) select").attr({name:"customer_address["+i+"][courier_charge]", id:"customer_address-"+i+"-courier_charge"}).rules("add", "required");
-					$(this).find("td:nth-child(5) input").attr({name:"customer_address["+i+"][default_address]", id:"customer_address-"+i+"-default_address"});
-					var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
-					if (test) { test.uniform(); }
-					i++;
-				});
-				
+				rename_rows2();
+				calculate_total();
 			}
 		} 
     });
@@ -511,8 +442,32 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 	function add_row2(){
 		var tr=$("#sample_tb2 tbody tr").clone();
 		$("#main_tb2 tbody").append(tr);
-		var i=1; 
+		rename_rows2();
+	}
+	
+	function rename_rows(){
+		var i=0;
+		
+		$("#main_tb tbody tr").each(function(){
+			
+			$(this).find("td:nth-child(1)").html(++i); --i;
+			$(this).find("td:nth-child(2) input").attr({name:"customer_contacts["+i+"][contact_person]", id:"customer_contacts-"+i+"-contact_person"}).rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr({name:"customer_contacts["+i+"][telephone]", id:"customer_contacts-"+i+"-customer_contacts"}).rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr({name:"customer_contacts["+i+"][mobile]", id:"customer_contacts-"+i+"-mobile"}).rules("add", "required");
+			$(this).find("td:nth-child(5) input").attr({name:"customer_contacts["+i+"][email]", id:"customer_contacts-"+i+"-email"}).rules("add", "required");
+			$(this).find("td:nth-child(6) input").attr({name:"customer_contacts["+i+"][designation]", id:"customer_contacts-"+i+"-designation"}).rules("add", "required");
+			$(this).find("td:nth-child(7) input").attr({name:"customer_contacts["+i+"][default_contact]", id:"customer_contacts-"+i+"-default_contact"});
+			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
+			if (test) { test.uniform(); }
+			i++;
+		});
+	}
+	
+	function rename_rows2(){
+		var i=1;
+		
 		$("#main_tb2 tbody tr").each(function(){
+			
 			$(this).find("td:nth-child(1)").html(i);
 			$(this).find("td:nth-child(2) textarea").attr({name:"customer_address["+i+"][address]", id:"customer_address-"+i+"-address"}).rules("add", "required");
 			$(this).find("td:nth-child(3) select").attr({name:"customer_address["+i+"][district_id]", id:"customer_address-"+i+"-district_id"}).rules("add", "required");
@@ -526,14 +481,13 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 	
 });
 </script>
-
 <table id="sample_tb" style="display:none;">
 	<tbody>
 		<tr>
 			<td>0</td>
 			<td><?php echo $this->Form->input('contact_person', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Contact Person']); ?></td>
 			<td><?php echo $this->Form->input('telephone', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Telephone','maxlength'=>15]); ?></td>
-			<td><?php echo $this->Form->input('mobile', ['type' => 'number','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','maxlength'=>10]); ?></td>
+			<td><?php echo $this->Form->input('mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','maxlength'=>10,'minlength'=>10]); ?></td>
 			<td><?php echo $this->Form->input('email', ['type' => 'email','label' => false,'class' => 'form-control input-sm','placeholder' => 'Email']); ?></td>
 			<td><?php echo $this->Form->input('designation', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Designation']); ?></td>
 			<td width="90"><?php echo $this->Form->input('default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2','value'=>1]); ?></td>
@@ -547,8 +501,8 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		<tr>
 			<td>0</td>
 			<td><?php echo $this->Form->input('address', ['label' => false,'type' => 'textarea','rows' => '2','style' => ['resize:none'],'class' => 'form-control input-sm','placeholder' => 'Address']); ?></td>
-			<td><?php echo $this->Form->input('district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm']); ?></td>
-			<td><?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Courier Charge']); ?></td>
+			<td><?php echo $this->Form->input('district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm select2me']); ?></td>
+			<td><?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me','placeholder' => 'Courier Charge']); ?></td>
 			<td width="90"><?php echo $this->Form->input('default_address', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn','value'=>1]); ?></td>
 			<td><a class="btn btn-xs btn-default addrow2" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow2" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>

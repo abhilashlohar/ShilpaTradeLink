@@ -124,7 +124,7 @@
 							<td><?= h($i) ?></td>
 							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Bank Name','value'=>$vendor_contact_person->name,'required']); ?></td>
 							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Branch','value'=>$vendor_contact_person->email,'required']); ?></td>
-							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.mobile', ['label' => false,'class' => 'form-control input-sm allLetter','value'=>$vendor_contact_person->mobile,'placeholder'=>'Mobile','maxlength'=>10,'required']); ?></td>
+							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.mobile', ['label' => false,'class' => 'form-control input-sm allLetter','value'=>$vendor_contact_person->mobile,'placeholder'=>'Mobile','maxlength'=>10,'minlength'=>10,'required']); ?></td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
 						<?php } ?>
@@ -392,7 +392,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			<td>0</td>
 			<td><?php echo $this->Form->input('name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Name','required']); ?></td>
 			<td><?php echo $this->Form->input('email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email','required']); ?></td>
-			<td><?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mobile','required']); ?></td>
+			<td><?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mobile','maxlength'=>10,'minlength'=>10,'required']); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 	</tbody>
