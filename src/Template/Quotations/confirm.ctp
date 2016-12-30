@@ -10,7 +10,18 @@ $edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Add']);
 			<a href="<?php echo $list_url; ?>" class="list-group-item"><i class="fa fa-chevron-left"></i> Back to Quotations </a>
 			<a  data-toggle="modal" class="list-group-item" href="#myModal2"><i class="fa fa-envelope"></i> Email to Customer </a>
 			<?php if($quotation->status=='Pending'){ ?>
-			<a href="<?php echo $edit_url.'?revision='.$id; ?>" class="list-group-item"><i class="fa fa-edit"></i> Edit Quotation </a>
+				<div class="btn-group dropup" >
+					<button type="button" class="list-group-item dropdown-toggle" data-toggle="dropdown" width="100%"><i class="fa fa-pencil-square-o"></i>Edit</button>
+					<ul class="dropdown-menu" role="menu" style=" margin-left: 50px; margin-bottom:-100px; ">
+						<li>
+							<?php	echo $this->Html->link('<i class="fa fa-file-o"></i>Save as Revision ','/Quotations/Add?revision='.$id,array('escape'=>false,'class'=>''));
+							 ?>
+						</li>
+						<li>
+							<?php echo $this->Html->link('<i class="fa fa-repeat"></i>Save as old version ',['action' => 'edit', $quotation->id],array('escape'=>false,'class'=>'')); ?>
+						</li>
+					</ul>
+				</div>
 			<?php } ?>
 			<a href="#" class="list-group-item" onclick="window.close()"><i class="fa fa-times"></i> Close </a>
 		</div>

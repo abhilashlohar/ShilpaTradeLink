@@ -166,10 +166,12 @@
 					</tr>
 				</thead>
 				<tbody id="main_tbody">
-					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_row): ?>
+					<?php $q=1; foreach ($quotation->quotation_rows as $quotation_row): ?>
 						<tr class="tr1 preimp" row_no='<?php echo @$quotation_row->id; ?>'>
 							<td rowspan="2" width="10">
-								<?php echo ++$q; --$q; ?><?php echo $this->Form->input('quotation_rows.'.$q.'.id'); ?>
+								<?php echo $this->Form->input('quotation_rows['.$q.'][height]', ['type' => 'hidden','value' => @$quotation_row->height]); ?>
+								<?php echo q; ?><?php echo $this->Form->input('quotation_rows.'.$q.'.id'); ?>
+								
 							</td>
 							<td>
 								<div class="row">
@@ -196,7 +198,7 @@
 							</td>
 							<td width="100">
 								<?php echo $this->Form->input('quotation_rows['.$q.'][quantity]', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value' => $quotation_row->quantity,'required','min'=>1]); ?>
-								<?php echo $this->Form->input('quotation_rows['.$q.'][height]', ['type' => 'hidden','value' => @$quotation_row->height]); ?>
+								
 							</td>
 							<td width="130">
 								<?php echo $this->Form->input('quotation_rows['.$q.'][rate]', ['label' => false,'class' => 'form-control input-sm rate','placeholder' => 'Rate', 'min'=>'0.01','value' => $quotation_row->rate,'required','r_popup_id'=>$q]); ?>
@@ -484,7 +486,7 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
-			$(this).find("td:nth-child(3) input:eq(0)").attr({name:"quotation_rows["+i+"][quantity]", id:"quotation_rows-"+i+"-quantity"}).rules('add', {
+			$(this).find("td:nth-child(3) input").attr({name:"quotation_rows["+i+"][quantity]", id:"quotation_rows-"+i+"-quantity"}).rules('add', {
 						required: true,
 						integer: true,
 						min: 1
