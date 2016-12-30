@@ -1,4 +1,4 @@
-<?php
+<?php //pr($quotation->employee->signature); exit;
 use Cake\Mailer\Email;
 
 require_once(ROOT . DS  .'vendor' . DS  . 'dompdf' . DS . 'autoload.inc.php');
@@ -234,7 +234,7 @@ $html.='
 	
 $html.='
 		<div align="left" class="">
-			<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->creator->signature.' height="50px" style="height:50px;"/>
+			<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$quotation->employee->signature.' height="50px" style="height:50px;"/>
 			<br/>
 			<span>'. h($quotation->employee->name) .'</span><br/>
 			<span>'. h($quotation->employee->designation->name) .'</span><br/>

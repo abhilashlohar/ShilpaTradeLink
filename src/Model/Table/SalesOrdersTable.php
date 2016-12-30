@@ -139,8 +139,6 @@ class SalesOrdersTable extends Table
     {
         $rules->add($rules->existsIn(['customer_id'], 'Customers'));
         $rules->add($rules->existsIn(['company_id'], 'Companies'));
-        $rules->add($rules->existsIn(['quotation_id'], 'Quotations'));
-
         return $rules;
     }
 }

@@ -3,6 +3,9 @@
     pointer-events: none;
     opacity: 0.4;
 }
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+	vertical-align: top !important;
+}
 </style>
 <div class="portlet light bordered">
 	<div class="portlet-title">
@@ -137,7 +140,7 @@
 					if(@$item_ar[$sales_order_rows->item_id]==$sales_order_rows->quantity){
 						$disable_class="disabledbutton";
 					}else{ $disable_class=""; } ?>
-					<tr class="tr1 <?php echo $disable_class; ?>" row_no='<?php echo @$sales_order_rows->id; ?>'>
+					<tr class="tr1 <?php echo $disable_class; ?> main_tr" row_no='<?php echo @$sales_order_rows->id; ?>'>
 						<td rowspan="2"><?= h($q) ?></td>
 						<td>						
 							<div class="row">
@@ -181,7 +184,7 @@
 						</td>
 						<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 					</tr>
-					<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
+					<tr class="tr2 <?php echo $disable_class; ?> main_tr" row_no='<?php echo @$sales_order_rows->id; ?>'>
 						<td colspan="6">
 						<div contenteditable="true" id="editor" name="<?php echo 'sales_order_rows['.$q.'][description]'; ?>"><?php echo @$sales_order_rows->description; ?></div>
 						<?php echo $this->Form->textarea('sales_order_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','style'=>['display:none'],'placeholder' => 'Description','required','value'=>$sales_order_rows->description]); ?>
@@ -349,11 +352,11 @@
 
 <table id="sample_tb" style="display:none;">
 	<tbody>
-		<tr class="tr1">
+		<tr class="tr1 main_tr">
 			<td rowspan="2">0</td>
 			<td>
 			<div class="row">
-					<div class="col-md-11 padding-right-decrease">
+					<div class="col-md-10 padding-right-decrease">
 						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_box','placeholder' => 'Item']); ?>
 					</div>
 					<div class="col-md-1 padding-left-decrease">
@@ -372,8 +375,6 @@
 						</div>
 					</div>
 				</div>
-			
-			
 			</td>
 			<td><?php echo $this->Form->input('unit[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
 			<td><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate', 'min'=>'0.01','step'=>"0.01"]); ?></td>
@@ -391,8 +392,11 @@
 			</td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
-		<tr class="tr2">
-			<td colspan="6"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'5']); ?></td>
+		<tr class="tr2 main_tr">
+			<td colspan="6">
+			<div contenteditable="true" id="editor"></div>
+			<?php echo $this->Form->textarea('description', ['label' => false,'style'=>['display:none'],'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','required']); ?>
+			</td>
 			<td></td>
 		</tr>
 	</tbody>
@@ -534,11 +538,9 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 	
-		$( window ).load(function() {
-			calculate_total();
-		});
+		calculate_total();
 	
-		$("#pnfper").on('click',function(){
+	$("#pnfper").on('click',function(){
 		if($(this).is(':checked')){
 			$("#pnf_text").show();
 			$('input[name="pnf"]').attr('readonly','readonly');
@@ -581,23 +583,7 @@ $(document).ready(function() {
 		var description=$(this).find('option:selected').attr("description");
 		$(this).closest("td").find('input').val(description);
     });
-	$('.quantity').die().live("keyup",function() {
-			var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc==0)
-			{
-				$(this).val('');
-				return false; 
-			}
-			else if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
-	});
+	
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
@@ -605,27 +591,7 @@ $(document).ready(function() {
 				var row_no=$(this).closest("tr").attr("row_no");
 				var del="tr[row_no="+row_no+"]";
 				$(del).remove();
-				var i=0;
-				$("#main_tb tbody tr.tr1").each(function(){
-					i++;
-					$(this).find("td:nth-child(1)").html(i);
-					$(this).find("td:nth-child(2) select").attr("name","sales_order_rows["+i+"][item_id]");
-					$(this).find("td:nth-child(3) input").attr("name","sales_order_rows["+i+"][quantity]");
-					$(this).find("td:nth-child(4) input").attr("name","sales_order_rows["+i+"][rate]");
-					$(this).find("td:nth-child(5) input").attr("name","sales_order_rows["+i+"][amount]");
-					$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
-					$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][so_sale_tax]");
-					var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
-					$(this).find("td:nth-child(7) input").val(description);
-				});
-				var i=0;
-				$("#main_tb tbody tr.tr2").each(function(){
-					i++;
-					$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
-					$(this).find('td:nth-child(1) div#editor').attr({name:"sales_order_rows["+i+"][description]"});
-
-					});
-				calculate_total();
+				rename_rows();
 			}
 		} 
     });
@@ -636,58 +602,54 @@ $(document).ready(function() {
 		var tr2=$("#sample_tb tbody tr.tr2").clone();
 		$("#main_tb tbody#main_tbody").append(tr2);
 		
-		var w=0; var r=0;
-		$("#main_tb tbody tr").each(function(){
+		var w=1; var r=0;
+		$("#main_tb tbody#main_tbody tr.main_tr").each(function(){
 			$(this).attr("row_no",w);
 			r++;
 			if(r==2){ w++; r=0; }
 		});
 		
-		var i=0;
+		rename_rows();
+	}
+	rename_rows();
+	function rename_rows(){
+		var i=1;
 		$("#main_tb tbody tr.tr1").each(function(){
-			i++;
 			$(this).find("td:nth-child(1)").html(i);
 			$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
-			$(this).find("td:nth-child(3) input").attr({name:"sales_order_rows["+i+"][quantity]", id:"sales_order_rows-"+i+"-quantity"}).rules('add', {
+			$(this).find("td:nth-child(3) input:eq( 0 )").attr({name:"sales_order_rows["+i+"][quantity]", id:"sales_order_rows-"+i+"-quantity"}).rules('add', {
 						required: true,
+						integer: true,
 						min: 1,
 						messages: {
 							min: "Quantity can't be zero."
 						}
 					});
-			$(this).find("td:nth-child(4) input").attr({name:"sales_order_rows["+i+"][rate]", id:"sales_order_rows-"+i+"-rate",r_popup_id:i}).rules('add', { required: true });
+			$(this).find("td:nth-child(4) input").attr({name:"sales_order_rows["+i+"][rate]", id:"sales_order_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
+						required: true,
+						number: true,
+						min: 0.01
+					});
 			$(this).find("td:nth-child(5) input").attr({name:"sales_order_rows["+i+"][amount]", id:"sales_order_rows-"+i+"-amount"}).rules("add", "required");
 			$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
 			$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][sale_tax_id]");
-			$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][so_sale_tax]");
+			$(this).find("td:nth-child(7) input:eq( 0 )").attr("name","sales_order_rows["+i+"][sale_tax_description]");
 			var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
-			$(this).find("td:nth-child(7) input").val(description);
-		});
-		var i=0;
+			$(this).find("td:nth-child(7) input:eq( 0 )").val(description);
+			$(this).find("td:nth-child(7) input:eq( 1 )").attr("name","sales_order_rows["+i+"][sale_tax_ledger_account_id]");
+			var ledger_account_id=$(this).find("td:nth-child(7) select option:selected").attr("ledger_account_id");
+			$(this).find("td:nth-child(7) input:eq( 1 )").val(ledger_account_id);
+		i++; });
 		
+		var i=1;
 		$("#main_tb tbody tr.tr2").each(function(){
-			i++;
 			$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
 			$(this).find('td:nth-child(1) div#editor').attr({name:"sales_order_rows["+i+"][description]"});
-		});
-		
-		$(document)
-		.one('focus.textarea', '.autoExpand', function(){
-			var savedValue = this.value;
-			this.value = '';
-			this.baseScrollHeight = this.scrollHeight;
-			this.value = savedValue;
-		})
-		.on('input.textarea', '.autoExpand', function(){
-			var minRows = this.getAttribute('data-min-rows')|0,rows;
-			this.rows = minRows;
-			console.log(this.scrollHeight , this.baseScrollHeight);
-			rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
-			this.rows = minRows + rows;
-		});
+
+		i++; });
 	}
 	
 		

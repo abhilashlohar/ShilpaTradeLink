@@ -116,7 +116,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Contact No</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_contact', ['label' => false,'class' => 'form-control input-sm quantity']); ?>
+							<?php echo $this->Form->input('customer_contact_no', ['label' => false,'class' => 'form-control input-sm quantity']); ?>
 						</div>
 					</div>
 				</div>
@@ -166,10 +166,11 @@
 					</tr>
 				</thead>
 				<tbody id="main_tbody">
-					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_row): ?>
+					<?php $q=1; foreach ($quotation->quotation_rows as $quotation_row): ?>
 						<tr class="tr1 preimp" row_no='<?php echo @$quotation_row->id; ?>'>
 							<td rowspan="2" width="10">
-								<?php echo ++$q; --$q; ?><?php echo $this->Form->input('quotation_rows.'.$q.'.id'); ?>
+								<?php echo $q; ?>
+								<?php echo $this->Form->input('quotation_rows.'.$q.'.id'); ?>
 							</td>
 							<td>
 								<div class="row">
@@ -192,11 +193,11 @@
 										</div>
 									</div>
 								</div>
-								
+								<?php echo $this->Form->input('quotation_rows['.$q.'][height]', ['type' => 'hidden','value' => @$quotation_row->height]); ?>
 							</td>
 							<td width="100">
 								<?php echo $this->Form->input('quotation_rows['.$q.'][quantity]', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value' => $quotation_row->quantity,'required','min'=>1]); ?>
-								<?php echo $this->Form->input('quotation_rows['.$q.'][height]', ['type' => 'hidden','value' => @$quotation_row->height]); ?>
+								
 							</td>
 							<td width="130">
 								<?php echo $this->Form->input('quotation_rows['.$q.'][rate]', ['label' => false,'class' => 'form-control input-sm rate','placeholder' => 'Rate', 'min'=>'0.01','value' => $quotation_row->rate,'required','r_popup_id'=>$q]); ?>
@@ -359,8 +360,11 @@ $(document).ready(function() {
 				enquiry_no  : {
 					  required: true,
 				},
-				customer_contact: {
+				customer_contact_no: {
 					  required: true,
+					  integer: true,
+					  minlength: 10,
+					  min: 0
 				},
 				subject:{
 					required: true,	
@@ -528,6 +532,7 @@ $(document).ready(function() {
 	
 	
 	
+	
 	function open_address(){
 		var customer_id=$('select[name="customer_id"]').val();
 		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
@@ -570,7 +575,7 @@ $(document).ready(function() {
 			dataType: 'json'
 		}).done(function(response) {
 			$('input[name="customer_for_attention"]').val(response.contact_person);
-			$('input[name="customer_contact"]').val(response.mobile);
+			$('input[name="customer_contact_no"]').val(response.mobile);
 		});
 		
 		$("#qt3_div").html('Loading...');
