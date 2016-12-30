@@ -634,29 +634,7 @@ $(document).ready(function() {
 		$(this).find("td:nth-child(7) input").val(description);
 	});
 	
-	<?php if($process_status=="New"){ ?> 
-	var terms_conditions=$("#terms_conditions").text();
-	$('textarea[name="terms_conditions"]').val(terms_conditions);
-	<?php }else{ ?>calculate_total(); 
-
-	<?php } ?>
-	$('.quantity').die().live("keyup",function() {
-			var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc==0)
-			{
-				$(this).val('');
-				return false; 
-			}
-			else if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
-	});
+	
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
@@ -664,28 +642,7 @@ $(document).ready(function() {
 				var row_no=$(this).closest("tr").attr("row_no");
 				var del="tr[row_no="+row_no+"]";
 				$(del).remove();
-				var i=0;
-				$("#main_tb tbody tr.tr1").each(function(){
-					 
-					$(this).find("td:nth-child(1)").html(++i); i--;
-					$(this).find("td:nth-child(2) select").attr("name","sales_order_rows["+i+"][item_id]");
-					
-					$(this).find("td:nth-child(3) input").attr("name","sales_order_rows["+i+"][quantity]");
-					$(this).find("td:nth-child(4) input").attr("name","sales_order_rows["+i+"][rate]");
-					$(this).find("td:nth-child(5) input").attr("name","sales_order_rows["+i+"][amount]");
-					$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
-					$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][sale_tax_id]");
-					$(this).find("td:nth-child(7) input").attr("name","sales_order_rows["+i+"][sale_tax_description]");
-					var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
-					$(this).find("td:nth-child(7) input").val(description);
-				i++; });
-				var i=0;
-				$("#main_tb tbody tr.tr2").each(function(){
-					i++;
-					$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
-					$(this).find('td:nth-child(1) div#editor').attr({name:"sales_order_rows["+i+"][description]"});
-
-				i++; });
+				rename_rows();
 				calculate_total();
 			}
 		} 
@@ -703,23 +660,30 @@ $(document).ready(function() {
 			r++;
 			if(r==2){ w++; r=0; }
 		});
-		
-		var i=0;
+		rename_rows();
+	}
+	
+	function rename_rows(){
+		var i=1;
 		$("#main_tb tbody tr.tr1").each(function(){
-			
-			$(this).find("td:nth-child(1)").html(++i); i--;
+			$(this).find("td:nth-child(1)").html(i);
 			$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
-			$(this).find("td:nth-child(3) input").attr({name:"sales_order_rows["+i+"][quantity]", id:"sales_order_rows-"+i+"-quantity"}).rules('add', {
+			$(this).find("td:nth-child(3) input:eq( 0 )").attr({name:"sales_order_rows["+i+"][quantity]", id:"sales_order_rows-"+i+"-quantity"}).rules('add', {
 						required: true,
+						integer: true,
 						min: 1,
 						messages: {
 							min: "Quantity can't be zero."
 						}
 					});
-			$(this).find("td:nth-child(4) input").attr({name:"sales_order_rows["+i+"][rate]", id:"sales_order_rows-"+i+"-rate",r_popup_id:i}).rules('add', { required: true });
+			$(this).find("td:nth-child(4) input").attr({name:"sales_order_rows["+i+"][rate]", id:"sales_order_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
+						required: true,
+						number: true,
+						min: 0.01
+					});
 			$(this).find("td:nth-child(5) input").attr({name:"sales_order_rows["+i+"][amount]", id:"sales_order_rows-"+i+"-amount"}).rules("add", "required");
 			$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
 			$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][sale_tax_id]");
@@ -730,29 +694,13 @@ $(document).ready(function() {
 			var ledger_account_id=$(this).find("td:nth-child(7) select option:selected").attr("ledger_account_id");
 			$(this).find("td:nth-child(7) input:eq( 1 )").val(ledger_account_id);
 		i++; });
-		var i=0;
 		
+		var i=1;
 		$("#main_tb tbody tr.tr2").each(function(){
-			
 			$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
 			$(this).find('td:nth-child(1) div#editor').attr({name:"sales_order_rows["+i+"][description]"});
 
 		i++; });
-		
-		$(document)
-		.one('focus.textarea', '.autoExpand', function(){
-			var savedValue = this.value;
-			this.value = '';
-			this.baseScrollHeight = this.scrollHeight;
-			this.value = savedValue;
-		})
-		.on('input.textarea', '.autoExpand', function(){
-			var minRows = this.getAttribute('data-min-rows')|0,rows;
-			this.rows = minRows;
-			console.log(this.scrollHeight , this.baseScrollHeight);
-			rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
-			this.rows = minRows + rows;
-		});
 	}
 	
 	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
