@@ -33,14 +33,14 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Category <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('item_category_id', ['empty'=>'--Select--','options' => $ItemCategories,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Category']); ?>
+							<?php echo $this->Form->input('item_category_id', ['empty'=>'--Select--','options' => $ItemCategories,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Category']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Group <span class="required" aria-required="true">*</span></label>
 							<div id="item_group_div">
-							<?php echo $this->Form->input('item_group_id', ['empty'=>'--Select--','options' => $ItemGroups,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Group']); ?>
+							<?php echo $this->Form->input('item_group_id', ['empty'=>'--Select--','options' => $ItemGroups,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Group']); ?>
 							</div>
 						</div>
 					</div>
@@ -48,7 +48,7 @@
 						<div class="form-group">
 							<label class="control-label">Sub-Group <span class="required" aria-required="true">*</span></label>
 							<div id="item_sub_group_div">
-							<?php echo $this->Form->input('item_sub_group_id', ['empty'=>'--Select--','options' => $ItemSubGroups,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Sub-Group']); ?>
+							<?php echo $this->Form->input('item_sub_group_id', ['empty'=>'--Select--','options' => $ItemSubGroups,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Sub-Group']); ?>
 							</div>
 						</div>
 					</div>
@@ -170,7 +170,9 @@ $(document).ready(function() {
 			item_sub_group_id    : {
 				  required: true,
 			},
-			
+			source :{
+					required: true,
+			},
 			
 			minimum_quantity  : {
 				  required: true,
