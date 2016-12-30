@@ -151,6 +151,7 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
+	
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -253,12 +254,11 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 
-	
-	add_row(); $('.default_btn:first').attr('checked','checked'); $.uniform.update();
     $('.addrow').die().live("click",function() {
-		alert();
 		add_row();
     });
+	
+	add_row(); $('.default_btn:first').attr('checked','checked'); $.uniform.update();
 	
 	$('.default_btn').die().live("click",function() { 
 		$('.default_btn').removeAttr('checked');
