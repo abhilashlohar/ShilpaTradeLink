@@ -175,7 +175,7 @@
 							<td>
 								<div class="row">
 									<div class="col-md-11 padding-right-decrease">
-										<?php echo $this->Form->input('quotation_rows['.$q.'][item_id]', ['options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','value' => $quotation_row->item_id,'required','popup_id'=>$q]); ?>
+										<?php echo $this->Form->input('quotation_rows['.$q.'][item_id]', ['options' => $items,'label' => false,'class' => 'form-control input-sm item_box','value' => $quotation_row->item_id,'required','popup_id'=>$q]); ?>
 									</div>
 									<div class="col-md-1 padding-left-decrease">
 										<a href="#" class="btn btn-default btn-sm popup_btn" role="button" popup_id="<?php echo $q; ?>"> <i class="fa fa-info-circle"></i> </a>
@@ -320,6 +320,7 @@ $( "#sortable" ).disableSelection();
 </script>
 <script>
 $(document).ready(function() {
+	
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -443,8 +444,7 @@ $(document).ready(function() {
 		add_row();
     });
 	
-	rename_rows();
-	calculate_total();
+	
 	
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
@@ -476,19 +476,18 @@ $(document).ready(function() {
 		rename_rows();
 		calculate_total();
 	}
-	
+	rename_rows();
 	function rename_rows(){
 		var i=1;
 		$("#main_tb tbody tr.tr1").each(function(){
 			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
+			$(this).find("td:nth-child(2) select.item_box").select2().attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
 			$(this).find("td:nth-child(3) input").attr({name:"quotation_rows["+i+"][quantity]", id:"quotation_rows-"+i+"-quantity"}).rules('add', {
 						required: true,
-						integer: true,
-						min: 1
+						digits: true,
 					});
 			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
 						required: true,
@@ -504,8 +503,17 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"}).rules("add", "required");
 			$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
 		i++; });
-		calculate_total();
+		
+		$("select.item_box").each(function(){
+			var popup_id=$(this).attr('popup_id');
+			var item_id=$(this).val();
+			if(popup_id){
+				last_three_rates_onload(popup_id,item_id);
+			}
+		});
 	}
+	
+	
 	
 	$('#main_tb input').die().live("keyup","blur",function() { 
 		calculate_total();
@@ -717,6 +725,9 @@ $(document).ready(function() {
 				$(".item_box[popup_id="+popup_id+"]").val('').select2();
 			}
 	}
+	
+	//rename_rows();
+	//calculate_total();
 	
 });
 

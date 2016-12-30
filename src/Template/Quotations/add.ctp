@@ -198,13 +198,13 @@ if(!empty($revision))
 				
 				<?php if(!empty($copy)|| !empty($revision)){ ?>
 				<tbody id="main_tbody">
-					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_rows): ?>
+					<?php $q=1; foreach ($quotation->quotation_rows as $quotation_rows): ?>
 					<tr class="tr1 preimp" row_no='<?php echo @$quotation_rows->id; ?>'>
-							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
+							<td rowspan="2"><?php echo $q; ?></td>
 							<td>
-							<div class="row">
+								<div class="row">
 									<div class="col-md-11 padding-right-decrease">
-										<?php echo $this->Form->input('quotation_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','value' => @$quotation_rows->item->id,'popup_id'=>$q]); ?>
+										<?php echo $this->Form->input('quotation_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_box','value' => @$quotation_rows->item->id,'popup_id'=>$q]); ?>
 									</div>
 									<div class="col-md-1 padding-left-decrease">
 										<a href="#" class="btn btn-default btn-sm popup_btn" role="button" popup_id="<?php echo $q; ?>"> <i class="fa fa-info-circle"></i> </a>
@@ -222,7 +222,7 @@ if(!empty($revision))
 										</div>
 									</div>
 								</div>
-							
+								<?php echo $this->Form->input('quotation_rows['.$q.'][height]', ['type' => 'hidden','value' => @$quotation_row->height]); ?>
 							</td>
 							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm mask_number','placeholder'=>'Quantity','value' => @$quotation_rows->quantity]); ?></td>
 							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm mask_decimal','placeholder'=>'Rate', 'min'=>'1','value' => @$quotation_rows->rate,'r_popup_id'=>$q]); ?></td>
@@ -482,7 +482,7 @@ $(document).ready(function() {
 	 <?php } ?>        
       
 
-	rename_rows();
+	
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
@@ -516,12 +516,12 @@ $(document).ready(function() {
 		});
 		rename_rows();
 	}
-	
+	rename_rows();
 	function rename_rows(){
 		var i=1;
 		$("#main_tb tbody tr.tr1").each(function(){
 			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
+			$(this).find("td:nth-child(2) select").select2().attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
