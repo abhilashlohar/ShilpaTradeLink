@@ -622,6 +622,7 @@ $(document).ready(function() {
 		$(this).closest("td").find('input').val(description);
 	});
 	<?php } ?>
+	
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
