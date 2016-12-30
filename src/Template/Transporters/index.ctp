@@ -38,7 +38,7 @@
 					<div class="col-md-9">
 						<div class="input-icon right">
 							<i class="fa"></i>
-							 <?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control']); ?>
+							 <?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control nospace allLetter','maxlength'=>10,'minlength'=>10]); ?>
 						</div>
 					</div>
 				</div>
@@ -120,3 +120,4 @@
 	</div>
 </div>
 </div>
+

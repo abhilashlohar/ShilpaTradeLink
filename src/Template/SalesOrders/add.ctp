@@ -322,7 +322,7 @@ if(!empty($copy))
 				<div class="col-md-3">
 					<div class="form-group">
 						<label class="control-label">Mobile <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('dispatch_mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Mobile','data-date-format'=>'dd-mm-yyyy']); ?>
+						<?php echo $this->Form->input('dispatch_mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Mobile']); ?>
 					</div>
 				</div>
 				<div class="col-md-3">

@@ -169,9 +169,6 @@ $(document).ready(function() {
 			item_sub_group_id    : {
 				  required: true,
 			},
-			source :{
-					required: true,
-			},
 			
 			minimum_quantity  : {
 				  required: true,
@@ -297,6 +294,9 @@ $('select[name="item_group_id"]').die().live("change",function() {
 		type: 'GET',
 	}).done(function(response) {
 		$('#item_sub_group_div').html(response);
+		
+		$('select[name="item_sub_group_id"]').select2();
+		
 	});
 });
 	
