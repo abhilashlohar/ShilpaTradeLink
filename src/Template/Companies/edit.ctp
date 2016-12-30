@@ -321,18 +321,7 @@ $(document).ready(function() {
 		if (confirm("Are you sure to remove row ?") == true) {
 			if(l>1){
 				$(this).closest("tr").remove();
-				var i=0;
-				$("#main_tb tbody tr").each(function(){
-					
-					$(this).find("td:nth-child(1)").html(++i); --i;
-					$(this).find("td:nth-child(2) input").attr("name","company_banks["+i+"][bank_name]");
-					$(this).find("td:nth-child(3) input").attr("name","company_banks["+i+"][branch]");
-					$(this).find("td:nth-child(4) input").attr("name","company_banks["+i+"][account_no]");
-					$(this).find("td:nth-child(5) input").attr("name","company_banks["+i+"][ifsc_code]");
-					$(this).find("td:nth-child(6) input[type=checkbox]").attr("name","company_banks["+i+"][default_bank]");
-					i++;
-					
-				});
+				
 				calculate_total();
 			}
 		} 
@@ -341,19 +330,7 @@ $(document).ready(function() {
 	function add_row(){
 		var tr=$("#sample_tb tbody tr").clone();
 		$("#main_tb tbody").append(tr);
-		var i=0;
-		$("#main_tb tbody tr").each(function(){
-			
-			$(this).find("td:nth-child(1)").html(++i); --i;
-			$(this).find("td:nth-child(2) input").attr("name","company_banks["+i+"][bank_name]");
-			$(this).find("td:nth-child(3) input").attr("name","company_banks["+i+"][branch]");
-			$(this).find("td:nth-child(4) input").attr("name","company_banks["+i+"][account_no]");
-			$(this).find("td:nth-child(5) input").attr("name","company_banks["+i+"][ifsc_code]");
-			$(this).find("td:nth-child(6) input[type=checkbox]").attr("name","company_banks["+i+"][default_bank]");
-			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
-			if (test) { test.uniform(); }
-			i++;
-		});
+		
 	}
 	
 });
