@@ -1,5 +1,4 @@
 <?php
-
 use Cake\Mailer\Email;
 
 require_once(ROOT . DS  .'vendor' . DS  . 'dompdf' . DS . 'autoload.inc.php');
@@ -126,7 +125,7 @@ $html = '
 $html .= '
 <table width="100%">
 		<tr>
-			<td style="">
+			<td width="50%">
 				<table width="100%">
 					
 					<tr>
@@ -157,7 +156,8 @@ $html .= '
 					</tr>
 				</table>
 			</td>
-			<td align="right" valign="top">
+			<td width="10%"></td>
+			<td valign="top">
 				<table>
 					<tr>
 						<td>Date</td>
