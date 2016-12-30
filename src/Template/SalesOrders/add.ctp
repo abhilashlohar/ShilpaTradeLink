@@ -13,7 +13,7 @@ if(!empty($copy))
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Add Sales Order</span>
 			<?php if($process_status=='Pulled From Quotation'){ ?>
-			<br/><span style=" font-size: 13px; ">Converting Quotation: <?= h(($quotation->qt1.'/IN-'.str_pad($quotation->qt2, 3, '0', STR_PAD_LEFT).'/'.$quotation->qt3.'/'.$quotation->qt4)) ?></span>
+			<br/><span style=" font-size: 13px; ">Converting Quotation: <?= h(($quotation->qt1.'/QO-'.str_pad($quotation->qt2, 3, '0', STR_PAD_LEFT).'/'.$quotation->qt3.'/'.$quotation->qt4)) ?></span>
 			<?php } ?>
 		</div>
 		<div class="actions">
@@ -355,11 +355,7 @@ if(!empty($copy))
 						<div id="form49_error"></div>
 					</div>
 				</div>
-				
-				
 			</div>
-			<!--<label>Commercial Terms & Conditions:</label> <a href="#" role="button" class="select_term_condition">Select </a>
-			<?php echo $this->Form->input('terms_conditions', ['label' => false,'class' => 'form-control','value' => @$quotation->terms_conditions]); ?>-->
 			<br/>
 		</div>
 		<?php echo $this->Form->input('process_status', ['type' => 'hidden','value' => @$process_status]); ?>
