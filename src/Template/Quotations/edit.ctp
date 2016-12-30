@@ -170,7 +170,7 @@
 						<tr class="tr1 preimp" row_no='<?php echo @$quotation_row->id; ?>'>
 							<td rowspan="2" width="10">
 								<?php echo $this->Form->input('quotation_rows['.$q.'][height]', ['type' => 'hidden','value' => @$quotation_row->height]); ?>
-								<?php echo q; ?><?php echo $this->Form->input('quotation_rows.'.$q.'.id'); ?>
+								<?php echo $q; ?><?php echo $this->Form->input('quotation_rows.'.$q.'.id'); ?>
 								
 							</td>
 							<td>
@@ -530,6 +530,7 @@ $(document).ready(function() {
 	$('.closebtn').on("click",function() { 
 		$("#myModal1").hide();
     });
+	
 	
 	
 	
