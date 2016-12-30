@@ -11,7 +11,7 @@ $edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Add']);
 			<a  data-toggle="modal" class="list-group-item" href="#myModal2"><i class="fa fa-envelope"></i> Email to Customer </a>
 			<?php if($quotation->status=='Pending'){ ?>
 				<div class="btn-group dropup" >
-					<button type="button" class="list-group-item dropdown-toggle" data-toggle="dropdown" width="100%"><i class="fa fa-pencil-square-o"></i>Edit</button>
+					<button type="button" class="list-group-item dropdown-toggle" data-toggle="dropdown" style="padding-right: 217px;" ><i class="fa fa-pencil-square-o" width="100%"></i>Edit</button>
 					<ul class="dropdown-menu" role="menu" style=" margin-left: 50px; margin-bottom:-100px; ">
 						<li>
 							<?php	echo $this->Html->link('<i class="fa fa-file-o"></i>Save as Revision ','/Quotations/Add?revision='.$id,array('escape'=>false,'class'=>''));
