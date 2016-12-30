@@ -281,8 +281,10 @@ class SalesOrdersController extends AppController
 			$salesOrder->quotation_id=$quotation_id;
 			$salesOrder->created_on_time= date("Y-m-d h:i:sA");
 			$salesOrder->company_id=$st_company_id;
+			
+			pr($salesOrder); exit;
             if ($this->SalesOrders->save($salesOrder)) {
-				//pr($salesOrder); exit;
+				
 
 				if(!empty($quotation_id)){
 					$quotation->status='Converted Into Sales Order';
@@ -293,7 +295,7 @@ class SalesOrdersController extends AppController
 						->execute();
 						
 				}
-				//pr($salesOrder);exit;
+				
                 $this->Flash->success(__('The sales order has been saved.'));
 				return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
 
