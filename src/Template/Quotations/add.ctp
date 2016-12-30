@@ -518,9 +518,9 @@ $(document).ready(function() {
 	}
 	
 	function rename_rows(){
-		var i=0;
+		var i=1;
 		$("#main_tb tbody tr.tr1").each(function(){
-			$(this).find("td:nth-child(1)").html(++i); i--;
+			$(this).find("td:nth-child(1)").html(i);
 			$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
@@ -535,13 +535,14 @@ $(document).ready(function() {
 					});
 			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
 						required: true,
+						number: true,
 						min: 0.01
 					});
 			
 			$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
 		i++; });
 		
-		var i=0;
+		var i=1;
 		$("#main_tb tbody tr.tr2").each(function(){
 			$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"}).rules("add", "required");
 			$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});

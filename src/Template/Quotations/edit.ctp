@@ -1,3 +1,8 @@
+<style>
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+	vertical-align: top !important;
+}
+</style>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -190,8 +195,8 @@
 								
 							</td>
 							<td width="100">
-								<?php echo $this->Form->input('quotation_rows['.$q.'][height]', ['type' => 'hidden','value' => @$quotation_row->height]); ?>
 								<?php echo $this->Form->input('quotation_rows['.$q.'][quantity]', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value' => $quotation_row->quantity,'required','min'=>1]); ?>
+								<?php echo $this->Form->input('quotation_rows['.$q.'][height]', ['type' => 'hidden','value' => @$quotation_row->height]); ?>
 							</td>
 							<td width="130">
 								<?php echo $this->Form->input('quotation_rows['.$q.'][rate]', ['label' => false,'class' => 'form-control input-sm rate','placeholder' => 'Rate', 'min'=>'0.01','value' => $quotation_row->rate,'required','r_popup_id'=>$q]); ?>
@@ -434,35 +439,9 @@ $(document).ready(function() {
 		add_row();
     });
 	
-	$('.quantity').die().live("keyup",function() {
-			var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc==0)
-			{
-				$(this).val('');
-				return false; 
-			}
-			else if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
-	});
-	$('.rate').die().live("keyup",function() {
-			var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
-	});
+	rename_rows();
+	calculate_total();
+	
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
@@ -470,25 +449,8 @@ $(document).ready(function() {
 				var row_no=$(this).closest("tr").attr("row_no");
 				var del="tr[row_no="+row_no+"]";
 				$(del).remove();
-				var i=0;
-				$("#main_tb tbody tr.tr1").each(function(){
-					i++;
-					$(this).find("td:nth-child(1)").html(i);
-					$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
-					$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
-					$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
-					$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
-					$(this).find("td:nth-child(3) input").attr({name:"quotation_rows["+i+"][quantity]", id:"quotation_rows-"+i+"-quantity"}).rules("add", "required");
-					$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules("add", "required");
-					$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
-				});
-				var i=0;
-				$("#main_tb tbody tr.tr2").each(function(){
-					i++;
-					$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"});
-					$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
-
-				});
+				
+				rename_rows();
 				calculate_total();
 			}
 		} 
@@ -507,10 +469,13 @@ $(document).ready(function() {
 			r++;
 			if(r==2){ w++; r=0; }
 		});
-		
-		var i=0;
-		$("#main_tb tbody#main_tbody tr.tr1").each(function(){
-			i++;
+		rename_rows();
+		calculate_total();
+	}
+	
+	function rename_rows(){
+		var i=1;
+		$("#main_tb tbody tr.tr1").each(function(){
 			$(this).find("td:nth-child(1)").html(i);
 			$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
@@ -518,39 +483,23 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
 			$(this).find("td:nth-child(3) input").attr({name:"quotation_rows["+i+"][quantity]", id:"quotation_rows-"+i+"-quantity"}).rules('add', {
 						required: true,
-						min: 1,
-						messages: {
-							min: "Quantity can't be zero."
-						}
+						integer: true,
+						min: 1
 					});
-			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules('add', { required: true });
+			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
+						required: true,
+						number: true,
+						min: 0.01
+					});
+			
 			$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
-		});
-		var i=0;
+		i++; });
 		
+		var i=1;
 		$("#main_tb tbody tr.tr2").each(function(){
-			i++;
 			$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"}).rules("add", "required");
 			$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
-
-		});
-		
-		
-		
-		$(document)
-		.one('focus.textarea', '.autoExpand', function(){
-			var savedValue = this.value;
-			this.value = '';
-			this.baseScrollHeight = this.scrollHeight;
-			this.value = savedValue;
-		})
-		.on('input.textarea', '.autoExpand', function(){
-			var minRows = this.getAttribute('data-min-rows')|0,rows;
-			this.rows = minRows;
-			console.log(this.scrollHeight , this.baseScrollHeight);
-			rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
-			this.rows = minRows + rows;
-		});
+		i++; });
 		calculate_total();
 	}
 	
@@ -723,14 +672,7 @@ $(document).ready(function() {
 						}
 					});
 					$('div[popup_ajax_id='+popup_id+']').html(response.html);
-					if(response.minimum_selling_price==0){
-						$('input[r_popup_id='+popup_id+']').attr({ min:0.01}).rules('add', {
-							min: 0.01,
-							messages: {
-								min: "Rate can't be zero."
-							}
-						});
-					}
+					
 				});
 			}else{
 				$('div[popup_ajax_id='+popup_id+']').html('Select customer first.');
@@ -759,10 +701,7 @@ $(document).ready(function() {
 					}
 					else{
 						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
-							min: 0.01,
-							messages: {
-								min: "Rate Can't be 0"
-							}
+							min: 0.01
 						});
 						
 					}
