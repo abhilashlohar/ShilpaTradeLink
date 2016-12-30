@@ -116,7 +116,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Contact No</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_contact', ['label' => false,'class' => 'form-control input-sm quantity']); ?>
+							<?php echo $this->Form->input('customer_contact_no', ['label' => false,'class' => 'form-control input-sm quantity']); ?>
 						</div>
 					</div>
 				</div>
@@ -359,8 +359,11 @@ $(document).ready(function() {
 				enquiry_no  : {
 					  required: true,
 				},
-				customer_contact: {
+				customer_contact_no: {
 					  required: true,
+					  integer: true,
+					  minlength: 10,
+					  min: 0
 				},
 				subject:{
 					required: true,	
@@ -570,7 +573,7 @@ $(document).ready(function() {
 			dataType: 'json'
 		}).done(function(response) {
 			$('input[name="customer_for_attention"]').val(response.contact_person);
-			$('input[name="customer_contact"]').val(response.mobile);
+			$('input[name="customer_contact_no"]').val(response.mobile);
 		});
 		
 		$("#qt3_div").html('Loading...');
