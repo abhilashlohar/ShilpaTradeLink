@@ -78,12 +78,13 @@
 						</div>
 					</div>
 					<br/>
+					<br/>
 					<div class="form-group">
 						<label class="col-md-4 control-label">Qutote Ref. No.</label>
 						<div class="col-md-2 padding-right-decrease">
 							<?php echo $this->Form->input('qt1', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
 						</div>
-						<div class="col-md-3 padding-right-decrease" id="qt3_div">
+						<div class="col-md-3" id="qt3_div">
 						
 							<?php 
 							$options=array();
@@ -363,9 +364,9 @@ $(document).ready(function() {
 				},
 				customer_contact_no: {
 					  required: true,
-					  digits: true,
+					  integer: true,
 					  minlength: 10,
-					  maxlength:10
+					  min: 0
 				},
 				subject:{
 					required: true,	
