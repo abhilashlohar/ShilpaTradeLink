@@ -417,7 +417,7 @@ class QuotationsController extends AppController
             }
         }
 		$Filenames = $this->Quotations->Filenames->find()->where(['customer_id' => $quotation->customer_id]);
-        $customers = $this->Quotations->Customers->find('all');
+        $customers = $this->Quotations->Customers->find('all')->contain(['Filenames']);
 		$companies = $this->Quotations->Companies->find('all',['limit' => 200]);
 		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
 		$ItemGroups = $this->Quotations->ItemGroups->find('list');

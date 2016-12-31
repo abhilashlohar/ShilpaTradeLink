@@ -40,7 +40,7 @@
 									$merge=$customer->customer_name.'	('.$customer->alias.')';
 								}
 								
-								$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
+								$options[]=['text' =>$merge, 'value' => $customer->id,'employee_id' => $customer->employee_id,'file' => sizeof($customer->filenames)];
 							}
 							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 						</div>
@@ -542,6 +542,12 @@ $(document).ready(function() {
 	
 	
 	function open_address(){
+		var file=$('select[name="customer_id"] option:selected').attr('file');
+		if(file==0){
+			$('select[name="customer_id"]').closest('.col-md-9').append('<span id="fileerror" style="color:#a94442;">This customer has not linked with any file. </span>');
+		}else{
+			$('select[name="customer_id"]').closest('.col-md-9').find('span#fileerror').remove();
+		}
 		var customer_id=$('select[name="customer_id"]').val();
 		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'addressList']); ?>";
