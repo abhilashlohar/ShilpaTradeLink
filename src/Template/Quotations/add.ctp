@@ -521,16 +521,16 @@ $(document).ready(function() {
 	}
 	rename_rows();
 	function rename_rows(){
-		var i=1;
+		var i=0;
 		$("#main_tb tbody tr.tr1").each(function(){
-			$(this).find("td:nth-child(1)").html(i);
+			$(this).find("td:nth-child(1)").html(++i); --i;
 			$(this).find("td:nth-child(2) select").select2().attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
 			$(this).find("td:nth-child(3) input").attr({name:"quotation_rows["+i+"][quantity]", id:"quotation_rows-"+i+"-quantity"}).rules('add', {
 						required: true,
-						integer: true,
+						digits: true,
 						min: 1,
 						messages: {
 							min: "Quantity can't be zero."
@@ -545,7 +545,7 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
 		i++; });
 		
-		var i=1;
+		var i=0;
 		$("#main_tb tbody tr.tr2").each(function(){
 			$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"}).rules("add", "required");
 			$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
