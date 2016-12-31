@@ -550,6 +550,15 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"}).rules("add", "required");
 			$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
 		i++; });
+		
+		$("select.item_box").each(function(){
+			var popup_id=$(this).attr('popup_id');
+			var item_id=$(this).val();
+			if(popup_id){
+				last_three_rates_onload(popup_id,item_id);
+			}
+		});
+		
 		calculate_total();
 	}
 	
@@ -601,6 +610,32 @@ $(document).ready(function() {
 		$('textarea[name="customer_address"]').val(addr);
 		$("#myModal1").hide();
     });
+	
+	
+	function last_three_rates_onload(popup_id,item_id){
+			var customer_id=$('select[name="customer_id"]').val();
+			$('div[popup_ajax_id='+popup_id+']').html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
+			if(customer_id){
+				var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'RecentRecords']); ?>";
+				url=url+'/'+item_id+'/'+customer_id,
+				$.ajax({
+					url: url,
+					dataType: 'json',
+				}).done(function(response) {
+					$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
+						min: response.minimum_selling_price,
+						messages: {
+							min: "Minimum selling price: "+response.minimum_selling_price
+						}
+					});
+					$('div[popup_ajax_id='+popup_id+']').html(response.html);
+					
+				});
+			}else{
+				$('div[popup_ajax_id='+popup_id+']').html('Select customer first.');
+				$(".item_box[popup_id="+popup_id+"]").val('').select2();
+			}
+	}
 	
 	$('select[name="customer_id"]').on("change",function() {
 		var file=$('select[name="customer_id"] option:selected').attr('file');
