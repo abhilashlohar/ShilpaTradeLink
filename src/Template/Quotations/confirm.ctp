@@ -10,8 +10,8 @@ $edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Add']);
 			<a href="<?php echo $list_url; ?>" class="list-group-item"><i class="fa fa-chevron-left"></i> Back to Quotations </a>
 			<a  data-toggle="modal" class="list-group-item" href="#myModal2"><i class="fa fa-envelope"></i> Email to Customer </a>
 			<?php if($quotation->status=='Pending'){ ?>
-				<div class="btn-group dropup" >
-					<button type="button" class="list-group-item dropdown-toggle" data-toggle="dropdown" style="padding-right: 217px;" ><i class="fa fa-pencil-square-o" width="100%"></i>Edit</button>
+				<div class="btn-group dropup" style=" width: 100%; ">
+					<button type="button" class="list-group-item dropdown-toggle" data-toggle="dropdown" style=" width: 100%; text-align: left; "><i class="fa fa-pencil-square-o" width="100%"></i>Edit</button>
 					<ul class="dropdown-menu" role="menu" style=" margin-left: 50px; margin-bottom:-100px; ">
 						<li>
 							<?php	echo $this->Html->link('<i class="fa fa-file-o"></i>Save as Revision ','/Quotations/Add?revision='.$id,array('escape'=>false,'class'=>''));
