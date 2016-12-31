@@ -400,9 +400,9 @@ $(document).ready(function() {
 				},
 				customer_contact_no: {
 					  required: true,
-					  integer: true,
+					  digits: true,
 					  minlength: 10,
-					  min: 0
+					  maxlength:10
 				},
 				subject:{
 					required: true,	
