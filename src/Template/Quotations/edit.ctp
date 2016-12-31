@@ -626,9 +626,10 @@ $(document).ready(function() {
 		$('#sortable').html("");
 		
 		$(".tabl_tc tbody tr").each(function(){
-			var v=$(this).find('td:nth-child(1) input[type="checkbox"]:checked').val();
+			var v=$(this).find('td:nth-child(1)  input[type="checkbox"]:checked').val();
 			if(v){
-				var tc=$(this).find('td:nth-child(2)').text();
+				var tc=$(this).find('td:nth-child(1) .check_value').val();
+				 
 				$('#sortable').append('<li class="ui-state-default">'+tc+'</li>');
 			}
 		});
@@ -648,6 +649,7 @@ $(document).ready(function() {
 		var terms_conditions=$("#terms_conditions").html();
 		$('div[name="terms_conditions"]').html(terms_conditions);
 		$("#sortable li").remove();
+		$('textarea[name="terms_conditions"]').val(terms_conditions);
 	}
 	
 	$(".updatetc").die().on("click",function(){
@@ -751,13 +753,19 @@ $(document).ready(function() {
 		<div class="modal-content">
 			<div class="modal-body" id="result_ajax">
 			<h4>Commercial Terms & Conditions</h4>
-				<div style=" overflow: auto; height: 450px; ">
+				<div style=" overflow: auto; height: 450px;">
 				<table class="table table-hover tabl_tc">
 				<?php foreach ($termsConditions as $termsCondition): ?>
-					 
 					 <tr>
-						<td width="10"><label><?php echo $this->Form->input('dummy', ['type' => 'checkbox','label' => false,'class' => '']); ?></label></td>
-						<td><p><?= h($termsCondition->text_line) ?></p></td>
+						 
+						<td>
+						 <div class="checkbox-list">
+							<label>
+								<input type="checkbox" name="dummy" value="<?= h($termsCondition->text_line) ?>" class="check_value"><?= h($termsCondition->text_line) ?>
+							</label> 
+						 </div>
+						
+						</td>
 					</tr>
 				<?php endforeach; ?>
 				</table>
