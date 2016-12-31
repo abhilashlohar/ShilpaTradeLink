@@ -468,7 +468,8 @@ $(document).ready(function() {
 				required: true,	
 			},
 			dispatch_mobile:{
-				required: true,	
+				required: true,
+				digits:  true,
 			},
 			dispatch_email:{
 				required: true,
