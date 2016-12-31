@@ -116,7 +116,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Contact No</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_contact_no', ['label' => false,'class' => 'form-control input-sm quantity']); ?>
+							<?php echo $this->Form->input('customer_contact_no', ['label' => false,'class' => 'form-control input-sm quantity','required']); ?>
 						</div>
 					</div>
 				</div>

@@ -134,7 +134,7 @@ if(!empty($revision))
 					<div class="form-group">
 						<label class="col-md-3 control-label">Contact No</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_contact_no', ['label' => false,'maxlength'=>10,'class' => 'form-control input-sm mask_number']); ?>
+							<?php echo $this->Form->input('customer_contact_no', ['label' => false,'maxlength'=>10,'class' => 'form-control input-sm ']); ?>
 						</div>
 					</div>
 				</div>
