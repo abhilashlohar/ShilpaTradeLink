@@ -200,7 +200,7 @@ if(!empty($revision))
 				
 				<?php if(!empty($copy)|| !empty($revision)){ ?>
 				<tbody id="main_tbody">
-					<?php $q=1; foreach ($quotation->quotation_rows as $quotation_rows): ?>
+					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_rows): ?>
 					<tr class="tr1 preimp" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td rowspan="2"><?php echo $q; ?></td>
 							<td>
@@ -224,7 +224,7 @@ if(!empty($revision))
 										</div>
 									</div>
 								</div>
-								<?php echo $this->Form->input('quotation_rows['.$q.'][height]', ['type' => 'hidden','value' => @$quotation_row->height]); ?>
+								<?php echo $this->Form->input('quotation_rows['.$q.'][height]', ['type' => 'hidden','value' => @$quotation_rows->height]); ?>
 							</td>
 							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm mask_number','placeholder'=>'Quantity','value' => @$quotation_rows->quantity]); ?></td>
 							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm mask_decimal','placeholder'=>'Rate', 'min'=>'1','value' => @$quotation_rows->rate,'r_popup_id'=>$q]); ?></td>

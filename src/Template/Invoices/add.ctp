@@ -180,11 +180,19 @@
 			<table class="table tableitm" id="tbl2">
 				<tr>
 					<td  align="right">
-					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per','value'=>@$sales_order->discount]); ?></label>(in %)</b>
-					<div class="input-group col-md-2" style="display:none;" id="discount_text">
-						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
-					</div>
+					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
+					<?php if($sales_order->discount_type=='1'){ ?>
+						<div class="input-group col-md-2"  id="discount_text">
+							<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='<?= h($sales_order->discount_per) ?>'><span class="input-group-addon">%</span>
+						</div>
+					<?php }else{ ?>
+						<div class="input-group col-md-2"  id="discount_text" style="display:none;">
+							<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='0'><span class="input-group-addon">%</span>
+						</div>
+					<?php } ?>
+					
 					</td>
+				
 					<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01,'value'=>@$sales_order->discount]); ?></td>
 				</tr>
 				<?php if(in_array('Yes',@$ed_des)) { ?>
@@ -540,7 +548,7 @@ $(document).ready(function() {
 		if($(this).is(':checked')){
 			$("#discount_text").show();
 			$('input[name="discount"]').attr('readonly','readonly');
-		}else{
+		}else{ alert();
 			$("#discount_text").hide();
 			$('input[name="discount"]').removeAttr('readonly');
 			$('input[name="discount_per"]').val(0);
