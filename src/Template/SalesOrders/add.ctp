@@ -322,7 +322,7 @@ if(!empty($copy))
 				<div class="col-md-3">
 					<div class="form-group">
 						<label class="control-label">Mobile <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('dispatch_mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Mobile']); ?>
+						<?php echo $this->Form->input('dispatch_mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Mobile']); ?>
 					</div>
 				</div>
 				<div class="col-md-3">
@@ -508,7 +508,9 @@ $(document).ready(function() {
 			},
 			dispatch_mobile:{
 				required: true,
-				digits: true
+				digits: true,
+				minlength: 10,
+				maxlength: 10,
 			},
 			dispatch_email:{
 				required: true,
