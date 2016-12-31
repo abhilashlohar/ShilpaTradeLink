@@ -128,7 +128,16 @@ $sr=0; foreach ($salesOrder->sales_order_rows as $salesOrderRows): $sr++;
 $html.='
 	<tr class="odd">
 		<td valign="top" align="center" style="padding-top:10px;">'. h($sr) .'</td>
-		<td style="padding-top:10px;" width="100%">'. h($salesOrderRows->item->name) .'</td>
+		<td style="padding-top:10px;" width="100%">';
+		
+		if(!empty($salesOrderRows->description)){
+			$html.= h($salesOrderRows->item->name);
+		}else{
+			$html.= h($salesOrderRows->item->name).'<div style="height:'.$salesOrderRows->height.'"></div> ';
+		}
+		
+		
+		$html.='</td>
 		<td align="right" valign="top"  style="padding-top:10px;">'. h($salesOrderRows->item->unit->name) .'</td>
 		<td valign="top" align="center" style="padding-top:10px;">'. h($salesOrderRows->quantity) .'</td>
 		<td align="right" valign="top" style="padding-top:10px;">'. $this->Number->format($salesOrderRows->rate,[ 'places' => 2]) .'</td>
