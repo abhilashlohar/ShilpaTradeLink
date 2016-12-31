@@ -93,16 +93,16 @@ if(!empty($revision))
 							<?php echo $this->Form->input('finalisation_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d','placeholder' => 'Finalisation Date']); ?>
 						</div>
 					</div>
-					<br/>
+					<br/><br/>
 					<div class="form-group">
 						<label class="col-md-4 control-label">Quotation No.</label>
-						<div class="col-md-2 padding-right-decrease">
+						<div class="col-md-2">
 							<?php echo $this->Form->input('qt1', ['label' => false,'class' => 'form-control input-sm','readonly','value'=>$Company->alias]); ?>
 						</div>
 						
 						
 						
-						<div class="col-md-3 padding-right-decrease" id="qt3_div">
+						<div class="col-md-3 " id="qt3_div">
 							<?php
 							$options=array();
 							foreach($Filenames as $Filenames){
@@ -416,6 +416,7 @@ $(document).ready(function() {
 				qt4:{
 					required: true,	
 				}
+
 			},
 
 		messages: { // custom messages for radio buttons and checkboxes
