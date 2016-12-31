@@ -200,7 +200,7 @@ if(!empty($revision))
 				
 				<?php if(!empty($copy)|| !empty($revision)){ ?>
 				<tbody id="main_tbody">
-					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_rows): ?>
+					<?php $q=1; foreach ($quotation->quotation_rows as $quotation_rows): ?>
 					<tr class="tr1 preimp" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td rowspan="2"><?php echo $q; ?></td>
 							<td>
