@@ -55,7 +55,7 @@ if(!empty($revision))
 									$merge=$customer->customer_name.'	('.$customer->alias.')';
 								}
 								
-								$options[]=['text' =>$merge, 'value' => $customer->id, 'employee_id' => $customer->employee_id];
+								$options[]=['text' =>$merge, 'value' => $customer->id, 'employee_id' => $customer->employee_id,'file' => sizeof($customer->filenames)];
 
 							}
 							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
@@ -134,7 +134,9 @@ if(!empty($revision))
 					<div class="form-group">
 						<label class="col-md-3 control-label">Contact No</label>
 						<div class="col-md-9">
+
 							<?php echo $this->Form->input('customer_contact_no', ['label' => false,'maxlength'=>10,'minlength'=>10,'class' => 'form-control input-sm mask_number']); ?>
+
 						</div>
 					</div>
 				</div>
@@ -198,13 +200,13 @@ if(!empty($revision))
 				
 				<?php if(!empty($copy)|| !empty($revision)){ ?>
 				<tbody id="main_tbody">
-					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_rows): ?>
+					<?php $q=1; foreach ($quotation->quotation_rows as $quotation_rows): ?>
 					<tr class="tr1 preimp" row_no='<?php echo @$quotation_rows->id; ?>'>
-							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
+							<td rowspan="2"><?php echo $q; ?></td>
 							<td>
-							<div class="row">
+								<div class="row">
 									<div class="col-md-11 padding-right-decrease">
-										<?php echo $this->Form->input('quotation_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','value' => @$quotation_rows->item->id,'popup_id'=>$q]); ?>
+										<?php echo $this->Form->input('quotation_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_box','value' => @$quotation_rows->item->id,'popup_id'=>$q]); ?>
 									</div>
 									<div class="col-md-1 padding-left-decrease">
 										<a href="#" class="btn btn-default btn-sm popup_btn" role="button" popup_id="<?php echo $q; ?>"> <i class="fa fa-info-circle"></i> </a>
@@ -222,7 +224,7 @@ if(!empty($revision))
 										</div>
 									</div>
 								</div>
-							
+								<?php echo $this->Form->input('quotation_rows['.$q.'][height]', ['type' => 'hidden','value' => @$quotation_row->height]); ?>
 							</td>
 							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm mask_number','placeholder'=>'Quantity','value' => @$quotation_rows->quantity]); ?></td>
 							<td><?php echo $this->Form->input('quotation_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm mask_decimal','placeholder'=>'Rate', 'min'=>'1','value' => @$quotation_rows->rate,'r_popup_id'=>$q]); ?></td>
@@ -482,7 +484,7 @@ $(document).ready(function() {
 	 <?php } ?>        
       
 
-	rename_rows();
+	
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
@@ -516,12 +518,12 @@ $(document).ready(function() {
 		});
 		rename_rows();
 	}
-	
+	rename_rows();
 	function rename_rows(){
 		var i=1;
 		$("#main_tb tbody tr.tr1").each(function(){
 			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
+			$(this).find("td:nth-child(2) select").select2().attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
@@ -600,6 +602,12 @@ $(document).ready(function() {
     });
 	
 	$('select[name="customer_id"]').on("change",function() {
+		var file=$('select[name="customer_id"] option:selected').attr('file');
+		if(file==0){
+			$('select[name="customer_id"]').closest('.col-md-9').append('<span id="fileerror" style="color:#a94442;">This customer has not linked with any file. </span>');
+		}else{
+			$('select[name="customer_id"]').closest('.col-md-9').find('span#fileerror').remove();
+		}
 		var customer_id=$('select[name="customer_id"] option:selected').val();
 		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'defaultAddress']); ?>";
 		url=url+'/'+customer_id,
@@ -658,9 +666,10 @@ $(document).ready(function() {
 		$('#sortable').html("");
 		
 		$(".tabl_tc tbody tr").each(function(){
-			var v=$(this).find('td:nth-child(1) input[type="checkbox"]:checked').val();
+			var v=$(this).find('td:nth-child(1)  input[type="checkbox"]:checked').val();
 			if(v){
-				var tc=$(this).find('td:nth-child(2)').text();
+				var tc=$(this).find('td:nth-child(1) .check_value').val();
+				 
 				$('#sortable').append('<li class="ui-state-default">'+tc+'</li>');
 			}
 		});
@@ -786,11 +795,16 @@ $(document).ready(function() {
 				<table class="table table-hover tabl_tc">
 				<?php foreach ($termsConditions as $termsCondition): ?>
 					 <tr>
-						<td width="100%">
-						<label>
-						<span><?php echo $this->Form->input('dummy', ['type' => 'checkbox','label' => false,'class' => '']); ?></span> <?= h($termsCondition->text_line) ?> </label>
-						 </td></div>
-						</tr>
+						 
+						<td>
+						 <div class="checkbox-list">
+							<label>
+								<input type="checkbox" name="dummy" value="<?= h($termsCondition->text_line) ?>" class="check_value"><?= h($termsCondition->text_line) ?>
+							</label> 
+						 </div>
+						
+						</td>
+					</tr>
 				<?php endforeach; ?>
 				</table>
 				</div>
@@ -802,3 +816,4 @@ $(document).ready(function() {
 		</div>
 	</div>
 </div>
+	

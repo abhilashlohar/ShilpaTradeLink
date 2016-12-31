@@ -40,7 +40,7 @@
 									$merge=$customer->customer_name.'	('.$customer->alias.')';
 								}
 								
-								$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id];
+								$options[]=['text' =>$merge, 'value' => $customer->id,'employee_id' => $customer->employee_id,'file' => sizeof($customer->filenames)];
 							}
 							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 						</div>
@@ -116,7 +116,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Contact No</label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('customer_contact_no', ['label' => false,'class' => 'form-control input-sm quantity']); ?>
+							<?php echo $this->Form->input('customer_contact_no', ['label' => false,'class' => 'form-control input-sm quantity','required']); ?>
 						</div>
 					</div>
 				</div>
@@ -175,7 +175,7 @@
 							<td>
 								<div class="row">
 									<div class="col-md-11 padding-right-decrease">
-										<?php echo $this->Form->input('quotation_rows['.$q.'][item_id]', ['options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','value' => $quotation_row->item_id,'required','popup_id'=>$q]); ?>
+										<?php echo $this->Form->input('quotation_rows['.$q.'][item_id]', ['options' => $items,'label' => false,'class' => 'form-control input-sm item_box','value' => $quotation_row->item_id,'required','popup_id'=>$q]); ?>
 									</div>
 									<div class="col-md-1 padding-left-decrease">
 										<a href="#" class="btn btn-default btn-sm popup_btn" role="button" popup_id="<?php echo $q; ?>"> <i class="fa fa-info-circle"></i> </a>
@@ -320,6 +320,7 @@ $( "#sortable" ).disableSelection();
 </script>
 <script>
 $(document).ready(function() {
+	
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -443,8 +444,7 @@ $(document).ready(function() {
 		add_row();
     });
 	
-	rename_rows();
-	calculate_total();
+	
 	
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
@@ -476,19 +476,18 @@ $(document).ready(function() {
 		rename_rows();
 		calculate_total();
 	}
-	
+	rename_rows();
 	function rename_rows(){
 		var i=1;
 		$("#main_tb tbody tr.tr1").each(function(){
 			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
+			$(this).find("td:nth-child(2) select.item_box").select2().attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
 			$(this).find("td:nth-child(3) input").attr({name:"quotation_rows["+i+"][quantity]", id:"quotation_rows-"+i+"-quantity"}).rules('add', {
 						required: true,
-						integer: true,
-						min: 1
+						digits: true,
 					});
 			$(this).find("td:nth-child(4) input").attr({name:"quotation_rows["+i+"][rate]", id:"quotation_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
 						required: true,
@@ -504,8 +503,17 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"}).rules("add", "required");
 			$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
 		i++; });
-		calculate_total();
+		
+		$("select.item_box").each(function(){
+			var popup_id=$(this).attr('popup_id');
+			var item_id=$(this).val();
+			if(popup_id){
+				last_three_rates_onload(popup_id,item_id);
+			}
+		});
 	}
+	
+	
 	
 	$('#main_tb input').die().live("keyup","blur",function() { 
 		calculate_total();
@@ -534,6 +542,12 @@ $(document).ready(function() {
 	
 	
 	function open_address(){
+		var file=$('select[name="customer_id"] option:selected').attr('file');
+		if(file==0){
+			$('select[name="customer_id"]').closest('.col-md-9').append('<span id="fileerror" style="color:#a94442;">This customer has not linked with any file. </span>');
+		}else{
+			$('select[name="customer_id"]').closest('.col-md-9').find('span#fileerror').remove();
+		}
 		var customer_id=$('select[name="customer_id"]').val();
 		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'addressList']); ?>";
@@ -618,9 +632,10 @@ $(document).ready(function() {
 		$('#sortable').html("");
 		
 		$(".tabl_tc tbody tr").each(function(){
-			var v=$(this).find('td:nth-child(1) input[type="checkbox"]:checked').val();
+			var v=$(this).find('td:nth-child(1)  input[type="checkbox"]:checked').val();
 			if(v){
-				var tc=$(this).find('td:nth-child(2)').text();
+				var tc=$(this).find('td:nth-child(1) .check_value').val();
+				 
 				$('#sortable').append('<li class="ui-state-default">'+tc+'</li>');
 			}
 		});
@@ -640,6 +655,7 @@ $(document).ready(function() {
 		var terms_conditions=$("#terms_conditions").html();
 		$('div[name="terms_conditions"]').html(terms_conditions);
 		$("#sortable li").remove();
+		$('textarea[name="terms_conditions"]').val(terms_conditions);
 	}
 	
 	$(".updatetc").die().on("click",function(){
@@ -718,6 +734,9 @@ $(document).ready(function() {
 			}
 	}
 	
+	//rename_rows();
+	//calculate_total();
+	
 });
 
 </script>
@@ -740,13 +759,19 @@ $(document).ready(function() {
 		<div class="modal-content">
 			<div class="modal-body" id="result_ajax">
 			<h4>Commercial Terms & Conditions</h4>
-				<div style=" overflow: auto; height: 450px; ">
+				<div style=" overflow: auto; height: 450px;">
 				<table class="table table-hover tabl_tc">
 				<?php foreach ($termsConditions as $termsCondition): ?>
-					 
 					 <tr>
-						<td width="10"><label><?php echo $this->Form->input('dummy', ['type' => 'checkbox','label' => false,'class' => '']); ?></label></td>
-						<td><p><?= h($termsCondition->text_line) ?></p></td>
+						 
+						<td>
+						 <div class="checkbox-list">
+							<label>
+								<input type="checkbox" name="dummy" value="<?= h($termsCondition->text_line) ?>" class="check_value"><?= h($termsCondition->text_line) ?>
+							</label> 
+						 </div>
+						
+						</td>
 					</tr>
 				<?php endforeach; ?>
 				</table>

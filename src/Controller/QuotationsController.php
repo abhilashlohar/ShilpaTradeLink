@@ -346,7 +346,7 @@ class QuotationsController extends AppController
 			$quotation->created_on=date("Y-m-d",strtotime($quotation->created_on));
 			$quotation->finalisation_date=date("Y-m-d",strtotime($quotation->finalisation_date));
 			$quotation->company_id=$st_company_id;
-			//pr($quotation); exit;
+			
             if ($this->Quotations->save($quotation)) {
 				if(empty($revision)){
 					$lastQuotation=$this->Quotations->get($quotation->id);
@@ -362,7 +362,7 @@ class QuotationsController extends AppController
 		$Filenames = $this->Quotations->Filenames->find()->where(['customer_id' => $quotation->customer_id]);
 
 		$copy=$this->request->query('copy');
-        $customers = $this->Quotations->Customers->find('all');
+        $customers = $this->Quotations->Customers->find('all')->contain(['Filenames']);
 		$companies = $this->Quotations->Companies->find('all');
 		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
 		$ItemGroups = $this->Quotations->ItemGroups->find('list');
@@ -405,18 +405,19 @@ class QuotationsController extends AppController
 			$quotation->finalisation_date=date("Y-m-d",strtotime($quotation->finalisation_date));
 			$quotation->company_id=$st_company_id;
 			//$quotation->company_id=$st_company_id;
-			
+			//pr($quotation); exit;
             if ($this->Quotations->save($quotation)) {
-				//pr($quotation); exit;
+				
+				
                 $this->Flash->success(__('The quotation has been saved.'));
 
                 return $this->redirect(['action' => 'confirm/'.$quotation->id]);
-            } else {// pr($quotation); exit;
+            } else {
                 $this->Flash->error(__('The quotation could not be saved. Please, try again.'));
             }
         }
 		$Filenames = $this->Quotations->Filenames->find()->where(['customer_id' => $quotation->customer_id]);
-        $customers = $this->Quotations->Customers->find('all');
+        $customers = $this->Quotations->Customers->find('all')->contain(['Filenames']);
 		$companies = $this->Quotations->Companies->find('all',['limit' => 200]);
 		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
 		$ItemGroups = $this->Quotations->ItemGroups->find('list');
