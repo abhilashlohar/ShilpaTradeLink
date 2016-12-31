@@ -542,12 +542,6 @@ $(document).ready(function() {
 	
 	
 	function open_address(){
-		var file=$('select[name="customer_id"] option:selected').attr('file');
-		if(file==0){
-			$('select[name="customer_id"]').closest('.col-md-9').append('<span id="fileerror" style="color:#a94442;">This customer has not linked with any file. </span>');
-		}else{
-			$('select[name="customer_id"]').closest('.col-md-9').find('span#fileerror').remove();
-		}
 		var customer_id=$('select[name="customer_id"]').val();
 		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'addressList']); ?>";
@@ -569,6 +563,12 @@ $(document).ready(function() {
 
 	
 	$('select[name="customer_id"]').on("change",function() {
+		var file=$('select[name="customer_id"] option:selected').attr('file');
+		if(file==0){
+			$('select[name="customer_id"]').closest('.col-md-9').append('<span id="fileerror" style="color:#a94442;">This customer has not linked with any file. </span>');
+		}else{
+			$('select[name="customer_id"]').closest('.col-md-9').find('span#fileerror').remove();
+		}
 		var contact_person=$('select[name="customer_id"] option:selected').attr('contact_person');
 		$('input[name="customer_for_attention"]').val(contact_person);
 		
