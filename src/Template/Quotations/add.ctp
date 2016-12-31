@@ -55,7 +55,7 @@ if(!empty($revision))
 									$merge=$customer->customer_name.'	('.$customer->alias.')';
 								}
 								
-								$options[]=['text' =>$merge, 'value' => $customer->id, 'employee_id' => $customer->employee_id];
+								$options[]=['text' =>$merge, 'value' => $customer->id, 'employee_id' => $customer->employee_id,'file' => sizeof($customer->filenames)];
 
 							}
 							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
@@ -600,6 +600,12 @@ $(document).ready(function() {
     });
 	
 	$('select[name="customer_id"]').on("change",function() {
+		var file=$('select[name="customer_id"] option:selected').attr('file');
+		if(file==0){
+			$('select[name="customer_id"]').closest('.col-md-9').append('<span id="fileerror" style="color:#a94442;">This customer has not linked with any file. </span>');
+		}else{
+			$('select[name="customer_id"]').closest('.col-md-9').find('span#fileerror').remove();
+		}
 		var customer_id=$('select[name="customer_id"] option:selected').val();
 		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'defaultAddress']); ?>";
 		url=url+'/'+customer_id,
