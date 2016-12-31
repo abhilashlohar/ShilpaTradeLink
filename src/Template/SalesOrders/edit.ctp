@@ -470,6 +470,8 @@ $(document).ready(function() {
 			dispatch_mobile:{
 				required: true,
 				digits:  true,
+				minlength: 10,
+				maxlength: 10,
 			},
 			dispatch_email:{
 				required: true,
