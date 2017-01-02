@@ -548,7 +548,7 @@ $(document).ready(function() {
 		if($(this).is(':checked')){
 			$("#discount_text").show();
 			$('input[name="discount"]').attr('readonly','readonly');
-		}else{ alert();
+		}else{ 
 			$("#discount_text").hide();
 			$('input[name="discount"]').removeAttr('readonly');
 			$('input[name="discount_per"]').val(0);

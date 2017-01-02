@@ -513,6 +513,18 @@ $(document).ready(function() {
 		}
 		calculate_total();
 	})
+	
+	if($(this).is(':checked')){
+			$("#discount_text").show();
+			$('input[name="discount"]').attr('readonly','readonly');
+		}else{
+			$("#discount_text").hide();
+			$('input[name="discount"]').removeAttr('readonly');
+			$('input[name="discount_per"]').val(0);
+			$('input[name="discount"]').val(0);
+		}
+		calculate_total();
+		
 	$("#discount_per").on('click',function(){
 		if($(this).is(':checked')){
 			$("#discount_text").show();
