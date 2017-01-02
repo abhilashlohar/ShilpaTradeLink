@@ -794,6 +794,10 @@ $(document).ready(function() {
 								min: "Minimum selling price: "+response.minimum_selling_price
 							}
 						});
+					}else{
+						$('input[r_popup_id='+popup_id+']').attr({ min:response.minimum_selling_price}).rules('add', {
+							min: 0.01
+						});
 					}
 					$('div[popup_ajax_id='+popup_id+']').html(response.html);
 				});
