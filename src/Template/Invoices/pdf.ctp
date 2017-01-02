@@ -102,7 +102,7 @@ $html.='
 				$html.='
 					<table  valign="center" width="100%" style="margin-top: 0px;" class="table2">
 						<tr>
-							<td width="50%">
+							<td width="60%">
 								
 								<span><b>'. h($invoice->customer->customer_name) .'</b></span><br/>
 								<div style="height:5px;"></div>
@@ -113,8 +113,8 @@ $html.='
 							<td width="" valign="top" align="right">
 								<table width="100%">
 									<tr>
-										<td width="80" valign="top" style="vertical-align: top;">Invoice No.</td>
-										<td valign="top">:</td>
+										<td width="60" valign="top" style="vertical-align: top;">Invoice No.</td>
+										<td width="20" valign="top">:</td>
 										<td  valign="top">'. h(($invoice->in1." / IN-".str_pad($invoice->in2, 3, "0", STR_PAD_LEFT)." / ".$invoice->in3." / ".$invoice->in4)) .'</td>
 									</tr>
 									<tr>
@@ -398,7 +398,7 @@ $html.='
 </body>
 </html>';
 
-echo $html; exit; 
+//echo $html; exit; 
 
 $name='Invoice-'.h(($invoice->in1.'_IN'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'_'.$invoice->in3.'_'.$invoice->in4));
 $dompdf->loadHtml($html);
