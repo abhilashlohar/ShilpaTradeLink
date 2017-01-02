@@ -523,6 +523,7 @@ $(document).ready(function() {
 	function rename_rows(){
 		var i=0;
 		$("#main_tb tbody tr.tr1").each(function(){
+			$(this).find('span.help-block-error').remove();
 			$(this).find("td:nth-child(1)").html(++i); --i;
 			$(this).find("td:nth-child(2) select").select2().attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);

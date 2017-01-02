@@ -149,7 +149,7 @@ if(!empty($copy))
 					{
 					if(!empty($quotation->quotation_rows)){
 					$q=0; foreach ($quotation->quotation_rows as $quotation_rows): ?>
-						<tr class="tr1" row_no='<?php echo @$quotation_rows->id; ?>'>
+						<tr class="tr1 maintr" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 							<td>
 
@@ -191,7 +191,7 @@ if(!empty($copy))
 							</td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
-						<tr class="tr2" row_no='<?php echo @$quotation_rows->id; ?>'>
+						<tr class="tr2 maintr" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td colspan="6">
 							<div contenteditable="true" id="editor" name="<?php echo 'sales_order_rows['.$q.'][description]'; ?>"><?php echo @$quotation_rows->description; ?></div>
 							<?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','style'=>['display:none'],'placeholder'=>'Description','required','value' => @$quotation_rows->description]); ?>
@@ -201,7 +201,7 @@ if(!empty($copy))
 					<?php $q++; endforeach; } } elseif(!empty($copy)) {
 					if(!empty($salesOrder->sales_order_rows)){
 					$q=0; foreach ($salesOrder->sales_order_rows as $sales_order_rows): ?>
-						<tr class="tr1" row_no='<?php echo @$sales_order_rows->id; ?>'>
+						<tr class="tr1 maintr" row_no='<?php echo @$sales_order_rows->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 							<td>
 							<div class="row">
@@ -242,7 +242,7 @@ if(!empty($copy))
 							</td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
-						<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
+						<tr class="tr2 maintr" row_no='<?php echo @$sales_order_rows->id; ?>'>
 							<td colspan="6">
 							<div contenteditable="true" id="editor" name="<?php echo 'sales_order_rows['.$q.'][description]'; ?>"><?php echo @$sales_order_rows->description; ?></div>
 							<?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','placeholder'=>'Description','style'=>['display:none'],'required','value' => @$sales_order_rows->description]); ?>
@@ -391,7 +391,7 @@ if(!empty($copy))
 
 <table id="sample_tb" style="display:none;">
 	<tbody>
-		<tr class="tr1 preimp">
+		<tr class="tr1 preimp maintr">
 			<td rowspan="2" width="10">0</td>
 			<td>
 				<div class="row">
@@ -432,7 +432,7 @@ if(!empty($copy))
 			</td>
 			<td width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
-		<tr class="tr2 preimp">
+		<tr class="tr2 preimp maintr">
 			<td colspan="6">
 			<div contenteditable="true" id="editor"></div>
 			<?php echo $this->Form->textarea('description', ['label' => false,'style'=>['display:none'],'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','required']); ?>
@@ -664,7 +664,7 @@ $(document).ready(function() {
 		$("#main_tb tbody#main_tbody").append(tr2);
 		
 		var w=0; var r=0;
-		$("#main_tb tbody tr").each(function(){
+		$("#main_tb tbody#main_tbody tr.maintr").each(function(){
 			$(this).attr("row_no",w);
 			r++;
 			if(r==2){ w++; r=0; }
@@ -673,21 +673,25 @@ $(document).ready(function() {
 	}
 	
 	function rename_rows(){
-		var i=1;
+		var i=0;
+		
 		$("#main_tb tbody tr.tr1").each(function(){
-			$(this).find("td:nth-child(1)").html(i);
+			$(this).find('span.help-block-error').remove();
+			$(this).find("td:nth-child(1)").html(++i); --i;
 			$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
 			$(this).find("td:nth-child(3) input:eq( 0 )").attr({name:"sales_order_rows["+i+"][quantity]", id:"sales_order_rows-"+i+"-quantity"}).rules('add', {
 						required: true,
-						integer: true,
+						digits: true,
 						min: 1,
 						messages: {
 							min: "Quantity can't be zero."
 						}
 					});
+				//$(this).find("td:nth-child(3)").append('<span for="sales_order_rows-'+i+'-quantity" class="help-block help-block-error" style="display:none;"></span>');
+					
 			$(this).find("td:nth-child(4) input").attr({name:"sales_order_rows["+i+"][rate]", id:"sales_order_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
 						required: true,
 						number: true,
@@ -704,12 +708,20 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(7) input:eq( 1 )").val(ledger_account_id);
 		i++; });
 		
-		var i=1;
+		var i=0;
 		$("#main_tb tbody tr.tr2").each(function(){
 			$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
 			$(this).find('td:nth-child(1) div#editor').attr({name:"sales_order_rows["+i+"][description]"});
 
 		i++; });
+		
+		$("select.item_box").each(function(){
+			var popup_id=$(this).attr('popup_id');
+			var item_id=$(this).val();
+			if(popup_id){
+				last_three_rates_onload(popup_id,item_id);
+			}
+		});
 	}
 	
 	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
