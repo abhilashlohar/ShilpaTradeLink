@@ -321,14 +321,19 @@ class QuotationsController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$Company = $this->Quotations->Companies->get($st_company_id);
-		
+		//pr($add_revision); exit;
         if ($this->request->is(['patch', 'post', 'put'])) {
 			$quotation = $this->Quotations->newEntity();
             $quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
 			$last_qt_no=$this->Quotations->find()->select(['qt2'])->where(['company_id' => $st_company_id])->order(['qt2' => 'DESC'])->first();
+			pr($last_qt_no); exit;
 			if($last_qt_no){
 				if(!empty($revision)){
-					$quotation->qt2=$last_qt_no->qt2;
+					
+					$last_qt_revision_no=$this->Quotations->find()->select(['qt2'])->where(['company_id' => $st_company_id,'id' => $revision])->order(['qt2' => 'DESC'])->first();
+					
+					
+					$quotation->qt2=$last_qt_revision_no->qt2;
 				}else{
 					$quotation->qt2=$last_qt_no->qt2+1;
 				}
