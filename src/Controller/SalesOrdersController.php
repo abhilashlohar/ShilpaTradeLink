@@ -189,7 +189,9 @@ class SalesOrdersController extends AppController
     {
 		$this->viewBuilder()->layout('');
         $salesOrder = $this->SalesOrders->get($id, [
-            'contain' => ['Customers', 'Companies','Carrier','Creator','Editor','Courier','Employees','SalesOrderRows' => ['SaleTaxes','Items'=>['Units']]]
+            'contain' => ['Customers', 'Companies','Carrier','Creator','Editor','Courier','Employees','SalesOrderRows' => function($q){
+				return $q->order(['SalesOrderRows.id' => 'ASC'])->contain(['SaleTaxes','Items'=>['Units']]);
+			}]
         ]);
 
         $this->set('salesOrder', $salesOrder);
