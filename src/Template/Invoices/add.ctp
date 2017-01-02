@@ -64,14 +64,14 @@
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
-						<label class="col-md-3 control-label">LR No.</label>
+						<label class="col-md-3 control-label">LR No. <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
 							<?php echo $this->Form->input('lr_no', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'LR No']); ?>
 						</div>
 					</div>
 					<br/><br/>
 					<div class="form-group">
-						<label class="col-md-3 control-label">Salesman  <span class="required" aria-required="true">*</span></label>
+						<label class="col-md-3 control-label">Salesman  </label>
 						<div class="col-md-9">
 							<?php echo @$sales_order->employee->name; ?>
 						</div>
@@ -89,7 +89,7 @@
 			<div class="row">
 				<div class="col-md-6">
 				<div class="form-group">
-						<label class="col-md-3 control-label">Customer PO NO  <span class="required" aria-required="true">*</span></label>
+						<label class="col-md-3 control-label">Customer PO NO  </label>
 						<div class="col-md-9">
 								<?php echo $sales_order->customer_po_no; ?>
 						</div>
