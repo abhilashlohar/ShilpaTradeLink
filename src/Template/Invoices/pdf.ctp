@@ -111,25 +111,25 @@ $html.='
 								<span>PAN : '. h($invoice->customer->pan_no) .'</span>
 							</td>
 							<td width="" valign="top" align="right">
-								<table>
+								<table width="100%">
 									<tr>
-										<td width="60" valign="top" style="vertical-align: top;">Invoice No.</td>
-										<td width="20" valign="top">:</td>
-										<td valign="top">'. h(($invoice->in1." / IN-".str_pad($invoice->in2, 3, "0", STR_PAD_LEFT)." / ".$invoice->in3." / ".$invoice->in4)) .'</td>
+										<td width="80" valign="top" style="vertical-align: top;">Invoice No.</td>
+										<td valign="top">:</td>
+										<td  valign="top">'. h(($invoice->in1." / IN-".str_pad($invoice->in2, 3, "0", STR_PAD_LEFT)." / ".$invoice->in3." / ".$invoice->in4)) .'</td>
 									</tr>
 									<tr>
 										<td valign="top" style="vertical-align: top;">Date</td>
-										<td width="20" valign="top">:</td>
+										<td valign="top">:</td>
 										<td valign="top">'. h(date("d-m-Y",strtotime($invoice->date_created))) .'</td>
 									</tr>
 									<tr>
 										<td valign="top" style="vertical-align: top;">LR No.</td>
-										<td width="20" valign="top">:</td>
+										<td valign="top">:</td>
 										<td valign="top" style="vertical-align: top;">'. h($invoice->lr_no) .'</td>
 									</tr>
 									<tr>
 										<td valign="top" style="vertical-align: top;">Carrier</td>
-										<td width="20" valign="top">:</td>
+										<td valign="top">:</td>
 										<td valign="top">'. h($invoice->transporter->transporter_name) .'</td>
 									</tr>
 								</table>
@@ -398,7 +398,7 @@ $html.='
 </body>
 </html>';
 
-//echo $html; exit; 
+echo $html; exit; 
 
 $name='Invoice-'.h(($invoice->in1.'_IN'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'_'.$invoice->in3.'_'.$invoice->in4));
 $dompdf->loadHtml($html);
