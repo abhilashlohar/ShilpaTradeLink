@@ -483,6 +483,7 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			$(this).find("td:nth-child(1)").html(i);
 			$(this).find("td:nth-child(2) select.item_box").select2().attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).rules("add", "required");
+			$(this).find("td:nth-child(2) input[type=hidden]:eq(0)").attr({name:"quotation_rows["+i+"][height]", id:"quotation_rows-"+i+"-height"});
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);

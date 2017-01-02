@@ -634,6 +634,8 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			$(this).find("td:nth-child(1)").html(i);
 			$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
+			$(this).find("td:nth-child(2) input[type=hidden]:eq(0)").attr({name:"sales_order_rows["+i+"][height]", id:"sales_order_rows-"+i+"-height"});
+			$(this).find("td:nth-child(2) input[type=hidden]:eq(1)").attr({name:"sales_order_rows["+i+"][processed_quantity]", id:"sales_order_rows-"+i+"-processed_quantity"});
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
@@ -722,26 +724,8 @@ $(document).ready(function() {
 				var row_no=$(this).closest("tr").attr("row_no");
 				var del="tr[row_no="+row_no+"]";
 				$(del).remove();
-				var i=0;
-				$("#main_tb tbody tr.tr1").each(function(){
-					i++;
-					$(this).find("td:nth-child(1)").html(i);
-					$(this).find("td:nth-child(2) select").attr("name","sales_order_rows["+i+"][item_id]");
-					$(this).find("td:nth-child(3) input").attr("name","sales_order_rows["+i+"][quantity]");
-					$(this).find("td:nth-child(4) input").attr("name","sales_order_rows["+i+"][rate]");
-					$(this).find("td:nth-child(5) input").attr("name","sales_order_rows["+i+"][amount]");
-					$(this).find("td:nth-child(6) select").attr("name","sales_order_rows["+i+"][excise_duty]");
-					$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][sale_tax_id]");
-					$(this).find("td:nth-child(7) select").attr("name","sales_order_rows["+i+"][so_sale_tax]");
-					var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
-					$(this).find("td:nth-child(7) input").val(description);
-				});
-				var i=0;
-				$("#main_tb tbody tr.tr2").each(function(){
-					i++;
-					$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
-				});
-				
+				rename_rows();
+				calculate_total();
 			}
 		} 
     });
@@ -917,7 +901,6 @@ $(document).ready(function() {
 				$(".item_box[popup_id="+popup_id+"]").val('').select2();
 			}
 	}
-	
 });
 </script>
 
