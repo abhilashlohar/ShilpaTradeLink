@@ -174,7 +174,7 @@
 			<table class="table tableitm" id="tbl2">
 				<tr>
 					<td  align="right">
-					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
+					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discountper']); ?></label>(in %)</b>
 					<?php if($invoice->discount_type=='1'){ ?>
 						<div class="input-group col-md-2"  id="discount_text">
 							<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='<?= h($invoice->discount_per) ?>'><span class="input-group-addon">%</span>
@@ -514,29 +514,22 @@ $(document).ready(function() {
 		calculate_total();
 	})
 	
-	if($(this).is(':checked')){
-			$("#discount_text").show();
-			$('input[name="discount"]').attr('readonly','readonly');
-		}else{
-			$("#discount_text").hide();
-			$('input[name="discount"]').removeAttr('readonly');
-			$('input[name="discount_per"]').val(0);
-			$('input[name="discount"]').val(0);
-		}
-		calculate_total();
+
 		
-	$("#discount_per").on('click',function(){
+	$("#discountper").on('click',function(){
 		if($(this).is(':checked')){
 			$("#discount_text").show();
 			$('input[name="discount"]').attr('readonly','readonly');
+			$('input[name="discount_per"]').val(0);
 		}else{
 			$("#discount_text").hide();
 			$('input[name="discount"]').removeAttr('readonly');
-			$('input[name="discount_per"]').val(0);
 			$('input[name="discount"]').val(0);
+			$('input[name="discount_per"]').val(0);
 		}
 		calculate_total();
 	})
+
 	
 	$('.deleterow').die().live("click",function() {
 			var l=$(this).closest("table tbody").find("tr").length;
@@ -605,7 +598,7 @@ $(document).ready(function() {
 				$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
 				total=total+Amount;
 			});
-			if($("#discount_per").is(':checked')){
+			if($("#discountper").is(':checked')){
 				var discount_per=parseFloat($('input[name="discount_per"]').val());
 				var discount_amount=(total*discount_per)/100;
 				if(isNaN(discount_amount)) { var discount_amount = 0; }
