@@ -17,28 +17,22 @@
 			<div class="form-body">
 			
 				<div class="row">
+					
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Company <span class="required" aria-required="true">*</span></label>
-							<br/>
-							<?php echo @$grn->company->name; ?>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">GRN No. <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">GRN No.</label>
 							<br/>
 							<?= h(($grn->grn1.'/GRN-'.str_pad($grn->grn2, 3, '0', STR_PAD_LEFT).'/'.$grn->grn3.'/'.$grn->grn4)) ?>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Supplier <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Supplier </label>
 							<br/>
 							<?php echo @$grn->vendor->company_name; ?>
 						</div>
 					</div>
-					<div class="col-md-3 pull-right" >
+					<div class="col-md-3" >
 						<div class="form-group">
 							<label class="control-label">Invoice Booking No</label></br>
 							<?php echo $grn->grn1.'/IB-'.str_pad($last_ib_no->ib2, 3, '0', STR_PAD_LEFT).'/'.$grn->grn3.'/'.$grn->grn4; ?>
@@ -46,10 +40,16 @@
 							<? ?>
 						</div>
 					</div>
+					<div class="col-md-2 pull-right">
+									<div class="form-group">
+										<label class="control-label">Date</label>
+										<br/>
+										<?php echo date("d-m-Y"); ?>
+									</div>
+								</div>
 				</div><br/>
 				
-				<div class="row">
-					<div class="col-md-4" style="display:none;">
+				<div class="row" style="display:none;">
 						<div class="form-group">
 							<label class="control-label">Invoice Booking No. <span class="required" aria-required="true">*</span></label>
 							<div class="row">
@@ -65,9 +65,11 @@
 								<div class="col-md-3">
 									<?php echo $this->Form->input('ib4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
 								</div>
+								
 							</div>
 						</div>
 					</div>
+					<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label>
@@ -77,42 +79,10 @@
 						</div>
 					</div>
 				</div>
-<<<<<<< HEAD
-						
+				</div>
 			</div>
 		     <?= $this->Form->end() ?>	
-			<div class="form-body">		
-			<div class="row">
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Company <span class="required" aria-required="true">*</span></label>
-							<br/>
-							<?php echo @$grn->company->name; ?>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">GRN No. <span class="required" aria-required="true">*</span></label>
-							<br/>
-							<?= h(($grn->grn1.'/GRN-'.str_pad($grn->grn2, 3, '0', STR_PAD_LEFT).'/'.$grn->grn3.'/'.$grn->grn4)) ?>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Supplier <span class="required" aria-required="true">*</span></label>
-							<br/>
-							<?php echo @$grn->vendor->company_name; ?>
-						</div>
-					</div>
-					<div class="col-md-2">
-						<div class="form-group">
-							<label class="control-label">Date</label>
-							<br/>
-							<?php echo date("d-m-Y"); ?>
-						</div>
-					</div>
-				</div><br/>
-				
+			
 				
 				<div class="alert alert-danger" id="row_error_item" style="display:none;padding: 5px !important;">
 					Please check at least one row.
@@ -157,26 +127,7 @@
 					
 					<tr>
 						 
-						<td colspan="4" align="right"><b> P & F</b> </td>
-						
-						<td>
-						<?php echo $this->Form->input('pnf', ['label' => false,'class' => 'form-control input-sm ','value'=>$grn->purchase_order->pnf,'placeholder' => 'P$F']); ?>
-						<?php 
-						if($grn->purchase_order->pnf=='%'){
-							$arr1=['value' => '%', 'text' => 'Percent(%)'];
-							$arr2=['value' => '', 'text' => 'Amount','checked'];
-						}else{
-							$arr1=['value' => '%', 'text' => 'Percent(%)','checked'];
-							$arr2=['value' => '', 'text' => 'Amount'];
-						}
-						echo $this->Form->radio('pnf_type',[$arr1,$arr2]); 
-						?>
-						</td>
 					
-							</br>
-						<td> 
-						<button type="submit" class="btn blue-hoki">Update InvoiceBookings
-						</td>
 				    
 					</tr>
 
