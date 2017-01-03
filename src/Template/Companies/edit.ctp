@@ -72,13 +72,13 @@ $this->Form->templates([
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Mobile No <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('mobile_no', ['label' => false,'class' => 'form-control input-sm allLetter','placeholder'=>'Mobile No','maxlength'=>'10','minlength'=>'10']); ?>
+							<?php echo $this->Form->input('mobile_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mobile No','maxlength'=>'10','minlength'=>'10']); ?>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Landline No</label>
-							<?php echo $this->Form->input('landline_no', ['label' => false,'class' => 'form-control input-sm allLetter','placeholder'=>'Landline No']); ?>
+							<?php echo $this->Form->input('landline_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Landline No']); ?>
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -201,6 +201,7 @@ $(document).ready(function() {
 			},
 			landline_no   : {
 				  required: true,
+				  digits: true,
 			},
 			email   :{
 				required: true,
