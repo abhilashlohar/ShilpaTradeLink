@@ -450,7 +450,7 @@ select
 				
 				<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Ledger Account','/ledgerAccounts',array('escape'=>false)); ?></li>
 				<li>
-				<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Ledgers','/ledgers',array('escape'=>false)); ?></li>
+				<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Daily Report','/ledgers',array('escape'=>false)); ?></li>
 				<li>
 				
 				<li>

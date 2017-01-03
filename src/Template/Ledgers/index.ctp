@@ -13,14 +13,6 @@
 				<table class="table table-condensed" style="width:90%;">
 				<tbody>
 					<tr>
-					<td width="40%">
-						<div class="row">
-							<div class="col-md-12">
-						<?php 
-							echo $this->Form->input('ledger', ['options'=>$ledgerAccounts,'empty'=>'-Ledger-','label' => false,'class' => 'form-control input-md select2me','value'=>@$ledger]);  ?>
-								</div>
-						</div>
-					</td>
 					<td>
 						<div class="row">
 							<div class="col-md-6">
