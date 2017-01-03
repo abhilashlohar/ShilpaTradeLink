@@ -188,7 +188,10 @@ $(document).ready(function() {
 				  required: true,
 			},
 			mobile_no:{
-				  required: true,
+				required: true,
+				digits: true,
+				minlength: 10,
+				maxlength: 10,
 			},
 			inventory_status:{
 				 required: true,
