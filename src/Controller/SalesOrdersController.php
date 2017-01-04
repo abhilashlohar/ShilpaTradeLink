@@ -378,6 +378,17 @@ class SalesOrdersController extends AppController
 			//pr($salesOrder); exit;
             if ($this->SalesOrders->save($salesOrder)) {
 				//pr($salesOrder); exit;
+				
+					$salesOrder->job_card='Pending';
+					$query = $this->SalesOrders->query();
+					$query->update()
+						->set(['job_card' => 'Pending'])
+						->where(['id' => $id])
+						->execute();
+						
+				
+				
+				
                 $this->Flash->success(__('The sales order has been saved.'));
 				return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
             } else {

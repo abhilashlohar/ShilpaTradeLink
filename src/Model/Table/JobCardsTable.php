@@ -99,7 +99,7 @@ class JobCardsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        //$rules->add($rules->existsIn(['sales_order_id'], 'SalesOrders'));
+        $rules->add($rules->existsIn(['sales_order_id'], 'SalesOrders'));
         $rules->add($rules->existsIn(['company_id'], 'Companies'));
 
         return $rules;

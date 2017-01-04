@@ -79,7 +79,8 @@ class JobCardRowsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['job_card_id'], 'JobCards'));
-        $rules->add($rules->existsIn(['sales_order_row_id'], 'SalesOrderRows'));
+        //$rules->add($rules->existsIn(['job_card_row_id'], 'JobCardRows'));
+        //$rules->add($rules->existsIn(['sales_order_row_id'], 'SalesOrderRows'));
         $rules->add($rules->existsIn(['item_id'], 'Items'));
 
         return $rules;

@@ -1,4 +1,4 @@
-<?php //pr($jobCard->customer->customer_name); exit; ?>
+<?php //pr($jobCard->sales_order_id); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
@@ -18,7 +18,7 @@
 					<div class="form-group">
 						<label class="col-md-5 control-label">Sales Order No</label>
 						<div class="col-md-7">
-							<?php echo $this->Form->input('sales_order_id', ['type'=>'hidden','value' => @$jobCard->sales_order_id]); ?>
+							
 							<?= h($jobCard->sales_order->so1.'/'.str_pad($jobCard->sales_order->so2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->sales_order->so3.'/'.$jobCard->sales_order->so4) ?>
 							
 						</div>
@@ -116,7 +116,7 @@
 						<th width="30%">In</th>
 						<th>Out</th>
 					</thead>
-					<tbody id="maintbody"><?php $q=0; $r=0; ?>
+					<tbody id="maintbody"><?php $p=0; $q=0; $r=0; ?>
 					<?php foreach ($jobCard->sales_order->sales_order_rows as $sales_order_row): ?>
 						<tr class="main_tr">
 							<td valign="top">
@@ -131,7 +131,7 @@
 										<label class="col-md-3 control-label">Remarks </label>
 										<?php   foreach($sales_order_row->job_card_rows as $job_card_row): ?>
 										<div class="col-md-9">
-											<?php echo $this->Form->textarea('job_card_row['.$r.'][remark]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks','value'=>$job_card_row->remark]); ?>
+											<?php echo $this->Form->textarea('job_card_rows['.$r.'][remark]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks','value'=>$job_card_row->remark]); ?>
 										</div><?php $r++; break; endforeach; ?>
 								</div>
 							<table>
@@ -147,14 +147,14 @@
 											<td align="center"><?= h(++$page_no) ?></td>
 											
 											<td>
-											<?php echo $this->Form->input('sales_order_row_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
-											<?php echo $this->Form->input('job_card_row['.$q.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm select2me','label'=>false,'value'=>$job_card_row->item_id]); ?>
+											<?php echo $this->Form->input('job_card_rows['.$p.'][sales_order_row_id]',['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$job_card_row->sales_order_row_id]); ?>
+											<?php echo $this->Form->input('job_card_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm select2me','label'=>false,'value'=>$job_card_row->item_id]); ?>
 											</td>
-											<td><?php echo $this->Form->input('job_card_row['.$q.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
+											<td><?php echo $this->Form->input('job_card_rows['.$p.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
 											<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 											
 										</tr>
-									<?php $q++; endforeach; ?>
+									<?php $p++;  endforeach; ?>
 									
 								</tbody>
 							</table>
@@ -162,7 +162,7 @@
 							</td>
 							
 						</tr>
-						<?php endforeach; ?>
+						<?php  endforeach; ?>
 					</tbody>
 				</table>
 			</div>
@@ -204,17 +204,20 @@ $(document).ready(function() {
 		var i=0; 
 		$("#main_tb tbody#maintbody tr.main_tr").each(function(){
 			var sales_order_row_id=$(this).find("td:nth-child(1) input").val();
+			alert(sales_order_row_id);
 			i++;
 			$(this).find("td:nth-child(2) textarea").attr({name:"job_card_rows["+i+"][remark]", id:"job_card_rows-"+i+"-remark"});
 			i--;
 			var sr=0;
 			$(this).find("td:nth-child(2) table tbody tr").each(function(){
-				i++; sr++;
+				
+				 sr++;
 				$(this).find('td:nth-child(1)').html(sr);
-				$(this).find("td:nth-child(2) input").attr({name:"job_card_rows["+i+"][sales_order_row_id]", id:"job_card_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
+				$(this).find('td:nth-child(2) input[type="hidden"]').attr({name:"job_card_rows["+i+"][sales_order_row_id]", id:"job_card_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
 				$(this).find("td:nth-child(2) select").attr({name:"job_card_rows["+i+"][item_id]", id:"job_card_rows-"+i+"-item_id"}).select2();
-				$(this).find("td:nth-child(3) input").attr({name:"job_card_rows["+i+"][quantity]", id:"job_card_rows-"+i+"-quantity"});
+				$(this).find("td:nth-child(3) input").attr({name:"job_card_rows["+i+"][quantity]", id:"job_card_rows-"+i+"-quantity"}); i++;
 			});
+		
 		});
 	}
 });

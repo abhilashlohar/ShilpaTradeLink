@@ -52,6 +52,7 @@ class SalesOrderRowsTable extends Table
 		
 		$this->hasMany('JobCardRows', [
             'foreignKey' => 'sales_order_row_id',
+			'saveStrategy' => 'replace'
         ]);
     }
 

@@ -1,36 +1,40 @@
+<?php //foreach($jobCards as $data){ pr($data); } exit; ?>
 <div class="portlet light bordered">
 <div class="portlet-title">
 <div class="caption">
     <i class="icon-globe font-blue-steel"></i>
-	<span class="caption-subject font-blue-steel uppercase">Job Cards</span> 
+	<span class="caption-subject font-blue-steel uppercase">Pending Sales Order For Job Cards</span> 
 </div>
 <div class="portlet-body">
 	<div class="row">
 		<div class="col-md-12">
 			<?php $page_no=$this->Paginator->current('JobCards'); $page_no=($page_no-1)*20; ?>	 
 			<table class="table table-bordered table-striped table-hover">
+				<thead>
 				<tr>
 					<td style="font-size:120%;">Sr.No.</td>
-					<td style="font-size:120%;">Job Cord No.</td>
 					<td style="font-size:120%;">Sales Order</td>
-					<td style="font-size:120%;">Required Date</td>
-					<td style="font-size:120%;">Created Date</td>
+					<td style="font-size:120%;">Customer</td>
+					<td style="font-size:120%;">Date</td>
+					<td style="font-size:120%;">PO No.</td>
 					<td style="font-size:120%;">Action</td>
 				</tr>
 				<tbody>
 		    <?php foreach ($jobCards as $jobCard): ?>
 				<tr>
 					<td><?= h(++$page_no) ?></td>
-					<td><?= h(($jobCard->jc1.'/JC-'.str_pad($jobCard->jc2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->jc3.'/'.$jobCard->jc4))?></td>
-					<td><?= h(($jobCard->sales_order->so1.'/SO-'.str_pad($jobCard->sales_order->so2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->sales_order->so3.'/'.$jobCard->sales_order->so4))?></td> 
-					<td><?= date("d-m-Y",strtotime($jobCard->created_on));?></td>
- 					<td><?= date("d-m-Y",strtotime($jobCard->required_date));?></td>
+					
+					<td><?= h(($jobCard->so1.'/SO-'.str_pad($jobCard->so2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->so3.'/'.$jobCard->so4))?></td> 
+					<td><?php echo $jobCard->customer->customer_name; ?></td> 
+					<td><?php echo $jobCard->po_date; ?></td> 
+					<td><?php echo $jobCard->customer_po_no; ?></td> 
+					
 					<td class="actions">
-					<?php if($material_indent=="true"){
-					echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Material Indents','/MaterialIndents/Add?job-cards='.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
-					} ?>
+					<?php 
+					echo $this->Html->link('<i class="fa fa-repeat "></i>  Create Job Card','/JobCards/Add?Sales-Order='.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+					?>
 					<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $jobCard->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
-					<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $jobCard->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
+					
 					</td>
 				</tr>
 		    <?php endforeach; ?>

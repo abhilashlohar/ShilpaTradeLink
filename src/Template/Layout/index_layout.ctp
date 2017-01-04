@@ -271,6 +271,7 @@ select
 						echo '<li>'.$this->Html->link( 'Create', '/Job-Cards/Add' ).'</li>';
 						} ?>
 						<li><?php echo $this->Html->link( 'View', '/Job-Cards' ); ?></li>
+						<li><?php echo $this->Html->link( 'Pending Jobcard', '/Job-Cards/PendingSalesorderForJobcard' ); ?></li>
 					</ul>
 				</li>
 				<li>

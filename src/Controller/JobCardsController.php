@@ -20,19 +20,11 @@ class JobCardsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['Companies','Customers','SalesOrders']
+            'contain' => []
         ];
         $jobCards = $this->paginate($this->JobCards->find()->order(['JobCards.id' => 'DESC']));
 		
-		$material_indent=$this->request->query('material-indent');
-		//pr($material_indent); exit;
-		if(!empty($material_indent)){
-			$jobCards=$this->paginate(
-				$this->JobCards->find()->contain(['JobCardRows'])->order(['JobCards.id' => 'DESC'])
-			);
-		}
-
-        $this->set(compact('jobCards','material_indent'));
+        $this->set(compact('jobCards'));
         $this->set('_serialize', ['jobCards']);
     }
 
@@ -101,7 +93,18 @@ class JobCardsController extends AppController
 			
 			//pr($jobCard); exit;
 			if ($this->JobCards->save($jobCard)) {
-		
+				//pr($jobCard->sales_order_id); exit;
+				
+				
+					//$quotation->status='Converted Into Sales Order';
+					$query = $this->JobCards->SalesOrders->query();
+					$query->update()
+						->set(['job_card' => 'Converted'])
+						->where(['id' => $jobCard->sales_order_id])
+						->execute();
+						
+				
+						
                 $this->Flash->success(__('The job card has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -142,20 +145,21 @@ class JobCardsController extends AppController
             $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
 			$jobCard->required_date=date("Y-m-d",strtotime($jobCard->required_date)); 
 			$jobCard->created_by=$s_employee_id; 
-			$jobCard->sales_order_id=$jobCard->sales_order_id;
-			//pr($jobCard->sales_order_id); exit;
 			$jobCard->company_id=$st_company_id;
 			$jobCard->customer_po_no=$jobCard->customer_po_no;
+			
 			$jobCard->created_on=date("Y-m-d");
-			pr($jobCard); exit;
+			$jobCard->sales_order_id=$jobCard->sales_order->id;
+			//pr($jobCard); exit;
             if ($this->JobCards->save($jobCard)) {
                 $this->Flash->success(__('The job card has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else {
+            } else { 
                 $this->Flash->error(__('The job card could not be saved. Please, try again.'));
             }
         }
+		
         //$salesOrders = $this->JobCards->SalesOrders->find('list', ['limit' => 200]);
         //$companies = $this->JobCards->Companies->find('list', ['limit' => 200]);
 		$items = $this->JobCards->Items->find('list');
@@ -181,5 +185,17 @@ class JobCardsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+	
+	public function PendingSalesorderForJobcard()
+    {
+		$this->viewBuilder()->layout('index_layout');
+        
+ 			$jobCards=$this->paginate(
+				$this->JobCards->SalesOrders->find()->contain(['Customers'])->where(['job_card'=>'Pending'])->order(['SalesOrders.id' => 'DESC'])
+			);
+			//pr($jobCard); exit;
+        $this->set('jobCards', $jobCards);
+        $this->set('_serialize', ['jobCard']);
     }
 }
