@@ -453,6 +453,7 @@ select
 
 				<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Daily Report','/ledgers',array('escape'=>false)); ?></li>
 
+				<li>
 					<a href="javascript:;">
 					<i class="fa fa-file-code-o"></i>
 					<span class="title">Account References</span>

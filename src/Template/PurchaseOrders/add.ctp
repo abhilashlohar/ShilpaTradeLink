@@ -75,14 +75,14 @@ With reference to your price list we are pleased to place an order for the follo
 						
 							<tr>
 								<td colspan="4" align="right"><b>Discount</b></td>
-								<td><?php echo $this->Form->input('discount', ['label' => false,'class' => 'form-control input-sm ','required','placeholder' => 'Discount']); ?>
+								<td><?php echo $this->Form->input('discount', ['label' => false,'class' => 'form-control input-sm ','placeholder' => 'Discount']); ?>
 								<?php echo $this->Form->radio('discount_type',[['value' => '%', 'text' => 'Percent(%)'],['value' => '', 'text' => 'Amount','checked']]); ?>
 								</td>
 							</tr>
 							
 							<tr>
 								<td colspan="4" align="right"><b>P&F</b></td>
-								<td><?php echo $this->Form->input('pnf', ['label' => false,'class' => 'form-control input-sm ','placeholder' => 'P&f','required']); ?>
+								<td><?php echo $this->Form->input('pnf', ['label' => false,'class' => 'form-control input-sm ','placeholder' => 'P&f']); ?>
 								<?php echo $this->Form->radio('pnf_type',[['value' => '%', 'text' => 'Percent(%)'],['value' => '', 'text' => 'Amount','checked']]); ?>
 								</td>
 							</tr>
@@ -95,7 +95,7 @@ With reference to your price list we are pleased to place an order for the follo
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Material to be transported at</label>
+							<label class="control-label">Material to be transported at<span class="required" aria-required="true">*</span></label>
 							<?php 
 							echo $this->Form->input('material_to_be_transported',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Material to be transported at']); ?>
 						</div>
@@ -184,7 +184,7 @@ With reference to your price list we are pleased to place an order for the follo
 					
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Excise Duty <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Excise Duty </label>
 							<?php 
 							echo $this->Form->input('excise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Excise Duty']); ?>
 						</div>

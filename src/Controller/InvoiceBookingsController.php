@@ -157,13 +157,59 @@ class InvoiceBookingsController extends AppController
     {
 	 $this->viewBuilder()->layout('index_layout');
         $invoiceBooking = $this->InvoiceBookings->get($id, [
-            'contain' => ['Grns'=>['Companies','Vendors','GrnRows'=>['Items'],'PurchaseOrders'=>['PurchaseOrderRows']]]
+            'contain' => ['InvoiceBookingRows' => ['Items'],'Grns'=>['Companies','Vendors','GrnRows'=>['Items'],'PurchaseOrders'=>['PurchaseOrderRows']]]
         ]);
 		
 		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $invoiceBooking = $this->InvoiceBookings->patchEntity($invoiceBooking, $this->request->data);
             if ($this->InvoiceBookings->save($invoiceBooking)) {
+				$invoiceBookingId=$invoiceBooking->id;
+				$grn_id=$invoiceBooking->grn_id;
+				
+				if(!empty($grn_id)){
+					$grn = $this->InvoiceBookings->Grns->get($grn_id, [
+					'contain' => ['GrnRows'=>['Items'],'Companies','Vendors','PurchaseOrders'=>['PurchaseOrderRows']]
+					]);
+				}
+				$this->InvoiceBookings->Ledgers->deleteAll(['voucher_id' =>$invoiceBookingId, 'voucher_source' => 'Invoice Booking']);
+				$i=0; 
+				foreach($invoiceBooking->invoice_booking_rows as $invoice_booking_row)
+				{
+				$item_id=$invoice_booking_row->item_id;
+				$rate=$invoice_booking_row->rate;
+				$query = $this->InvoiceBookings->ItemLedgers->query();
+				$query->update()
+					->set(['rate' => $rate])
+					->where(['item_id' => $item_id, 'source_id' => $grn_id, 'source_model'=> 'Grns'])
+					->execute();
+				$i++;
+				}
+				$accountReferences = $this->InvoiceBookings->AccountReferences->get(2);
+				
+				//ledger posting
+				$ledger = $this->InvoiceBookings->Ledgers->newEntity();
+				$ledger->ledger_account_id = $accountReferences->ledger_account_id;
+				$ledger->debit = $invoiceBooking->total;
+				$ledger->credit = 0;
+				$ledger->voucher_id = $invoiceBooking->id;
+				$ledger->voucher_source = 'Invoice Booking';
+				$ledger->transaction_date = $invoiceBooking->created_on;
+				$this->InvoiceBookings->Ledgers->save($ledger);
+				
+				//Ledger posting for bankcash
+				
+				$ledger = $this->InvoiceBookings->Ledgers->newEntity();
+				//pr($grn->vendor->ledger_account_id); exit;
+				$ledger->ledger_account_id = $grn->vendor->ledger_account_id;
+				//pr($ledger->ledger_account_id); exit;
+				$ledger->debit = 0;
+				$ledger->credit =$invoiceBooking->total;
+				$ledger->voucher_id = $invoiceBooking->id;
+				$ledger->transaction_date = $invoiceBooking->created_on;
+				$ledger->voucher_source = 'Invoice Booking';
+				$this->InvoiceBookings->Ledgers->save($ledger);
+				
                 $this->Flash->success(__('The invoice booking has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -172,6 +218,7 @@ class InvoiceBookingsController extends AppController
             }
         }
         $grns = $this->InvoiceBookings->Grns->find('list', ['limit' => 200]);
+		
         $this->set(compact('invoiceBooking', 'grns'));
         $this->set('_serialize', ['invoiceBooking']);
     }
