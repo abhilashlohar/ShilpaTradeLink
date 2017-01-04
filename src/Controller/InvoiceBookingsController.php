@@ -121,9 +121,7 @@ class InvoiceBookingsController extends AppController
 				//Ledger posting for bankcash
 				
 				$ledger = $this->InvoiceBookings->Ledgers->newEntity();
-				//pr($grn->vendor->ledger_account_id); exit;
 				$ledger->ledger_account_id = $grn->vendor->ledger_account_id;
-				//pr($ledger->ledger_account_id); exit;
 				$ledger->debit = 0;
 				$ledger->credit =$invoiceBooking->total;
 				$ledger->voucher_id = $invoiceBooking->id;
@@ -196,6 +194,7 @@ class InvoiceBookingsController extends AppController
 				$ledger->voucher_source = 'Invoice Booking';
 				$ledger->transaction_date = $invoiceBooking->created_on;
 				$this->InvoiceBookings->Ledgers->save($ledger);
+				
 				
 				//Ledger posting for bankcash
 				
