@@ -59,9 +59,7 @@ class InvoiceBookingsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		
 		$grn_id=@(int)$this->request->query('grn');
-		
 		$grn=array();
 		if(!empty($grn_id)){
 			$grn = $this->InvoiceBookings->Grns->get($grn_id, [
@@ -77,10 +75,6 @@ class InvoiceBookingsController extends AppController
 
 		
 	 $this->set(compact('grn','last_ib_no'));
-		
-	 
-		
-		
 		$invoiceBooking = $this->InvoiceBookings->newEntity();
 		if ($this->request->is('post')) {
             $invoiceBooking = $this->InvoiceBookings->patchEntity($invoiceBooking, $this->request->data);
@@ -100,22 +94,26 @@ class InvoiceBookingsController extends AppController
 					$grn->status='Invoice-Booked';
 					$this->InvoiceBookings->Grns->save($grn);
 				}
-				
-				//Ledger Posting
 				$accountReferences = $this->InvoiceBookings->AccountReferences->get(2);
 				 $total=0; 
 				 $sum=0;
 				$q=0; 
 				//pr($grn);exit;
+				/*
 				foreach ($grn->grn_rows as $grn_rows)
 				{
+					$grn_row_id=$grn_rows->id;
+					$itemLedger = $this->InvoiceBookings->ItemLedgers->get($grn_row_id);
+					$itemLedger->rate = ;
+					$this->InvoiceBookings->ItemLedgers->save($itemLedger);
 					$sum=$grn_rows->quantity*$grn->purchase_order->purchase_order_rows[$q]->rate ;
+					
 					$q++; $total=$total+$sum; 
 				}; 
-				
+				*/
 				$ledger = $this->InvoiceBookings->Ledgers->newEntity();
 				$ledger->ledger_account_id = $accountReferences->ledger_account_id;
-				$ledger->debit = $total;
+				$ledger->debit = $invoiceBooking->total;
 				$ledger->credit = 0;
 				$ledger->voucher_id = $invoiceBooking->id;
 				$ledger->voucher_source = 'Invoice Booking';
@@ -129,7 +127,7 @@ class InvoiceBookingsController extends AppController
 				$ledger->ledger_account_id = $grn->vendor->ledger_account_id;
 				//pr($ledger->ledger_account_id); exit;
 				$ledger->debit = 0;
-				$ledger->credit = $total;
+				$ledger->credit =$invoiceBooking->total;
 				$ledger->voucher_id = $invoiceBooking->id;
 				$ledger->transaction_date = $invoiceBooking->created_on;
 				$ledger->voucher_source = 'Invoice Booking';

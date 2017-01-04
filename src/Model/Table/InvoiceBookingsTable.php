@@ -71,6 +71,7 @@ class InvoiceBookingsTable extends Table
             'joinType' => 'INNER'
         ]);
 		
+		$this->belongsTo('ItemLedgers');
 		$this->belongsTo('AccountReferences');
 		$this->belongsTo('Ledgers');
 		
