@@ -705,7 +705,6 @@ jQuery(document).ready(function() {
 	UIGeneral.init();
 	FormiCheck.init(); // init page demo
 	ComponentsDropdowns.init();
-	
 });
 </script>
 <style>
@@ -773,9 +772,6 @@ $('div[contenteditable="true"]').each(function(){
 	var name=$(this).attr('name');
 	$('textarea[name="'+name+'"]').text(ht);
 });
-
-
-
 </script>         
 
  

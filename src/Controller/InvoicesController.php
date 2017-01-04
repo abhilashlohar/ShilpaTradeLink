@@ -628,6 +628,6 @@ class InvoicesController extends AppController
 		
 		$Customer=$this->Invoices->Customers->find()->where(['ledger_account_id'=>$received_from_id])->first();
 		$Invoices = $this->Invoices->find()->where(['company_id'=>$st_company_id,'customer_id'=>$Customer->id,'due_payment >'=>0]);
-		 $this->set(compact('Invoices'));
+		 $this->set(compact('Invoices','Customer'));
 	}
 }

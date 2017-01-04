@@ -1,10 +1,12 @@
 <style>
-
 .padding-right-decrease{
 	padding-right: 0;
 }
 .padding-left-decrease{
 	padding-left: 0;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+	vertical-align: top !important;
 }
 </style>
 <div class="portlet light bordered">
@@ -80,7 +82,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Amount<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm quantity']); ?>
+							<?php echo $this->Form->input('amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -92,28 +94,8 @@
 				</div>
 				
 				<br/>
-				<div style="width: 70%;">
-				<table class="table tableitm" id="main_tb" >
-					<thead>
-						<tr>
-							<th width="3%">Sr.No. </th>
-							<th width="30%">Type</th>
-							<th width="37%">Reference</th>
-							<th width="20%">Amount</th>
-							<th width="10%"></th>
-						</tr>
-					</thead>
-					<tbody id="main_tbody">
-					
-					</tbody>
-					<tfoot>
-						<tr>
-							<td colspan="3" align="right"><b>Total</b></td>
-							<td><?php echo $this->Form->input('total_of_breakups', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total']); ?></td>
-							<td></td>
-						</tr>
-					</tfoot>
-				</table>
+				<div style="width: 50%;" id="pending_invpice_container">
+				
 				</div>
 			</div>
 		
@@ -187,163 +169,31 @@ $(document).ready(function() {
 		}
 
 	});
-		$('.quantity').die().live("keyup",function() {
-		var asc=$(this).val();
-		var numbers =  /^[0-9]*\.?[0-9]*$/;
-		if(asc==0)
-		{
-			$(this).val('');
-			return false; 
-		}
-		else if(asc.match(numbers))  
-		{  
-		} 
-		else  
-		{  
-			$(this).val('');
-			return false;  
-		}
-	});
-	$('input[name="amount"]').die().live("keyup",function() { 
-		var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
-	});
 	
-	
-	$('.addrow').die().live("click",function() { 
-		add_row();
-    });
-	
-	add_row();
-	function add_row(){
-		var tr1=$("#sample_tb tbody tr").clone();
-		$("#main_tb tbody#main_tbody").append(tr1);
-		rename_rows();
-	}
-	
-	$('.deleterow').die().live("click",function() {
-		var l=$(this).closest("table tbody").find("tr").length;
-		if (confirm("Are you sure to remove row ?") == true) {
-			if(l>1){
-				var row_no=$(this).closest("tr").remove();
-				rename_rows();
-			}
-		} 
-    });
-	
-	function rename_rows(){
-		var i=0;
-		$("#main_tb tbody tr").each(function(){
-			i++;
-			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr({name:"receipt_breakups["+i+"][type]", id:"receipt_breakups-"+i+"-type"}).rules("add", "required");
-			$(this).find("td:nth-child(3) a").attr({row_no:i});
-			var type=$(this).find("td:nth-child(2) option:selected").val();
-			if(type=='Against Ref'){
-				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"receipt_breakups["+i+"][invoice_id]", id:"receipt_breakups-"+i+"-invoice_id"}).rules("add", "required");
-				$(this).find("td:nth-child(3) input:eq(1)").attr({name:"receipt_breakups["+i+"][q]", id:"receipt_breakups-"+i+"-q"}).rules("remove", "required");
-				$(this).find("td:nth-child(3) span[for=receipt_breakups-"+i+"-new_ref_no]").remove();
-				
-			}else if(type=='On Account' || type==''){
-				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"receipt_breakups["+i+"][q]", id:"receipt_breakups-"+i+"-q"}).rules("remove", "required");
-				$(this).find("td:nth-child(3) input:eq(1)").attr({name:"receipt_breakups["+i+"][q]", id:"receipt_breakups-"+i+"-q"}).rules("remove", "required");
-			}else{
-				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"receipt_breakups["+i+"][q]", id:"receipt_breakups-"+i+"-q"}).rules("remove", "required");
-				$(this).find("td:nth-child(3) input:eq(1)").attr({name:"receipt_breakups["+i+"][new_ref_no]", id:"receipt_breakups-"+i+"-new_ref_no"}).rules("add", "required");
-				$(this).find("td:nth-child(3) span[for=receipt_breakups-"+i+"-invoice_id]").remove();
-			}
-			
-			$(this).find("td:nth-child(4) input").attr({name:"receipt_breakups["+i+"][amount]", id:"receipt_breakups-"+i+"-amount"}).rules("add", "required");
-		})
-	}
-	
-	
-	$('.type').die().live("change",function() {
-		var type=$(this).find('option:selected').val();
-		if(type=='Against Ref'){
-			$(this).closest('tr').find('td:nth-child(3)').find('a').show();
-			$(this).closest('tr').find('td:nth-child(3)').find('input:eq(1)').hide();
-		}else if(type=='On Account' || type==''){
-			$(this).closest('tr').find('td:nth-child(3)').find('a').hide();
-			$(this).closest('tr').find('td:nth-child(3)').find('input:eq(1)').hide();
+	$(".check_row").die().live("click",function() {
+		if($(this).is(':checked')){
+			$(this).closest('tr').find('.amount_box').removeAttr('readonly');
+			var invoice_amount=$(this).closest('tr').find('.amount_box').attr('invoice_amount');
+			$(this).closest('tr').find('.amount_box').val(invoice_amount);
 		}else{
-			$(this).closest('tr').find('td:nth-child(3)').find('a').hide();
-			$(this).closest('tr').find('td:nth-child(3)').find('input:eq(1)').show();
+			$(this).closest('tr').find('.amount_box').attr('readonly','readonly');
+			$(this).closest('tr').find('.amount_box').val('');
 		}
-		
-		rename_rows();
 	});
-	
-	$('.select_ref').die().live("click",function() {
-		var row_no=$(this).attr('row_no');
-		$('#myModal1').attr('row_no',row_no);
-		$('#myModal1').show();
-	});
-	
-	$('.closebtn').live("click",function() { 
-		$(".modal").hide();
-    });
 	
 	$('select[name="received_from_id"]').die().live("change",function() {
 		var received_from_id=$(this).find('option:selected').val();
-		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
+		$("#pending_invpice_container").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 		var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'DueInvoicesForReceipt']); ?>";
 		url=url+'/'+received_from_id,
 		$.ajax({
 			url: url,
 		}).done(function(response) {
-			$("#result_ajax").html(response);
+			$("#pending_invpice_container").html(response);
+			Metronic.init();
 		});
 	});
 	
-	$('input').die().live("click",function() {
-		adjust_invoice();
-	});
-	
-	$('.invoice_tr').die().live("click",function() {
-		var invoice_id=$(this).attr('invoice_id');
-		var row_no=$('#myModal1').attr('row_no');
-		$('input[name="receipt_breakups['+row_no+'][invoice_id]"]').val(invoice_id);
-		$('#myModal1').hide();
-		adjust_invoice();
-	});
-	
-	
-	function adjust_invoice(){
-		var receipt_amount=parseFloat($('input[name="amount"]').val());
-		if(!receipt_amount){ receipt_amount=0; }
-		$('#main_tb tbody#main_tbody tr').each(function(){
-			var type=$(this).find('td:nth-child(2) select option:selected').val();
-			//
-			
-			if(type=="Against Ref"){
-				var invoice_id=$(this).find('td:nth-child(3) input:eq(0)').val();
-				if(invoice_id){
-					var invoice_amount=parseFloat($('tr.invoice_tr[invoice_id="'+invoice_id+'"]').find('td:nth-child(3)').text());
-					if(!invoice_amount){ invoice_amount=0; }
-					$(this).find('td:nth-child(4) input').val(invoice_amount);
-					var remaining_amount=receipt_amount-invoice_amount;
-					
-					if(remaining_amount>=0){
-						$('tr.invoice_tr[invoice_id="'+invoice_id+'"]').remove();
-					}
-				}
-			}else{
-				var amount=parseFloat($(this).find('td:nth-child(4) input').val());
-				remaining_amount=receipt_amount-amount;
-				receipt_amount=remaining_amount;
-			}
-			
-		})
-	}
 });
 </script>
 
@@ -394,6 +244,10 @@ $(document).ready(function() {
 			cheque_no :{
 				required: true,
 			},
+			amount :{
+				required: true,
+				digits :true
+			}
 		},
 
 		errorPlacement: function (error, element) { // render error placement for each input type
@@ -456,36 +310,7 @@ $(document).ready(function() {
 		}
 
 	});
-		$('.quantity').die().live("keyup",function() {
-		var asc=$(this).val();
-		var numbers =  /^[0-9]*\.?[0-9]*$/;
-		if(asc==0)
-		{
-			$(this).val('');
-			return false; 
-		}
-		else if(asc.match(numbers))  
-		{  
-		} 
-		else  
-		{  
-			$(this).val('');
-			return false;  
-		}
-	});
-	$('input[name="amount"]').die().live("keyup",function() { 
-		var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
-	});
-	
+		
 	$('input[name="payment_mode"]').die().live("click",function() {
 		var payment_mode=$(this).val();
 		
