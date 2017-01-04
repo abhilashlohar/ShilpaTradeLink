@@ -265,7 +265,9 @@ if(!empty($revision))
 			<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control','value' => @$quotation->terms_conditions,'required','style'=>'display:none']); ?>
 			
 			<br/>
+			
 			<ol id="sortable">
+			
 			  
 			</ol>
 			
@@ -698,6 +700,7 @@ $(document).ready(function() {
 	$('.closebtn2').on("click",function() { 
 		$("#myModal2").hide();
     });
+
 	
 	$('.insert_tc').die().live("click",function() {
 		$('#sortable').html("");
@@ -807,6 +810,15 @@ $(document).ready(function() {
 				$(".item_box[popup_id="+popup_id+"]").val('').select2();
 			}
 	}
+
+			$("#select_all").change(function(){ 
+				$(".check_value").prop('checked', $(this).prop("checked"));
+				$.uniform.update(); 
+			});
+
+			
+
+
 	
 	
 });
@@ -834,9 +846,15 @@ $(document).ready(function() {
 			<h4>Commercial Terms & Conditions</h4>
 				<div style=" overflow: auto; height: 450px;">
 				<table class="table table-hover tabl_tc">
+				<tr>
+					<th>
+						<label>
+						<input type="checkbox" id="select_all"/> Selecct All
+						</label>
+					</th>
+				</tr>	
 				<?php foreach ($termsConditions as $termsCondition): ?>
 					 <tr>
-						 
 						<td>
 						 <div class="checkbox-list">
 							<label>
