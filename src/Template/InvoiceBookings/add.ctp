@@ -69,7 +69,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="row">
+				<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label>
@@ -86,18 +86,7 @@
 						</div>
 					</div>
 				</div>
-					
-			</div>
-				</div>
-				</div>
-			</div>
-		     <?= $this->Form->end() ?>	
-			
 				
-				<div class="alert alert-danger" id="row_error_item" style="display:none;padding: 5px !important;">
-					Please check at least one row.
-				</div>
-
 				<table class="table tableitm" id="main_tb">
 				<thead>
 					<tr>
@@ -155,12 +144,15 @@
 			
 		</div>
 	</div>	
-
-		<?php } ?>	
-
-</div>
 	
-</div>	
+	<?php } ?>
+		     <?= $this->Form->end() ?>
+			
+		
+					
+		</div>	
+				
+
 <style>
 .table thead tr th {
     color: #FFF;

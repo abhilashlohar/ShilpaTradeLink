@@ -41,10 +41,7 @@ class ItemLedgersTable extends Table
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Sources', [
-            'foreignKey' => 'source_id',
-            'joinType' => 'INNER'
-        ]);
+        
     }
 
     /**
@@ -90,7 +87,6 @@ class ItemLedgersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['item_id'], 'Items'));
-        $rules->add($rules->existsIn(['source_id'], 'Sources'));
 
         return $rules;
     }

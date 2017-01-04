@@ -103,12 +103,12 @@ class GrnsController extends AppController
 			$grn->company_id=$st_company_id ;
 			$grn->created_by=$this->viewVars['s_employee_id'];
 			
-			//pr ($grn->created_by); exit;
-			//pr($grn); exit;
+			
             if ($this->Grns->save($grn)) {
 					if(!empty($purchase_order_id)){
 						$grn->check=array_filter($grn->check);
 						$i=0; 
+						
 						foreach($grn->check as $purchase_order_row_id){
 							$qty=$grn->grn_rows[$i]['quantity'];
 							$item_id=$grn->grn_rows[$i]['item_id'];
@@ -128,7 +128,9 @@ class GrnsController extends AppController
 							$itemLedger->processed_on = date("Y-m-d");
 							$this->Grns->ItemLedgers->save($itemLedger);
 						} 
+						
 					} 
+					
 					$this->Flash->success(__('The grn has been saved.'));
 
 					return $this->redirect(['action' => 'index']);

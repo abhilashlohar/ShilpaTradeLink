@@ -85,7 +85,19 @@ class InvoiceBookingsController extends AppController
 			$invoiceBooking->created_by=$this->viewVars['s_employee_id'];
 			//pr($invoiceBooking); exit;
             if ($this->InvoiceBookings->save($invoiceBooking)) {
-				//pr($invoiceBooking); exit;
+			
+				$i=0; 
+				foreach($invoiceBooking->invoice_booking_rows as $invoice_booking_row)
+				{
+				$item_id=$invoice_booking_row->item_id;
+				$rate=$invoice_booking_row->rate;
+				$query = $this->InvoiceBookings->ItemLedgers->query();
+				$query->update()
+					->set(['rate' => $rate])
+					->where(['item_id' => $item_id, 'source_id' => $grn_id, 'source_model'=> 'Grns'])
+					->execute();
+				$i++;
+				}
 				if(!empty($grn_id)){
 					//$grn = $this->InvoiceBookings->Grns->get($grn_id);
 					$grn = $this->InvoiceBookings->Grns->get($grn_id, [
@@ -95,22 +107,8 @@ class InvoiceBookingsController extends AppController
 					$this->InvoiceBookings->Grns->save($grn);
 				}
 				$accountReferences = $this->InvoiceBookings->AccountReferences->get(2);
-				 $total=0; 
-				 $sum=0;
-				$q=0; 
-				//pr($grn);exit;
-				/*
-				foreach ($grn->grn_rows as $grn_rows)
-				{
-					$grn_row_id=$grn_rows->id;
-					$itemLedger = $this->InvoiceBookings->ItemLedgers->get($grn_row_id);
-					$itemLedger->rate = ;
-					$this->InvoiceBookings->ItemLedgers->save($itemLedger);
-					$sum=$grn_rows->quantity*$grn->purchase_order->purchase_order_rows[$q]->rate ;
-					
-					$q++; $total=$total+$sum; 
-				}; 
-				*/
+				
+				//ledger posting
 				$ledger = $this->InvoiceBookings->Ledgers->newEntity();
 				$ledger->ledger_account_id = $accountReferences->ledger_account_id;
 				$ledger->debit = $invoiceBooking->total;
