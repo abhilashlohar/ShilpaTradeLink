@@ -286,15 +286,20 @@ $(document).ready(function() {
 					required: true,
 				},
 				customer_id : {
-					  required: true,
+					required: true,
 				},
 				customer_address : {
-					  required: true,
+					required: true,
 				},
 				vendor_id : {
-					  required: true,
+					required: true,
 				},
-				
+				invoice_id:{
+					required: true,	
+				},
+				invoice_booking_id:{
+					required: true,	
+				}
 			},
 	
 
@@ -376,11 +381,7 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 	
-                
-
-               
-
-	add_row();
+    add_row();
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
@@ -395,6 +396,7 @@ $(document).ready(function() {
 				var row_no=$(this).closest("tr").attr("row_no");
 				var del="tr[row_no="+row_no+"]";
 				$(del).remove();
+				rename_rows();
 				var i=0;
 				$("#main_tb tbody tr.tr1").each(function(){
 					i++;
@@ -436,9 +438,9 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			i++;
 			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr("name","challan_rows["+i+"][item_id]").select2();
-			$(this).find("td:nth-child(3) input").attr("name","challan_rows["+i+"][quantity]");
-			$(this).find("td:nth-child(4) input").attr("name","challan_rows["+i+"][rate]");
+			$(this).find("td:nth-child(2) select").select2().attr("name","challan_rows["+i+"][item_id]").rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr("name","challan_rows["+i+"][quantity]").rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr("name","challan_rows["+i+"][rate]").rules("add", "required");
 			$(this).find("td:nth-child(5) input").attr("name","challan_rows["+i+"][amount]");
 		});
 		var i=0;
@@ -465,7 +467,9 @@ $(document).ready(function() {
 			this.rows = minRows + rows;
 		});
 	}
-	
+	function rename_rows(){
+		
+	}
 	
 	$('#main_tb input').die().live("keyup","blur",function() { 
 		calculate_total();
