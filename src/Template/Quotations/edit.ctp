@@ -736,6 +736,10 @@ $(document).ready(function() {
 				$(".item_box[popup_id="+popup_id+"]").val('').select2();
 			}
 	}
+	$("#select_all").change(function(){ 
+				$(".check_value").prop('checked', $(this).prop("checked"));
+				$.uniform.update(); 
+	});
 	
 	//rename_rows();
 	//calculate_total();
@@ -764,6 +768,13 @@ $(document).ready(function() {
 			<h4>Commercial Terms & Conditions</h4>
 				<div style=" overflow: auto; height: 450px;">
 				<table class="table table-hover tabl_tc">
+				<tr>
+					<th>
+						<label>
+						<input type="checkbox" id="select_all"/> Selecct All
+						</label>
+					</th>
+				</tr>
 				<?php foreach ($termsConditions as $termsCondition): ?>
 					 <tr>
 						 

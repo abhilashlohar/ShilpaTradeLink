@@ -58,7 +58,7 @@ class ItemSubGroupsController extends AppController
         $this->paginate = [
             'contain' => ['ItemGroups'=>['ItemCategories']]
         ];
-        $itemSubGroups = $this->paginate($this->ItemSubGroups->find()->where($where));
+        $itemSubGroups = $this->paginate($this->ItemSubGroups->find()->where($where)->order(['ItemSubGroups.name' => 'ASC']));
 
         $this->set(compact('itemSubGroups'));
         $this->set('_serialize', ['itemSubGroups']);

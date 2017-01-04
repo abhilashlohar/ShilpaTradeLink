@@ -289,13 +289,13 @@ if(!empty($copy))
 			<div class="row">
 				<div class="col-md-4">
 					<div class="form-group">
-						<label class="control-label">Transporter <span class="required" aria-required="true">*</span></label>
+						<label class="control-label">Transporter <?= h($quotation->customer->transporter_id) ?><span class="required" aria-required="true">*</span></label>
 						<?php echo $this->Form->input('transporter_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 					</div>
 					<br/>
 					<div class="form-group">
 						<label class="control-label">Documents Courier <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('documents_courier_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
+						<?php echo $this->Form->input('documents_courier_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm select2me','value' => @$quotation->customer->customer_address[0]->transporter_id]); ?>
 					</div>
 				</div>
 				<div class="col-md-4">
