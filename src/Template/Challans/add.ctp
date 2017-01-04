@@ -100,7 +100,7 @@
 					
 					<div class="col-md-3" id="invoice_booking_div" style="display:none;">
 						<div class="form-group">
-							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Invoice Booking No. <span class="required" aria-required="true">*</span></label>
 							<div class="row">
 								<?php
 									$options=array();
@@ -299,7 +299,7 @@ $(document).ready(function() {
 				},
 				invoice_booking_id:{
 					required: true,	
-				}
+				},
 			},
 	
 
@@ -380,7 +380,7 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
-	
+	rename_rows();
     add_row();
     $('.addrow').die().live("click",function() { 
 		add_row();
@@ -397,23 +397,6 @@ $(document).ready(function() {
 				var del="tr[row_no="+row_no+"]";
 				$(del).remove();
 				rename_rows();
-				var i=0;
-				$("#main_tb tbody tr.tr1").each(function(){
-					i++;
-					$(this).find("td:nth-child(1)").html(i);
-					$(this).find("td:nth-child(2) select").attr("name","challan_rows["+i+"][item_id]");
-					$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
-					$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
-					$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
-					$(this).find("td:nth-child(3) input").attr("name","challan_rows["+i+"][quantity]");
-					$(this).find("td:nth-child(4) input").attr("name","challan_rows["+i+"][rate]");
-					$(this).find("td:nth-child(5) input").attr("name","challan_rows["+i+"][amount]");
-				});
-				var i=0;
-				$("#main_tb tbody tr.tr2").each(function(){
-					i++;
-					$(this).find("td:nth-child(1) textarea").attr("name","challan_rows["+i+"][description]");
-				});
 				calculate_total();
 			}
 		} 
@@ -433,42 +416,37 @@ $(document).ready(function() {
 			r++;
 			if(r==2){ w++; r=0; }
 		});
-		
-		var i=0;
-		$("#main_tb tbody tr.tr1").each(function(){
-			i++;
-			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").select2().attr("name","challan_rows["+i+"][item_id]").rules("add", "required");
-			$(this).find("td:nth-child(3) input").attr("name","challan_rows["+i+"][quantity]").rules("add", "required");
-			$(this).find("td:nth-child(4) input").attr("name","challan_rows["+i+"][rate]").rules("add", "required");
-			$(this).find("td:nth-child(5) input").attr("name","challan_rows["+i+"][amount]");
-		});
-		var i=0;
-		
-		$("#main_tb tbody tr.tr2").each(function(){
-			i++;
-			$(this).find("td:nth-child(1) textarea").attr("name","challan_rows["+i+"][description]");
-		});
-		
-		
-		
-		$(document)
-		.one('focus.textarea', '.autoExpand', function(){
-			var savedValue = this.value;
-			this.value = '';
-			this.baseScrollHeight = this.scrollHeight;
-			this.value = savedValue;
-		})
-		.on('input.textarea', '.autoExpand', function(){
-			var minRows = this.getAttribute('data-min-rows')|0,rows;
-			this.rows = minRows;
-			console.log(this.scrollHeight , this.baseScrollHeight);
-			rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
-			this.rows = minRows + rows;
-		});
-	}
+		rename_rows();
+		}
+	
+rename_rows();	
 	function rename_rows(){
-		
+	var i=0;
+			$("#main_tb tbody tr.tr1").each(function(){
+				$(this).find("td:nth-child(1)").html(++i); --i;
+				$(this).find("td:nth-child(2) select").select2().attr({name:"challan_rows["+i+"][item_id]", id:"challan_rows-"+i+"-item_id"}).rules("add", "required");
+				$(this).find("td:nth-child(3) input").attr({name:"challan_rows["+i+"][quantity]", id:"challan_rows-"+i+"-quantity"}).rules('add', {
+						required: true,
+						digits: true,
+						min: 1,
+						messages: {
+							min: "Quantity can't be zero."
+						}
+					});
+				$(this).find("td:nth-child(4) input").attr({name:"challan_rows["+i+"][rate]", id:"challan_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
+						required: true,
+						number: true,
+						min: 0.01
+					});
+				$(this).find("td:nth-child(5) input").attr({name:"challan_rows["+i+"][amount]", id:"challan_rows-"+i+"-amount"});
+				i++; 
+			});
+			var i=0;
+			$("#main_tb tbody tr.tr2").each(function(){
+				
+				$(this).find("td:nth-child(1) textarea").attr("name","challan_rows["+i+"][description]");
+				i++; 
+			});	
 	}
 	
 	$('#main_tb input').die().live("keyup","blur",function() { 

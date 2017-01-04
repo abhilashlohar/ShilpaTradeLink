@@ -96,12 +96,13 @@
 					
 					<div class="col-md-3" id="invoice_booking_div" style="display:none;">
 						<div class="form-group">
-							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Invoice Booking No. <span class="required" aria-required="true">*</span></label>
 							<div class="row">
 								<?php
 									$options=array();
 									foreach($invoice_bookings as $invoice_booking){
-									$options[]=['text' =>$invoice_booking->invoice_no, 'value' => $invoice_booking->id];
+									$merge=(($invoice_booking->ib1.'/IB-'.str_pad($invoice_booking->ib2, 3, '0', STR_PAD_LEFT).'/'.$invoice_booking->ib3.'/'.$invoice_booking->ib4));
+									$options[]=['text' =>$merge, 'value' => $invoice_booking->id];
 									}
 									echo $this->Form->input('invoice_booking_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me']); ?>
 							</div>
@@ -111,7 +112,7 @@
 						<div class="form-group">
 							<label class="control-label">Lr No. <span class="required" aria-required="true">*</span></label>
 							
-							<?php echo $this->Form->input('lr_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'LR No']); ?>
+							<?php echo $this->Form->input('lr_no', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'LR No']); ?>
 							
 						</div>
 					</div>
@@ -195,18 +196,12 @@
 			<label class="control-label">Documents  </label>
 			<?php echo $this->Form->textarea('documents', ['label' => false,'class' => 'form-control wysihtml5']); ?>
 			<br/>
-			<div class="alert alert-danger" id="terms_conditions_error" style="display:none;">
-				Select Commercial Terms & Conditions.
-			</div>
 			
 			<label class="control-label">Reference Detail  </label>
 			<?php echo $this->Form->textarea('reference_detail', ['label' => false,'class' => 'form-control wysihtml5']); ?>
 			<br/>
-			<div class="alert alert-danger" id="terms_conditions_error" style="display:none;">
-				Select Commercial Terms & Conditions.
-			</div>
 			
-			<br/>
+
 			
 		</div>
 		<div class="form-actions">
@@ -272,7 +267,6 @@
 	</tbody>
 </table>
 
-<div id="terms_conditions" style="display:none;"></div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <style>
 #sortable li{
@@ -313,7 +307,6 @@ $(document).ready(function() {
 				vendor_id : {
 					required: true,
 				},
-				
 				
 			},
 		
@@ -397,9 +390,8 @@ $(document).ready(function() {
 	//--	 END OF VALIDATION
 	
                 
-
-               
-
+	rename_rows();
+	calculate_total();
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
@@ -414,31 +406,13 @@ $(document).ready(function() {
 				var row_no=$(this).closest("tr").attr("row_no");
 				var del="tr[row_no="+row_no+"]";
 				$(del).remove();
-				var i=0;
-				$("#main_tb tbody tr.tr1").each(function(){
-					i++;
-					$(this).find("td:nth-child(1)").html(i);
-					$(this).find("td:nth-child(2) select").attr("name","challan_rows["+i+"][item_id]");
-					$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
-					$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
-					$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
-					$(this).find("td:nth-child(3) input").attr("name","challan_rows["+i+"][quantity]");
-					$(this).find("td:nth-child(4) input").attr("name","challan_rows["+i+"][rate]");
-					$(this).find("td:nth-child(5) input").attr("name","challan_rows["+i+"][amount]");
-				});
-				var i=0;
-				$("#main_tb tbody tr.tr2").each(function(){
-					i++;
-					$(this).find("td:nth-child(1) textarea").attr("name","challan_rows["+i+"][description]");
-				});
+				rename_rows();
 				calculate_total();
 			}
 		} 
     });
 	
-
-	
-		function add_row(){
+	function add_row(){
 		var tr1=$("#sample_tb tbody tr.tr1").clone();
 		$("#main_tb tbody").append(tr1);
 		var tr2=$("#sample_tb tbody tr.tr2").clone();
@@ -450,41 +424,36 @@ $(document).ready(function() {
 			r++;
 			if(r==2){ w++; r=0; }
 		});
-		
-		var i=0;
-		$("#main_tb tbody tr.tr1").each(function(){
-			i++;
-			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr("name","challan_rows["+i+"][item_id]").select2();
-			$(this).find("td:nth-child(3) input").attr("name","challan_rows["+i+"][quantity]");
-			$(this).find("td:nth-child(4) input").attr("name","challan_rows["+i+"][rate]");
-			$(this).find("td:nth-child(5) input").attr("name","challan_rows["+i+"][amount]");
-		});
-		var i=0;
-		
-		$("#main_tb tbody tr.tr2").each(function(){
-			i++;
-			$(this).find("td:nth-child(1) textarea").attr("name","challan_rows["+i+"][description]");
-		});
-		
-		
-		
-		$(document)
-		.one('focus.textarea', '.autoExpand', function(){
-			var savedValue = this.value;
-			this.value = '';
-			this.baseScrollHeight = this.scrollHeight;
-			this.value = savedValue;
-		})
-		.on('input.textarea', '.autoExpand', function(){
-			var minRows = this.getAttribute('data-min-rows')|0,rows;
-			this.rows = minRows;
-			console.log(this.scrollHeight , this.baseScrollHeight);
-			rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
-			this.rows = minRows + rows;
-		});
+		rename_rows();
 	}
-	
+	function rename_rows(){
+	var i=0;
+			$("#main_tb tbody tr.tr1").each(function(){
+				$(this).find("td:nth-child(1)").html(++i); --i;
+				$(this).find("td:nth-child(2) select").select2().attr({name:"challan_rows["+i+"][item_id]", id:"challan_rows-"+i+"-item_id"}).rules("add", "required");
+				$(this).find("td:nth-child(3) input").attr({name:"challan_rows["+i+"][quantity]", id:"challan_rows-"+i+"-quantity"}).rules('add', {
+						required: true,
+						digits: true,
+						min: 1,
+						messages: {
+							min: "Quantity can't be zero."
+						}
+					});
+				$(this).find("td:nth-child(4) input").attr({name:"challan_rows["+i+"][rate]", id:"challan_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
+						required: true,
+						number: true,
+						min: 0.01
+					});
+				$(this).find("td:nth-child(5) input").attr({name:"challan_rows["+i+"][amount]", id:"challan_rows-"+i+"-amount"});
+				i++; 
+			});
+			var i=0;
+			$("#main_tb tbody tr.tr2").each(function(){
+				
+				$(this).find("td:nth-child(1) textarea").attr("name","challan_rows["+i+"][description]");
+				i++; 
+			});	
+	}
 	
 	$('#main_tb input').die().live("keyup","blur",function() { 
 		calculate_total();
@@ -624,21 +593,18 @@ $(document).ready(function() {
 	
 		$('#id_radio2').click(function () {
 		
-        $('#vendor_div').show('fast');
 		$('#customer_div').hide('fast');
-		$('#vendor_address_div').show('fast');
 		$('#customer_address_div').hide('fast');
+        $('#vendor_div').show('fast');
+		$('#vendor_address_div').show('fast');
 		$('#invoice_div').hide('fast');
 		$('#invoice_booking_div').show('fast');
 	});
 				 
 	$('#id_radio1').click(function () {
-        $('#vendor_div').hide('fast');
-		$('#customer_div').show('fast');    
-		$('#vendor_address_div').hide('fast');
+        $('#customer_div').show('fast');    
 		$('#customer_address_div').show('fast');
 		$('#invoice_div').show('fast');
-		$('#invoice_booking_div').hide('fast');
 	});
 	
 	if ($('#id_radio2').is(':checked')) {
@@ -656,7 +622,7 @@ $(document).ready(function() {
 		$('#customer_address_div').show('fast');
 		$('#invoice_div').show('fast');
 		$('#invoice_booking_div').hide('fast');
-                }
+        }
 });
 
 </script>
