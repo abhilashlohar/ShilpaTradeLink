@@ -236,7 +236,9 @@ class SalesOrdersController extends AppController
 		$process_status='New';
 		if(!empty($quotation_id)){
 			$quotation = $this->SalesOrders->Quotations->get($quotation_id, [
-				'contain' => ['QuotationRows' => ['Items']]
+				'contain' => ['QuotationRows' => ['Items'],'Customers'=>['CustomerAddress' => function($q){
+					return $q->where(['default_address'=>1]);
+				}]]
 			]);
 			$process_status='Pulled From Quotation';
 			
