@@ -17,9 +17,15 @@
 			<td><?= h(($Invoice->in1.'/IN-'.str_pad($Invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$Invoice->in3.'/	'.$Invoice->in4)) ?></td>
 			<td align="right" ><?php echo $this->Number->format($Invoice->due_payment,[ 'places' => 2]); ?></td>
 			<td align="right" width="120">
-				<input type="text" name="amount" class="form-control input-sm amount_box" placeholder="Amount" max="<?php echo $Invoice->due_payment; ?>" readonly="readonly" invoice_amount="<?php echo $Invoice->due_payment; ?>">
+				<input type="text" name="amount" class="form-control input-sm amount_box" placeholder="Amount" max="<?php echo $Invoice->due_payment; ?>" readonly="readonly" invoice_amount="<?php echo $Invoice->due_payment; ?>" />
 			</td>
 		</tr>
 	<?php } ?>
 	</tbody>
+	<tfoot>
+		<tr>
+			<td align="right" colspan="4"></td>
+			<td><input type="text" name="total_amount_agst" class="form-control input-sm" readonly="readonly" placeholder="Total" /></td>
+		</tr>
+	</tfoot>
 </table>

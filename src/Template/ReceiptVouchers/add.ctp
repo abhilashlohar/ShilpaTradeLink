@@ -82,7 +82,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Amount<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount']); ?>
+							<?php echo $this->Form->input('amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','id'=>'total_received_amount']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -94,9 +94,38 @@
 				</div>
 				
 				<br/>
-				<div style="width: 50%;" id="pending_invpice_container">
+				<table width="100%">
+					<tr>
+						<td width="45%" valign="top" id="pending_invpice_container"></td>
+						<td></td>
+						<td width="45%" valign="top">
+							<h4>Adjust received amount</h4>
+							<table class="table tableitm" id="main_tb" >
+								<thead>
+									<tr>
+										<th width="3%">Sr.No. </th>
+										<th width="30%">Type</th>
+										<th width="37%">Reference</th>
+										<th width="20%">Amount</th>
+										<th width="10%"></th>
+									</tr>
+								</thead>
+								<tbody id="main_tbody">
+								
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="3" align="right"><b>Total</b></td>
+										<td><?php echo $this->Form->input('total_of_breakups', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','readonly']); ?></td>
+										<td></td>
+									</tr>
+								</tfoot>
+							</table>
+						</td>
+					</tr>
+				</table>
 				
-				</div>
+				<label class="control-label">Total adjusted amount</label> <input type="text" name="total_adjusted_amount" class="form-control input-sm" readonly="readonly" placeholder="Total Adjusted Amount" style="width:200px;"/>
 			</div>
 		
 			<div class="form-actions">
@@ -120,9 +149,15 @@ $(document).ready(function() {
 		focusInvalid: true, // do not focus the last invalid input
 		ignore: [],
 		rules: {
-			
+			total_adjusted_amount: {
+				equalTo: "#total_received_amount"
+			},
 		},
-
+		messages: {
+			total_adjusted_amount: {
+				equalTo: "Please adjust complete received amount."
+			},
+		},
 		errorPlacement: function (error, element) { // render error placement for each input type
 			if (element.parent(".input-group").size() > 0) {
 				error.insertAfter(element.parent(".input-group"));
@@ -144,7 +179,7 @@ $(document).ready(function() {
 		invalidHandler: function (event, validator) { //display error alert on form submit   
 			success3.hide();
 			error3.show();
-			Metronic.scrollTo(error3, -200);
+			//Metronic.scrollTo(error3, -200);
 		},
 
 		highlight: function (element) { // hightlight error inputs
@@ -168,6 +203,46 @@ $(document).ready(function() {
 			form[0].submit(); // submit the form
 		}
 
+	});
+	
+	$('.addrow').die().live("click",function() { 
+		add_row();
+    });
+	
+	add_row();
+	function add_row(){
+		var tr1=$("#sample_tb tbody tr").clone();
+		$("#main_tb tbody#main_tbody").append(tr1);
+		rename_rows_new_ref();
+	}
+	
+	function rename_rows_new_ref(){
+		var i=0;
+		$("#main_tb tbody#main_tbody tr").each(function(){
+			$(this).find("td:nth-child(1)").html(++i); i--;
+			$(this).find("td:nth-child(2) select").attr({name:"receipt_breakups["+i+"][type]", id:"receipt_breakups-"+i+"-type"}).rules("add", "required");
+			
+			var type=$(this).find("td:nth-child(2) option:selected").val();
+			if(type=='On Account' || type==''){
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"receipt_breakups["+i+"][q]", id:"receipt_breakups-"+i+"-q"}).rules("remove", "required");
+			}else{
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"receipt_breakups["+i+"][new_ref_no]", id:"receipt_breakups-"+i+"-new_ref_no"}).rules("remove", "required");
+			}
+			
+			$(this).find("td:nth-child(4) input").attr({name:"receipt_breakups["+i+"][amount]", id:"receipt_breakups-"+i+"-amount"}).rules("add", "required");
+			i++;
+		});
+	}
+	
+	$('.type').die().live("change",function() {
+		var type=$(this).find('option:selected').val();
+		if(type=='On Account' || type==''){
+			$(this).closest('tr').find('td:nth-child(3)').find('input:eq(0)').hide();
+		}else{
+			$(this).closest('tr').find('td:nth-child(3)').find('input:eq(0)').show();
+		}
+		
+		rename_rows_new_ref();
 	});
 	
 	$(".check_row").die().live("click",function() {
@@ -202,11 +277,9 @@ $(document).ready(function() {
 		<tr>
 			<td>0</td>
 			<td><?php 
-			$options=['Against Ref'=>'Against Ref','New Ref'=>'New Ref','On Account'=>'On Account','Advance'=>'Advance'];
+			$options=['New Ref'=>'New Ref','On Account'=>'On Account','Advance'=>'Advance'];
 			echo $this->Form->input('type', ['empty'=>'--select--','options' => $options,'label' => false,'class' => 'form-control input-sm type','placeholder' => 'Rate']); ?></td>
 			<td>
-				<a href="#" role="button" class="select_ref" style="display:none;">Select Ref</a>
-				<?php echo $this->Form->input('invoice_id', ['type' => 'hidden','class' => 'my_item']); ?>
 				<?php echo $this->Form->input('new_ref', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Type New Ref','style'=>'display:none']); ?>
 			</td>
 			<td><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
