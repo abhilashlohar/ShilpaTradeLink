@@ -1,6 +1,6 @@
 <?php  ?>
 <h4>Due Invoices of <?= h($Customer->customer_name) ?></h4>
-<table class="table table-hover">
+<table class="table table-hover" id="due_receipt">
 	<thead>
 		<tr>
 			<th></th>
@@ -12,7 +12,7 @@
 	</thead>
 	<tbody>
 	<?php $i=0; foreach($Invoices as $Invoice){ ?>
-		<tr>
+		<tr class="tr1">
 			<td><input type="checkbox" value="<?= h($Invoice->id) ?>" class="check_row" name="invoice_record[<?php echo $i; ?>][checkbox]" /></td>
 			<td><?php echo ++$i; $i--;  ?></td>
 			<td><?= h(($Invoice->in1.'/IN-'.str_pad($Invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$Invoice->in3.'/	'.$Invoice->in4)) ?></td>

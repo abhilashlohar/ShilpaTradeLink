@@ -66,7 +66,7 @@ class ReceiptVouchersController extends AppController
 			$receiptVoucher->created_on=date("Y-m-d");
 			$receiptVoucher->company_id=$st_company_id;
 				
-			pr($receiptVoucher); exit;	
+
             if ($this->ReceiptVouchers->save($receiptVoucher)) {
 				
 				//Ledger posting for Received From Entity

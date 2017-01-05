@@ -206,6 +206,7 @@ $(document).ready(function() {
 	
 	$('.addrow').die().live("click",function() { 
 		add_row();
+		
     });
 	
 	add_row();
@@ -213,6 +214,7 @@ $(document).ready(function() {
 		var tr1=$("#sample_tb tbody tr").clone();
 		$("#main_tb tbody#main_tbody").append(tr1);
 		rename_rows_new_ref();
+		
 	}
 	
 	function rename_rows_new_ref(){
@@ -230,6 +232,7 @@ $(document).ready(function() {
 			
 			$(this).find("td:nth-child(4) input").attr({name:"new_ref_record["+i+"][amount]", id:"new_ref_record-"+i+"-amount"}).rules("add", "required");
 			i++;
+			
 		});
 	}
 	
@@ -249,14 +252,18 @@ $(document).ready(function() {
 			$(this).closest('tr').find('.amount_box').removeAttr('readonly');
 			var invoice_amount=$(this).closest('tr').find('.amount_box').attr('invoice_amount');
 			$(this).closest('tr').find('.amount_box').val(invoice_amount);
+			calculation_for_total();
+   
 		}else{
 			$(this).closest('tr').find('.amount_box').attr('readonly','readonly');
 			$(this).closest('tr').find('.amount_box').val('');
+			calculation_for_total();
 		}
 	});
 	
 	$('select[name="received_from_id"]').die().live("change",function() {
 		var received_from_id=$(this).find('option:selected').val();
+		
 		$("#pending_invpice_container").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 		var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'DueInvoicesForReceipt']); ?>";
 		url=url+'/'+received_from_id,
@@ -267,12 +274,32 @@ $(document).ready(function() {
 			Metronic.init();
 		});
 	});
-	
+	calculation_for_total();
 	$('input').live("keyup",function() {
 		calculation_for_total();
 	});
-	function calculation_for_total(){
-		alert();
+	
+	function calculation_for_total(){  
+		var total_left=0; var total_right=0; var sum=0;
+		$("#due_receipt tbody tr.tr1").each(function(){ 
+			var val=$(this).find('td:nth-child(1) input[type="checkbox"]:checked').val();
+			if(val){
+				var qty=parseFloat($(this).find('.amount_box').val());
+				total_left=total_left+qty;
+			} 
+			$('input[name="total_amount_agst"]').val(total_left.toFixed(2));	
+			
+		});
+		
+		$("#main_tb tbody tr").each(function(){
+			var amount=parseFloat($(this).find("td:nth-child(4) input").val());
+			if(!amount){ amount=0; }
+			total_right=total_right+amount;
+			$('input[name="total_of_breakups"]').val(total_right.toFixed(2));	
+			}); 
+			sum=total_right+total_left;
+			$('input[name="total_adjusted_amount"]').val(sum.toFixed(2));	
+		
 	}
 	
 });
