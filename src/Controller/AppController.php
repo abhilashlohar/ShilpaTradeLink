@@ -85,7 +85,7 @@ class AppController extends Controller
 		
 		$this->loadModel('pages');
 		$page=$this->pages->find()->where(['controller'=>$controller,'action'=>$action])->first();
-		if(!empty($page->id) and !in_array($page->id,$allowed_pagesaction)){
+		if(!empty($page->id) and !in_array($page->id,$allowed_pages)){
 			$this->viewBuilder()->layout('index_layout');
 			$this -> render('/Error/not_allow'); 
 		}
