@@ -21,6 +21,7 @@
 						</div>
 					</div>
 				</div>
+				
 				<div class="form-group">
 					<label class="control-label col-md-3">Description (Quotation)
 					</label>
@@ -108,7 +109,7 @@
 					<tr>
 						<th>Sr. No.</th>
 						<th>Figure</th>
-				
+						<th>Freeze</th>
 						
 						<th class="actions"><?= __('Actions') ?></th>
 					</tr>
@@ -116,8 +117,11 @@
 				<tbody>
 					<?php $i=0; foreach ($saleTaxes as $saleTax): $i++; ?>
 					<tr>
+						<?php if($saleTax->freeze==1) { $saletax ="Yes"; } else 
+							{ $saletax ="No"; } ?>
 						<td><?= h($i) ?></td>
 						<td><?= $this->Number->format($saleTax->tax_figure,[ 'places' => 2]) ?></td>
+						<td><?php echo $saletax; ?></td>
 						<td class="actions">
 							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $saleTax->id]) ?>
 							<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $saleTax->id], ['confirm' => __('Are you sure you want to delete # {0}?', $saleTax->id)]) ?>
