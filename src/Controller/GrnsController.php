@@ -122,6 +122,7 @@ class GrnsController extends AppController
 							$itemLedger = $this->Grns->ItemLedgers->newEntity();
 							$itemLedger->item_id = $item_id;
 							$itemLedger->quantity = $qty;
+							$itemLedger->company_id = $grn->company_id;
 							$itemLedger->source_model = 'Grns';
 							$itemLedger->source_id = $grn->id;
 							$itemLedger->in_out = 'In';
@@ -164,10 +165,7 @@ class GrnsController extends AppController
 					]
 			]);
 		
-		
-
-       
-        if ($this->request->is(['patch', 'post', 'put'])) {
+			if ($this->request->is(['patch', 'post', 'put'])) {
             $grn = $this->Grns->patchEntity($grn, $this->request->data);
             if ($this->Grns->save($grn)) {
 				

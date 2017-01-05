@@ -285,6 +285,7 @@ class InvoicesController extends AppController
 				$ledger->credit = 0;
 				$ledger->voucher_id = $invoice->id;
 				$ledger->voucher_source = 'Invoice';
+				$ledger->company_id = $invoice->company_id;
 				$ledger->transaction_date = $invoice->date_created;
 				
 				if($ledger_grand>0)
@@ -299,6 +300,7 @@ class InvoicesController extends AppController
 				$ledger->debit = 0;
 				$ledger->credit = $invoice->total_after_pnf;
 				$ledger->voucher_id = $invoice->id;
+				$ledger->company_id = $invoice->company_id;
 				$ledger->transaction_date = $invoice->date_created;
 				$ledger->voucher_source = 'Invoice';
 				if($ledger_pnf>0)
@@ -317,6 +319,7 @@ class InvoicesController extends AppController
 				$ledger->debit = 0;
 				$ledger->credit = $invoice->sale_tax_amount;
 				$ledger->voucher_id = $invoice->id;
+				$ledger->company_id = $invoice->company_id;
 				$ledger->transaction_date = $invoice->date_created;
 				$ledger->voucher_source = 'Invoice';
 				if($ledger_saletax>0)
@@ -334,6 +337,7 @@ class InvoicesController extends AppController
 				$ledger->debit = 0;
 				$ledger->credit = $invoice->fright_amount;
 				$ledger->voucher_id = $invoice->id;
+				$ledger->company_id = $invoice->company_id;
 				$ledger->transaction_date = $invoice->date_created;
 				$ledger->voucher_source = 'Invoice';
 				if($ledger_fright>0)
@@ -360,6 +364,7 @@ class InvoicesController extends AppController
 						$itemLedger->source_model = 'Invoices';
 						$itemLedger->source_id = $invoice->id;
 						$itemLedger->in_out = 'Out';
+						$itemLedger->company_id = $invoice->company_id;
 						$itemLedger->processed_on = date("Y-m-d");
 						$this->Invoices->ItemLedgers->save($itemLedger);
 						
@@ -445,6 +450,7 @@ class InvoicesController extends AppController
 				$ledger->debit = $invoice->grand_total;
 				$ledger->credit = 0;
 				$ledger->voucher_id = $invoice->id;
+				$ledger->company_id = $invoice->company_id;
 				$ledger->voucher_source = 'Invoice';
 				$ledger->transaction_date = $invoice->date_created;
 				
@@ -460,6 +466,7 @@ class InvoicesController extends AppController
 				$ledger->debit = 0;
 				$ledger->credit = $invoice->total_after_pnf;
 				$ledger->voucher_id = $invoice->id;
+				$ledger->company_id = $invoice->company_id;
 				$ledger->transaction_date = $invoice->date_created;
 				$ledger->voucher_source = 'Invoice';
 				if($ledger_pnf>0)
@@ -478,6 +485,7 @@ class InvoicesController extends AppController
 				$ledger->debit = 0;
 				$ledger->credit = $invoice->sale_tax_amount;
 				$ledger->voucher_id = $invoice->id;
+				$ledger->company_id = $invoice->company_id;
 				$ledger->transaction_date = $invoice->date_created;
 				$ledger->voucher_source = 'Invoice';
 				if($ledger_saletax>0)
@@ -495,6 +503,7 @@ class InvoicesController extends AppController
 				$ledger->debit = 0;
 				$ledger->credit = $invoice->fright_amount;
 				$ledger->voucher_id = $invoice->id;
+				$ledger->company_id = $invoice->company_id;
 				$ledger->transaction_date = $invoice->date_created;
 				$ledger->voucher_source = 'Invoice';
 				if($ledger_fright>0)
