@@ -9,8 +9,8 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $type
  * @property string $new_ref_no
- * @property int $invoice_id
  * @property int $receipt_voucher_id
+ * @property int $invoice_id
  * @property float $amount
  *
  * @property \App\Model\Entity\Invoice $invoice

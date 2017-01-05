@@ -9,8 +9,8 @@ use Cake\Validation\Validator;
 /**
  * ReceiptBreakups Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Invoices
  * @property \Cake\ORM\Association\BelongsTo $ReceiptVouchers
+ * @property \Cake\ORM\Association\BelongsTo $Invoices
  *
  * @method \App\Model\Entity\ReceiptBreakup get($primaryKey, $options = [])
  * @method \App\Model\Entity\ReceiptBreakup newEntity($data = null, array $options = [])
@@ -37,12 +37,12 @@ class ReceiptBreakupsTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
-        $this->belongsTo('Invoices', [
-            'foreignKey' => 'invoice_id',
-            'joinType' => 'INNER'
-        ]);
         $this->belongsTo('ReceiptVouchers', [
             'foreignKey' => 'receipt_voucher_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Invoices', [
+            'foreignKey' => 'invoice_id',
             'joinType' => 'INNER'
         ]);
     }
@@ -84,8 +84,8 @@ class ReceiptBreakupsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['invoice_id'], 'Invoices'));
         $rules->add($rules->existsIn(['receipt_voucher_id'], 'ReceiptVouchers'));
+        $rules->add($rules->existsIn(['invoice_id'], 'Invoices'));
 
         return $rules;
     }

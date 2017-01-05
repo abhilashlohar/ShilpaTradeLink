@@ -67,18 +67,19 @@ class ReceiptBreakupsTableTest extends TestCase
         'app.invoice_rows',
         'app.quotation_rows',
         'app.item_ledgers',
+        'app.job_card_rows',
+        'app.job_cards',
         'app.sale_taxes',
         'app.quotation_close_reasons',
-        'app.customer_contacts',
         'app.email_records',
+        'app.customer_contacts',
         'app.customer_segs',
         'app.account_references',
         'app.receipt_vouchers',
         'app.vouchers_references',
         'app.voucher_ledger_accounts',
         'app.received_froms',
-        'app.bank_cashes',
-        'app.receipt_effects'
+        'app.bank_cashes'
     ];
 
     /**

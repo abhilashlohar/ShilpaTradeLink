@@ -219,16 +219,16 @@ $(document).ready(function() {
 		var i=0;
 		$("#main_tb tbody#main_tbody tr").each(function(){
 			$(this).find("td:nth-child(1)").html(++i); i--;
-			$(this).find("td:nth-child(2) select").attr({name:"receipt_breakups["+i+"][type]", id:"receipt_breakups-"+i+"-type"}).rules("add", "required");
+			$(this).find("td:nth-child(2) select").attr({name:"new_ref_record["+i+"][type]", id:"new_ref_record-"+i+"-type"}).rules("add", "required");
 			
 			var type=$(this).find("td:nth-child(2) option:selected").val();
 			if(type=='On Account' || type==''){
-				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"receipt_breakups["+i+"][q]", id:"receipt_breakups-"+i+"-q"}).rules("remove", "required");
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"new_ref_record["+i+"][q]", id:"new_ref_record-"+i+"-q"}).rules("remove", "required");
 			}else{
-				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"receipt_breakups["+i+"][new_ref_no]", id:"receipt_breakups-"+i+"-new_ref_no"}).rules("add", "required");
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"new_ref_record["+i+"][new_ref_no]", id:"new_ref_record-"+i+"-new_ref_no"}).rules("add", "required");
 			}
 			
-			$(this).find("td:nth-child(4) input").attr({name:"receipt_breakups["+i+"][amount]", id:"receipt_breakups-"+i+"-amount"}).rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr({name:"new_ref_record["+i+"][amount]", id:"new_ref_record-"+i+"-amount"}).rules("add", "required");
 			i++;
 		});
 	}
@@ -267,6 +267,13 @@ $(document).ready(function() {
 			Metronic.init();
 		});
 	});
+	
+	$('input').live("keyup",function() {
+		calculation_for_total();
+	});
+	function calculation_for_total(){
+		alert();
+	}
 	
 });
 </script>
