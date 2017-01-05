@@ -1,3 +1,4 @@
+
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -71,7 +72,7 @@
 									<?php echo $this->Form->input('ch1', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
 								</div>
 								<div class="col-md-4" id="ch3_div">
-									<?php echo $this->Form->input('ch3', ['empty' => "Select",'options'=>$filenames,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+									<?php echo $this->Form->input('ch3', ['empty' => "Select",'options'=>$filenames,'label' => false,'class' => 'form-control input-sm select2me','value'=>$challan->ch3]); ?>
 								</div>
 								<div class="col-md-4">
 									<?php echo $this->Form->input('ch4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
@@ -297,15 +298,20 @@ $(document).ready(function() {
 				company_id:{
 					required: true,
 				},
-				
 				customer_id : {
-					  required: true,
+					required: true,
 				},
 				customer_address : {
-					  required: true,
+					required: true,
 				},
 				vendor_id : {
 					required: true,
+				},
+				invoice_id:{
+					required: true,	
+				},
+				invoice_booking_id:{
+					required: true,	
 				},
 				
 			},
@@ -605,6 +611,10 @@ $(document).ready(function() {
         $('#customer_div').show('fast');    
 		$('#customer_address_div').show('fast');
 		$('#invoice_div').show('fast');
+		$('#vendor_div').hide('fast');
+		$('#vendor_address_div').hide('fast');
+		$('#invoice_booking_div').hide('fast');
+		
 	});
 	
 	if ($('#id_radio2').is(':checked')) {

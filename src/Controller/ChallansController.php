@@ -145,12 +145,15 @@ class ChallansController extends AppController
 			$challan->created_by=$s_employee_id; 
 			$challan->company_id=$st_company_id;
 			$challan->created_on=date("Y-m-d",strtotime($challan->created_on));
-			//pr($challan); exit;
+			$customer_id=$challan->customer_id;
+			$vendor_id=$challan->vendor_id;
+			
             if ($this->Challans->save($challan)) {
                 $this->Flash->success(__('The challan has been saved.'));
 
                   return $this->redirect(['action' => 'confirm/'.$challan->id]);
             } else {
+				
                 $this->Flash->error(__('The challan could not be saved. Please, try again.'));
             }
         }
@@ -195,12 +198,27 @@ class ChallansController extends AppController
 			$challan->created_by=$s_employee_id; 
 			$challan->company_id=$st_company_id;
 			$challan->created_on=date("Y-m-d",strtotime($challan->created_on));
+			$customer_id=$challan->customer_id;
+			$vendor_id=$challan->vendor_id;
+			
+			if(empty($customer_id))
+			{
+			$challan->customer_id =0;
+			$challan->invoice_id =0;
+			$challan->customer_address ='';
+			}
+			if(empty($vendor_id))
+			{
+			$challan->vendor_id =0;	
+			$challan->invoice_booking_id =0;
+			$challan->vendor_address ='';
+			}
             if ($this->Challans->save($challan)) {
 				
                 $this->Flash->success(__('The challan has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+				return $this->redirect(['action' => 'index']);
             } else {
+				
                 $this->Flash->error(__('The challan could not be saved. Please, try again.'));
             }
         }
