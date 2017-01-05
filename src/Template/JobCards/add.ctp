@@ -262,7 +262,7 @@ $(document).ready(function() {
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
 			if(l>1){  
-			 $(this).closest('tr').remove(); 
+			 $(this).closest('tr').remove();
 				var i=0; 
 				$("#main_tb tbody#maintbody tr.main_tr").each(function(){
 					var sales_order_row_id=$(this).find("td:nth-child(1) input").val();
