@@ -59,16 +59,12 @@
 				</div><br/>
 
 			
-				<div class="alert alert-danger" id="row_error_item" style="display:none;padding: 5px !important;">
-					Please check at least one row.
-				</div>
 				<table class="table tableitm" id="main_tb">
 					<thead>
 						<tr>
 							<th width="10%">Sr.No. </th>
-							<th width="60%">Items</th>
+							<th width="70%">Items</th>
 							<th width="20%">Quantity</th>
-							<th width="10%"></th>
 							
 						</tr>
 					</thead>
@@ -97,11 +93,9 @@
 								</td>
 								<td>
 								
-								<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$grn_rows->quantity-$grn_rows->processed_quantity,'readonly','min'=>'1','max'=>$total_items[$grn_rows->item_id]-$processed_items[$grn_rows->item_id]+$grn_rows->quantity]); ?>
+								<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$grn_rows->quantity-$grn_rows->processed_quantity,'min'=>'1','max'=>$total_items[$grn_rows->item_id]-$processed_items[$grn_rows->item_id]+$grn_rows->quantity]); ?>
 								</td>
-								<td>
-									<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$grn_rows->id]); ?></label>
-								</td>
+								
 							</tr>
 							<tr class="tr2" row_no='<?php echo @$grn_rows->id; ?>'>
 								<td colspan="2">
@@ -116,7 +110,7 @@
 			<div class="form-actions">
 				<div class="row">
 					<div class="col-md-offset-3 col-md-9">
-						<button type="submit" class="btn btn-primary">ADD GRN</button>
+						<button type="submit" class="btn btn-primary">EDIT GRN</button>
 					</div>
 				</div>
 			</div>
@@ -193,21 +187,7 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			var check_d=0;
-				$(".rename_check").each(function () {
-					if($(this).prop('checked'))
-					{
-						check_d=1;
-					}
-				});
-			if(check_d==0)
-			{
-				$("#row_error_item").show();
-				success3.hide();
-				error3.show();
-				Metronic.scrollTo(error3, -200);
-				return false;
-			}
+			
 			success1.show();
 			error1.hide();
 			form[0].submit(); // submit the form
@@ -233,28 +213,18 @@ $(document).ready(function() {
 			return false;  
 		}
 	});
+	rename_rows();
 	
-	$('.rename_check').die().live("click",function() {
-		rename_rows();
-    });
 	
 	function rename_rows(){
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
-			var val=$(this).find('td:nth-child(4) input[type="checkbox"]:checked').val();
-			if(val){
-				$(this).find('td:nth-child(2) input').attr({ name:"grn_rows["+val+"][item_id]"});
-				$(this).find('td:nth-child(3) input').attr({ name:"grn_rows["+val+"][quantity]", id:"grn_rows-"+val+"-quantity"}).removeAttr('readonly');
-				
+			
+				$(this).find('td:nth-child(2) input').attr({ name:"grn_rows["+row_no+"][item_id]"});
+				$(this).find('td:nth-child(3) input').attr({ name:"grn_rows["+row_no+"][quantity]", id:"grn_rows-"+row_no+"-quantity"}).removeAttr('readonly');
 				$(this).css('background-color','#fffcda');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
-			}else{
-				$(this).find('td:nth-child(2) input').attr({ name:"q"});
-				$(this).find('td:nth-child(3) input').attr({ name:"q", id:"q",readonly:"readonly"});
-				
-				$(this).css('background-color','#FFF');
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
-			}
+			
 		});
 	}
 });		

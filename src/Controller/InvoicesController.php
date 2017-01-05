@@ -521,7 +521,7 @@ class InvoicesController extends AppController
 					$this->Invoices->SalesOrderRows->save($salesorderrow);
 				$qq++; 
 					$query = $this->Invoices->ItemLedgers->query();
-				$query->update()
+					$query->update()
 					->set(['quantity' => $qty])
 					->where(['item_id' => $item_id, 'source_id' => $invoice->id, 'source_model'=> 'Invoices'])
 					->execute();

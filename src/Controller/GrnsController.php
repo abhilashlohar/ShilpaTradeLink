@@ -167,14 +167,22 @@ class GrnsController extends AppController
 		
 			if ($this->request->is(['patch', 'post', 'put'])) {
             $grn = $this->Grns->patchEntity($grn, $this->request->data);
-            if ($this->Grns->save($grn)) {
-				
-                $this->Flash->success(__('The grn has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The grn could not be saved. Please, try again.'));
-            }
-        }
+				if ($this->Grns->save($grn)) {
+					foreach($grn->grn_rows as $grn_row){
+							$qty=$grn_row->quantity;
+							$item_id=$grn_row->item_id;
+							$query = $this->Grns->ItemLedgers->query();
+							$query->update()
+							->set(['quantity' => $qty])
+							->where(['item_id' => $item_id, 'source_id' => $grn->id, 'source_model'=> 'Grns'])
+							->execute();
+					}
+					$this->Flash->success(__('The grn has been saved.'));
+					return $this->redirect(['action' => 'index']);
+				} else {
+					$this->Flash->error(__('The grn could not be saved. Please, try again.'));
+				}
+			}
         $purchaseOrders = $this->Grns->PurchaseOrders->find('list', ['limit' => 200]);
         $companies = $this->Grns->Companies->find('list', ['limit' => 200]);
         $this->set(compact('grn', 'purchaseOrders', 'companies'));
