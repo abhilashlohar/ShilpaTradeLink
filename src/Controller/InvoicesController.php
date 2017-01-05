@@ -512,10 +512,20 @@ class InvoicesController extends AppController
 				}
 				
 				$qq=0; foreach($invoice->invoice_rows as $invoice_rows){
+					
+					$item_id=$invoice_rows->item_id;
+					$qty=$invoice_rows->quantity;
+						
 					$salesorderrow=$this->Invoices->SalesOrderRows->find()->where(['sales_order_id'=>$invoice->sales_order_id,'item_id'=>$invoice_rows->item_id])->first();
 					$salesorderrow->processed_quantity=$salesorderrow->processed_quantity-$invoice->getOriginal('invoice_rows')[$qq]->quantity+$invoice_rows->quantity;
 					$this->Invoices->SalesOrderRows->save($salesorderrow);
-				$qq++; }
+				$qq++; 
+					$query = $this->Invoices->ItemLedgers->query();
+				$query->update()
+					->set(['quantity' => $qty])
+					->where(['item_id' => $item_id, 'source_id' => $invoice->id, 'source_model'=> 'Invoices'])
+					->execute();
+				}
                 $this->Flash->success(__('The invoice has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
