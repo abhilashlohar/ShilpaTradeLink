@@ -20,7 +20,7 @@ class JobCardsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => []
+            'contain' => ['SalesOrders']
         ];
         $jobCards = $this->paginate($this->JobCards->find()->order(['JobCards.id' => 'DESC']));
 		
@@ -59,14 +59,20 @@ class JobCardsController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		
 		$sales_order_id=@(int)$this->request->query('Sales-Order');
-		
+
 		if(!empty($sales_order_id)){
 			$salesOrder = $this->JobCards->SalesOrders->get($sales_order_id, [
 				'contain' => ['Customers','SalesOrderRows'=>['Items'=>function ($q){
-					return $q->where(['Items.source !='=>'Purchessed']);
+					return $q->where(['Items.source' => 'Purchessed/Manufactured']);
 				}]]
 			]);
+			//pr($salesOrder); exit;
 		}
+		
+		
+		
+		
+		
 		$last_jc_no=$this->JobCards->find()->select(['jc2'])->where(['company_id' => $st_company_id])->order(['jc2' => 'DESC'])->first();
 			if($last_jc_no){
 				@$last_jc_no->jc2=$last_jc_no->jc2+1;

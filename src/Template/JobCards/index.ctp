@@ -26,9 +26,7 @@
 					<td><?= date("d-m-Y",strtotime($jobCard->created_on));?></td>
  					<td><?= date("d-m-Y",strtotime($jobCard->required_date));?></td>
 					<td class="actions">
-					<?php if($material_indent=="true"){
-					echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Material Indents','/MaterialIndents/Add?job-cards='.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
-					} ?>
+					
 					<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $jobCard->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
 					<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $jobCard->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 					</td>
