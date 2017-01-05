@@ -116,7 +116,7 @@
 								<tfoot>
 									<tr>
 										<td colspan="3" align="right"><b>Total</b></td>
-										<td><?php echo $this->Form->input('total_of_breakups', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','readonly']); ?></td>
+										<td><?php echo $this->Form->input('total_of_breakups', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','readonly','value'=>'0.00']); ?></td>
 										<td></td>
 									</tr>
 								</tfoot>
@@ -147,7 +147,6 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
-		ignore: [],
 		rules: {
 			total_adjusted_amount: {
 				equalTo: "#total_received_amount"
@@ -226,7 +225,7 @@ $(document).ready(function() {
 			if(type=='On Account' || type==''){
 				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"receipt_breakups["+i+"][q]", id:"receipt_breakups-"+i+"-q"}).rules("remove", "required");
 			}else{
-				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"receipt_breakups["+i+"][new_ref_no]", id:"receipt_breakups-"+i+"-new_ref_no"}).rules("remove", "required");
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"receipt_breakups["+i+"][new_ref_no]", id:"receipt_breakups-"+i+"-new_ref_no"}).rules("add", "required");
 			}
 			
 			$(this).find("td:nth-child(4) input").attr({name:"receipt_breakups["+i+"][amount]", id:"receipt_breakups-"+i+"-amount"}).rules("add", "required");
