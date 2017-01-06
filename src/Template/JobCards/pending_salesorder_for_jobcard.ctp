@@ -35,12 +35,10 @@
 					<?php if(($jobCard->job_card ='Pending') and (sizeof($jobCard->sales_order_rows)==0)){
 					echo $this->Html->link('<i class="fa fa-repeat "></i>  Create Job Card','/JobCards/Add?Sales-Order='.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 					} 
-					elseif(($jobCard->job_card ='Pending') and (sizeof($jobCard->sales_order_rows)==1)){
+					elseif(($jobCard->job_card ='Pending') and (sizeof($jobCard->sales_order_rows)!=0)){
 					echo $this->Html->link('<i class="fa fa-repeat "></i>  Selct Item Source','/JobCards/PreAdd?Pre-add='.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 					} 
-					elseif(($jobCard->job_card ='Pending') and (sizeof($jobCard->sales_order_rows)==1)){
-					echo $this->Html->link('<i class="fa fa-repeat "></i>  Selct Item Source','/JobCards/Add?Sales-Order='.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
-					} 
+					
 					echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $jobCard->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
 					</td>
 				</tr>
