@@ -196,11 +196,14 @@ class JobCardsController extends AppController
 	public function PendingSalesorderForJobcard()
     {
 		$this->viewBuilder()->layout('index_layout');
-        
- 			$jobCards=$this->paginate(
-				$this->JobCards->SalesOrders->find()->contain(['Customers'])->where(['job_card'=>'Pending'])->order(['SalesOrders.id' => 'DESC'])
-			);
-			//pr($jobCard); exit;
+			
+			$query = $this->JobCards->SalesOrders->find()->contain(['SalesOrderRows'=>['Items' => function($q){
+				return $q->where(['source'=>'Purchessed/Manufactured']);
+			}]]);
+ 			$jobCards=$this->paginate($query);
+			
+			
+			
         $this->set('jobCards', $jobCards);
         $this->set('_serialize', ['jobCard']);
     }

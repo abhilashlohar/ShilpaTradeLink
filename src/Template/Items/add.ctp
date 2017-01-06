@@ -18,7 +18,7 @@
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Alias <span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Alias </label>
 							<?php echo $this->Form->input('alias', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Alias']); ?>
 						</div>
 					</div>
@@ -125,7 +125,7 @@
 					<div class="col-md-4">
 						<label class="control-label">Source</label>
 						<div class="checkbox-list">
-							<?php echo $this->Form->radio('source',[['value' => 'Assembled', 'text' => 'Assembled'],['value' => 'Purchessed', 'text' => 'Purchessed'],['value' => 'Manufactured', 'text' => 'Manufactured'],['value'=>'Purchessed / Manufactured','text'=>'Purchessed / Manufactured']]); ?>
+							<?php echo $this->Form->radio('source',[['value' => 'Assembled', 'text' => 'Assembled'],['value' => 'Purchessed', 'text' => 'Purchessed'],['value' => 'Manufactured', 'text' => 'Manufactured'],['value'=>'Purchessed/Manufactured','text'=>'Purchessed/Manufactured']]); ?>
 						</div>
 					</div>
 				</div>

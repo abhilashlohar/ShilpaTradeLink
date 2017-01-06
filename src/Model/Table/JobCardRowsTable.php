@@ -44,7 +44,8 @@ class JobCardRowsTable extends Table
         ]);
         $this->belongsTo('SalesOrderRows', [
             'foreignKey' => 'sales_order_row_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
+			'counterCache' => true
         ]);
         $this->belongsTo('Items', [
             'foreignKey' => 'item_id',
