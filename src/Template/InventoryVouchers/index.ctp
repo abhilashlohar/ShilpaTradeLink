@@ -14,7 +14,7 @@
 						<tr>
 							<th>Sr. No.</th>
 							<th>Inventory Voucher No</th>
-							<th>Customer</th>
+							
 							
 							<th class="actions"><?= __('Actions') ?></th>
 						</tr>
@@ -24,7 +24,7 @@
 						<tr>
 							<td><?= h(++$page_no) ?></td>
 							<td><?= h(($inventoryVoucher->iv1.'/IV-'.str_pad($inventoryVoucher->iv2, 3, '0', STR_PAD_LEFT).'/'.$inventoryVoucher->iv3.'/'.$inventoryVoucher->iv4)) ?></td>
-							<td><?= h($inventoryVoucher->invoice_row->item->name) ?></td>
+						
 							<td>
 							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $inventoryVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
 							

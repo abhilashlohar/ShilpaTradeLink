@@ -204,7 +204,7 @@ $(document).ready(function() {
 		var i=0; 
 		$("#main_tb tbody#maintbody tr.main_tr").each(function(){
 			var sales_order_row_id=$(this).find("td:nth-child(1) input").val();
-			alert(sales_order_row_id);
+			
 			i++;
 			$(this).find("td:nth-child(2) textarea").attr({name:"job_card_rows["+i+"][remark]", id:"job_card_rows-"+i+"-remark"});
 			i--;

@@ -20,7 +20,7 @@ class InventoryVouchersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['InventoryVoucherRows','InvoiceRows'=>['Items']]
+            'contain' => ['InventoryVoucherRows']
         ];
         $inventoryVouchers = $this->paginate($this->InventoryVouchers->find()->order(['InventoryVouchers.id' => 'DESC']));
 
@@ -39,7 +39,7 @@ class InventoryVouchersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 	   $inventoryVoucher = $this->InventoryVouchers->get($id, [
-            'contain' => ['Companies','Invoices','Items','Creator','InvoiceRows','InventoryVoucherRows'=>['Items']]
+            'contain' => ['Companies','Items','Creator','InventoryVoucherRows'=>['Items']]
         ]);
 		
 		 $this->set('inventoryVoucher', $inventoryVoucher);
@@ -65,7 +65,6 @@ class InventoryVouchersController extends AppController
 			]);
 			//pr($salesOrder); exit;
 		}
-		$inventoryVoucher = $this->InventoryVouchers->newEntity();
 		//pr($this->request->data); exit;
 		$last_iv_no=$this->InventoryVouchers->find()->select(['iv2'])->order(['iv2' => 'DESC'])->first();
 			if($last_iv_no){
@@ -74,14 +73,12 @@ class InventoryVouchersController extends AppController
 				@$last_iv_no->iv2=1;
 			}
 		
+		$inventoryVoucher = $this->InventoryVouchers->newEntity();
         if ($this->request->is('post')) {
-			
-            
-			//pr($inventoryVoucher->invoice_row_id); exit;
+			$inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);
+			$inventoryVoucher->job_card_id=$jobcard_id;
             if ($this->InventoryVouchers->save($inventoryVoucher)) {
 				
-				$InvoiceRow->inventory_voucher='Done';
-				$this->InventoryVouchers->InvoiceRows->save($InvoiceRow);
                 $this->Flash->success(__('The inventory voucher has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

@@ -74,21 +74,6 @@ class InventoryVouchersTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->requirePresence('iv1', 'create')
-            ->notEmpty('iv1');
-
-        $validator
-            ->requirePresence('iv2', 'create')
-            ->notEmpty('iv2');
-
-        $validator
-            ->requirePresence('iv3', 'create')
-            ->notEmpty('iv3');
-
-        $validator
-            ->requirePresence('iv4', 'create')
-            ->notEmpty('iv4');
 
         return $validator;
     }
@@ -100,11 +85,5 @@ class InventoryVouchersTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
-    {
-        $rules->add($rules->existsIn(['invoice_id'], 'Invoices'));
-        $rules->add($rules->existsIn(['invoice_row_id'], 'InvoiceRows'));
-
-        return $rules;
-    }
+    
 }
