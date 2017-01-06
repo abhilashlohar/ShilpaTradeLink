@@ -39,7 +39,10 @@ class SalesOrdersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 		$this->belongsTo('Filenames');
-
+		$this->belongsTo('JobCards', [
+            'foreignKey' => 'jobcard_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'

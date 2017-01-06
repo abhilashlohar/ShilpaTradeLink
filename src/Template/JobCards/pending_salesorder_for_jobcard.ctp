@@ -20,8 +20,10 @@
 					<td style="font-size:120%;">Action</td>
 				</tr>
 				<tbody>
-		    <?php foreach ($jobCards as $jobCard): ?>
+		    <?php foreach ($jobCards as $jobCard): 
+			//pr($jobCard->sales_order_rows);?>
 				<tr>
+					
 					<td><?= h(++$page_no) ?></td>
 					
 					<td><?= h(($jobCard->so1.'/SO-'.str_pad($jobCard->so2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->so3.'/'.$jobCard->so4))?></td> 
@@ -30,10 +32,16 @@
 					<td><?php echo $jobCard->customer_po_no; ?></td> 
 					
 					<td class="actions">
-					<?php 
+					<?php if(($jobCard->job_card ='Pending') and (sizeof($jobCard->sales_order_rows)==0)){
 					echo $this->Html->link('<i class="fa fa-repeat "></i>  Create Job Card','/JobCards/Add?Sales-Order='.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
-					?>
-					<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $jobCard->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
+					} 
+					elseif(($jobCard->job_card ='Pending') and (sizeof($jobCard->sales_order_rows)==1)){
+					echo $this->Html->link('<i class="fa fa-repeat "></i>  Selct Item Source','/JobCards/PreAdd?Pre-add='.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+					} 
+					elseif(($jobCard->job_card ='Pending') and (sizeof($jobCard->sales_order_rows)==1)){
+					echo $this->Html->link('<i class="fa fa-repeat "></i>  Selct Item Source','/JobCards/Add?Sales-Order='.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+					} 
+					echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $jobCard->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
 					</td>
 				</tr>
 		    <?php endforeach; ?>
