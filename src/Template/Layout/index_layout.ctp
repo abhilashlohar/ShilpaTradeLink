@@ -295,7 +295,7 @@ select
 					</a>
 					<ul class="sub-menu">
 						<?php if(in_array(1,$allowed_pages)){
-						echo '<li>'.$this->Html->link( 'Create', '/Invoices/PendingItemForInventoryVoucher' ).'</li>';
+						echo '<li>'.$this->Html->link( 'Create', '/InventoryVouchers/Add' ).'</li>';
 						} ?>
 						<li><?php echo $this->Html->link( 'View', '/InventoryVouchers' ); ?></li>
 					</ul>

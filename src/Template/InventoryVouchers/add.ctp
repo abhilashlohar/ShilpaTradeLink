@@ -1,52 +1,106 @@
-<?php //pr($invoiceRows); exit; ?>
+<?php //pr($jobCards); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Inventory Vouchers</span>
 		</div>
+		<div class="actions">
+		<?php echo $this->Html->link('<i class="fa fa-files-o"></i> Pull Job-Card','/JobCards?inventory_voucher=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
+		</div>
 	</div>
+	
+	
 	<div class="portlet-body form">
 		<!-- BEGIN FORM-->
-		<?= $this->Form->create($inventoryVoucher,['id'=>'form_sample_3']) ?>
+		 <?= $this->Form->create($inventoryVoucher,['id'=>'form_sample_3']) ?>
 			<div class="form-body">
-				<div class="row">
-					
-					
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Invoice No <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('iv1', ['label' => false,'type'=>'hidden','value'=>$invoiceRows->invoice->in1]); ?>
-							<?php echo $this->Form->input('iv2', ['label' => false,'type'=>'hidden','value'=>$last_iv_no->iv2]); ?>
-							<?php echo $this->Form->input('iv3', ['label' => false,'type'=>'hidden','value'=>$invoiceRows->invoice->in3]); ?>
-							<?php echo $this->Form->input('iv4', ['label' => false,'type'=>'hidden','value'=>$invoiceRows->invoice->in4]); ?>
-							<?php echo $invoiceRows->invoice->in1.'/IN-'.str_pad($invoiceRows->invoice->in2, 3, '0', STR_PAD_LEFT).'/'. $invoiceRows->invoice->in3.'/'. $invoiceRows->invoice->in4; ?>
+
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-5 control-label">Job Card No</label>
+						<div class="col-md-7">
+							
+							<?= h($jobCards->jc1.'/'.str_pad($jobCards->jc2, 3, '0', STR_PAD_LEFT).'/'.$jobCards->jc3.'/'.$jobCards->jc4) ?>
+							
 						</div>
 					</div>
-					
-				</div>	
-				
-				<div class="table-scrollable">
-					<table class="table tableitm" id="main_tb">
-						<thead>
-							<tr>
-								<th width="50">Sr.No. </th>
-								<th>Items</th>
-								<th width="130">Quantity</th>
-								
-								<th width="70"></th>
-							</tr>
-						</thead>
-						<tbody>
-							
-						</tbody>
-						
-					</table>
 				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-5 control-label">Invoice Voucher No. </label>
+						<div class="col-md-7">
+						<?php echo $this->Form->input('iv1', ['label' => false,'type'=>'hidden','value'=>$jobCards->jc1]); ?>
+						<?php echo $this->Form->input('jc2', ['label' => false,'type'=>'hidden','value'=>$last_iv_no->iv2]); ?>
+						<?php echo $this->Form->input('jc3', ['label' => false,'type'=>'hidden','value'=>$jobCards->jc3]); ?>
+						<?php echo $this->Form->input('jc4', ['label' => false,'type'=>'hidden','value'=>$jobCards->jc]); ?>
+						<?php echo $jobCards->jc1.'/IV-'.str_pad($last_iv_no->iv2, 3, '0', STR_PAD_LEFT).'/'.$jobCards->jc3.'/'.$jobCards->jc4; ?>
+						</div>
+					</div>
+				</div>
+
+			</div><br/>
+		
 				
-	
+				
+				<table width="100%" id="main_tb" border="1">
+					<thead>
+						<th width="30%">In</th>
+						<th>Out</th>
+					</thead>
+					
+					<tbody id="maintbody"><?php $p=0; $q=0; $r=0; ?>
+					<?php foreach ($jobCards->sales_order->sales_order_rows as $sales_order_row): ?>
+						<tr class="main_tr">
+							<td valign="top">
+							<?php echo $this->Form->input('sales_order_id', ['type'=>'text','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->id,'type'=>'hidden']); ?>
+							<b><?= h($sales_order_row->item->name) ?></b>
+							</td>
+							
+							<td>
+								<?php  $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
+								<div>
+								<div class="form-group">
+										<label class="col-md-3 control-label">Remarks </label>
+										<?php   foreach($sales_order_row->job_card_rows as $job_card_row): ?>
+										<div class="col-md-9">
+											<?php echo $this->Form->textarea('job_card_rows['.$r.'][remark]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks','value'=>$job_card_row->remark]); ?>
+										</div><?php $r++; break; endforeach; ?>
+								</div>
+							<table>
+								<thead>
+									<th>Sr</th>
+									<th width="70%">Item</th>
+									<th>Quantity</th>
+									<th width="10%"></th>
+								</thead>
+								<tbody>
+									<?php  foreach($sales_order_row->job_card_rows as $job_card_row): ?> 
+										<tr>
+											<td align="center"><?= h(++$page_no) ?></td>
+											
+											<td>
+											<?php echo $this->Form->input('job_card_rows['.$p.'][sales_order_row_id]',['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$job_card_row->sales_order_row_id]); ?>
+											<?php echo $this->Form->input('job_card_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm select2me','label'=>false,'value'=>$job_card_row->item_id]); ?>
+											</td>
+											<td><?php echo $this->Form->input('job_card_rows['.$p.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
+											<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+											
+										</tr>
+									<?php $p++;  endforeach; ?>
+									
+								</tbody>
+							</table>
+							</div>	
+							</td>
+							
+						</tr>
+						<?php  endforeach; ?>
+					</tbody>
+				</table>
 			</div>
-		</div>
+	
 			<div class="form-actions">
 				 <button type="submit" class="btn blue-hoki">Add Inventory Vouchers</button>
 			</div>

@@ -69,10 +69,6 @@ class JobCardsController extends AppController
 			//pr($salesOrder); exit;
 		}
 		
-		
-		
-		
-		
 		$last_jc_no=$this->JobCards->find()->select(['jc2'])->where(['company_id' => $st_company_id])->order(['jc2' => 'DESC'])->first();
 			if($last_jc_no){
 				@$last_jc_no->jc2=$last_jc_no->jc2+1;
@@ -95,7 +91,7 @@ class JobCardsController extends AppController
 			//$jobCard->customer_id=$s_employee_id;
 			$jobCard->customer_po_no=$jobCard->customer_po_no;
 			$jobCard->created_on=date("Y-m-d");
-			
+			$jobCard->status='Pending';
 			
 			//pr($jobCard); exit;
 			if ($this->JobCards->save($jobCard)) {

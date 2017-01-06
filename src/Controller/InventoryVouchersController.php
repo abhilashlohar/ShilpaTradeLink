@@ -51,19 +51,22 @@ class InventoryVouchersController extends AppController
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
-    public function add($invoice_id = null,$invoice_row_id = null)
+    public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		
+		$jobcard_id=@(int)$this->request->query('jobcard');
+		if(!empty($jobcard_id)){
+			$jobCards = $this->InventoryVouchers->JobCards->get($jobcard_id, [
+		'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items','JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
+			]);
+			//pr($salesOrder); exit;
+		}
 		$inventoryVoucher = $this->InventoryVouchers->newEntity();
 		//pr($this->request->data); exit;
-		$invoiceRows = $this->InventoryVouchers->InvoiceRows->get($invoice_row_id, [
-            'contain' => ['Invoices','Items']
-        ]);
-		
-		
 		$last_iv_no=$this->InventoryVouchers->find()->select(['iv2'])->order(['iv2' => 'DESC'])->first();
 			if($last_iv_no){
 				@$last_iv_no->iv2=$last_iv_no->iv2+1;
@@ -73,15 +76,10 @@ class InventoryVouchersController extends AppController
 		
         if ($this->request->is('post')) {
 			
-            $inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);
-			$inventoryVoucher->invoice_id=$invoice_id;
-			//pr($inventoryVoucher->invoice_id); 
-			$inventoryVoucher->created_by=$s_employee_id; 
-			$inventoryVoucher->company_id=$st_company_id; 
-			$inventoryVoucher->invoice_row_id=$invoice_row_id;
+            
 			//pr($inventoryVoucher->invoice_row_id); exit;
             if ($this->InventoryVouchers->save($inventoryVoucher)) {
-				$InvoiceRow=$this->InventoryVouchers->InvoiceRows->get($invoice_row_id);
+				
 				$InvoiceRow->inventory_voucher='Done';
 				$this->InventoryVouchers->InvoiceRows->save($InvoiceRow);
                 $this->Flash->success(__('The inventory voucher has been saved.'));
@@ -93,10 +91,9 @@ class InventoryVouchersController extends AppController
         }
 		
 		
-        $invoices = $this->InventoryVouchers->Invoices->find('list', ['limit' => 200]);
         $items = $this->InventoryVouchers->Items->find('list', ['limit' => 200]);
         //$invoiceRows = $this->InventoryVouchers->InvoiceRows->find('list', ['limit' => 200]);
-        $this->set(compact('inventoryVoucher', 'invoices', 'invoiceRows','items','last_iv_no'));
+        $this->set(compact('inventoryVoucher', 'jobCards','items','last_iv_no'));
         $this->set('_serialize', ['inventoryVoucher']);
     }
 

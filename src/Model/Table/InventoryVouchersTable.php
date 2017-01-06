@@ -38,12 +38,12 @@ class InventoryVouchersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 		$this->belongsTo('Items');
-        $this->belongsTo('Invoices', [
-            'foreignKey' => 'invoice_id',
+        $this->belongsTo('JobCards', [
+            'foreignKey' => 'job_card_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('InvoiceRows', [
-            'foreignKey' => 'invoice_row_id',
+        $this->belongsTo('JobCardRows', [
+            'foreignKey' => 'job_card_row_id',
             'joinType' => 'INNER'
         ]);
         $this->hasMany('InventoryVoucherRows', [
