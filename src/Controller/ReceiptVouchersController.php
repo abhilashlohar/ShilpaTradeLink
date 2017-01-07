@@ -60,13 +60,22 @@ class ReceiptVouchersController extends AppController
 		$st_company_id = $session->read('st_company_id');
         
         if ($this->request->is('post')) {
+			$receipt_breakups=[];
+			foreach($this->request->data['invoice_record'] as $invoice_record){
+					if(@$invoice_record['checkbox']){
+					$receipt_breakups[]=['ref_type'=>'Agst Ref','new_ref_no'=>'','invoice_id'=>$invoice_record['invoice_id'],'amount'=>$invoice_record['invoice_amount']];
+				}
+			} 
+			foreach($this->request->data['new_ref_record'] as $new_ref_record){
+				$receipt_breakups[]=['ref_type'=>$new_ref_record['type'],'new_ref_no'=>@$new_ref_record['new_ref_no'],'invoice_id'=>0,'amount'=>$new_ref_record['amount']];
+			}
+			$this->request->data['receipt_breakups']=$receipt_breakups;
+			
             $receiptVoucher = $this->ReceiptVouchers->patchEntity($receiptVoucher, $this->request->data);
 			$receiptVoucher->created_by=$s_employee_id;
 			$receiptVoucher->transaction_date=date("Y-m-d",strtotime($receiptVoucher->transaction_date));
 			$receiptVoucher->created_on=date("Y-m-d");
 			$receiptVoucher->company_id=$st_company_id;
-				
-
             if ($this->ReceiptVouchers->save($receiptVoucher)) {
 				
 				//Ledger posting for Received From Entity
@@ -121,6 +130,7 @@ class ReceiptVouchersController extends AppController
 				return $this->redirect(['action' => 'view/'.$receiptVoucher->id]);
            
 			} else {
+				pr($receiptVoucher); exit;
                 $this->Flash->error(__('The receipt voucher could not be saved. Please, try again.'));
             }
         }

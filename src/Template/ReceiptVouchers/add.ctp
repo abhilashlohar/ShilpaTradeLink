@@ -206,7 +206,15 @@ $(document).ready(function() {
 	
 	$('.addrow').die().live("click",function() { 
 		add_row();
-		
+    });
+	
+	
+	$('.deleterow').die().live("click",function() {
+		var l=$(this).closest("table tbody").find("tr").length;
+		if(l>1){
+			$(this).closest('tr').remove();
+			rename_rows_new_ref();
+		}
     });
 	
 	add_row();
@@ -221,16 +229,19 @@ $(document).ready(function() {
 		var i=0;
 		$("#main_tb tbody#main_tbody tr").each(function(){
 			$(this).find("td:nth-child(1)").html(++i); i--;
-			$(this).find("td:nth-child(2) select").attr({name:"new_ref_record["+i+"][type]", id:"new_ref_record-"+i+"-type"}).rules("add", "required");
+			$(this).find("td:nth-child(2) select").attr({name:"new_ref_record["+i+"][type]", id:"new_ref_record-"+i+"-type"});
 			
 			var type=$(this).find("td:nth-child(2) option:selected").val();
 			if(type=='On Account' || type==''){
-				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"new_ref_record["+i+"][q]", id:"new_ref_record-"+i+"-q"}).rules("remove", "required");
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"new_ref_record["+i+"][q]", id:"new_ref_record-"+i+"-q"});
 			}else{
-				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"new_ref_record["+i+"][new_ref_no]", id:"new_ref_record-"+i+"-new_ref_no"}).rules("add", "required");
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"new_ref_record["+i+"][new_ref_no]", id:"new_ref_record-"+i+"-new_ref_no"});
 			}
 			
-			$(this).find("td:nth-child(4) input").attr({name:"new_ref_record["+i+"][amount]", id:"new_ref_record-"+i+"-amount"}).rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr({name:"new_ref_record["+i+"][amount]", id:"new_ref_record-"+i+"-amount"}).rules('add', {
+						number: true,
+						min: 0.01
+					});
 			i++;
 			
 		});
@@ -245,6 +256,11 @@ $(document).ready(function() {
 		}
 		
 		rename_rows_new_ref();
+	});
+	
+	$('input[name="amount"]').live("blur",function() {
+		var val=$(this).val();
+		$(this).val(parseFloat($(this).val()).toFixed(2));
 	});
 	
 	$(".check_row").die().live("click",function() {

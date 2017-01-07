@@ -55,8 +55,10 @@ class ReceiptVouchersTable extends Table
             'foreignKey' => 'bank_cash_id',
             'propertyName' => 'BankCash',
         ]);
+		
 		$this->hasMany('ReceiptBreakups', [
-            'foreignKey' => 'receipt_voucher_id'
+            'foreignKey' => 'receipt_voucher_id',
+			'saveStrategy' => 'replace'
         ]);
     }
 

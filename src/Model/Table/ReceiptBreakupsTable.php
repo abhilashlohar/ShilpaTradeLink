@@ -59,14 +59,9 @@ class ReceiptBreakupsTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->requirePresence('type', 'create')
-            ->notEmpty('type');
-
-        $validator
-            ->requirePresence('new_ref_no', 'create')
-            ->notEmpty('new_ref_no');
-
+		$validator
+            ->allowEmpty('invoice_id');
+			
         $validator
             ->decimal('amount')
             ->requirePresence('amount', 'create')
@@ -85,7 +80,6 @@ class ReceiptBreakupsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['receipt_voucher_id'], 'ReceiptVouchers'));
-        $rules->add($rules->existsIn(['invoice_id'], 'Invoices'));
 
         return $rules;
     }
