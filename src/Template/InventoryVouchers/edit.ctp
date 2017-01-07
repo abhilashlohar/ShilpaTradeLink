@@ -9,18 +9,24 @@
 	<div class="portlet-body form">
 		<!-- BEGIN FORM-->
 		<?= $this->Form->create($inventoryVoucher,['id'=>'form_sample_3']) ?>
-			<div class="form-body">
-				<div class="row">
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Invoice No :  <span class="required" aria-required="true"></span></label>
-							<?php echo $inventoryVoucher->invoice->in1.'/IN-'.str_pad($inventoryVoucher->invoice->in2, 3, '0', STR_PAD_LEFT).'/'. $inventoryVoucher->invoice->in3.'/'. $inventoryVoucher->invoice->in4; ?>
+			<div class="row">
+				<div class="col-md-5">
+					<div class="form-group">
+						<label class="col-md-5 control-label">Voucher No. </label>
+						<div class="col-md-7">
+						<?php echo $this->Form->input('iv1', ['label' => false,'type'=>'hidden','value'=>$inventoryVoucher->iv1]); ?>
+						<?php echo $this->Form->input('iv2', ['label' => false,'type'=>'hidden','value'=>$inventoryVoucher->iv2]); ?>
+						<?php echo $this->Form->input('iv3', ['label' => false,'type'=>'hidden','value'=>$inventoryVoucher->iv3]); ?>
+						<?php echo $this->Form->input('iv4', ['label' => false,'type'=>'hidden','value'=>$inventoryVoucher->iv4]); ?>
+						<?php echo $inventoryVoucher->iv1.'/IV-'.str_pad($inventoryVoucher->iv2, 3, '0', STR_PAD_LEFT).'/'.$inventoryVoucher->iv3.'/'.$inventoryVoucher->iv4; ?>
 						</div>
 					</div>
-					
-					
-				</div>	
+				</div>
 				
+				
+
+			</div><br/>
+
 				<div class="table-scrollable">
 					<table class="table tableitm" id="main_tb">
 						<thead>

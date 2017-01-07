@@ -57,7 +57,6 @@ class InventoryVouchersController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		
 		$jobcard_id=@(int)$this->request->query('jobcard');
 		if(!empty($jobcard_id)){
 			$jobCards = $this->InventoryVouchers->JobCards->get($jobcard_id, [
@@ -104,7 +103,7 @@ class InventoryVouchersController extends AppController
     public function edit($id = null)
     { 	$this->viewBuilder()->layout('index_layout');
         $inventoryVoucher = $this->InventoryVouchers->get($id, [
-            'contain' => ['Items','Invoices','InventoryVoucherRows']
+            'contain' => ['InventoryVoucherRows'=>['Items']]
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);
@@ -116,8 +115,6 @@ class InventoryVouchersController extends AppController
                 $this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
             }
         }
-		
-        $invoices = $this->InventoryVouchers->Invoices->find('list', ['limit' => 200]);
         $items = $this->InventoryVouchers->Items->find('list', ['limit' => 200]);
         $this->set(compact('inventoryVoucher', 'invoices', 'invoiceRows','items'));
         $this->set('_serialize', ['inventoryVoucher']);

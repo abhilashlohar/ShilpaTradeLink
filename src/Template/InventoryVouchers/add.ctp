@@ -18,18 +18,9 @@
 			<div class="form-body">
 
 			<div class="row">
-				<div class="col-md-4">
+				<div class="col-md-5">
 					<div class="form-group">
-						<label class="col-md-5 control-label">Job Card No</label>
-						<div class="col-md-7">
-							
-							<?= h($jobCards->jc1.'/'.str_pad($jobCards->jc2, 3, '0', STR_PAD_LEFT).'/'.$jobCards->jc3.'/'.$jobCards->jc4) ?>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="form-group">
-						<label class="col-md-5 control-label">Invoice Voucher No. </label>
+						<label class="col-md-5 control-label">Voucher No. </label>
 						<div class="col-md-7">
 						<?php echo $this->Form->input('iv1', ['label' => false,'type'=>'hidden','value'=>$jobCards->jc1]); ?>
 						<?php echo $this->Form->input('iv2', ['label' => false,'type'=>'hidden','value'=>$last_iv_no->iv2]); ?>
@@ -39,6 +30,16 @@
 						</div>
 					</div>
 				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-5 control-label">Job Card No</label>
+						<div class="col-md-7">
+							
+							<?= h($jobCards->jc1.'/'.str_pad($jobCards->jc2, 3, '0', STR_PAD_LEFT).'/'.$jobCards->jc3.'/'.$jobCards->jc4) ?>
+						</div>
+					</div>
+				</div>
+				
 
 			</div><br/>
 				<table width="100%" id="main_tb" border="1">
@@ -57,13 +58,7 @@
 							<td>
 								<?php  $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
 								<div>
-								<div class="form-group">
-										<label class="col-md-3 control-label">Remarks </label>
-										<?php   foreach($sales_order_row->job_card_rows as $job_card_row): ?>
-										<div class="col-md-9">
-											<?php echo $this->Form->textarea('job_card_rows['.$r.'][remark]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks','value'=>$job_card_row->remark]); ?>
-										</div><?php $r++; break; endforeach; ?>
-								</div>
+								
 			<table>
 								<thead>
 									<th>Sr</th>
@@ -123,9 +118,7 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() { 
-	
-	
-	
+	rename_rows_name();
 	$('.addrow').die().live("click",function() {
 		var tr1=$("#sample_tb tbody").html();
 		$(this).closest('table tbody').append(tr1);
@@ -142,10 +135,6 @@ $(document).ready(function() {
 		var i=0; 
 		$("#main_tb tbody#maintbody tr.main_tr").each(function(){
 			var sales_order_row_id=$(this).find("td:nth-child(1) input").val();
-			
-			i++;
-			$(this).find("td:nth-child(2) textarea").attr({name:"inventory_voucher_rows["+i+"][remark]", id:"inventory_voucher_rows-"+i+"-remark"});
-			i--;
 			var sr=0;
 			$(this).find("td:nth-child(2) table tbody tr").each(function(){
 				
