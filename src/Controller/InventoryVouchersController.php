@@ -103,7 +103,7 @@ class InventoryVouchersController extends AppController
     public function edit($id = null)
     { 	$this->viewBuilder()->layout('index_layout');
         $inventoryVoucher = $this->InventoryVouchers->get($id, [
-            'contain' => ['InventoryVoucherRows'=>['Items']]
+            'contain' => ['JobCards','InventoryVoucherRows'=>['Items']]
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);

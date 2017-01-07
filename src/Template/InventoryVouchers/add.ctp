@@ -57,9 +57,8 @@
 							
 							<td>
 								<?php  $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
-								<div>
-								
-			<table>
+						<div>
+							<table>
 								<thead>
 									<th>Sr</th>
 									<th width="70%">Item</th>
