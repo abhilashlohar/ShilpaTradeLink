@@ -48,16 +48,16 @@
 							</tr>
 						</thead>
 						<tbody id="main_tbody">
-							<?php $q=0; foreach ($jobCard->sales_order_rows as $sales_order_row): ?>
+							<?php $sn=1; $q=0; foreach ($jobCard->sales_order_rows as $sales_order_row): ?>
 							<tr>
-								<td><?php echo $q; ?></td>
+								<td><?php echo $sn; ?></td>
 								<td><?php echo $sales_order_row->item->name ?></td>
 								<td>
 									<?php echo $this->Form->input('sales_order_rows.'.$q.'.id', ['type' => 'hidden','value' => @$jobCard->sales_order_rows->id]); ?>
 									<?php echo $this->Form->radio('sales_order_rows.'.$q.'.source_type',[['value' => 'Purchessed', 'text' => 'Purchessed'],['value' => 'Manufactured', 'text' => 'Manufactured']]); ?>
 								</td>
 							</tr>
-							<?php $q++; endforeach; ?>
+							<?php $sn++; $q++; endforeach; ?>
 						</tbody>
 						
 					</table>

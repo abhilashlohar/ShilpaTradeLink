@@ -32,14 +32,18 @@
 					<td><?php echo $jobCard->customer_po_no; ?></td> 
 					
 					<td class="actions">
-					<?php if(($jobCard->job_card ='Pending') and (sizeof($jobCard->sales_order_rows)==0)){
-					echo $this->Html->link('<i class="fa fa-repeat "></i>  Create Job Card','/JobCards/Add?Sales-Order='.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+					<?php if(($jobCard->job_card =='Pending') and (sizeof($jobCard->sales_order_rows)==0)){
+					echo $this->Html->link('<i class="fa fa-repeat "></i>  Create Job Card','/JobCards/Add?sales-order='.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 					} 
-					elseif(($jobCard->job_card ='Pending') and (sizeof($jobCard->sales_order_rows)!=0)){
+					elseif(($jobCard->job_card =='Pending') and (sizeof($jobCard->sales_order_rows)!=0)){
 					echo $this->Html->link('<i class="fa fa-repeat "></i>  Selct Item Source','/JobCards/PreAdd?Pre-add='.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
-					} 
+					}
+					elseif(($jobCard->job_card =='Converted')){
+					echo $this->Html->link('<i class="fa fa-repeat "></i> Edit jobCard','/JobCards/Edit/'.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+					echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $jobCard->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View'));
+					}
 					
-					echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $jobCard->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
+					 ?>
 					</td>
 				</tr>
 		    <?php endforeach; ?>
