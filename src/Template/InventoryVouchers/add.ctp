@@ -69,8 +69,8 @@
 									<?php  foreach($sales_order_row->job_card_rows as $job_card_row): ?> 
 										<tr>
 											<td align="center"><?= h(++$page_no) ?></td>
-											
 											<td>
+											<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][job_card_row_id]',['class' => 'form-control input-sm','type'=>'text','label'=>false,'value'=>$job_card_row->id]); ?>
 											<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm select2me','label'=>false,'value'=>$job_card_row->item_id]); ?>
 											</td>
 											<td><?php echo $this->Form->input('inventory_voucher_rows['.$p.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
