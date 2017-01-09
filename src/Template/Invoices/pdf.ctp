@@ -102,7 +102,7 @@ $html.='
 				$html.='
 					<table  valign="center" width="100%" style="margin-top: 0px;" class="table2">
 						<tr>
-							<td width="60%">
+							<td width="50%">
 								
 								<span><b>'. h($invoice->customer->customer_name) .'</b></span><br/>
 								<div style="height:5px;"></div>
@@ -110,7 +110,7 @@ $html.='
 								<span>TIN : '. h($invoice->customer->tin_no) .'</span><br/>
 								<span>PAN : '. h($invoice->customer->pan_no) .'</span>
 							</td>
-							<td width="" valign="top" align="right">
+							<td width="50%" valign="top" align="right">
 								<table width="100%">
 									<tr>
 										<td width="55" valign="top" style="vertical-align: top;">Invoice No.</td>
@@ -228,7 +228,7 @@ $html .= '<div id="footer">';
 <table width="100%" class="table_rows" >
 	<tbody>
 			<tr>
-				<td rowspan="'.$temp.'" width="50%">
+				<td rowspan="'.$temp.'" width="90%">
 					<b style="font-size:13px;"><u>Our Bank Details</u></b>
 					<table width="100%" class="table2">
 						<tr>
