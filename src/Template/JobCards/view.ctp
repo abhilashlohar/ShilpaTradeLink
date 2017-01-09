@@ -15,15 +15,15 @@
 	<div class="form-body">
 		 <table border="0" align="center" width="100%">
 		        <tr>
-					<td ><label><b>Job Card No</b></label></td>
-					<td>:</td>
-					<td><?= h(($jobCard->jc1.'/JC-'.str_pad($jobCard->jc2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->jc3.'/'.$jobCard->jc4))?></td>
-					<td width="50%"><label  style="font-size:105%"><b>Customer Name</b></label></td>
-					<td>:</td>
-					<td><?= h($jobCard->customer->customer_name) ?></td>
+					<td  width="20%"><label><b>Job Card No</b></label></td>
+					<td  width="5%">:</td>
+					<td  width="25%"><?= h(($jobCard->jc1.'/JC-'.str_pad($jobCard->jc2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->jc3.'/'.$jobCard->jc4))?></td>
+					<td  width="20%"><label  style="font-size:105%"><b>Customer Name</b></label></td>
+					<td  width="5%">:</td>
+					<td  width="25%"><?= h($jobCard->customer->customer_name) ?></td>
 				</tr>
 				<tr>
-					<td><label style="font-size:105%"><b>SO No</b></label></td>
+					<td><label><b>Sales Order No</b></label></td>
 					<td>:</td>
 					<td><?= h(($jobCard->sales_order->so1.'/SO-'.str_pad($jobCard->sales_order->so2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->sales_order->so3.'/'.$jobCard	->sales_order->so4))?></td>
 					<td><label style="font-size:105%"><b>Customer PO No</b></label></td>
@@ -32,19 +32,24 @@
 				</tr>
 				<tr>
 					<td><label style="font-size:105%"><b>Required Date</b></label></td>
-					<td>:<?= h($jobCard->required_date=date("d-m-Y",strtotime($jobCard->required_date))) ?></td>
+					<td>:</td>
+					<td><?= h($jobCard->required_date=date("d-m-Y",strtotime($jobCard->required_date))) ?></td>
 					<td><label style="font-size:105%"><b>Dispatch Name</b></label></td>
-					<td>:<?= h($jobCard->dispatch_name) ?></td>
+					<td>:</td>
+					<td><?= h($jobCard->dispatch_name) ?></td>
 				</tr>
 				<tr>
 					<td><label style="font-size:105%"><b>Dispatch Email</b></label></td>
-					<td>:<?= h($jobCard->dispatch_email) ?></td>
+					<td>:</td>
+					<td><?= h($jobCard->dispatch_email) ?></td>
 					<td><label style="font-size:105%"><b>Dispatch Address</b></label></td>
-					<td>:<?= h($jobCard->dispatch_address)?></td>
+					<td>:</td>
+					<td><?= h($jobCard->dispatch_address)?></td>
 				</tr>
 				<tr>
 					<td><label style="font-size:105%"><b>Packing</b></label></td>
-					<td>:<?= h($jobCard->packing) ?></td>
+					<td>:</td>
+					<td><?= h($jobCard->packing) ?></td>
 					<td><label style="font-size:105%"> </td>
 					<td> </td>
 				</tr>
