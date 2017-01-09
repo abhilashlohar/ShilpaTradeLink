@@ -93,6 +93,8 @@ class SalesOrdersTable extends Table
             'foreignKey' => 'sale_tax_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->hasOne('JobCards');
     }
 
     /**

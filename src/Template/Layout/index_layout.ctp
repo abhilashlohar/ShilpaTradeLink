@@ -251,6 +251,19 @@ select
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-file-code-o"></i>
+					<span class="title">Job Cards</span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<?php if(in_array(1,$allowed_pages)){
+						echo '<li>'.$this->Html->link( 'Create', '/Job-Cards/Pending-Salesorder-For-Jobcard' ).'</li>';
+						} ?>
+						<li><?php echo $this->Html->link( 'View', '/Job-Cards' ); ?></li>
+					</ul>
+				</li>
+				<li>
+					<a href="javascript:;">
+					<i class="fa fa-file-code-o"></i>
 					<span class="title">Invoices</span>
 					<span class="arrow "></span>
 					</a>
@@ -258,33 +271,6 @@ select
 						<li><?php echo $this->Html->link( 'Create', '/Invoices/add' ); ?></li>
 						<li><?php echo $this->Html->link( 'View', '/Invoices' ); ?></li>
 						
-					</ul>
-				</li>
-				<li>
-					<a href="javascript:;">
-					<i class="fa fa-file-code-o"></i>
-					<span class="title">Job Cards</span>
-					<span class="arrow "></span>
-					</a>
-					<ul class="sub-menu">
-						<?php if(in_array(1,$allowed_pages)){
-						echo '<li>'.$this->Html->link( 'Create', '/Job-Cards/Add' ).'</li>';
-						} ?>
-						<li><?php echo $this->Html->link( 'View', '/Job-Cards' ); ?></li>
-						<li><?php echo $this->Html->link( 'Pending Jobcard', '/Job-Cards/PendingSalesorderForJobcard' ); ?></li>
-					</ul>
-				</li>
-				<li>
-					<a href="javascript:;">
-					<i class="fa fa-file-code-o"></i>
-					<span class="title">Material Indent</span>
-					<span class="arrow "></span>
-					</a>
-					<ul class="sub-menu">
-						<?php if(in_array(1,$allowed_pages)){
-						echo '<li>'.$this->Html->link( 'Create', '/MaterialIndents/Add' ).'</li>';
-						} ?>
-						<li><?php echo $this->Html->link( 'View', '/MaterialIndents' ); ?></li>
 					</ul>
 				</li>
 				<li>

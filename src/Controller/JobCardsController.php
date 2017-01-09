@@ -38,7 +38,9 @@ class JobCardsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $jobCard = $this->JobCards->get($id, [
-            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items','JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
+            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'=>function ($q){
+					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
+				},'JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
         ]);
         $this->set('jobCard', $jobCard);
         $this->set('_serialize', ['jobCard']);
@@ -59,7 +61,7 @@ class JobCardsController extends AppController
 		if(!empty($sales_order_id)){
 			$salesOrder = $this->JobCards->SalesOrders->get($sales_order_id, [
 				'contain' => ['Customers','SalesOrderRows'=>['Items'=>function ($q){
-					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed']);
+					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
 				}]]
 			]);
 		}
@@ -84,7 +86,7 @@ class JobCardsController extends AppController
 			if ($this->JobCards->save($jobCard)) {
 					$query = $this->JobCards->SalesOrders->query();
 					$query->update()
-						->set(['job_card' => 'Converted'])
+						->set(['job_card_status' => 'Converted'])
 						->where(['id' => $jobCard->sales_order_id])
 						->execute();
                 $this->Flash->success(__('The job card has been saved.'));
@@ -114,7 +116,9 @@ class JobCardsController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$jobCard = $this->JobCards->get($id, [
-            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items','JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
+            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'=>function ($q){
+					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
+				},'JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
         ]);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -162,11 +166,12 @@ class JobCardsController extends AppController
 	public function PendingSalesorderForJobcard()
     {
 		$this->viewBuilder()->layout('index_layout');
-			$query = $this->JobCards->SalesOrders->find()->contain(['Customers','SalesOrderRows'=>['Items' => function($q){
+			$query = $this->JobCards->SalesOrders->find()->contain(['Customers','JobCards','SalesOrderRows'=>['Items' => function($q){
 				return $q->where(['source'=>'Purchessed/Manufactured']);
 			}]]);
- 		$jobCards=$this->paginate($query);
-        $this->set('jobCards', $jobCards);
+ 		$SalesOrders=$this->paginate($query);
+		//pr($SalesOrders); exit;
+		$this->set(compact('SalesOrders'));
         $this->set('_serialize', ['jobCard']);
     }
 	public function PreAdd($id = null)

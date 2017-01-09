@@ -20,28 +20,34 @@
 					<td style="font-size:120%;">Action</td>
 				</tr>
 				<tbody>
-		    <?php foreach ($jobCards as $jobCard): 
+		    <?php foreach ($SalesOrders as $SalesOrder): 
 			//pr($jobCard->sales_order_rows);?>
 				<tr>
 					
 					<td><?= h(++$page_no) ?></td>
 					
-					<td><?= h(($jobCard->so1.'/SO-'.str_pad($jobCard->so2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->so3.'/'.$jobCard->so4))?></td> 
-					<td><?php echo $jobCard->customer->customer_name; ?></td> 
-					<td><?php echo $jobCard->po_date; ?></td> 
-					<td><?php echo $jobCard->customer_po_no; ?></td> 
+					<td><?= h(($SalesOrder->so1.'/SO-'.str_pad($SalesOrder->so2, 3, '0', STR_PAD_LEFT).'/'.$SalesOrder->so3.'/'.$SalesOrder->so4))?></td> 
+					<td><?php echo $SalesOrder->customer->customer_name; ?></td> 
+					<td><?php echo $SalesOrder->po_date; ?></td> 
+					<td><?php echo $SalesOrder->customer_po_no; ?></td> 
 					
 					<td class="actions">
-					<?php if(($jobCard->job_card =='Pending') and (sizeof($jobCard->sales_order_rows)==0)){
-					echo $this->Html->link('<i class="fa fa-repeat "></i>  Create Job Card','/JobCards/Add?sales-order='.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
-					} 
-					elseif(($jobCard->job_card =='Pending') and (sizeof($jobCard->sales_order_rows)!=0)){
-					echo $this->Html->link('<i class="fa fa-repeat "></i>  Selct Item Source','/JobCards/PreAdd?Pre-add='.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+					<?php if(($SalesOrder->job_card_status =='Pending') and (sizeof($SalesOrder->sales_order_rows)==0)){ echo sizeof($SalesOrder->job_card);
+						if(sizeof($SalesOrder->job_card)==0){
+							echo $this->Html->link('<i class="fa fa-repeat "></i>  Create Job Card','/JobCards/Add?sales-order='.$SalesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+						}else{
+							echo $this->Html->link('<i class="fa fa-repeat "></i>  Edit Job Card','/JobCards/Edit/'.$SalesOrder->job_card[0]->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+						}
 					}
-					elseif(($jobCard->job_card =='Converted')){
-					echo $this->Html->link('<i class="fa fa-repeat "></i> Edit jobCard','/JobCards/Edit/'.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
-					echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $jobCard->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View'));
+						
+					elseif(($SalesOrder->job_card_status =='Pending') and (sizeof($SalesOrder->sales_order_rows)!=0)){
+						if(sizeof($SalesOrder->job_card)==0){
+							echo $this->Html->link('<i class="fa fa-repeat "></i>  Create Job Card','/JobCards/PreAdd?Pre-add='.$SalesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+						}else{
+							echo $this->Html->link('<i class="fa fa-repeat "></i>  Edit Job Card','/JobCards/PreEdit?Pre-add='.$SalesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+						}
 					}
+					
 					
 					 ?>
 					</td>
