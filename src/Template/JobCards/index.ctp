@@ -27,7 +27,7 @@
  					<td><?= date("d-m-Y",strtotime($jobCard->required_date));?></td>
 					<td class="actions">
 					
-					<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $jobCard->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
+					<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $jobCard->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','target'=>'blank','data-original-title'=>'View')); ?>
 					<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $jobCard->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 					<?php echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Inventory Voucher','/Inventory-Vouchers/Add?jobcard='.$jobCard->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								?>

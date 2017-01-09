@@ -15,16 +15,20 @@
 	<div class="form-body">
 		 <table border="0" align="center" width="100%">
 		        <tr>
-					<td width="20%"><label style="font-size:105%"><b>SO No</b></label></td>
-					<td>:<?= h(($jobCard->sales_order->so1.'/SO-'.str_pad($jobCard->sales_order->so2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->sales_order->so3.'/'.$jobCard	->sales_order->so4))?></td>
-					<td width="15%"><label  style="font-size:105%"><b>Customer Name</b></label></td>
-					<td>:<?= h($jobCard->customer->customer_name) ?></td>
+					<td ><label><b>Job Card No</b></label></td>
+					<td>:</td>
+					<td><?= h(($jobCard->jc1.'/JC-'.str_pad($jobCard->jc2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->jc3.'/'.$jobCard->jc4))?></td>
+					<td width="50%"><label  style="font-size:105%"><b>Customer Name</b></label></td>
+					<td>:</td>
+					<td><?= h($jobCard->customer->customer_name) ?></td>
 				</tr>
 				<tr>
-					<td ><label style="font-size:105%"><b>Job Card No</b></label></td>
-					<td>:<?= h(($jobCard->jc1.'/JC-'.str_pad($jobCard->jc2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->jc3.'/'.$jobCard->jc4))?></td>
+					<td><label style="font-size:105%"><b>SO No</b></label></td>
+					<td>:</td>
+					<td><?= h(($jobCard->sales_order->so1.'/SO-'.str_pad($jobCard->sales_order->so2, 3, '0', STR_PAD_LEFT).'/'.$jobCard->sales_order->so3.'/'.$jobCard	->sales_order->so4))?></td>
 					<td><label style="font-size:105%"><b>Customer PO No</b></label></td>
-					<td>:<?= h($jobCard->customer_po_no)?></td>
+					<td>:</td>
+					<td><?= h($jobCard->customer_po_no)?></td>
 				</tr>
 				<tr>
 					<td><label style="font-size:105%"><b>Required Date</b></label></td>
