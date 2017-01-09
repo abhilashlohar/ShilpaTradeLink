@@ -113,8 +113,8 @@ $html.='
 							<td width="" valign="top" align="right">
 								<table width="100%">
 									<tr>
-										<td width="60" valign="top" style="vertical-align: top;">Invoice No.</td>
-										<td width="20" valign="top">:</td>
+										<td width="55" valign="top" style="vertical-align: top;">Invoice No.</td>
+										<td width="25" valign="top">:</td>
 										<td  valign="top">'. h(($invoice->in1." / IN-".str_pad($invoice->in2, 3, "0", STR_PAD_LEFT)." / ".$invoice->in3." / ".$invoice->in4)) .'</td>
 									</tr>
 									<tr>
