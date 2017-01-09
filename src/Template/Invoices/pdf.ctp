@@ -222,30 +222,30 @@ else{
 
  
 		
-$html .= '<div id="footer">';
+$html .= '<div id="footer" class="avoid_break">';
 
 	$html.='
 <table width="100%" class="table_rows" >
 	<tbody>
 			<tr>
-				<td rowspan="'.$temp.'" width="90%">
+				<td rowspan="'.$temp.'" width="40%">
 					<b style="font-size:13px;"><u>Our Bank Details</u></b>
 					<table width="100%" class="table2">
 						<tr>
-							<td width="30%">Bank Name</td>
-							<td>: '.h($invoice->company->company_banks[0]->bank_name).'</td>
+							<td width="30%" style="white-space: nowrap;">Bank Name</td>
+							<td style="white-space: nowrap;">: '.h($invoice->company->company_banks[0]->bank_name).'</td>
 						</tr>
 						<tr>
 							<td>Branch</td>
-							<td>: '.h($invoice->company->company_banks[0]->branch).'</td>
+							<td style="white-space: nowrap;">: '.h($invoice->company->company_banks[0]->branch).'</td>
 						</tr>
 						<tr>
-							<td>Account No</td>
-							<td>: '.h($invoice->company->company_banks[0]->account_no).'</td>
+							<td style="white-space: nowrap;">Account No</td>
+							<td style="white-space: nowrap;">: '.h($invoice->company->company_banks[0]->account_no).'</td>
 						</tr>
 						<tr>
-							<td>IFSC Code</td>
-							<td>: '.h($invoice->company->company_banks[0]->ifsc_code).'</td>
+							<td style="white-space: nowrap;">IFSC Code</td>
+							<td style="white-space: nowrap;">: '.h($invoice->company->company_banks[0]->ifsc_code).'</td>
 						</tr>
 					</table>
 				</td>
@@ -280,18 +280,20 @@ $html .= '<div id="footer">';
 			$tot=1;
 			if($invoice->fright_amount > 0 ){ $tot=2;}
 				$html.='<tr>
-				<td rowspan="'.$tot.'">
+				<td rowspan="'.$tot.'" width="40%">
 				<table class="table2">';
 					if(!empty($invoice->form47)){
 				
-					$html.='<tr><td>Road Permit No. </td>
+					$html.='<tr>
+								<td style="white-space: nowrap;">Road Permit No. </td>
 								<td> : </td>
 								<td>'. h($invoice->form47) .'</td>
 								</tr>';	
 								}
 										
 					if(!empty($invoice->form49)){
-					$html.='<tr><td>Form 49 No. </td>
+					$html.='<tr>
+								<td style="white-space: nowrap;">Form 49 No. </td>
 								<td> : </td>
 								<td>'. h($invoice->form49) .'</td>
 								</tr>';	
