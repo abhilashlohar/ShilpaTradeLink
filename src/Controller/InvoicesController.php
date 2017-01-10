@@ -425,7 +425,7 @@ class InvoicesController extends AppController
             'contain' => ['InvoiceRows'=>['Items'],'SalesOrders'=>
 			['SalesOrderRows'=>['Items','SaleTaxes'],'Invoices'=>['InvoiceRows']],'Companies','Customers','Employees','SaleTaxes']
         ]);
-		//pr($invoice); exit;
+		
         if ($this->request->is(['patch', 'post', 'put'])){
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 			
@@ -530,7 +530,7 @@ class InvoicesController extends AppController
                 $this->Flash->success(__('The invoice has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else {
+            } else {pr($invoice); exit;
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }
         }

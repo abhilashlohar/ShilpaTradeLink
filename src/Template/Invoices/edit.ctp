@@ -1,4 +1,4 @@
-<?php //pr($invoice->sales_order->sales_order_rows); exit; ?>
+<?php //pr($invoice->sales_order->invoices); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -142,8 +142,15 @@
 					foreach($invoice->sales_order->sales_order_rows as $data3){
 						$total_items[$data3->item_id]=@$total_items[$data3->item_id]+$data3->quantity;
 					}
+					foreach($invoice->sales_order->invoices as $data){
+						foreach($data->invoice_rows as $invoice_row){
+							$item_array[]=$invoice_row->item_id;
+							
+						}
+					}
+					//pr($item_array); 
 					
-					$q=1; foreach ($invoice->sales_order->sales_order_rows as $sales_order_row): ?>
+					$q=1; foreach ($invoice->sales_order->sales_order_rows as $sales_order_row): //pr($sales_order_row->item_id); exit; ?> 
 						<tr class="tr1" row_no="<?= h($q) ?>">
 							<td rowspan="2"><?= h($q) ?></td>
 							<td><?php 
@@ -151,30 +158,35 @@
 							echo $this->Form->input('item_id_display', ['type'=>'text','label' => false,'class' => 'form-control input-sm','value'=>$sales_order_row->item->name,'readonly']);
 							?></td>
 							<td>
-							<?php  echo $this->Form->input('invoice_rows['.$q.'][quantity]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$sales_order_row->quantity]); ?>
+							<?php  echo $this->Form->input('invoice_rows['.$q.'][quantity]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value' => @$sales_order_row->quantity-$sales_order_row->processed_quantity,'readonly','min'=>'1','max'=>@$sales_order_row->quantity-$sales_order_row->processed_quantity]); 
+							
+							?>
 						
 							</td>
 							<td><?php echo $this->Form->input('invoice_rows['.$q.'][rate]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$sales_order_row->rate,'readonly']); ?></td>
 							<td><?php echo $this->Form->input('invoice_rows['.$q.'][amount]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$sales_order_row->amount]); ?></td>
 							<td><?php echo @$sales_order_row->sale_tax->tax_figure; ?></td>
+							<?php if(in_array($sales_order_row->item_id,$item_array)){
+									$checked1="checked";
+								}else{
+									$checked1="";
+								} ?>
 							<td>
-								<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$sales_order_row->id]); ?></label>
+								<label><?php echo $this->Form->input('invoice_rows['.$q.'][check]', ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$sales_order_row->id,"checked"=>$checked1 ]);
+								?></label>
 								<?php echo $this->Form->input('invoice_rows['.$q.'][sale_tax]', ['label' => false,'type' => 'hidden','value' => @$sales_order_row->sale_tax->tax_figure]); ?>
 								<?php echo $this->Form->input('st_description', ['type' => 'hidden','label' => false,'value' => @$sales_order_row->sale_tax->invoice_description]); ?>
 								<?php echo $this->Form->input('st_id', ['type' => 'hidden','label' => false,'value' => @$sales_order_row->sale_tax->id]); ?>
 							</td>
 							<td>
-							<?php if($invoice->process_status=="New"){ ?>
-							<a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a>
-							<?php } ?>
 							</td>
 						</tr>
 						<tr class="tr2" row_no="<?= h($q) ?>">
-							<td colspan="4">
+							<td colspan="7">
 							<div contenteditable="true" id="editor" name="<?php echo 'invoice_rows['.$q.'][description]'; ?>"><?php echo @$sales_order_row->description; ?></div>
 							<?php echo $this->Form->textarea('invoice_rows['.$q.'][description]', ['label' => false,'class' => 'form-control input-sm autoExpand','style'=>['display:none'],'placeholder' => 'Description','required','value'=>$sales_order_row->description]); ?>
 							</td>
-							<td></td>
+							
 						</tr>
 					<?php $q++; endforeach;  ?>
 				</tbody>
@@ -514,7 +526,8 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
 			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
-			if(val){
+			
+			if(val){ 
 				$(this).find('td:nth-child(2) input').attr("name","invoice_rows["+val+"][item_id]").attr("id","invoice_rows-"+val+"-item_id").rules("add", "required");
 				$(this).find('td:nth-child(3) input').removeAttr("readonly").attr("name","invoice_rows["+val+"][quantity]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-quantity").rules("add", "required");
 				$(this).find('td:nth-child(4) input').attr("name","invoice_rows["+val+"][rate]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-rate").rules("add", "required");
@@ -539,106 +552,27 @@ $(document).ready(function() {
 			
 		});
 	}
-		$("#pnfper").on('click',function(){
-		if($(this).is(':checked')){
-			$("#pnf_text").show();
-			$('input[name="pnf"]').attr('readonly','readonly');
-			$('input[name="pnf_per"]').val(0);
-
-		}else{
-			$("#pnf_text").hide();
-			$('input[name="pnf"]').removeAttr('readonly');
-			$('input[name="pnf"]').val(0);
-			$('input[name="pnfper"]').val(0);
-			
-		}
-		calculate_total();
-	})
 	
-
-		
-	$("#discountper").on('click',function(){
-		if($(this).is(':checked')){
-			$("#discount_text").show();
-			$('input[name="discount"]').attr('readonly','readonly');
-			$('input[name="discount_per"]').val(0);
-		}else{
-			$("#discount_text").hide();
-			$('input[name="discount"]').removeAttr('readonly');
-			$('input[name="discount"]').val(0);
-			$('input[name="discount_per"]').val(0);
-		}
-		calculate_total();
-	})
-
-	
-	$('.deleterow').die().live("click",function() {
-			var l=$(this).closest("table tbody").find("tr").length;
-			if (confirm("Are you sure to remove row ?") == true) {
-				if(l>2){
-					var row_no=$(this).closest("tr").attr("row_no");
-					var del="tr[row_no="+row_no+"]";
-					$(del).remove();
-					var i=0;
-					$("#main_tb tbody tr.tr1").each(function(){
-						i++;
-						$(this).find("td:nth-child(1)").html(i);
-						$(this).find("td:nth-child(2) select").attr("name","invoice_rows["+i+"][item_id]");
-						$(this).find("td:nth-child(3) input").attr("name","invoice_rows["+i+"][quantity]");
-						$(this).find("td:nth-child(4) input").attr("name","invoice_rows["+i+"][rate]");
-						$(this).find("td:nth-child(5) input").attr("name","invoice_rows["+i+"][amount]");
-						$(this).find('td:nth-child(6) select').attr("name","invoice_rows["+i+"][excise_duty]");
-					});
-					var i=0;
-					$("#main_tb tbody tr.tr2").each(function(){
-						i++;
-						$(this).find("td:nth-child(1) textarea").attr("name","invoice_rows["+i+"][description]");
-					});
-					calculate_total();
-				}
-			} 
-		});
-		
-		function add_row(){
-			var tr1=$("#sample_tb tbody tr.tr1").clone();
-			$("#main_tb tbody").append(tr1);
-			var tr2=$("#sample_tb tbody tr.tr2").clone();
-			$("#main_tb tbody").append(tr2);
-			
-			var w=0; var r=0;
-			$("#main_tb tbody tr").each(function(){
-				$(this).attr("row_no",w);
-				r++;
-				if(r==2){ w++; r=0; }
-			});
-			
-			var i=0;
-			$("#main_tb tbody tr.tr1").each(function(){
-				i++;
-				$(this).find("td:nth-child(1)").html(i);
-				$(this).find("td:nth-child(2) select").attr("name","invoice_rows["+i+"][item_id]").select2();
-				$(this).find("td:nth-child(3) input").attr("name","invoice_rows["+i+"][quantity]");
-				$(this).find("td:nth-child(4) input").attr("name","invoice_rows["+i+"][rate]");
-				$(this).find("td:nth-child(5) input").attr("name","invoice_rows["+i+"][amount]");
-				$(this).find('td:nth-child(6) select').attr("name","invoice_rows["+i+"][excise_duty]");
-			});
-			var i=0;
-			
-			$("#main_tb tbody tr.tr2").each(function(){
-				i++;
-				$(this).find("td:nth-child(1) textarea").attr("name","invoice_rows["+i+"][description]");
-			});
-		}
-		
-		function calculate_total(){
+	function calculate_total(){
 			var total=0;
 			$("#main_tb tbody tr.tr1").each(function(){
-				var unit=$(this).find("td:nth-child(3) input").val();
-				var Rate=$(this).find("td:nth-child(4) input").val();
-				var Amount=unit*Rate;
+			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
+			if(val){
+				var qty=parseInt($(this).find("td:nth-child(3) input").val());
+				var Rate=parseFloat($(this).find("td:nth-child(4) input").val());
+				var Amount=qty*Rate;
 				$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
 				total=total+Amount;
-			});
+				var sale_tax=parseFloat($(this).find("td:nth-child(7) input[type=hidden]").eq(1).val());
+				if(isNaN(sale_tax)) { var sale_tax = 0; }
+				$('input[name="sale_tax_per"]').val(sale_tax);
+				var sale_tax_description=$(this).find("td:nth-child(7) input[type=hidden]").eq(2).val();
+				$('input[name="sale_tax_description"]').val(sale_tax_description);
+				var sale_tax_id=$(this).find("td:nth-child(7) input[type=hidden]").eq(3).val();
+				$('input[name="sale_tax_id"]').val(sale_tax_id);
+				
+			}
+		});
 			if($("#discountper").is(':checked')){
 				var discount_per=parseFloat($('input[name="discount_per"]').val());
 				var discount_amount=(total*discount_per)/100;
