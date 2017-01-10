@@ -422,7 +422,8 @@ class InvoicesController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		
         $invoice = $this->Invoices->get($id, [
-            'contain' => ['InvoiceRows'=>['Items'],'SalesOrders'=>['SalesOrderRows','Invoices'=>['InvoiceRows']],'Companies','Customers','Employees','SaleTaxes']
+            'contain' => ['InvoiceRows'=>['Items'],'SalesOrders'=>
+			['SalesOrderRows'=>['Items','SaleTaxes'],'Invoices'=>['InvoiceRows']],'Companies','Customers','Employees','SaleTaxes']
         ]);
 		//pr($invoice); exit;
         if ($this->request->is(['patch', 'post', 'put'])) {

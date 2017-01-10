@@ -1,3 +1,4 @@
+<?php //pr($invoice->sales_order->sales_order_rows); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -126,6 +127,7 @@
 						<th width="130">Quantity</th>
 						<th width="130">Rate</th>
 						<th width="130">Amount</th>
+						<th width="130">Sale Tax</th>
 						<th width="70"></th>
 					</tr>
 				</thead>
@@ -141,20 +143,26 @@
 						$total_items[$data3->item_id]=@$total_items[$data3->item_id]+$data3->quantity;
 					}
 					
-					if($invoice->process_status=="New" or 1==1){ 
-					$q=1; foreach ($invoice->invoice_rows as $invoice_rows): ?>
+					$q=1; foreach ($invoice->sales_order->sales_order_rows as $sales_order_row): ?>
 						<tr class="tr1" row_no="<?= h($q) ?>">
 							<td rowspan="2"><?= h($q) ?></td>
 							<td><?php 
-							echo $this->Form->input('invoice_rows['.$q.'][item_id]', ['type'=>'hidden','value'=>$invoice_rows->item_id]);
-							echo $this->Form->input('item_id_display', ['type'=>'text','label' => false,'class' => 'form-control input-sm','value'=>$invoice_rows->item->name,'readonly']);
+							echo $this->Form->input('invoice_rows['.$q.'][item_id]', ['type'=>'hidden','value'=>$sales_order_row->item_id]);
+							echo $this->Form->input('item_id_display', ['type'=>'text','label' => false,'class' => 'form-control input-sm','value'=>$sales_order_row->item->name,'readonly']);
 							?></td>
 							<td>
-							<?php  echo $this->Form->input('invoice_rows['.$q.'][quantity]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$invoice_rows->quantity,'max'=>$total_items[$invoice_rows->item_id]-$processed_items[$invoice_rows->item_id]+$invoice_rows->quantity]); ?>
-							<?php echo $this->Form->input('invoice_rows['.$q.'][height]', ['type' => 'hidden','value' => @$invoice_rows->height]); ?>
+							<?php  echo $this->Form->input('invoice_rows['.$q.'][quantity]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$sales_order_row->quantity]); ?>
+						
 							</td>
-							<td><?php echo $this->Form->input('invoice_rows['.$q.'][rate]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$invoice_rows->rate,'readonly']); ?></td>
-							<td><?php echo $this->Form->input('invoice_rows['.$q.'][amount]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$invoice_rows->amount]); ?></td>
+							<td><?php echo $this->Form->input('invoice_rows['.$q.'][rate]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$sales_order_row->rate,'readonly']); ?></td>
+							<td><?php echo $this->Form->input('invoice_rows['.$q.'][amount]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$sales_order_row->amount]); ?></td>
+							<td><?php echo @$sales_order_row->sale_tax->tax_figure; ?></td>
+							<td>
+								<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$sales_order_row->id]); ?></label>
+								<?php echo $this->Form->input('invoice_rows['.$q.'][sale_tax]', ['label' => false,'type' => 'hidden','value' => @$sales_order_row->sale_tax->tax_figure]); ?>
+								<?php echo $this->Form->input('st_description', ['type' => 'hidden','label' => false,'value' => @$sales_order_row->sale_tax->invoice_description]); ?>
+								<?php echo $this->Form->input('st_id', ['type' => 'hidden','label' => false,'value' => @$sales_order_row->sale_tax->id]); ?>
+							</td>
 							<td>
 							<?php if($invoice->process_status=="New"){ ?>
 							<a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a>
@@ -163,12 +171,12 @@
 						</tr>
 						<tr class="tr2" row_no="<?= h($q) ?>">
 							<td colspan="4">
-							<div contenteditable="true" id="editor" name="<?php echo 'invoice_rows['.$q.'][description]'; ?>"><?php echo @$invoice_rows->description; ?></div>
-							<?php echo $this->Form->textarea('invoice_rows['.$q.'][description]', ['label' => false,'class' => 'form-control input-sm autoExpand','style'=>['display:none'],'placeholder' => 'Description','required','value'=>$invoice_rows->description]); ?>
+							<div contenteditable="true" id="editor" name="<?php echo 'invoice_rows['.$q.'][description]'; ?>"><?php echo @$sales_order_row->description; ?></div>
+							<?php echo $this->Form->textarea('invoice_rows['.$q.'][description]', ['label' => false,'class' => 'form-control input-sm autoExpand','style'=>['display:none'],'placeholder' => 'Description','required','value'=>$sales_order_row->description]); ?>
 							</td>
 							<td></td>
 						</tr>
-					<?php $q++; endforeach; } ?>
+					<?php $q++; endforeach;  ?>
 				</tbody>
 			</table>
 			<table class="table tableitm" id="tbl2">
@@ -493,11 +501,44 @@ $(document).ready(function() {
     });
 	
 	
+	$('.rename_check').die().live("click",function() {
+		rename_rows(); calculate_total();
+		
+    });
 	
 	$('.addrow').die().live("click",function() { 
 		add_row();
     });
-	
+		
+	function rename_rows(){
+		$("#main_tb tbody tr.tr1").each(function(){
+			var row_no=$(this).attr('row_no');
+			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
+			if(val){
+				$(this).find('td:nth-child(2) input').attr("name","invoice_rows["+val+"][item_id]").attr("id","invoice_rows-"+val+"-item_id").rules("add", "required");
+				$(this).find('td:nth-child(3) input').removeAttr("readonly").attr("name","invoice_rows["+val+"][quantity]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-quantity").rules("add", "required");
+				$(this).find('td:nth-child(4) input').attr("name","invoice_rows["+val+"][rate]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-rate").rules("add", "required");
+				$(this).find('td:nth-child(5) input').attr("name","invoice_rows["+val+"][amount]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-amount").rules("add", "required");
+				
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').removeAttr("readonly").attr("name","invoice_rows["+val+"][description]").attr("id","invoice_rows-"+val+"-description").rules("add", "required");
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) div#editor').attr("name","invoice_rows["+val+"][description]").attr("id","invoice_rows-"+val+"-description");
+				
+				$(this).css('background-color','#fffcda');
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
+			}else{
+				$(this).find('td:nth-child(2) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
+				$(this).find('td:nth-child(3) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
+				$(this).find('td:nth-child(4) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
+				$(this).find('td:nth-child(5) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
+				
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
+				$(this).css('background-color','#FFF');
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
+			}
+			
+			
+		});
+	}
 		$("#pnfper").on('click',function(){
 		if($(this).is(':checked')){
 			$("#pnf_text").show();

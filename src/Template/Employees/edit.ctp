@@ -363,37 +363,61 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-			customer_name:{
+			name:{
 				required: true,
 			},
-			district_id : {
+			dipartment_id : {
 				  required: true,
 			},
-			customer_seg_id : {
+			sex : {
 				  required: true,
 			},
-			
-			employee_id : {
+			mobile : {
+				  required: true,
+				  digits: true,
+				  minlength: 10,
+				  maxlength: 10,
+			},
+			email:{
+				required: true,
+			},
+			designation_id:{
+				required: true,
+			},
+			permanent_address:{
+				required: true,
+			},
+			residence_address:{
+				required: true,
+			},
+			signature : {
 				  required: true,
 			},
-			payment_terms : {
-				  required: true,
+			marital_status:{
+				 required: true,
 			},
-			mode_of_payment : {
-				  required: true,
-			},
+
 			account_category_id:{
-				  required: true,
+				 required: true,
 			},
 			account_group_id:{
-				  required: true,
+				 required: true,
 			},
 			account_first_subgroup_id:{
-				  required: true,
+				 required: true,
 			},
 			account_second_subgroup_id:{
-				  required: true,
-			}
+				 required: true,
+			},
+			bank_name:{
+				 required: true,
+			},
+			account_no:{
+				 required: true,
+			},
+			branch_name:{
+				 required: true,
+			},
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
