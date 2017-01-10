@@ -142,7 +142,7 @@ $html .= '
 								
 								<tr>
 									<td>Kind Attn.</td>
-									<td>: '. h(($quotation->customer_for_attention)) .' ('. h($quotation->customer_contact_no) .')</td>
+									<td>: '. h(($quotation->customer_for_attention)) .'</td>
 								</tr>
 								<tr>
 									<td>Reference</td>
