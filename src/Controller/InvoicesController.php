@@ -249,7 +249,7 @@ class InvoicesController extends AppController
 			]);
 			$process_status='Pulled From Sales-Order';
 		}
-				
+			
 	
 		$this->set(compact('sales_order','process_status','sales_order_id'));
 		
@@ -425,7 +425,7 @@ class InvoicesController extends AppController
             'contain' => ['InvoiceRows'=>['Items'],'SalesOrders'=>['SalesOrderRows','Invoices'=>['InvoiceRows']],'Companies','Customers','Employees','SaleTaxes']
         ]);
 		//pr($invoice); exit;
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        if ($this->request->is(['patch', 'post', 'put'])){
             $invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 			
 			$invoice->date_created=date("Y-m-d",strtotime($invoice->date_created));
