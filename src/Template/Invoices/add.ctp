@@ -1,3 +1,4 @@
+
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -180,20 +181,20 @@
 			<table class="table tableitm" id="tbl2">
 				<tr>
 					<td  align="right">
+					<?php 
+						if($sales_order->discount_type==1){
+							echo 'In Sales Order'; echo  @$sales_order->discount;'Rs   ' ; } 
+						else{
+							echo 'In Sales Order'; echo @$sales_order->discount_per; echo '%  ' ; } 
+					?> 
 					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
-					<?php if($sales_order->discount_type=='1'){ ?>
-						<div class="input-group col-md-2"  id="discount_text">
-							<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='<?= h($sales_order->discount_per) ?>'><span class="input-group-addon">%</span>
-						</div>
-					<?php }else{ ?>
-						<div class="input-group col-md-2"  id="discount_text" style="display:none;">
-							<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='0'><span class="input-group-addon">%</span>
-						</div>
-					<?php } ?>
-					
+						
+						<div class="input-group col-md-2" style="display:none;" id="discount_text">
+						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
+					</div>
 					</td>
 				
-					<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01,'value'=>@$sales_order->discount]); ?></td>
+					<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
 				</tr>
 				<?php if(in_array('Yes',@$ed_des)) { ?>
 				<tr style="background-color:#e6faf9;">
@@ -207,12 +208,18 @@
 				</tr>
 				<tr>
 					<td  align="right">
-					<b>P&F <label><?php echo $this->Form->input('pnf_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'pnfper','value'=>@$sales_order->pnf]); ?></label>(in %)</b>
+					<?php
+						if($sales_order->pnf_type==1){
+							echo 'In Sales Order'; echo  @$sales_order->pnf;'Rs' ; } 
+						else{
+							echo 'In Sales Order'; echo @$sales_order->pnf_per; echo '%' ; } 
+						?> 
+					<b>P&F <label><?php echo $this->Form->input('pnf_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'pnfper']); ?></label>(in %)</b>
 					<div class="input-group col-md-2" style="display:none;" id="pnf_text">
 						<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
 					</div>
 					</td>
-					<td><?php echo $this->Form->input('pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01,'value'=>@$sales_order->pnf]); ?></td>
+					<td><?php echo $this->Form->input('pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'P&F','step'=>0.01]); ?></td>
 				</tr>
 				<tr>
 					<td  align="right"><b>Total after P&F </b></td>
@@ -299,8 +306,18 @@
 						</div>
 					</div>
 				</div>
+			</div><br/>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-6 control-label">Customer TIN</label>
+						<div class="col-md-6" id="due">
+							<?php echo $this->Form->input('customer_tin', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value' => @$sales_order->customer->tin_no,'required']); ?><br/>
+							
+						</div>
+					</div>
+				</div>
 			</div>
-			
 		</div>
 		<?php echo $this->Form->input('process_status', ['type' => 'hidden','value' => @$process_status]); ?>
 		<?php echo $this->Form->input('sales_order_id', ['type' => 'hidden','value' => @$sales_order_id]); ?>
@@ -388,13 +405,19 @@ $(document).ready(function() {
 			},
 			employee_id: {
 				  required: true,
-			}
+			},
+			customer_tin: {
+				  required: true,
+			},
 			
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
 			membership: {
 				required: "Please select a Membership type"
+			},
+			customer_tin: {
+				required: "Can't generate Invoice,Customer has not TIN"
 			},
 			service: {
 				required: "Please select  at least 2 types of Service",

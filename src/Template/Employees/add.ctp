@@ -401,6 +401,7 @@ $(document).ready(function() {
 			account_second_subgroup_id:{
 				 required: true,
 			},
+
 			bank_name:{
 				 required: true,
 			},
@@ -411,8 +412,6 @@ $(document).ready(function() {
 				 required: true,
 			},
 		},
-
-	
 
 		messages: { // custom messages for radio buttons and checkboxes
 			membership: {
@@ -483,7 +482,6 @@ $(document).ready(function() {
 		}
 
 	});
-	
 	//--	 END OF VALIDATION
 	$('.allLetter').live("keyup",function(){
 		var inputtxt=  $(this).val();

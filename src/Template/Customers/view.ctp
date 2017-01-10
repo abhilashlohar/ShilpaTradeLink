@@ -20,8 +20,10 @@ color: #113775;
 			<tr>
 			    <td><label class="control-label1">District</label></td>
 				<td><?= h($customer->district->district,$customer->district->id) ?></td>
+
 				<td><label class="control-label1">Credit Limit</label></td>
 				<td><?= h($customer->credit_limit) ?></td>
+
 			</tr>
 			<tr>
 			    <td><label class="control-label1">Tin No</label></td>
