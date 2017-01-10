@@ -85,6 +85,7 @@ class EmployeesController extends AppController
 			if (in_array($ext, $arr_ext)) {
 				move_uploaded_file($file['tmp_name'], WWW_ROOT . '/signatures/' . $setNewFileName . '.' . $ext);
 			}
+//pr($employee); exit;
             if ($this->Employees->save($employee)) {
 				$ledgerAccount = $this->Employees->LedgerAccounts->newEntity();
 				$ledgerAccount->account_second_subgroup_id = $employee->account_second_subgroup_id;

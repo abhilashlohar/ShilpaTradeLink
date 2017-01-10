@@ -385,6 +385,21 @@ $(document).ready(function() {
 			marital_status:{
 				 required: true,
 			},
+			account_category_id:{
+				 required: true,
+			},
+			account_group_id:{
+				 required: true,
+			},
+			account_first_subgroup_id:{
+				 required: true,
+			},
+			account_second_subgroup_id:{
+				 required: true,
+			},
+			companies:{
+				required: true,
+			}
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes

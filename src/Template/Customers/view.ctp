@@ -21,8 +21,8 @@ color: #113775;
 			    <td><label class="control-label1">District</label></td>
 				<td><?= h($customer->district->district,$customer->district->id) ?></td>
 				
-				<td><label class="control-label1">Company Group</label></td>
-				<td><?= h($customer->company_group->name,$customer->company_group->id) ?></td>
+				<td></td>
+				<td></td>
 			</tr>
 			<tr>
 			    <td><label class="control-label1">Tin No</label></td>
