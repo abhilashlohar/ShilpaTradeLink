@@ -183,9 +183,11 @@
 					<td  align="right">
 					<?php 
 						if($sales_order->discount_type==1){
-							echo 'In Sales Order'; echo  @$sales_order->discount;'Rs   ' ; } 
+							echo 'In Sales Order '; echo @$sales_order->discount_per; echo ' %  ' ;
+							 } 
 						else{
-							echo 'In Sales Order'; echo @$sales_order->discount_per; echo '%  ' ; } 
+							echo 'In Sales Order '; echo  @$sales_order->discount; echo ' Rs ' ;
+							 } 
 					?> 
 					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
 						
@@ -210,9 +212,12 @@
 					<td  align="right">
 					<?php
 						if($sales_order->pnf_type==1){
-							echo 'In Sales Order'; echo  @$sales_order->pnf;'Rs' ; } 
+							echo 'In Sales Order '; echo @$sales_order->pnf_per; echo ' % ';
+							 } 
 						else{
-							echo 'In Sales Order'; echo @$sales_order->pnf_per; echo '%' ; } 
+							echo 'In Sales Order '; echo  @$sales_order->pnf; echo ' Rs ' ;
+							 }
+							echo ' ';
 						?> 
 					<b>P&F <label><?php echo $this->Form->input('pnf_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'pnfper']); ?></label>(in %)</b>
 					<div class="input-group col-md-2" style="display:none;" id="pnf_text">
