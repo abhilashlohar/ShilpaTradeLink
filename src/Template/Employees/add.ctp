@@ -385,6 +385,7 @@ $(document).ready(function() {
 			marital_status:{
 				 required: true,
 			},
+
 			account_category_id:{
 				 required: true,
 			},
@@ -397,10 +398,9 @@ $(document).ready(function() {
 			account_second_subgroup_id:{
 				 required: true,
 			},
-			companies:{
-				required: true,
-			}
 		},
+
+	
 
 		messages: { // custom messages for radio buttons and checkboxes
 			membership: {
@@ -471,6 +471,7 @@ $(document).ready(function() {
 		}
 
 	});
+	
 	//--	 END OF VALIDATION
 	$('.allLetter').live("keyup",function(){
 		var inputtxt=  $(this).val();
