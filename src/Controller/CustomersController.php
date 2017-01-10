@@ -53,7 +53,7 @@ class CustomersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $customer = $this->Customers->get($id, [
-            'contain' => ['Districts', 'CompanyGroups', 'CustomerSegs', 'CustomerContacts', 'Quotations','CustomerAddress']
+            'contain' => ['Districts', 'CustomerSegs', 'CustomerContacts', 'Quotations','CustomerAddress']
         ]);
 
         $this->set('customer', $customer);

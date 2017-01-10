@@ -47,6 +47,7 @@ $html = '
 	.itemrow tbody td{
 		border-bottom: none;border-top: none;
 	}
+
 	.table_rows th{
 		font-size:14px;
 	}
@@ -185,6 +186,7 @@ $html .= '
 
 $html.='<br/>
 <table width="100%" class="table_rows itemrow">
+	<thead>
 		<tr>
 			<th style="white-space: nowrap;">S No</th>
 			<th>Item Description</th>
@@ -193,6 +195,8 @@ $html.='<br/>
 			<th>Rate</th>
 			<th>Amount</th>
 		</tr>
+	</thead>
+	<tbody>
 ';
 
 $sr=0; foreach ($quotation->quotation_rows as $quotationRows): $sr++; 
@@ -209,6 +213,7 @@ endforeach;
 
 
 $html.='
+	</tbody>
 	<tfoot>
 			<tr>
 				<td colspan="5" style="text-align:right;border-top: 1px solid #000;">Total</td>
