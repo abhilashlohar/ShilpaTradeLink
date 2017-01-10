@@ -379,10 +379,10 @@ class SalesOrdersController extends AppController
             if ($this->SalesOrders->save($salesOrder)) {
 				//pr($salesOrder); exit;
 				
-					$salesOrder->job_card='Pending';
+					$salesOrder->job_card_status='Pending';
 					$query = $this->SalesOrders->query();
 					$query->update()
-						->set(['job_card' => 'Pending'])
+						->set(['job_card_status' => 'Pending'])
 						->where(['id' => $id])
 						->execute();
 						

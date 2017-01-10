@@ -385,7 +385,9 @@ $(document).ready(function() {
 			marital_status:{
 				 required: true,
 			},
+			
 		},
+	
 
 		messages: { // custom messages for radio buttons and checkboxes
 			membership: {
@@ -456,6 +458,7 @@ $(document).ready(function() {
 		}
 
 	});
+	
 	//--	 END OF VALIDATION
 	$('.allLetter').live("keyup",function(){
 		var inputtxt=  $(this).val();
