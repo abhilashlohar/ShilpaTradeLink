@@ -153,6 +153,7 @@ class InvoicesController extends AppController
         $invoice = $this->Invoices->get($id, [
             'contain' => ['Customers', 'Companies', 'InvoiceRows' => ['Items']]
         ]);
+		
 
         $this->set('invoice', $invoice);
         $this->set('_serialize', ['invoice']);
@@ -422,8 +423,9 @@ class InvoicesController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		
         $invoice = $this->Invoices->get($id, [
-            'contain' => ['InvoiceRows'=>['Items'],'SalesOrders'=>
-			['SalesOrderRows'=>['Items','SaleTaxes'],'Invoices'=>['InvoiceRows']],'Companies','Customers','Employees','SaleTaxes']
+            'contain' => ['InvoiceRows','SalesOrders' => ['Invoices'=>['InvoiceRows'],'SalesOrderRows' => ['Items' => function ($q){
+				return $q->select(['name']);
+			},'SaleTaxes']],'Companies','Customers','Employees','SaleTaxes']
         ]);
 		
         if ($this->request->is(['patch', 'post', 'put'])){
@@ -438,7 +440,7 @@ class InvoicesController extends AppController
 			$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date)); 
 			$invoice->in3=$invoice->in3;
 			$invoice->due_payment=$invoice->grand_total;
-			//pr($invoice->in3); exit;
+			//pr($invoice->invoice_rows); exit;
 			
             if ($this->Invoices->save($invoice)) {
 				
@@ -518,7 +520,7 @@ class InvoicesController extends AppController
 					$qty=$invoice_rows->quantity;
 						
 					$salesorderrow=$this->Invoices->SalesOrderRows->find()->where(['sales_order_id'=>$invoice->sales_order_id,'item_id'=>$invoice_rows->item_id])->first();
-					$salesorderrow->processed_quantity=$salesorderrow->processed_quantity-$invoice->getOriginal('invoice_rows')[$qq]->quantity+$invoice_rows->quantity;
+					$salesorderrow->processed_quantity=$salesorderrow->processed_quantity-@$invoice->getOriginal('invoice_rows')[$qq]->quantity+$invoice_rows->quantity;
 					$this->Invoices->SalesOrderRows->save($salesorderrow);
 				$qq++; 
 					$query = $this->Invoices->ItemLedgers->query();
@@ -530,7 +532,7 @@ class InvoicesController extends AppController
                 $this->Flash->success(__('The invoice has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else {pr($invoice); exit;
+            } else {
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }
         }
@@ -551,12 +553,7 @@ class InvoicesController extends AppController
 				$due_paisa+=$invoice_data->due_payment;
 		}
 		$old_due_payment=$due_paisa-$invoice->due_payment;
-		//pr($old_due_payment); exit;
-		//pr($invoice->due_payment); exit;
-		//pr($old_due_payment); exit;
 		
-		//pr($old_due_payment); exit;
-		//$dueInvoices = $this->Invoices->find()->where(['customer_id'=>$invoice->customer_id,'due_payment !='=>0]);
 		$items = $this->Invoices->Items->find('list',['limit' => 200]);
 		$transporters = $this->Invoices->Transporters->find('list', ['limit' => 200]);
 		$termsConditions = $this->Invoices->TermsConditions->find('all',['limit' => 200]);

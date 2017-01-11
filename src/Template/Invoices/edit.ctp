@@ -1,4 +1,9 @@
 <?php //pr($invoice->sales_order->invoices); exit; ?>
+<style>
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+	vertical-align: top !important;
+}
+</style>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -133,59 +138,68 @@
 				</thead>
 				<tbody>
 					<?php 
-					foreach($invoice->sales_order->invoices as $data){
-						foreach($data->invoice_rows as $data2){
-						$processed_items[$data2->item_id]=@$processed_items[$data2->item_id]+$data2->quantity;
+					$existing_rows=[];
+					$current_rows=[];
+					$current_row_items=[];
+					foreach($invoice->sales_order->invoices as $all_invoice){
+						foreach($all_invoice->invoice_rows as $all_invoice_row){
+							$existing_rows[$all_invoice_row->item_id]=@$existing_rows[$all_invoice_row->item_id]+$all_invoice_row->quantity;
 						}
 					}
-					foreach($invoice->sales_order->sales_order_rows as $data3){
-						$total_items[$data3->item_id]=@$total_items[$data3->item_id]+$data3->quantity;
-					}
-					foreach($invoice->sales_order->invoices as $data4){
-						foreach($data4->invoice_rows as $invoice_row){
-							$item_array[]=$invoice_row->item_id;
-							
-						}
-					}
-					//pr($item_array); 
 					
-					$q=1; foreach ($invoice->sales_order->sales_order_rows as $sales_order_row): //pr($sales_order_row->item_id); exit; ?> 
+					foreach($invoice->invoice_rows as $current_invoice_row){
+						$existing_rows[$current_invoice_row->item_id]=$existing_rows[$current_invoice_row->item_id]-$current_invoice_row->quantity;
+						$current_rows[]=$current_invoice_row->item_id;
+						$current_row_items[$current_invoice_row->item_id]=$current_invoice_row->quantity;
+					}
+					$q=0; 
+					foreach ($invoice->sales_order->sales_order_rows as $sales_order_row){ ?>
+						<?php if(@$existing_rows[$sales_order_row->item_id]!=$sales_order_row->quantity) { ?> 
 						<tr class="tr1" row_no="<?= h($q) ?>">
-							<td rowspan="2"><?= h($q) ?></td>
-							<td><?php 
-							echo $this->Form->input('invoice_rows['.$q.'][item_id]', ['type'=>'hidden','value'=>$sales_order_row->item_id]);
-							echo $this->Form->input('item_id_display', ['type'=>'text','label' => false,'class' => 'form-control input-sm','value'=>$sales_order_row->item->name,'readonly']);
-							?></td>
+							<td rowspan="2"><?php echo ++$q; $q--; ?></td>
 							<td>
-							<?php  echo $this->Form->input('invoice_rows['.$q.'][quantity]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value' => @$sales_order_row->quantity]); 
-							?>
+								<?php 
+								echo $this->Form->input('q', ['type'=>'hidden','value'=>$sales_order_row->item_id]);
+								echo $sales_order_row->item->name;
+								?>
 							</td>
-							<td><?php echo $this->Form->input('invoice_rows['.$q.'][rate]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$sales_order_row->rate,'readonly']); ?></td>
-							<td><?php echo $this->Form->input('invoice_rows['.$q.'][amount]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$sales_order_row->amount]); ?></td>
-							<td><?php echo @$sales_order_row->sale_tax->tax_figure; ?></td>
-							<?php if(in_array($sales_order_row->item_id,$item_array)){
-									$checked1="checked";
-								}else{
-									$checked1="";
-								} ?>
 							<td>
-								<label><?php echo $this->Form->input('invoice_rows['.$q.'][check]', ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$sales_order_row->id,"checked"=>$checked1 ]);
+								<?php  
+								echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value' => @$current_row_items[$sales_order_row->item_id],'max'=>$sales_order_row->quantity-@$existing_rows[$sales_order_row->item_id]]); 
+								?>
+							</td>
+							<td>
+								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$sales_order_row->rate,'readonly']); ?>
+							</td>
+							<td>
+								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$sales_order_row->amount]); ?>
+							</td>
+							<td>
+								<?php echo @$sales_order_row->sale_tax->tax_figure; ?>
+							</td>
+							<td>
+								<label><?php 
+								if(in_array($sales_order_row->item_id,$current_rows)){
+									$check='checked';
+								}else{
+									$check='';
+								}
+								echo $this->Form->input('q', ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$sales_order_row->id,$check]);
 								?></label>
-								<?php echo $this->Form->input('invoice_rows['.$q.'][sale_tax]', ['label' => false,'type' => 'hidden','value' => @$sales_order_row->sale_tax->tax_figure]); ?>
+								<?php echo $this->Form->input('q', ['label' => false,'type' => 'hidden','value' => @$sales_order_row->sale_tax->tax_figure]); ?>
 								<?php echo $this->Form->input('st_description', ['type' => 'hidden','label' => false,'value' => @$sales_order_row->sale_tax->invoice_description]); ?>
 								<?php echo $this->Form->input('st_id', ['type' => 'hidden','label' => false,'value' => @$sales_order_row->sale_tax->id]); ?>
-							</td>
-							<td>
 							</td>
 						</tr>
 						<tr class="tr2" row_no="<?= h($q) ?>">
 							<td colspan="7">
-							<div contenteditable="true" id="editor" name="<?php echo 'invoice_rows['.$q.'][description]'; ?>"><?php echo @$sales_order_row->description; ?></div>
-							<?php echo $this->Form->textarea('invoice_rows['.$q.'][description]', ['label' => false,'class' => 'form-control input-sm autoExpand','style'=>['display:none'],'placeholder' => 'Description','required','value'=>$sales_order_row->description]); ?>
+							<?php echo $sales_order_row->description; ?>
+							<?php echo $this->Form->textarea('q', ['label' => false,'class' => 'form-control input-sm autoExpand','style'=>['display:none'],'placeholder' => 'Description','required','value'=>$sales_order_row->description]); ?>
 							</td>
 							
 						</tr>
-					<?php $q++; endforeach;  ?>
+						<?php } ?>
+					<?php $q++; }  ?>
 				</tbody>
 			</table>
 			<table class="table tableitm" id="tbl2">
@@ -436,23 +450,9 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			
-			q="ok";
-			$("#main_tb tbody tr.tr1").each(function(){
-				var w=$(this).find("td:nth-child(3) input").val();
-				var r=$(this).find("td:nth-child(4) input").val();
-				if(w=="" || r==""){
-					q="e";
-				}
-			});
-			if(q=="e"){
-				$("#row_error").show();
-				return false;
-			}else{
-				success1.show();
-				error1.hide();
-				form[0].submit(); // submit the form
-			}
+			success1.show();
+			error1.hide();
+			form[0].submit();
 		}
 
 	});
@@ -466,35 +466,7 @@ $(document).ready(function() {
 		$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').rules("add", "required");
 	});	
 	
-	$('.quantity').die().live("keyup",function() {
-			var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc==0)
-			{
-				$(this).val('');
-				return false; 
-			}
-			else if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
-	});
-	$('input[name="discount"],input[name="discount_per"],input[name="pnf"],input[name="fright_amount"],input[name="pnf_per"]').die().live("keyup",function() {
-			var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
-	});
+	
 	$('select[name="company_id"]').on("change",function() {
 		var alias=$('select[name="company_id"] option:selected').attr("alias");
 		$('input[name="in1"]').val(alias);
@@ -518,7 +490,8 @@ $(document).ready(function() {
 	$('.addrow').die().live("click",function() { 
 		add_row();
     });
-		
+	
+	rename_rows(); calculate_total();
 	function rename_rows(){
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
