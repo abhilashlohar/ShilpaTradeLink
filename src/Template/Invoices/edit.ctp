@@ -135,15 +135,14 @@
 					<?php 
 					foreach($invoice->sales_order->invoices as $data){
 						foreach($data->invoice_rows as $data2){
-							
-							$processed_items[$data2->item_id]=@$processed_items[$data2->item_id]+$data2->quantity;
+						$processed_items[$data2->item_id]=@$processed_items[$data2->item_id]+$data2->quantity;
 						}
 					}
 					foreach($invoice->sales_order->sales_order_rows as $data3){
 						$total_items[$data3->item_id]=@$total_items[$data3->item_id]+$data3->quantity;
 					}
-					foreach($invoice->sales_order->invoices as $data){
-						foreach($data->invoice_rows as $invoice_row){
+					foreach($invoice->sales_order->invoices as $data4){
+						foreach($data4->invoice_rows as $invoice_row){
 							$item_array[]=$invoice_row->item_id;
 							
 						}
@@ -158,10 +157,8 @@
 							echo $this->Form->input('item_id_display', ['type'=>'text','label' => false,'class' => 'form-control input-sm','value'=>$sales_order_row->item->name,'readonly']);
 							?></td>
 							<td>
-							<?php  echo $this->Form->input('invoice_rows['.$q.'][quantity]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value' => @$sales_order_row->quantity-$sales_order_row->processed_quantity,'readonly','min'=>'1','max'=>@$sales_order_row->quantity-$sales_order_row->processed_quantity]); 
-							
+							<?php  echo $this->Form->input('invoice_rows['.$q.'][quantity]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value' => @$sales_order_row->quantity]); 
 							?>
-						
 							</td>
 							<td><?php echo $this->Form->input('invoice_rows['.$q.'][rate]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$sales_order_row->rate,'readonly']); ?></td>
 							<td><?php echo $this->Form->input('invoice_rows['.$q.'][amount]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$sales_order_row->amount]); ?></td>
