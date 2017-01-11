@@ -39,12 +39,11 @@
 						</div>
 					</div>
 				</div>
-				
-
 			</div><br/>
+			
 				<table width="100%" id="main_tb" border="1">
 					<thead>
-						<th width="30%">In</th>
+						<th width="25%">In</th>
 						<th>Out</th>
 					</thead>
 					<tbody id="maintbody"><?php $p=0; $q=0; $r=0; ?>
@@ -57,7 +56,8 @@
 							
 							<td>
 								<?php  $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
-						<div>
+								<div>
+								
 							<table>
 								<thead>
 									<th>Sr</th>
@@ -69,11 +69,12 @@
 									<?php  foreach($sales_order_row->job_card_rows as $job_card_row): ?> 
 										<tr>
 											<td align="center"><?= h(++$page_no) ?></td>
+											
 											<td>
-											<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][job_card_row_id]',['class' => 'form-control input-sm','type'=>'text','label'=>false,'value'=>$job_card_row->id]); ?>
-											<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm select2me','label'=>false,'value'=>$job_card_row->item_id]); ?>
+											<?php echo $this->Form->input('job_card_rows['.$p.'][sales_order_row_id]',['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$job_card_row->sales_order_row_id]); ?>
+											<?php echo $this->Form->input('job_card_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm select2me','label'=>false,'value'=>$job_card_row->item_id]); ?>
 											</td>
-											<td><?php echo $this->Form->input('inventory_voucher_rows['.$p.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
+											<td><?php echo $this->Form->input('job_card_rows['.$p.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
 											<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 											
 										</tr>
@@ -83,13 +84,12 @@
 							</table>
 							</div>	
 							</td>
+							
 						</tr>
 						<?php  endforeach; ?>
 					</tbody>
 				</table>
-				
 			</div>
-	
 			<div class="form-actions">
 				 <button type="submit" class="btn blue-hoki">Add Inventory Vouchers</button>
 			</div>
@@ -136,8 +136,7 @@ $(document).ready(function() {
 			var sales_order_row_id=$(this).find("td:nth-child(1) input").val();
 			var sr=0;
 			$(this).find("td:nth-child(2) table tbody tr").each(function(){
-				
-				 sr++;
+				sr++;
 				$(this).find('td:nth-child(1)').html(sr);
 				$(this).find('td:nth-child(2) input[type="hidden"]').attr({name:"inventory_voucher_rows["+i+"][sales_order_row_id]", id:"job_card_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
 				$(this).find("td:nth-child(2) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2();
