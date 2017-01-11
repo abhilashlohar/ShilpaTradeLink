@@ -119,12 +119,14 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php $i=0; foreach($vendor->vendor_contact_persons as $vendor_contact_person){ $i++; ?>
+						<?php $i=0; foreach($vendor->vendor_contact_persons as $vendor_contact_person){ $i++;
+						if($vendor_contact_person->default_person =='1'){ $checked2="checked"; } else{ $checked2=""; } ?>
 						<tr>
 							<td><?= h($i) ?></td>
-							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Bank Name','value'=>$vendor_contact_person->name,'required']); ?></td>
+							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Name','value'=>$vendor_contact_person->name,'required']); ?></td>
 							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Branch','value'=>$vendor_contact_person->email,'required']); ?></td>
 							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.mobile', ['label' => false,'class' => 'form-control input-sm allLetter','value'=>$vendor_contact_person->mobile,'placeholder'=>'Mobile','maxlength'=>10,'minlength'=>10,'required']); ?></td>
+							<td width="90"><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.default_person', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn',"checked"=>$checked2]); ?></td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
 						<?php } ?>
@@ -193,15 +195,6 @@ $(document).ready(function() {
 				  required: true,
 			},
 			
-			name:{
-				   required: true,
-			},
-			email:{
-				  required: true,
-			},
-			mobile:{
-				  required: true,
-			},
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
@@ -275,19 +268,7 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
-	$('.allLetter').live("keyup",function(){
-		var inputtxt=  $(this).val();
-		var numbers =  /^[0-9]*\.?[0-9]*$/;
-		
-		if(inputtxt.match(numbers))  
-		{  
-		} 
-		else  
-		{  
-			$(this).val('');
-			return false;  
-		}
-	});
+
 	
 	$('select[name="account_category_id"]').on("change",function() {
 	$('#account_group_div').html('Loading...');
@@ -332,8 +313,8 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		$('select[name="account_second_subgroup_id"]').select2();
 	});
 });	
-	
-	$('.default_btn:first').attr('checked','checked'); $.uniform.update();
+	rename_rows();
+	//$('.default_btn:first').attr('checked','checked'); $.uniform.update();
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
@@ -350,18 +331,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		if (confirm("Are you sure to remove row ?") == true) {
 			if(l>1){
 				$(this).closest("tr").remove();
-				var i=0;
-				$("#main_tb tbody tr").each(function(){
-					
-					$(this).find("td:nth-child(1)").html(++i); --i;
-					$(this).find("td:nth-child(2) input").attr("name","vendor_contact_persons["+i+"][name]");
-					$(this).find("td:nth-child(3) input").attr("name","vendor_contact_persons["+i+"][email]");
-					$(this).find("td:nth-child(4) input").attr("name","vendor_contact_persons["+i+"][mobile]");
-					$(this).find("td:nth-child(6) input[type=checkbox]").attr("name","vendor_contact_persons["+i+"][default_person]");
-					i++;
-					
-				});
-				calculate_total();
+				rename_rows();
 			}
 		} 
     });
@@ -369,18 +339,26 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 	function add_row(){
 		var tr=$("#sample_tb tbody tr").clone();
 		$("#main_tb tbody").append(tr);
-		var i=0;
+		rename_rows();
+	}
+	
+	function rename_rows(){
+	var i=0;
 		$("#main_tb tbody tr").each(function(){
 			
 			$(this).find("td:nth-child(1)").html(++i); --i;
-			$(this).find("td:nth-child(2) input").attr("name","vendor_contact_persons["+i+"][name]");
-			$(this).find("td:nth-child(3) input").attr("name","vendor_contact_persons["+i+"][email]");
-			$(this).find("td:nth-child(4) input").attr("name","vendor_contact_persons["+i+"][mobile]");
-			$(this).find("td:nth-child(5) input[type=checkbox]").attr("name","vendor_contact_persons["+i+"][default_person]");
+			$(this).find("td:nth-child(2) input").attr({name:"vendor_contact_persons["+i+"][name]",id:"vendor_contact_persons-"+i+"-name"}).rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr({name:"vendor_contact_persons["+i+"][email]",id:"vendor_contact_persons-"+i+"-email"}).rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr({name:"vendor_contact_persons["+i+"][mobile]",id:"vendor_contact_persons-"+i+"-mobile"}).rules('add', {
+						required: true,
+						number: true,
+						minlength:10,
+					});
+			$(this).find("td:nth-child(5) input[type=checkbox]").attr({name:"vendor_contact_persons["+i+"][default_person]", id:"vendor_contact_persons-"+i+"-default_person"});
 			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
 			if (test) { test.uniform(); }
 			i++;
-		});
+		});	
 	}
 	
 });
@@ -390,9 +368,10 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 	<tbody>
 		<tr>
 			<td>0</td>
-			<td><?php echo $this->Form->input('name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Name','required']); ?></td>
-			<td><?php echo $this->Form->input('email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email','required']); ?></td>
-			<td><?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mobile','maxlength'=>10,'minlength'=>10,'required']); ?></td>
+			<td><?php echo $this->Form->input('name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Name']); ?></td>
+			<td><?php echo $this->Form->input('email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email']); ?></td>
+			<td><?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mobile','maxlength'=>1]); ?></td>
+			<td width="90"><?php echo $this->Form->input('default_person', ['type'=>'checkbox','label' => false,'class' => 'form-control default_btn']); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 	</tbody>
