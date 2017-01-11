@@ -4,6 +4,9 @@
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Add Invoice</span>
+			<?php if($process_status!="New"){ ?>
+			<br/><span style=" font-size: 13px; ">Converting Sales Orders: <?= h(($sales_order->so1.'/QO-'.str_pad($sales_order->so2, 3, '0', STR_PAD_LEFT).'/'.$sales_order->so3.'/'.$sales_order->so4)) ?></span>
+			<?php } ?>
 		</div>
 		<div class="actions">
 			<?php echo $this->Html->link('<i class="icon-home"></i> Pull Sales-Order','/SalesOrders/index?pull-request=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
