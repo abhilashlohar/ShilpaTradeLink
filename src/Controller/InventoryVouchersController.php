@@ -58,10 +58,14 @@ class InventoryVouchersController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$jobcard_id=@(int)$this->request->query('jobcard');
+		
 		if(!empty($jobcard_id)){
 			$jobCards = $this->InventoryVouchers->JobCards->get($jobcard_id, [
-		'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items','JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
-			]);
+            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'=>function ($q){
+					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
+				},'JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
+        ]);
+			
 			//pr($salesOrder); exit;
 		}
 		//pr($this->request->data); exit;
@@ -76,8 +80,13 @@ class InventoryVouchersController extends AppController
         if ($this->request->is('post')) {
 			$inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);
 			$inventoryVoucher->job_card_id=$jobcard_id;
+			//pr($inventoryVoucher); exit;
             if ($this->InventoryVouchers->save($inventoryVoucher)) {
-				
+				$query = $this->InventoryVouchers->JobCards->query();
+					$query->update()
+						->set(['status' => 'Converted'])
+						->where(['id' => $inventoryVoucher->job_card_id])
+						->execute();
                 $this->Flash->success(__('The inventory voucher has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -103,8 +112,13 @@ class InventoryVouchersController extends AppController
     public function edit($id = null)
     { 	$this->viewBuilder()->layout('index_layout');
         $inventoryVoucher = $this->InventoryVouchers->get($id, [
-            'contain' => ['JobCards','InventoryVoucherRows'=>['Items']]
+            'contain' => ['InventoryVoucherRows'=>['Items'],'JobCards'=>[
+				'SalesOrders'=>['SalesOrderRows'=>['Items'=>function ($q){
+					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
+				},'JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
+        ]
         ]);
+		//pr($inventoryVoucher->job_card->sales_order->sales_order_rows[0]); exit;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);
             if ($this->InventoryVouchers->save($inventoryVoucher)) {

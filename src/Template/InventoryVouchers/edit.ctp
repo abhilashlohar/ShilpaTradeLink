@@ -1,4 +1,4 @@
-
+<?php //pr($inventoryVoucher); exit;?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -28,7 +28,25 @@
 			</div><br/>
 
 				<div class="table-scrollable">
-					<table class="table tableitm" id="main_tb">
+					
+				<table width="100%" id="main_tb" border="1">
+					<thead>
+						<th width="25%">In</th>
+						<th>Out</th>
+					</thead>
+					<tbody id="maintbody"><?php $p=0; $q=0; $r=0; ?>
+					<?php foreach ($inventoryVoucher->job_card->sales_order->sales_order_rows as $sales_order_row): ?>
+						<tr class="main_tr">
+							<td valign="top">
+							<?php echo $this->Form->input('sales_order_id', ['type'=>'text','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->id,'type'=>'hidden']); ?>
+							<b><?= h($sales_order_row->item->name) ?></b>
+							</td>
+							
+							<td>
+								<?php  $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
+								<div>
+								
+							<table class="table tableitm" id="main_tb">
 						<thead>
 							<tr>
 								<th width="50">Sr.No. </th>
@@ -49,6 +67,13 @@
 						<?php $q++; endforeach; ?>
 						</tbody>
 					</table>
+							</div>	
+							</td>
+							
+						</tr>
+						<?php  endforeach; ?>
+					</tbody>
+				</table>
 				</div>
 				
 	

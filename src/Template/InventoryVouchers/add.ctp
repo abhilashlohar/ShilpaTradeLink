@@ -1,4 +1,4 @@
-<?php //pr($jobCards); exit; ?>
+
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -66,15 +66,15 @@
 									<th width="10%"></th>
 								</thead>
 								<tbody>
-									<?php  foreach($sales_order_row->job_card_rows as $job_card_row): ?> 
+									<?php  foreach($sales_order_row->job_card_rows as $job_card_row):  pr($job_card_row->id); ?> 
 										<tr>
 											<td align="center"><?= h(++$page_no) ?></td>
 											
 											<td>
-											<?php echo $this->Form->input('job_card_rows['.$p.'][sales_order_row_id]',['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$job_card_row->sales_order_row_id]); ?>
-											<?php echo $this->Form->input('job_card_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm select2me','label'=>false,'value'=>$job_card_row->item_id]); ?>
+											<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][job_card_row_id]', ['type'=>'hidden','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$job_card_row->id]); ?>
+											<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm select2me','label'=>false,'value'=>$job_card_row->item_id]); ?>
 											</td>
-											<td><?php echo $this->Form->input('job_card_rows['.$p.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
+											<td><?php echo $this->Form->input('inventory_voucher_rows['.$p.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
 											<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 											
 										</tr>
@@ -118,6 +118,7 @@
 <script>
 $(document).ready(function() { 
 	rename_rows_name();
+
 	$('.addrow').die().live("click",function() {
 		var tr1=$("#sample_tb tbody").html();
 		$(this).closest('table tbody').append(tr1);
@@ -126,8 +127,12 @@ $(document).ready(function() {
 	
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
-		alert(l);
-		$(this).closest('tr').remove();
+		if (confirm("Are you sure to remove row ?") == true) {
+			if(l>1){
+				$(this).closest("tr").remove();
+				rename_rows_name();
+			}
+		}
     });
 	
 	function rename_rows_name(){
@@ -138,7 +143,8 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(2) table tbody tr").each(function(){
 				sr++;
 				$(this).find('td:nth-child(1)').html(sr);
-				$(this).find('td:nth-child(2) input[type="hidden"]').attr({name:"inventory_voucher_rows["+i+"][sales_order_row_id]", id:"job_card_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
+				
+				$(this).find('td:nth-child(2) input[type="hidden"]').attr({name:"inventory_voucher_rows["+i+"][job_card_row_id]", id:"job_card_rows-"+i+"-job_card_row_id"}).val(job_card_row_id);
 				$(this).find("td:nth-child(2) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2();
 				$(this).find("td:nth-child(3) input").attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"}); i++;
 			});
