@@ -1,4 +1,6 @@
-<?php //foreach($jobCards as $data){ pr($data); } exit; ?>
+<?php //pr($SalesOrders); exit; ?>
+
+
 <div class="portlet light bordered">
 <div class="portlet-title">
 <div class="caption">
@@ -21,7 +23,7 @@
 				</tr>
 				<tbody>
 		    <?php foreach ($SalesOrders as $SalesOrder): 
-			//pr($jobCard->sales_order_rows);?>
+			pr($SalesOrder->job_card_status);?>
 				<tr>
 					
 					<td><?= h(++$page_no) ?></td>
@@ -32,11 +34,11 @@
 					<td><?php echo $SalesOrder->customer_po_no; ?></td> 
 					
 					<td class="actions">
-					<?php if(($SalesOrder->job_card_status =='Pending') and (sizeof($SalesOrder->sales_order_rows)==0)){ echo sizeof($SalesOrder->job_card);
+					<?php if(($SalesOrder->job_card_status =='Pending') and (sizeof($SalesOrder->sales_order_rows)==0)){
 						if(sizeof($SalesOrder->job_card)==0){
 							echo $this->Html->link('<i class="fa fa-repeat "></i>  Create Job Card','/JobCards/Add?sales-order='.$SalesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 						}else{
-							echo $this->Html->link('<i class="fa fa-repeat "></i>  Edit Job Card','/JobCards/Edit/'.$SalesOrder->job_card[0]->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+							echo $this->Html->link('<i class="fa fa-repeat "></i>  Edit Job Card','/JobCards/Edit/'.$SalesOrder->job_card->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 						}
 					}
 						
@@ -44,9 +46,13 @@
 						if(sizeof($SalesOrder->job_card)==0){
 							echo $this->Html->link('<i class="fa fa-repeat "></i>  Create Job Card','/JobCards/PreAdd?Pre-add='.$SalesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 						}else{
-							echo $this->Html->link('<i class="fa fa-repeat "></i>  Edit Job Card','/JobCards/PreEdit?Pre-add='.$SalesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+							echo $this->Html->link('<i class="fa fa-repeat "></i>  Edit Job Card','/JobCards/PreEdit?Pre-edit='.$SalesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 						}
 					}
+					elseif(($SalesOrder->job_card_status =='Converted')){
+							echo $this->Html->link('<i class="fa fa-repeat "></i>  Edit Job Card','/JobCards/Edit/'.$SalesOrder->job_card->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+							echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $SalesOrder->job_card->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','target'=>'blank','data-original-title'=>'View'));
+						}
 					
 					
 					 ?>

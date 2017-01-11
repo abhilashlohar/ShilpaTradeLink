@@ -1,4 +1,4 @@
-<?php //pr($jobCard->sales_order_id); exit; ?>
+<?php //pr($jobCard); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >

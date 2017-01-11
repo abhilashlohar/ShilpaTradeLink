@@ -120,7 +120,7 @@ class JobCardsController extends AppController
 					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
 				},'JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
         ]);
-
+			//pr($jobCard); exit;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
 			$jobCard->required_date=date("Y-m-d",strtotime($jobCard->required_date)); 
@@ -178,6 +178,39 @@ class JobCardsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$sales_order_id=$this->request->query('Pre-add');
+		
+		$jobCard = $this->JobCards->SalesOrders->get($sales_order_id, [
+            'contain' => ['Customers','SalesOrderRows'=>['Items'=>function ($q){
+					return $q->where(['Items.source' => 'Purchessed/Manufactured']);
+				}]]
+        ]);
+		
+		if ($this->request->is(['patch', 'post', 'put'])) {
+            $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
+            if ($this->JobCards->save($jobCard)) {
+					foreach($jobCard->sales_order_rows as $sales_order_row ){
+						$query = $this->JobCards->SalesOrders->SalesOrderRows->query();
+							$query->update()
+							->set(['source_type' =>$sales_order_row['source_type']])
+							->where(['id' => $sales_order_row['id']])
+							->execute();
+					} 
+		
+                $this->Flash->success(__('The job card has been saved.'));
+                $this->redirect(['controller' =>'JobCards','action' => 'Add?Sales-Order='.$sales_order_id]);
+            } else { 
+                $this->Flash->error(__('The job card could not be saved. Please, try again.'));
+            }
+        }
+        
+        $this->set(compact('jobCard'));
+        $this->set('_serialize', ['jobCards']);
+	
+	}
+	public function PreEdit($id = null)
+    {
+		$this->viewBuilder()->layout('index_layout');
+		$sales_order_id=$this->request->query('Pre-edit');
 		
 		$jobCard = $this->JobCards->SalesOrders->get($sales_order_id, [
             'contain' => ['Customers','SalesOrderRows'=>['Items'=>function ($q){
