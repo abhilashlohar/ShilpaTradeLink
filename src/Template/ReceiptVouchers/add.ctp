@@ -9,6 +9,9 @@
 	vertical-align: top !important;
 }
 </style>
+<?php if($ErrorreceivedFroms){
+	echo 'error msg'; exit; 
+} ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >

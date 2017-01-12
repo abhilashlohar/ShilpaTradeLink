@@ -130,7 +130,6 @@ class ReceiptVouchersController extends AppController
 				return $this->redirect(['action' => 'view/'.$receiptVoucher->id]);
            
 			} else {
-				pr($receiptVoucher); exit;
                 $this->Flash->error(__('The receipt voucher could not be saved. Please, try again.'));
             }
         }
@@ -141,7 +140,11 @@ class ReceiptVouchersController extends AppController
 		foreach($vouchersReferences->voucher_ledger_accounts as $data){
 			$where[]=$data->ledger_account_id;
 		}
-		$receivedFroms = $this->ReceiptVouchers->ReceivedFroms->find('list')->where(['ReceivedFroms.id IN' => $where]);
+		if(sizeof($where)>0){
+			$receivedFroms = $this->ReceiptVouchers->ReceivedFroms->find('list')->where(['ReceivedFroms.id IN' => $where]);
+		}else{
+			$ErrorreceivedFroms='true';
+		}
 				
 		$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get(4, [
             'contain' => ['VoucherLedgerAccounts']
@@ -150,12 +153,17 @@ class ReceiptVouchersController extends AppController
 		foreach($vouchersReferences->voucher_ledger_accounts as $data){
 			$where[]=$data->ledger_account_id;
 		}
-		$bankCashes = $this->ReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
+		if(sizeof($where)>0){
+			$bankCashes = $this->ReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
+		}else{
+			$ErrorbankCashes='true';
+		}
+		
 		
         $companies = $this->ReceiptVouchers->Companies->find('all');
 
 		$Invoices = $this->ReceiptVouchers->Invoices->find()->where(['company_id'=>$st_company_id,'due_payment >'=>0]);		
-        $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies'));
+        $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies','ErrorreceivedFroms','ErrorbankCashes'));
         $this->set('_serialize', ['receiptVoucher']);
     }
 
