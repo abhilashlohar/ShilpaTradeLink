@@ -64,6 +64,8 @@ class ReceiptVouchersController extends AppController
 			foreach($this->request->data['invoice_record'] as $invoice_record){
 					if(@$invoice_record['checkbox']){
 					$receipt_breakups[]=['ref_type'=>'Agst Ref','new_ref_no'=>'','invoice_id'=>$invoice_record['invoice_id'],'amount'=>$invoice_record['invoice_amount']];
+					
+					
 				}
 			} 
 			foreach($this->request->data['new_ref_record'] as $new_ref_record){
@@ -77,7 +79,6 @@ class ReceiptVouchersController extends AppController
 			$receiptVoucher->created_on=date("Y-m-d");
 			$receiptVoucher->company_id=$st_company_id;
             if ($this->ReceiptVouchers->save($receiptVoucher)) {
-				
 				//Ledger posting for Received From Entity
 				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
 				$ledger->ledger_account_id = $receiptVoucher->bank_cash_id;
@@ -99,33 +100,28 @@ class ReceiptVouchersController extends AppController
 				$this->ReceiptVouchers->Ledgers->save($ledger); 
 				
 				//Invoice Update 
-				if($receiptVoucher->payment_process=="Against Reference Number"){
-					$Customer=$this->ReceiptVouchers->Customers->find()->where(['ledger_account_id'=>$receiptVoucher->received_from_id])->first();
+				$i=0;
+				foreach($receiptVoucher->receipt_breakups as $data)
+				{
+					if($data->invoice_id>0){
+					$invoice_id=$data->invoice_id;
+					$amount=$data->amount;
+					$Invoices=$this->ReceiptVouchers->Invoices->find()->where(['id'=>$invoice_id]);
 					
-					
-					$Invoices=$this->ReceiptVouchers->Invoices->find()->where(['due_payment !='=>0,'customer_id'=>$Customer->id])->order(['date_created'=>'ASC']);
-					$remaining_amount=$receiptVoucher->amount;
-					foreach($Invoices as $Invoice){
-						
-						$remaining_amount=$remaining_amount-$Invoice->due_payment;
-						pr($remaining_amount); exit;
-						if($remaining_amount>=0){
-							$Invoice=$this->ReceiptVouchers->Invoices->get($Invoice->id);
-							$Invoice->due_payment=0;
-							$this->ReceiptVouchers->Invoices->save($Invoice);
-							$receiptEffect=$this->ReceiptVouchers->ReceiptEffects->newEntity();
-							pr($receiptEffect); exit;
-							$receiptEffect->amount=$receiptVoucher->amount;
-							pr($receiptEffect->amount); exit;
-							
-						}else{
-							$Invoice=$this->ReceiptVouchers->Invoices->get($Invoice->id);
-							$Invoice->due_payment=abs($remaining_amount);
-							$this->ReceiptVouchers->Invoices->save($Invoice);
-							break;
-						}
+					foreach($Invoices as $data1)
+					{
+					$due_payment=$data1->due_payment;
 					}
-				} 
+					$remaining=$due_payment-$amount;
+					$query = $this->ReceiptVouchers->Invoices->query();
+					$query->update()
+					->set(['due_payment' => $remaining])
+					->where(['id' => $invoice_id])
+					->execute();
+					}
+					$i++;
+				}
+			
 				$this->Flash->success(__('The Receipt-Voucher:'.str_pad($receiptVoucher->id, 4, '0', STR_PAD_LEFT)).' has been genereted.');
 				return $this->redirect(['action' => 'view/'.$receiptVoucher->id]);
            
