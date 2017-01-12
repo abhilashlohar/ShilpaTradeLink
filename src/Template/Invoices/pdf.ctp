@@ -278,7 +278,7 @@ $html .= '<div id="footer" class="avoid_break">';
 			}
 						
 			$tot=1;
-			if($invoice->fright_amount > 0 ){ $tot=2;}
+			if($invoice->fright_amount > 0 ){ $tot=3;}
 				$html.='<tr>
 				<td rowspan="'.$tot.'" width="40%">
 				<table class="table2">';

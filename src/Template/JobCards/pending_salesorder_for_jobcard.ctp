@@ -22,12 +22,9 @@
 					<td style="font-size:120%;">Action</td>
 				</tr>
 				<tbody>
-		    <?php foreach ($SalesOrders as $SalesOrder): 
-			pr($SalesOrder->job_card_status);?>
+		    <?php foreach ($SalesOrders as $SalesOrder): ?>
 				<tr>
-					
 					<td><?= h(++$page_no) ?></td>
-					
 					<td><?= h(($SalesOrder->so1.'/SO-'.str_pad($SalesOrder->so2, 3, '0', STR_PAD_LEFT).'/'.$SalesOrder->so3.'/'.$SalesOrder->so4))?></td> 
 					<td><?php echo $SalesOrder->customer->customer_name; ?></td> 
 					<td><?php echo $SalesOrder->po_date; ?></td> 
