@@ -83,6 +83,7 @@ class InvoiceBookingsController extends AppController
 			$invoiceBooking->created_on=date("Y-m-d");
 			$invoiceBooking->company_id=$st_company_id ;
 			$invoiceBooking->created_by=$this->viewVars['s_employee_id'];
+			$invoiceBooking->due_payment=$invoiceBooking->total;
 			//pr($invoiceBooking); exit;
             if ($this->InvoiceBookings->save($invoiceBooking)) {
 			
@@ -245,4 +246,5 @@ class InvoiceBookingsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
 }
