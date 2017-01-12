@@ -71,6 +71,7 @@
 											<td align="center"><?= h(++$page_no) ?></td>
 											
 											<td>
+											<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][sales_order_row_id]', ['type'=>'hidden','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$job_card_row->sales_order_row_id]); ?>
 											<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][job_card_row_id]', ['type'=>'hidden','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$job_card_row->id]); ?>
 											<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm select2me','label'=>false,'value'=>$job_card_row->item_id]); ?>
 											</td>
