@@ -109,9 +109,12 @@ class PettyCashReceiptVouchersController extends AppController
 		foreach($vouchersReferences->voucher_ledger_accounts as $data){
 			$where[]=$data->ledger_account_id;
 		}
-
-		$receivedFroms = $this->PettyCashReceiptVouchers->ReceivedFroms->find('list')->where(['ReceivedFroms.id IN' => $where]);
-			
+		if(sizeof($where)>0){
+			$receivedFroms = $this->PettyCashReceiptVouchers->ReceivedFroms->find('list')->where(['ReceivedFroms.id IN' => $where]);
+		}
+		else{
+			$ErrorreceivedFroms='true';
+		}
 		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(6, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
@@ -120,10 +123,14 @@ class PettyCashReceiptVouchersController extends AppController
 			  $where[]=$data->ledger_account_id;
 			
 		}
-		$bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
-		
-       $companies = $this->PettyCashReceiptVouchers->Companies->find('all');
-        $this->set(compact('pettyCashReceiptVoucher', 'receivedFroms', 'bankCashes','companies'));
+		if(sizeof($where)>0){
+			$bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
+		}
+		else{
+			$ErrorbankCashes='true';
+		}
+	 $companies = $this->PettyCashReceiptVouchers->Companies->find('all');
+        $this->set(compact('pettyCashReceiptVoucher', 'receivedFroms', 'bankCashes','companies','ErrorbankCashes','ErrorreceivedFroms'));
         $this->set('_serialize', ['pettyCashReceiptVoucher']);
     }
 

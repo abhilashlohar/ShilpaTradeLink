@@ -9,15 +9,27 @@
 	vertical-align: top !important;
 }
 </style>
-<?php if($ErrorreceivedFroms){
-	echo 'error msg'; exit; 
-} ?>
+
+<?php if(@$ErrorreceivedFroms){
+	?> 
+	<div class="actions">
+			<?php echo $this->Html->link('Create Ledger Account For Receipt Voucher -> Received From','/VouchersReferences/edit/3',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+	</div>
+<?php } 
+ else if(@$ErrorbankCashes){
+	?> 
+	<div class="actions">
+			<?php echo $this->Html->link('Create Ledger Account For Receipt Voucher -> Cash/Bank','/VouchersReferences/edit/4',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+	</div>
+<?php }  else { ?>
+
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Receipt Voucher</span>
 		</div>
+		
 	</div>
 	<div class="portlet-body form">
 		<!-- BEGIN FORM-->
@@ -139,6 +151,7 @@
 		<!-- END FORM-->
 	</div>
 </div>
+<?php } ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {

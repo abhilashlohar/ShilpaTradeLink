@@ -110,8 +110,11 @@ class CreditNotesController extends AppController
 		foreach($vouchersReferences->voucher_ledger_accounts as $data){
 			  $where[]=$data->ledger_account_id;
 		}
-
-		$purchaseAccs = $this->CreditNotes->PurchaseAccs->find('list')->where(['PurchaseAccs.id IN' => $where]);
+		if(sizeof($where)>0){
+			$purchaseAccs = $this->CreditNotes->PurchaseAccs->find('list')->where(['PurchaseAccs.id IN' => $where]);
+		}else{
+			$ErrorpurchaseAccs='true';
+		}
 			
 		$vouchersReferences = $this->CreditNotes->VouchersReferences->get(13, [
             'contain' => ['VoucherLedgerAccounts']
@@ -120,11 +123,14 @@ class CreditNotesController extends AppController
 		foreach($vouchersReferences->voucher_ledger_accounts as $data){
 			  $where[]=$data->ledger_account_id;
 		}
-
-		$parties = $this->CreditNotes->Parties->find('list')->where(['Parties.id IN' => $where]);
-		
+		if(sizeof($where)>0){
+			$parties = $this->CreditNotes->Parties->find('list')->where(['Parties.id IN' => $where]);
+		}
+		else{
+			$Errorparties='true';
+		}
 		$companies = $this->CreditNotes->Companies->find('all');
-        $this->set(compact('creditNote', 'purchaseAccs', 'parties', 'companies'));
+        $this->set(compact('creditNote', 'purchaseAccs', 'parties', 'companies','ErrorpurchaseAccs','Errorparties'));
         $this->set('_serialize', ['debitNote']);
  }
 

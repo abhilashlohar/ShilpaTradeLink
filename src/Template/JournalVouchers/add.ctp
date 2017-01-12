@@ -1,4 +1,9 @@
-
+<?php if(@$Errorledgers){
+		?> 
+		<div class="actions">
+				<?php echo $this->Html->link('Create Ledger Account For Journal Voucher -> Ledger','/VouchersReferences/edit/9',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+		</div>
+<?php } else { ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
@@ -66,7 +71,7 @@
 		<?= $this->Form->end() ?>
 		<!-- END FORM-->
 	</div>
-
+		<?php } ?>
 
 <style>
 .table thead tr th {

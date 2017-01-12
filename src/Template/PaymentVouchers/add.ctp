@@ -1,4 +1,15 @@
-<?php  //pr($ledgerAccounts); exit ?>
+<?php if(@$ErrorpaidTos){
+		?> 
+		<div class="actions">
+				<?php echo $this->Html->link('Create Ledger Account For PaymentVoucher -> Paid To','/VouchersReferences/edit/1',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+		</div>
+		<?php } 
+		 else if(@$ErrorbankCashes){
+		?> 
+		<div class="actions">
+				<?php echo $this->Html->link('Create Ledger Account For PaymentVoucher -> Cash/Bank','/VouchersReferences/edit/2',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+		</div>
+<?php }  else { ?>
 
 <div class="portlet light bordered">
 	<div class="portlet-title">
@@ -98,6 +109,7 @@
 		<!-- END FORM-->
 	</div>
 </div>
+<?php } ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {

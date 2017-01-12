@@ -1,3 +1,15 @@
+<?php if(@$ErrorcashBankFroms){
+	?> 
+	<div class="actions">
+			<?php echo $this->Html->link('Create Ledger Account For Contra Voucher -> Bank/Cashes Froms','/VouchersReferences/edit/7',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+	</div>
+<?php } 
+  else if(@$ErrorcashBankTos){
+	?> 
+	<div class="actions">
+			<?php echo $this->Html->link('Create Ledger Account For Contra Voucher -> Bank/Cashes Tos','/VouchersReferences/edit/8',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+	</div>
+<?php }  else { ?>
 
 <div class="portlet light bordered">
 	<div class="portlet-title">
@@ -95,7 +107,7 @@
 		<!-- END FORM-->
 	</div>
 </div>
-
+<?php } ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {

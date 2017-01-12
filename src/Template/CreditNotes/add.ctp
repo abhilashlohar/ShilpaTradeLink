@@ -1,4 +1,15 @@
-
+<?php if(@$ErrorpurchaseAccs){
+		?> 
+		<div class="actions">
+				<?php echo $this->Html->link('Create Ledger Account For Credit Notes -> Purchase Account','/VouchersReferences/edit/12',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+		</div>
+		<?php } 
+		 else if(@$Errorparties){
+		?> 
+		<div class="actions">
+				<?php echo $this->Html->link('Create Ledger Account For Credit Notes -> Party','/VouchersReferences/edit/13',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+		</div>
+		<?php }  else { ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
@@ -6,6 +17,7 @@
 			<span class="caption-subject font-blue-steel uppercase">Add Credit Note</span>
 		</div>
 	</div>
+		
 	<div class="portlet-body form">
 		<!-- BEGIN FORM-->
 		 <?= $this->Form->create($creditNote,['type' => 'file','id'=>'form_sample_3']) ?>
@@ -92,7 +104,7 @@
 		<!-- END FORM-->
 	</div>
 </div>
-
+<?php } ?>		
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {

@@ -117,12 +117,18 @@ class JournalVouchersController extends AppController
 		foreach($vouchersReferences->voucher_ledger_accounts as $data){
 			$where[]=$data->ledger_account_id;
 		}
-
-		$ledgers = $this->JournalVouchers->LedgerAccounts->find('list')->where(['LedgerAccounts.id IN' => $where]);
+		if(sizeof($where)>0){
+			$ledgers = $this->JournalVouchers->LedgerAccounts->find('list')->where(['LedgerAccounts.id IN' => $where]);
+		}
+		else{
+			$Errorledgers='true';
+		}
+		
+		
 			
 		$companies = $this->JournalVouchers->Companies->find('all');
         
-        $this->set(compact('journalVoucher', 'ledgers','companies'));
+        $this->set(compact('journalVoucher', 'ledgers','companies','Errorledgers'));
         $this->set('_serialize', ['journalVoucher']);
     }
 

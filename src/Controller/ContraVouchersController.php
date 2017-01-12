@@ -111,10 +111,13 @@ class ContraVouchersController extends AppController
 		foreach($vouchersReferences->voucher_ledger_accounts as $data){
 			$where[]=$data->ledger_account_id;
 		}
-
-		$cashBankFroms = $this->ContraVouchers->CashBankFroms->find('list')->where(['cashBankFroms.id IN' => $where]);
+		if(sizeof($where)>0){
+			$cashBankFroms = $this->ContraVouchers->CashBankFroms->find('list')->where(['cashBankFroms.id IN' => $where]);
+		}
+		else{
+			$ErrorcashBankFroms='true';
+		}
 		
-			
 		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get(8, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
@@ -123,12 +126,17 @@ class ContraVouchersController extends AppController
 			  $where[]=$data->ledger_account_id;
 		
 		}
-
-		$cashBankTos = $this->ContraVouchers->CashBankTos->find('list')->where(['cashBankTos.id IN' => $where]);
+		if(sizeof($where)>0){
+			$cashBankTos = $this->ContraVouchers->CashBankTos->find('list')->where(['cashBankTos.id IN' => $where]);
+		}
+		else{
+			$ErrorcashBankTos='true';
+		}
+		
 		
 		$companies = $this->ContraVouchers->Companies->find('all');
         
-        $this->set(compact('contraVoucher', 'cashBankFroms', 'cashBankTos','companies'));
+        $this->set(compact('contraVoucher', 'cashBankFroms', 'cashBankTos','companies','ErrorcashBankTos','ErrorcashBankFroms'));
         $this->set('_serialize', ['contraVoucher']);
     }
 

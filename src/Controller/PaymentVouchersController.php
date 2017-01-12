@@ -111,9 +111,13 @@ class PaymentVouchersController extends AppController
 		foreach($vouchersReferences->voucher_ledger_accounts as $data){
 			$where[]=$data->ledger_account_id;
 		}
+		if(sizeof($where)>0){
+			$paidTos = $this->PaymentVouchers->PaidTos->find('list')->where(['PaidTos.id IN' => $where]);
+		}
+		else{
+			$ErrorpaidTos='true';
+		}
 		
-		$paidTos = $this->PaymentVouchers->PaidTos->find('list')->where(['PaidTos.id IN' => $where]);
-				
 		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get(2, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
@@ -121,10 +125,16 @@ class PaymentVouchersController extends AppController
 		foreach($vouchersReferences->voucher_ledger_accounts as $data){
 			$where[]=$data->ledger_account_id;
 		}
-		$bankCashes = $this->PaymentVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
+		if(sizeof($where)>0){
+			$bankCashes = $this->PaymentVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);$paidTos = $this->PaymentVouchers->PaidTos->find('list')->where(['PaidTos.id IN' => $where]);
+		}
+		else{
+			$ErrorbankCashes='true';
+		}
+		
 		
         $companies = $this->PaymentVouchers->Companies->find('all');		
-        $this->set(compact('paymentVoucher', 'paidTos', 'bankCashes','companies'));
+        $this->set(compact('paymentVoucher', 'paidTos', 'bankCashes','companies','ErrorpaidTos','ErrorbankCashes'));
         $this->set('_serialize', ['paymentVoucher']);
     }
 

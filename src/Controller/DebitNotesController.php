@@ -110,8 +110,13 @@ class DebitNotesController extends AppController
 		foreach($vouchersReferences->voucher_ledger_accounts as $data){
 			$where[]=$data->ledger_account_id;
 		}
-
-		$salesAccs = $this->DebitNotes->SalesAccs->find('list')->where(['SalesAccs.id IN' => $where]);
+		if(sizeof($where)>0){
+			$salesAccs = $this->DebitNotes->SalesAccs->find('list')->where(['SalesAccs.id IN' => $where]);
+		}
+		else{
+			$ErrorsalesAccs='true';
+		}
+		
 			
 		$vouchersReferences = $this->DebitNotes->VouchersReferences->get(11, [
             'contain' => ['VoucherLedgerAccounts']
@@ -121,11 +126,17 @@ class DebitNotesController extends AppController
 			  $where[]=$data->ledger_account_id;
 		
 		}
-
-		$parties = $this->DebitNotes->Parties->find('list')->where(['Parties.id IN' => $where]);
+		if(sizeof($where)>0){
+			$parties = $this->DebitNotes->Parties->find('list')->where(['Parties.id IN' => $where]);
+		
+		}
+		else{
+			$Errorparties='true';
+		}
+		
 		
 		$companies = $this->DebitNotes->Companies->find('all');
-        $this->set(compact('debitNote', 'salesAccs', 'parties', 'companies'));
+        $this->set(compact('debitNote', 'salesAccs', 'parties', 'companies','ErrorsalesAccs','Errorparties'));
         $this->set('_serialize', ['debitNote']);
     }
 
