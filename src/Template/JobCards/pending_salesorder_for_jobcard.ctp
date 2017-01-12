@@ -11,7 +11,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<?php $page_no=$this->Paginator->current('JobCards'); $page_no=($page_no-1)*20; ?>	 
-			<table class="table table-bordered table-striped table-hover">
+			<table class="table table-bordered table-striped ">
 				<thead>
 				<tr>
 					<td style="font-size:120%;">Sr.No.</td>

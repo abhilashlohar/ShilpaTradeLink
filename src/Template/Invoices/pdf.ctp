@@ -301,7 +301,7 @@ $html .= '<div id="footer" class="avoid_break">';
 				$html.='</table>
 				
 				</td>';
-				if($invoice->fright_amount > 0 ){ //pr(sizeof($invoice->fright_amount)); exit;
+				if($invoice->fright_amount > 0 ){
 				$html.='
 				<td style="text-align:right;">'. h($invoice->fright_text) .'</td>
 				<td style="text-align:right;">'. $this->Number->format($invoice->fright_amount,[ 'places' => 2]) .'</td>
@@ -400,7 +400,7 @@ $html.='
 </body>
 </html>';
 
-echo $html; exit; 
+//echo $html; exit; 
 
 $name='Invoice-'.h(($invoice->in1.'_IN'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'_'.$invoice->in3.'_'.$invoice->in4));
 $dompdf->loadHtml($html);
