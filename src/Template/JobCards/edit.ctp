@@ -117,7 +117,9 @@
 						<th>Out</th>
 					</thead>
 					<tbody id="maintbody"><?php $p=0; $q=0; $r=0; ?>
-					<?php foreach ($jobCard->sales_order->sales_order_rows as $sales_order_row): ?>
+					<?php //pr($jobCard->sales_order->sales_order_rows);
+					foreach ($jobCard->sales_order->sales_order_rows as $sales_order_row): ?>
+						
 						<tr class="main_tr">
 							<td valign="top">
 							<?php echo $this->Form->input('sales_order_id', ['type'=>'text','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->id,'type'=>'hidden']); ?>

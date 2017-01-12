@@ -377,11 +377,23 @@ class SalesOrdersController extends AppController
 			
 			//pr($salesOrder); exit;
             if ($this->SalesOrders->save($salesOrder)) {
-				//pr($salesOrder); exit;
+				
+				foreach($salesOrder->sales_order_rows as $sales_order_row){
+					$item_id=$sales_order_row->getOriginal('item_id');
+					//pr($item_id); exit;
+					$item_id=$sales_order_row->item_id;
+					$sales_order_id=$sales_order_row->sales_order_id;
+					$query = $this->SalesOrders->SalesOrderRows->JobCardRows->query();
+					//pr($query); exit;
+					$query->update()
+						->set(['sales_order_row_id' => $sales_order_row->id])
+						->where(['sales_order_item_id' => $item_id,'sales_order_id'=>$sales_order_id])
+						->execute();
+				}
 				
 					$salesOrder->job_card_status='Pending';
-					$query = $this->SalesOrders->query();
-					$query->update()
+					$query2 = $this->SalesOrders->query();
+					$query2->update()
 						->set(['job_card_status' => 'Pending'])
 						->where(['id' => $id])
 						->execute();

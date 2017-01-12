@@ -39,9 +39,9 @@
 							}
 						}else{
 							if(sizeof($SalesOrder->sales_order_rows)>0){
-								echo $this->Html->link('<i class="fa fa-repeat "></i>  Edit Job Card','/JobCards/Pre-Edit?job_card='.$SalesOrder->job_card->id.'&sales-order='.$SalesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+								echo $this->Html->link('<i class="fa fa-repeat "></i>  Edit Job Card','/JobCards/Pre-Edit?job-card='.$SalesOrder->job_card->id.'&sales-order='.$SalesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 							}else{
-								echo $this->Html->link('<i class="fa fa-repeat "></i>  Edit Job Card','/JobCards/Edit?job_card='.$SalesOrder->job_card->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+								echo $this->Html->link('<i class="fa fa-repeat "></i> Edit Job Card',['action' => 'edit', $SalesOrder->job_card->id],array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 							}
 						} ?>
 					</td>

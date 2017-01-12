@@ -82,8 +82,13 @@ class JobCardsController extends AppController
 			$jobCard->customer_po_no=$jobCard->customer_po_no;
 			$jobCard->created_on=date("Y-m-d");
 			$jobCard->status='Pending';
-			
+			foreach($jobCard->job_card_rows as $job_card_row){
+					$job_card_row->sales_order_id=$sales_order_id;
+				}
+				
 			if ($this->JobCards->save($jobCard)) {
+				
+				//pr($jobCard); exit;
 					$query = $this->JobCards->SalesOrders->query();
 					$query->update()
 						->set(['job_card_status' => 'Converted'])
@@ -115,12 +120,14 @@ class JobCardsController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		
 		$jobCard = $this->JobCards->get($id, [
             'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'=>function ($q){
 					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
 				},'JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
         ]);
-			//pr($jobCard); exit;
+		
+				
         if ($this->request->is(['patch', 'post', 'put'])) {
             $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
 			$jobCard->required_date=date("Y-m-d",strtotime($jobCard->required_date)); 
@@ -130,6 +137,9 @@ class JobCardsController extends AppController
 			
 			$jobCard->created_on=date("Y-m-d");
 			$jobCard->sales_order_id=$jobCard->sales_order->id;
+			foreach($jobCard->job_card_rows as $job_card_row){
+					$job_card_row->sales_order_id=$jobCard->sales_order_id;
+				}
             if ($this->JobCards->save($jobCard)) {
                 $this->Flash->success(__('The job card has been saved.'));
 
@@ -231,6 +241,7 @@ class JobCardsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$sales_order_id=$this->request->query('sales-order');
+		$id=$this->request->query('job-card');
 		
 		$jobCard = $this->JobCards->SalesOrders->get($sales_order_id, [
             'contain' => ['Customers','SalesOrderRows'=>['Items'=>function ($q){
@@ -252,7 +263,7 @@ class JobCardsController extends AppController
 					} 
 		
                 $this->Flash->success(__('The job card has been saved.'));
-                $this->redirect(['controller' =>'JobCards','action' => 'Edit/'.$sales_order_id]);
+                $this->redirect(['controller' =>'JobCards','action' => 'Edit/'.$id]);
             } else { 
                 $this->Flash->error(__('The job card could not be saved. Please, try again.'));
             }
