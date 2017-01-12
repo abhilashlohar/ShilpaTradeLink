@@ -66,6 +66,7 @@ class InvoiceBookingsController extends AppController
 				'contain' => ['GrnRows'=>['Items'],'Companies','Vendors','PurchaseOrders'=>['PurchaseOrderRows']]
 			]);
 		}
+		
 		$last_ib_no=$this->InvoiceBookings->find()->select(['ib2'])->where(['company_id' => $st_company_id])->order(['ib2' => 'DESC'])->first();
 			if($last_ib_no){
 				@$last_ib_no->ib2=$last_ib_no->ib2+1;

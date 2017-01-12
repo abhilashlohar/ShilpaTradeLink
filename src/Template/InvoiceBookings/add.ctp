@@ -65,7 +65,7 @@
 								<div class="col-md-3">
 									<?php echo $this->Form->input('ib4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
 								</div>
-								
+								<?php echo $this->Form->input('vendor_id', ['label' => false,'class' => 'form-control input-sm','type' =>'hidden','value'=>@$grn->vendor_id]); ?>
 							</div>
 						</div>
 				</div>
