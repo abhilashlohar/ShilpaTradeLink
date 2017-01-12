@@ -1,4 +1,8 @@
-<?php //pr($salesOrder->sales_order_rows); exit; ?>
+<style>
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+	vertical-align: top !important;
+}
+</style>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
@@ -18,6 +22,18 @@
 			<div class="row">
 				<div class="col-md-4">
 					<div class="form-group">
+						<label class="col-md-5 control-label">Job Card No. </label>
+						<div class="col-md-7">
+						<?php echo $this->Form->input('jc1', ['label' => false,'type'=>'hidden','value'=>$salesOrder->so1]); ?>
+						<?php echo $this->Form->input('jc2', ['label' => false,'type'=>'hidden','value'=>$last_jc_no->jc2]); ?>
+						<?php echo $this->Form->input('jc3', ['label' => false,'type'=>'hidden','value'=>$salesOrder->so3]); ?>
+						<?php echo $this->Form->input('jc4', ['label' => false,'type'=>'hidden','value'=>$salesOrder->so4]); ?>
+						<?php echo $salesOrder->so1.'/JC-'.str_pad($last_jc_no->jc2, 3, '0', STR_PAD_LEFT).'/'.$salesOrder->so3.'/'.$salesOrder->so4; ?>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
 						<label class="col-md-5 control-label">Sales Order No</label>
 						<div class="col-md-7">
 							
@@ -35,20 +51,6 @@
 						</div>
 					</div>
 				</div>
-				
-				<div class="col-md-4">
-					<div class="form-group">
-						<label class="col-md-5 control-label">Job Card No. </label>
-						<div class="col-md-7">
-						<?php echo $this->Form->input('jc1', ['label' => false,'type'=>'hidden','value'=>$salesOrder->so1]); ?>
-						<?php echo $this->Form->input('jc2', ['label' => false,'type'=>'hidden','value'=>$last_jc_no->jc2]); ?>
-						<?php echo $this->Form->input('jc3', ['label' => false,'type'=>'hidden','value'=>$salesOrder->so3]); ?>
-						<?php echo $this->Form->input('jc4', ['label' => false,'type'=>'hidden','value'=>$salesOrder->so4]); ?>
-						<?php echo $salesOrder->so1.'/JC-'.str_pad($last_jc_no->jc2, 3, '0', STR_PAD_LEFT).'/'.$salesOrder->so3.'/'.$salesOrder->so4; ?>
-						</div>
-					</div>
-				</div>
-
 			</div><br/>
 			<div class="row">
 				<div class="col-md-4">

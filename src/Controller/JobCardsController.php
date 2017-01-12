@@ -91,7 +91,7 @@ class JobCardsController extends AppController
 						->execute();
                 $this->Flash->success(__('The job card has been saved.'));
 
-                return $this->redirect(['action' => 'PendingSalesorderForJobcard']);
+				return $this->redirect(['action' => 'view/'.$jobCard->id]);
             } else { 
                 $this->Flash->error(__('The job card could not be saved. Please, try again.'));
             }
@@ -166,18 +166,38 @@ class JobCardsController extends AppController
 	public function PendingSalesorderForJobcard()
     {
 		$this->viewBuilder()->layout('index_layout');
-			$query = $this->JobCards->SalesOrders->find()->contain(['Customers','JobCards','SalesOrderRows'=>['Items' => function($q){
-				return $q->where(['source'=>'Purchessed/Manufactured']);
-			}]]);
- 		$SalesOrders=$this->paginate($query);
-		//pr($SalesOrders); exit;
+		
+		$this->paginate = [
+            'contain' => ['Customers','JobCards','SalesOrderRows'=>['Items'=>function ($q){
+				return $q->where(['Items.source'=>'Purchessed/Manufactured']);
+			}]]
+        ];
+		
+		$SalesOrders=$this->paginate(
+			$this->JobCards->SalesOrders->find()->select(['total_rows' => 
+				$this->JobCards->SalesOrders->find()->func()->count('SalesOrderRows.id')])
+					->matching(
+						'SalesOrderRows.Items', function ($q) {
+							return $q->where(['Items.source !='=>'Purchessed']);
+						}
+					)
+					->group(['SalesOrders.id'])
+					->autoFields(true)
+					->having(['total_rows >' => 0])
+					->where(['job_card_status'=>'Pending'])
+					->order(['SalesOrders.id' => 'DESC'])
+			);
+			
+		
+	
 		$this->set(compact('SalesOrders'));
         $this->set('_serialize', ['jobCard']);
     }
-	public function PreAdd($id = null)
+	public function PreAdd()
     {
 		$this->viewBuilder()->layout('index_layout');
-		$sales_order_id=$this->request->query('Pre-add');
+		$sales_order_id=$this->request->query('sales-order');
+		$sales_order_id=$this->request->query('sales-order');
 		
 		$jobCard = $this->JobCards->SalesOrders->get($sales_order_id, [
             'contain' => ['Customers','SalesOrderRows'=>['Items'=>function ($q){
@@ -207,14 +227,14 @@ class JobCardsController extends AppController
         $this->set('_serialize', ['jobCards']);
 	
 	}
-	public function PreEdit($id = null)
+	public function PreEdit()
     {
 		$this->viewBuilder()->layout('index_layout');
-		$sales_order_id=$this->request->query('Pre-edit');
+		$sales_order_id=$this->request->query('sales-order');
 		
 		$jobCard = $this->JobCards->SalesOrders->get($sales_order_id, [
-            'contain' => ['Customers','jobCard','SalesOrderRows'=>['Items'=>function ($q){
-					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
+            'contain' => ['Customers','SalesOrderRows'=>['Items'=>function ($q){
+					return $q->where(['Items.source'=>'Purchessed/Manufactured']);
 				}]]
         ]);
 		
@@ -232,7 +252,7 @@ class JobCardsController extends AppController
 					} 
 		
                 $this->Flash->success(__('The job card has been saved.'));
-                $this->redirect(['controller' =>'JobCards','action' => 'Edit?'.$sales_order_id]);
+                $this->redirect(['controller' =>'JobCards','action' => 'Edit/'.$sales_order_id]);
             } else { 
                 $this->Flash->error(__('The job card could not be saved. Please, try again.'));
             }

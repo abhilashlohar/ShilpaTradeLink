@@ -3,7 +3,7 @@
 	<div class="portlet-title">
 		<div class="caption" >
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Select Item Source</span>
+			<span class="caption-subject font-blue-steel ">Define Item Source for "Purchessed/Manufactured" items.</span>
 		</div>
 		
 	</div>
@@ -33,35 +33,38 @@
 						</div>
 					</div>
 				</div>
-				
-
 			</div><br/>
 			
-			<div class="table-scrollable">
-					<table class="table tableitm" id="main_tb">
-						<thead>
-							<tr>
-								<th width="50">Sr.No. </th>
-								<th>Items</th>
-								<th width="130">Source</th>
-								
-							</tr>
-						</thead>
-						<tbody id="main_tbody">
-							<?php $sn=1; $q=0; foreach ($jobCard->sales_order_rows as $sales_order_row): ?>
-							<tr>
-								<td><?php echo $sn; ?></td>
-								<td><?php echo $sales_order_row->item->name ?></td>
-								<td>
-									<?php echo $this->Form->input('sales_order_rows.'.$q.'.id', ['type' => 'hidden','value' => @$jobCard->sales_order_rows->id]); ?>
-									<?php echo $this->Form->radio('sales_order_rows.'.$q.'.source_type',[['value' => 'Purchessed', 'text' => 'Purchessed'],['value' => 'Manufactured', 'text' => 'Manufactured']]); ?>
-								</td>
-							</tr>
-							<?php $sn++; $q++; endforeach; ?>
-						</tbody>
-						
-					</table>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="table-scrollable">
+						<table class="table tableitm" id="main_tb">
+							<thead>
+								<tr>
+									<th width="50">Sr.No. </th>
+									<th>Items</th>
+									<th width="130">Source</th>
+									
+								</tr>
+							</thead>
+							<tbody id="main_tbody">
+								<?php $sn=1; $q=0; foreach ($jobCard->sales_order_rows as $sales_order_row): ?>
+								<tr>
+									<td><?php echo $sn; ?></td>
+									<td><?php echo $sales_order_row->item->name ?></td>
+									<td>
+										<?php echo $this->Form->input('sales_order_rows.'.$q.'.id', ['type' => 'hidden','value' => @$jobCard->sales_order_rows->id]); ?>
+										<?php echo $this->Form->radio('sales_order_rows.'.$q.'.source_type',[['value' => 'Purchessed', 'text' => 'Purchessed'],['value' => 'Manufactured', 'text' => 'Manufactured']]); ?>
+									</td>
+								</tr>
+								<?php $sn++; $q++; endforeach; ?>
+							</tbody>
+							
+						</table>
+					</div>
 				</div>
+			</div>
+			
 		
 				
 				
@@ -69,7 +72,7 @@
 			</div>
 		
 			<div class="form-actions">
-				<button type="submit" class="btn btn-primary">CREATE JOB CARD</button>
+				<button type="submit" class="btn btn-primary">NEXT</button>
 			</div>
 		<?= $this->Form->end() ?>
 	</div>
