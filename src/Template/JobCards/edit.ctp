@@ -196,8 +196,27 @@ $(document).ready(function() {
 	
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
-		alert(l);
-		$(this).closest('tr').remove();
+		if (confirm("Are you sure to remove row ?") == true) {
+			if(l>1){  
+			 $(this).closest('tr').remove();
+				var i=0; 
+				$("#main_tb tbody#maintbody tr.main_tr").each(function(){
+					var sales_order_row_id=$(this).find("td:nth-child(1) input").val();
+					i++;
+					$(this).find("td:nth-child(2) textarea").attr({name:"job_card_rows["+i+"][remark]", id:"job_card_rows-"+i+"-remark"});
+					i--;
+					var sr=0;
+					$(this).find("td:nth-child(2) table tbody tr").each(function(){
+						i++; sr++;
+						$(this).find('td:nth-child(1)').html(sr);
+						$(this).find("td:nth-child(2) input").attr({name:"job_card_rows["+i+"][sales_order_row_id]", id:"job_card_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
+						
+						$(this).find("td:nth-child(2) select").attr({name:"job_card_rows["+i+"][item_id]", id:"job_card_rows-"+i+"-item_id"}).select2();
+						$(this).find("td:nth-child(3) input").attr({name:"job_card_rows["+i+"][quantity]", id:"job_card_rows-"+i+"-quantity"});
+					});
+				});
+			}
+		} 
     });
 	
 	function rename_rows_name(){

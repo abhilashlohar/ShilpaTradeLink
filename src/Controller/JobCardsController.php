@@ -213,14 +213,16 @@ class JobCardsController extends AppController
 		$sales_order_id=$this->request->query('Pre-edit');
 		
 		$jobCard = $this->JobCards->SalesOrders->get($sales_order_id, [
-            'contain' => ['Customers','SalesOrderRows'=>['Items'=>function ($q){
-					return $q->where(['Items.source' => 'Purchessed/Manufactured']);
+            'contain' => ['Customers','jobCard','SalesOrderRows'=>['Items'=>function ($q){
+					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
 				}]]
         ]);
+		
 		
 		if ($this->request->is(['patch', 'post', 'put'])) {
             $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
             if ($this->JobCards->save($jobCard)) {
+				pr()
 					foreach($jobCard->sales_order_rows as $sales_order_row ){
 						$query = $this->JobCards->SalesOrders->SalesOrderRows->query();
 							$query->update()
@@ -230,7 +232,7 @@ class JobCardsController extends AppController
 					} 
 		
                 $this->Flash->success(__('The job card has been saved.'));
-                $this->redirect(['controller' =>'JobCards','action' => 'Add?Sales-Order='.$sales_order_id]);
+                $this->redirect(['controller' =>'JobCards','action' => 'Edit?'.$sales_order_id]);
             } else { 
                 $this->Flash->error(__('The job card could not be saved. Please, try again.'));
             }
