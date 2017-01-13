@@ -140,6 +140,7 @@ class JobCardsController extends AppController
 			foreach($jobCard->job_card_rows as $job_card_row){
 					$job_card_row->sales_order_id=$jobCard->sales_order_id;
 				}
+			
             if ($this->JobCards->save($jobCard)) {
                 $this->Flash->success(__('The job card has been saved.'));
 

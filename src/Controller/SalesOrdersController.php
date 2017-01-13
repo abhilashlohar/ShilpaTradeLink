@@ -357,7 +357,7 @@ class SalesOrdersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $salesOrder = $this->SalesOrders->get($id, [
-            'contain' => ['SalesOrderRows' => ['Items'],'Invoices' => ['InvoiceRows']]
+            'contain' => ['SalesOrderRows' => ['Items','JobCardRows'],'Invoices' => ['InvoiceRows']]
         ]);
 		
 		$s_employee_id=$this->viewVars['s_employee_id'];
@@ -375,28 +375,24 @@ class SalesOrdersController extends AppController
 			$salesOrder->edited_on=date("Y-m-d");
 			$salesOrder->edited_on_time= date("Y-m-d h:i:sA");
 			
-			//pr($salesOrder); exit;
             if ($this->SalesOrders->save($salesOrder)) {
-				
 				foreach($salesOrder->sales_order_rows as $sales_order_row){
-					$item_id=$sales_order_row->getOriginal('item_id');
-					//pr($item_id); exit;
-					$item_id=$sales_order_row->item_id;
-					$sales_order_id=$sales_order_row->sales_order_id;
-					$query = $this->SalesOrders->SalesOrderRows->JobCardRows->query();
-					//pr($query); exit;
-					$query->update()
+					$job_card_row_ids=explode(',',$sales_order_row->job_card_row_ids);
+					foreach($job_card_row_ids as $job_card_row_id){
+						$query = $this->SalesOrders->SalesOrderRows->JobCardRows->query();
+						$query->update()
 						->set(['sales_order_row_id' => $sales_order_row->id])
-						->where(['sales_order_item_id' => $item_id,'sales_order_id'=>$sales_order_id])
+						->where(['id' => $job_card_row_id])
 						->execute();
+					}
 				}
 				
-					$salesOrder->job_card_status='Pending';
-					$query2 = $this->SalesOrders->query();
-					$query2->update()
-						->set(['job_card_status' => 'Pending'])
-						->where(['id' => $id])
-						->execute();
+				$salesOrder->job_card_status='Pending';
+				$query2 = $this->SalesOrders->query();
+				$query2->update()
+					->set(['job_card_status' => 'Pending'])
+					->where(['id' => $id])
+					->execute();
 						
 				
 				

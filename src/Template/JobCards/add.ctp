@@ -116,17 +116,17 @@
 				
 				<table class="table table-bordered " width="100%" id="main_tb" border="1">
 					<thead>
-						<th valign="right" width="30%">IN</th>
-						<th align="center">OUT</th>
+						<th width="30%" class="text-center"><label class="control-label">Production</label></th>
+						<th align="center" class="text-center"><label class="control-label">Consumption</label></th>
 					</thead>
 					<tbody id="maintbody">
 					<?php foreach($salesOrder->sales_order_rows as $sales_order_row){ ?>
 						<tr class="main_tr">
-							<td valign="top">
+							<td valign="top" class="text-center">
 							<?php echo $this->Form->input('sales_order_id', ['type'=>'text','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->id,'type'=>'hidden']); ?>
 							<?php echo $this->Form->input('sales_order_item_id', ['type'=>'text','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->item->id,'type'=>'hidden']); ?>
 							
-							<b><?= h($sales_order_row->item->name) ?></b>
+							<br/><b><?= h($sales_order_row->item->name) ?> ( <?= h($sales_order_row->quantity) ?> )</b>
 							</td>
 							<td></td>
 						</tr>
@@ -335,10 +335,10 @@ $(document).ready(function() {
 <div id="onload_sample_tb" style="display:none;">
 	
 	<div class="col-md-10">
-					<div class="form-group">
-						<label class="control-label">Remarks <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->textarea('remark', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks','required','rows'=>1]); ?>
-					</div>
+		<div class="form-group">
+			<label class="control-label">Remarks <span class="required" aria-required="true">*</span></label>
+			<?php echo $this->Form->textarea('remark', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks','required','rows'=>1]); ?>
+		</div>
 	</div>
 	
 <table class="table">

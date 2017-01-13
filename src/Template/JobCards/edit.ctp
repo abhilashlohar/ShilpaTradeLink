@@ -113,54 +113,57 @@
 				
 				<table width="100%" id="main_tb" border="1">
 					<thead>
-						<th width="30%">In</th>
-						<th>Out</th>
+						<th width="30%" class="text-center"><label class="control-label">Production</label></th>
+						<th align="center" class="text-center"><label class="control-label">Consumption</label></th>
 					</thead>
 					<tbody id="maintbody"><?php $p=0; $q=0; $r=0; ?>
 					<?php //pr($jobCard->sales_order->sales_order_rows);
 					foreach ($jobCard->sales_order->sales_order_rows as $sales_order_row): ?>
 						
 						<tr class="main_tr">
-							<td valign="top">
+							<td valign="top" align="center">
 							<?php echo $this->Form->input('sales_order_id', ['type'=>'text','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->id,'type'=>'hidden']); ?>
-							<b><?= h($sales_order_row->item->name) ?></b>
+							<br/><b><?= h($sales_order_row->item->name) ?> ( <?= h($sales_order_row->quantity) ?> )</b>
 							</td>
 							
 							<td>
-								<?php  $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
-								<div>
-								<div class="form-group">
-										<label class="col-md-3 control-label">Remarks </label>
-										<?php   foreach($sales_order_row->job_card_rows as $job_card_row): ?>
-										<div class="col-md-9">
-											<?php echo $this->Form->textarea('job_card_rows['.$r.'][remark]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks','value'=>$job_card_row->remark]); ?>
-										</div><?php $r++; break; endforeach; ?>
+							<?php if(sizeof($sales_order_row->job_card_rows)>0){ ?>
+							<?php  $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
+							<div>
+								<div class="form-group" style="padding:10px;">
+									<?php   foreach($sales_order_row->job_card_rows as $job_card_row){ ?>
+										<?php if(!empty($job_card_row->remark)){ ?>
+											<label class="control-label">Remarks <span class="required" aria-required="true">*</span></label>
+											<?php echo $this->Form->textarea('job_card_rows['.$r.'][remark]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks','value'=>$job_card_row->remark,'rows'=>1]); ?>
+										<?php } ?>
+									<?php $r++; } ?>
 								</div>
-							<table>
-								<thead>
-									<th>Sr</th>
-									<th width="70%">Item</th>
-									<th>Quantity</th>
-									<th width="10%"></th>
-								</thead>
-								<tbody>
-									<?php  foreach($sales_order_row->job_card_rows as $job_card_row): ?> 
-										<tr>
-											<td align="center"><?= h(++$page_no) ?></td>
-											
-											<td>
-											<?php echo $this->Form->input('job_card_rows['.$p.'][sales_order_row_id]',['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$job_card_row->sales_order_row_id]); ?>
-											<?php echo $this->Form->input('job_card_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm select2me','label'=>false,'value'=>$job_card_row->item_id]); ?>
-											</td>
-											<td><?php echo $this->Form->input('job_card_rows['.$p.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
-											<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
-											
-										</tr>
-									<?php $p++;  endforeach; ?>
-									
-								</tbody>
-							</table>
-							</div>	
+								<table class="table">
+									<thead>
+										<th>Sr</th>
+										<th width="70%">Item</th>
+										<th>Quantity</th>
+										<th width="10%"></th>
+									</thead>
+									<tbody>
+										<?php  foreach($sales_order_row->job_card_rows as $job_card_row): ?> 
+											<tr>
+												<td align="center"><?= h(++$page_no) ?></td>
+												
+												<td>
+												<?php echo $this->Form->input('job_card_rows['.$p.'][sales_order_row_id]',['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$job_card_row->sales_order_row_id]); ?>
+												<?php echo $this->Form->input('job_card_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm ','label'=>false,'value'=>$job_card_row->item_id]); ?>
+												</td>
+												<td><?php echo $this->Form->input('job_card_rows['.$p.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
+												<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+												
+											</tr>
+										<?php $p++;  endforeach; ?>
+										
+									</tbody>
+								</table>
+							</div>
+							<?php } ?>
 							</td>
 							
 						</tr>
@@ -181,11 +184,14 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() { 
-	
+	onload_add_row();
 	function onload_add_row(){
 		var tr1=$("#onload_sample_tb").html();
 		$("#main_tb tbody#maintbody tr.main_tr").each(function(){
-			$(this).find("td:nth-child(2)").html(tr1);
+			var table_count=$(this).find("td:nth-child(2) table").length;
+			if(table_count==0){
+				$(this).find("td:nth-child(2)").html(tr1);
+			}
 		});
 		rename_rows_name();
 	}
@@ -226,9 +232,9 @@ $(document).ready(function() {
 		$("#main_tb tbody#maintbody tr.main_tr").each(function(){
 			var sales_order_row_id=$(this).find("td:nth-child(1) input").val();
 			
-			i++;
+			
 			$(this).find("td:nth-child(2) textarea").attr({name:"job_card_rows["+i+"][remark]", id:"job_card_rows-"+i+"-remark"});
-			i--;
+			
 			var sr=0;
 			$(this).find("td:nth-child(2) table tbody tr").each(function(){
 				
@@ -244,11 +250,9 @@ $(document).ready(function() {
 });
 </script>
 <div id="onload_sample_tb" style="display:none;">
-	<div class="form-group">
-			<label class="col-md-3 control-label">Remarks </label>
-			<div class="col-md-9">
-				<?php echo $this->Form->textarea('remark', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks']); ?>
-			</div>
+	<div class="form-group" style="padding:10px;">
+		<label class="control-label">Remarks <span class="required" aria-required="true">*</span></label>
+		<?php echo $this->Form->textarea('remark', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Remarks','required','rows'=>1]); ?>
 	</div>
 <table class="table">
 	<thead>
