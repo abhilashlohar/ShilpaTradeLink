@@ -62,12 +62,12 @@ class PaymentBreakupsTable extends Table
 		$validator
             ->allowEmpty('invoice_booking_id');
 			
-        $validator
+         $validator
             ->decimal('amount')
             ->requirePresence('amount', 'create')
-            ->notEmpty('amount');
+            ->allowEmpty('amount');
 
-        return $validator;
+		return $validator;
     }
 
     /**

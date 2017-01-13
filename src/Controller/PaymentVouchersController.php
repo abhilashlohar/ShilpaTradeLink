@@ -134,10 +134,10 @@ class PaymentVouchersController extends AppController
 					$i++;
 				}
 			
-				
 				$this->Flash->success(__('The Payment-Voucher:'.str_pad($paymentVoucher->voucher_no, 4, '0', STR_PAD_LEFT)).' has been genereted.');
 				return $this->redirect(['action' => 'view/'.$paymentVoucher->id]);
             } else {
+				
                 $this->Flash->error(__('The payment voucher could not be saved. Please, try again.'));
             }
         }

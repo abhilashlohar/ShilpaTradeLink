@@ -150,7 +150,7 @@
 		<?= $this->Form->end() ?>
 		<!-- END FORM-->
 	</div>
-</div>
+
 <?php } ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
@@ -254,10 +254,7 @@ $(document).ready(function() {
 				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"new_ref_record["+i+"][new_ref_no]", id:"new_ref_record-"+i+"-new_ref_no"});
 			}
 			
-			$(this).find("td:nth-child(4) input").attr({name:"new_ref_record["+i+"][amount]", id:"new_ref_record-"+i+"-amount"}).rules('add', {
-						number: true,
-						min: 0.01
-					});
+			$(this).find("td:nth-child(4) input").attr({name:"new_ref_record["+i+"][amount]", id:"new_ref_record-"+i+"-amount"});
 			i++;
 			
 		});
@@ -383,7 +380,6 @@ $(document).ready(function() {
 				required: true,
 			},
 			amount :{
-				required: true,
 				digits :true
 			}
 		},

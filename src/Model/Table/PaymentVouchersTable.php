@@ -90,7 +90,8 @@ class PaymentVouchersTable extends Table
             ->requirePresence('narration', 'create')
             ->notEmpty('narration');
 			
-		$validator
+	    $validator
+            ->decimal('amount')
             ->requirePresence('amount', 'create')
             ->notEmpty('amount');
 

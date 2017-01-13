@@ -65,7 +65,7 @@ class ReceiptBreakupsTable extends Table
         $validator
             ->decimal('amount')
             ->requirePresence('amount', 'create')
-            ->notEmpty('amount');
+            ->allowEmpty('amount');
 
         return $validator;
     }
