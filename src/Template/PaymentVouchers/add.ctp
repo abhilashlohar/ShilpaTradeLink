@@ -185,7 +185,7 @@ $(document).ready(function() {
 		invalidHandler: function (event, validator) { //display error alert on form submit   
 			success3.hide();
 			error3.show();
-			Metronic.scrollTo(error3, -200);
+			//Metronic.scrollTo(error3, -200);
 		},
 
 		highlight: function (element) { // hightlight error inputs
@@ -204,55 +204,11 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			q="ok";
-			$("#main_tb tbody tr").each(function(){
-				var t=$(this).find("td:nth-child(2) input").val();
-				var w=$(this).find("td:nth-child(3) input").val();
-				var r=$(this).find("td:nth-child(4) input").val();
-				if(t=="" || w=="" || r==""){
-					q="e";
-				}
-			});
-			if(q=="e"){
-				$("#row_error").show();
-				return false;
-			}else{
-				success3.show();
-				error3.hide();
-				form[0].submit(); // submit the form
-			}
+			success3.show();
+			error3.hide();
+			form[0].submit(); // submit the form
 		}
 
-	});
-		$('.quantity').die().live("keyup",function() {
-		var asc=$(this).val();
-		var numbers =  /^[0-9]*\.?[0-9]*$/;
-		if(asc==0)
-		{
-			$(this).val('');
-			return false; 
-		}
-		else if(asc.match(numbers))  
-		{  
-		} 
-		else  
-		{  
-			$(this).val('');
-			return false;  
-		}
-	});
-	
-	$('input[name="amount"]').die().live("keyup",function() { 
-		var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
 	});
 	
 	$('input[name="payment_mode"]').die().live("click",function() {
