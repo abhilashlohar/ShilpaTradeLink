@@ -269,60 +269,78 @@ $html .= '<div id="footer" class="avoid_break">';
 			}	
 				
 			if($invoice->sale_tax_per>0){
-				$html.='
-			
-			<tr>
-				<td style="text-align:right;">'.h($invoice->sale_tax->invoice_description).'</td>
-				<td style="text-align:right;">'. $this->Number->format($invoice->sale_tax_amount,[ 'places' => 2]).'</td>
-			</tr>';
+			$html.='<tr>
+						<td style="text-align:right;">'.h($invoice->sale_tax->invoice_description).'</td>
+						<td style="text-align:right;">'. $this->Number->format($invoice->sale_tax_amount,[ 'places' => 2]).'</td>
+					</tr>';
 			}
-						
-			$tot=1;
-			if($invoice->fright_amount > 0 ){ $tot=2;}
+			if($invoice->fright_amount==0){
+			$html.='<tr>
+						<td>';
+							if(!empty($invoice->form47) or !empty($invoice->form49)){
+							$html.='<table class="table2">';	
+							}
+							
+							if(!empty($invoice->form47)){
+							$html.='<tr>
+										<td style="white-space: nowrap;">Road Permit No. </td>
+										<td> : </td>
+										<td>'. h($invoice->form47) .'</td>
+									</tr>';	
+							}
+							if(!empty($invoice->form49)){
+							$html.='<tr>
+										<td style="white-space: nowrap;">Form 49 No. </td>
+										<td> : </td>
+										<td>'. h($invoice->form49) .'</td>
+									</tr>';	
+							}
+							if(!empty($invoice->form47) or !empty($invoice->form49)){
+							$html.='</table>';	
+							}
+							
+				$html.='</td>
+						<td align="right"><b>GRAND TOTAL</b></td>
+						<td>'. $this->Number->format($invoice->grand_total,[ 'places' => 2]).'</td>
+					</tr>';
+			}else{
 				$html.='<tr>
-				<td rowspan="'.$tot.'" width="40%">
-				<table class="table2">';
+					<td  valign="middle" style="white-space: nowrap;">';
+					if(!empty($invoice->form47) or !empty($invoice->form49)){
+					$html.='<table class="table2">';	
+					}
+					
 					if(!empty($invoice->form47)){
-				
 					$html.='<tr>
 								<td style="white-space: nowrap;">Road Permit No. </td>
 								<td> : </td>
 								<td>'. h($invoice->form47) .'</td>
-								</tr>';	
-								}
-										
+							</tr>';	
+					}
 					if(!empty($invoice->form49)){
 					$html.='<tr>
 								<td style="white-space: nowrap;">Form 49 No. </td>
 								<td> : </td>
 								<td>'. h($invoice->form49) .'</td>
-								</tr>';	
+							</tr>';	
 					}
-				$html.='</table>
-				
-				</td>';
-				if($invoice->fright_amount > 0 ){
-				$html.='
-				<td style="text-align:right;">'. h($invoice->fright_text) .'</td>
-				<td style="text-align:right;">'. $this->Number->format($invoice->fright_amount,[ 'places' => 2]) .'</td>
+					if(!empty($invoice->form47) or !empty($invoice->form49)){
+					$html.='</table>';	
+					}
+			$html.='</td>
+					<td style="text-align:right;">'.h($invoice->fright_text).'</td>
+					<td>'. $this->Number->format($invoice->fright_amount,[ 'places' => 2]).'</td>
+				</tr>
+				<tr>
+					<td style="white-space: nowrap;"></td>
+					<td align="right"><b>GRAND TOTAL</b></td>
+					<td>'. $this->Number->format($invoice->grand_total,[ 'places' => 2]).'</td>
 				</tr>';
-				$html.='<tr>
-					
-				<td style="text-align:right"; rowspan="1"><b>GRAND TOTAL</b></td>
-				<td style="text-align:right;">'. $this->Number->format($invoice->grand_total,[ 'places' => 2]) .'</td>
-			</tr>';
-				}
-				else {
-					
-				$html.='					
-				<td style="text-align:right"; rowspan="1"><b>GRAND TOTAL</b></td>
-				<td style="text-align:right;">'. $this->Number->format($invoice->grand_total,[ 'places' => 2]) .'</td>
-			</tr>';
-				}
+			}
 			
-			$html.='	
+				
 			
-			<tr>
+			$html.='<tr>
 				<td colspan="3">
 				<table   width="100%" class="table-amnt">
 					<tr>
