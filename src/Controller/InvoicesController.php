@@ -206,13 +206,7 @@ class InvoicesController extends AppController
             'contain' => ['InvoiceRows']
 			]);
 		
-		/*$qwer=array('orange', 'banana', 'apple', 'pineapple', 'strawberry');;
-		$item = $qwer[ 3 ];
-		$qwer[ 3 ] = $qwer[ 3 - 1 ];
-		$qwer[ 3 - 1 ] = $item;
 		
-		pr($qwer);
-		exit;*/
 		
 		
 		if ($this->request->is(['patch', 'post', 'put'])) {
