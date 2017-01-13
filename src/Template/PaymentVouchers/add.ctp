@@ -93,12 +93,45 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Amount<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Amount']); ?>
+							<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Amount','id'=>'total_paid_amount']); ?>
 						</div>
 					</div>
 				</div>
-				</div>
+			</div>	
 				
+			<br/>
+				<table width="100%">
+					<tr>
+						<td width="45%" valign="top" id="pending_invoice_container"></td>
+						<td></td>
+						<td width="45%" valign="top">
+							<h4>Adjust paid amount</h4>
+							<table class="table tableitm" id="main_tb" >
+								<thead>
+									<tr>
+										<th width="3%">Sr.No. </th>
+										<th width="30%">Type</th>
+										<th width="37%">Reference</th>
+										<th width="20%">Amount</th>
+										<th width="10%"></th>
+									</tr>
+								</thead>
+								<tbody id="main_tbody">
+								
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="3" align="right"><b>Total</b></td>
+										<td><?php echo $this->Form->input('total_of_breakups', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','readonly','value'=>'0.00']); ?></td>
+										<td></td>
+									</tr>
+								</tfoot>
+							</table>
+						</td>
+					</tr>
+				</table>
+				
+				<label class="control-label">Total adjusted amount</label> <input type="text" name="total_adjusted_amount" class="form-control input-sm" readonly="readonly" placeholder="Total Adjusted Amount" style="width:200px;"/>
 			</div>
 		
 			<div class="form-actions">
@@ -121,12 +154,16 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
-		rules: {
-			cheque_no :{
-				required: true,
+				rules: {
+			total_adjusted_amount: {
+				equalTo: "#total_paid_amount"
 			},
 		},
-
+		messages: {
+			total_adjusted_amount: {
+				equalTo: "Please adjust complete paid amount."
+			},
+		},
 		errorPlacement: function (error, element) { // render error placement for each input type
 			if (element.parent(".input-group").size() > 0) {
 				error.insertAfter(element.parent(".input-group"));
@@ -227,8 +264,152 @@ $(document).ready(function() {
 		}
 	});
 	
+	$('.addrow').die().live("click",function() { 
+		add_row();
+    });
+	
+	
+	$('.deleterow').die().live("click",function() {
+		var l=$(this).closest("table tbody").find("tr").length;
+		if(l>1){
+			$(this).closest('tr').remove();
+			rename_rows_new_ref();
+		}
+    });
+	
+	add_row();
+	function add_row(){
+		var tr1=$("#sample_tb tbody tr").clone();
+		$("#main_tb tbody#main_tbody").append(tr1);
+		rename_rows_new_ref();
+		
+	}
+	
+	function rename_rows_new_ref(){
+		var i=0;
+		$("#main_tb tbody#main_tbody tr").each(function(){
+			$(this).find("td:nth-child(1)").html(++i); i--;
+			$(this).find("td:nth-child(2) select").attr({name:"new_ref_record["+i+"][type]", id:"new_ref_record-"+i+"-type"});
+			
+			var type=$(this).find("td:nth-child(2) option:selected").val();
+			if(type=='On Account' || type==''){
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"new_ref_record["+i+"][q]", id:"new_ref_record-"+i+"-q"});
+			}else{
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"new_ref_record["+i+"][new_ref_no]", id:"new_ref_record-"+i+"-new_ref_no"});
+			}
+			
+			$(this).find("td:nth-child(4) input").attr({name:"new_ref_record["+i+"][amount]", id:"new_ref_record-"+i+"-amount"}).rules('add', {
+						number: true,
+						min: 0.01
+					});
+			i++;
+			
+		});
+	}
+	
+	$('.type').die().live("change",function() {
+		var type=$(this).find('option:selected').val();
+		if(type=='On Account' || type==''){
+			$(this).closest('tr').find('td:nth-child(3)').find('input:eq(0)').hide();
+		}else{
+			$(this).closest('tr').find('td:nth-child(3)').find('input:eq(0)').show();
+		}
+		
+		rename_rows_new_ref();
+	});
+	
+	$('input[name="amount"]').live("blur",function() {
+		var val=$(this).val();
+		$(this).val(parseFloat($(this).val()).toFixed(2));
+	});
+	
+	$(".check_row").die().live("click",function() {
+		if($(this).is(':checked')){
+			$(this).closest('tr').find('.amount_box').removeAttr('readonly');
+			var invoice_booking_amount=$(this).closest('tr').find('.amount_box').attr('invoice_booking_amount');
+			$(this).closest('tr').find('.amount_box').val(invoice_booking_amount);
+			calculation_for_total();
+   
+		}else{
+			$(this).closest('tr').find('.amount_box').attr('readonly','readonly');
+			$(this).closest('tr').find('.amount_box').val('');
+			calculation_for_total();
+		}
+	});
+	
+	$('select[name="paid_to_id"]').die().live("change",function() {
+		var paid_to_id=$(this).find('option:selected').val();
+		
+		$("#pending_invoice_container").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
+		var url="<?php echo $this->Url->build(['controller'=>'InvoiceBookings','action'=>'DueInvoiceBookingsForPayment']); ?>";
+		url=url+'/'+paid_to_id,
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$("#pending_invoice_container").html(response);
+			Metronic.init();
+		});
+	});
+	calculation_for_total();
+	$('input').live("keyup",function() {
+		calculation_for_total();
+	});
+	
+	function calculation_for_total(){  
+		var total_left=0; var total_right=0; var sum=0;
+		$("#due_payment tbody tr.tr1").each(function(){ 
+			var val=$(this).find('td:nth-child(1) input[type="checkbox"]:checked').val();
+			if(val){
+				var qty=parseFloat($(this).find('.amount_box').val());
+				total_left=total_left+qty;
+			} 
+			$('input[name="total_amount_agst"]').val(total_left.toFixed(2));	
+			
+		});
+		
+		$("#main_tb tbody tr").each(function(){
+			var amount=parseFloat($(this).find("td:nth-child(4) input").val());
+			if(!amount){ amount=0; }
+			total_right=total_right+amount;
+			$('input[name="total_of_breakups"]').val(total_right.toFixed(2));	
+			}); 
+			sum=total_right+total_left;
+			$('input[name="total_adjusted_amount"]').val(sum.toFixed(2));	
+		
+	}
 	
 });
+	
 </script>
 
+<table id="sample_tb" style="display:none;">
+	<tbody >
+		<tr>
+			<td>0</td>
+			<td><?php 
+			$options=['New Ref'=>'New Ref','On Account'=>'On Account','Advance'=>'Advance'];
+			echo $this->Form->input('type', ['empty'=>'--select--','options' => $options,'label' => false,'class' => 'form-control input-sm type','placeholder' => 'Rate']); ?></td>
+			<td>
+				<?php echo $this->Form->input('new_ref', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Type New Ref','style'=>'display:none']); ?>
+			</td>
+			<td><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
+			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+<div id="myModal1" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body" id="result_ajax">
+				Please select paid from
+			</div>
+			<div class="modal-footer">
+				<button class="btn default closebtn">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 

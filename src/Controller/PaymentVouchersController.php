@@ -69,6 +69,19 @@ class PaymentVouchersController extends AppController
 			}else{
 				$paymentVoucher->voucher_no=1;
 			}
+						
+			$payment_breakups=[];
+			foreach($this->request->data['invoice_booking_record'] as $invoice_booking_record){
+					if(@$invoice_booking_record['checkbox']){
+					$payment_breakups[]=['ref_type'=>'Agst Ref','new_ref_no'=>'','invoice_booking_id'=>$invoice_booking_record['invoice_booking_id'],'amount'=>$invoice_booking_record['invoice_booking_amount']];
+					
+				}
+			} 
+			foreach($this->request->data['new_ref_record'] as $new_ref_record){
+				$payment_breakups[]=['ref_type'=>$new_ref_record['type'],'new_ref_no'=>@$new_ref_record['new_ref_no'],'invoice_booking_id'=>0,'amount'=>$new_ref_record['amount']];
+			}
+			$this->request->data['payment_breakups']=$payment_breakups;
+			
 			$paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
 			
 			$paymentVoucher->created_by=$s_employee_id;
@@ -96,6 +109,31 @@ class PaymentVouchersController extends AppController
 				$ledger->transaction_date = $paymentVoucher->transaction_date;
 				$ledger->voucher_source = 'Payment Voucher';
 				$this->PaymentVouchers->Ledgers->save($ledger); 
+				
+					
+				//InvoiceBooking Update 
+				$i=0;
+				foreach($paymentVoucher->payment_breakups as $data)
+				{
+					if($data->invoice_booking_id>0){
+					$invoice_booking_id=$data->invoice_booking_id;
+					$amount=$data->amount;
+					$InvoiceBookings=$this->PaymentVouchers->InvoiceBookings->find()->where(['id'=>$invoice_booking_id]);
+					
+					foreach($InvoiceBookings as $data1)
+					{
+					$due_payment=$data1->due_payment;
+					}
+					$remaining=$due_payment-$amount;
+					$query = $this->PaymentVouchers->InvoiceBookings->query();
+					$query->update()
+					->set(['due_payment' => $remaining])
+					->where(['id' => $invoice_booking_id])
+					->execute();
+					}
+					$i++;
+				}
+			
 				
 				$this->Flash->success(__('The Payment-Voucher:'.str_pad($paymentVoucher->voucher_no, 4, '0', STR_PAD_LEFT)).' has been genereted.');
 				return $this->redirect(['action' => 'view/'.$paymentVoucher->id]);
@@ -126,14 +164,15 @@ class PaymentVouchersController extends AppController
 			$where[]=$data->ledger_account_id;
 		}
 		if(sizeof($where)>0){
-			$bankCashes = $this->PaymentVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);$paidTos = $this->PaymentVouchers->PaidTos->find('list')->where(['PaidTos.id IN' => $where]);
+			$bankCashes = $this->PaymentVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
 		}
 		else{
 			$ErrorbankCashes='true';
 		}
 		
 		
-        $companies = $this->PaymentVouchers->Companies->find('all');		
+        $companies = $this->PaymentVouchers->Companies->find('all');
+		
         $this->set(compact('paymentVoucher', 'paidTos', 'bankCashes','companies','ErrorpaidTos','ErrorbankCashes'));
         $this->set('_serialize', ['paymentVoucher']);
     }

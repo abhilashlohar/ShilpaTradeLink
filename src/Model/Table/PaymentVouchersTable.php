@@ -35,6 +35,7 @@ class PaymentVouchersTable extends Table
         $this->primaryKey('id');
 		$this->belongsTo('VouchersReferences');
 		$this->belongsTo('Ledgers');
+		$this->belongsTo('InvoiceBookings');
 		$this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
@@ -54,6 +55,10 @@ class PaymentVouchersTable extends Table
 			'foreignKey' => 'created_by',
 			'propertyName' => 'creator',
 		]);
+		$this->hasMany('PaymentBreakups', [
+            'foreignKey' => 'payment_voucher_id',
+			'saveStrategy' => 'replace'
+        ]);
 		
 	}
 

@@ -247,5 +247,16 @@ class InvoiceBookingsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	function DueInvoiceBookingsForPayment($paid_to_id=null){
+		$this->viewBuilder()->layout('');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$Vendor=$this->InvoiceBookings->Vendors->find()->where(['ledger_account_id'=>$paid_to_id])->first();
+		if(!$Vendor){ echo 'Select paid to.'; exit; }
+		$InvoiceBookings = $this->InvoiceBookings->find()->where(['company_id'=>$st_company_id,'vendor_id'=>$Vendor->id,'due_payment >'=>0]);
+		 $this->set(compact('InvoiceBookings','Vendor'));
+	}
 
 }

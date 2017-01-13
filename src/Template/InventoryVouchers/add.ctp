@@ -66,7 +66,7 @@
 									<th width="10%"></th>
 								</thead>
 								<tbody>
-									<?php  foreach($sales_order_row->job_card_rows as $job_card_row):  pr($job_card_row->id); ?> 
+									<?php  foreach($sales_order_row->job_card_rows as $job_card_row): ?> 
 										<tr>
 											<td align="center"><?= h(++$page_no) ?></td>
 											
@@ -117,10 +117,11 @@
 
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
-$(document).ready(function() { 
-	rename_rows_name();
+$(document).ready(function() {
+
 
 	$('.addrow').die().live("click",function() {
+			
 		var tr1=$("#sample_tb tbody").html();
 		$(this).closest('table tbody').append(tr1);
 		rename_rows_name();
@@ -161,6 +162,7 @@ $(document).ready(function() {
 			<td>0</td>
 			<td>
 			<?php echo $this->Form->input('sales_order_row_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
+			<?php echo $this->Form->input('job_card_row_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
 			<?php echo $this->Form->input('item_id',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm','label'=>false]); ?>
 			</td>
 			<td><?php echo $this->Form->input('quantity',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false]); ?></td>
