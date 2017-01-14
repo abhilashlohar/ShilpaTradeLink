@@ -256,6 +256,9 @@ class JobCardsController extends AppController
             if ($this->JobCards->save($jobCard)) {
 				
 					foreach($jobCard->sales_order_rows as $sales_order_row ){
+						if($sales_order_row['source_type']=="Purchessed"){
+							$this->JobCards->JobCardRows->deleteAll(['sales_order_row_id' => $sales_order_row['id']]);
+						}
 						$query = $this->JobCards->SalesOrders->SalesOrderRows->query();
 							$query->update()
 							->set(['source_type' =>$sales_order_row['source_type']])

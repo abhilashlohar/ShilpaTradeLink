@@ -47,11 +47,10 @@
 					<td><?= h($jobCard->dispatch_address)?></td>
 				</tr>
 				<tr>
-					<td><label style="font-size:105%"><b>Packing</b></label></td>
-					<td>:</td>
-					<td><?= h($jobCard->packing) ?></td>
-					<td><label style="font-size:105%"> </td>
-					<td> </td>
+					<td valign="top"><label style="font-size:105%"><b>Packing</b></label></td>
+					<td valign="top">:</td>
+					<td colspan="4"><?= $this->Text->autoParagraph(h($jobCard->packing)) ?></td>
+					
 				</tr>
 			</table>	
 	</div>
