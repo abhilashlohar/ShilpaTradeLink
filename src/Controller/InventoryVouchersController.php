@@ -66,7 +66,7 @@ class InventoryVouchersController extends AppController
 				},'JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
         ]);
 			
-			//pr($salesOrder); exit;
+		$sales_order_id=$jobCards->sales_order_id;	
 		}
 		//pr($this->request->data); exit;
 		$last_iv_no=$this->InventoryVouchers->find()->select(['iv2'])->order(['iv2' => 'DESC'])->first();
@@ -79,7 +79,11 @@ class InventoryVouchersController extends AppController
 		$inventoryVoucher = $this->InventoryVouchers->newEntity();
         if ($this->request->is('post')) {
 			$inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);
+			$inventoryVoucher->iv2=$last_iv_no->iv2;
 			$inventoryVoucher->job_card_id=$jobcard_id;
+			$inventoryVoucher->sales_order_id=$sales_order_id;
+			$inventoryVoucher->created_by=$s_employee_id; 
+			$inventoryVoucher->company_id=$st_company_id;
 			//pr($inventoryVoucher); exit;
             if ($this->InventoryVouchers->save($inventoryVoucher)) {
 				$query = $this->InventoryVouchers->JobCards->query();
@@ -112,13 +116,11 @@ class InventoryVouchersController extends AppController
     public function edit($id = null)
     { 	$this->viewBuilder()->layout('index_layout');
         $inventoryVoucher = $this->InventoryVouchers->get($id, [
-            'contain' => ['InventoryVoucherRows'=>['Items'],'JobCards'=>[
-				'SalesOrders'=>['SalesOrderRows'=>['Items'=>function ($q){
+            'contain' =>  ['SalesOrders'=>['SalesOrderRows'=>['InventoryVoucherRows','Items'=>function ($q){
 					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
-				},'JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
-        ]
+				},'InventoryVoucherRows'=>['Items']]],'Creator', 'Companies']
         ]);
-		//pr($inventoryVoucher->job_card->sales_order->sales_order_rows[0]); exit;
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);
             if ($this->InventoryVouchers->save($inventoryVoucher)) {

@@ -43,47 +43,58 @@
 			
 				<table width="100%" id="main_tb" border="1">
 					<thead>
-						<th width="25%">In</th>
-						<th>Out</th>
+						<th width="30%" class="text-center"><label class="control-label">Production</label></th>
+						<th align="center" class="text-center"><label class="control-label">Consumption</label></th>
 					</thead>
 					<tbody id="maintbody"><?php $p=0; $q=0; $r=0; ?>
-					<?php foreach ($jobCards->sales_order->sales_order_rows as $sales_order_row): ?>
+					<?php //pr($jobCard->sales_order->sales_order_rows);
+					foreach ($jobCards->sales_order->sales_order_rows as $sales_order_row): ?>
+						
 						<tr class="main_tr">
-							<td valign="top">
+							<td valign="top" align="center">
 							<?php echo $this->Form->input('sales_order_id', ['type'=>'text','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->id,'type'=>'hidden']); ?>
-							<b><?= h($sales_order_row->item->name) ?></b>
+							<br/><b><?= h($sales_order_row->item->name) ?> ( <?= h($sales_order_row->quantity) ?> )</b>
 							</td>
 							
 							<td>
-								<?php  $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
-								<div>
-								
-							<table>
-								<thead>
-									<th>Sr</th>
-									<th width="70%">Item</th>
-									<th>Quantity</th>
-									<th width="10%"></th>
-								</thead>
-								<tbody>
-									<?php  foreach($sales_order_row->job_card_rows as $job_card_row): ?> 
-										<tr>
-											<td align="center"><?= h(++$page_no) ?></td>
-											
-											<td>
-											<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][sales_order_row_id]', ['type'=>'hidden','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$job_card_row->sales_order_row_id]); ?>
-											<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][job_card_row_id]', ['type'=>'hidden','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$job_card_row->id]); ?>
-											<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm select2me','label'=>false,'value'=>$job_card_row->item_id]); ?>
-											</td>
-											<td><?php echo $this->Form->input('inventory_voucher_rows['.$p.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
-											<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
-											
-										</tr>
-									<?php $p++;  endforeach; ?>
-									
-								</tbody>
-							</table>
-							</div>	
+							<?php if(sizeof($sales_order_row->job_card_rows)>0){ ?>
+							<?php  $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
+							<div>
+								<div class="form-group" style="padding:10px;">
+									<?php   foreach($sales_order_row->job_card_rows as $job_card_row){ ?>
+										<?php if(!empty($job_card_row->remark)){ ?>
+											<label class="control-label">Remarks </label>
+											<?php echo $job_card_row->remark; ?>
+										<?php } ?>
+									<?php $r++; } ?>
+								</div>
+								<table class="table">
+									<thead>
+										<th>Sr</th>
+										<th width="60%">Item</th>
+										<th>Quantity</th>
+										<th width="15%"></th>
+									</thead>
+									<tbody>
+										<?php  foreach($sales_order_row->job_card_rows as $job_card_row): ?> 
+											<tr>
+												<td align="center"><?= h(++$page_no) ?></td>
+												
+												<td>
+												
+												<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][sales_order_row_id]',['class' => 'form-control input-sm','type'=>'text','label'=>false,'value'=>$job_card_row->sales_order_row_id]); ?>
+												<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm ','label'=>false,'value'=>$job_card_row->item_id]); ?>
+												</td>
+												<td><?php echo $this->Form->input('inventory_voucher_rows['.$p.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
+												<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+												
+											</tr>
+										<?php $p++;  endforeach; ?>
+										
+									</tbody>
+								</table>
+							</div>
+							<?php } ?>
 							</td>
 							
 						</tr>
@@ -121,7 +132,6 @@ $(document).ready(function() {
 
 
 	$('.addrow').die().live("click",function() {
-			
 		var tr1=$("#sample_tb tbody").html();
 		$(this).closest('table tbody').append(tr1);
 		rename_rows_name();
@@ -130,23 +140,39 @@ $(document).ready(function() {
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
-			if(l>1){
-				$(this).closest("tr").remove();
-				rename_rows_name();
+			if(l>1){  
+			 $(this).closest('tr').remove();
+				var i=0; 
+				$("#main_tb tbody#maintbody tr.main_tr").each(function(){
+					var sales_order_row_id=$(this).find("td:nth-child(1) input").val();
+					i++;
+					$(this).find("td:nth-child(2) textarea").attr({name:"inventory_voucher_rows["+i+"][remark]", id:"inventory_voucher_rows-"+i+"-remark"});
+					i--;
+					var sr=0;
+					$(this).find("td:nth-child(2) table tbody tr").each(function(){
+						i++; sr++;
+						$(this).find('td:nth-child(1)').html(sr);
+						$(this).find("td:nth-child(2) input").attr({name:"inventory_voucher_rows["+i+"][sales_order_row_id]", id:"inventory_voucher_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
+						$(this).find("td:nth-child(2) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2();
+						$(this).find("td:nth-child(3) input").attr({name:"job_card_rows["+i+"][quantity]", id:"job_card_rows-"+i+"-quantity"});
+					});
+				});
 			}
-		}
+		} 
     });
-	
+	rename_rows_name();
 	function rename_rows_name(){
 		var i=0; 
 		$("#main_tb tbody#maintbody tr.main_tr").each(function(){
 			var sales_order_row_id=$(this).find("td:nth-child(1) input").val();
+			$(this).find("td:nth-child(2) textarea").attr({name:"inventory_voucher_rows["+i+"][remark]", id:"inventory_voucher_rows-"+i+"-remark"});
+			
 			var sr=0;
 			$(this).find("td:nth-child(2) table tbody tr").each(function(){
-				sr++;
-				$(this).find('td:nth-child(1)').html(sr);
 				
-				$(this).find('td:nth-child(2) input[type="hidden"]').attr({name:"inventory_voucher_rows["+i+"][job_card_row_id]", id:"job_card_rows-"+i+"-job_card_row_id"}).val(job_card_row_id);
+				 sr++;
+				$(this).find('td:nth-child(1)').html(sr);
+				$(this).find('td:nth-child(2) input[type="text"]').attr({name:"inventory_voucher_rows["+i+"][sales_order_row_id]", id:"inventory_voucher_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
 				$(this).find("td:nth-child(2) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2();
 				$(this).find("td:nth-child(3) input").attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"}); i++;
 			});
@@ -161,8 +187,7 @@ $(document).ready(function() {
 		<tr>
 			<td>0</td>
 			<td>
-			<?php echo $this->Form->input('sales_order_row_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
-			<?php echo $this->Form->input('job_card_row_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
+			<?php echo $this->Form->input('sales_order_row_id',['class' => 'form-control input-sm','type'=>'text','label'=>false]); ?>
 			<?php echo $this->Form->input('item_id',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm','label'=>false]); ?>
 			</td>
 			<td><?php echo $this->Form->input('quantity',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false]); ?></td>

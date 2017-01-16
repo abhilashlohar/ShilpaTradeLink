@@ -1,4 +1,4 @@
-<?php //pr($inventoryVoucher); exit;?>
+<?php ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -22,63 +22,62 @@
 						</div>
 					</div>
 				</div>
-				
-				
-
 			</div><br/>
-
-				<div class="table-scrollable">
-					
+			
+			
 				<table width="100%" id="main_tb" border="1">
 					<thead>
-						<th width="25%">In</th>
-						<th>Out</th>
+						<th width="30%" class="text-center"><label class="control-label">Production</label></th>
+						<th align="center" class="text-center"><label class="control-label">Consumption</label></th>
 					</thead>
 					<tbody id="maintbody"><?php $p=0; $q=0; $r=0; ?>
-					<?php foreach ($inventoryVoucher->job_card->sales_order->sales_order_rows as $sales_order_row): ?>
+					<?php 
+					foreach ($inventoryVoucher->sales_order->sales_order_rows as $sales_order_row): ?> 
+						
 						<tr class="main_tr">
-							<td valign="top">
+							<td valign="top" align="center">
 							<?php echo $this->Form->input('sales_order_id', ['type'=>'text','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->id,'type'=>'hidden']); ?>
-							<b><?= h($sales_order_row->item->name) ?></b>
+							<br/><b><?= h($sales_order_row->item->name) ?> ( <?= h($sales_order_row->quantity) ?> )</b>
 							</td>
 							
 							<td>
-								<?php  $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
-								<div>
+							<?php if(sizeof($sales_order_row->inventory_voucher_rows)>0){ ?>
+							<?php  $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
+							<div>
 								
-							<table class="table tableitm" id="main_tb">
-						<thead>
-							<tr>
-								<th width="50">Sr.No. </th>
-								<th>Items</th>
-								<th width="130">Quantity</th>
-								<th width="70"></th>
-							</tr>
-						</thead>
-						<tbody>
-						
-						<?php $q=0; foreach ($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row): ?>
-						<tr class="tr1 preimp" row_no='<?php echo @$inventory_voucher_row->id; ?>'>
-							<td width="10"><?php echo ++$q; --$q; ?><?php echo $this->Form->input('inventory_voucher_row.'.$q.'.id'); ?></td>
-							<td><?php echo $this->Form->input('inventory_voucher_row['.$q.'][item_id]', ['options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','value' => $inventory_voucher_row->item_id]); ?></td>
-							<td width="100"><?php echo $this->Form->input('inventory_voucher_row['.$q.'][quantity]', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value' => $inventory_voucher_row->quantity]); ?></td>
-							<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
-						</tr>	
-						<?php $q++; endforeach; ?>
-						</tbody>
-					</table>
-							</div>	
+								<table class="table">
+									<thead>
+										<th>Sr</th>
+										<th width="60%">Item</th>
+										<th>Quantity</th>
+										<th width="15%"></th>
+									</thead>
+									<tbody>
+										<?php  foreach($sales_order_row->inventory_voucher_rows as $inventory_voucher_row): ?> 
+											<tr>
+												<td align="center"><?= h(++$page_no) ?></td>
+												
+												<td>
+												<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][sales_order_row_id]',['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$inventory_voucher_row->sales_order_row_id]); ?>
+												<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm ','label'=>false,'value'=>$inventory_voucher_row->item_id]); ?>
+												</td>
+												<td><?php echo $this->Form->input('inventory_voucher_rows['.$p.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$inventory_voucher_row->quantity]); ?></td>
+												<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+												
+											</tr>
+										<?php $p++;  endforeach; ?>
+										
+									</tbody>
+								</table>
+							</div>
+							<?php } ?>
 							</td>
 							
 						</tr>
 						<?php  endforeach; ?>
 					</tbody>
 				</table>
-				</div>
-				
-	
 			</div>
-		</div>
 			<div class="form-actions">
 				 <button type="submit" class="btn blue-hoki">Update Inventory Vouchers</button>
 			</div>
@@ -87,18 +86,6 @@
 	</div>
 </div>
 
-<table id="sample_tb" style="display:none;">
-	<tbody>
-		<tr class="tr1 preimp">
-			<td width="10">0</td>
-			<td><?php echo $this->Form->input('q', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen']); ?></td>
-			<td width="100"><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
-			
-			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
-		</tr>
-		
-	</tbody>
-</table>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <style>
 #sortable li{
@@ -114,155 +101,73 @@
 <?php echo $this->Html->script('/drag_drop/jquery-1.12.4.js'); ?>
 <?php echo $this->Html->script('/drag_drop/jquery-ui.js'); ?>
 
-<script>
-$( function() {
-$( "#sortable" ).sortable();
-$( "#sortable" ).disableSelection();
-} );
-</script>
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-	//--------- FORM VALIDATION
-	var form3 = $('#form_sample_3');
-	var error3 = $('.alert-danger', form3);
-	var success3 = $('.alert-success', form3);
-	form3.validate({
-		errorElement: 'span', //default input error message container
-		errorClass: 'help-block help-block-error', // default input error message class
-		focusInvalid: true, // do not focus the last invalid input
-		rules: {
-			rules: {
-				company_id:{
-					required: true,
-				},
-				customer_id : {
-					  required: true,
-				},
-				po1 : {
-					  required: true,
-				},
-				po3:{
-					required: true
-				},
-				po4:{
-					required: true,
-				},
-				
-			},
-		},
-		messages: { // custom messages for radio buttons and checkboxes
-			membership: {
-				required: "Please select a Membership type"
-			},
-			service: {
-				required: "Please select  at least 2 types of Service",
-				minlength: jQuery.validator.format("Please select  at least {0} types of Service")
-			}
-		},
 
-		errorPlacement: function (error, element) { // render error placement for each input type
-			if (element.parent(".input-group").size() > 0) {
-				error.insertAfter(element.parent(".input-group"));
-			} else if (element.attr("data-error-container")) { 
-				error.appendTo(element.attr("data-error-container"));
-			} else if (element.parents('.radio-list').size() > 0) { 
-				error.appendTo(element.parents('.radio-list').attr("data-error-container"));
-			} else if (element.parents('.radio-inline').size() > 0) { 
-				error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
-			} else if (element.parents('.checkbox-list').size() > 0) {
-				error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
-			} else if (element.parents('.checkbox-inline').size() > 0) { 
-				error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
-			} else {
-				error.insertAfter(element); // for other inputs, just perform default behavior
-			}
-		},
 
-		invalidHandler: function (event, validator) { //display error alert on form submit   
-			success3.hide();
-			error3.show();
-			Metronic.scrollTo(error3, -200);
-		},
-
-		highlight: function (element) { // hightlight error inputs
-		   $(element)
-				.closest('.form-group').addClass('has-error'); // set error class to the control group
-		},
-
-		unhighlight: function (element) { // revert the change done by hightlight
-			$(element)
-				.closest('.form-group').removeClass('has-error'); // set error class to the control group
-		},
-
-		success: function (label) {
-			label
-				.closest('.form-group').removeClass('has-error'); // set success class to the control group
-		},
-
-		submitHandler: function (form) {
-			success3.show();
-				error3.hide();
-				form[0].submit(); // submit the form
-		}
-
-	});
-	//--	 END OF VALIDATION
-	
-	
-	$('.quantity').die().live("keyup",function() {
-		var asc=$(this).val();
-		var numbers =  /^[0-9]*\.?[0-9]*$/;
-		if(asc==0)
-		{
-			$(this).val('');
-			return false; 
-		}
-		else if(asc.match(numbers))  
-		{  
-		} 
-		else  
-		{  
-			$(this).val('');
-			return false;  
-		}
-	});
-	
-
-    $('.addrow').die().live("click",function() { 
-		add_row();
+	$('.addrow').die().live("click",function() {
+		var tr1=$("#sample_tb tbody").html();
+		$(this).closest('table tbody').append(tr1);
+		rename_rows_name();
     });
 	
-	function add_row(){
-		var tr1=$("#sample_tb tbody tr.tr1").clone();
-		$("#main_tb tbody").append(tr1);
-		var i=0;
-		$("#main_tb tbody tr.tr1").each(function(){
-			i++;
-			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr("name","inventory_voucher_rows["+i+"][item_id]").select2().rules("add", "required");
-			$(this).find("td:nth-child(3) input").attr("name","inventory_voucher_rows["+i+"][quantity]").rules("add", "required");
-			
-		});
-		
-	}
-	
-		$('.deleterow').die().live("click",function() {
+	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
-			
-				var del=$(this).closest("tr");
-				$(del).remove();
-				var i=0;
-				$("#main_tb tbody tr.tr1").each(function(){
+			if(l>1){  
+			 $(this).closest('tr').remove();
+				var i=0; 
+				$("#main_tb tbody#maintbody tr.main_tr").each(function(){
+					var sales_order_row_id=$(this).find("td:nth-child(1) input").val();
 					i++;
-					$(this).find("td:nth-child(1)").html(i);
-					$(this).find("td:nth-child(2) select").attr("name","inventory_voucher_rows["+i+"][item_id]").select2();
-					$(this).find("td:nth-child(3) input").attr("name","inventory_voucher_rows["+i+"][quantity]");
-					
+					$(this).find("td:nth-child(2) textarea").attr({name:"inventory_voucher_rows["+i+"][remark]", id:"inventory_voucher_rows-"+i+"-remark"});
+					i--;
+					var sr=0;
+					$(this).find("td:nth-child(2) table tbody tr").each(function(){
+						i++; sr++;
+						$(this).find('td:nth-child(1)').html(sr);
+						$(this).find("td:nth-child(2) input").attr({name:"inventory_voucher_rows["+i+"][sales_order_row_id]", id:"inventory_voucher_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
+						$(this).find("td:nth-child(2) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2();
+						$(this).find("td:nth-child(3) input").attr({name:"job_card_rows["+i+"][quantity]", id:"job_card_rows-"+i+"-quantity"});
+					});
 				});
+			}
 		} 
     });
-	
+	rename_rows_name();
+	function rename_rows_name(){
+		var i=0; 
+		$("#main_tb tbody#maintbody tr.main_tr").each(function(){
+			var sales_order_row_id=$(this).find("td:nth-child(1) input").val();
+			$(this).find("td:nth-child(2) textarea").attr({name:"inventory_voucher_rows["+i+"][remark]", id:"inventory_voucher_rows-"+i+"-remark"});
+			
+			var sr=0;
+			$(this).find("td:nth-child(2) table tbody tr").each(function(){
+				
+				 sr++;
+				$(this).find('td:nth-child(1)').html(sr);
+				$(this).find('td:nth-child(2) input[type="text"]').attr({name:"inventory_voucher_rows["+i+"][sales_order_row_id]", id:"inventory_voucher_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
+				$(this).find("td:nth-child(2) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2();
+				$(this).find("td:nth-child(3) input").attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"}); i++;
+			});
+		
+		});
+	}
 });
 </script>
 
+<table id="sample_tb" style="display:none;">
+	<tbody>
+		<tr>
+			<td>0</td>
+			<td>
+			<?php echo $this->Form->input('sales_order_row_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
+			<?php echo $this->Form->input('item_id',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm','label'=>false]); ?>
+			</td>
+			<td><?php echo $this->Form->input('quantity',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false]); ?></td>
+			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
+		</tr>
+		
+	</tbody>
+</table>

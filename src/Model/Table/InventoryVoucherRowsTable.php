@@ -41,9 +41,10 @@ class InventoryVoucherRowsTable extends Table
             'foreignKey' => 'inventory_voucher_id',
             'joinType' => 'INNER'
         ]);
-		 $this->belongsTo('JobCardRows', [
-            'foreignKey' => 'job_card_row_id',
-            'joinType' => 'INNER'
+		$this->belongsTo('SalesOrderRows', [
+            'foreignKey' => 'sales_order_row_id',
+            'joinType' => 'INNER',
+			'counterCache' => true
         ]);
         $this->belongsTo('Items', [
             'foreignKey' => 'item_id',

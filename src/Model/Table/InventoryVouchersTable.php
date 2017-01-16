@@ -42,6 +42,10 @@ class InventoryVouchersTable extends Table
             'foreignKey' => 'job_card_id',
             'joinType' => 'INNER'
         ]);
+		 $this->belongsTo('SalesOrders', [
+            'foreignKey' => 'sales_order_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('JobCardRows', [
             'foreignKey' => 'job_card_row_id',
             'joinType' => 'INNER'

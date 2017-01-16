@@ -54,6 +54,11 @@ class SalesOrderRowsTable extends Table
             'foreignKey' => 'sales_order_row_id',
 			'saveStrategy' => 'replace'
         ]);
+		
+		$this->hasMany('InventoryVoucherRows', [
+            'foreignKey' => 'sales_order_row_id',
+			'saveStrategy' => 'replace'
+        ]);
     }
 
     /**
