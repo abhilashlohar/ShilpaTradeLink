@@ -78,6 +78,9 @@
 					</tbody>
 				</table>
 			</div>
+			
+			<?php echo $this->Form->input('sales_order_id', ['type'=>'hidden','value' => @$inventoryVoucher->sales_order_id]); ?>
+			
 			<div class="form-actions">
 				 <button type="submit" class="btn blue-hoki">Update Inventory Vouchers</button>
 			</div>
@@ -117,21 +120,7 @@ $(document).ready(function() {
 		if (confirm("Are you sure to remove row ?") == true) {
 			if(l>1){  
 			 $(this).closest('tr').remove();
-				var i=0; 
-				$("#main_tb tbody#maintbody tr.main_tr").each(function(){
-					var sales_order_row_id=$(this).find("td:nth-child(1) input").val();
-					i++;
-					$(this).find("td:nth-child(2) textarea").attr({name:"inventory_voucher_rows["+i+"][remark]", id:"inventory_voucher_rows-"+i+"-remark"});
-					i--;
-					var sr=0;
-					$(this).find("td:nth-child(2) table tbody tr").each(function(){
-						i++; sr++;
-						$(this).find('td:nth-child(1)').html(sr);
-						$(this).find("td:nth-child(2) input").attr({name:"inventory_voucher_rows["+i+"][sales_order_row_id]", id:"inventory_voucher_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
-						$(this).find("td:nth-child(2) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2();
-						$(this).find("td:nth-child(3) input").attr({name:"job_card_rows["+i+"][quantity]", id:"job_card_rows-"+i+"-quantity"});
-					});
-				});
+				rename_rows_name();
 			}
 		} 
     });
@@ -147,7 +136,7 @@ $(document).ready(function() {
 				
 				 sr++;
 				$(this).find('td:nth-child(1)').html(sr);
-				$(this).find('td:nth-child(2) input[type="text"]').attr({name:"inventory_voucher_rows["+i+"][sales_order_row_id]", id:"inventory_voucher_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
+				$(this).find('td:nth-child(2) input[type="hidden"]').attr({name:"inventory_voucher_rows["+i+"][sales_order_row_id]", id:"inventory_voucher_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
 				$(this).find("td:nth-child(2) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2();
 				$(this).find("td:nth-child(3) input").attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"}); i++;
 			});

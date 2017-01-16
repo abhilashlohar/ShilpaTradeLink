@@ -19,10 +19,16 @@ class JobCardsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$inventory_voucher_status=$this->request->query('inventory_voucher');
+		//pr($inventory_voucher_status); exit;
         $this->paginate = [
             'contain' => ['SalesOrders']
         ];
-        $jobCards = $this->paginate($this->JobCards->find()->order(['JobCards.id' => 'DESC']));
+		if($inventory_voucher_status=='true'){
+			$jobCards = $this->paginate($this->JobCards->find()->where(['status' => 'Pending']));
+		}else{
+			$jobCards = $this->paginate($this->JobCards->find()->order(['JobCards.id' => 'DESC']));
+		}
         $this->set(compact('jobCards'));
         $this->set('_serialize', ['jobCards']);
     }

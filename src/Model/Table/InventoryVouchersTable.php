@@ -38,6 +38,7 @@ class InventoryVouchersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 		$this->belongsTo('Items');
+		$this->belongsTo('ItemLedgers');
         $this->belongsTo('JobCards', [
             'foreignKey' => 'job_card_id',
             'joinType' => 'INNER'

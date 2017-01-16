@@ -65,7 +65,6 @@ class InventoryVouchersController extends AppController
 					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
 				},'JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
         ]);
-			
 		$sales_order_id=$jobCards->sales_order_id;	
 		}
 		//pr($this->request->data); exit;
@@ -87,12 +86,26 @@ class InventoryVouchersController extends AppController
 			//pr($inventoryVoucher); exit;
             if ($this->InventoryVouchers->save($inventoryVoucher)) {
 				$query = $this->InventoryVouchers->JobCards->query();
+				//pr($inventoryVoucher); exit;
 					$query->update()
 						->set(['status' => 'Converted'])
 						->where(['id' => $inventoryVoucher->job_card_id])
 						->execute();
+					foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
+						
+						$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
+						$itemLedger->item_id = $inventory_voucher_row->item_id;		
+						$itemLedger->quantity = $inventory_voucher_row->quantity;
+						$itemLedger->source_model = 'Inventory Voucher';
+						$itemLedger->source_id = $inventory_voucher_row->inventory_voucher_id;
+						$itemLedger->in_out = 'Out';
+						$itemLedger->rate = '0.00';
+						$itemLedger->company_id = $st_company_id;
+						$itemLedger->processed_on = date("Y-m-d");
+						//pr($itemLedger); exit;
+						$this->InventoryVouchers->ItemLedgers->save($itemLedger);
                 $this->Flash->success(__('The inventory voucher has been saved.'));
-
+					}
                 return $this->redirect(['action' => 'index']);
             } else { //pr($inventoryVoucher); exit;
                 $this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
@@ -115,6 +128,8 @@ class InventoryVouchersController extends AppController
      */
     public function edit($id = null)
     { 	$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
         $inventoryVoucher = $this->InventoryVouchers->get($id, [
             'contain' =>  ['SalesOrders'=>['SalesOrderRows'=>['InventoryVoucherRows','Items'=>function ($q){
 					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
@@ -123,8 +138,36 @@ class InventoryVouchersController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);
+			//$inventoryVoucher->job_card_id=$jobcard_id;
+			$inventoryVoucher->sales_order_id=$inventoryVoucher->sales_order_id;
+			//$inventoryVoucher->created_by=$s_employee_id; 
+			//$inventoryVoucher->company_id=$st_company_id;
+			//pr($inventoryVoucher); exit;
+			
             if ($this->InventoryVouchers->save($inventoryVoucher)) {
+				
+				$query = $this->InventoryVouchers->ItemLedgers->query();
+				$query->delete()
+					->where(['ItemLedgers.source_id' => $inventoryVoucher->id,'source_model' =>'Inventory Voucher'])
+					->execute();
+					foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
+						
+						$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
+						$itemLedger->item_id = $inventory_voucher_row->item_id;		
+						$itemLedger->quantity = $inventory_voucher_row->quantity;
+						$itemLedger->source_model = 'Inventory Voucher';
+						$itemLedger->source_id = $inventory_voucher_row->inventory_voucher_id;
+						$itemLedger->in_out = 'Out';
+						$itemLedger->rate = '0.00';
+						$itemLedger->company_id = $st_company_id;
+						$itemLedger->processed_on = date("Y-m-d");
+						//pr($itemLedger); exit;
+						$this->InventoryVouchers->ItemLedgers->save($itemLedger);
+				
+					}
+				
                 $this->Flash->success(__('The inventory voucher has been saved.'));
+			
 
                 return $this->redirect(['action' => 'index']);
             } else {
