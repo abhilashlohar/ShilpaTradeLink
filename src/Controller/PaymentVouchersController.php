@@ -42,7 +42,7 @@ class PaymentVouchersController extends AppController
 		
 		$this->viewBuilder()->layout('index_layout');
         $paymentVoucher = $this->PaymentVouchers->get($id, [
-            'contain' => ['PaidTos','BankCashes','Companies','Creator']
+            'contain' => ['PaidTos','BankCashes','Companies','Creator','PaymentBreakups'=>['InvoiceBookings']]
         ]);
 
         $this->set('paymentVoucher', $paymentVoucher);

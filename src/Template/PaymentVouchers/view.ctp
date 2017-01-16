@@ -97,4 +97,21 @@
 	 </tr>
 </table>
 </div>
+<table class="table table-bordered table-condensed">
+	<thead> 
+		<th>Sr.No</th>
+		<th>Reference Type</th>
+		<th>Invoice Booking No</th>
+		<th>Amount</th>
+			
+	</thead>
+	<tbody>
+		<?php foreach ($paymentVoucher->payment_breakups as $payment_breakup):  pr($payment_breakup);?>
+		<tr>
+			
+		</tr>
+		<?php endforeach; ?>
+	</tbody>
+</table>
+</br>
 </div>
