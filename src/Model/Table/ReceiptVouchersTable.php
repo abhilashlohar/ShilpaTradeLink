@@ -55,7 +55,11 @@ class ReceiptVouchersTable extends Table
             'foreignKey' => 'bank_cash_id',
             'propertyName' => 'BankCash',
         ]);
-		
+		$this->belongsTo('Creator', [
+			'className' => 'Employees',
+			'foreignKey' => 'created_by',
+			'propertyName' => 'creator',
+		]);
 		$this->hasMany('ReceiptBreakups', [
             'foreignKey' => 'receipt_voucher_id',
 			'saveStrategy' => 'replace'

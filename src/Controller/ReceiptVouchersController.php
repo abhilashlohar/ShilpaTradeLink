@@ -22,7 +22,7 @@ class ReceiptVouchersController extends AppController
         $this->paginate = [
             'contain' => ['ReceivedFroms', 'BankCashes']
         ];
-        $receiptVouchers = $this->paginate($this->ReceiptVouchers->find()->order(['transaction_date' => 'DESC']));
+        $receiptVouchers = $this->paginate($this->ReceiptVouchers->find()->where(['company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
 
         $this->set(compact('receiptVouchers'));
         $this->set('_serialize', ['receiptVouchers']);
@@ -39,7 +39,7 @@ class ReceiptVouchersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $receiptVoucher = $this->ReceiptVouchers->get($id, [
-            'contain' => ['ReceivedFroms', 'BankCashes','Companies']
+            'contain' => ['ReceivedFroms', 'BankCashes','Companies','Creator','ReceiptBreakups'=>['Invoices']]
         ]);
 
         $this->set('receiptVoucher', $receiptVoucher);
@@ -60,6 +60,13 @@ class ReceiptVouchersController extends AppController
 		$st_company_id = $session->read('st_company_id');
         
         if ($this->request->is('post')) {
+			$last_ref_no=$this->ReceiptVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
+			if($last_ref_no){
+				$receiptVoucher->voucher_no=$last_ref_no->voucher_no+1;
+			}else{
+				$receiptVoucher->voucher_no=1;
+			}
+				
 			$receipt_breakups=[];
 			foreach($this->request->data['invoice_record'] as $invoice_record){
 					if(@$invoice_record['checkbox']){
@@ -69,7 +76,9 @@ class ReceiptVouchersController extends AppController
 				}
 			} 
 			foreach($this->request->data['new_ref_record'] as $new_ref_record){
+				if(!empty($new_ref_record['type'])){
 				$receipt_breakups[]=['ref_type'=>$new_ref_record['type'],'new_ref_no'=>@$new_ref_record['new_ref_no'],'invoice_id'=>0,'amount'=>$new_ref_record['amount']];
+				}
 			}
 			$this->request->data['receipt_breakups']=$receipt_breakups;
 			

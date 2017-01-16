@@ -43,7 +43,7 @@ class ReceiptBreakupsTable extends Table
         ]);
         $this->belongsTo('Invoices', [
             'foreignKey' => 'invoice_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
     }
 

@@ -97,21 +97,31 @@
 	 </tr>
 </table>
 </div>
+</br>
+
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size:14px;" class="maindiv">	
 <table class="table table-bordered table-condensed">
 	<thead> 
 		<th>Sr.No</th>
 		<th>Reference Type</th>
-		<th>Invoice Booking No</th>
+		<th>Invoice Booking No / Ref No.</th>
 		<th>Amount</th>
 			
 	</thead>
 	<tbody>
-		<?php foreach ($paymentVoucher->payment_breakups as $payment_breakup):  pr($payment_breakup);?>
+		<?php $i=0; foreach ($paymentVoucher->payment_breakups as $payment_breakup): 
+		$url_path="/invoice-bookings/view/".$payment_breakup->invoice_booking_id;
+		?>
 		<tr>
+			<td><?php echo ++$i;?></td>
+			<td><?= h($payment_breakup->ref_type) ?></td>
 			
+			<td><?php if($payment_breakup->invoice_booking_id) { ?><?php echo $this->Html->link(($payment_breakup->invoice_booking->ib1.'/IB-'.str_pad($payment_breakup->invoice_booking->ib2, 3, '0', STR_PAD_LEFT).'/'.$payment_breakup->invoice_booking->ib3.'/'.$payment_breakup->invoice_booking->ib4),$url_path,['target' => '_blank']); ?><?php } else { ?><?= h($payment_breakup->new_ref_no) ?> <?php }?></td>
+			<td><?= h($payment_breakup->amount) ?></td>
 		</tr>
 		<?php endforeach; ?>
 	</tbody>
 </table>
-</br>
 </div>
+</br>
+

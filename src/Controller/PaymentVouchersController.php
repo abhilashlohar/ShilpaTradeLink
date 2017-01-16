@@ -78,7 +78,9 @@ class PaymentVouchersController extends AppController
 				}
 			} 
 			foreach($this->request->data['new_ref_record'] as $new_ref_record){
+				if(!empty($new_ref_record['type'])){
 				$payment_breakups[]=['ref_type'=>$new_ref_record['type'],'new_ref_no'=>@$new_ref_record['new_ref_no'],'invoice_booking_id'=>0,'amount'=>$new_ref_record['amount']];
+				}
 			}
 			$this->request->data['payment_breakups']=$payment_breakups;
 			

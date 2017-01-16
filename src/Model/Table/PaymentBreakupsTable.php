@@ -43,7 +43,7 @@ class PaymentBreakupsTable extends Table
         ]);
         $this->belongsTo('InvoiceBookings', [
             'foreignKey' => 'invoice_booking_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
     }
 

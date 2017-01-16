@@ -62,24 +62,60 @@
 	<div style="border:solid 1px ;"></div>
 	<table width="100%" class="divFooter">
 		<tr>
-				<td align="left" valign="top">
+			<td align="left" valign="top">
 				<table>
 					<tr>
-						<td style="font-size: 14px;font-weight: bold;">
+						<td style="font-size: 16px;font-weight: bold;">
 						Rs: <?=h($receiptVoucher->amount) ?>
 					</tr>
 				</table>
 			</td>
-			<td align="right">
-				<table>
-					<tr>
-						<td align="center">
-						For <?= h($receiptVoucher->company->name) ?><br/><br/><br/><span style="    border-top: solid 1px #585757;">Authorised Signatory</span>
-						</td>
-					</tr>
-				</table>
-			</td>
+			
 		</tr>
-	</table>	
+	</table>
+	<br/>
+	<table width="100%" class="table_rows ">
+    <tr>
+	<td align="center" width="25%"> 
+	
+	</td>
+	   <td align="right" width="15%"> 
+	
+		 <?php 
+		 echo $this->Html->Image('/signatures/'.$receiptVoucher->creator->signature,['height'=>'50px','style'=>'height:50px;']); 
+		 ?></br>
+		 </hr>
+		 <span><b>Prepared By</b></span><br/>
+		 <span><?= h($receiptVoucher->company->name) ?></span><br/>
+		</td>
+	 </tr>
+</table>
+	
 </div>
+</br>
+
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size: 14px;" class="maindiv">
+<table class="table table-bordered table-condensed">
+	<thead> 
+		<th>Sr.No</th>
+		<th>Reference Type</th>
+		<th>Invoice No / Ref No.</th>
+		<th>Amount</th>
+			
+	</thead>
+	<tbody>
+	
+		<?php $i=0; foreach ($receiptVoucher->receipt_breakups as $receipt_breakup): 
+		 $url_path="/invoices/confirm/".$receipt_breakup->invoice_id;?>
+		<tr>
+			<td><?php echo ++$i;?></td>
+			<td><?= h($receipt_breakup->ref_type) ?></td>
+			<td><?php if($receipt_breakup->invoice_id) { ?><?php echo $this->Html->link(($receipt_breakup->invoice->in1.'/IN-'.str_pad($receipt_breakup->invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$receipt_breakup->invoice->in3.'/'.$receipt_breakup->invoice->in4),$url_path,['target' => '_blank']) ?><?php } else { ?> <?= h($receipt_breakup->new_ref_no) ?> <?php }?></td>
+			<td><?= h($receipt_breakup->amount) ?></td>
+		</tr>
+		<?php endforeach; ?>
+	</tbody>
+</table>
+</br>	
+
 </div>
