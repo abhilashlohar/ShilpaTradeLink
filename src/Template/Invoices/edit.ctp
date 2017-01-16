@@ -123,7 +123,7 @@
 				<?php } ?>
 			</div><br/>
 			
-		
+			<input type="text"  name="checked_row_length" id="checked_row_length" style="height: 0px;padding: 0;border: none;" />
 			<table class="table tableitm" id="main_tb">
 				<thead>
 					<tr>
@@ -368,12 +368,15 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-			company_id:{
+			checked_row_length: {
 				required: true,
+				max : 1,
+				min : 1,
 			},
 			date_created : {
 				  required: true,
 			},
+			
 			customer_id : {
 				  required: true,
 			},
@@ -397,12 +400,15 @@ $(document).ready(function() {
 			},
 			employee_id: {
 				  required: true,
-			}
+			},
+			
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
-			membership: {
-				required: "Please select a Membership type"
+			checked_row_length: {
+				required : "Please select atleast one row.",
+				min : "Please select atleast one row.",
+				max: "You can not select multiple rows of different sale tax rate."
 			},
 			service: {
 				required: "Please select  at least 2 types of Service",
@@ -493,6 +499,7 @@ $(document).ready(function() {
 	
 	rename_rows(); calculate_total();
 	function rename_rows(){
+		var list = new Array();
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
 			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
@@ -508,6 +515,10 @@ $(document).ready(function() {
 				
 				$(this).css('background-color','#fffcda');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
+				
+				var s_tax=$(this).find('td:nth-child(6)').text();
+				
+				list.push(s_tax);
 			}else{
 				$(this).find('td:nth-child(2) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(3) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
@@ -518,7 +529,11 @@ $(document).ready(function() {
 				$(this).css('background-color','#FFF');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
 			}
-			
+			var unique=list.filter(function(itm,i,a){
+				return i==a.indexOf(itm);
+			});
+
+			$("#checked_row_length").val(unique.length);
 			
 		});
 	}

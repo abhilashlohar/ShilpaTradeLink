@@ -131,10 +131,8 @@
 				</div>
 				<?php } ?>
 			</div><br/>
+			<input type="text"  name="checked_row_length" id="checked_row_length" style="height: 0px;padding: 0;border: none;" />
 			
-			<div class="alert alert-danger" id="row_error_item" style="display:none;padding: 5px !important;">
-				Please check at least one row.
-			</div>
 			<table class="table tableitm" id="main_tb">
 				<thead>
 					<tr>
@@ -392,9 +390,7 @@ $(document).ready(function() {
 			},
 			in1 : {
 				  required: true,
-			},
-			
-			
+			},			
 			in3:{
 				required: true
 			},
@@ -416,12 +412,17 @@ $(document).ready(function() {
 			customer_tin: {
 				  required: true,
 			},
+			checked_row_length: {
+				required: true,
+				max : 1,
+			}
 			
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
-			membership: {
-				required: "Please select a Membership type"
+			checked_row_length: {
+				required : "Please select atleast one row.",
+				max: "You can not select multiple rows of different sale tax rate."
 			},
 			customer_tin: {
 				required: "Can't generate Invoice,Customer has not TIN"
@@ -472,23 +473,6 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			var check_d=0;
-				$(".rename_check").each(function () {
-					if($(this).prop('checked'))
-					{
-						check_d=1;
-					}
-				});
-			if(check_d==0)
-			{
-				$("#row_error_item").show();
-				success3.hide();
-				error3.show();
-				//Metronic.scrollTo(error3, -200);
-				return false;
-			}
-			q="ok"; var count=0;
-			
 			success1.show();
 			error1.hide();
 			form[0].submit(); // submit the form
@@ -497,23 +481,7 @@ $(document).ready(function() {
 	});
 	
 	//--	 END OF VALIDATION
-	$('.quantity').die().live("keyup",function() {
-		var asc=$(this).val();
-		var numbers =  /^[0-9]*\.?[0-9]*$/;
-		if(asc==0)
-		{
-			$(this).val('');
-			return false; 
-		}
-		else if(asc.match(numbers))  
-		{  
-		} 
-		else  
-		{  
-			$(this).val('');
-			return false;  
-		}
-	});
+	
 	
 	$('#update_credit_limit').on("click",function() {
 		var customer_id=$('input[name="customer_id"]').val();
@@ -600,9 +568,12 @@ $(document).ready(function() {
 	
 	<?php if($process_status!="New"){ ?>
 	function rename_rows(){
+		var list = new Array();
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
 			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
+			
+			
 			if(val){
 				$(this).find('td:nth-child(2) input').attr("name","invoice_rows["+val+"][item_id]").attr("id","invoice_rows-"+val+"-item_id").rules("add", "required");
 				$(this).find('td:nth-child(3) input').removeAttr("readonly").attr("name","invoice_rows["+val+"][quantity]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-quantity").rules("add", "required");
@@ -614,6 +585,11 @@ $(document).ready(function() {
 				
 				$(this).css('background-color','#fffcda');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
+				
+				var s_tax=$(this).find('td:nth-child(6)').text();
+				
+				list.push(s_tax);
+				
 			}else{
 				$(this).find('td:nth-child(2) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(3) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
@@ -625,6 +601,11 @@ $(document).ready(function() {
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
 			}
 			
+			var unique=list.filter(function(itm,i,a){
+				return i==a.indexOf(itm);
+			});
+
+			$("#checked_row_length").val(unique.length);
 			
 		});
 	}
@@ -701,7 +682,7 @@ $(document).ready(function() {
 	}
 	<?php } ?>
 	
-	$('.select_address').on("click",function() { 
+	$('.select_address').on("click",function() {
 		open_address();
     });
 	
