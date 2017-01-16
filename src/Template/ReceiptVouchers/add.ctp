@@ -167,6 +167,12 @@ $(document).ready(function() {
 			total_adjusted_amount: {
 				equalTo: "#total_received_amount"
 			},
+			cheque_no :{
+				required: true,
+			},
+			amount :{
+				decimal :true,
+			}
 		},
 		messages: {
 			total_adjusted_amount: {
@@ -330,6 +336,16 @@ $(document).ready(function() {
 			$('input[name="total_adjusted_amount"]').val(sum.toFixed(2));	
 		
 	}
+	$('input[name="payment_mode"]').die().live("click",function() {
+		var payment_mode=$(this).val();
+		
+		if(payment_mode=="Cheque"){
+			$("#chq_no").show();
+		}else{
+			$("#chq_no").hide();
+		}
+	});
+	
 	
 });
 </script>
@@ -364,86 +380,3 @@ $(document).ready(function() {
 		</div>
 	</div>
 </div>
-<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
-<script>
-$(document).ready(function() {
-	
-	//--------- FORM VALIDATION
-	var form3 = $('#form_sample_3');
-	var error3 = $('.alert-danger', form3);
-	var success3 = $('.alert-success', form3);
-	form3.validate({
-		errorElement: 'span', //default input error message container
-		errorClass: 'help-block help-block-error', // default input error message class
-		focusInvalid: true, // do not focus the last invalid input
-		rules: {
-			cheque_no :{
-				required: true,
-			},
-			amount :{
-				digits :true
-			}
-		},
-
-		errorPlacement: function (error, element) { // render error placement for each input type
-			if (element.parent(".input-group").size() > 0) {
-				error.insertAfter(element.parent(".input-group"));
-			} else if (element.attr("data-error-container")) { 
-				error.appendTo(element.attr("data-error-container"));
-			} else if (element.parents('.radio-list').size() > 0) { 
-				error.appendTo(element.parents('.radio-list').attr("data-error-container"));
-			} else if (element.parents('.radio-inline').size() > 0) { 
-				error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
-			} else if (element.parents('.checkbox-list').size() > 0) {
-				error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
-			} else if (element.parents('.checkbox-inline').size() > 0) { 
-				error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
-			} else {
-				error.insertAfter(element); // for other inputs, just perform default behavior
-			}
-		},
-
-		invalidHandler: function (event, validator) { //display error alert on form submit   
-			success3.hide();
-			error3.show();
-			Metronic.scrollTo(error3, -200);
-		},
-
-		highlight: function (element) { // hightlight error inputs
-		   $(element)
-				.closest('.form-group').addClass('has-error'); // set error class to the control group
-		},
-
-		unhighlight: function (element) { // revert the change done by hightlight
-			$(element)
-				.closest('.form-group').removeClass('has-error'); // set error class to the control group
-		},
-
-		success: function (label) {
-			label
-				.closest('.form-group').removeClass('has-error'); // set success class to the control group
-		},
-
-		submitHandler: function (form) {
-			
-				success3.show();
-				error3.hide();
-				form[0].submit(); // submit the form
-			
-		}
-
-	});
-		
-	$('input[name="payment_mode"]').die().live("click",function() {
-		var payment_mode=$(this).val();
-		
-		if(payment_mode=="Cheque"){
-			$("#chq_no").show();
-		}else{
-			$("#chq_no").hide();
-		}
-	});
-	
-	
-});
-</script>
