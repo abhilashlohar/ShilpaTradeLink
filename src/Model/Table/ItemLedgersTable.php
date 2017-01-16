@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \Cake\ORM\Association\BelongsTo $Items
  * @property \Cake\ORM\Association\BelongsTo $Sources
+ * @property \Cake\ORM\Association\BelongsTo $Companies
  *
  * @method \App\Model\Entity\ItemLedger get($primaryKey, $options = [])
  * @method \App\Model\Entity\ItemLedger newEntity($data = null, array $options = [])
@@ -42,6 +43,10 @@ class ItemLedgersTable extends Table
             'joinType' => 'INNER'
         ]);
         
+        $this->belongsTo('Companies', [
+            'foreignKey' => 'company_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
@@ -60,6 +65,11 @@ class ItemLedgersTable extends Table
             ->integer('quantity')
             ->requirePresence('quantity', 'create')
             ->notEmpty('quantity');
+
+        $validator
+            ->decimal('rate')
+            ->requirePresence('rate', 'create')
+            ->notEmpty('rate');
 
         $validator
             ->requirePresence('source_model', 'create')
@@ -87,6 +97,7 @@ class ItemLedgersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['item_id'], 'Items'));
+        $rules->add($rules->existsIn(['company_id'], 'Companies'));
 
         return $rules;
     }
