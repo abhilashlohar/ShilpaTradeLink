@@ -34,6 +34,7 @@
 							<td><?= h($invoiceBooking->invoice_no) ?></td>
 							<td><?php echo date("d-m-Y",strtotime($invoiceBooking->created_on)) ?></td>
 							<td class="actions">
+								<?= $this->Html->link(__('View'), ['action' => 'view', $invoiceBooking->id]) ?>
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $invoiceBooking->id]) ?>
 								<?= $this->Html->link(__('Delete'), ['action' => 'delete', $invoiceBooking->id]) ?>
 								
