@@ -555,6 +555,8 @@ select
 						} ?>
 					</ul>
 				</li>
+				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Item Report','/Item-Ledgers/Stock-Report',array('escape'=>false)); ?></li>	
+				
 			</ul>
 			<!-- END SIDEBAR MENU -->
 		</div>
