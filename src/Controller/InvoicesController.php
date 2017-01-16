@@ -508,21 +508,37 @@ class InvoicesController extends AppController
 					$this->Invoices->Ledgers->save($ledger); 
 				}
 				
+				
+				$this->Invoices->ItemLedgers->deleteAll(['source_id' => $invoice->id, 'source_model'=> 'Invoices']);
+				
 				$qq=0; foreach($invoice->invoice_rows as $invoice_rows){
 					
-					$item_id=$invoice_rows->item_id;
-					$qty=$invoice_rows->quantity;
-						
 					$salesorderrow=$this->Invoices->SalesOrderRows->find()->where(['sales_order_id'=>$invoice->sales_order_id,'item_id'=>$invoice_rows->item_id])->first();
 					$salesorderrow->processed_quantity=$salesorderrow->processed_quantity-@$invoice->getOriginal('invoice_rows')[$qq]->quantity+$invoice_rows->quantity;
 					$this->Invoices->SalesOrderRows->save($salesorderrow);
-				$qq++; 
-					$query = $this->Invoices->ItemLedgers->query();
-					$query->update()
-					->set(['quantity' => $qty])
-					->where(['item_id' => $item_id, 'source_id' => $invoice->id, 'source_model'=> 'Invoices'])
-					->execute();
+					$qq++; 
 				}
+				
+				$this->Invoices->ItemLedgers->deleteAll(['source_id' => $invoice->id, 'source_model'=> 'Invoices']);
+				
+				$i=0; foreach($invoice->invoice_rows as $invoice_rows){
+					
+					$item_id=$invoice->invoice_rows[$i]['item_id'];
+						$qty=$invoice->invoice_rows[$i]['quantity'];
+						
+						$itemLedger = $this->Invoices->ItemLedgers->newEntity();
+						$itemLedger->item_id = $item_id;
+						$itemLedger->quantity = $qty;
+						$itemLedger->source_model = 'Invoices';
+						$itemLedger->source_id = $invoice->id;
+						$itemLedger->in_out = 'Out';
+						$itemLedger->company_id = $invoice->company_id;
+						$itemLedger->processed_on = date("Y-m-d");
+						$this->Invoices->ItemLedgers->save($itemLedger);
+						$i++;
+
+				}
+				
                 $this->Flash->success(__('The invoice has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
