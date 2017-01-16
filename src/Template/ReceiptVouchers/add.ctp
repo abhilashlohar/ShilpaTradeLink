@@ -170,9 +170,7 @@ $(document).ready(function() {
 			cheque_no :{
 				required: true,
 			},
-			amount :{
-				decimal :true,
-			}
+			
 		},
 		messages: {
 			total_adjusted_amount: {
