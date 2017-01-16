@@ -24,7 +24,7 @@
 					<tr>
 						<td>Voucher No</td>
 						<td width="20" align="center">:</td>
-						<td><?= h(str_pad($receiptVoucher->id, 4, '0', STR_PAD_LEFT)) ?></td>
+						<td><?= h('#'.str_pad($receiptVoucher->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
 					</tr>
 				</table>
 			</td>
@@ -105,15 +105,21 @@
 	</thead>
 	<tbody>
 	
-		<?php $i=0; foreach ($receiptVoucher->receipt_breakups as $receipt_breakup): 
-		 $url_path="/invoices/confirm/".$receipt_breakup->invoice_id;?>
+		<?php $i=0; $sum=0; foreach ($receiptVoucher->receipt_breakups as $receipt_breakup): 
+		 $url_path="/invoices/confirm/".$receipt_breakup->invoice_id; 
+		 ?>
 		<tr>
 			<td><?php echo ++$i;?></td>
 			<td><?= h($receipt_breakup->ref_type) ?></td>
 			<td><?php if($receipt_breakup->invoice_id) { ?><?php echo $this->Html->link(($receipt_breakup->invoice->in1.'/IN-'.str_pad($receipt_breakup->invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$receipt_breakup->invoice->in3.'/'.$receipt_breakup->invoice->in4),$url_path,['target' => '_blank']) ?><?php } else { ?> <?= h($receipt_breakup->new_ref_no) ?> <?php }?></td>
 			<td><?= h($receipt_breakup->amount) ?></td>
+			<?php $sum= $sum+$receipt_breakup->amount; ?>
 		</tr>
 		<?php endforeach; ?>
+		<tr>
+			
+			<td colspan="3" align="right">Total</td><td><?php echo $sum;?></td>
+		</tr>
 	</tbody>
 </table>
 </br>	

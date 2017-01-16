@@ -22,6 +22,9 @@ class ReceiptVouchersController extends AppController
         $this->paginate = [
             'contain' => ['ReceivedFroms', 'BankCashes']
         ];
+		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
         $receiptVouchers = $this->paginate($this->ReceiptVouchers->find()->where(['company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
 
         $this->set(compact('receiptVouchers'));
@@ -68,18 +71,18 @@ class ReceiptVouchersController extends AppController
 			}
 				
 			$receipt_breakups=[];
-			foreach($this->request->data['invoice_record'] as $invoice_record){
+			if(!empty($this->request->data['invoice_record'])){
+				foreach($this->request->data['invoice_record'] as $invoice_record){
 					if(@$invoice_record['checkbox']){
-					$receipt_breakups[]=['ref_type'=>'Agst Ref','new_ref_no'=>'','invoice_id'=>$invoice_record['invoice_id'],'amount'=>$invoice_record['invoice_amount']];
-					
-					
-				}
-			} 
-			foreach($this->request->data['new_ref_record'] as $new_ref_record){
-				if(!empty($new_ref_record['type'])){
-				$receipt_breakups[]=['ref_type'=>$new_ref_record['type'],'new_ref_no'=>@$new_ref_record['new_ref_no'],'invoice_id'=>0,'amount'=>$new_ref_record['amount']];
-				}
+						$receipt_breakups[]=['ref_type'=>'Agst Ref','new_ref_no'=>'','invoice_id'=>$invoice_record['invoice_id'],'amount'=>$invoice_record['invoice_amount']];
+					}
+				} 
 			}
+				foreach($this->request->data['new_ref_record'] as $new_ref_record){
+					if(!empty($new_ref_record['type'])){
+					$receipt_breakups[]=['ref_type'=>$new_ref_record['type'],'new_ref_no'=>@$new_ref_record['new_ref_no'],'invoice_id'=>0,'amount'=>$new_ref_record['amount']];
+					}
+				}
 			$this->request->data['receipt_breakups']=$receipt_breakups;
 			
             $receiptVoucher = $this->ReceiptVouchers->patchEntity($receiptVoucher, $this->request->data);

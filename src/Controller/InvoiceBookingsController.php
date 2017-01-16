@@ -42,7 +42,7 @@ class InvoiceBookingsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $invoiceBooking = $this->InvoiceBookings->get($id, [
-            'contain' => ['Grns']
+            'contain' => ['InvoiceBookingRows'=>['Items'],'Creator','Companies']
         ]);
 
         $this->set('invoiceBooking', $invoiceBooking);

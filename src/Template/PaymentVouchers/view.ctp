@@ -25,7 +25,7 @@
 					<tr>
 						<td>Voucher No</td>
 						<td width="20" align="center">:</td>
-						<td><?= h(str_pad($paymentVoucher->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
+						<td><?= h('#'.str_pad($paymentVoucher->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
 					</tr>
 				</table>
 			</td>
@@ -109,7 +109,7 @@
 			
 	</thead>
 	<tbody>
-		<?php $i=0; foreach ($paymentVoucher->payment_breakups as $payment_breakup): 
+		<?php $i=0; $sum=0; foreach ($paymentVoucher->payment_breakups as $payment_breakup): 
 		$url_path="/invoice-bookings/view/".$payment_breakup->invoice_booking_id;
 		?>
 		<tr>
@@ -118,8 +118,13 @@
 			
 			<td><?php if($payment_breakup->invoice_booking_id) { ?><?php echo $this->Html->link(($payment_breakup->invoice_booking->ib1.'/IB-'.str_pad($payment_breakup->invoice_booking->ib2, 3, '0', STR_PAD_LEFT).'/'.$payment_breakup->invoice_booking->ib3.'/'.$payment_breakup->invoice_booking->ib4),$url_path,['target' => '_blank']); ?><?php } else { ?><?= h($payment_breakup->new_ref_no) ?> <?php }?></td>
 			<td><?= h($payment_breakup->amount) ?></td>
+			
+			<?php $sum= $sum+$payment_breakup->amount; ?>
 		</tr>
 		<?php endforeach; ?>
+		<tr>
+			<td colspan="3" align="right">Total</td><td><?php echo $sum;?></td>
+		</tr>
 	</tbody>
 </table>
 </div>

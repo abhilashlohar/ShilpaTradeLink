@@ -8,7 +8,7 @@
 			<td align="right" width="50%" style="font-size: 10px;">
 			<span style="font-size: 14px;"><?= h($contraVoucher->company->name) ?></span><br/>
 			<span><?= $this->Text->autoParagraph(h($contraVoucher->company->address)) ?></span>
-			<span><?= h($contraVoucher->company->mobile_no) ?></span>
+			<span><?= h('#'.$contraVoucher->company->mobile_no) ?></span>
 			</td>
 		</tr>
 		<tr>

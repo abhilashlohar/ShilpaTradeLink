@@ -71,12 +71,14 @@ class PaymentVouchersController extends AppController
 			}
 						
 			$payment_breakups=[];
-			foreach($this->request->data['invoice_booking_record'] as $invoice_booking_record){
-					if(@$invoice_booking_record['checkbox']){
-					$payment_breakups[]=['ref_type'=>'Agst Ref','new_ref_no'=>'','invoice_booking_id'=>$invoice_booking_record['invoice_booking_id'],'amount'=>$invoice_booking_record['invoice_booking_amount']];
-					
-				}
-			} 
+			
+			if(!empty($this->request->data['invoice_record'])){
+				foreach($this->request->data['invoice_booking_record'] as $invoice_booking_record){
+						if(@$invoice_booking_record['checkbox']){
+						$payment_breakups[]=['ref_type'=>'Agst Ref','new_ref_no'=>'','invoice_booking_id'=>$invoice_booking_record['invoice_booking_id'],'amount'=>$invoice_booking_record['invoice_booking_amount']];
+					}
+				} 
+			}
 			foreach($this->request->data['new_ref_record'] as $new_ref_record){
 				if(!empty($new_ref_record['type'])){
 				$payment_breakups[]=['ref_type'=>$new_ref_record['type'],'new_ref_no'=>@$new_ref_record['new_ref_no'],'invoice_booking_id'=>0,'amount'=>$new_ref_record['amount']];

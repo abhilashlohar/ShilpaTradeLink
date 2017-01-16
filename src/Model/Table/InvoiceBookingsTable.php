@@ -46,6 +46,12 @@ class InvoiceBookingsTable extends Table
 			'saveStrategy' => 'replace'
         ]);
 		
+		$this->belongsTo('Creator', [
+			'className' => 'Employees',
+			'foreignKey' => 'created_by',
+			'propertyName' => 'creator',
+		]);
+		
 		$this->belongsTo('PurchaseOrders', [
             'foreignKey' => 'purchase_order_id',
             'joinType' => 'INNER'
@@ -79,6 +85,7 @@ class InvoiceBookingsTable extends Table
             'foreignKey' => 'invoice_booking_id',
 			'saveStrategy' => 'replace'
         ]);
+		
     }
 
     /**
