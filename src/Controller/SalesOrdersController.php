@@ -357,7 +357,7 @@ class SalesOrdersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $salesOrder = $this->SalesOrders->get($id, [
-            'contain' => ['SalesOrderRows' => ['Items','JobCardRows'],'Invoices' => ['InvoiceRows']]
+            'contain' => ['SalesOrderRows' => ['Items','JobCardRows','InventoryVoucherRows'],'Invoices' => ['InvoiceRows']]
         ]);
 		
 		$s_employee_id=$this->viewVars['s_employee_id'];
@@ -376,13 +376,29 @@ class SalesOrdersController extends AppController
 			$salesOrder->edited_on_time= date("Y-m-d h:i:sA");
 			
             if ($this->SalesOrders->save($salesOrder)) {
+				//pr($salesOrder); exit;
 				foreach($salesOrder->sales_order_rows as $sales_order_row){
 					$job_card_row_ids=explode(',',$sales_order_row->job_card_row_ids);
 					foreach($job_card_row_ids as $job_card_row_id){
+						//pr($job_card_row_id); exit;
 						$query = $this->SalesOrders->SalesOrderRows->JobCardRows->query();
 						$query->update()
 						->set(['sales_order_row_id' => $sales_order_row->id])
 						->where(['id' => $job_card_row_id])
+						->execute();
+					}
+				}
+				
+				foreach($salesOrder->sales_order_rows as $sales_order_row){
+					
+					$inventory_voucher_row_ids=explode(',',$sales_order_row->inventory_voucher_row_ids);
+					
+					foreach($inventory_voucher_row_ids as $inventory_voucher_row_id){
+						//pr($inventory_voucher_row_id); exit;
+						$query = $this->SalesOrders->SalesOrderRows->InventoryVoucherRows->query();
+						$query->update()
+						->set(['sales_order_row_id' => $sales_order_row->id])
+						->where(['id' => $inventory_voucher_row_id])
 						->execute();
 					}
 				}

@@ -168,11 +168,21 @@
 							<?php echo $this->Form->input('sales_order_rows.'.$q.'.processed_quantity', ['type' => 'hidden','value'=>$sales_order_rows->processed_quantity]); ?>
 							<?php 
 							$job_card_row_ids=[];
+							$inventory_voucher_row_ids=[];
 							foreach($sales_order_rows->job_card_rows as $job_card_row){
 								$job_card_row_ids[]=$job_card_row->id;
 							}
-							$job_card_row_ids=implode(',',$job_card_row_ids); ?> 
+							
+							foreach($sales_order_rows->inventory_voucher_rows as $inventory_voucher_row){
+								$inventory_voucher_row_ids[]=$inventory_voucher_row->id;
+							}
+							$inventory_voucher_row_ids=implode(',',$inventory_voucher_row_ids);
+							$job_card_row_ids=implode(',',$job_card_row_ids); 
+							?> 
+							
 							<?php echo $this->Form->input('sales_order_rows.'.$q.'.job_card_row_ids', ['type' => 'hidden','value'=>$job_card_row_ids]); ?>
+							<?php echo $this->Form->input('sales_order_rows.'.$q.'.inventory_voucher_row_ids', ['type' => 'hidden','value'=>$inventory_voucher_row_ids]); ?>
+							
 							<?php echo $this->Form->input('sales_order_rows.'.$q.'.source_type', ['type' => 'hidden','value'=>$sales_order_rows->source_type]); ?>
 							
 						</td>

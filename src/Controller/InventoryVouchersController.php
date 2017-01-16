@@ -92,10 +92,12 @@ class InventoryVouchersController extends AppController
 						->where(['id' => $inventoryVoucher->job_card_id])
 						->execute();
 					foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
-						
+						$quantity=0;
+						//pr($inventoryVoucher->sales_order_row_quantity); exit;
 						$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
-						$itemLedger->item_id = $inventory_voucher_row->item_id;		
-						$itemLedger->quantity = $inventory_voucher_row->quantity;
+						$itemLedger->item_id = $inventory_voucher_row->item_id;
+						$quantity=$inventory_voucher_row->sales_order_row_quantity*$inventory_voucher_row->quantity;
+						$itemLedger->quantity = $quantity;
 						$itemLedger->source_model = 'Inventory Voucher';
 						$itemLedger->source_id = $inventory_voucher_row->inventory_voucher_id;
 						$itemLedger->in_out = 'Out';
@@ -151,10 +153,11 @@ class InventoryVouchersController extends AppController
 					->where(['ItemLedgers.source_id' => $inventoryVoucher->id,'source_model' =>'Inventory Voucher'])
 					->execute();
 					foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
-						
+						$quantity=0;
 						$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
 						$itemLedger->item_id = $inventory_voucher_row->item_id;		
-						$itemLedger->quantity = $inventory_voucher_row->quantity;
+						$quantity=$inventoryVoucher->sales_order_row_quantity*$inventory_voucher_row->quantity;
+						$itemLedger->quantity = $quantity;
 						$itemLedger->source_model = 'Inventory Voucher';
 						$itemLedger->source_id = $inventory_voucher_row->inventory_voucher_id;
 						$itemLedger->in_out = 'Out';

@@ -53,6 +53,7 @@
 						<tr class="main_tr">
 							<td valign="top" align="center">
 							<?php echo $this->Form->input('sales_order_id', ['type'=>'text','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->id,'type'=>'hidden']); ?>
+							
 							<br/><b><?= h($sales_order_row->item->name) ?> ( <?= h($sales_order_row->quantity) ?> )</b>
 							</td>
 							
@@ -83,6 +84,7 @@
 												<td>
 												
 												<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][sales_order_row_id]',['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$job_card_row->sales_order_row_id]); ?>
+												<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][sales_order_row_quantity]', ['value'=>$sales_order_row->quantity,'type'=>'text']); ?>
 												<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm ','label'=>false,'value'=>$job_card_row->item_id]); ?>
 												</td>
 												<td><?php echo $this->Form->input('inventory_voucher_rows['.$p.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
@@ -151,6 +153,7 @@ $(document).ready(function() {
 		var i=0; 
 		$("#main_tb tbody#maintbody tr.main_tr").each(function(){
 			var sales_order_row_id=$(this).find("td:nth-child(1) input").val();
+			var sales_order_row_id=$(this).find("td:nth-child(1) input").val();
 			$(this).find("td:nth-child(2) textarea").attr({name:"inventory_voucher_rows["+i+"][remark]", id:"inventory_voucher_rows-"+i+"-remark"});
 			
 			var sr=0;
@@ -158,9 +161,11 @@ $(document).ready(function() {
 				
 				 sr++;
 				$(this).find('td:nth-child(1)').html(sr);
-				$(this).find('td:nth-child(2) input[type="text"]').attr({name:"inventory_voucher_rows["+i+"][sales_order_row_id]", id:"inventory_voucher_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
+				$(this).find('td:nth-child(2) input[type="hidden"]').attr({name:"inventory_voucher_rows["+i+"][sales_order_row_id]", id:"inventory_voucher_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
 				$(this).find("td:nth-child(2) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2();
-				$(this).find("td:nth-child(3) input").attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"}); i++;
+				$(this).find("td:nth-child(3) input").attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"});
+
+				i++;
 			});
 		
 		});

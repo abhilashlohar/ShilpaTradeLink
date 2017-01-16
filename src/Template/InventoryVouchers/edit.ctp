@@ -37,6 +37,7 @@
 						<tr class="main_tr">
 							<td valign="top" align="center">
 							<?php echo $this->Form->input('sales_order_id', ['type'=>'text','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->id,'type'=>'hidden']); ?>
+							<?php echo $this->Form->input('sales_order_row_quantity', ['value'=>$sales_order_row->quantity,'type'=>'hidden']); ?>
 							<br/><b><?= h($sales_order_row->item->name) ?> ( <?= h($sales_order_row->quantity) ?> )</b>
 							</td>
 							
