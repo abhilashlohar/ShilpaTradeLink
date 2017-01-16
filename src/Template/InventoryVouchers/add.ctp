@@ -173,7 +173,7 @@ $(document).ready(function() {
 		<tr>
 			<td>0</td>
 			<td>
-			<?php echo $this->Form->input('sales_order_row_id',['class' => 'form-control input-sm','type'=>'text','label'=>false]); ?>
+			<?php echo $this->Form->input('sales_order_row_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
 			<?php echo $this->Form->input('item_id',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm','label'=>false]); ?>
 			</td>
 			<td><?php echo $this->Form->input('quantity',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false]); ?></td>
