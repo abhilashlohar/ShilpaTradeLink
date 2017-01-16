@@ -170,7 +170,6 @@ $(document).ready(function() {
 			cheque_no :{
 				required: true,
 			},
-			
 		},
 		messages: {
 			total_adjusted_amount: {
