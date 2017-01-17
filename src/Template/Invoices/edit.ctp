@@ -167,6 +167,7 @@
 								<?php  
 								echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value' => @$current_row_items[$sales_order_row->item_id],'max'=>$sales_order_row->quantity-@$existing_rows[$sales_order_row->item_id]]); 
 								?>
+								<span>Max: <?= h($sales_order_row->quantity-@$existing_rows[$sales_order_row->item_id]) ?></span>
 							</td>
 							<td>
 								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$sales_order_row->rate,'readonly']); ?>
