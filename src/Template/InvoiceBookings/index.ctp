@@ -34,9 +34,19 @@
 							<td><?= h($invoiceBooking->invoice_no) ?></td>
 							<td><?php echo date("d-m-Y",strtotime($invoiceBooking->created_on)) ?></td>
 							<td class="actions">
-								<?= $this->Html->link(__('View'), ['action' => 'view', $invoiceBooking->id]) ?>
-								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $invoiceBooking->id]) ?>
-								<?= $this->Html->link(__('Delete'), ['action' => 'delete', $invoiceBooking->id]) ?>
+								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $invoiceBooking->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
+							
+								<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $invoiceBooking->id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
+								
+								<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+									['action' => 'delete', $invoiceBooking->id], 
+									[
+										'escape' => false,
+										'class' => 'btn btn-xs red tooltips',
+										'data-original-title'=>'Delete',
+										'confirm' => __('Are you sure, you want to delete {0}?', $invoiceBooking->id)
+									]
+								) ?>
 								
 							</td>
 						</tr>

@@ -118,7 +118,7 @@
 		<?php endforeach; ?>
 		<tr>
 			
-			<td colspan="3" align="right"style="font-weight:bold;">Total</td><td style="font-weight:bold;"><?php echo $sum;?></td>
+			<td colspan="3" align="right" style="font-weight:bold;">Total</td><td style="font-weight:bold;"><?php echo $sum;?></td>
 		</tr>
 	</tbody>
 </table>

@@ -9,7 +9,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<?php $page_no=$this->Paginator->current('materialIndents'); $page_no=($page_no-1)*20; ?>
-				<table class="table table-bordered">
+				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
 							<th>Sr. No.</th>

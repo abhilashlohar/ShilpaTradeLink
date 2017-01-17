@@ -19,10 +19,12 @@ class InventoryVouchersController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
         $this->paginate = [
             'contain' => ['InventoryVoucherRows']
         ];
-        $inventoryVouchers = $this->paginate($this->InventoryVouchers->find()->order(['InventoryVouchers.id' => 'DESC']));
+        $inventoryVouchers = $this->paginate($this->InventoryVouchers->find()->where(['company_id'=>$st_company_id])->order(['InventoryVouchers.id' => 'DESC']));
 
         $this->set(compact('inventoryVouchers'));
         $this->set('_serialize', ['inventoryVouchers']);
