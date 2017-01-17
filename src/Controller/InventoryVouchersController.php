@@ -95,7 +95,6 @@ class InventoryVouchersController extends AppController
 						->execute();
 					foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
 						$quantity=0;
-						//pr($inventoryVoucher->sales_order_row_quantity); exit;
 						$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
 						$itemLedger->item_id = $inventory_voucher_row->item_id;
 						$quantity=$inventory_voucher_row->sales_order_row_quantity*$inventory_voucher_row->quantity;
@@ -158,7 +157,7 @@ class InventoryVouchersController extends AppController
 						$quantity=0;
 						$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
 						$itemLedger->item_id = $inventory_voucher_row->item_id;		
-						$quantity=$inventoryVoucher->sales_order_row_quantity*$inventory_voucher_row->quantity;
+						$quantity=$inventory_voucher_row->sales_order_row_quantity*$inventory_voucher_row->quantity;
 						$itemLedger->quantity = $quantity;
 						$itemLedger->source_model = 'Inventory Voucher';
 						$itemLedger->source_id = $inventory_voucher_row->inventory_voucher_id;
