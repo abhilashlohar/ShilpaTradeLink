@@ -62,14 +62,7 @@
 							<?php if(sizeof($sales_order_row->job_card_rows)>0){ ?>
 							<?php  $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
 							<div>
-								<div class="form-group" style="padding:10px;">
-									<?php   foreach($sales_order_row->job_card_rows as $job_card_row){ ?>
-										<?php if(!empty($job_card_row->remark)){ ?>
-											<label class="control-label">Remarks </label>
-											<?php echo $job_card_row->remark; ?>
-										<?php } ?>
-									<?php $r++; } ?>
-								</div>
+								
 								<table class="table">
 									<thead>
 										<th>Sr</th>
