@@ -387,6 +387,18 @@ select
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> List','/Vendors',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
+					<li>
+					<a href="javascript:;">
+					<i class="fa fa-puzzle-piece"></i>
+					<span class="title">Challans</span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> Create','/Challans/Add',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Challans',array('escape'=>false)); ?></li>
+					</ul>
+				</li>
+				
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
@@ -399,18 +411,7 @@ select
 					</ul>
 				</li>
 				
-				<li>
-					<a href="javascript:;">
-					<i class="fa fa-puzzle-piece"></i>
-					<span class="title">Challans</span>
-					<span class="arrow "></span>
-					</a>
-					<ul class="sub-menu">
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Create','/Challans/Add',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Challans',array('escape'=>false)); ?></li>
-					</ul>
-				</li>
-				
+			
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
