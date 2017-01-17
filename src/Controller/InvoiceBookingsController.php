@@ -25,7 +25,7 @@ class InvoiceBookingsController extends AppController
             'contain' => ['Grns']
         ];
 		
-		$invoiceBookings = $this->paginate($this->InvoiceBookings->find()->where(['invoicebookings.company_id'=>$st_company_id]));
+		$invoiceBookings = $this->paginate($this->InvoiceBookings->find()->where(['InvoiceBookings.company_id'=>$st_company_id]));
 
         $this->set(compact('invoiceBookings','status'));
         $this->set('_serialize', ['invoiceBookings']);
