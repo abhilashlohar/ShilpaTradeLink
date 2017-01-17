@@ -34,8 +34,7 @@ class GrnsController extends AppController
 		}elseif($status=='Invoice-Booked'){
 			$where['status']='Invoice-Booked';
 		}
-		
-		$grns = $this->paginate($this->Grns->find()->where($where)->where(['Grns.company_id'=>$st_company_id]));
+		$grns = $this->paginate($this->Grns->find()->where($where)->where(['Grns.company_id'=>$st_company_id])->order(['Grns.id' => 'DESC']));
         $this->set(compact('grns','pull_request','status'));
         $this->set('_serialize', ['grns']);
     }
@@ -178,14 +177,12 @@ class GrnsController extends AppController
 							->execute();
 					}
 					$qq=0; foreach($grn->grn_rows as $grn_row){
-					//pr($grn->purchase_order_id); exit;
-					$purchaseorderrow=$this->Grns->PurchaseOrderRows->find()->where(['purchase_order_id'=>$grn->purchase_order_id,'item_id'=>$grn_row->item_id])->first();
-					//pr($purchaseorderrow->processed_quantity-@$grn->getOriginal('grn_rows')[$qq]->quantity); exit;
-					$purchaseorderrow->processed_quantity=$purchaseorderrow->processed_quantity-@$grn->getOriginal('grn_rows')[$qq]->quantity+$grn_row->quantity;
-					//pr($purchaseorderrow->processed_quantity); exit;
-					$this->Grns->PurchaseOrderRows->save($purchaseorderrow);
-					$qq++; 
-				}
+						//pr($grn->purchase_order_id); exit;
+						$purchaseorderrow=$this->Grns->PurchaseOrderRows->find()->where(['purchase_order_id'=>$grn->purchase_order_id,'item_id'=>$grn_row->item_id])->first();
+						$purchaseorderrow->processed_quantity=$purchaseorderrow->processed_quantity-@$grn->getOriginal('grn_rows')[$qq]->quantity+$grn_row->quantity;
+						$this->Grns->PurchaseOrderRows->save($purchaseorderrow);
+						$qq++; 
+					} 
 					$this->Flash->success(__('The grn has been saved.'));
 					return $this->redirect(['action' => 'index']);
 				} else {
