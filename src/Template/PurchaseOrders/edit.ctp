@@ -380,7 +380,8 @@ $(document).ready(function() {
 		$('input[name="po1"]').val(alias);
     });
 
-	
+	rename_rows();
+	calculate_total();
 	
     $('.addrow').die().live("click",function() { 
 		add_row();
@@ -398,39 +399,8 @@ $(document).ready(function() {
 			r++;
 			if(r==2){ w++; r=0; }
 		});
-		
-		var i=0;
-		$("#main_tb tbody tr.tr1").each(function(){
-			i++;
-			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").attr("name","purchase_order_rows["+i+"][item_id]").select2();
-			$(this).find("td:nth-child(3) input").attr("name","purchase_order_rows["+i+"][quantity]");
-			$(this).find("td:nth-child(4) input").attr("name","purchase_order_rows["+i+"][rate]");
-			$(this).find("td:nth-child(5) input").attr("name","purchase_order_rows["+i+"][amount]");
-		});
-		var i=0;
-		
-		$("#main_tb tbody tr.tr2").each(function(){
-			i++;
-			$(this).find("td:nth-child(1) textarea").attr("name","purchase_order_rows["+i+"][description]");
-		});
-		
-		
-		
-		$(document)
-		.one('focus.textarea', '.autoExpand', function(){
-			var savedValue = this.value;
-			this.value = '';
-			this.baseScrollHeight = this.scrollHeight;
-			this.value = savedValue;
-		})
-		.on('input.textarea', '.autoExpand', function(){
-			var minRows = this.getAttribute('data-min-rows')|0,rows;
-			this.rows = minRows;
-			console.log(this.scrollHeight , this.baseScrollHeight);
-			rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 17);
-			this.rows = minRows + rows;
-		});
+		rename_rows();
+		calculate_total();
 	}
 	
 		$('.deleterow').die().live("click",function() {
@@ -440,29 +410,32 @@ $(document).ready(function() {
 				var row_no=$(this).closest("tr").attr("row_no");
 				var del="tr[row_no="+row_no+"]";
 				$(del).remove();
-				var i=0;
-				$("#main_tb tbody tr.tr1").each(function(){
-					i++;
-					$(this).find("td:nth-child(1)").html(i);
-					$(this).find("td:nth-child(2) select").attr("name","purchase_order_rows["+i+"][item_id]").select2();
-					$(this).find("td:nth-child(3) input").attr("name","purchase_order_rows["+i+"][quantity]");
-					$(this).find("td:nth-child(4) input").attr("name","purchase_order_rows["+i+"][rate]");
-					$(this).find("td:nth-child(5) input").attr("name","purchase_order_rows["+i+"][amount]");
-					$(this).find("td:nth-child(7) input").attr("name","purchase_order_rows["+i+"][description]");
-					var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
-					$(this).find("td:nth-child(7) input").val(description);
-				});
-				var i=0;
-				$("#main_tb tbody tr.tr2").each(function(){
-					i++;
-					$(this).find("td:nth-child(1) textarea").attr("name","purchase_order_rows["+i+"][description]");
-				});
+				rename_rows();
 				calculate_total();
 			}
 		} 
     });
 	
 	
+	function rename_rows(){
+	var i=0;
+		$("#main_tb tbody tr.tr1").each(function(){
+			i++;
+			$(this).find("td:nth-child(1)").html(i);
+			$(this).find("td:nth-child(2) select").select2().attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"}).rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr({name:"purchase_order_rows["+i+"][quantity]", id:"purchase_order_rows-"+i+"-quantity"}).rules("add", "required");
+			$(this).find("td:nth-child(4) input").attr({name:"purchase_order_rows["+i+"][rate]", id:"purchase_order_rows-"+i+"-rate"}).rules("add", "required");
+			$(this).find("td:nth-child(5) input").attr("name","purchase_order_rows["+i+"][amount]");
+		});
+		var i=0;
+		
+		$("#main_tb tbody tr.tr2").each(function(){
+			i++;
+			$(this).find("td:nth-child(1) textarea").attr({name:"purchase_order_rows["+i+"][description]", id:"purchase_order_rows-"+i+"-description"}).rules("add", "required");
+		});
+		
+			
+	}
 		$('#main_tb input').die().live("keyup","blur",function() { 
 		calculate_total();
     });
