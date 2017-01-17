@@ -121,7 +121,7 @@ class PurchaseOrdersController extends AppController
         $vendors = $this->PurchaseOrders->Vendors->find('list');
 		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
 		$customers = $this->PurchaseOrders->Customers->find('all');
-		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list');
+		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']]);
 		$transporters = $this->PurchaseOrders->Transporters->find('list');
         $this->set(compact('purchaseOrder', 'Company', 'vendors','filenames','items','SaleTaxes','transporters','customers'));
         $this->set('_serialize', ['purchaseOrder']);
@@ -170,7 +170,7 @@ class PurchaseOrdersController extends AppController
 		$vendors = $this->PurchaseOrders->Vendors->find('list');
 		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
 		$customers = $this->PurchaseOrders->Customers->find('all');
-		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list');
+		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']]);
 		$transporters = $this->PurchaseOrders->Transporters->find('list');
        
         $this->set(compact('purchaseOrder', 'Company', 'vendors','filenames','customers','SaleTaxes','transporters','items'));
