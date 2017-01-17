@@ -224,8 +224,8 @@ $html.='
 if(!empty($quotation->additional_note)){
 	$html.='
 	<div class="avoid_break">
-		<b>Note:</b>
-		'. $this->Text->autoParagraph(h($quotation->additional_note)) .'
+		
+		'. $this->Text->autoParagraph(h('<b>Note:</b><br/>'.$quotation->additional_note)) .'
 	</div><br/>';
 }
 $html.='
