@@ -30,41 +30,61 @@
 					</div>
 				</div>
 				
+				
 				<div class="row">
-					<div class="col-md-2">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Tin No <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('tin_no', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Tin No']); ?>
 						</div>
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Gst No</label>
 							<?php echo $this->Form->input('gst_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Gst No']); ?>
 						</div>
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">ECC No</label>
 							<?php echo $this->Form->input('ecc_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'ECC No']); ?>
 						</div>
 					</div>
-					<div class="col-md-2">
+				</div>
+				<div class="row">
+					
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Pan No</label>
 							<?php echo $this->Form->input('pan_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Pan No']); ?>
 						</div>
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Payment Terms</label>
-							<?php echo $this->Form->input('payment_terms', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Payment Terms']); ?>
+							<?php $options=[];
+							for($q=0; $q<100; $q++){
+								$options[$q]=$q;
+							}
+							echo $this->Form->input('payment_terms', ['options'=>$options,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Payment Terms']); ?>
 						</div>
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Mode of Payment</label>
-							<?php echo $this->Form->input('mode_of_payment', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Mode of Payment']); ?>
+							<label class="control-label">Mode of Payment<span class="required" aria-required="true">*</span></label>
+							<div class="radio-list">
+								<div class="radio-inline" data-error-container="#mode_of_payment_error">
+								<?php echo $this->Form->radio(
+									'mode_of_payment',
+									[
+										['value' => 'Cheque', 'text' => 'Cheque'],
+										['value' => 'NEFT', 'text' => 'NEFT'],
+										['value' => 'Cash', 'text' => 'Cash']
+									]
+								); ?>
+								</div>
+                                <div id="mode_of_payment_error"></div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -124,7 +144,7 @@
 						<tr>
 							<td><?= h($i) ?></td>
 							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Name','value'=>$vendor_contact_person->name,'required']); ?></td>
-							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Branch','value'=>$vendor_contact_person->email,'required']); ?></td>
+							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email','value'=>$vendor_contact_person->email,'required']); ?></td>
 							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.mobile', ['label' => false,'class' => 'form-control input-sm allLetter','value'=>$vendor_contact_person->mobile,'placeholder'=>'Mobile','maxlength'=>10,'minlength'=>10,'required']); ?></td>
 							<td width="90"><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.default_person', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn',"checked"=>$checked2]); ?></td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
@@ -370,7 +390,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			<td>0</td>
 			<td><?php echo $this->Form->input('name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Name']); ?></td>
 			<td><?php echo $this->Form->input('email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email']); ?></td>
-			<td><?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mobile','maxlength'=>1]); ?></td>
+			<td><?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mobile','maxlength'=>10]); ?></td>
 			<td width="90"><?php echo $this->Form->input('default_person', ['type'=>'checkbox','label' => false,'class' => 'form-control default_btn']); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>

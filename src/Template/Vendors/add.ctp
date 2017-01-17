@@ -31,31 +31,34 @@
 				</div>
 				
 				<div class="row">
-					<div class="col-md-2">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Tin No <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('tin_no', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Tin No']); ?>
 						</div>
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Gst No</label>
 							<?php echo $this->Form->input('gst_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Gst No']); ?>
 						</div>
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">ECC No</label>
 							<?php echo $this->Form->input('ecc_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'ECC No']); ?>
 						</div>
 					</div>
-					<div class="col-md-2">
+				</div>
+				<div class="row">
+					
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Pan No</label>
 							<?php echo $this->Form->input('pan_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Pan No']); ?>
 						</div>
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Payment Terms</label>
 							<?php $options=[];
@@ -65,11 +68,24 @@
 							echo $this->Form->input('payment_terms', ['options'=>$options,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Payment Terms']); ?>
 						</div>
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Mode of Payment</label>
-							<?php echo $this->Form->input('mode_of_payment', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Mode of Payment']); ?>
+							<label class="control-label">Mode of Payment<span class="required" aria-required="true">*</span></label>
+							<div class="radio-list">
+								<div class="radio-inline" data-error-container="#mode_of_payment_error">
+								<?php echo $this->Form->radio(
+									'mode_of_payment',
+									[
+										['value' => 'Cheque', 'text' => 'Cheque'],
+										['value' => 'NEFT', 'text' => 'NEFT'],
+										['value' => 'Cash', 'text' => 'Cash']
+									]
+								); ?>
+								</div>
+                                <div id="mode_of_payment_error"></div>
+							</div>
 						</div>
+						
 					</div>
 				</div>
 				<div class="row">
