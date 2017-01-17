@@ -110,7 +110,7 @@ class InventoryVouchersController extends AppController
                 $this->Flash->success(__('The inventory voucher has been saved.'));
 					}
                 return $this->redirect(['action' => 'index']);
-            } else { //pr($inventoryVoucher); exit;
+            } else { 
                 $this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
             }
         }
@@ -174,7 +174,7 @@ class InventoryVouchersController extends AppController
 			
 
                 return $this->redirect(['action' => 'index']);
-            } else {
+            } else { pr($inventoryVoucher); exit;
                 $this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
             }
         }

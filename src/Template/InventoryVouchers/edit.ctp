@@ -60,7 +60,7 @@
 												
 												<td>
 												<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][sales_order_row_id]',['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$inventory_voucher_row->sales_order_row_id]); ?>
-												<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][sales_order_row_quantity]', ['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$sales_order_row->quantity,'type'=>'text']); ?>
+												<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][sales_order_row_quantity]', ['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$sales_order_row->quantity]); ?>
 												<?php echo $this->Form->input('inventory_voucher_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm ','label'=>false,'value'=>$inventory_voucher_row->item_id]); ?>
 												</td>
 												<td><?php echo $this->Form->input('inventory_voucher_rows['.$p.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$inventory_voucher_row->quantity]); ?></td>
