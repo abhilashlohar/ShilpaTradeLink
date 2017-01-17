@@ -72,7 +72,7 @@ class PaymentVouchersController extends AppController
 						
 			$payment_breakups=[];
 			
-			if(!empty($this->request->data['invoice_record'])){
+			if(!empty($this->request->data['invoice_booking_record'])){
 				foreach($this->request->data['invoice_booking_record'] as $invoice_booking_record){
 						if(@$invoice_booking_record['checkbox']){
 						$payment_breakups[]=['ref_type'=>'Agst Ref','new_ref_no'=>'','invoice_booking_id'=>$invoice_booking_record['invoice_booking_id'],'amount'=>$invoice_booking_record['invoice_booking_amount']];
