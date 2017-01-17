@@ -145,8 +145,8 @@
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Delivery Date</label>
-							
-								<?php echo $this->Form->input('delivery_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Delivery Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d','value'=>date("d-m-Y",strtotime($purchaseOrder->delivery_date))]); ?>
+								<?php echo $this->Form->input('delivery_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Delivery Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d','value'=>date("d-m-Y",strtotime($purchaseOrder->delivery_date)]); ?>
+								
 							</div>
 						</div>
 				</div>
