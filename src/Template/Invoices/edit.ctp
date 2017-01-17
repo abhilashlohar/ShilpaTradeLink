@@ -206,20 +206,16 @@
 			<table class="table tableitm" id="tbl2">
 				<tr>
 					<td  align="right">
-					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discountper']); ?></label>(in %)</b>
-					<?php if($invoice->discount_type=='1'){ ?>
-						<div class="input-group col-md-2"  id="discount_text">
-							<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='<?= h($invoice->discount_per) ?>'><span class="input-group-addon">%</span>
-						</div>
-					<?php }else{ ?>
-						<div class="input-group col-md-2"  id="discount_text" style="display:none;">
-							<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='0'><span class="input-group-addon">%</span>
-						</div>
-					<?php } ?>
-					
+					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
+						
+						<div class="input-group col-md-2" style="display:none;" id="discount_text">
+						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
+					</div>
 					</td>
-					<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'discount','step'=>0.01]); ?></td>
+				
+					<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
 				</tr>
+				
 				<tr style="background-color:#e6faf9;">
 					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'textarea','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty Description','style'=>['text-align:left']]); ?> </b></td>
 					<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty']); ?></td>
@@ -559,7 +555,7 @@ $(document).ready(function() {
 				
 			}
 		});
-			if($("#discountper").is(':checked')){
+			if($("#discount_per").is(':checked')){
 				var discount_per=parseFloat($('input[name="discount_per"]').val());
 				var discount_amount=(total*discount_per)/100;
 				if(isNaN(discount_amount)) { var discount_amount = 0; }
@@ -635,6 +631,34 @@ $(document).ready(function() {
 		$("#myModal12").hide();
     });
 	
+	$("#discount_per").on('click',function(){
+		if($(this).is(':checked')){
+			$("#discount_text").show();
+			$('input[name="discount"]').attr('readonly','readonly');
+		}else{ 
+			$("#discount_text").hide();
+			$('input[name="discount"]').removeAttr('readonly');
+			$('input[name="discount_per"]').val(0);
+			$('input[name="discount"]').val(0);
+		}
+		calculate_total();
+	});
+		
+	$("#pnfper").on('click',function(){
+		if($(this).is(':checked')){
+			$("#pnf_text").show();
+			$('input[name="pnf"]').attr('readonly','readonly');
+			$('input[name="pnf_per"]').val(0);
+
+		}else{
+			$("#pnf_text").hide();
+			$('input[name="pnf"]').removeAttr('readonly');
+			$('input[name="pnf"]').val(0);
+			$('input[name="pnfper"]').val(0);
+			
+		}
+		calculate_total();
+	});
 	
 	$('select[name="customer_id"]').on("change",function() {
 		var customer_id=$('select[name="customer_id"] option:selected').val();
