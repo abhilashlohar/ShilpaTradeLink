@@ -229,23 +229,7 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 	
-		$('.quantity').die().live("keyup",function() {
-			var asc=$(this).val();
-			var numbers =  /^[0-9]*\.?[0-9]*$/;
-			if(asc==0)
-			{
-				$(this).val('');
-				return false; 
-			}
-			else if(asc.match(numbers))  
-			{  
-			} 
-			else  
-			{  
-				$(this).val('');
-				return false;  
-			}
-	});
+
 
 	onload_add_row();
 	function onload_add_row(){
