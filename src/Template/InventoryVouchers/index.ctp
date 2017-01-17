@@ -29,18 +29,6 @@
 							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $inventoryVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
 							
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $inventoryVoucher->id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
-								<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
-									['action' => 'delete', $inventoryVoucher->id], 
-									[
-										'escape' => false,
-										'class' => 'btn btn-xs red tooltips',
-										'data-original-title'=>'Delete',
-										'confirm' => __('Are you sure, you want to delete {0}?', $inventoryVoucher->id)
-									]
-								) ?>
-								
-								
-							
 							</td>
 						</tr>
 						<?php endforeach; ?>
