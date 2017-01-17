@@ -148,6 +148,11 @@ class JobCardsController extends AppController
 				}
 			
             if ($this->JobCards->save($jobCard)) {
+				$query = $this->JobCards->SalesOrders->query();
+					$query->update()
+						->set(['job_card_status' => 'Converted'])
+						->where(['id' => $jobCard->sales_order_id])
+						->execute();
                 $this->Flash->success(__('The job card has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

@@ -180,10 +180,10 @@ class GrnsController extends AppController
 					$qq=0; foreach($grn->grn_rows as $grn_row){
 					//pr($grn->purchase_order_id); exit;
 					$purchaseorderrow=$this->Grns->PurchaseOrderRows->find()->where(['purchase_order_id'=>$grn->purchase_order_id,'item_id'=>$grn_row->item_id])->first();
-					//pr($purchaseorderrow); exit;
+					//pr($purchaseorderrow->processed_quantity-@$grn->getOriginal('grn_rows')[$qq]->quantity); exit;
 					$purchaseorderrow->processed_quantity=$purchaseorderrow->processed_quantity-@$grn->getOriginal('grn_rows')[$qq]->quantity+$grn_row->quantity;
 					//pr($purchaseorderrow->processed_quantity); exit;
-					$this->Invoices->SalesOrderRows->save($purchaseorderrow);
+					$this->Grns->PurchaseOrderRows->save($purchaseorderrow);
 					$qq++; 
 				}
 					$this->Flash->success(__('The grn has been saved.'));
