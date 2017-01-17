@@ -32,7 +32,7 @@
 					<tr>
 						<td>Date.</td>
 						<td width="20" align="center">:</td>
-						<td><?= h(date("d-m-Y",strtotime($invoiceBooking->date_created))) ?></td>
+						<td><?= h(date("d-m-Y",strtotime($invoiceBooking->created_on))) ?></td>
 					</tr>
 				</table>
 			</td>
