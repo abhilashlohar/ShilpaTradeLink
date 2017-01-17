@@ -76,9 +76,9 @@
 								<?php if($pull_request=="true"){
 									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into GRN','/Grns/Add?purchase-order='.$purchaseOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
-								<?php //if($status!='Converted Into Invoice' and in_array(4,$allowed_pages) and $pull_request!="true"){ ?> 
-									<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $purchaseOrder->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
-								<?php //} ?>
+								<?php if($pull_request!="true"){ 
+									echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $purchaseOrder->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));} ?>
+
 							</td>
 						</tr>
 						<?php endforeach; ?>
