@@ -107,6 +107,7 @@
 					</tbody>
 				</table>
 			</div>
+			<?php echo $this->Form->input('purchase_order_id', ['type' => 'hidden','value'=>@$grn->purchase_order_id]); ?>
 			<div class="form-actions">
 				<div class="row">
 					<div class="col-md-offset-3 col-md-9">

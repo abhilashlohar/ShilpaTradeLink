@@ -390,11 +390,8 @@ class SalesOrdersController extends AppController
 				}
 				
 				foreach($salesOrder->sales_order_rows as $sales_order_row){
-					
 					$inventory_voucher_row_ids=explode(',',$sales_order_row->inventory_voucher_row_ids);
-					
 					foreach($inventory_voucher_row_ids as $inventory_voucher_row_id){
-						//pr($inventory_voucher_row_id); exit;
 						$query = $this->SalesOrders->SalesOrderRows->InventoryVoucherRows->query();
 						$query->update()
 						->set(['sales_order_row_id' => $sales_order_row->id])
@@ -409,9 +406,6 @@ class SalesOrdersController extends AppController
 					->set(['job_card_status' => 'Pending'])
 					->where(['id' => $id])
 					->execute();
-						
-				
-				
 				
                 $this->Flash->success(__('The sales order has been saved.'));
 				return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);

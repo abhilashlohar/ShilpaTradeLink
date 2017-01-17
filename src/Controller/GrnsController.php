@@ -177,6 +177,15 @@ class GrnsController extends AppController
 							->where(['item_id' => $item_id, 'source_id' => $grn->id, 'source_model'=> 'Grns'])
 							->execute();
 					}
+					$qq=0; foreach($grn->grn_rows as $grn_row){
+					//pr($grn->purchase_order_id); exit;
+					$purchaseorderrow=$this->Grns->PurchaseOrderRows->find()->where(['purchase_order_id'=>$grn->purchase_order_id,'item_id'=>$grn_row->item_id])->first();
+					//pr($purchaseorderrow); exit;
+					$purchaseorderrow->processed_quantity=$purchaseorderrow->processed_quantity-@$grn->getOriginal('grn_rows')[$qq]->quantity+$grn_row->quantity;
+					//pr($purchaseorderrow->processed_quantity); exit;
+					$this->Invoices->SalesOrderRows->save($purchaseorderrow);
+					$qq++; 
+				}
 					$this->Flash->success(__('The grn has been saved.'));
 					return $this->redirect(['action' => 'index']);
 				} else {
