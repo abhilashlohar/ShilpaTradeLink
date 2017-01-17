@@ -40,8 +40,8 @@ class InventoryVouchersController extends AppController
     public function view($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
-	   $inventoryVoucher = $this->InventoryVouchers->get($id, [
-            'contain' => ['Companies','Items','Creator','InventoryVoucherRows'=>['Items']]
+	    $inventoryVoucher = $this->InventoryVouchers->get($id, [
+            'contain' => ['Companies','Creator','InventoryVoucherRows'=>['Items']]
         ]);
 		
 		 $this->set('inventoryVoucher', $inventoryVoucher);
@@ -107,8 +107,9 @@ class InventoryVouchersController extends AppController
 						$itemLedger->processed_on = date("Y-m-d");
 						//pr($itemLedger); exit;
 						$this->InventoryVouchers->ItemLedgers->save($itemLedger);
-                $this->Flash->success(__('The inventory voucher has been saved.'));
 					}
+
+                $this->Flash->success(__('The inventory voucher has been saved.'));
                 return $this->redirect(['action' => 'index']);
             } else { 
                 $this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
