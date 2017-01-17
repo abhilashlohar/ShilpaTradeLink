@@ -154,8 +154,7 @@ class JobCardsController extends AppController
 						->where(['id' => $jobCard->sales_order_id])
 						->execute();
                 $this->Flash->success(__('The job card has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+				return $this->redirect(['action' => 'view/'.$jobCard->id]);
             } else { 
                 $this->Flash->error(__('The job card could not be saved. Please, try again.'));
             }
