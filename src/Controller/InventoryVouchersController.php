@@ -40,8 +40,10 @@ class InventoryVouchersController extends AppController
     public function view($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
-	    $inventoryVoucher = $this->InventoryVouchers->get($id, [
-            'contain' => ['Companies','Creator','InventoryVoucherRows'=>['Items']]
+	   $inventoryVoucher = $this->InventoryVouchers->get($id, [
+            'contain' =>  ['SalesOrders'=>['SalesOrderRows'=>['InventoryVoucherRows','Items'=>function ($q){
+					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
+				},'InventoryVoucherRows'=>['Items']]],'Creator', 'Companies']
         ]);
 		
 		 $this->set('inventoryVoucher', $inventoryVoucher);

@@ -3,7 +3,7 @@
 <table width="100%" class="divHeader" border="0">
 <tr>
     <td><?php echo $this->Html->image('/logos/'.$inventoryVoucher->company->logo, ['width' => '48%']); ?></td>
-    <td valign="bottom" width="30%" align="center" style="font-size:23px;font-weight: bold;color: #0685a8;">INVENTORY VOUCHER</td>
+    <td valign="bottom" width="35%" align="center" style="font-size:23px;font-weight: bold;color: #0685a8;">INVENTORY VOUCHER</td>
 	<td align="right" style="font-size: 14px;" width="36%"> 
  
 	<span style="font-size: 20px;"><?= h($inventoryVoucher->company->name) ?></span><br/>
@@ -16,40 +16,66 @@
 </br>
 <table width="100%">
 	<tr>
-		<td width="50%" valign="top" align="left">
-			<table border="0" width="100%">
+		<td  valign="top" align="left">
+			<table border="0">
 				<tr>
-					<td align="center" width="10%"><label style="font-size: 14px;font-weight: bold;">Invoice No </label></td>
-					<td align="center">:<?php echo $inventoryVoucher->invoice->in1.'/IN-'.str_pad($inventoryVoucher->invoice->in2, 3, '0', STR_PAD_LEFT).'/'. $inventoryVoucher->invoice->in3.'/'. $inventoryVoucher->invoice->in4; ?></td>
-					<td align="right"><label style="font-size: 14px;font-weight: bold;">Item Name</label></td>
-					<td align="center">:<?php echo $inventoryVoucher->item->name; ?></td>
-					<td align="right" width=" "<label style="font-size: 14px;font-weight: bold;">Inventory Voucher No</label></td>
-					<td align="center">:<?= h($inventoryVoucher->iv1.'/IV'.str_pad($inventoryVoucher->iv2, 3, '0', STR_PAD_LEFT).'/'.$inventoryVoucher->iv3.'/'.$inventoryVoucher->iv4) ?></td>
+					<td align="left" width=" "<label style="font-size: 14px;font-weight: bold;">Inventory Voucher No</label></td>
+					<td>:</td>
+					<td align="right"><?= h($inventoryVoucher->iv1.'/IV'.str_pad($inventoryVoucher->iv2, 3, '0', STR_PAD_LEFT).'/'.$inventoryVoucher->iv3.'/'.$inventoryVoucher->iv4) ?></td>
+					<td align="left"></td>
+					<td></td>
 				</tr>
 			</table>
 	   </td>
 	</tr>
 </table>	
 </br>
-<?php $page_no=0; ?>	
-<table class="table tableitm" align="center" border="0">
-<thead>
-	<tr>
-		<th width="45%">Sr.No.</th>
-		<th>Item Name</th>
-		<th width="8%">Quantity</th>
-	</tr>
-</thead>
-<tbody>
-<?php foreach ($inventoryVoucher->inventory_voucher_rows as $inventoryVoucherRows): ?>
-	<tr>
-		<td><?= h(++$page_no)?></td>
-		<td><?= h($inventoryVoucherRows->item->name)?></td>
-		<td><?= h($inventoryVoucherRows->quantity) ?></td>
-	</tr>
-<?php endforeach;  ?>
-</tbody>
-</table>
+				<table width="100%" id="main_tb" border="1">
+					<thead>
+						<th width="30%" class="text-center"><label class="control-label">Production</label></th>
+						<th align="center" class="text-center"><label class="control-label">Consumption</label></th>
+					</thead>
+					<tbody id="maintbody"><?php $p=0; $q=0; $r=0; ?>
+					<?php 
+					foreach ($inventoryVoucher->sales_order->sales_order_rows as $sales_order_row): ?> 
+						
+						<tr class="main_tr">
+							<td valign="top" align="center">
+							<?php echo $this->Form->input('sales_order_id', ['type'=>'text','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->id,'type'=>'hidden']); ?>
+							<?php echo $this->Form->input('sales_order_row_quantity', ['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$sales_order_row->quantity]); ?>
+							<br/><b><?= h($sales_order_row->item->name) ?> ( <?= h($sales_order_row->quantity) ?> )</b>
+							</td>
+							
+							<td>
+							<?php if(sizeof($sales_order_row->inventory_voucher_rows)>0){ ?>
+							<?php  $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
+							<div>
+								
+								<table class="table">
+									<thead>
+										<th>Sr</th>
+										<th width="60%">Item</th>
+										<th>Quantity</th>
+										<th width="15%"></th>
+									</thead>
+									<tbody>
+										<?php  foreach($sales_order_row->inventory_voucher_rows as $inventory_voucher_row): ?> 
+											<tr>
+												<td align="center"><?= h(++$page_no) ?></td>
+												<td><?= h($inventory_voucher_row->item->name) ?></td>
+												<td><?= h($inventory_voucher_row->quantity) ?></td>
+											</tr>
+										<?php $p++;  endforeach; ?>
+									</tbody>
+								</table>
+							</div>
+							<?php } ?>
+							</td>
+							
+						</tr>
+						<?php  endforeach; ?>
+					</tbody>
+				</table>
 <table width="100%" class="divFooter">
 	<tr>
 		<td align="right">
@@ -70,17 +96,6 @@
 	</tr>
 </table>	
 </div>
-<style>
-.table thead tr th {
-    color: #FFF;
-	background-color: #254b73;
-}
-.padding-right-decrease{
-	padding-right: 0;
-}
-.padding-left-decrease{
-	padding-left: 0;
-}
-</style>
+
  
  
