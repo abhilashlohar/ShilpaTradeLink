@@ -69,7 +69,7 @@
 			</div>
 		
 			<div class="form-actions">
-				<button type="submit" class="btn btn-primary">CREATE JOB CARD</button>
+				<button type="submit" class="btn btn-primary">NEXT</button>
 			</div>
 		<?= $this->Form->end() ?>
 	</div>
