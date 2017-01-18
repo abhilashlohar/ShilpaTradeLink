@@ -1,3 +1,8 @@
+<style>
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+	vertical-align: top !important;
+}
+</style>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -65,7 +70,7 @@
 									<td rowspan="2"><?= h($q) ?></td>
 									<td>
 									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.processed_quantity', ['type' => 'hidden','value'=>@$purchase_order_rows->processed_quantity]);?>	
-									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm select2me','placeholder' => 'Item','value'=>$purchase_order_rows->item_id]); ?></td>
+									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item','value'=>$purchase_order_rows->item_id]); ?></td>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$purchase_order_rows->quantity]); ?></td>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.rate', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01",'value'=>$purchase_order_rows->rate]); ?></td>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value'=>$purchase_order_rows->amount]); ?></td>
@@ -223,16 +228,7 @@
 	background-color: #254b73;
 }
 </style>
-<?php echo $this->Html->css('/drag_drop/jquery-ui.css'); ?>
-<?php echo $this->Html->script('/drag_drop/jquery-1.12.4.js'); ?>
-<?php echo $this->Html->script('/drag_drop/jquery-ui.js'); ?>
 
-<script>
-$( function() {
-$( "#sortable" ).sortable();
-$( "#sortable" ).disableSelection();
-} );
-</script>
 <script>
 $(document).ready(function() {
 	//--------- FORM VALIDATION
@@ -319,25 +315,7 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
-	
-		$('.quantity').die().live("keyup",function() {
-		var asc=$(this).val();
-		var numbers =  /^[0-9]*\.?[0-9]*$/;
-		if(asc==0)
-		{
-			$(this).val('');
-			return false; 
-		}
-		else if(asc.match(numbers))  
-		{  
-		} 
-		else  
-		{  
-			$(this).val('');
-			return false;  
-		}
-	});
-	
+
 	
 	
 		<?php if(empty($purchaseOrder->purchase_order_rows)){ ?>
@@ -468,7 +446,7 @@ $(document).ready(function() {
 	<tbody>
 		<tr class="tr1">
 			<td rowspan="2" width="10">0</td>
-			<td><?php echo $this->Form->input('q', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen']); ?></td>
+			<td><?php echo $this->Form->input('q', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm']); ?></td>
 			<td width="100"><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
 			<td width="130"><?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate']); ?></td>
 			<td width="130"><?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
