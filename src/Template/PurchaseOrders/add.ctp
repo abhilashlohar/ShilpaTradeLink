@@ -173,8 +173,12 @@ With reference to your price list we are pleased to place an order for the follo
 							<label class="control-label">Customer <span class="required" aria-required="true">*</span></label>
 							<?php 
 							foreach($customers as $customer){
+								if(empty($customer->alias)){
+									$merge=$customer->customer_name;
+								}else{
 									$merge=$customer->customer_name.'	('.$customer->alias.')';
-									$option[]=['text' =>$merge, 'value' => $customer->id];
+								}
+								$option[]=['text' =>$merge, 'value' => $customer->id];
 									
 								}
 							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $option,'class' => 'form-control input-sm select2me']); ?>
