@@ -329,7 +329,7 @@ $(document).ready(function() {
 	<thead>
 		<th>S.No</th>
 		<th width="70%">Item</th>
-		<th>Quantity</th>
+		<th>Quantity Per Unit</th>
 		<th width="10%"></th>
 	</thead>
 	<tbody>

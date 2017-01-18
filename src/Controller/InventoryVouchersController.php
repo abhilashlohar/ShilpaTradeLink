@@ -96,6 +96,8 @@ class InventoryVouchersController extends AppController
 						->where(['id' => $inventoryVoucher->job_card_id])
 						->execute();
 						//Insert in Item Ledger//
+					
+					$items_with_rate=[];
 					foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
 						$quantity=0;
 						$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
@@ -109,17 +111,31 @@ class InventoryVouchersController extends AppController
 						$itemLedger->company_id = $st_company_id;
 						$itemLedger->processed_on = date("Y-m-d");
 						$this->InventoryVouchers->ItemLedgers->save($itemLedger);
+						
+						//calculate rate from item ledger if $inventory_voucher_row->item_id
+						$results=$this->InventoryVouchers->ItemLedgers->find()->where(['ItemLedgers.item_id' => $inventory_voucher_row->item_id,'ItemLedgers.in_out' => 'In','company_id' => $st_company_id]); 
+						
+					foreach($results as $result){
+						
+						$items_with_rate[$inventory_voucher_row->sales_order_row_id]=@$items_with_rate[$inventory_voucher_row->sales_order_row_id]+($result->rate*$inventory_voucher_row->quantity);
 					}
+					}
+						
 					
 						//Insert in Item Ledger//
 					foreach($jobCards->sales_order->sales_order_rows as $sales_order_row ){
-						$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();	
+						$amount=$items_with_rate[$sales_order_row->id];
+						$update_rate=$amount/$sales_order_row->quantity;
+						$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
+						//pr($update_rate);
+						/* $results=$this->InventoryVouchers->ItemLedgers->find()->where(['ItemLedgers.item_id' => $sales_order_row->item_id,'ItemLedgers.in_out' => 'In','company_id' => $st_company_id])->toArray(); */ 
+						
 						$itemLedger->item_id=$sales_order_row->item_id;
 						$itemLedger->quantity =$sales_order_row->quantity;
 						$itemLedger->source_model = 'Inventory Voucher';
 						$itemLedger->source_id = $inventoryVoucher->id;
 						$itemLedger->in_out = 'In';
-						$itemLedger->rate = '0.00';
+						$itemLedger->rate = $update_rate;
 						$itemLedger->company_id = $st_company_id;
 						$itemLedger->processed_on = date("Y-m-d");
 						$this->InventoryVouchers->ItemLedgers->save($itemLedger);
@@ -185,30 +201,31 @@ class InventoryVouchersController extends AppController
 						$itemLedger->processed_on = date("Y-m-d");
 						//pr($itemLedger); exit;
 						$this->InventoryVouchers->ItemLedgers->save($itemLedger);
-				
+						$results=$this->InventoryVouchers->ItemLedgers->find()->where(['ItemLedgers.item_id' => $inventory_voucher_row->item_id,'ItemLedgers.in_out' => 'In','company_id' => $st_company_id]); 
+						
+					foreach($results as $result){
+						
+						$items_with_rate[$inventory_voucher_row->sales_order_row_id]=@$items_with_rate[$inventory_voucher_row->sales_order_row_id]+($result->rate*$inventory_voucher_row->quantity);
 					}
+					}
+					
 					foreach($inventoryVoucher->sales_order->sales_order_rows as $sales_order_row ){
-						$rate_in_ledger=0;
-						//pr($sales_order_row->inventory_voucher_rows); exit;
-						foreach($sales_order_row->inventory_voucher_rows as $inventory_voucher_row ){
-							pr($inventory_voucher_row); exit;
-							$rate_in_ledger+=$rate_in_ledger+$inventory_voucher_row->quantity;
-						}
+						$amount=$items_with_rate[$sales_order_row->id];
+						$update_rate=$amount/$sales_order_row->quantity;
+						
 						$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();	
 						$itemLedger->item_id=$sales_order_row->item_id;
 						$itemLedger->quantity =$sales_order_row->quantity;
 						$itemLedger->source_model = 'Inventory Voucher';
 						$itemLedger->source_id = $inventoryVoucher->id;
 						$itemLedger->in_out = 'In';
-						$itemLedger->rate = '0.00';
+						$itemLedger->rate = $update_rate;
 						$itemLedger->company_id = $st_company_id;
 						$itemLedger->processed_on = date("Y-m-d");
 						$this->InventoryVouchers->ItemLedgers->save($itemLedger);
 						
 					} 
-					foreach($inventoryVoucher->sales_order->sales_order_rows as $sales_order_row ){
-						
-					}
+					
 				
                 $this->Flash->success(__('The inventory voucher has been saved.'));
 			

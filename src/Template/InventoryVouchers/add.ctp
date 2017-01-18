@@ -68,7 +68,7 @@
 									<thead>
 										<th>Sr</th>
 										<th width="60%">Item</th>
-										<th>Quantity</th>
+										<th>Quantity Per Unitb3</th>
 										<th width="15%"></th>
 									</thead>
 									<tbody>

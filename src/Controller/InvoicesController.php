@@ -170,7 +170,6 @@ class InvoicesController extends AppController
 				->where(['inventory_voucher'=>'Pending'])
 				->order(['InvoiceRows.id' => 'DESC'])
 			);
-	//pr($invoices); exit;
         $this->set('invoices', $invoices);
         $this->set('_serialize', ['invoice']);
     }
