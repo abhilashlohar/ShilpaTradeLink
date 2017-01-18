@@ -46,7 +46,7 @@ class CustomerGroupsController extends AppController
         $this->set(compact('customerGroup'));
         $this->set('_serialize', ['customerGroup']);
 		
-        $customerGroups = $this->paginate($this->CustomerGroups->find()->where($where));
+        $customerGroups = $this->paginate($this->CustomerGroups->find()->where($where)->order(['CustomerGroups.name' => 'ASC']));
 
         $this->set(compact('customerGroups','status'));
         $this->set('_serialize', ['customerGroups']);

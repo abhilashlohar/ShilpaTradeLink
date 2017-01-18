@@ -36,7 +36,8 @@ class EmployeesController extends AppController
 		if(!empty($department_name)){
 			$where['Departments.name LIKE']='%'.$department_name.'%';
 		}
-		$employees = $this->paginate($this->Employees->find()->where($where));
+		$employees = $this->paginate($this->Employees->find()->where($where)->order(['Employees.name' => 'ASC']));
+
 
         $this->set(compact('employees','status'));
         $this->set('_serialize', ['employees']);

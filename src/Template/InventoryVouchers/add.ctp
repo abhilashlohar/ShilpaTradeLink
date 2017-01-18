@@ -54,6 +54,7 @@
 							<td valign="top" align="center">
 							<?php echo $this->Form->input('sales_order_id', ['empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->id,'type'=>'hidden']); ?>
 							<?php echo $this->Form->input('sales_order_row_quantity', ['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$sales_order_row->quantity]); ?>
+							<?php echo $this->Form->input('sales_order_row_item_id', ['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$sales_order_row->item_id]); ?>
 							
 							<br/><b><?= h($sales_order_row->item->name) ?> ( <?= h($sales_order_row->quantity) ?> )</b>
 							</td>

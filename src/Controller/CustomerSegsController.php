@@ -19,7 +19,7 @@ class CustomerSegsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $customerSegs = $this->paginate($this->CustomerSegs);
+        $customerSegs = $this->paginate($this->CustomerSegs->find()->order(['CustomerSegs.name' => 'ASC']));
 
         $this->set(compact('customerSegs'));
         $this->set('_serialize', ['customerSegs']);
