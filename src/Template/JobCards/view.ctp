@@ -39,12 +39,9 @@
 					<td><?= h($jobCard->dispatch_name) ?></td>
 				</tr>
 				<tr>
-					<td><label style="font-size:105%"><b>Dispatch Email</b></label></td>
-					<td>:</td>
-					<td><?= h($jobCard->dispatch_email) ?></td>
-					<td><label style="font-size:105%"><b>Dispatch Address</b></label></td>
-					<td>:</td>
-					<td><?= h($jobCard->dispatch_address)?></td>
+					<td valign="top"><label style="font-size:105%"><b>Dispatch Destination</b></label></td>
+					<td valign="top">:</td>
+					<td colspan="4"><?= $this->Text->autoParagraph(h($jobCard->dispatch_destination))?></td>
 				</tr>
 				<tr>
 					<td valign="top"><label style="font-size:105%"><b>Packing</b></label></td>
