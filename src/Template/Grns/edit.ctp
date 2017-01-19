@@ -8,7 +8,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Edit GRN</span>
+			<span class="caption-subject font-blue-steel uppercase">Edit Goods Receipt Note</span>
 		
 		</div>
 		

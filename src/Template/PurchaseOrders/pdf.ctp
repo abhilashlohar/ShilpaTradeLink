@@ -137,7 +137,7 @@ $html.='
 		</tr>
 		<tr>
 			<th>S No</th>
-			<th>Item Description</th>
+			<th>Item</th>
 			<th>Unit</th>
 			<th>Quantity</th>
 			<th>Rate</th>
@@ -148,7 +148,7 @@ $sr=0; foreach ($purchaseOrder->purchase_order_rows as $purchase_order_rows): $s
 $html.='
 	<tr class="odd">
 		<td style="padding-top:10px;" valign="top" align="center" width="5%">'. h($sr) .'</td>
-		<td  style="padding-top:10px;" width="100%">'. $this->Text->autoParagraph(h($purchase_order_rows->description)) .
+		<td  style="padding-top:10px;" width="100%">'. h($purchase_order_rows->item->name) .''. $this->Text->autoParagraph(h($purchase_order_rows->description)) .
 		'<div style="height:'.$purchase_order_rows->height.'"></div></td>
 		<td style="padding-top:10px;" valign="top" align="center">'. h($purchase_order_rows->item->unit->name) .'</td>
 		<td style="padding-top:10px;" valign="top" align="center">'. h($purchase_order_rows->quantity) .'</td>

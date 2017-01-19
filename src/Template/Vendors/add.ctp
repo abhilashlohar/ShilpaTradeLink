@@ -2,7 +2,7 @@
 	<div class="portlet-title">
 		<div class="caption" >
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Add Vendor</span>
+			<span class="caption-subject font-blue-steel uppercase">Add Supplier</span>
 		</div>
 	</div>
 	<div class="portlet-body form">

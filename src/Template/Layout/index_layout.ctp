@@ -379,7 +379,7 @@ select
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
-					<span class="title">Vendors</span>
+					<span class="title">Suppliers</span>
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">

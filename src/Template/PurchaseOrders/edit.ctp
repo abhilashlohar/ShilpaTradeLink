@@ -1,3 +1,4 @@
+
 <style>
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
 	vertical-align: top !important;
@@ -124,13 +125,15 @@
 							<label class="control-label">Sale Tax <span class="required" aria-required="true">*</span></label>
 							<?php 
 							$options=[];
-							foreach($SaleTaxes as $SaleTaxe){
-								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
+							
+							foreach($SaleTaxes as $SaleTaxe){ 
+							
+								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->invoice_description];
 							}
 							echo $this->Form->input('sale_tax_per', ['options'=>$options,'label' => false,'class' => 'form-control input-sm select2me','id'=>'saletax']);
 							?>
 							
-							<?php echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm ', 'placeholder'=>'Sale Tax Description']);
+							<?php echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm ', 'placeholder'=>'Sale Tax Description', 'value'=>$purchaseOrder->sale_tax_description]);
 							?>
 							</div>
 							
@@ -146,14 +149,15 @@
 							echo $this->Form->input('delivery',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Delivery']); ?>
 						</div>
 					</div>
-					
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Delivery Date</label>
-								<?php echo $this->Form->input('delivery_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Delivery Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d','value'=>date("d-m-Y",strtotime($purchaseOrder->delivery_date))]); ?>
-								
-							</div>
+							<label class="control-label">Transporter <span class="required" aria-required="true">*</span></label>
+							<?php 
+							echo $this->Form->input('transporter_id',['empty'=>'--Select--','options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
+					</div>
+					
+					
 				</div>
 				</div>
 				
@@ -179,13 +183,7 @@
 							echo $this->Form->input('road_permit_form47',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Road permit form 47']); ?>
 						</div>
 					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Transporter <span class="required" aria-required="true">*</span></label>
-							<?php 
-							echo $this->Form->input('transporter_id',['empty'=>'--Select--','options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me']); ?>
-						</div>
-					</div>
+					
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Customer <span class="required" aria-required="true">*</span></label>
@@ -326,25 +324,7 @@ $(document).ready(function() {
 		add_row();
 		<?php } ?> 
 	
-		$("#saletax").on('click',function(){
-			if($(this).is(':click')){ 
-				$("#pnf_text").show();
-				$('input[name="pnf"]').css('display','block');
-			}else{
-				$("#pnf_text").hide();
-				$('input[name="pnf"]').removeAttr('readonly');
-			}
-		})
-		
-		$("#pnfper").on('click',function(){
-		if($(this).is(':checked')){
-			$("#pnf_text").show();
-			$('input[name="pnf"]').attr('readonly','readonly');
-		}else{
-			$("#pnf_text").hide();
-			$('input[name="pnf"]').removeAttr('readonly');
-		}
-	})
+	
 	
 		$("#discount_per").on('click',function(){
 		if($(this).is(':checked')){
@@ -434,15 +414,17 @@ $(document).ready(function() {
 		$('input[name="total"]').val(total.toFixed(2));
 		
 	}
-	$('select[name=sale_tax_per]').die().live("change",function() {
+	
+	$('select[name=sale_tax_per]').die().live("change",function() { 
 		var description=$('select[name=sale_tax_per] option:selected').attr('description');
+		//alert(description);
 		$('input[name=sale_tax_description]').val(description);
     });
 	
-	$('select[name=sale_tax_per]').die().live("change",function() {
+	/* $('select[name=sale_tax_per]').die().live("change",function() {
 		var description=$('select[name=sale_tax_per] option:selected').attr('description');
 		$('input[name=sale_tax_description]').val(description);
-    });
+    }); */
 });
 </script>
 
