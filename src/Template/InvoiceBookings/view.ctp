@@ -6,6 +6,7 @@
 			<td align="right" width="50%" style="font-size: 12px;">
 			<span style="font-size: 14px;"><?= h($invoiceBooking->company->name) ?></span><br/>
 			<span><?= $this->Text->autoParagraph(h($invoiceBooking->company->address)) ?></span>
+			<span><?= h($invoiceBooking->company->landline_no) ?></span><br/>
 			<span><?= h($invoiceBooking->company->mobile_no) ?></span>
 			</td>
 		</tr>
