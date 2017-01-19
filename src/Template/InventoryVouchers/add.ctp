@@ -18,7 +18,7 @@
 			<div class="form-body">
 
 			<div class="row">
-				<div class="col-md-5">
+				<div class="col-md-4">
 					<div class="form-group">
 						<label class="col-md-5 control-label">Voucher No. </label>
 						<div class="col-md-7">
@@ -36,6 +36,15 @@
 						<div class="col-md-7">
 							
 							<?= h($jobCards->jc1.'/'.str_pad($jobCards->jc2, 3, '0', STR_PAD_LEFT).'/'.$jobCards->jc3.'/'.$jobCards->jc4) ?>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-5 control-label">Customer Name</label>
+						<div class="col-md-7">
+							<?php echo $jobCards->customer->customer_name; ?>
+							
 						</div>
 					</div>
 				</div>
