@@ -114,7 +114,7 @@ class InvoiceBookingsController extends AppController
 				$per_unit_cost=$rate_total/$qty_total;
 				$query1 = $this->InvoiceBookings->Items->query();
 				$query1->update()
-					->set(['minimum_selling_price_factor' => $per_unit_cost])
+					->set(['dynamic_cost' => $per_unit_cost])
 					->where(['id' => $item_id])
 					->execute();
 				$i++;
@@ -203,6 +203,24 @@ class InvoiceBookingsController extends AppController
 				$query->update()
 					->set(['rate' => $rate, 'rate_updated' => 'Yes'])
 					->where(['item_id' => $item_id, 'source_id' => $grn_id, 'source_model'=> 'Grns'])
+					->execute();
+				$results=$this->InvoiceBookings->ItemLedgers->find()->where(['ItemLedgers.item_id' => $item_id,'ItemLedgers.in_out' => 'In','rate_updated' => 'Yes','company_id' => $st_company_id])->toArray(); 
+				
+				$j=0; $qty_total=0; $rate_total=0; $per_unit_cost=0;
+				foreach($results as $result){
+					$qty=$result->quantity;
+					$rate=$result->rate;
+					@$total_amount=$qty*$rate;
+					$rate_total=$rate_total+$total_amount;
+					$qty_total=$qty_total+$qty;
+				$j++;
+				}
+				
+				$per_unit_cost=$rate_total/$qty_total;
+				$query1 = $this->InvoiceBookings->Items->query();
+				$query1->update()
+					->set(['dynamic_cost' => $per_unit_cost])
+					->where(['id' => $item_id])
 					->execute();
 				$i++;
 				}
