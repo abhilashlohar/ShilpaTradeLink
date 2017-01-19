@@ -9,9 +9,7 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Add Job Card</span>
 		</div>
-		<div class="actions">
-		<?php echo $this->Html->link('<i class="fa fa-files-o"></i> Pull Sales-Order','/Sales-Orders/index?job-card=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
-		</div>
+		
 	</div>
 	<?php if(!empty($salesOrder)){ ?>
 	<div class="portlet-body form">
