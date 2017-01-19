@@ -91,6 +91,7 @@ $html = '
   </div>
  
 
+  
   <div id="content"> ';
   
 
@@ -165,10 +166,6 @@ $html.='
 		<td style="padding-top:8px;padding-bottom:5px;" align="right" valign="top">'. $this->Number->format($invoiceRows->amount,[ 'places' => 2]) .'</td>
 	</tr>';
 endforeach; 
-
-
-
-	
 if($invoice->discount_type=='1'){ $discount_text='Discount @ '.$invoice->discount_per.'%'; }else{ $discount_text='Discount'; }
 
 
