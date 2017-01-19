@@ -4,7 +4,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">GRN</span>
+			<span class="caption-subject font-blue-steel uppercase">Goods Receipt Note</span>
 			<?php if($pull_request=="true"){ ?>
 			: Select a GRN to Book Invoice
 			<?php } ?>
@@ -38,7 +38,7 @@
 						<tr>
 							<th>Sr. No.</th>
 							<th>GRN No.</th>
-							<th>Vendor</th>
+							<th>Supplier</th>
 							<th>Date Created</th>
 							<th class="actions"><?= __('Actions') ?></th>
 						</tr>

@@ -8,6 +8,7 @@
  
 	<span style="font-size: 20px;"><?= h($inventoryVoucher->company->name) ?></span><br/>
 	<span style="font-size: 15px;"><?= $this->Text->autoParagraph(h($inventoryVoucher->company->address)) ?></span>
+	<span><?= h($inventoryVoucher->company->landline_no) ?></span><br/>
 	<span><?= h($inventoryVoucher->company->mobile_no) ?></span>
 	</td>
 </tr>

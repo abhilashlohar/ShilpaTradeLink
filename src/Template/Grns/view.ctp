@@ -3,10 +3,11 @@
 <table width="100%" class="divHeader">
 <tr>
 	<td><?php echo $this->Html->image('/logos/'.$grn->company->logo, ['width' => '48%']); ?></td>
-    <td valign="bottom" width="30%" align="center" style="font-size:30px;font-weight: bold;color: #0685a8;">GRN</td>
+    <td valign="bottom" width="30%" align="center" style="font-size:24px;font-weight: bold;color: #0685a8;">Goods Receipt Note</td>
 	<td align="right" width="36%" style="font-size: 14px;"> 
 	<span style="font-size: 20px;"><?= h($grn->company->name) ?></span><br/>
-	<span style="font-size: 15px;"><?= $this->Text->autoParagraph(h($grn->company->address)) ?></span>
+	<span style="font-size: 14px;"><?= $this->Text->autoParagraph(h($grn->company->address)) ?></span>
+	<span><?= h($grn->company->landline_no) ?></span><br/>
 	<span><?= h($grn->company->mobile_no) ?></span>
 	</td>
 </tr>
@@ -18,10 +19,12 @@
 		<td width="50%" valign="top" align="left">
 			<table border="0" width="100%">
 				<tr>
-					<td align="center" width="8%"><label style="font-size: 14px;font-weight: bold;">GRN No</label></td>
-					<td align="center">:<?= h($grn->grn1)?></td>
-					<td align="right" width="76%"<label style="font-size: 14px;font-weight: bold;">Date</label></td>
-					<td align="center">:<?= h(date("d-m-Y",strtotime($grn->date_created))) ?> </td>
+					<td valign="top"><label style="font-size: 14px;font-weight: bold;">GRN No</label></td>
+					<td valign="top" >:<?= h(($grn->grn1.'/GRN-'.str_pad($grn->grn2, 3, '0', STR_PAD_LEFT).'/'.$grn->grn3.'/'.$grn->grn4)) ?></td>
+					<td valign="top"><label style="font-size: 14px;font-weight: bold;">Purchase Order No</label></td>
+					<td valign="top" >:<?= h(($grn->purchase_order->po1.'/PO-'.str_pad($grn->purchase_order->po2, 3, '0', STR_PAD_LEFT).'/'.$grn->purchase_order->po3.'/'.$grn->purchase_order->po4)) ?></td>
+					<td valign="top" ><label style="font-size: 14px;font-weight: bold;">Date</label></td>
+					<td valign="top">:<?= h(date("d-m-Y",strtotime($grn->date_created))) ?> </td>
 				</tr>
 			</table>
 	   </td>
