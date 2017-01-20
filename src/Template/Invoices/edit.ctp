@@ -206,14 +206,20 @@
 			<table class="table tableitm" id="tbl2">
 				<tr>
 					<td  align="right">
-					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
+						<?php 
+						if($invoice->discount_type==1){ $checked2="Checked";
+							 } 
+						else{	$checked2="";
+							 } 
+					?> 
+					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per','Checked'=>$checked2]); ?></label>(in %)</b>
 						
 						<div class="input-group col-md-2" style="display:none;" id="discount_text">
-						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
+						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value="<?php echo $invoice->discount_per; ?> "><span class="input-group-addon">%</span>
 					</div>
 					</td>
 				
-					<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
+					<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01,'value'=>$invoice->discount]); ?></td>
 				</tr>
 				
 				<tr style="background-color:#e6faf9;">
@@ -460,6 +466,18 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+	if($("#discount_per").is(':checked')){
+		
+		
+		$("#discount_text").show();
+		$('input[name="discount"]').attr('readonly','readonly');
+		
+	}else{
+		$("#discount_text").hide();
+		$('input[name="discount"]').removeAttr('readonly');
+		$('input[name="discount_per"]').val(0);
+		$('input[name="discount"]').val(0);
+	}
 
 	$("#main_tb tbody tr.tr1").each(function(){
 		var row_no=$(this).attr('row_no');
