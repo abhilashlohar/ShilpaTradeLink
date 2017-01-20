@@ -8,8 +8,10 @@ $edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Add']);
 		<td valign="top" style="background: #FFF;">
 		<div class="list-group">
 			<a href="<?php echo $list_url; ?>" class="list-group-item"><i class="fa fa-chevron-left"></i> Back to Quotations </a>
+			<?php if($quotation->revision==$revision){ ?>
 			<a  data-toggle="modal" class="list-group-item" href="#myModal2"><i class="fa fa-envelope"></i> Email to Customer </a>
-			<?php if($quotation->status=='Pending'){ ?>
+			<?php } ?>
+			<?php if($quotation->status=='Pending' AND $quotation->revision==$revision){ ?>
 				<div class="btn-group dropup" style=" width: 100%; ">
 					<button type="button" class="list-group-item dropdown-toggle" data-toggle="dropdown" style=" width: 100%; text-align: left; "><i class="fa fa-pencil-square-o" width="100%"></i>Edit</button>
 					<ul class="dropdown-menu" role="menu" style=" margin-left: 50px; margin-bottom:-100px; ">
@@ -25,6 +27,7 @@ $edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Add']);
 			<?php } ?>
 			<a href="#" class="list-group-item" onclick="window.close()"><i class="fa fa-times"></i> Close </a>
 		</div>
+		<?php if($quotation->revision==$revision){ ?>
 		<div style="padding:5px;">
 		<h4>Adjust height of rows</h4>
 		<?= $this->Form->create($quotation) ?>
@@ -33,8 +36,10 @@ $edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Add']);
 				echo $this->Form->input('quotation_rows.'.$quotationRows->id.'.height',['label' => 'Row-'.$sr,'class' => 'input-sm quantity','value'=>$quotationRows->height]);				
 			endforeach; ?>
 			<?= $this->Form->button(__('Update'),['class'=>'btn btn-sm default']) ?>
+		
 		<?= $this->Form->end() ?>
 		</div>
+		<?php } ?>
 		</td>
 		<td width="80%">
 			<object data="<?php echo $pdf_url.'/'.$id; ?>" type="application/pdf" width="100%" height="613px">

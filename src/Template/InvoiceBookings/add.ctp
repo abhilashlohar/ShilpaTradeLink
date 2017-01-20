@@ -72,6 +72,14 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
+							<label class="control-label">Supplier Date. <span class="required" aria-required="true">*</span></label>
+								<?php echo $this->Form->input('supplier_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Supplier Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d']); ?>
+							
+						</div>
+					</div>
+					
+					<div class="col-md-4">
+						<div class="form-group">
 							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('invoice_no', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Invoice NO']); ?>
 							<br/>
