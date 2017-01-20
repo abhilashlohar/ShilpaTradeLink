@@ -9,9 +9,7 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Add Job Card</span>
 		</div>
-		<div class="actions">
-		<?php echo $this->Html->link('<i class="fa fa-files-o"></i> Pull Sales-Order','/Sales-Orders/index?job-card=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
-		</div>
+		
 	</div>
 	<?php if(!empty($salesOrder)){ ?>
 	<div class="portlet-body form">
@@ -20,10 +18,10 @@
 			<div class="form-body">
 
 			<div class="row">
-				<div class="col-md-4">
+				<div class="col-md-5">
 					<div class="form-group">
-						<label class="col-md-5 control-label">Job Card No. </label>
-						<div class="col-md-7">
+						<label class="col-md-4 control-label">Job Card No. </label>
+						<div class="col-md-8">
 						<?php echo $this->Form->input('jc1', ['label' => false,'type'=>'hidden','value'=>$salesOrder->so1]); ?>
 						<?php echo $this->Form->input('jc2', ['label' => false,'type'=>'hidden','value'=>$last_jc_no->jc2]); ?>
 						<?php echo $this->Form->input('jc3', ['label' => false,'type'=>'hidden','value'=>$salesOrder->so3]); ?>
@@ -34,17 +32,16 @@
 				</div>
 				<div class="col-md-4">
 					<div class="form-group">
-						<label class="col-md-5 control-label">Sales Order No</label>
-						<div class="col-md-7">
-							
-							<?= h($salesOrder->so1.'/'.str_pad($salesOrder->so2, 3, '0', STR_PAD_LEFT).'/'.$salesOrder->so3.'/'.$salesOrder->so4) ?>
+						<label class="col-md-3 control-label">SO No</label>
+						<div class="col-md-9">
+						<?= h($salesOrder->so1.'/SO-'.str_pad($salesOrder->so2, 3, '0', STR_PAD_LEFT).'/'.$salesOrder->so3.'/'.$salesOrder->so4) ?>
 							
 						</div>
 					</div>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<div class="form-group">
-						<label class="col-md-5 control-label">Customer Name </label>
+						<label class="col-md-5 control-label"> Customer </label>
 						<div class="col-md-7">
 						<?php echo $this->Form->input('customer_id', ['type'=>'hidden','value' => @$salesOrder->customer_id]); ?>
 						<?php echo $salesOrder->customer->customer_name; ?>
@@ -53,10 +50,10 @@
 				</div>
 			</div><br/>
 			<div class="row">
-				<div class="col-md-4">
+				<div class="col-md-5">
 					<div class="form-group">
-						<label class="col-md-5 control-label">Customer PO No</label>
-						<div class="col-md-7">
+						<label class="col-md-6 control-label">Customer PO No</label>
+						<div class="col-md-6">
 							<?php echo $this->Form->input('customer_po_no', ['type'=>'hidden','value' => @$salesOrder->customer_po_no]); ?>
 							<?php echo $salesOrder->customer_po_no; ?>
 						</div>
@@ -71,32 +68,12 @@
 					</div>
 				</div>
 			</div><br/>
-						<div class="row">
-				<div class="col-md-4">
+			<div class="row">
+				<div class="col-md-12">
 					<div class="form-group">
-						<label class="col-md-5 control-label">Dispatch Name </label>
-						<div class="col-md-7">
-							
-							<?php echo $this->Form->input('dispatch_name', ['type'=>'hidden','value' => @$salesOrder->dispatch_name]); ?>
-							<?php echo $salesOrder->dispatch_name; ?>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="form-group">
-						<label class="col-md-5 control-label">Dispatch Email</label>
-						<div class="col-md-7">
-							<?php echo $this->Form->input('dispatch_email', ['type'=>'hidden','value' => @$salesOrder->dispatch_email]); ?>
-							<?php echo $salesOrder->dispatch_email; ?>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="form-group">
-						<label class="col-md-5 control-label">Dispatch Address</label>
-						<div class="col-md-7">
-							<?php echo $this->Form->input('dispatch_address', ['type'=>'hidden','value' => @$salesOrder->dispatch_address]); ?>
-							<?php echo $salesOrder->dispatch_address; ?>
+						<label class="col-md-2 control-label">Dispatch Destination: <span class="required" aria-required="true">*</span></label>
+						<div class="col-md-10">
+							<?php echo $this->Form->textarea('dispatch_destination', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Dispatch Destination']); ?>
 						</div>
 					</div>
 				</div>
@@ -162,6 +139,9 @@ $(document).ready(function() {
 				packing:{
 					required: true,
 				},
+				dispatch_destination:{
+					required: true,
+				},
 				required_date : {
 					  required: true,
 				},
@@ -172,13 +152,7 @@ $(document).ready(function() {
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
-			membership: {
-				required: "Please select a Membership type"
-			},
-			service: {
-				required: "Please select  at least 2 types of Service",
-				minlength: jQuery.validator.format("Please select  at least {0} types of Service")
-			}
+			
 		},
 
 		errorPlacement: function (error, element) { // render error placement for each input type

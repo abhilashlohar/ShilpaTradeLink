@@ -1,3 +1,4 @@
+
 <?php 
 require_once(ROOT . DS  .'vendor' . DS  . 'dompdf' . DS . 'autoload.inc.php');
 use Dompdf\Dompdf;
@@ -8,10 +9,6 @@ $options->set('defaultFont', 'Lato-Hairline');
 $dompdf = new Dompdf($options);
 
 $dompdf = new Dompdf();
-
-
-
-
 $html = '
 <html>
 <head>
@@ -52,7 +49,7 @@ $html = '
 		border: 0px solid  #000;font-size: 14px;padding:0px; 
 	}
 	.table3 {
-		margin-top:-5px; border-top: 0px solid  #000; 
+		margin-top:-5px; border-top: none; 
 	}
 	
 	.table-amnt td{
@@ -78,7 +75,7 @@ $html = '
 			</tr>
 			<tr>
 				<td width="30%" valign="bottom">
-				<div align="center" style="font-size: 28px;font-weight: bold;color: #0685a8;">PURCHASE ORDER</div>
+				<div align="center" style="font-size: 20px;font-weight: bold;color: #0685a8;">PURCHASE ORDER</div>
 				</td>
 				<td align="right" width="35%" style="font-size: 12px;">
 				<span>'. $this->Text->autoParagraph(h($purchaseOrder->company->address)) .'</span>
@@ -211,29 +208,38 @@ $html .= '	<table width="100%" class="table_rows table3">
     <td valign="top" >Delivery:-'. h(($purchaseOrder->delivery)) .'</td>
 </tr>';
 
- $html .= '
-  <tr>
-		<td style="padding-left:5px;" valign="top">Excise Invoice Required in Favour of Consignee:<br/><br/>
-			 '. h($purchaseOrder->customer->customer_name) .'<br/>
-			'. h($purchaseOrder->customer->customer_address[0]->address) .'<br/>
-			ECC : '. h($purchaseOrder->customer->ecc_no) .'<br/>
-			TIN : '. h($purchaseOrder->customer->tin_no) .'<br/>
-		</td >
-		<td colspan="2" align="right" width="50%">Please confirm that you have registered this order and request you to return back the duplicate copy duly signed in token of having accepted the order.<br/><br/>
-					<div align="center">
-						<span>For <b>'. h($purchaseOrder->company->name) .'</b></span><br/>
-						<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$purchaseOrder->creator->signature.' height="50px" style="height:50px;"/>
-						<br/>
-						<span><b>Authorised Signatory</b></span><br/>
-						<span>'. h($purchaseOrder->creator->name) .'</span><br/>
-						
-					</div>
-				</td>
-	
-	</td>
-  </tr>
-  
-</table>';
+$html.='<tr>
+			<td colspan="3">
+				<table width="100%" class="table2">
+					<tr>
+						<td>
+					<table>
+							<tr>
+								<td>Excise Invoice Required in Favour of Consignee:<br/>
+								'. h($purchaseOrder->customer->customer_name) .'<br/>
+								'. h($purchaseOrder->customer->customer_address[0]->address) .'<br/>
+								ECC : '. h($purchaseOrder->customer->ecc_no) .'<br/>
+								TIN : '. h($purchaseOrder->customer->tin_no) .'<br/></td>
+							</tr>
+					</table>
+						</td>
+						<td colspan="2" align="left" width="50%"><br/>Please confirm that you have registered this order and request you to return back the duplicate copy duly signed in token of having accepted the order.<br/><br/>
+							<div align="center">
+								<span>For <b>'. h($purchaseOrder->company->name) .'</b></span><br/>
+									<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$purchaseOrder->creator->signature.' height="50px" style="height:50px;"/>
+									<br/>
+									<span><b>Authorised Signatory</b></span><br/>
+									<span>'. h($purchaseOrder->creator->name) .'</span><br/>
+									
+							</div>
+						</td>
+			</tr>
+		</table>
+		</td>
+		</tr>
+			
+		</tbody>
+	</table>';
 
 
 

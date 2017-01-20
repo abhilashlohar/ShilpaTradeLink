@@ -104,6 +104,10 @@ class GrnsTable extends Table
             ->requirePresence('grn4', 'create')
             ->notEmpty('grn4');
 
+		$validator
+            ->requirePresence('road_permit_no', 'create')
+            ->notEmpty('road_permit_no');
+			
         $validator
             ->date('created_by')
             ->requirePresence('created_by', 'create')

@@ -5,7 +5,7 @@
 <div class="portlet-title">
 <div class="caption">
     <i class="icon-globe font-blue-steel"></i>
-	<span class="caption-subject font-blue-steel uppercase">Pending Sales Order For Job Cards</span> 
+	<span class="caption-subject font-blue-steel uppercase">Pending Sales Order To Create Job Cards</span> 
 </div>
 <div class="portlet-body">
 	<div class="row">
