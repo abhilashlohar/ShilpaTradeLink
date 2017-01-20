@@ -21,7 +21,7 @@ class QuotationsController extends AppController
 		
 		$url=$this->request->here();
 		$url=parse_url($url,PHP_URL_QUERY);
-		 
+		
 		$copy_request=$this->request->query('copy-request');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');

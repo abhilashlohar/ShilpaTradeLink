@@ -18,7 +18,7 @@ class InvoicesController extends AppController
      *
      * @return \Cake\Network\Response|null
      */
-    public function index()
+    public function index($status=null)
     {
 		$url=$this->request->here();
 		$url=parse_url($url,PHP_URL_QUERY);
@@ -64,12 +64,19 @@ class InvoicesController extends AppController
 		if(!empty($total_To)){
 			$where['total_after_pnf <=']=$total_To;
 		}
+	
         $this->paginate = [
             'contain' => ['Customers', 'Companies']
         ];
+		if($status=='Pending'){
+			$where['status']='';
+		}
+		elseif($status=='Cancel'){
+			$where['status']='Cancel';
+		}
         $invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
 		
-        $this->set(compact('invoices'));
+        $this->set(compact('invoices','status'));
         $this->set('_serialize', ['invoices']);
 		$this->set(compact('url'));
     }
@@ -657,4 +664,26 @@ class InvoicesController extends AppController
 		$Invoices = $this->Invoices->find()->where(['company_id'=>$st_company_id,'customer_id'=>$Customer->id,'due_payment >'=>0]);
 		 $this->set(compact('Invoices','Customer'));
 	}
+	
+	function Cancel($id = null)
+    {
+        $invoice = $this->Invoices->get($id);
+		
+		$invoice->status='Cancel';
+		$sales_order_id=$invoice->sales_order_id;
+		
+		/* $results=$this->Invoices->ItemLedgers->find()->where(['ItemLedgers.source_id' => $id,'source_model' => 'Invoices'])->toArray(); */
+		
+		$this->Invoices->ItemLedgers->deleteAll(['ItemLedgers.source_id' => $id,'source_model' => 'Invoices']);
+		
+		 if ($this->Invoices->save($invoice)) {
+			 
+			 
+            $this->Flash->success(__('The invoice has been Cancel.'));
+        } else {
+            $this->Flash->error(__('The invoice could not be Cancel. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index']);
+    }
 }
