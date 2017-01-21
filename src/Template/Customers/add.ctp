@@ -80,7 +80,7 @@
 							for($q=0; $q<100; $q++){
 								$options[$q]=$q;
 							}
-							echo $this->Form->input('payment_terms', ['options'=>$options,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+							echo $this->Form->input('payment_terms', ['empty' => "--Select --",'options'=>$options,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -183,17 +183,17 @@
 					</div>
 				</div>
 				<h4 style="font-size:13px'">Customer's Contacts</h4>
-				<table class="table table-condensed tableitm" id="main_tb">
+				<table class="table tableitm" id="main_tb">
 					<thead>
 						<tr>
-							<th><label class="control-label">Sr.No.<label></th>
-							<th><label class="control-label">Person<label></th>
-							<th><label class="control-label">Telephone<label></th>
-							<th><label class="control-label">Mobile<label></th>
-							<th><label class="control-label">Email<label></th>
-							<th><label class="control-label">Designation<label></th>
-							<th><label class="control-label">Default<label></th>
-							<th></th>
+							<th>Sr.No.</th>
+							<th>Person</th>
+							<th>Telephone</th>
+							<th>Mobile</th>
+							<th>Email</th>
+							<th>Designation</th>
+							<th>Default</th>
+							<th width="10%"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -202,14 +202,14 @@
 				</table>
 				
 				<h4 style="font-size:13px'">Customer's Address</h4>
-				<table class="table table-condensed tableitm" id="main_tb2">
+				<table class="table tableitm" id="main_tb2">
 					<thead>
 						<tr>
-							<th><label class="control-label">Sr.No.</label></th>
-							<th><label class="control-label">Address<label></th>
-							<th><label class="control-label">District<label></th>
-							<th><label class="control-label">Courier<label></th>
-							<th><label class="control-label">Default<label></th>
+							<th>Sr.No.</th>
+							<th>Address</th>
+							<th>District</th>
+							<th>Courier</th>
+							<th>Default</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -228,6 +228,12 @@
 	</div>
 </div>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<style>
+.table thead tr th  {
+    color: #FFF;
+	background-color: #254b73;
+}
+</style>
 <script>
 $(document).ready(function() {
 	//--------- FORM VALIDATION
@@ -240,6 +246,9 @@ $(document).ready(function() {
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
 			customer_name:{
+				required: true,
+			},
+			alias:{
 				required: true,
 			},
 			district_id : {
