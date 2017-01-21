@@ -188,8 +188,8 @@ $html.='</table>';
 		
 $html .= '	<table width="100%" class="table_rows table3">
   <tr>
-    <td valign="top" rowspan="2" style="text-align:left;">Material To Be Transported:'. h(($purchaseOrder->material_to_be_transported)) .'</td>
-    <td valign="top" rowspan="2" style="text-align:left;">Sale Tax:'. h(($purchaseOrder->sale_tax_per)) .'%'. h(($purchaseOrder->sale_tax_description)) .'</td>
+    <td valign="top" rowspan="2" style="text-align:center;">Material To Be Transported:<br/>'. h(($purchaseOrder->material_to_be_transported)) .'</td>
+    <td valign="top" rowspan="2" style="text-align:center;">Sale Tax:<br/>'. h(($purchaseOrder->sale_tax_per)) .'%'. h(($purchaseOrder->sale_tax_description)) .'</td>
     <td valign="top"> <p>Discount:'. h(($purchaseOrder->discount)) .''. h(($purchaseOrder->discount_type)) .'</p>
     </td>
   </tr>
@@ -197,15 +197,15 @@ $html .= '	<table width="100%" class="table_rows table3">
   <td><p>P & F	:'. h(($purchaseOrder->pnf)) .''. h(($purchaseOrder->pnf_type)) .'</p></td>
   </tr>
   <tr>
-    <td valign="top" style="text-align:left;">LR To Be Prepared In Favour Of:'. h(($purchaseOrder->lr_to_be_prepared_in_favour_of)) .'</td>
-    <td valign="top" style="text-align:left;">Payment Terms:'. h(($purchaseOrder->payment_terms)) .'</td>
-    <td valign="top">Excise Duty	:'. h(($purchaseOrder->excise_duty)) .'</td>
+    <td valign="top" style="text-align:center;">LR To Be Prepared In Favour Of:<br/>'. h(($purchaseOrder->lr_to_be_prepared_in_favour_of)) .'</td>
+    <td valign="top" style="text-align:center;">Payment Terms:<br/>'. h(($purchaseOrder->payment_terms)) .'</td>
+    <td valign="top">Excise Duty:'. h(($purchaseOrder->excise_duty)) .'</td>
    
   </tr>
   <tr>
-    <td valign="top" style="text-align:left;">Road Permit Form:'. h(($purchaseOrder->road_permit_form47)) .'</td>
-    <td valign="top" style="text-align:left;">Transporter Name:'. h(($purchaseOrder->transporter->transporter_name)) .'</td>
-    <td valign="top" >Delivery:-'. h(($purchaseOrder->delivery)) .'</td>
+    <td valign="top" style="text-align:center;">Road Permit Form:<br/>'. h(($purchaseOrder->road_permit_form47)) .'</td>
+    <td valign="top" style="text-align:center;">Transporter Name:<br/>'. h(($purchaseOrder->transporter->transporter_name)) .'</td>
+    <td valign="top" >Delivery:-<br/>'. h(($purchaseOrder->delivery)) .'</td>
 </tr>';
 
 $html.='<tr>
