@@ -459,7 +459,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			$(this).find("td:nth-child(2) input").attr({name:"customer_contacts["+i+"][contact_person]", id:"customer_contacts-"+i+"-contact_person"}).rules('add', {
 						required: true,
 						lettersonly: true,
-					});
+			});
 			$(this).find("td:nth-child(3) input").attr({name:"customer_contacts["+i+"][telephone]", id:"customer_contacts-"+i+"-customer_contacts"}).rules('add', {
 						required: true,
 						number: true,
