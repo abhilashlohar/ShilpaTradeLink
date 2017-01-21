@@ -13,7 +13,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Company Group <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('company_group_id', ['options' => $companyGroups,'label' => false,'class' => 'form-control input-sm','placeholder'=>'company_group_id']); ?>
+							<?php echo $this->Form->input('company_group_id', ['options' => $companyGroups,'label' => false,'class' => 'form-control input-sm ','placeholder'=>'company_group_id']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -120,17 +120,22 @@
 						</div>
 					</div>
 				</div>
-				
-				<h4 style="font-size:13px'">Bank Details</h4>
-				<table class="table table-condensed tableitm" id="main_tb">
+				<div class="portlet-title">
+					<div class="caption" >
+						<i class="icon-globe font-blue-steel"></i>
+						<span class="caption-subject font-blue-steel uppercase">Bank Details</span>
+					</div>
+				</div><br/>
+				<table class="table  tableitm" id="main_tb">
 					<thead>
 						<tr>
-							<th><label class="control-label">Sr.No.<label></th>
-							<th><label class="control-label">BANK NAME<label></th>
-							<th><label class="control-label">BRANCH<label></th>
-							<th><label class="control-label">ACCOUNT NO<label></th>
-							<th><label class="control-label">IFSC CODE<label></th>
-							<th><label class="control-label">DEFAULT<label></th>
+							<th>Sr.No.</th>
+							<th>BANK NAME</th>
+							<th>BRANCH</th>
+							<th>ACCOUNT NO</th>
+							<th>IFSC CODE</th>
+							<th>DEFAULT</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -148,6 +153,12 @@
 		<!-- END FORM-->
 	</div>
 </div>
+<style>
+.table thead tr th {
+    color: #FFF;
+	background-color: #254b73;
+}
+</style>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
@@ -271,13 +282,16 @@ $(document).ready(function() {
 			return false;  
 		}
 	});
-
+	 
 	
+	 
     $('.addrow').die().live("click",function() {
 		add_row();
     });
+	add_row();
 	
-	add_row(); $('.default_btn:first').attr('checked','checked'); $.uniform.update();
+	$('.default_btn:first').attr('checked','checked'); 
+	$.uniform.update();
 	
 	$('.default_btn').die().live("click",function() { 
 		$('.default_btn').removeAttr('checked');
