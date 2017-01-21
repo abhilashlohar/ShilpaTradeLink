@@ -77,7 +77,7 @@ $this->Form->templates([
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Landline No</label>
+							<label class="control-label">Landline No<span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('landline_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Landline No']); ?>
 						</div>
 					</div>
@@ -158,7 +158,7 @@ $this->Form->templates([
 						<td><?= h($i) ?></td>
 						<td><?php echo $this->Form->input('company_banks.'.$i.'.bank_name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Bank Name','value'=>$company_bank->bank_name]); ?></td>
 						<td><?php echo $this->Form->input('company_banks.'.$i.'.branch', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Branch','value'=>$company_bank->branch]); ?></td>
-						<td><?php echo $this->Form->input('company_banks.'.$i.'.account_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Account No','value'=>$company_bank->account_no]); ?></td>
+						<td><?php echo $this->Form->input('company_banks.'.$i.'.account_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Account No','value'=>$company_bank->account_no,'maxlength'=>20]); ?></td>
 						<td><?php echo $this->Form->input('company_banks.'.$i.'.ifsc_code', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'IFSC Code','value'=>$company_bank->ifsc_code]); ?></td>
 						<td width="90"><?php echo $this->Form->input('company_banks.'.$i.'.default_bank', ['type'=>'checkbox','label' => false,'class' => 'form-control default_btn','checked'=>$checked]); ?></td>
 						<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
@@ -336,8 +336,14 @@ $(document).ready(function() {
 		var i=1;
 		$("#main_tb tbody tr").each(function(){
 			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) input").attr({name:"company_banks["+i+"][bank_name]", id:"company_banks-"+i+"-bank_name"}).rules("add", "required");
-			$(this).find("td:nth-child(3) input").attr({name:"company_banks["+i+"][branch]", id:"company_banks-"+i+"-branch"}).rules("add", "required");
+			$(this).find("td:nth-child(2) input").attr({name:"company_banks["+i+"][bank_name]", id:"company_banks-"+i+"-bank_name"}).rules('add', {
+						required: true,
+						lettersonly: true,
+			});
+			$(this).find("td:nth-child(3) input").attr({name:"company_banks["+i+"][branch]", id:"company_banks-"+i+"-branch"}).rules('add', {
+						required: true,
+						lettersonly: true,
+			});
 			$(this).find("td:nth-child(4) input").attr({name:"company_banks["+i+"][account_no]", id:"company_banks-"+i+"-account_no"}).rules('add', {
 						required: true,
 						integer: true,
@@ -362,7 +368,7 @@ $(document).ready(function() {
 			<td>0</td>
 			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Bank Name']); ?></td>
 			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Branch']); ?></td>
-			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Account No']); ?></td>
+			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Account No','maxlength'=>20]); ?></td>
 			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'IFSC Code']); ?></td>
 			<td width="90"><?php echo $this->Form->input('q', ['type'=>'checkbox','label' => false,'class' => 'form-control default_btn','value'=>1]); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
