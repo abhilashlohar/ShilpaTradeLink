@@ -79,7 +79,7 @@
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Dynamic Cost</label>
-							<?php echo $this->Form->input('dynamic_cost', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity']); ?>
+							<?php echo $this->Form->input('dynamic_cost', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity']); ?>
 						</div>
 					</div>
 					<div class="col-md-3">

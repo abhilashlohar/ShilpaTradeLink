@@ -144,6 +144,7 @@ $html.='
 			Your Purchase Order No.'. h($invoice->customer_po_no) .' dated '. h(date("d-m-Y",strtotime($invoice->po_date))) .'
 			</td>
 		</tr>
+		<thead>
 		<tr>
 			<th>S No</th>
 			<th>Item Description</th>
@@ -152,6 +153,8 @@ $html.='
 			<th>Rate</th>
 			<th>Amount</th>
 		</tr>
+		</thead>
+		<tbody>
 ';
 
 $sr=0; foreach ($invoice->invoice_rows as $invoiceRows): $sr++; 
@@ -166,7 +169,7 @@ $html.='
 	</tr>';
 endforeach; 
 
-
+	$html.='<tbody>';
 
 	
 if($invoice->discount_type=='1'){ $discount_text='Discount @ '.$invoice->discount_per.'%'; }else{ $discount_text='Discount'; }
