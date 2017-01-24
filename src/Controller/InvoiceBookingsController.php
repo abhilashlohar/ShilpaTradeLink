@@ -25,7 +25,7 @@ class InvoiceBookingsController extends AppController
             'contain' => ['Grns']
         ];
 		
-		$invoiceBookings = $this->paginate($this->InvoiceBookings->find()->where(['InvoiceBookings.company_id'=>$st_company_id]));
+		$invoiceBookings = $this->paginate($this->InvoiceBookings->find()->where(['InvoiceBookings.company_id'=>$st_company_id])->order(['InvoiceBookings.id' => 'DESC']));
 
         $this->set(compact('invoiceBookings','status'));
         $this->set('_serialize', ['invoiceBookings']);
@@ -94,6 +94,7 @@ class InvoiceBookingsController extends AppController
 			$invoiceBooking->grn_id=$grn_id; 
 			$invoiceBooking->created_on=date("Y-m-d");
 			$invoiceBooking->company_id=$st_company_id;
+			$invoiceBooking->supplier_date=date("Y-m-d",strtotime($invoiceBooking->supplier_date)); 
 			$invoiceBooking->created_by=$this->viewVars['s_employee_id'];
 			$invoiceBooking->due_payment=$invoiceBooking->total;
 			//pr($invoiceBooking); exit;
@@ -187,7 +188,9 @@ class InvoiceBookingsController extends AppController
      */
     public function edit($id = null)
     {
-	 $this->viewBuilder()->layout('index_layout');
+	$this->viewBuilder()->layout('index_layout');
+	$session = $this->request->session();
+	$st_company_id = $session->read('st_company_id');
         $invoiceBooking = $this->InvoiceBookings->get($id, [
             'contain' => ['InvoiceBookingRows' => ['Items'],'Grns'=>['Companies','Vendors','GrnRows'=>['Items'],'PurchaseOrders'=>['PurchaseOrderRows']]]
         ]);
@@ -195,7 +198,10 @@ class InvoiceBookingsController extends AppController
 		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $invoiceBooking = $this->InvoiceBookings->patchEntity($invoiceBooking, $this->request->data);
+			$invoiceBooking->supplier_date=date("Y-m-d",strtotime($invoiceBooking->supplier_date)); 
+
             if ($this->InvoiceBookings->save($invoiceBooking)) {
+				
 				$invoiceBookingId=$invoiceBooking->id;
 				$grn_id=$invoiceBooking->grn_id;
 				
@@ -216,7 +222,6 @@ class InvoiceBookingsController extends AppController
 					->where(['item_id' => $item_id, 'source_id' => $grn_id, 'source_model'=> 'Grns'])
 					->execute();
 				$results=$this->InvoiceBookings->ItemLedgers->find()->where(['ItemLedgers.item_id' => $item_id,'ItemLedgers.in_out' => 'In','rate_updated' => 'Yes','company_id' => $st_company_id])->toArray(); 
-				
 				$j=0; $qty_total=0; $rate_total=0; $per_unit_cost=0;
 				foreach($results as $result){
 					$qty=$result->quantity;
