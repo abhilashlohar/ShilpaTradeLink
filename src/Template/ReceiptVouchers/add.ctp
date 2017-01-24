@@ -293,10 +293,8 @@ $(document).ready(function() {
 		}
 	});
 	
-	<?php //if(){ ?>
 	$('select[name="received_from_id"]').die().live("change",function() {
 		var received_from_id=$(this).find('option:selected').val();
-		alert(received_from_id);
 		
 		$("#pending_invpice_container").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 		var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'DueInvoicesForReceipt']); ?>";
@@ -335,7 +333,6 @@ $(document).ready(function() {
 			$('input[name="total_adjusted_amount"]').val(sum.toFixed(2));	
 		
 	}
-	<?php //} ?>
 	$('input[name="payment_mode"]').die().live("click",function() {
 		var payment_mode=$(this).val();
 		

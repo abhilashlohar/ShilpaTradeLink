@@ -664,7 +664,7 @@ class InvoicesController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
-		$Customer=$this->Invoices->Customers->find()->where(['ledger_account_id'=>$received_from_id,'bill_to_bill_account'=>'Yes'])->first();
+		$Customer=$this->Invoices->Customers->find()->where(['ledger_account_id'=>$received_from_id])->first();
 		if(!$Customer){ echo 'Select received from.'; exit; }
 		$Invoices = $this->Invoices->find()->where(['company_id'=>$st_company_id,'customer_id'=>$Customer->id,'due_payment >'=>0]);
 		 $this->set(compact('Invoices','Customer'));

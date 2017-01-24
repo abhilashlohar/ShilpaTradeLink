@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 16, 2017 at 07:07 AM
+-- Generation Time: Dec 24, 2016 at 10:19 AM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -29,7 +29,6 @@ SET time_zone = "+00:00";
 CREATE TABLE `inventory_voucher_rows` (
   `id` int(10) NOT NULL,
   `inventory_voucher_id` int(10) NOT NULL,
-  `sales_order_row_id` int(11) NOT NULL,
   `item_id` int(10) NOT NULL,
   `quantity` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -38,21 +37,10 @@ CREATE TABLE `inventory_voucher_rows` (
 -- Dumping data for table `inventory_voucher_rows`
 --
 
-INSERT INTO `inventory_voucher_rows` (`id`, `inventory_voucher_id`, `sales_order_row_id`, `item_id`, `quantity`) VALUES
-(64, 15, 2, 70, 4),
-(65, 15, 2, 39, 4),
-(66, 15, 3, 43, 2),
-(67, 15, 3, 60, 6),
-(68, 16, 5, 42, 6),
-(69, 16, 6, 39, 2),
-(70, 16, 6, 54, 4),
-(71, 16, 0, 59, 3),
-(72, 17, 2, 70, 4),
-(73, 17, 2, 39, 4),
-(74, 17, 2, 54, 3),
-(75, 17, 3, 43, 2),
-(76, 17, 3, 60, 6),
-(77, 17, 3, 40, 5);
+INSERT INTO `inventory_voucher_rows` (`id`, `inventory_voucher_id`, `item_id`, `quantity`) VALUES
+(11, 8, 39, 11),
+(12, 8, 42, 21),
+(13, 9, 41, 651);
 
 --
 -- Indexes for dumped tables
@@ -72,7 +60,7 @@ ALTER TABLE `inventory_voucher_rows`
 -- AUTO_INCREMENT for table `inventory_voucher_rows`
 --
 ALTER TABLE `inventory_voucher_rows`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
