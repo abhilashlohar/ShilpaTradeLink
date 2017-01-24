@@ -124,6 +124,24 @@
 							<?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Bill to Bill Account<span class="required" aria-required="true">*</span></label>
+							<div class="radio-list">
+								<div class="radio-inline">
+								<?php echo $this->Form->radio(
+									'mode_of_payment',
+									[
+										['value' => 'Cheque', 'text' => 'Cheque'],
+										['value' => 'NEFT', 'text' => 'NEFT']
+										
+									]
+								); ?>
+								</div>
+                               
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-4">
