@@ -88,8 +88,9 @@
 							<tr class="tr1" row_no='<?php echo @$purchase_order_rows->id; ?>'>
 								<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 								<td>
-									<?php echo $this->Form->input('q', ['type' => 'hidden','value'=>@$purchase_order_rows->item_id]); 
-									echo $purchase_order_rows->item->name;
+									<?php echo $this->Form->input('q', ['type' => 'hidden','value'=>@$purchase_order_rows->item_id]);
+									 echo $this->Form->input('q', ['type' => 'text','value'=>@$purchase_order_rows->item->serial_number_enable]);
+									 echo $purchase_order_rows->item->name;
 									?>								
 								</td>
 									
@@ -109,6 +110,9 @@
 									<?php echo $this->Text->autoParagraph(h($purchase_order_rows->description)); ?>
 								</td>
 								<td></td>
+							</tr>
+							<tr class="tr3" row_no='<?php echo @$purchase_order_rows->id; ?>'>
+								
 							</tr>
 						<?php $q++; endforeach; }?>
 					</tbody>
@@ -244,12 +248,22 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
 			var val=$(this).find('td:nth-child(4) input[type="checkbox"]:checked').val();
+			var serial_number_enable=$(this).find('td:nth-child(2) input[type="text"]:nth-child(2)').val();
+			
 			if(val){
+				if(serial_number_enable==1){
+					var tr1=$("#sample_tb tbody tr.tr1").clone();
+					$("#main_tb tbody tr.tr3").append(tr1);
+					$(this).css('background-color','#fffcda');
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
+				
+				}else{
 				$(this).find('td:nth-child(2) input').attr({ name:"grn_rows["+val+"][item_id]"});
 				$(this).find('td:nth-child(3) input').attr({ name:"grn_rows["+val+"][quantity]", id:"grn_rows-"+val+"-quantity"}).removeAttr('readonly');
 				
 				$(this).css('background-color','#fffcda');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
+				}
 			}else{
 				$(this).find('td:nth-child(2) input').attr({ name:"q"});
 				$(this).find('td:nth-child(3) input').attr({ name:"q", id:"q",readonly:"readonly"});
@@ -259,5 +273,17 @@ $(document).ready(function() {
 			}
 		});
 	}
+	
+	
 });		
 </script>
+<table id="sample_tb" style="display:none;">
+	<tbody>	
+			<tr class="tr1">
+					
+					<td width="100"><?php echo $this->Form->input('unit[]', ['type' => 'type','label' => false,'class' => 'form-control input-sm','placeholder' => 'Serial Number']); ?></td>
+								
+		</tr>
+			
+	</tbody>
+</table>
