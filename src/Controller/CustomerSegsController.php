@@ -56,7 +56,8 @@ class CustomerSegsController extends AppController
 			$this->request->data["flag"]=0;
             $customerSeg = $this->CustomerSegs->patchEntity($customerSeg, $this->request->data);
             if ($this->CustomerSegs->save($customerSeg)) {
-                $this->Flash->success(__('The Customer Segment has been saved.'));
+				$name=$customerSeg->name;
+                $this->Flash->success(__('The Customer Segment '.$name.' has been saved.'));
 
                return $this->redirect('/customer-segs');
             } else {
