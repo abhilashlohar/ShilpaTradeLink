@@ -96,6 +96,8 @@ class PaymentVouchersController extends AppController
 				
 				//Ledger posting for paidto
 				$ledger = $this->PaymentVouchers->Ledgers->newEntity();
+				
+			    $ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $paymentVoucher->paid_to_id;
 				$ledger->debit = $paymentVoucher->amount;
 				$ledger->credit = 0;
@@ -106,6 +108,7 @@ class PaymentVouchersController extends AppController
 				
 				//Ledger posting for bankcash
 				$ledger = $this->PaymentVouchers->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $paymentVoucher->cash_bank_account_id;
 				$ledger->debit = 0;
 				$ledger->credit = $paymentVoucher->amount;;
@@ -213,6 +216,7 @@ class PaymentVouchersController extends AppController
 				
 					$this->PaymentVouchers->Ledgers->deleteAll(['voucher_id' => $paymentVoucher->id, 'voucher_source' => 'Payment Voucher']);
 					$ledger = $this->PaymentVouchers->Ledgers->newEntity();
+					$ledger->company_id=$st_company_id;
 					$ledger->ledger_account_id = $paymentVoucher->paid_to_id;
 					$ledger->debit = $paymentVoucher->amount;
 					$ledger->credit = 0;
@@ -223,6 +227,7 @@ class PaymentVouchersController extends AppController
 					
 					//Ledger posting for bankcash
 					$ledger = $this->PaymentVouchers->Ledgers->newEntity();
+					$ledger->company_id=$st_company_id;
 					$ledger->ledger_account_id = $paymentVoucher->cash_bank_account_id;
 					$ledger->debit = 0;
 					$ledger->credit = $paymentVoucher->amount;;

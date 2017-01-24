@@ -135,7 +135,10 @@ class CustomersTable extends Table
             ->requirePresence('customer_name', 'create')
             ->notEmpty('customer_name');
 
-
+		$validator
+            ->requirePresence('alias', 'create')
+            ->notEmpty('customer_name');
+		
 		$validator->add(
 				'customer_name', 
 				['unique' => [

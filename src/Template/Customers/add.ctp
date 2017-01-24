@@ -13,13 +13,13 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Customer Name <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('customer_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Customer Name']); ?>
+							<?php echo $this->Form->input('customer_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Enter Customer Name']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Alias </label>
-							<?php echo $this->Form->input('alias', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Alias']); ?>
+							<label class="control-label">Alias <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('alias', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Enter Customer Alias']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -34,19 +34,19 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Customer Seg <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('customer_seg_id', ['empty' => "--Select Segment --",'options' => $customerSegs,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Customer Seg']); ?>
+							<?php echo $this->Form->input('customer_seg_id', ['empty' => "--Select Segment --",'options' => $customerSegs,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Tin No</label>
-							<?php echo $this->Form->input('tin_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Tin No']); ?>
+							<?php echo $this->Form->input('tin_no', ['label' => false,'class' => 'form-control input-sm nospace']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Gst No </label>
-							<?php echo $this->Form->input('gst_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Gst No']); ?>
+							<?php echo $this->Form->input('gst_no', ['label' => false,'class' => 'form-control input-sm nospace']); ?>
 						</div>
 					</div>
 				</div>
@@ -55,13 +55,13 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Pan No </label>
-							<?php echo $this->Form->input('pan_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Pan No']); ?>
+							<?php echo $this->Form->input('pan_no', ['label' => false,'class' => 'form-control input-sm nospace']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Ecc No</label>
-							<?php echo $this->Form->input('ecc_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Ecc No']); ?>
+							<?php echo $this->Form->input('ecc_no', ['label' => false,'class' => 'form-control input-sm nospace']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -80,7 +80,9 @@
 							for($q=0; $q<100; $q++){
 								$options[$q]=$q;
 							}
-							echo $this->Form->input('payment_terms', ['empty' => "--Select --",'options'=>$options,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+
+							echo $this->Form->input('payment_terms', ['options'=>$options,'label' => false,'class' => 'form-control input-sm select2me','empty' => "--Select No. of Days--",]); ?>
+
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -113,13 +115,13 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Credit Limit</label>
-							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Credit Limit']); ?>
+							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Enter Credit Limit']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Transporter</label>
-							<?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Transporter']); ?>
+							<?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 				</div>
@@ -159,7 +161,7 @@
 						<div class="form-group">
 						<label class="control-label">Account Group <span class="required" aria-required="true">*</span></label>
 							<div id="account_group_div">
-							<?php echo $this->Form->input('account_group_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account Group']); ?>
+							<?php echo $this->Form->input('account_group_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','empty' => "--Select Account Group--"]); ?>
 							</div>
 						</div>
 					</div>
@@ -167,7 +169,7 @@
 						<div class="form-group">
 						<label class="control-label">Account First Sub Group <span class="required" aria-required="true">*</span></label>
 							<div id="account_first_subgroup_div">
-							<?php echo $this->Form->input('account_first_subgroup_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account First Sub Group']); ?>
+							<?php echo $this->Form->input('account_first_subgroup_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','empty' => "--Select Account First Sub Group--"]); ?>
 							</div>
 						</div>
 					</div>
@@ -177,7 +179,7 @@
 						<div class="form-group">
 							<label class="control-label">Account Second Sub Group <span class="required" aria-required="true">*</span></label>
 							<div id="account_second_subgroup_div">
-							<?php echo $this->Form->input('account_second_subgroup_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account Second Sub Group']); ?>
+							<?php echo $this->Form->input('account_second_subgroup_id', ['options' => [],'label' => false,'class' => 'form-control input-sm select2me','empty' => "--Select Account Second Sub Group--"]); ?>
 							</div>
 						</div>
 					</div>
@@ -234,6 +236,9 @@
 	background-color: #254b73;
 }
 </style>
+
+
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
 	//--------- FORM VALIDATION
@@ -247,9 +252,7 @@ $(document).ready(function() {
 		rules: {
 			customer_name:{
 				required: true,
-			},
-			alias:{
-				required: true,
+				lettersonly: true,
 			},
 			district_id : {
 				  required: true,
@@ -278,8 +281,7 @@ $(document).ready(function() {
 			},
 			account_second_subgroup_id:{
 				  required: true,
-			},
-			
+			}
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
@@ -313,7 +315,7 @@ $(document).ready(function() {
 		invalidHandler: function (event, validator) { //display error alert on form submit   
 			success3.hide();
 			error3.show();
-			Metronic.scrollTo(error3, -200);
+			//Metronic.scrollTo(error3, -200);
 		},
 
 		highlight: function (element) { // hightlight error inputs
@@ -397,15 +399,12 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 	});
 });	
 	
-	
-	add_row(); 
-	$('.default_btn2:first').attr('checked','checked'); $.uniform.update();
 	$('.default_btn2').die().live("click",function() { 
 		$('.default_btn2').removeAttr('checked');
 		$(this).attr('checked','checked');
 		$.uniform.update();
     });
-	
+	add_row();
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
@@ -428,13 +427,12 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		
 	}
 	
-	add_row2(); $('.default_btn:first').attr('checked','checked'); $.uniform.update();
 	$('.default_btn').die().live("click",function() { 
 		$('.default_btn').removeAttr('checked');
 		$(this).attr('checked','checked');
 		$.uniform.update();
     });
-	
+	add_row2();
     $('.addrow2').die().live("click",function() { 
 		add_row2();
     });
@@ -455,7 +453,6 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		var tr=$("#sample_tb2 tbody tr").clone();
 		$("#main_tb2 tbody").append(tr);
 		rename_rows2();
-		
 	}
 	
 	function rename_rows(){
@@ -464,7 +461,10 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		$("#main_tb tbody tr").each(function(){
 			
 			$(this).find("td:nth-child(1)").html(++i); --i;
-			$(this).find("td:nth-child(2) input").attr({name:"customer_contacts["+i+"][contact_person]", id:"customer_contacts-"+i+"-contact_person"}).rules("add", "required");
+			$(this).find("td:nth-child(2) input").attr({name:"customer_contacts["+i+"][contact_person]", id:"customer_contacts-"+i+"-contact_person"}).rules('add', {
+						required: true,
+						lettersonly: true,
+			});
 			$(this).find("td:nth-child(3) input").attr({name:"customer_contacts["+i+"][telephone]", id:"customer_contacts-"+i+"-customer_contacts"}).rules('add', {
 						required: true,
 						number: true,
@@ -477,7 +477,11 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 						maxlength:10
 					});
 			$(this).find("td:nth-child(5) input").attr({name:"customer_contacts["+i+"][email]", id:"customer_contacts-"+i+"-email"}).rules("add", "required");
-			$(this).find("td:nth-child(6) input").attr({name:"customer_contacts["+i+"][designation]", id:"customer_contacts-"+i+"-designation"}).rules("add", "required");
+			$(this).find("td:nth-child(6) input").attr({name:"customer_contacts["+i+"][designation]", id:"customer_contacts-"+i+"-designation"}).rules('add', {
+						required: true,
+						lettersonly: true,
+			});
+			
 			$(this).find("td:nth-child(7) input").attr({name:"customer_contacts["+i+"][default_contact]", id:"customer_contacts-"+i+"-default_contact"});
 			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
 			if (test) { test.uniform(); }
@@ -503,7 +507,6 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 	
 });
 </script>
-
 <table id="sample_tb" style="display:none;">
 	<tbody>
 		<tr>
@@ -524,11 +527,10 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		<tr>
 			<td>0</td>
 			<td><?php echo $this->Form->input('address', ['label' => false,'type' => 'textarea','rows' => '2','style' => ['resize:none'],'class' => 'form-control input-sm','placeholder' => 'Address']); ?></td>
-			<td><?php echo $this->Form->input('district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm ']); ?></td>
-			<td><?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Courier Charge select2me']); ?></td>
+			<td><?php echo $this->Form->input('district_id', ['options' => $districts,'label' => false,'class' => 'form-control input-sm']); ?></td>
+			<td><?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Courier Charge']); ?></td>
 			<td width="90"><?php echo $this->Form->input('default_address', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn','value'=>1]); ?></td>
 			<td><a class="btn btn-xs btn-default addrow2" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow2" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 	</tbody>
 </table>
-

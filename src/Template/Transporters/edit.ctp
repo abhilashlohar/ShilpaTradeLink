@@ -9,7 +9,7 @@
 		<!-- BEGIN FORM-->
 		<div class="row ">
 		<div class="col-md-12">
-		 <?= $this->Form->create($transporter,array("class"=>"form-horizontal")) ?>
+		 <?= $this->Form->create($transporter,array("class"=>"form-horizontal",'id'=>'form_sample_3')) ?>
 			<div class="form-body">
 				<div class="form-group">
 					<label class="control-label col-md-3">Transporter Name  <span class="required" aria-required="true">
@@ -70,6 +70,10 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
+			transporter_name:{
+				required: true,
+				lettersonly: true,
+			},
 			mobile:{
 				required: true,
 				digits: true,

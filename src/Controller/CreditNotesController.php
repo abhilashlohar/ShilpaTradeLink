@@ -79,6 +79,7 @@ class CreditNotesController extends AppController
 			
 			if ($this->CreditNotes->save($creditNote)) {
 				$ledger = $this->CreditNotes->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $creditNote->purchase_acc_id;
 				$ledger->debit = 0;
 				$ledger->credit = $creditNote->amount;
@@ -88,6 +89,7 @@ class CreditNotesController extends AppController
 				$this->CreditNotes->Ledgers->save($ledger);
 				//Ledger posting for bankcash
 				$ledger = $this->CreditNotes->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $creditNote->party_id;
 				$ledger->debit =  $creditNote->amount;
 				$ledger->credit = 0;
@@ -164,6 +166,7 @@ class CreditNotesController extends AppController
 				$this->CreditNotes->Ledgers->deleteAll(['voucher_id' => $creditNote->id, 'voucher_source' => 'Credit Note']);
 				
 				$ledger = $this->CreditNotes->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $creditNote->purchase_acc_id;
 				$ledger->debit = 0;
 				$ledger->credit = $creditNote->amount;
@@ -173,6 +176,7 @@ class CreditNotesController extends AppController
 				$this->CreditNotes->Ledgers->save($ledger);
 				//Ledger posting for bankcash
 				$ledger = $this->CreditNotes->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $creditNote->party_id;
 				$ledger->debit =  $creditNote->amount;
 				$ledger->credit = 0;

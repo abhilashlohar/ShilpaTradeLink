@@ -24,13 +24,13 @@ $this->Form->templates([
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Name <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
+							<?php echo $this->Form->input('name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Enter Company Name']); ?>
 						</div>
 					</div>
-					<div class="col-md-2">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Alias <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('alias', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Alias']); ?>
+							<?php echo $this->Form->input('alias', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Enter Company Alias']); ?>
 						</div>
 					</div>
 				</div>
@@ -39,31 +39,31 @@ $this->Form->templates([
 					<div class="col-md-2">
 						<div class="form-group">
 							<label class="control-label">Pan No</label>
-							<?php echo $this->Form->input('pan_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Pan No']); ?>
+							<?php echo $this->Form->input('pan_no', ['label' => false,'class' => 'form-control input-sm nospace']); ?>
 						</div>
 					</div>
 					<div class="col-md-2">
-						<div class="form-group">
+						<div class="orm-group">
 							<label class="control-label">Tin No</label>
-							<?php echo $this->Form->input('tin_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Tin No']); ?>
+							<?php echo $this->Form->input('tin_no', ['label' => false,'class' => 'form-control input-sm nospace']); ?>
 						</div>
 					</div>
 					<div class="col-md-2">
 						<div class="form-group">
 							<label class="control-label">Tan No</label>
-							<?php echo $this->Form->input('tan_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Tan No']); ?>
+							<?php echo $this->Form->input('tan_no', ['label' => false,'class' => 'form-control input-sm nospace']); ?>
 						</div>
 					</div>
 					<div class="col-md-2">
 						<div class="form-group">
 							<label class="control-label">Service Tax No</label>
-							<?php echo $this->Form->input('service_tax_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Service Tax No']); ?>
+							<?php echo $this->Form->input('service_tax_no', ['label' => false,'class' => 'form-control input-sm']); ?>
 						</div>
 					</div>
 					<div class="col-md-2">
 						<div class="form-group">
 							<label class="control-label">CIN No</label>
-							<?php echo $this->Form->input('cin_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'CIN No']); ?>
+							<?php echo $this->Form->input('cin_no', ['label' => false,'class' => 'form-control input-sm nospace']); ?>
 						</div>
 					</div>
 				</div>
@@ -72,39 +72,39 @@ $this->Form->templates([
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Mobile No <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('mobile_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mobile No','maxlength'=>'10','minlength'=>'10']); ?>
+							<?php echo $this->Form->input('mobile_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Enter Mobile No','maxlength'=>'10','minlength'=>'10']); ?>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Landline No</label>
-							<?php echo $this->Form->input('landline_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Landline No']); ?>
+							<label class="control-label">Landline No<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('landline_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Enter Landline No']); ?>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Email ID <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email ID']); ?>
+							<?php echo $this->Form->input('email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Enter Email ID']); ?>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Website</label>
-							<?php echo $this->Form->input('website', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Website']); ?>
+							<?php echo $this->Form->input('website', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Enter Website URL']); ?>
 						</div>
 					</div>
 				</div>
 				
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Inventory <span class="required" aria-required="true">*</span></label>
 							<div class="radio-list" data-error-container="#inventory_status_error">
 							<?php echo $this->Form->radio(
 								'inventory_status',
 								[
-									['value' => 'With Inventory', 'text' => 'With Inventory'],
-									['value' => 'Without Inventory', 'text' => 'Without Inventory'],
+									['value' => 'With Inventory', 'text' => 'With'],
+									['value' => 'Without Inventory', 'text' => 'Without'],
 								]
 							); ?>
 							</div>
@@ -163,7 +163,7 @@ $this->Form->templates([
 						<td><?= h($i) ?></td>
 						<td><?php echo $this->Form->input('company_banks.'.$i.'.bank_name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Bank Name','value'=>$company_bank->bank_name]); ?></td>
 						<td><?php echo $this->Form->input('company_banks.'.$i.'.branch', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Branch','value'=>$company_bank->branch]); ?></td>
-						<td><?php echo $this->Form->input('company_banks.'.$i.'.account_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Account No','value'=>$company_bank->account_no]); ?></td>
+						<td><?php echo $this->Form->input('company_banks.'.$i.'.account_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Account No','value'=>$company_bank->account_no,'maxlength'=>20]); ?></td>
 						<td><?php echo $this->Form->input('company_banks.'.$i.'.ifsc_code', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'IFSC Code','value'=>$company_bank->ifsc_code]); ?></td>
 						<td width="90"><?php echo $this->Form->input('company_banks.'.$i.'.default_bank', ['type'=>'checkbox','label' => false,'class' => 'form-control default_btn','checked'=>$checked]); ?></td>
 						<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
@@ -200,12 +200,13 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
-		rules: {
+	rules: {
 			company_group_id:{
 				required: true,
 			},
 			name  : {
 				  required: true,
+				  lettersonly: true,
 			},
 			alias  : {
 				  required: true,
@@ -222,7 +223,7 @@ $(document).ready(function() {
 				required: true,
 			},
 			logo   :{
-				
+				required: true,
 				accept: "image/png"
 			},
 			address : {
@@ -297,20 +298,7 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
-		$('.allLetter').live("keyup",function(){
-		var inputtxt=  $(this).val();
-		var numbers =  /^[0-9]*\.?[0-9]*$/;
-		
-		if(inputtxt.match(numbers))  
-		{  
-		} 
-		else  
-		{  
-			$(this).val('');
-			return false;  
-		}
-	});
-
+	
 	
     $('.addrow').die().live("click",function() {
 		add_row();
@@ -347,12 +335,19 @@ $(document).ready(function() {
 		var i=1;
 		$("#main_tb tbody tr").each(function(){
 			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) input").attr({name:"company_banks["+i+"][bank_name]", id:"company_banks-"+i+"-bank_name"}).rules("add", "required");
-			$(this).find("td:nth-child(3) input").attr({name:"company_banks["+i+"][branch]", id:"company_banks-"+i+"-branch"}).rules("add", "required");
+			$(this).find("td:nth-child(2) input").attr({name:"company_banks["+i+"][bank_name]", id:"company_banks-"+i+"-bank_name"}).rules('add', {
+						required: true,
+						lettersonly: true,
+			});
+			$(this).find("td:nth-child(3) input").attr({name:"company_banks["+i+"][branch]", id:"company_banks-"+i+"-branch"}).rules('add', {
+						required: true,
+						lettersonly: true,
+			});
 			$(this).find("td:nth-child(4) input").attr({name:"company_banks["+i+"][account_no]", id:"company_banks-"+i+"-account_no"}).rules('add', {
 						required: true,
-						integer: true,
-						min: 0
+						number: true,
+						min: 0,
+						maxlength: 20,
 					});
 			$(this).find("td:nth-child(5) input").attr({name:"company_banks["+i+"][ifsc_code]", id:"company_banks-"+i+"-ifsc_code"}).rules("add", "required");
 			$(this).find("td:nth-child(6) input[type=checkbox]").attr("name","company_banks["+i+"][default_bank]");
@@ -373,7 +368,7 @@ $(document).ready(function() {
 			<td>0</td>
 			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Bank Name']); ?></td>
 			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Branch']); ?></td>
-			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Account No']); ?></td>
+			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Account No','maxlength'=>20]); ?></td>
 			<td><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'IFSC Code']); ?></td>
 			<td width="90"><?php echo $this->Form->input('q', ['type'=>'checkbox','label' => false,'class' => 'form-control default_btn','value'=>1]); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>

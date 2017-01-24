@@ -102,6 +102,10 @@ class PurchaseOrdersTable extends Table
             ->requirePresence('vendor_id', 'create')
             ->notEmpty('vendor_id');
 			
+		$validator
+            ->requirePresence('customer_id', 'create')
+            ->notEmpty('customer_id');
+			
         $validator
             ->requirePresence('po1', 'create')
             ->notEmpty('po1');
