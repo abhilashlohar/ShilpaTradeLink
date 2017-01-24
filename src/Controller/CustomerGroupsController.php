@@ -20,14 +20,15 @@ class CustomerGroupsController extends AppController
     public function index($status=null)
     {
 		$url=$this->request->here();
-		 $url=parse_url($url,PHP_URL_QUERY);
+		$url=parse_url($url,PHP_URL_QUERY);
 		$this->viewBuilder()->layout('index_layout');
 		$customerGroup = $this->CustomerGroups->newEntity();
         if ($this->request->is('post')) {
             $customerGroup = $this->CustomerGroups->patchEntity($customerGroup, $this->request->data);
 		
             if ($this->CustomerGroups->save($customerGroup)) {
-                $this->Flash->success(__('The customer group has been saved.'));
+				$name=$customerGroup->name;
+                $this->Flash->success(__('The customer group '.$name.' has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -81,6 +82,7 @@ class CustomerGroupsController extends AppController
         if ($this->request->is('post')) {
             $customerGroup = $this->CustomerGroups->patchEntity($customerGroup, $this->request->data);
             if ($this->CustomerGroups->save($customerGroup)) {
+				
                 $this->Flash->success(__('The customer group has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
