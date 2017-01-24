@@ -261,7 +261,6 @@ $(document).ready(function() {
 		rules: {
 			customer_name:{
 				required: true,
-				lettersonly: true,
 			},
 			district_id : {
 				  required: true,
@@ -472,7 +471,6 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			$(this).find("td:nth-child(1)").html(++i); --i;
 			$(this).find("td:nth-child(2) input").attr({name:"customer_contacts["+i+"][contact_person]", id:"customer_contacts-"+i+"-contact_person"}).rules('add', {
 						required: true,
-						lettersonly: true,
 			});
 			$(this).find("td:nth-child(3) input").attr({name:"customer_contacts["+i+"][telephone]", id:"customer_contacts-"+i+"-customer_contacts"}).rules('add', {
 						required: true,
@@ -488,7 +486,6 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			$(this).find("td:nth-child(5) input").attr({name:"customer_contacts["+i+"][email]", id:"customer_contacts-"+i+"-email"}).rules("add", "required");
 			$(this).find("td:nth-child(6) input").attr({name:"customer_contacts["+i+"][designation]", id:"customer_contacts-"+i+"-designation"}).rules('add', {
 						required: true,
-						lettersonly: true,
 			});
 			$(this).find("td:nth-child(7) input").attr({name:"customer_contacts["+i+"][default_contact]", id:"customer_contacts-"+i+"-default_contact"});
 			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
@@ -519,11 +516,11 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 	<tbody>
 		<tr>
 			<td>0</td>
-			<td><?php echo $this->Form->input('contact_person', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Contact Person']); ?></td>
+			<td><?php echo $this->Form->input('contact_person', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Contact Person' ,'required pattern' => "[a-zA-Z' ']+"]); ?></td>
 			<td><?php echo $this->Form->input('telephone', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Telephone','maxlength'=>15]); ?></td>
 			<td><?php echo $this->Form->input('mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Mobile','maxlength'=>10,'minlength'=>10]); ?></td>
 			<td><?php echo $this->Form->input('email', ['type' => 'email','label' => false,'class' => 'form-control input-sm','placeholder' => 'Email']); ?></td>
-			<td><?php echo $this->Form->input('designation', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Designation']); ?></td>
+			<td><?php echo $this->Form->input('designation', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Designation', 'required pattern' => "[a-zA-Z' ']+"]); ?></td>
 			<td width="90"><?php echo $this->Form->input('default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2','value'=>1]); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>

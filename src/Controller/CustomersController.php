@@ -72,12 +72,14 @@ class CustomersController extends AppController
         if ($this->request->is('post')) {
             $customer = $this->Customers->patchEntity($customer, $this->request->data);
 			//pr($customer); exit;
+			$billTobill=$customer->bill_to_bill_account;
             if ($this->Customers->save($customer)) {
 				
 				$ledgerAccount = $this->Customers->LedgerAccounts->newEntity();
 				
 				$ledgerAccount->account_second_subgroup_id = $customer->account_second_subgroup_id;
 				$ledgerAccount->name = $customer->customer_name;
+				$ledgerAccount->bill_to_bill_account = $billTobill;
 				$ledgerAccount->source_model = 'Customers';
 				$ledgerAccount->source_id = $customer->id;
 				if ($this->Customers->LedgerAccounts->save($ledgerAccount)) {
@@ -121,6 +123,7 @@ class CustomersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
 			
             $customer = $this->Customers->patchEntity($customer, $this->request->data);
+			
             if ($this->Customers->save($customer)) {
                 $this->Flash->success(__('The customer has been saved.'));
 

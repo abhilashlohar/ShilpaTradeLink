@@ -140,4 +140,11 @@ class LedgerAccountsController extends AppController
 		//pr(ledgerAccount); exit;
 		$this->set(compact('ledgerAccount'));
     }
+	
+	public function BillToBillAccount($received_from_id=null){
+		$this->viewBuilder()->layout('');
+		$ledgerAccount = $this->LedgerAccounts->get($received_from_id);
+		echo $bill = $ledgerAccount->bill_to_bill_account;
+	}
+	
 }

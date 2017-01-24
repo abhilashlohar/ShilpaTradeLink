@@ -108,8 +108,9 @@
 						</div>
 					</div>
 				</div>
-				
+				<?php echo $this->Form->input('bill_to_bill', ['label' => false,'class' => 'form-control input-sm','type'=>'text','id'=>'bill_to_bill','style'=>'height:0px; border:none; widht:0px;']); ?>
 				<br/>
+				<div id="bill_to_bill_show" style="display:none;">
 				<table width="100%">
 					<tr>
 						<td width="45%" valign="top" id="pending_invpice_container"></td>
@@ -143,7 +144,7 @@
 				
 				<label class="control-label">Total adjusted amount</label> <input type="text" name="total_adjusted_amount" class="form-control input-sm" readonly="readonly" placeholder="Total Adjusted Amount" style="width:200px;"/>
 			</div>
-		
+		</div>
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary">ADD RECEIPT VOUCHER</button>
 			</div>
@@ -242,7 +243,6 @@ $(document).ready(function() {
 		var tr1=$("#sample_tb tbody tr").clone();
 		$("#main_tb tbody#main_tbody").append(tr1);
 		rename_rows_new_ref();
-		
 	}
 	
 	function rename_rows_new_ref(){
@@ -271,9 +271,9 @@ $(document).ready(function() {
 		}else{
 			$(this).closest('tr').find('td:nth-child(3)').find('input:eq(0)').show();
 		}
-		
 		rename_rows_new_ref();
 	});
+	
 	
 	$('input[name="amount"]').live("blur",function() {
 		var val=$(this).val();
@@ -294,8 +294,26 @@ $(document).ready(function() {
 		}
 	});
 	
+		
 	$('select[name="received_from_id"]').die().live("change",function() {
 		var received_from_id=$(this).find('option:selected').val();
+		var url1="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'BillToBillAccount']); ?>";
+		url1=url1+'/'+received_from_id,
+		$.ajax({
+			url: url1,
+		}).done(function(response) {
+			$("#bill_to_bill").val(response);
+			var bill_amount=$("#bill_to_bill").val();
+			
+				if(bill_amount=='Yes'){
+					$('#bill_to_bill_show').show();
+				}
+				else
+				{
+					$('#bill_to_bill_show').hide();
+				}
+			});
+		
 		
 		$("#pending_invpice_container").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 		var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'DueInvoicesForReceipt']); ?>";
@@ -304,10 +322,14 @@ $(document).ready(function() {
 			url: url,
 		}).done(function(response) {
 			$("#pending_invpice_container").html(response);
-			Metronic.init();
+			
 		});
 	});
+	
+	
+		
 	calculation_for_total();
+	
 	$('input').live("keyup",function() {
 		calculation_for_total();
 	});
