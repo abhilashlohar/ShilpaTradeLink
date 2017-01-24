@@ -130,10 +130,10 @@
 							<div class="radio-list">
 								<div class="radio-inline">
 								<?php echo $this->Form->radio(
-									'mode_of_payment',
+									'bill_to_bill_account',
 									[
-										['value' => 'Cheque', 'text' => 'Cheque'],
-										['value' => 'NEFT', 'text' => 'NEFT']
+										['value' => 'Yes', 'text' => 'Yes'],
+										['value' => 'No', 'text' => 'No']
 										
 									]
 								); ?>

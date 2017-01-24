@@ -69,7 +69,7 @@ class InventoryVouchersController extends AppController
         ]);
 		$sales_order_id=$Invoices->sales_order_id;	
 		}
-		pr($Invoices); exit;
+		//pr($Invoices); exit;
 		
 		$last_iv_no=$this->InventoryVouchers->find()->select(['iv2'])->order(['iv2' => 'DESC'])->first();
 			if($last_iv_no){
