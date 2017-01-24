@@ -137,6 +137,10 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
+			transporter_name:{
+				required: true,
+				lettersonly: true,
+			},
 			mobile:{
 				required: true,
 				digits: true,
