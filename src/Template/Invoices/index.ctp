@@ -121,8 +121,10 @@ $url_excel="/?".$url;
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $invoice->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
 								<?php if($invoice->status !='Cancel'){
 								echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $invoice->id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));  echo $this->Html->link('<i class="fa fa-minus-circle"></i> ',['action' => '#'],array('escape'=>false,'class'=>'btn btn-xs red tooltips close_btn','data-original-title'=>'Close','role'=>'button','invoice_id'=>$invoice->id));
+								} 
+								if($invoice->inventory_voucher_status=='Pending'){ 
+								echo $this->Html->link('<i class="fa fa-repeat"></i>  Create Inventory Voucher','/Inventory-Vouchers/Add?Invoice='.$invoice->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
-								
 							</td>
 						</tr>
 						<?php endforeach; ?>

@@ -6,12 +6,12 @@
 			<span class="caption-subject font-blue-steel uppercase">Inventory Vouchers</span>
 		</div>
 		<div class="actions">
-		<?php echo $this->Html->link('<i class="fa fa-files-o"></i> Pull Job-Card','/JobCards?inventory_voucher=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
+		<?php echo $this->Html->link('<i class="fa fa-files-o"></i> Pull Invoice','/Invoices?inventory_voucher=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
 		</div>
 	</div>
 	
 	
-	<?php if(!empty($jobCards)){ ?>
+	<?php if(!empty($Invoices)){ ?>
 	<div class="portlet-body form">
 		<!-- BEGIN FORM-->
 		 <?= $this->Form->create($inventoryVoucher,['id'=>'form_sample_3']) ?>

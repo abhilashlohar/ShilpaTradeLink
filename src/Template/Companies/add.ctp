@@ -72,7 +72,7 @@
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Landline No</label>
+							<label class="control-label">Landline No<span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('landline_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Landline No']); ?>
 						</div>
 					</div>

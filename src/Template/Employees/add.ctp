@@ -13,7 +13,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Name <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
+							<?php echo $this->Form->input('name', ['label' => false,'class' => 'form-control input-sm firstupercase','id'=>'inputTextBox' ,'placeholder'=>'Name']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -76,13 +76,13 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Education Qualification</label>
-							<?php echo $this->Form->input('qualification', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Education Qualification']); ?>
+							<?php echo $this->Form->input('qualification', ['label' => false,'class' => 'form-control input-sm','maxlength'=>100,'placeholder'=>'Education Qualification']); ?>
 						</div>
 					</div>
 					
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label"> Last Company worked Name</label>
+							<label class="control-label"> Last Company worked</label>
 							<?php echo $this->Form->input('last_company', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Last Company Name']); ?>
 						</div>
 					</div>
@@ -179,13 +179,13 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Permanent Address </label>
+							<label class="control-label">Permanent Address<span class="required" aria-required="true">*</span> </label>
 							<?php echo $this->Form->input('permanent_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Permanent Address']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Residence Address </label>
+							<label class="control-label">Residence Address <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('residence_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Residence Address']); ?>
 						</div>
 					</div>
@@ -238,7 +238,7 @@
 					</div>
 				</div>
 				
-				<h4 style="font-size:13px'">Employee Emergency Contact Persons</h4>
+				<h4 style="font-size:13px'">Emergency Contact Persons</h4>
 				<table class="table table-condensed tableitm">
 					<thead>
 						<tr>
@@ -256,18 +256,18 @@
 							<?php echo $this->Form->input('employee_contact_persons.0.name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
 						</td>
 						<td>
-							<?php echo $this->Form->input('employee_contact_persons.0.mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Mobile','maxlength'=>10]); ?>
+							<?php echo $this->Form->input('employee_contact_persons.0.mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','maxlength'=>10]); ?>
 							
 						</td>
 						<td>
-						<?php echo $this->Form->input('employee_contact_persons.0.landline', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'landline','maxlength'=>15]); ?>
+						<?php echo $this->Form->input('employee_contact_persons.0.landline', ['type' => 'text','label' => false,'class' => 'form-control input-sm land_line','placeholder' => 'landline','maxlength'=>30]); ?>
 						
 						</td>
 						<td>
 							<?php echo $this->Form->input('employee_contact_persons.0.email', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Email']); ?>
 						</td>
 						<td>
-							<?php echo $this->Form->input('employee_contact_persons.0.relation', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Relation']); ?>
+							<?php echo $this->Form->input('employee_contact_persons.0.relation', ['label' => false,'class' => 'form-control input-sm firstupercase allAlpha','placeholder'=>'Relation']); ?>
 						</td>
 					</tr>
 					
@@ -276,18 +276,18 @@
 							<?php echo $this->Form->input('employee_contact_persons.1.name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Name']); ?>
 						</td>
 						<td>
-							<?php echo $this->Form->input('employee_contact_persons.1.mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Mobile']); ?>
+							<?php echo $this->Form->input('employee_contact_persons.1.mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile']); ?>
 							
 						</td>
 						<td>
-						<?php echo $this->Form->input('employee_contact_persons.1.landline', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'landline','maxlength'=>15]); ?>
+						<?php echo $this->Form->input('employee_contact_persons.1.landline', ['type' => 'text','label' => false,'class' => 'form-control input-sm land_line','placeholder' => 'landline','maxlength'=>30]); ?>
 						
 						</td>
 						<td>
 							<?php echo $this->Form->input('employee_contact_persons.1.email', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Email']); ?>
 						</td>
 						<td>
-							<?php echo $this->Form->input('employee_contact_persons.1.relation', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Relation']); ?>
+							<?php echo $this->Form->input('employee_contact_persons.1.relation', ['label' => false,'class' => 'form-control input-sm firstupercase allAlpha','placeholder'=>'Relation']); ?>
 						</td>
 					</tr>
 						
@@ -312,16 +312,16 @@
 					</thead>
 					<tbody>
 						<td>
-							<?php echo $this->Form->input('bank_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Bank Name']); ?>
+							<?php echo $this->Form->input('bank_name', ['label' => false,'class' => 'form-control input-sm firstupercase allAlpha','placeholder'=>'Bank Name']); ?>
 						</td>
 						<td>
-							<?php echo $this->Form->input('account_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Account No']); ?>
+							<?php echo $this->Form->input('account_no', ['label' => false,'class' => 'form-control input-sm nospace allLetter','maxlength'=>20,'placeholder'=>'Account No']); ?>
 						</td>
 						<td>
-							<?php echo $this->Form->input('branch_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Branch Name']); ?>
+							<?php echo $this->Form->input('branch_name', ['label' => false,'class' => 'form-control input-sm firstupercase allAlpha','placeholder'=>'Branch Name']); ?>
 						</td>
 						<td>
-							<?php echo $this->Form->input('ifsc_code', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'IFSC Code']); ?>
+							<?php echo $this->Form->input('ifsc_code', ['label' => false,'class' => 'form-control input-sm ','id' => 'ifsc_cod','placeholder'=>'IFSC Code']); ?>
 						</td>
 					</tbody>
 				</table>
@@ -362,6 +362,9 @@ $(document).ready(function() {
 				  required: true,
 			},
 			sex : {
+				  required: true,
+			},
+			relation : {
 				  required: true,
 			},
 			mobile : {
@@ -409,6 +412,9 @@ $(document).ready(function() {
 				 required: true,
 			},
 			branch_name:{
+				 required: true,
+			},
+			ifsc_code:{
 				 required: true,
 			},
 		},
@@ -483,6 +489,13 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+	$("#inputTextBox").keypress(function(event){
+        var inputValue = event.which;
+        // allow letters and whitespaces only.
+        if(!(inputValue >= 65 && inputValue <= 120) && (inputValue != 32 && inputValue != 0)) { 
+            event.preventDefault(); 
+        }
+    });
 	$('.allLetter').live("keyup",function(){
 		var inputtxt=  $(this).val();
 		var numbers =  /^[0-9]*\.?[0-9]*$/;
@@ -495,7 +508,47 @@ $(document).ready(function() {
 			$(this).val('');
 			return false;  
 		}
+	});	
+	$('.allAlpha').live("keyup",function(){
+		var inputtxt=  $(this).val();
+		var numbers =  /^[a-zA-Z\s]+$/;
+		
+		if(inputtxt.match(numbers))  
+		{  
+		} 
+		else  
+		{  
+			$(this).val('');
+			return false;  
+		}
+	});	
+	$('.land_line').live("keyup",function(){
+		var inputtxt=  $(this).val();
+		var numbers =  /^[0-9,\+-]+$/;
+		
+		if(inputtxt.match(numbers))  
+		{  
+		} 
+		else  
+		{  
+			$(this).val('');
+			return false;  
+		}
+	});	
+	$('.ifsc_cod').live("keyup",function(){
+		var inputtxt=  $(this).val();
+		var numbers =  /^[A-Za-z]{4}\d{7}$/;
+		
+		if(inputtxt.match(numbers))  
+		{  
+		} 
+		else  
+		{  
+			$(this).val('');
+			return false;  
+		}
 	});
+
 	//account group 
 	$('select[name="account_category_id"]').on("change",function() {
 	$('#account_group_div').html('Loading...');
