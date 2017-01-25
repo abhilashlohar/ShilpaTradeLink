@@ -1,3 +1,10 @@
+<style>
+.sr_no{
+	float: left;
+	margin-left: 5px;
+	margin-top: 5px;
+}
+</style>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -89,7 +96,7 @@
 								<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 								<td>
 									<?php echo $this->Form->input('q', ['type' => 'hidden','value'=>@$purchase_order_rows->item_id]);
-									 echo $this->Form->input('q', ['type' => 'text','value'=>@$purchase_order_rows->item->serial_number_enable]);
+									 echo $this->Form->input('q', ['type' => 'hidden','value'=>@$purchase_order_rows->item->serial_number_enable]);
 									 echo $purchase_order_rows->item->name;
 									?>								
 								</td>
@@ -109,11 +116,10 @@
 								<td colspan="2">
 									<?php echo $this->Text->autoParagraph(h($purchase_order_rows->description)); ?>
 								</td>
-								<td></td>
+								<div id="TextBoxContainer">
+								</div>
 							</tr>
-							<tr class="tr3" row_no='<?php echo @$purchase_order_rows->id; ?>'>
-								
-							</tr>
+							
 						<?php $q++; endforeach; }?>
 					</tbody>
 				</table>
@@ -221,49 +227,44 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+	//$('input[name="showthis"]').hide();
 	
-	$('.quantity').die().live("keyup",function() {
-		var asc=$(this).val();
-		var numbers =  /^[0-9]*\.?[0-9]*$/;
-		if(asc==0)
-		{
-			$(this).val('');
-			return false; 
-		}
-		else if(asc.match(numbers))  
-		{  
-		} 
-		else  
-		{  
-			$(this).val('');
-			return false;  
-		}
-	});
 	
 	$('.rename_check').die().live("click",function() {
+		$("#main_tb tbody tr.tr1").each(function(){
+			var row_no=$(this).attr('row_no');
+			var val=$(this).find('td:nth-child(4) input[type="checkbox"]:checked').val();
+			var serial_number_enable=$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(2)').val();	
+			var item_id=$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(1)').val();
+			
+			var quantity=$(this).find('td:nth-child(3) input[type="text"]').val();
+			if(val){ var p=1;
+				$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input.sr_no').remove();
+				for (i = 0; i < quantity; i++) {
+					
+					$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<input type="text" class="sr_no" name="item_serial_numbers['+item_id+']" placeholder=" enter item '+p+' serial number" />')
+					p++;
+				}
+			}else{
+				$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input.sr_no').remove();
+			}
+		});
 		rename_rows();
+		
     });
-	
+	var p=0;
 	function rename_rows(){
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
 			var val=$(this).find('td:nth-child(4) input[type="checkbox"]:checked').val();
-			var serial_number_enable=$(this).find('td:nth-child(2) input[type="text"]:nth-child(2)').val();
+			
 			
 			if(val){
-				if(serial_number_enable==1){
-					var tr1=$("#sample_tb tbody tr.tr1").clone();
-					$("#main_tb tbody tr.tr3").append(tr1);
-					$(this).css('background-color','#fffcda');
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
-				
-				}else{
-				$(this).find('td:nth-child(2) input').attr({ name:"grn_rows["+val+"][item_id]"});
+				$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(1)').attr({ name:"grn_rows["+val+"][item_id]"});
 				$(this).find('td:nth-child(3) input').attr({ name:"grn_rows["+val+"][quantity]", id:"grn_rows-"+val+"-quantity"}).removeAttr('readonly');
 				
 				$(this).css('background-color','#fffcda');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
-				}
 			}else{
 				$(this).find('td:nth-child(2) input').attr({ name:"q"});
 				$(this).find('td:nth-child(3) input').attr({ name:"q", id:"q",readonly:"readonly"});

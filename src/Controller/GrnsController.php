@@ -96,15 +96,22 @@ class GrnsController extends AppController
 			}else{
 				$grn->grn2=1;
 			}
+			$item_serial_numbers2=$this->request->data['item_serial_numbers']; 
+			$item_serial_numbers=[];
+			foreach($item_serial_numbers2 as $data){
+				$item_serial_numbers=['item_id'=>2,'serial_no'=>$data,'status'=>'In'];
+			}
+			pr($this->request->data); exit;
+			$this->request->data['item_serial_numbers']=$item_serial_numbers;
+			//pr($this->request->data); exit;
 			
 			$grn = $this->Grns->patchEntity($grn, $this->request->data);
 			$grn->date_created=date("Y-m-d");
 			$grn->purchase_order_id=$purchase_order_id;
 			$grn->company_id=$st_company_id ;
 			$grn->created_by=$this->viewVars['s_employee_id'];
-			
-			
-            if ($this->Grns->save($grn)) {
+			 if ($this->Grns->save($grn)) {
+				
 					if(!empty($purchase_order_id)){
 						$grn->check=array_filter($grn->check);
 						$i=0; 
@@ -112,7 +119,6 @@ class GrnsController extends AppController
 						foreach($grn->check as $purchase_order_row_id){
 							$qty=$grn->grn_rows[$i]['quantity'];
 							$item_id=$grn->grn_rows[$i]['item_id'];
-							
 							$PurchaseOrderRows = $this->Grns->PurchaseOrderRows->get($purchase_order_row_id);
 							$PurchaseOrderRows->processed_quantity=$PurchaseOrderRows->processed_quantity+$qty;
 							$this->Grns->PurchaseOrderRows->save($PurchaseOrderRows);
@@ -135,7 +141,7 @@ class GrnsController extends AppController
 					$this->Flash->success(__('The grn has been saved.'));
 
 					return $this->redirect(['action' => 'index']);
-				} else {
+				} else { 
 					$this->Flash->error(__('The grn could not be saved. Please, try again.'));
 				}
 			}
