@@ -2,7 +2,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Add GRN</span>
+			<span class="caption-subject font-blue-steel uppercase">Add Goods Receipt Note</span>
 		<?php 
 			if($purchase_order){
 				echo '<span style="font-size: 12px;">Converting Purchase-Order: '.$purchase_order->po1.' / PO'.str_pad($purchase_order->po2, 3, '0', STR_PAD_LEFT).' / '.$purchase_order->po3.' / '.$purchase_order->po4.'</span>';
@@ -19,7 +19,7 @@
 		<div class="form-body">
 			<div class="form-body">
 				<div class="row">
-					<div class="col-md-3">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Company <span class="required" aria-required="true">*</span></label>
 							<br/>
@@ -42,12 +42,8 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Supplier <span class="required" aria-required="true">*</span></label>
-							<br/>
-							<?php echo @$purchase_order->vendor->company_name; ?>
-						</div>
+					<div class="col-md-2">
+						
 					</div>
 					<div class="col-md-2">
 						<div class="form-group">
@@ -57,7 +53,21 @@
 						</div>
 					</div>
 				</div><br/>
-
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Supplier <span class="required" aria-required="true">*</span></label>
+							<br/>
+							<?php echo @$purchase_order->vendor->company_name; ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Road Permit No<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('road_permit_no', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Road permit No']); ?>
+						</div>
+					</div>
+				</div>
 			
 				<div class="alert alert-danger" id="row_error_item" style="display:none;padding: 5px !important;">
 					Please check at least one row.
@@ -82,8 +92,13 @@
 									echo $purchase_order_rows->item->name;
 									?>								
 								</td>
+									
 								<td>
-									<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$purchase_order_rows->quantity-$purchase_order_rows->processed_quantity,'readonly','min'=>'1','max'=>@$purchase_order_rows->quantity-$purchase_order_rows->processed_quantity]); ?>
+								
+									<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$purchase_order_rows->quantity-$purchase_order_rows->processed_quantity,'readonly','min'=>'1','max'=>@$purchase_order_rows->quantity-$purchase_order_rows->processed_quantity]); 
+									echo "In Purchase-Order Quantity:- ";
+									echo $purchase_order_rows->quantity;
+									?>
 								</td>
 								<td>
 									<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$purchase_order_rows->id]); ?></label>

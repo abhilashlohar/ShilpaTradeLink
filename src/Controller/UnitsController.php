@@ -20,7 +20,7 @@ class UnitsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		
-        $units = $this->paginate($this->Units->find());
+        $units = $this->paginate($this->Units->find()->order(['Units.name' => 'ASC']));
 		
 		$unit = $this->Units->newEntity();
         if ($this->request->is('post')) {

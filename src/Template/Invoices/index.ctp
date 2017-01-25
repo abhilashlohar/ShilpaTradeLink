@@ -11,7 +11,32 @@ $url_excel="/?".$url;
 			<span class="caption-subject font-blue-steel uppercase">Invoices</span>
 			
 		</div>
-		<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/Invoices/Export-Excel/'.@$url_excel.'',['class' =>'btn btn-sm green tooltips pull-right','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
+	
+		
+	
+				<div class="actions">
+			<?php
+			if($status=='Pending'){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
+			
+			if($status=='Cancel'){ $class3='btn btn-primary'; }else{ $class3='btn btn-default'; }
+			?>
+			
+				<?= $this->Html->link(
+					'Pending',
+					'/Invoices/index/Pending',
+					['class' => $class1]
+				); ?>
+				
+				
+				<?= $this->Html->link(
+					'Cancel',
+					'/Invoices/index/Cancel',
+					['class' => $class3]
+				); ?>
+				<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/Invoices/Export-Excel/'.@$url_excel.'',['class' =>'btn btn-sm green tooltips pull-right','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
+			
+		</div>
+		
 	</div>
 	<div class="portlet-body">
 		<div class="row">
@@ -28,6 +53,7 @@ $url_excel="/?".$url;
 						</tr>
 					</thead>
 					<tbody>
+					
 						<tr>
 							<td>
 								<div class="row">
@@ -81,7 +107,10 @@ $url_excel="/?".$url;
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($invoices as $invoice): ?>
+						<?php foreach ($invoices as $invoice): 
+						if($invoice->status=='Pending'){ $tr_color='#FFF'; }
+						if($invoice->status=='Cancel'){ $tr_color='#FFF'; }
+						?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
 							<td><?= h(($invoice->in1.'/IN-'.str_pad($invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$invoice->in3.'/'.$invoice->in4)) ?></td>
@@ -90,7 +119,10 @@ $url_excel="/?".$url;
 							<td><?= h($invoice->total_after_pnf) ?></td>
 							<td class="actions">
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $invoice->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
-								<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $invoice->id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
+								<?php if($invoice->status !='Cancel'){
+								echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $invoice->id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));  echo $this->Html->link('<i class="fa fa-minus-circle"></i> ',['action' => '#'],array('escape'=>false,'class'=>'btn btn-xs red tooltips close_btn','data-original-title'=>'Close','role'=>'button','invoice_id'=>$invoice->id));
+								} ?>
+								
 							</td>
 						</tr>
 						<?php endforeach; ?>
@@ -104,6 +136,65 @@ $url_excel="/?".$url;
 					</ul>
 					<p><?= $this->Paginator->counter() ?></p>
 				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$( function() {
+$( "#sortable" ).sortable();
+$( "#sortable" ).disableSelection();
+} );
+</script>
+<?php echo $this->Html->css('/drag_drop/jquery-ui.css'); ?>
+<?php echo $this->Html->script('/drag_drop/jquery-1.12.4.js'); ?>
+<?php echo $this->Html->script('/drag_drop/jquery-ui.js'); ?>
+
+<script>
+$(document).ready(function() { 
+	
+	$('#close_popup_btn').die().live("click",function() {
+		var invoice_id=$(this).attr('invoice_id');
+		var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'Cancel']); 
+		?>";
+		
+		url=url+'/'+invoice_id
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			location.reload();
+		});		
+		
+    });
+
+	
+	$('.close_btn').die().live("click",function() {
+		var invoice_id=$(this).attr('invoice_id');
+		$("#myModal2").show();
+		$("#close_popup_btn").attr('invoice_id',invoice_id);
+    });
+	
+	$('.closebtn2').on("click",function() { 
+		$("#myModal2").hide();
+    });
+	
+	
+	
+	
+});	
+</script>
+
+<div id="myModal2" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+			
+				Are you sure you want to cancel
+				
+			</div>
+			<div class="modal-footer">
+				<button class="btn default closebtn2">Close</button>
+				<button class="btn red close_rsn" id="close_popup_btn">Close Invoice</button>
 			</div>
 		</div>
 	</div>

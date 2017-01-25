@@ -93,6 +93,7 @@ class ReceiptVouchersController extends AppController
             if ($this->ReceiptVouchers->save($receiptVoucher)) {
 				//Ledger posting for Received From Entity
 				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $receiptVoucher->bank_cash_id;
 				$ledger->debit =$receiptVoucher->amount;
 				$ledger->credit = 0;
@@ -103,6 +104,7 @@ class ReceiptVouchersController extends AppController
 				
 				//Ledger posting for bankcash
 				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $receiptVoucher->received_from_id;
 				$ledger->debit = 0;
 				$ledger->credit = $receiptVoucher->amount;;
@@ -204,6 +206,7 @@ class ReceiptVouchersController extends AppController
 				$this->ReceiptVouchers->Ledgers->deleteAll(['voucher_id' => $receiptVoucher->id, 'voucher_source' => 'Receipt Voucher']);
 				//Ledger posting for Received From Entity
 				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $receiptVoucher->bank_cash_id;
 				$ledger->debit =$receiptVoucher->amount;
 				$ledger->credit = 0;
@@ -214,6 +217,7 @@ class ReceiptVouchersController extends AppController
 				
 				//Ledger posting for bankcash
 				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $receiptVoucher->received_from_id;
 				$ledger->debit = 0;
 				$ledger->credit = $receiptVoucher->amount;;

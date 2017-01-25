@@ -182,21 +182,21 @@
 				<tr>
 					<td  align="right">
 					<?php 
-						if($sales_order->discount_type==1){
+						if($sales_order->discount_type==1){ $checked2="Checked";
 							echo 'In Sales Order '; echo @$sales_order->discount_per; echo ' %  ' ;
 							 } 
-						else{
+						else{	$checked2="";
 							echo 'In Sales Order '; echo  @$sales_order->discount; echo ' Rs ' ;
 							 } 
 					?> 
-					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per']); ?></label>(in %)</b>
+					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per','Checked'=>$checked2]); ?></label>(in %)</b>
 						
 						<div class="input-group col-md-2" style="display:none;" id="discount_text">
-						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01><span class="input-group-addon">%</span>
+						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value="<?php echo $sales_order->discount_per; ?> "><span class="input-group-addon">%</span>
 					</div>
 					</td>
 				
-					<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
+					<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01,'value'=>$sales_order->discount]); ?></td>
 				</tr>
 				<?php if(in_array('Yes',@$ed_des)) { ?>
 				<tr style="background-color:#e6faf9;">
@@ -481,7 +481,18 @@ $(document).ready(function() {
 	});
 	
 	//--	 END OF VALIDATION
-	
+	if($("#discount_per").is(':checked')){
+			
+			
+			$("#discount_text").show();
+			$('input[name="discount"]').attr('readonly','readonly');
+			
+		}else{
+			$("#discount_text").hide();
+			$('input[name="discount"]').removeAttr('readonly');
+			$('input[name="discount_per"]').val(0);
+			$('input[name="discount"]').val(0);
+		}
 	
 	$('#update_credit_limit').on("click",function() {
 		var customer_id=$('input[name="customer_id"]').val();

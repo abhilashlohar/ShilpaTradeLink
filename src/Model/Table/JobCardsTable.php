@@ -87,7 +87,11 @@ class JobCardsTable extends Table
             ->requirePresence('created_on', 'create')
             ->notEmpty('created_on');
 
-        return $validator;
+		$validator
+            ->requirePresence('dispatch_destination', 'create')
+            ->notEmpty('dispatch_destination');
+        
+		return $validator;
     }
 
     /**

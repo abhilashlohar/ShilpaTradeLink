@@ -45,7 +45,7 @@ class ItemCategoriesController extends AppController
         $this->set('_serialize', ['itemCategory']);
 		
        
-		$itemCategories = $this->paginate($this->ItemCategories->find()->where($where)->order(['name' => 'ASC']));
+		$itemCategories = $this->paginate($this->ItemCategories->find()->where($where)->order(['ItemCategories.name' => 'ASC']));
         $this->set(compact('itemCategories'));
         $this->set('_serialize', ['itemCategories']);
     }

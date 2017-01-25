@@ -8,7 +8,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Edit GRN</span>
+			<span class="caption-subject font-blue-steel uppercase">Edit Goods Receipt Note</span>
 		
 		</div>
 		
@@ -19,7 +19,7 @@
 		<div class="form-body">
 			<div class="form-body">
 				<div class="row">
-					<div class="col-md-3">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Company <span class="required" aria-required="true">*</span></label>
 							<br/>
@@ -42,12 +42,8 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Supplier <span class="required" aria-required="true">*</span></label>
-							<br/>
-							<?php echo @$grn->vendor->company_name; ?>
-						</div>
+					<div class="col-md-2">
+						
 					</div>
 					<div class="col-md-2">
 						<div class="form-group">
@@ -57,7 +53,21 @@
 						</div>
 					</div>
 				</div><br/>
-
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Supplier <span class="required" aria-required="true">*</span></label>
+							<br/>
+							<?php echo @$grn->vendor->company_name; ?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Road Permit No<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('road_permit_no', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Road permit No']); ?>
+						</div>
+					</div>
+				</div>
 			
 				<table class="table tableitm" id="main_tb">
 					<thead>

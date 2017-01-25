@@ -243,6 +243,7 @@ $(document).ready(function() {
 		rules: {
 			customer_name:{
 				required: true,
+				lettersonly: true,
 			},
 			district_id : {
 				  required: true,
@@ -451,7 +452,10 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		$("#main_tb tbody tr").each(function(){
 			
 			$(this).find("td:nth-child(1)").html(++i); --i;
-			$(this).find("td:nth-child(2) input").attr({name:"customer_contacts["+i+"][contact_person]", id:"customer_contacts-"+i+"-contact_person"}).rules("add", "required");
+			$(this).find("td:nth-child(2) input").attr({name:"customer_contacts["+i+"][contact_person]", id:"customer_contacts-"+i+"-contact_person"}).rules('add', {
+						required: true,
+						lettersonly: true,
+			});
 			$(this).find("td:nth-child(3) input").attr({name:"customer_contacts["+i+"][telephone]", id:"customer_contacts-"+i+"-customer_contacts"}).rules('add', {
 						required: true,
 						number: true,

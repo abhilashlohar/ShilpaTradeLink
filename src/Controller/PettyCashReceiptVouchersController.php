@@ -77,6 +77,7 @@ class PettyCashReceiptVouchersController extends AppController
 			if ($this->PettyCashReceiptVouchers->save($pettyCashReceiptVoucher)) 
 			{
 				$ledger = $this->PettyCashReceiptVouchers->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $pettyCashReceiptVoucher->bank_cash_id;
 				$ledger->debit = $pettyCashReceiptVoucher->amount;
 				$ledger->credit = 0;
@@ -86,6 +87,7 @@ class PettyCashReceiptVouchersController extends AppController
 				$this->PettyCashReceiptVouchers->Ledgers->save($ledger);
 				//Ledger posting for bankcash
 				$ledger = $this->PettyCashReceiptVouchers->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $pettyCashReceiptVoucher->received_from_id;
 				$ledger->debit = 0;
 				$ledger->credit = $pettyCashReceiptVoucher->amount;;
@@ -160,11 +162,10 @@ class PettyCashReceiptVouchersController extends AppController
 			$pettyCashReceiptVoucher->company_id=$st_company_id;
 			
             if ($this->PettyCashReceiptVouchers->save($pettyCashReceiptVoucher)) {
-				
-				
 				$this->PettyCashReceiptVouchers->Ledgers->deleteAll(['voucher_id' => $pettyCashReceiptVoucher->id, 'voucher_source' => 'PettyCashReceipt Voucher']);
 				
 				$ledger = $this->PettyCashReceiptVouchers->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $pettyCashReceiptVoucher->bank_cash_id;
 				$ledger->debit = $pettyCashReceiptVoucher->amount;
 				$ledger->credit = 0;
@@ -174,6 +175,7 @@ class PettyCashReceiptVouchersController extends AppController
 				$this->PettyCashReceiptVouchers->Ledgers->save($ledger);
 				//Ledger posting for bankcash
 				$ledger = $this->PettyCashReceiptVouchers->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $pettyCashReceiptVoucher->received_from_id;
 				$ledger->debit = 0;
 				$ledger->credit = $pettyCashReceiptVoucher->amount;;

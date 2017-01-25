@@ -91,6 +91,7 @@ $html = '
   </div>
  
 
+  
   <div id="content"> ';
   
 
@@ -168,10 +169,7 @@ $html.='
 		<td style="padding-top:8px;padding-bottom:5px;" align="right" valign="top">'. $this->Number->format($invoiceRows->amount,[ 'places' => 2]) .'</td>
 	</tr>';
 endforeach; 
-
 	$html.='<tbody>';
-
-	
 if($invoice->discount_type=='1'){ $discount_text='Discount @ '.$invoice->discount_per.'%'; }else{ $discount_text='Discount'; }
 
 
@@ -332,7 +330,7 @@ $html .= '<div id="footer" class="avoid_break">';
 					}
 			$html.='</td>
 					<td style="text-align:right;">'.h($invoice->fright_text).'</td>
-					<td>'. $this->Number->format($invoice->fright_amount,[ 'places' => 2]).'</td>
+					<td style="text-align:right;">'. $this->Number->format($invoice->fright_amount,[ 'places' => 2]).'</td>
 				</tr>
 				<tr>
 					<td style="white-space: nowrap;"></td>

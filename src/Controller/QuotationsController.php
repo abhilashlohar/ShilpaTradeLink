@@ -10,8 +10,7 @@ use App\Controller\AppController;
  */
 class QuotationsController extends AppController
 {
-	
-    /**
+	/**
      * Index method
      *
      * @return \Cake\Network\Response|null
@@ -21,7 +20,7 @@ class QuotationsController extends AppController
 		
 		$url=$this->request->here();
 		$url=parse_url($url,PHP_URL_QUERY);
-		 
+		
 		$copy_request=$this->request->query('copy-request');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
@@ -210,8 +209,12 @@ class QuotationsController extends AppController
 						   return $q
 								->where(['CustomerContacts.default_contact'=>1]);
 						}]]
-			]);
-			
+		]);
+		$quote_id=$quotation->quotation_id;
+		$query = $this->Quotations->find()->where(['quotation_id' => $quote_id]);
+		$max = $query
+		->select(['revision' => $query->func()->max('Quotations.revision')])->first();
+		$revision=$max->revision;
 		if ($this->request->is(['patch', 'post', 'put'])) {
             foreach($this->request->data['quotation_rows'] as $quotation_row_id=>$value){
 				$quotationRow=$this->Quotations->QuotationRows->get($quotation_row_id);
@@ -223,7 +226,7 @@ class QuotationsController extends AppController
 		
 		$email = $this->Quotations->EmailRecords->newEntity();
 		
-		$this->set(compact('quotation','id','email'));
+		$this->set(compact('quotation','id','email','revision'));
         
     }
 	
@@ -453,8 +456,7 @@ class QuotationsController extends AppController
         } else {
             $this->Flash->error(__('The quotation could not be deleted. Please, try again.'));
         }
-
-        return $this->redirect(['action' => 'index']);
+		return $this->redirect(['action' => 'index']);
     }
 	
 	public function close($id = null,$reason=null)
@@ -469,11 +471,18 @@ class QuotationsController extends AppController
         } else {
             $this->Flash->error(__('The quotation could not be closed. Please, try again.'));
         }
-
-        return $this->redirect(['action' => 'index']);
+		return $this->redirect(['action' => 'index']);
     }
 	
-		
+	public function revision($id = null)
+    {
+		$quotation = $this->Quotations->get($id);
+		$quot_id = $quotation->quotation_id;
+		$revision = $quotation->revision;
+		$quotations =$this->Quotations->find()->contain(['Customers','Employees','ItemGroups'])->where(['Quotations.quotation_id' =>$quot_id,'Quotations.revision !=' => $revision ]);
+		$this->set(compact('quotations','quot_id','edit_hide'));
+    }
+	
 	public function reopen($id = null)
     {
         $quotation = $this->Quotations->get($id);
@@ -484,8 +493,7 @@ class QuotationsController extends AppController
         } else {
             $this->Flash->error(__('The quotation could not be Reopened. Please, try again.'));
         }
-
-        return $this->redirect(['action' => 'index']);
+		return $this->redirect(['action' => 'index']);
     }
 	
 }

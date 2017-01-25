@@ -6,6 +6,7 @@
 		<td align="right" width="50%" style="font-size: 14px;">
 		<span style="font-size: 20px;"><?= h($jobCard->company->name) ?></span><br/>
 		<span style="font-size: 15px;"><?= $this->Text->autoParagraph(h($jobCard->company->address)) ?></span>
+		<span style="font-size: 15px;"><?= h($jobCard->company->landline_no) ?></span><br/>
 		<span style="font-size: 15px;"><?= h($jobCard->company->mobile_no) ?></span>
 		</td>
 	</tr>
@@ -39,12 +40,9 @@
 					<td><?= h($jobCard->dispatch_name) ?></td>
 				</tr>
 				<tr>
-					<td><label style="font-size:105%"><b>Dispatch Email</b></label></td>
-					<td>:</td>
-					<td><?= h($jobCard->dispatch_email) ?></td>
-					<td><label style="font-size:105%"><b>Dispatch Address</b></label></td>
-					<td>:</td>
-					<td><?= h($jobCard->dispatch_address)?></td>
+					<td valign="top"><label style="font-size:105%"><b>Dispatch Destination</b></label></td>
+					<td valign="top">:</td>
+					<td colspan="4"><?= $this->Text->autoParagraph(h($jobCard->dispatch_destination))?></td>
 				</tr>
 				<tr>
 					<td valign="top"><label style="font-size:105%"><b>Packing</b></label></td>

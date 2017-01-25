@@ -106,7 +106,7 @@ With reference to your price list we are pleased to place an order for the follo
 							<?php 
 							$options=[];
 							foreach($SaleTaxes as $SaleTaxe){
-								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->description];
+								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->invoice_description];
 							}
 							echo $this->Form->input('sale_tax_per', ['empty'=>'--Select--','options'=>$options,'label' => false,'class' => 'form-control input-sm select2me','id'=>'saletax']);
 							?>
@@ -127,14 +127,15 @@ With reference to your price list we are pleased to place an order for the follo
 							echo $this->Form->input('delivery',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Delivery']); ?>
 						</div>
 					</div>
-					
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Delivery Date</label>
-							
-								<?php echo $this->Form->input('delivery_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Delivery Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '+0d','data-date-end-date' => '+60d']); ?>
-							</div>
+							<label class="control-label">Transporter <span class="required" aria-required="true">*</span></label>
+							<?php 
+							echo $this->Form->input('transporter_id',['empty'=>'--Select--','options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
+					</div>
+					
+				
 				</div>
 				</div>
 				
@@ -160,13 +161,7 @@ With reference to your price list we are pleased to place an order for the follo
 							echo $this->Form->input('road_permit_form47',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Road permit form 47']); ?>
 						</div>
 					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Transporter <span class="required" aria-required="true">*</span></label>
-							<?php 
-							echo $this->Form->input('transporter_id',['empty'=>'--Select--','options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me']); ?>
-						</div>
-					</div>
+					
 					
 					<div class="col-md-3">
 						<div class="form-group">

@@ -65,24 +65,52 @@ class InvoiceBookingsController extends AppController
 			$grn = $this->InvoiceBookings->Grns->get($grn_id, [
 				'contain' => ['GrnRows'=>['Items'],'Companies','Vendors','PurchaseOrders'=>['PurchaseOrderRows']]
 			]);
+		
+		@$quantity_sum=0;
+		foreach($grn->purchase_order->purchase_order_rows as $purchase_order_row){
+		@$quantity_sum=$quantity_sum+$purchase_order_row->quantity;
+		}
+		//pr($grn->purchase_order->discount_type); exit;
+		if($grn->purchase_order->discount_type=='%'){
+			$item_dis=($grn->purchase_order->total*$grn->purchase_order->discount)/100;
+			//$item_rate=$grn->purchase_order->total-$item_dis;
+			$per_item_discount=number_format($item_dis/$quantity_sum,2);
+			
+		}else{
+			$item_dis=$grn->purchase_order->discount;
+			$per_item_discount=number_format($item_dis/$quantity_sum,2);
+			
 		}
 		
-		$last_ib_no=$this->InvoiceBookings->find()->select(['ib2'])->where(['company_id' => $st_company_id])->order(['ib2' => 'DESC'])->first();
-			if($last_ib_no){
-				@$last_ib_no->ib2=$last_ib_no->ib2+1;
-			}else{
-				@$last_ib_no->ib2=1;
-			}
-
+		if($grn->purchase_order->pnf_type=='%'){
+			$item_pnf=($grn->purchase_order->total*$grn->purchase_order->pnf)/100;
+			//$item_rate=$grn->purchase_order->total-$item_dis;
+			$per_item_pnf=number_format($item_pnf/$quantity_sum,2);
+			
+		}else{
+			$item_pnf=$grn->purchase_order->pnf;
+			$per_item_pnf=number_format($item_pnf/$quantity_sum,2);
+		}
 		
-	 $this->set(compact('grn','last_ib_no'));
+		$item_tax=($grn->purchase_order->total*$grn->purchase_order->sale_tax_per)/100;
+		//$item_rate=$grn->purchase_order->total-$item_dis;
+		$per_item_tax=number_format($item_tax/$quantity_sum,2);
+	}
+		$last_ib_no=$this->InvoiceBookings->find()->select(['ib2'])->where(['company_id' => $st_company_id])->order(['ib2' => 'DESC'])->first();
+		if($last_ib_no){
+			@$last_ib_no->ib2=$last_ib_no->ib2+1;
+		}else{
+			@$last_ib_no->ib2=1;
+			}
+		
+		$this->set(compact('grn','last_ib_no','quantity_sum','per_item_discount','per_item_pnf','per_item_tax'));
 		$invoiceBooking = $this->InvoiceBookings->newEntity();
 		if ($this->request->is('post')) {
             $invoiceBooking = $this->InvoiceBookings->patchEntity($invoiceBooking, $this->request->data);
 			
 			$invoiceBooking->grn_id=$grn_id; 
 			$invoiceBooking->created_on=date("Y-m-d");
-			$invoiceBooking->company_id=$st_company_id ;
+			$invoiceBooking->company_id=$st_company_id;
 			$invoiceBooking->created_by=$this->viewVars['s_employee_id'];
 			$invoiceBooking->due_payment=$invoiceBooking->total;
 			//pr($invoiceBooking); exit;
@@ -95,8 +123,27 @@ class InvoiceBookingsController extends AppController
 				$rate=$invoice_booking_row->rate;
 				$query = $this->InvoiceBookings->ItemLedgers->query();
 				$query->update()
-					->set(['rate' => $rate])
+					->set(['rate' => $rate, 'rate_updated' => 'Yes'])
 					->where(['item_id' => $item_id, 'source_id' => $grn_id, 'source_model'=> 'Grns'])
+					->execute();
+				
+				$results=$this->InvoiceBookings->ItemLedgers->find()->where(['ItemLedgers.item_id' => $item_id,'ItemLedgers.in_out' => 'In','rate_updated' => 'Yes','company_id' => $st_company_id])->toArray(); 
+				
+				$j=0; $qty_total=0; $rate_total=0; $per_unit_cost=0;
+				foreach($results as $result){
+					$qty=$result->quantity;
+					$rate=$result->rate;
+					@$total_amount=$qty*$rate;
+					$rate_total=$rate_total+$total_amount;
+					$qty_total=$qty_total+$qty;
+				$j++;
+				}
+				
+				$per_unit_cost=$rate_total/$qty_total;
+				$query1 = $this->InvoiceBookings->Items->query();
+				$query1->update()
+					->set(['dynamic_cost' => $per_unit_cost])
+					->where(['id' => $item_id])
 					->execute();
 				$i++;
 				}
@@ -182,8 +229,26 @@ class InvoiceBookingsController extends AppController
 				$rate=$invoice_booking_row->rate;
 				$query = $this->InvoiceBookings->ItemLedgers->query();
 				$query->update()
-					->set(['rate' => $rate])
+					->set(['rate' => $rate, 'rate_updated' => 'Yes'])
 					->where(['item_id' => $item_id, 'source_id' => $grn_id, 'source_model'=> 'Grns'])
+					->execute();
+				$results=$this->InvoiceBookings->ItemLedgers->find()->where(['ItemLedgers.item_id' => $item_id,'ItemLedgers.in_out' => 'In','rate_updated' => 'Yes','company_id' => $st_company_id])->toArray(); 
+				
+				$j=0; $qty_total=0; $rate_total=0; $per_unit_cost=0;
+				foreach($results as $result){
+					$qty=$result->quantity;
+					$rate=$result->rate;
+					@$total_amount=$qty*$rate;
+					$rate_total=$rate_total+$total_amount;
+					$qty_total=$qty_total+$qty;
+				$j++;
+				}
+				
+				$per_unit_cost=$rate_total/$qty_total;
+				$query1 = $this->InvoiceBookings->Items->query();
+				$query1->update()
+					->set(['dynamic_cost' => $per_unit_cost])
+					->where(['id' => $item_id])
 					->execute();
 				$i++;
 				}

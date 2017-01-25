@@ -3,8 +3,7 @@ if(!empty($status)){
 		$url_excel=$status."/?".$url;
 	}else{
 		$url_excel="/?".$url;
-	}
-	
+	}	
 ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
@@ -127,8 +126,11 @@ if(!empty($status)){
 						if($quotation->status=='Pending'){ $tr_color='#FFF'; }
 						if($quotation->status=='Closed'){ $tr_color='#FFF'; }
 						?>
-						<tr style="background-color:<?php echo $tr_color; ?>;">
-							<td><?= h(++$page_no) ?></td>
+						<tr>
+							<td><?= h(++$page_no) ?>
+							<button type="button" class="btn btn-xs tooltips revision_show" value="<?=$quotation->id ?>" style="margin-left:5px;" data-original-title="Revisions"><i class="fa fa-plus-circle"></i></button>
+							<button type="button" class="btn btn-xs tooltips revision_hide" id="revision_hide" value="<?=$quotation->id ?>" style="margin-left:5px; display:none;"><i class="fa fa-minus-circle"></i></button></td>
+							
 							<td><?= h(($quotation->qt1.'/QT-'.str_pad($quotation->qt2, 3, '0', STR_PAD_LEFT).'/'.$quotation->qt3.'/'.$quotation->qt4)) ?></td>
 							<td><?= h($quotation->customer->customer_name) ?></td>
 							<td><?= h($quotation->employee->name) ?></td>
@@ -179,6 +181,7 @@ if(!empty($status)){
 								} ?>
 							</td>
 						</tr>
+						
 						<?php endforeach; ?>
 					</tbody>
 				</table>
@@ -231,6 +234,7 @@ $(document).ready(function() {
 		});		
 		
     });
+	
 	$('.close_btn').die().live("click",function() {
 		var quote_id=$(this).attr('quote_id');
 		var addr=$(this).text();
@@ -241,6 +245,31 @@ $(document).ready(function() {
 	$('.closebtn2').on("click",function() { 
 		$("#myModal2").hide();
     });
+	
+	$('.revision_show').die().live("click",function() {
+		//$("#revision_hide").show();
+		//$("#revision_show").hide();
+		$(this).hide();
+		$(this).closest('td').find(".revision_hide").show();
+		var entity=$(this).closest('tr');
+		var quote_id=$(this).val();
+		var url="<?php echo $this->Url->build(['controller'=>'Quotations','action'=>'Revision']);
+		?>";
+		url=url+'/'+quote_id+'/'+quote_id,
+		
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			entity.after(response);
+			//$("#view_revision").html(response);
+		});		
+    });
+	
+	$('.revision_hide').die().live("click",function() {
+		$(this).closest('tr').next().remove();
+		$(this).hide();
+		$(this).closest('td').find(".revision_show").show();
+	});
 });	
 </script>
 

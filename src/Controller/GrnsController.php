@@ -88,15 +88,16 @@ class GrnsController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		 $grn = $this->Grns->newEntity();
         if ($this->request->is('post')) {
-            $grn = $this->Grns->patchEntity($grn, $this->request->data);
-			 $grn->vendor_id=$purchase_order->vendor_id;
+			$grn->vendor_id=$purchase_order->vendor_id;
 			$last_grn_no=$this->Grns->find()->select(['grn2'])->where(['company_id' => $st_company_id])->order(['grn2' => 'DESC'])->first();
+			//pr($last_grn_no);  exit;
 			if($last_grn_no){
-				$grn->grn2=$last_grn_no->grn2+1;
+				$grn->grn2=(int)$last_grn_no->grn2+1;
 			}else{
 				$grn->grn2=1;
 			}
-
+			
+			$grn = $this->Grns->patchEntity($grn, $this->request->data);
 			$grn->date_created=date("Y-m-d");
 			$grn->purchase_order_id=$purchase_order_id;
 			$grn->company_id=$st_company_id ;

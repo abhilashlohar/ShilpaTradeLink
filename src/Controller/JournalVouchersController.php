@@ -94,9 +94,11 @@ class JournalVouchersController extends AppController
 						$ledger->debit = 0;
 						$ledger->credit = $journal_voucher_rows->amount;
 					}
+					$ledger->company_id=$st_company_id;
 					$ledger->voucher_id = $journalVoucher->id;
 					$ledger->voucher_source = 'Journal Voucher';
 					$ledger->transaction_date = $journalVoucher->created_on;
+					$ledger->company_id = $st_company_id;
 					//pr($ledger); exit;
 					$this->JournalVouchers->Ledgers->save($ledger);
 					}
@@ -151,11 +153,12 @@ class JournalVouchersController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $journalVoucher = $this->JournalVouchers->patchEntity($journalVoucher, $this->request->data);
-			$journalVoucher->created_by=$s_employee_id;
+			$journalVoucher->edited_by=$s_employee_id;
 			$journalVoucher->transaction_date=date("Y-m-d",strtotime($journalVoucher->transaction_date));
-			$journalVoucher->created_on=date("Y-m-d");
+			$journalVoucher->edited_on=date("Y-m-d");
 			$journalVoucher->company_id=$st_company_id;
-			
+			$journalVoucher->created_by = $journalVoucher -> created_by;
+			$journalVoucher->created_on = $journalVoucher -> created_on;
             if ($this->JournalVouchers->save($journalVoucher)) {
 				
 				$this->JournalVouchers->Ledgers->deleteAll(['voucher_id' => $journalVoucher->id, 'voucher_source' => 'Journal Voucher']);
@@ -172,9 +175,11 @@ class JournalVouchersController extends AppController
 						$ledger->debit = 0;
 						$ledger->credit = $journal_voucher_rows->amount;
 					}
+					$ledger->company_id=$st_company_id;
 					$ledger->voucher_id = $journalVoucher->id;
 					$ledger->voucher_source = 'Journal Voucher';
 					$ledger->transaction_date = $journalVoucher->created_on;
+					$ledger->company_id = $st_company_id;
 					//pr($ledger); exit;
 					$this->JournalVouchers->Ledgers->save($ledger);
 					}

@@ -109,6 +109,10 @@ class InvoiceBookingsTable extends Table
             ->requirePresence('created_on', 'create')
             ->notEmpty('created_on');
 
+		 $validator
+			->requirePresence('supplier_date', 'create')
+            ->notEmpty('supplier_date');
+
         return $validator;
     }
 

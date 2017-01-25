@@ -18,7 +18,7 @@
 			<div class="form-body">
 
 			<div class="row">
-				<div class="col-md-5">
+				<div class="col-md-4">
 					<div class="form-group">
 						<label class="col-md-5 control-label">Voucher No. </label>
 						<div class="col-md-7">
@@ -39,6 +39,15 @@
 						</div>
 					</div>
 				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-5 control-label">Customer Name</label>
+						<div class="col-md-7">
+							<?php echo $jobCards->customer->customer_name; ?>
+							
+						</div>
+					</div>
+				</div>
 			</div><br/>
 			
 				<table width="100%" id="main_tb" border="1">
@@ -54,6 +63,7 @@
 							<td valign="top" align="center">
 							<?php echo $this->Form->input('sales_order_id', ['empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->id,'type'=>'hidden']); ?>
 							<?php echo $this->Form->input('sales_order_row_quantity', ['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$sales_order_row->quantity]); ?>
+							<?php echo $this->Form->input('sales_order_row_item_id', ['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$sales_order_row->item_id]); ?>
 							
 							<br/><b><?= h($sales_order_row->item->name) ?> ( <?= h($sales_order_row->quantity) ?> )</b>
 							</td>
@@ -67,7 +77,7 @@
 									<thead>
 										<th>Sr</th>
 										<th width="60%">Item</th>
-										<th>Quantity</th>
+										<th>Quantity Per Unitb3</th>
 										<th width="15%"></th>
 									</thead>
 									<tbody>

@@ -36,7 +36,7 @@ class CustomersController extends AppController
         $this->paginate = [
             'contain' => ['Districts', 'CustomerSegs']
         ];
-        $customers = $this->paginate($this->Customers->find()->where($where));
+        $customers = $this->paginate($this->Customers->find()->where($where)->order(['Customers.customer_name' => 'ASC']));
 
         $this->set(compact('customers'));
         $this->set('_serialize', ['customers']);

@@ -79,6 +79,7 @@ class ContraVouchersController extends AppController
 			
 			if ($this->ContraVouchers->save($contraVoucher)) {
 				$ledger = $this->ContraVouchers->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $contraVoucher->cash_bank_from;
 				$ledger->debit = 0;
 				$ledger->credit = $contraVoucher->amount;
@@ -88,6 +89,7 @@ class ContraVouchersController extends AppController
 				$this->ContraVouchers->Ledgers->save($ledger);
 				//Ledger posting for bankcash
 				$ledger = $this->ContraVouchers->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $contraVoucher->cash_bank_to;
 				$ledger->debit =  $contraVoucher->amount;
 				$ledger->credit = 0;
@@ -170,6 +172,7 @@ class ContraVouchersController extends AppController
 				$this->ContraVouchers->Ledgers->deleteAll(['voucher_id' => $contraVoucher->id, 'voucher_source' => 'Contra Voucher']);
 				
 				$ledger = $this->ContraVouchers->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $contraVoucher->cash_bank_from;
 				$ledger->debit = 0;
 				$ledger->credit = $contraVoucher->amount;
@@ -180,6 +183,7 @@ class ContraVouchersController extends AppController
 				
 				//Ledger posting for bankcash
 				$ledger = $this->ContraVouchers->Ledgers->newEntity();
+				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $contraVoucher->cash_bank_to;
 				$ledger->debit =  $contraVoucher->amount;
 				$ledger->credit = 0;
