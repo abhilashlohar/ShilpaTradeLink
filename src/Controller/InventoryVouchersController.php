@@ -67,7 +67,7 @@ class InventoryVouchersController extends AppController
 			$Invoice = $this->InventoryVouchers->Invoices->get($invoice_id, [
 				'contain' => ['InvoiceRows'=>['Items'],'Creator', 'Companies','Customers','SalesOrders'=>['SalesOrderRows'=>['JobCardRows'=>['Items']]]]
 			]);
-			$job_card_data=[];
+		$job_card_data=[];
 			foreach($Invoice->sales_order->sales_order_rows as $sales_order_row){
 				$job_card_data[$sales_order_row->item_id]=$sales_order_row->job_card_rows;
 			}
@@ -117,19 +117,16 @@ class InventoryVouchersController extends AppController
     { 	$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		
         $inventoryVoucher = $this->InventoryVouchers->get($id, [
-            'contain' =>  ['SalesOrders'=>['SalesOrderRows'=>['InventoryVoucherRows','Items'=>function ($q){
-					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
-				},'InventoryVoucherRows'=>['Items']]],'Creator', 'Companies']
+            'contain' =>  ['InventoryVoucherRows','Companies']
         ]);
+		
+		pr($inventoryVoucher); exit;
 		//pr($inventoryVoucher->sales_order->sales_order_rows->inventory_voucher_rows[0]); exit;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);
-			//$inventoryVoucher->job_card_id=$jobcard_id;
 			$inventoryVoucher->sales_order_id=$inventoryVoucher->sales_order_id;
-			//$inventoryVoucher->created_by=$s_employee_id; 
-			//$inventoryVoucher->company_id=$st_company_id;
-			//pr($inventoryVoucher); exit;
 			
             if ($this->InventoryVouchers->save($inventoryVoucher)) {
 				
