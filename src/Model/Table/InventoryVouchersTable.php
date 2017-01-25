@@ -65,6 +65,10 @@ class InventoryVouchersTable extends Table
 			'foreignKey' => 'company_id',
 			'joinType' => 'INNER'
 		]);
+		$this->belongsTo('Invoices', [
+            'foreignKey' => 'invoices_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**

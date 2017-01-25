@@ -59,6 +59,8 @@ class SalesOrderRowsTable extends Table
             'foreignKey' => 'sales_order_row_id',
 			'saveStrategy' => 'replace'
         ]);
+		
+		
     }
 
     /**

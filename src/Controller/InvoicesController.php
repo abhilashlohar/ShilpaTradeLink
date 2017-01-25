@@ -23,7 +23,12 @@ class InvoicesController extends AppController
 		$url=$this->request->here();
 		$url=parse_url($url,PHP_URL_QUERY);
 		$this->viewBuilder()->layout('index_layout');
-		
+		$inventory_status=$this->request->query('inventory_voucher');
+		//pr($inventory_voucher_status); exit; 
+		if($inventory_status=='true'){
+			$Invoices = $this->paginate($this->Invoices->find()->where(['inventory_voucher_status' => 'Pending']));
+		}
+		//pr($Invoices); exit; 
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
@@ -37,7 +42,7 @@ class InvoicesController extends AppController
 		$total_From=$this->request->query('total_From');
 		$total_To=$this->request->query('total_To');
 		$page=$this->request->query('page');
-		$this->set(compact('ref_no','customer','total_From','total_To','From','To','page','invoice_no','company_alise','file'));
+		$this->set(compact('ref_no','customer','total_From','total_To','From','To','page','invoice_no','company_alise','file','inventory_status'));
 		if(!empty($company_alise)){
 			$where['in1 LIKE']='%'.$company_alise.'%';
 		}

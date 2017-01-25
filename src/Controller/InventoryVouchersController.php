@@ -61,17 +61,15 @@ class InventoryVouchersController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		$jobcard_id=@(int)$this->request->query('jobcard');
-		
-		if(!empty($jobcard_id)){
-			$jobCards = $this->InventoryVouchers->JobCards->get($jobcard_id, [
-            'contain' => ['SalesOrders'=>['SalesOrderRows'=>['Items'=>function ($q){
-					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
-				},'JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
+		$invoice_id=@(int)$this->request->query('Invoice');
+		//pr($invoice_id); exit;
+		if(!empty($invoice_id)){
+			$Invoices = $this->InventoryVouchers->Invoices->get($invoice_id, [
+            'contain' => ['InvoiceRows'],'Creator', 'Companies','Customers']
         ]);
-		$sales_order_id=$jobCards->sales_order_id;	
+		$sales_order_id=$Invoices->sales_order_id;	
 		}
-		
+		pr($Invoices); exit;
 		
 		$last_iv_no=$this->InventoryVouchers->find()->select(['iv2'])->order(['iv2' => 'DESC'])->first();
 			if($last_iv_no){
@@ -152,7 +150,7 @@ class InventoryVouchersController extends AppController
 		
         $items = $this->InventoryVouchers->Items->find('list', ['limit' => 200]);
         //$invoiceRows = $this->InventoryVouchers->InvoiceRows->find('list', ['limit' => 200]);
-        $this->set(compact('inventoryVoucher', 'jobCards','items','last_iv_no'));
+        $this->set(compact('inventoryVoucher', 'Invoices','items','last_iv_no'));
         $this->set('_serialize', ['inventoryVoucher']);
     }
 

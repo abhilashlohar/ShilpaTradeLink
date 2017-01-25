@@ -27,7 +27,7 @@
 					<div class="col-md-9">
 						<div class="input-icon right">
 							<i class="fa"></i>
-							 <?php echo $this->Form->input('transporter_name', ['label' => false,'class' => 'form-control']); ?>
+							 <?php echo $this->Form->input('transporter_name', ['label' => false,'class' => 'form-control allAlpha']); ?>
 						</div>
 					</div>
 				</div>
@@ -137,6 +137,10 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
+			transporter_name:{
+				required: true,
+				lettersonly: true,
+			},
 			mobile:{
 				required: true,
 				digits: true,
@@ -201,6 +205,20 @@ $(document).ready(function() {
 			form[0].submit(); // submit the form
 		}
 
+	});
+		
+	$('.allAlpha').live("keyup",function(){
+		var inputtxt=  $(this).val();
+		var numbers =  /^[a-zA-Z\s]+$/;
+		
+		if(inputtxt.match(numbers))  
+		{  
+		} 
+		else  
+		{  
+			$(this).val('');
+			return false;  
+		}
 	});
 
 

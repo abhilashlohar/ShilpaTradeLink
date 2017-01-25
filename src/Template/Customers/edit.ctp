@@ -13,13 +13,13 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Customer Name <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('customer_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Customer Name']); ?>
+							<?php echo $this->Form->input('customer_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Enter Customer Name']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Alise <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('alias', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Customer Name']); ?>
+							<?php echo $this->Form->input('alias', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Enter Customer Alise']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -34,19 +34,19 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Customer Seg <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('customer_seg_id', ['options' => $customerSegs,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Customer Seg']); ?>
+							<?php echo $this->Form->input('customer_seg_id', ['options' => $customerSegs,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Tin No </label>
-							<?php echo $this->Form->input('tin_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Tin No']); ?>
+							<?php echo $this->Form->input('tin_no', ['label' => false,'class' => 'form-control input-sm nospace']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Gst No </label>
-							<?php echo $this->Form->input('gst_no', ['label' => false,'class' => 'form-control input-sm nospace','placeholder'=>'Gst No']); ?>
+							<?php echo $this->Form->input('gst_no', ['label' => false,'class' => 'form-control input-sm nospace']); ?>
 						</div>
 					</div>
 				</div>
@@ -110,13 +110,13 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Credit Limit</label>
-							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Credit Limit']); ?>
+							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Enter Credit Limit']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Transporter</label>
-							<?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Transporter']); ?>
+							<?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 				</div>
@@ -468,7 +468,10 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 						maxlength:10
 					});
 			$(this).find("td:nth-child(5) input").attr({name:"customer_contacts["+i+"][email]", id:"customer_contacts-"+i+"-email"}).rules("add", "required");
-			$(this).find("td:nth-child(6) input").attr({name:"customer_contacts["+i+"][designation]", id:"customer_contacts-"+i+"-designation"}).rules("add", "required");
+			$(this).find("td:nth-child(6) input").attr({name:"customer_contacts["+i+"][designation]", id:"customer_contacts-"+i+"-designation"}).rules('add', {
+						required: true,
+						lettersonly: true,
+			});
 			$(this).find("td:nth-child(7) input").attr({name:"customer_contacts["+i+"][default_contact]", id:"customer_contacts-"+i+"-default_contact"});
 			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
 			if (test) { test.uniform(); }
