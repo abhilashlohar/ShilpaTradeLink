@@ -242,7 +242,7 @@ $(document).ready(function() {
 				$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input.sr_no').remove();
 				for (i = 0; i < quantity; i++) {
 					
-					$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<input type="text" class="sr_no" name="item_serial_numbers['+item_id+']" placeholder=" enter item '+p+' serial number" />')
+					$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<input type="text" class="sr_no" name="serial_numbers['+item_id+'][]" placeholder="'+p+' serial number" />')
 					p++;
 				}
 			}else{

@@ -90,16 +90,15 @@ class GrnsController extends AppController
         if ($this->request->is('post')) {
 			$grn->vendor_id=$purchase_order->vendor_id;
 			$last_grn_no=$this->Grns->find()->select(['grn2'])->where(['company_id' => $st_company_id])->order(['grn2' => 'DESC'])->first();
-			//pr($last_grn_no);  exit;
 			if($last_grn_no){
 				$grn->grn2=(int)$last_grn_no->grn2+1;
 			}else{
 				$grn->grn2=1;
 			}
-			$item_serial_numbers2=$this->request->data['item_serial_numbers']; 
+			$serial_numbers=$this->request->data['serial_numbers']; 
 			$item_serial_numbers=[];
-			foreach($item_serial_numbers2 as $data){
-				$item_serial_numbers=['item_id'=>2,'serial_no'=>$data,'status'=>'In'];
+			foreach($serial_numbers as $item_id=>$data){
+				$item_serial_numbers=['item_id'=>$item_id,'serial_no'=>$data,'status'=>'In'];
 			}
 			pr($this->request->data); exit;
 			$this->request->data['item_serial_numbers']=$item_serial_numbers;
