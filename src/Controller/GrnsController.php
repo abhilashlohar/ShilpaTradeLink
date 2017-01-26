@@ -98,9 +98,10 @@ class GrnsController extends AppController
 			$serial_numbers=$this->request->data['serial_numbers']; 
 			$item_serial_numbers=[];
 			foreach($serial_numbers as $item_id=>$data){
-				$item_serial_numbers=['item_id'=>$item_id,'serial_no'=>$data,'status'=>'In'];
+				foreach($data as $sr)
+				$item_serial_numbers[]=['item_id'=>$item_id,'serial_no'=>$sr,'status'=>'In'];
 			}
-			pr($this->request->data); exit;
+			
 			$this->request->data['item_serial_numbers']=$item_serial_numbers;
 			//pr($this->request->data); exit;
 			
@@ -109,6 +110,7 @@ class GrnsController extends AppController
 			$grn->purchase_order_id=$purchase_order_id;
 			$grn->company_id=$st_company_id ;
 			$grn->created_by=$this->viewVars['s_employee_id'];
+			//pr($grn); exit;
 			 if ($this->Grns->save($grn)) {
 				
 					if(!empty($purchase_order_id)){
