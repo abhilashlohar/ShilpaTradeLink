@@ -1,47 +1,38 @@
-<?php 
-
-$url_excel="/?".$url;
-
-?>
+<?php $url_excel="/?".$url; ?>
 
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Invoices</span>
-			
+			<span class="caption-subject font-blue-steel uppercase">Invoices</span> 
+			<?php if($inventory_voucher=="true"){ echo " :Select invoice to create it's inventory voucher"; } ?>
 		</div>
-	
-		
-	
-				<div class="actions">
+		<div class="actions">
+		<?php if($inventory_voucher!="true"){ ?>
 			<?php
 			if($status=='Pending'){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
-			
 			if($status=='Cancel'){ $class3='btn btn-primary'; }else{ $class3='btn btn-default'; }
 			?>
 			
-				<?= $this->Html->link(
-					'Pending',
-					'/Invoices/index/Pending',
-					['class' => $class1]
-				); ?>
-				
-				
-				<?= $this->Html->link(
-					'Cancel',
-					'/Invoices/index/Cancel',
-					['class' => $class3]
-				); ?>
-				<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/Invoices/Export-Excel/'.@$url_excel.'',['class' =>'btn btn-sm green tooltips pull-right','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
-			
+			<?= $this->Html->link(
+				'Pending',
+				'/Invoices/index/Pending',
+				['class' => $class1]
+			); ?>
+			<?= $this->Html->link(
+				'Cancel',
+				'/Invoices/index/Cancel',
+				['class' => $class3]
+			); ?>
+			<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/Invoices/Export-Excel/'.@$url_excel.'',['class' =>'btn btn-sm green tooltips pull-right','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
+		<?php } ?>
 		</div>
-		
 	</div>
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
 				<form method="GET" >
+				<input type="hidden" name="inventory_voucher" value="<?php echo @$inventory_voucher; ?>">
 				<table class="table table-condensed">
 					<thead>
 						<tr>
@@ -119,12 +110,16 @@ $url_excel="/?".$url;
 							<td><?= h($invoice->total_after_pnf) ?></td>
 							<td class="actions">
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $invoice->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
+								<?php if($inventory_voucher!="true"){ ?>
 								<?php if($invoice->status !='Cancel'){
 								echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $invoice->id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));  echo $this->Html->link('<i class="fa fa-minus-circle"></i> ',['action' => '#'],array('escape'=>false,'class'=>'btn btn-xs red tooltips close_btn','data-original-title'=>'Close','role'=>'button','invoice_id'=>$invoice->id));
-								} 
-								if($invoice->inventory_voucher_status=='Pending'){ 
+								}?>
+								<?php } ?>
+								<?php
+								if($invoice->inventory_voucher_status=='Pending'){
 								echo $this->Html->link('<i class="fa fa-repeat"></i>  Create Inventory Voucher','/Inventory-Vouchers/Add?Invoice='.$invoice->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
+								
 							</td>
 						</tr>
 						<?php endforeach; ?>

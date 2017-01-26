@@ -23,12 +23,8 @@ class InvoicesController extends AppController
 		$url=$this->request->here();
 		$url=parse_url($url,PHP_URL_QUERY);
 		$this->viewBuilder()->layout('index_layout');
-		$inventory_status=$this->request->query('inventory_voucher');
-		//pr($inventory_voucher_status); exit; 
-		if($inventory_status=='true'){
-			$Invoices = $this->paginate($this->Invoices->find()->where(['inventory_voucher_status' => 'Pending']));
-		}
-		//pr($Invoices); exit; 
+		$inventory_voucher=$this->request->query('inventory_voucher');
+		
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
@@ -73,15 +69,23 @@ class InvoicesController extends AppController
         $this->paginate = [
             'contain' => ['Customers', 'Companies']
         ];
-		if($status=='Pending'){
+		
+		if($inventory_voucher=='true'){
 			$where['status']='';
+			$where['inventory_voucher_status']='Pending';
+		}else{
+			if($status=='Pending'){
+				$where['status']='';
+			}
+			elseif($status=='Cancel'){
+				$where['status']='Cancel';
+			}	
 		}
-		elseif($status=='Cancel'){
-			$where['status']='Cancel';
-		}
+		
         $invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
 		
-        $this->set(compact('invoices','status'));
+		
+        $this->set(compact('invoices','status','inventory_voucher'));
         $this->set('_serialize', ['invoices']);
 		$this->set(compact('url'));
     }

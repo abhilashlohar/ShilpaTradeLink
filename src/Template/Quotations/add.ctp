@@ -383,7 +383,6 @@ $(document).ready(function() {
 				customer_address : {
 					  required: true,
 				},
-				
 				employee_id:{
 					required: true
 				},
