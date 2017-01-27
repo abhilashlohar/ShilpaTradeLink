@@ -457,12 +457,24 @@ class InvoicesController extends AppController
 			
             if ($this->Invoices->save($invoice)) {
 				
+				$this->Invoices->Ledgers->deleteAll(['voucher_id' => $invoice->id, 'voucher_source' => 'Invoice']);
+				//pr($invoice->inventory_voucher_status); 
+				if($invoice->inventory_voucher_status == 'Converted'){
+				
+				$InventoryVoucher = $this->Invoices->InventoryVouchers->get($id,[
+					'contain' => ['InventoryVoucherRows']
+				]);
+				
+				$this->Invoices->InventoryVouchers->ItemLedgers->deleteAll(['ItemLedgers.source_id' => $InventoryVoucher->id,'source_model'=>'Inventory Voucher']);
+				$this->Invoices->InventoryVouchers->InventoryVoucherRows->deleteAll(['InventoryVoucherRows.inventory_voucher_id' => $InventoryVoucher->id]);
+				$this->Invoices->InventoryVouchers->delete($InventoryVoucher);
+				}
+				//pr(hello); exit;
 				$query = $this->Invoices->query();
 					$query->update()
 						->set(['inventory_voucher_status' => 'Pending'])
 						->where(['id' => $id])
 						->execute();
-				$this->Invoices->Ledgers->deleteAll(['voucher_id' => $invoice->id, 'voucher_source' => 'Invoice']);
 				$customer_ledger=$this->Invoices->Customers->get($invoice->customer_id);
 				
 				
