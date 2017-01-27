@@ -34,6 +34,7 @@
 				<tr class="main_tr">
 					<td>
 					<?= h($invoice_row->item->name) ?> (<?= h($invoice_row->quantity) ?>)
+					<?php echo $this->Form->input('invoice_row_quantity', ['type' => 'hidden','label' => false,'value' => $invoice_row->quantity]); ?>
 					<?php echo $this->Form->input('invoice_row_id', ['type' => 'hidden','label' => false,'value' => $invoice_row->id]); ?>
 					</td>
 					<td>

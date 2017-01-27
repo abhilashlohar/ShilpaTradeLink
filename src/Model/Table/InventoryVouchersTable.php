@@ -53,7 +53,8 @@ class InventoryVouchersTable extends Table
         ]);
         $this->hasMany('InventoryVoucherRows', [
             'foreignKey' => 'inventory_voucher_id',
-			'saveStrategy' => 'replace'	
+			'saveStrategy' => 'replace'
+
         ]);
 		$this->belongsTo('Creator', [
 			'className' => 'Employees',

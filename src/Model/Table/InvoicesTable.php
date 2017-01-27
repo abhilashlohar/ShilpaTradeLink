@@ -86,6 +86,11 @@ class InvoicesTable extends Table
             'joinType' => 'INNER'
         ]);
 		
+		$this->belongsTo('InventoryVouchers', [
+            'foreignKey' => 'invoice_id',
+            'joinType' => 'INNER'
+        ]);
+		
 		$this->belongsTo('AccountReferences');
 		$this->belongsTo('Ledgers');
 		
