@@ -92,6 +92,11 @@ class InventoryVouchersController extends AppController
 			$inventoryVoucher->company_id=$st_company_id;
 			//pr($inventoryVoucher); exit;
             if ($this->InventoryVouchers->save($inventoryVoucher)) {
+				$query = $this->InventoryVouchers->Invoices->query();
+					$query->update()
+						->set(['inventory_voucher_status' => 'Converted'])
+						->where(['id' => $inventoryVoucher->invoice_id])
+						->execute();
                 $this->Flash->success(__('The inventory voucher has been saved.'));
                 return $this->redirect(['action' => 'index']);
             } else { 
@@ -115,20 +120,32 @@ class InventoryVouchersController extends AppController
      */
     public function edit($id = null)
     { 	$this->viewBuilder()->layout('index_layout');
+		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		
-        $inventoryVoucher = $this->InventoryVouchers->get($id, [
-            'contain' =>  ['InventoryVoucherRows','Companies']
-        ]);
-		
-		pr($inventoryVoucher); exit;
+		$inventoryVoucher = $this->InventoryVouchers->get($id);
+		$invoice_id=$inventoryVoucher->invoice_id;
+		//pr($invoice_id); exit;
+        $Invoice = $this->InventoryVouchers->Invoices->get($invoice_id, [
+				'contain' => ['InvoiceRows'=>['Items'],'Creator', 'Companies','Customers']
+			]);
+		$inventoryVoucher = $this->InventoryVouchers->get($id, [
+				'contain' => ['InventoryVoucherRows'=>['Items'],'Creator', 'Companies']
+			]);
+		//pr($Invoice); exit;
 		//pr($inventoryVoucher->sales_order->sales_order_rows->inventory_voucher_rows[0]); exit;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);
 			$inventoryVoucher->sales_order_id=$inventoryVoucher->sales_order_id;
 			
             if ($this->InventoryVouchers->save($inventoryVoucher)) {
+				$inventoryVoucher->iv1=$inventoryVoucher->iv1;
+				$inventoryVoucher->iv2=$inventoryVoucher->iv2;
+				$inventoryVoucher->iv3=$inventoryVoucher->iv3;
+				$inventoryVoucher->iv4='16-17';
+				$inventoryVoucher->invoice_id=$invoice_id;
+				$inventoryVoucher->created_by=$s_employee_id; 
+				$inventoryVoucher->company_id=$st_company_id;
 				
 				$query = $this->InventoryVouchers->ItemLedgers->query();
 				$query->delete()
@@ -156,7 +173,7 @@ class InventoryVouchersController extends AppController
 					}
 					}
 					
-					foreach($inventoryVoucher->sales_order->sales_order_rows as $sales_order_row ){
+					/* foreach($inventoryVoucher->sales_order->sales_order_rows as $sales_order_row ){
 						$amount=$items_with_rate[$sales_order_row->id];
 						$update_rate=$amount/$sales_order_row->quantity;
 						
@@ -171,19 +188,19 @@ class InventoryVouchersController extends AppController
 						$itemLedger->processed_on = date("Y-m-d");
 						$this->InventoryVouchers->ItemLedgers->save($itemLedger);
 						
-					} 
+					}  */
 					
 				
                 $this->Flash->success(__('The inventory voucher has been saved.'));
 			
 
                 return $this->redirect(['action' => 'index']);
-            } else { pr($inventoryVoucher); exit;
+            } else { 
                 $this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
             }
         }
         $items = $this->InventoryVouchers->Items->find('list', ['limit' => 200]);
-        $this->set(compact('inventoryVoucher', 'invoices', 'invoiceRows','items'));
+        $this->set(compact('inventoryVoucher', 'Invoice', 'invoiceRows','items'));
         $this->set('_serialize', ['inventoryVoucher']);
     }
 

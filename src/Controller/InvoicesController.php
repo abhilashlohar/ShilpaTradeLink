@@ -73,6 +73,7 @@ class InvoicesController extends AppController
 		if($inventory_voucher=='true'){
 			$where['status']='';
 			$where['inventory_voucher_status']='Pending';
+			
 		}else{
 			if($status=='Pending'){
 				$where['status']='';
@@ -81,8 +82,11 @@ class InvoicesController extends AppController
 				$where['status']='Cancel';
 			}	
 		}
-		
+		if($inventory_voucher=='true'){
+			$invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id,'inventory_voucher_status'=>'Pending'])->order(['Invoices.id' => 'DESC']));
+		}else{
         $invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
+		}
 		
 		
         $this->set(compact('invoices','status','inventory_voucher'));
@@ -453,8 +457,14 @@ class InvoicesController extends AppController
 			
             if ($this->Invoices->save($invoice)) {
 				
+				$query = $this->Invoices->query();
+					$query->update()
+						->set(['inventory_voucher_status' => 'Pending'])
+						->where(['id' => $id])
+						->execute();
 				$this->Invoices->Ledgers->deleteAll(['voucher_id' => $invoice->id, 'voucher_source' => 'Invoice']);
 				$customer_ledger=$this->Invoices->Customers->get($invoice->customer_id);
+				pr($customer_ledger); exit;
 				
 				$ledger_grand=$invoice->grand_total;
 				$ledger = $this->Invoices->Ledgers->newEntity();

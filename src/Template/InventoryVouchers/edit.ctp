@@ -6,19 +6,19 @@
 	padding:3px;
 }
 </style>
-<?php pr($inventoryVoucher); exit; ?>
+<?php //pr($Invoice); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Add Inventory Voucher</span>
+			<span class="caption-subject font-blue-steel uppercase">Edit Inventory Voucher</span>
 		</div>
 		<div class="actions">
 		<?php echo $this->Html->link('<i class="fa fa-files-o"></i> Pull Invoice','/Invoices?inventory_voucher=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
 		</div>
 	</div>
 	<div>
-	<?php if(@$Invoice){ ?>
+	<?php if(@$inventoryVoucher){ ?>
 		<?= $this->Form->create($inventoryVoucher,['id'=>'form_sample_3']) ?>
 		<table border="1" width="80%" id="main_tb">
 			<thead>
@@ -30,7 +30,7 @@
 			<tbody id="maintbody">
 			<?php 
 			$i=0;
-			foreach($inventoryVoucher->invoice_rows as $invoice_row){ ?>
+			foreach($Invoice->invoice_rows as $invoice_row){ ?>
 				<tr class="main_tr">
 					<td>
 					<?= h($invoice_row->item->name) ?> (<?= h($invoice_row->quantity) ?>)
@@ -39,7 +39,7 @@
 					<td>
 					<table>
 						<tbody>
-						<?php foreach($job_card_data[$invoice_row->item_id] as $job_card_row){ ?>
+						<?php foreach($inventoryVoucher->inventory_voucher_rows as $job_card_row){ ?>
 							<tr>
 								<td>
 								<?php echo $this->Form->input('invoice_row_id', ['type' => 'hidden','value'=>$invoice_row->id]); ?>

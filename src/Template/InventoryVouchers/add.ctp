@@ -59,7 +59,7 @@
 			<?php } ?>
 			</tbody>
 		</table>
-		<button type="submit" class="btn btn-primary" >GENERATE QUOTATION</button>
+		<button type="submit" class="btn btn-primary" >GENERATE INVENTORY VOUCHER</button>
 		<?= $this->Form->end() ?>
 	<?php } ?>
 	</div>
