@@ -262,9 +262,9 @@ class InvoicesController extends AppController
 					]
 			]);
 			$process_status='Pulled From Sales-Order';
+			
 		}
 			
-	
 		$this->set(compact('sales_order','process_status','sales_order_id'));
 		
         $invoice = $this->Invoices->newEntity();
@@ -278,7 +278,6 @@ class InvoicesController extends AppController
 			}else{
 				$invoice->in2=1;
 			}
-			
 			$invoice->in3=$sales_order->so3;
 			$invoice->created_by=$s_employee_id;
 			$invoice->company_id=$sales_order->company_id;
@@ -289,7 +288,7 @@ class InvoicesController extends AppController
 			//pr($invoice->in3); exit;
 			$invoice->date_created=date("Y-m-d");
 			$invoice->due_payment=$invoice->grand_total;
-		
+			
             if ($this->Invoices->save($invoice)) {
 				
 				$ledger_grand=$invoice->grand_total;
@@ -359,12 +358,37 @@ class InvoicesController extends AppController
 					$this->Invoices->Ledgers->save($ledger); 
 				}
 				
+				
+				 $discount=$invoice->discount;
+				 $pf=$invoice->pnf;
+				 $exciseDuty=$invoice->exceise_duty;
+				 $sale_tax=$invoice->sale_tax_amount;
+				 $fright=$invoice->fright_amount;
+				 $total_amt=0;
+				foreach($invoice->invoice_rows as $invoice_row){
+					$amt=$invoice_row->amount;
+					$total_amt=$total_amt+$amt;
+				}
+				
 				if(!empty($sales_order_id)){
 					$invoice->check=array_filter($invoice->check);
 					$i=0; 
 					foreach($invoice->check as $sales_order_row_id){
 						$item_id=$invoice->invoice_rows[$i]['item_id'];
 						$qty=$invoice->invoice_rows[$i]['quantity'];
+						$rate=$invoice->invoice_rows[$i]['rate'];
+						$amount=$invoice->invoice_rows[$i]['amount'];
+						$dis=$discount*$amount/$total_amt;
+						$item_discount=$dis/$qty;
+						$pnf=$pf*$amount/$total_amt;
+						$item_pf=$pnf/$qty;
+						$excise=$exciseDuty*$amount/$total_amt;
+						$item_excise=$excise/$qty;
+						$saletax=$sale_tax*$amount/$total_amt;
+						$item_saletax=$saletax/$qty;
+						$fr_amount=$fright*$amount/$total_amt;
+						$item_fright=$fr_amount/$qty;
+						
 						
 						$SalesOrderRow = $this->Invoices->SalesOrderRows->get($sales_order_row_id);
 						$SalesOrderRow->processed_quantity=$SalesOrderRow->processed_quantity+$qty;
@@ -378,8 +402,11 @@ class InvoicesController extends AppController
 						$itemLedger->source_model = 'Invoices';
 						$itemLedger->source_id = $invoice->id;
 						$itemLedger->in_out = 'Out';
+						$itemLedger->rate = $rate-$item_discount+$item_excise+$item_saletax+$item_fright+$item_pf;
 						$itemLedger->company_id = $invoice->company_id;
 						$itemLedger->processed_on = date("Y-m-d");
+						$itemLedger->rate_updated = 'Yes';
+						
 						$this->Invoices->ItemLedgers->save($itemLedger);
 						
 					}
@@ -453,9 +480,7 @@ class InvoicesController extends AppController
 			$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date)); 
 			$invoice->in3=$invoice->in3;
 			$invoice->due_payment=$invoice->grand_total;
-			//pr($invoice->invoice_rows); exit;
-			
-            if ($this->Invoices->save($invoice)) {
+			if ($this->Invoices->save($invoice)) {
 				
 				$query = $this->Invoices->query();
 					$query->update()
@@ -464,8 +489,6 @@ class InvoicesController extends AppController
 						->execute();
 				$this->Invoices->Ledgers->deleteAll(['voucher_id' => $invoice->id, 'voucher_source' => 'Invoice']);
 				$customer_ledger=$this->Invoices->Customers->get($invoice->customer_id);
-				pr($customer_ledger); exit;
-				
 				$ledger_grand=$invoice->grand_total;
 				$ledger = $this->Invoices->Ledgers->newEntity();
 				$ledger->ledger_account_id = $customer_ledger->ledger_account_id;
@@ -528,6 +551,7 @@ class InvoicesController extends AppController
 				$ledger->company_id = $invoice->company_id;
 				$ledger->transaction_date = $invoice->date_created;
 				$ledger->voucher_source = 'Invoice';
+				
 				if($ledger_fright>0)
 				{
 					$this->Invoices->Ledgers->save($ledger); 
@@ -546,10 +570,33 @@ class InvoicesController extends AppController
 				
 				$this->Invoices->ItemLedgers->deleteAll(['source_id' => $invoice->id, 'source_model'=> 'Invoices']);
 				
+				 $discount=$invoice->discount;
+				 $pf=$invoice->pnf;
+				 $exciseDuty=$invoice->exceise_duty;
+				 $sale_tax=$invoice->sale_tax_amount;
+				 $fright=$invoice->fright_amount;
+				 $total_amt=0;
+				foreach($invoice->invoice_rows as $invoice_row){
+					$amt=$invoice_row->amount;
+					$total_amt=$total_amt+$amt;
+				}
 				$i=0; foreach($invoice->invoice_rows as $invoice_rows){
 					
-					$item_id=$invoice->invoice_rows[$i]['item_id'];
+						$item_id=$invoice->invoice_rows[$i]['item_id'];
 						$qty=$invoice->invoice_rows[$i]['quantity'];
+						$rate=$invoice->invoice_rows[$i]['rate'];
+						$amount=$invoice->invoice_rows[$i]['amount'];
+						$dis=$discount*$amount/$total_amt;
+						$item_discount=$dis/$qty;
+						$pnf=$pf*$amount/$total_amt;
+						$item_pf=$pnf/$qty;
+						$excise=$exciseDuty*$amount/$total_amt;
+						$item_excise=$excise/$qty;
+						$saletax=$sale_tax*$amount/$total_amt;
+						$item_saletax=$saletax/$qty;
+						$fr_amount=$fright*$amount/$total_amt;
+						$item_fright=$fr_amount/$qty;
+						
 						
 						$itemLedger = $this->Invoices->ItemLedgers->newEntity();
 						$itemLedger->item_id = $item_id;
@@ -557,8 +604,10 @@ class InvoicesController extends AppController
 						$itemLedger->source_model = 'Invoices';
 						$itemLedger->source_id = $invoice->id;
 						$itemLedger->in_out = 'Out';
+						$itemLedger->rate = $rate-$item_discount+$item_excise+$item_saletax+$item_fright+$item_pf;
 						$itemLedger->company_id = $invoice->company_id;
 						$itemLedger->processed_on = date("Y-m-d");
+						$itemLedger->rate_updated = 'Yes';
 						$this->Invoices->ItemLedgers->save($itemLedger);
 						$i++;
 
