@@ -125,9 +125,9 @@
 							
 							$total_pnf=($tot_pnf*$grn->purchase_order->purchase_order_rows[$q]->amount)/$grn->purchase_order->total;
 							$item_pnf=$total_pnf/$grn->purchase_order->purchase_order_rows[$q]->quantity;
-							$total_sale=($tot_sale_tax*$grn->purchase_order->purchase_order_rows[$q]->amount)/$grn->purchase_order->total;
-							$item_sale=$total_pnf/$grn->purchase_order->purchase_order_rows[$q]->quantity;
 							
+							$total_sale=($tot_sale_tax*$grn->purchase_order->purchase_order_rows[$q]->amount)/$grn->purchase_order->total;
+							$item_sale=$total_sale/$grn->purchase_order->purchase_order_rows[$q]->quantity;
 							?>
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.rate',['label' => false,'class' => 'form-control input-sm','value'=>$grn->purchase_order->purchase_order_rows[$q]->rate-$item_discount+$item_pnf+$item_sale,'type'=>'text']); ?></td>
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.amount',['label' => false,'class' => 'form-control input-sm','value'=>$grn->purchase_order->purchase_order_rows[$q]->rate*$grn_rows->quantity,'type'=>'text']); ?></td>
