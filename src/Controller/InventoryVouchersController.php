@@ -97,6 +97,31 @@ class InventoryVouchersController extends AppController
 						->set(['inventory_voucher_status' => 'Converted'])
 						->where(['id' => $inventoryVoucher->invoice_id])
 						->execute();
+						
+				foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
+						$quantity=0;
+						
+						$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
+						
+						$itemLedger->item_id = $inventory_voucher_row->item_id;		
+						//pr(); exit;
+						$quantity=$inventoryVoucher->invoice_row_quantity*$inventory_voucher_row->quantity;
+						$itemLedger->quantity = $quantity;
+						$itemLedger->source_model = 'Inventory Voucher';
+						$itemLedger->source_id = $inventory_voucher_row->inventory_voucher_id;
+						$itemLedger->in_out = 'Out';
+						$itemLedger->rate = '0.00';
+						$itemLedger->company_id = $st_company_id;
+						$itemLedger->processed_on = date("Y-m-d");
+						//pr($itemLedger); exit;
+						$this->InventoryVouchers->ItemLedgers->save($itemLedger);
+						$results=$this->InventoryVouchers->ItemLedgers->find()->where(['ItemLedgers.item_id' => $inventory_voucher_row->item_id,'ItemLedgers.in_out' => 'In','company_id' => $st_company_id]); 
+						
+					foreach($results as $result){
+						
+						$items_with_rate[$inventory_voucher_row->sales_order_row_id]=@$items_with_rate[$inventory_voucher_row->sales_order_row_id]+($result->rate*$inventory_voucher_row->quantity);
+					}
+					}
                 $this->Flash->success(__('The inventory voucher has been saved.'));
                 return $this->redirect(['action' => 'index']);
             } else { 
@@ -151,11 +176,14 @@ class InventoryVouchersController extends AppController
 				$query->delete()
 					->where(['ItemLedgers.source_id' => $inventoryVoucher->id,'source_model' =>'Inventory Voucher'])
 					->execute();
-					foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
+						foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
 						$quantity=0;
+						
 						$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
+						
 						$itemLedger->item_id = $inventory_voucher_row->item_id;		
-						$quantity=$inventory_voucher_row->sales_order_row_quantity*$inventory_voucher_row->quantity;
+						//pr(); exit;
+						$quantity=$inventoryVoucher->invoice_row_quantity*$inventory_voucher_row->quantity;
 						$itemLedger->quantity = $quantity;
 						$itemLedger->source_model = 'Inventory Voucher';
 						$itemLedger->source_id = $inventory_voucher_row->inventory_voucher_id;

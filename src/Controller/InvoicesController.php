@@ -464,7 +464,7 @@ class InvoicesController extends AppController
 						->execute();
 				$this->Invoices->Ledgers->deleteAll(['voucher_id' => $invoice->id, 'voucher_source' => 'Invoice']);
 				$customer_ledger=$this->Invoices->Customers->get($invoice->customer_id);
-				pr($customer_ledger); exit;
+				
 				
 				$ledger_grand=$invoice->grand_total;
 				$ledger = $this->Invoices->Ledgers->newEntity();
