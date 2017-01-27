@@ -110,7 +110,7 @@ class GrnsController extends AppController
 			$grn->purchase_order_id=$purchase_order_id;
 			$grn->company_id=$st_company_id ;
 			$grn->created_by=$this->viewVars['s_employee_id'];
-			//pr($grn); exit;
+			//
 			 if ($this->Grns->save($grn)) {
 				
 					if(!empty($purchase_order_id)){
@@ -142,7 +142,7 @@ class GrnsController extends AppController
 					$this->Flash->success(__('The grn has been saved.'));
 
 					return $this->redirect(['action' => 'index']);
-				} else { 
+				} else { pr($grn); exit;
 					$this->Flash->error(__('The grn could not be saved. Please, try again.'));
 				}
 			}
