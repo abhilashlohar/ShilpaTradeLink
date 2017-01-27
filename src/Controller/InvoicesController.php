@@ -501,11 +501,7 @@ class InvoicesController extends AppController
 						->where(['id' => $id])
 						->execute();
 				$customer_ledger=$this->Invoices->Customers->get($invoice->customer_id);
-<<<<<<< HEAD
-=======
-				
-				
->>>>>>> origin/master
+
 				$ledger_grand=$invoice->grand_total;
 				$ledger = $this->Invoices->Ledgers->newEntity();
 				$ledger->ledger_account_id = $customer_ledger->ledger_account_id;
