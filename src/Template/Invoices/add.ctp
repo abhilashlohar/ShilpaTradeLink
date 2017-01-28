@@ -821,7 +821,7 @@ $(document).ready(function() {
 		});
 		}
 		else{
-			
+			$("#pending_invoice_container").html('<div align="center"></div>');
 		}
 	});
 	calculation_for_total();

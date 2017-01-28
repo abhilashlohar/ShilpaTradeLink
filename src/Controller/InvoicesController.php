@@ -274,7 +274,7 @@ class InvoicesController extends AppController
 		if(!empty($this->request->data['invoice_breakups'])){
 				foreach($this->request->data['invoice_breakups'] as $invoice_breakup_record){
 						if(@$invoice_breakup_record['checkbox']){
-						$invoice_breakups[]=['receipt_id'=>$invoice_breakup_record['receipt_id'],'amount'=>$invoice_breakup_record['amount']];
+						$invoice_breakups[]=['receipt_voucher_id'=>$invoice_breakup_record['receipt_voucher_id'],'amount'=>$invoice_breakup_record['amount']];
 					}
 				} 
 			}
