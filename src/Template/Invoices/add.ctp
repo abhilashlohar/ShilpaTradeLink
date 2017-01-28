@@ -787,10 +787,11 @@ $(document).ready(function() {
     });
 	
 	$(".check_row").die().live("click",function() {  
-	if($(this).is(':checked')){ alert(); 
+	if($(this).is(':checked')){  
 			$(this).closest('tr').find('.amount_box').removeAttr('readonly');
-			var invoice_amount=$(this).closest('tr').find('.amount_box').attr('invoice_amount');
-			$(this).closest('tr').find('.amount_box').val(invoice_amount);
+			var amount=$(this).closest('tr').find('.amount_box').attr('amount');
+			
+			$(this).closest('tr').find('.amount_box').val(amount);
 			calculation_for_total();
    
 		}else{
