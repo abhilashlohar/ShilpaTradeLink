@@ -229,8 +229,8 @@ $(document).ready(function() {
 	//--	 END OF VALIDATION
 	//$('input[name="showthis"]').hide();
 	
-	
-	$('.rename_check').die().live("click",function() {
+	function add_sr_textbox(){
+		var r=0;
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
 			var val=$(this).find('td:nth-child(4) input[type="checkbox"]:checked').val();
@@ -242,16 +242,27 @@ $(document).ready(function() {
 				$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input.sr_no').remove();
 				for (i = 0; i < quantity; i++) {
 					
-					$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<input type="text" class="sr_no" name="serial_numbers['+item_id+'][]" placeholder="'+p+' serial number" />')
+					$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<input type="text" class="sr_no" name="serial_numbers['+item_id+'][]" placeholder="'+p+' serial number" id="sr_no'+r+'" />');
 					p++;
+					r++;
 				}
 			}else{
 				$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input.sr_no').remove();
 			}
 		});
+	}
+	
+	$('.rename_check').die().live("click",function() {
+		add_sr_textbox();
 		rename_rows();
-		
     });
+	$('.quantity').die().live("keyup",function() {
+		add_sr_textbox();
+		rename_rows();
+    });
+	
+	
+	
 	var p=0;
 	function rename_rows(){
 		$("#main_tb tbody tr.tr1").each(function(){
