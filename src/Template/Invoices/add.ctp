@@ -322,7 +322,31 @@
 						</div>
 					</div>
 				</div>
-			</div>
+				<div class="col-md-5">
+					<div class="form-group">
+						<label class="col-md-6 control-label">Payment Type<span class="required" aria-required="true">*</span></label>
+						<div class="col-md-6" id="due">
+							<div class="radio-list">
+								<div class="radio-inline" >
+								<?php echo $this->Form->radio(
+									'payment_mode',
+									[
+										['value' => 'New_ref', 'text' => 'New_ref'],
+										['value' => 'Agst_ref', 'text' => 'Agst_ref']
+									]
+								); ?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<table width="100%">
+					<tr>
+						<td width="100%" align="center" valign="top" id="pending_invoice_container"></td>
+						<td></td>
+						
+					</tr>
+				</table>
 		</div>
 		<?php echo $this->Form->input('process_status', ['type' => 'hidden','value' => @$process_status]); ?>
 		<?php echo $this->Form->input('sales_order_id', ['type' => 'hidden','value' => @$sales_order_id]); ?>
@@ -761,6 +785,60 @@ $(document).ready(function() {
 		$('textarea[name="customer_address"]').val(addr);
 		$("#myModal12").hide();
     });
+	
+	$(".check_row").die().live("click",function() {  
+	if($(this).is(':checked')){ alert(); 
+			$(this).closest('tr').find('.amount_box').removeAttr('readonly');
+			var invoice_amount=$(this).closest('tr').find('.amount_box').attr('invoice_amount');
+			$(this).closest('tr').find('.amount_box').val(invoice_amount);
+			calculation_for_total();
+   
+		}else{
+			$(this).closest('tr').find('.amount_box').attr('readonly','readonly');
+			$(this).closest('tr').find('.amount_box').val('');
+			calculation_for_total();
+		}
+	
+	});
+	
+	 $('input[type="radio"]').click(function(){ 
+	    var payment_mode_sel=$('input[name=payment_mode]:checked').val();
+		
+	    var customer_id=$('input[name="customer_id"]').val();
+		
+		if(payment_mode_sel == 'Agst_ref'){
+		$("#pending_invoice_container").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
+		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'AgstRefForPayment']); ?>";
+		
+		url=url+'/'+customer_id,
+		
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$("#pending_invoice_container").html(response);
+			
+		});
+		}
+		else{
+			
+		}
+	});
+	calculation_for_total();
+	$('input').live("keyup",function() {
+		calculation_for_total();
+	});
+	function calculation_for_total(){  
+		var total_left=0; var total_right=0; var sum=0;
+		$("#due_receipt tbody tr.tr1").each(function(){ 
+			var val=$(this).find('td:nth-child(1) input[type="checkbox"]:checked').val();
+			if(val){
+				var qty=parseFloat($(this).find('.amount_box').val());
+				total_left=total_left+qty;
+			} 
+			$('input[name="total_amount_agst"]').val(total_left.toFixed(2));	
+			
+		});
+	}
 	
 	
 });

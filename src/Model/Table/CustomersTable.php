@@ -116,6 +116,7 @@ class CustomersTable extends Table
             'foreignKey' => 'account_second_subgroup_id',
             'joinType' => 'INNER'
         ]);
+		$this->belongsTo('ReceiptVouchers');
 		
     }
 

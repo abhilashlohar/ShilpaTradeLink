@@ -241,4 +241,17 @@ class CustomersController extends AppController
 		$Customer = $this->Customers->get($customer_id);
 		echo $Customer->credit_limit;
     }
+	function AgstRefForPayment($customer_id=null){
+		$this->viewBuilder()->layout('');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$Customer=$this->Customers->find()->where(['Customers.id'=>$customer_id])->first();
+		//pr($Customer); 
+		$ReceiptVoucher=$this->Customers->ReceiptVouchers->find()->where(['received_from_id'=>$Customer->ledger_account_id])->toArray();
+		//pr($ReceiptVoucher); exit;
+		if(!$ReceiptVoucher){ echo 'Select paid to.'; exit; }
+		//$InvoiceBookings = $this->InvoiceBookings->find()->where(['company_id'=>$st_company_id,'vendor_id'=>$Vendor->id,'due_payment >'=>0]);
+		$this->set(compact('Customer','ReceiptVoucher'));
+	}
 }

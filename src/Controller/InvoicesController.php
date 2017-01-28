@@ -269,7 +269,18 @@ class InvoicesController extends AppController
 		
         $invoice = $this->Invoices->newEntity();
         if ($this->request->is('post')) {
+		
+		$invoice_breakups=[];
+		if(!empty($this->request->data['invoice_breakups'])){
+				foreach($this->request->data['invoice_breakups'] as $invoice_breakup_record){
+						if(@$invoice_breakup_record['checkbox']){
+						$invoice_breakups[]=['receipt_id'=>$invoice_breakup_record['receipt_id'],'amount'=>$invoice_breakup_record['amount']];
+					}
+				} 
+			}
 			
+		$this->request->data['invoice_breakups']=$invoice_breakups;
+		
 		$invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
 			
 			$last_in_no=$this->Invoices->find()->select(['in2'])->where(['company_id' => $sales_order->company_id])->order(['in2' => 'DESC'])->first();
@@ -289,7 +300,16 @@ class InvoicesController extends AppController
 			$invoice->date_created=date("Y-m-d");
 			$invoice->due_payment=$invoice->grand_total;
 			
+
+			
+			
+			
+			//pr($invoice); exit;
+			
             if ($this->Invoices->save($invoice)) {
+				
+				//pr($invoice); exit;
+				
 				
 				$ledger_grand=$invoice->grand_total;
 				$ledger = $this->Invoices->Ledgers->newEntity();
@@ -414,7 +434,7 @@ class InvoicesController extends AppController
                 $this->Flash->success(__('The invoice has been saved.'));
 
                 return $this->redirect(['action' => 'confirm/'.$invoice->id]);
-            } else {
+            } else { pr($invoice); exit;
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }
         }
