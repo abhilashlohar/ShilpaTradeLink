@@ -17,7 +17,7 @@
 					<div class="col-md-9">
 						<div class="input-icon right">
 							<i class="fa"></i>
-							 <?php echo $this->Form->input('name', ['label' => false,'class' => 'form-control firstupercase', 'required pattern' => "[a-zA-Z' ']+"]); ?>
+							 <?php echo $this->Form->input('name', ['label' => false,'class' => 'form-control firstupercase']); ?>
 						</div>
 					</div>
 				</div>

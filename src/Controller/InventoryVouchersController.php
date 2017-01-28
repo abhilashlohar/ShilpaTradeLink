@@ -90,47 +90,81 @@ class InventoryVouchersController extends AppController
 			$inventoryVoucher->invoice_id=$invoice_id;
 			$inventoryVoucher->created_by=$s_employee_id; 
 			$inventoryVoucher->company_id=$st_company_id;
-			//pr($inventoryVoucher); exit;
+			
             if ($this->InventoryVouchers->save($inventoryVoucher)) {
+				
 				$query = $this->InventoryVouchers->Invoices->query();
 					$query->update()
 						->set(['inventory_voucher_status' => 'Converted'])
 						->where(['id' => $inventoryVoucher->invoice_id])
 						->execute();
-						
+				
 				foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
-						$quantity=0;
-						
-						$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
-						
-						$itemLedger->item_id = $inventory_voucher_row->item_id;		
-						//pr(); exit;
-						$quantity=$inventoryVoucher->invoice_row_quantity*$inventory_voucher_row->quantity;
-						$itemLedger->quantity = $quantity;
-						$itemLedger->source_model = 'Inventory Voucher';
-						$itemLedger->source_id = $inventory_voucher_row->inventory_voucher_id;
-						$itemLedger->in_out = 'Out';
-						$itemLedger->rate = '0.00';
-						$itemLedger->company_id = $st_company_id;
-						$itemLedger->processed_on = date("Y-m-d");
-						//pr($itemLedger); exit;
-						$this->InventoryVouchers->ItemLedgers->save($itemLedger);
-						$results=$this->InventoryVouchers->ItemLedgers->find()->where(['ItemLedgers.item_id' => $inventory_voucher_row->item_id,'ItemLedgers.in_out' => 'In','company_id' => $st_company_id]); 
-						
+					$item_id=$inventory_voucher_row->item_id;
+					$result_ledgers=$this->InventoryVouchers->ItemLedgers->find()->where(['ItemLedgers.item_id' => $item_id,'ItemLedgers.in_out' => 'In','rate_updated' => 'Yes','company_id' => $st_company_id])->toArray(); 
+			
+					$j=0; $qty_total=0; $rate_total=0; $per_unit_cost=0;
+					foreach($result_ledgers as $result_ledger){
+						$qty=$result_ledger->quantity;
+						$rate=$result_ledger->rate;
+						@$total_amount=$qty*$rate;
+						$rate_total=$rate_total+$total_amount;
+						$qty_total=$qty_total+$qty;
+						$j++;
+					}
+					$per_unit_cost=$rate_total/$qty_total;
+					$quantity=0;
+					$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
+					$itemLedger->item_id = $inventory_voucher_row->item_id;		
+					//pr(); exit;
+					$quantity=$inventoryVoucher->invoice_row_quantity*$inventory_voucher_row->quantity;
+					$itemLedger->quantity = $quantity;
+					$itemLedger->source_model = 'Inventory Voucher';
+					$itemLedger->source_id = $inventory_voucher_row->inventory_voucher_id;
+					$itemLedger->in_out = 'Out';
+					$itemLedger->rate = $per_unit_cost;
+					$itemLedger->company_id = $st_company_id;
+					$itemLedger->processed_on = date("Y-m-d");
+					//pr($itemLedger); exit;
+					$this->InventoryVouchers->ItemLedgers->save($itemLedger);
+					$results=$this->InventoryVouchers->ItemLedgers->find()->where(['ItemLedgers.item_id' => $inventory_voucher_row->item_id,'ItemLedgers.in_out' => 'In','company_id' => $st_company_id]); 
+					
 					foreach($results as $result){
-						
-						$items_with_rate[$inventory_voucher_row->sales_order_row_id]=@$items_with_rate[$inventory_voucher_row->sales_order_row_id]+($result->rate*$inventory_voucher_row->quantity);
+					$items_with_rate[$inventory_voucher_row->sales_order_row_id]=@$items_with_rate[$inventory_voucher_row->sales_order_row_id]+($result->rate*$inventory_voucher_row->quantity);
 					}
+				}
+					$item_ledgers=$this->InventoryVouchers->ItemLedgers->find()->where(['ItemLedgers.in_out' => 'Out','company_id' => $st_company_id,'ItemLedgers.source_id' => $inventoryVoucher->id,'source_model' =>'Inventory Voucher']);
+					
+					$inv_qty=0;$inv_amt=0;$amt_total=0;
+					foreach($item_ledgers as $item_ledger){
+					$invqty=$item_ledger->quantity;
+					$invrate=$item_ledger->rate;
+					$inv_amt=$invqty*$invrate;
+					$amt_total=$amt_total+$inv_amt;
+					$inv_qty=$inv_qty+$invqty;
 					}
-                $this->Flash->success(__('The inventory voucher has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else { 
-                $this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
-            }
+					$inv_cost=$amt_total/$inv_qty;
+					foreach($Invoice->invoice_rows as $invoice_row){
+					$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
+					$itemLedger->item_id = $invoice_row->item_id;		
+					//pr(); exit;
+					$itemLedger->quantity = $invoice_row->quantity;
+					$itemLedger->source_model = 'Inventory Voucher';
+					$itemLedger->source_id = $inventory_voucher_row->inventory_voucher_id;
+					$itemLedger->in_out = 'IN';
+					$itemLedger->rate = $inv_cost;
+					$itemLedger->company_id = $st_company_id;
+					$itemLedger->processed_on = date("Y-m-d");
+					//pr($itemLedger); exit;
+					$this->InventoryVouchers->ItemLedgers->save($itemLedger);	
+					}
+						$this->Flash->success(__('The inventory voucher has been saved.'));
+						return $this->redirect(['action' => 'index']);
+					} else { 
+						$this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
+					}
         }
-		
-		
-        $items = $this->InventoryVouchers->Items->find('list');
+		$items = $this->InventoryVouchers->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']]);
         //$invoiceRows = $this->InventoryVouchers->InvoiceRows->find('list', ['limit' => 200]);
         $this->set(compact('inventoryVoucher', 'Invoice','items','last_iv_no','job_card_data'));
         $this->set('_serialize', ['inventoryVoucher']);
@@ -227,7 +261,7 @@ class InventoryVouchersController extends AppController
                 $this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
             }
         }
-        $items = $this->InventoryVouchers->Items->find('list', ['limit' => 200]);
+        $items = $this->InventoryVouchers->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']]);
         $this->set(compact('inventoryVoucher', 'Invoice', 'invoiceRows','items'));
         $this->set('_serialize', ['inventoryVoucher']);
     }

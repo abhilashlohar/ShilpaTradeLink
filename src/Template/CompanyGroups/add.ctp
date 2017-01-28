@@ -91,7 +91,6 @@ $(document).ready(function() {
 		rules: {
 			name:{
 				required: true,
-				lettersonly: true,
 				maxlength:30,
 			},
 			

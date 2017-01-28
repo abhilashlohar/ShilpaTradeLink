@@ -178,7 +178,7 @@ $(document).ready(function() {
 			},
 			name  : {
 				  required: true,
-				  lettersonly: true,
+				  
 			},
 			alias  : {
 				  required: true,
@@ -324,11 +324,11 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(1)").html(i);
 			$(this).find("td:nth-child(2) input").attr({name:"company_banks["+i+"][bank_name]", id:"company_banks-"+i+"-bank_name"}).rules('add', {
 						required: true,
-						lettersonly: true,
+					
 			});
 			$(this).find("td:nth-child(3) input").attr({name:"company_banks["+i+"][branch]", id:"company_banks-"+i+"-branch"}).rules('add', {
 						required: true,
-						lettersonly: true,
+						
 			});
 			$(this).find("td:nth-child(4) input").attr({name:"company_banks["+i+"][account_no]", id:"company_banks-"+i+"-account_no"}).rules('add', {
 						required: true,

@@ -107,7 +107,7 @@ class JobCardsController extends AppController
                 $this->Flash->error(__('The job card could not be saved. Please, try again.'));
             }
         }
-		$items = $this->JobCards->Items->find('list');
+		$items = $this->JobCards->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']]);;
         $companies = $this->JobCards->Companies->find('list', ['limit' => 200]);
         $this->set(compact('jobCard', 'salesOrder', 'companies','items','customers','last_jc_no'));
         $this->set('_serialize', ['jobCard']);
@@ -160,7 +160,7 @@ class JobCardsController extends AppController
             }
         }
 		
-		$items = $this->JobCards->Items->find('list');
+		$items = $this->JobCards->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']]);
         $this->set(compact('jobCard', 'salesOrders', 'companies','items'));
         $this->set('_serialize', ['jobCard']);
     }

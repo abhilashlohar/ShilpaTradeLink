@@ -45,6 +45,7 @@
 							<tr>
 								<td>
 								<?php echo $this->Form->input('invoice_row_id', ['type' => 'hidden','value'=>$invoice_row->id]); ?>
+								<?php echo $this->Form->input('invoice_row_item_id', ['type' => 'hidden','value'=>$invoice_row->item_id]); ?>
 								<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.item_id', ['orphans' => $items,'label' => false,'class' => 'form-control input-sm','value' => $job_card_row->item_id]); ?>
 								</td>
 								<td>
