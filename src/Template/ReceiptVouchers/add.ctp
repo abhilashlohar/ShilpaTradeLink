@@ -59,7 +59,7 @@
 						<div class="form-group">
 							<label class="control-label">Recived Form<span class="required" aria-required="true">*</span></label>
 						
-							<?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','label' => false,'options' =>$customers,'class' => 'form-control input-sm select2me']); ?>
+							<?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','label' => false,'options' =>$receivedFroms,'class' => 'form-control input-sm select2me']); ?>
 						
 						</div>
 					</div>
