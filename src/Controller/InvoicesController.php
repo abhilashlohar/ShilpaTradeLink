@@ -266,19 +266,17 @@ class InvoicesController extends AppController
 		}
 			
 		$this->set(compact('sales_order','process_status','sales_order_id'));
-		
+		//pr($this->request->data); exit;
         $invoice = $this->Invoices->newEntity();
         if ($this->request->is('post')) {
-		
 		$invoice_breakups=[];
 		if(!empty($this->request->data['invoice_breakups'])){
 				foreach($this->request->data['invoice_breakups'] as $invoice_breakup_record){
 						if(@$invoice_breakup_record['checkbox']){
-						$invoice_breakups[]=['receipt_voucher_id'=>$invoice_breakup_record['receipt_voucher_id'],'receipt_amount'=>$invoice_breakup_record['receipt_amount'],'amount'=>$invoice_breakup_record['amount']];
+						$invoice_breakups[]=['receipt_voucher_id'=>$invoice_breakup_record['receipt_voucher_id'],'amount'=>$invoice_breakup_record['advance_amount'],'receipt_amount'=>$invoice_breakup_record['receipt_amount']];
 					}
 				} 
 			}
-			//pr($invoice_breakups); exit;
 		$this->request->data['invoice_breakups']=$invoice_breakups;
 		
 		$invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
@@ -296,10 +294,8 @@ class InvoicesController extends AppController
 			$invoice->customer_id=$sales_order->customer_id;
 			$invoice->customer_po_no=$sales_order->customer_po_no;
 			$invoice->po_date=date("Y-m-d",strtotime($sales_order->po_date)); 
-			//pr($invoice->in3); exit;
 			$invoice->date_created=date("Y-m-d");
 			
-			//pr($invoice->total_amount_agst); exit;
 			if($invoice->payment_mode=='New_ref'){
 			$invoice->due_payment=$invoice->grand_total;
 			}else{
@@ -308,6 +304,24 @@ class InvoicesController extends AppController
 			
 			
             if ($this->Invoices->save($invoice)) {
+				//pr($invoice->invoice_breakups); 
+				foreach($invoice->invoice_breakups as $invoice_breakup){
+					$rec_id=$invoice_breakup->receipt_voucher_id;
+					//pr($invoice_breakup->receipt_amount);
+					//pr($invoice_breakup->advance_amount);
+				
+					$receipt_amt =$invoice_breakup->receipt_amount-$invoice_breakup->amount;
+					//pr($receipt_amt);
+					
+					$query = $this->Invoices->ReceiptVouchers->query();
+					$query->update()
+						->set(['advance_amount' => $receipt_amt])
+						->where(['id' => $rec_id,'receipt_type' => 'Agst Ref'])
+						->execute();
+					//pr($rec_id);
+					
+				} //exit;
+				
 				$ledger_grand=$invoice->grand_total;
 				$ledger = $this->Invoices->Ledgers->newEntity();
 				$ledger->ledger_account_id = $sales_order->customer->ledger_account_id;
@@ -431,7 +445,7 @@ class InvoicesController extends AppController
                 $this->Flash->success(__('The invoice has been saved.'));
 
                 return $this->redirect(['action' => 'confirm/'.$invoice->id]);
-            } else { pr($invoice); exit;
+            } else { //pr($invoice); exit;
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }
         }
