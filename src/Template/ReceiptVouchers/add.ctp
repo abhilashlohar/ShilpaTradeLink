@@ -319,7 +319,7 @@ $(document).ready(function() {
 		}).done(function(response) {
 			$("#bill_to_bill").val(response);
 			
-			});
+		});
 		
 		
 		$("#pending_invpice_container").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
