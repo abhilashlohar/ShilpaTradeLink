@@ -81,6 +81,10 @@ class ReceiptVouchersController extends AppController
 			}
 			if(!empty($this->request->data['advance'])){
 			$receipt_breakups[]=['ref_type'=>'Advance','new_ref_no'=>'','invoice_id'=>0,'amount'=>$this->request->data['advance']];
+			$receiptVoucher->advance_amount=$this->request->data['advance'];
+			}
+			else{
+			$receiptVoucher->advance_amount=$this->request->data['amount'];
 			}
 				
 			$this->request->data['receipt_breakups']=$receipt_breakups;
@@ -90,7 +94,7 @@ class ReceiptVouchersController extends AppController
 			$receiptVoucher->transaction_date=date("Y-m-d",strtotime($receiptVoucher->transaction_date));
 			$receiptVoucher->created_on=date("Y-m-d");
 			$receiptVoucher->company_id=$st_company_id;
-			$receiptVoucher->advance_amount=$this->request->data['advance'];
+			
             if ($this->ReceiptVouchers->save($receiptVoucher)) {
 				//Ledger posting for Received From Entity
 				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
