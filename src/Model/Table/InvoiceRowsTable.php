@@ -7,7 +7,7 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * QuotationRows Model
+ * InvoiceRows Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Quotations
  * @property \Cake\ORM\Association\BelongsTo $Items

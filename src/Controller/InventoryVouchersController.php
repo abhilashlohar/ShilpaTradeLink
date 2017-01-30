@@ -90,7 +90,7 @@ class InventoryVouchersController extends AppController
 			$inventoryVoucher->invoice_id=$invoice_id;
 			$inventoryVoucher->created_by=$s_employee_id; 
 			$inventoryVoucher->company_id=$st_company_id;
-			
+			//pr($inventoryVoucher); exit;
             if ($this->InventoryVouchers->save($inventoryVoucher)) {
 				
 				$query = $this->InventoryVouchers->Invoices->query();
@@ -99,9 +99,10 @@ class InventoryVouchersController extends AppController
 						->where(['id' => $inventoryVoucher->invoice_id])
 						->execute();
 				
+				$out_ar=[];
 				foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
 					$item_id=$inventory_voucher_row->item_id;
-					$result_ledgers=$this->InventoryVouchers->ItemLedgers->find()->where(['ItemLedgers.item_id' => $item_id,'ItemLedgers.in_out' => 'In','rate_updated' => 'Yes','company_id' => $st_company_id])->toArray(); 
+					/*$result_ledgers=$this->InventoryVouchers->ItemLedgers->find()->where(['ItemLedgers.item_id' => $item_id,'ItemLedgers.in_out' => 'In','rate_updated' => 'Yes','company_id' => $st_company_id])->toArray(); 
 			
 					$j=0; $qty_total=0; $rate_total=0; $per_unit_cost=0;
 					foreach($result_ledgers as $result_ledger){
@@ -112,7 +113,9 @@ class InventoryVouchersController extends AppController
 						$qty_total=$qty_total+$qty;
 						$j++;
 					}
-					$per_unit_cost=$rate_total/$qty_total;
+					$per_unit_cost=$rate_total/$qty_total;*/
+					$Item=$this->InventoryVouchers->Items->get($item_id);
+					$per_unit_cost=$Item->dynamic_cost;
 					$quantity=0;
 					$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
 					$itemLedger->item_id = $inventory_voucher_row->item_id;		
@@ -125,18 +128,35 @@ class InventoryVouchersController extends AppController
 					$itemLedger->rate = $per_unit_cost;
 					$itemLedger->company_id = $st_company_id;
 					$itemLedger->processed_on = date("Y-m-d");
-					//pr($itemLedger); exit;
+					
 					$this->InventoryVouchers->ItemLedgers->save($itemLedger);
 					$results=$this->InventoryVouchers->ItemLedgers->find()->where(['ItemLedgers.item_id' => $inventory_voucher_row->item_id,'ItemLedgers.in_out' => 'In','company_id' => $st_company_id]); 
 					
 					foreach($results as $result){
 					$items_with_rate[$inventory_voucher_row->sales_order_row_id]=@$items_with_rate[$inventory_voucher_row->sales_order_row_id]+($result->rate*$inventory_voucher_row->quantity);
 					}
+					
+					$out_ar[$inventory_voucher_row->invoice_row_id]=@$out_ar[$inventory_voucher_row->invoice_row_id]+($per_unit_cost*$inventory_voucher_row->quantity);
 				}
+				
+				foreach($out_ar as $key=>$val){
+					$InvoiceRow=$this->InventoryVouchers->InvoiceRows->get($key);
+					$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
+					$itemLedger->item_id = $InvoiceRow->item_id;
+					$itemLedger->quantity = $InvoiceRow->quantity;
+					$itemLedger->source_model = 'Inventory Voucher';
+					$itemLedger->source_id = $inventoryVoucher->id;
+					$itemLedger->in_out = 'In';
+					$itemLedger->rate = $val;
+					$itemLedger->company_id = $st_company_id;
+					$itemLedger->processed_on = date("Y-m-d");
+					$this->InventoryVouchers->ItemLedgers->save($itemLedger);
+				}
+				
 					
 			}
-						$this->Flash->success(__('The inventory voucher has been saved.'));
-						return $this->redirect(['action' => 'index']);
+				$this->Flash->success(__('The inventory voucher has been saved.'));
+				return $this->redirect(['action' => 'index']);
 		} else { 
 			$this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
 		}

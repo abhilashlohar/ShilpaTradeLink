@@ -26,7 +26,7 @@
 							<td><?= h(($inventoryVoucher->iv1.'/IV-'.str_pad($inventoryVoucher->iv2, 3, '0', STR_PAD_LEFT).'/'.$inventoryVoucher->iv3.'/'.$inventoryVoucher->iv4)) ?></td>
 						
 							<td>
-							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $inventoryVoucher->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
+							
 							
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $inventoryVoucher->id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 							</td>

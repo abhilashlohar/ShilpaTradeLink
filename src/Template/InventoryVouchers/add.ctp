@@ -91,11 +91,12 @@ $(document).ready(function() {
 	function rename_rows_name(){
 		var i=0; 
 		$("#main_tb tbody#maintbody tr.main_tr").each(function(){
-			var invoice_row_id=$(this).find("td:nth-child(1) input[type=hidden]:nth-child(1)").val();
+			var invoice_row_id=$(this).find("td:nth-child(1) input[type=hidden][name=invoice_row_id]:nth-child(1)").val();
 			var sr=0;
 			$(this).find("td:nth-child(2) table tbody tr").each(function(){
 				i++; sr++;
-				$(this).find("td:nth-child(1) input[type=hidden]").attr({name:"inventory_voucher_rows["+i+"][invoice_row_id]"}).val(invoice_row_id);
+				$(this).find("td:nth-child(1) input[type=hidden]:nth-child(1)").attr({name:"inventory_voucher_rows["+i+"][invoice_row_id]"}).val(invoice_row_id);
+				$(this).find("td:nth-child(1) input[type=hidden]:nth-child(2)").attr({name:"inventory_voucher_rows["+i+"][invoice_row_item_id]"}).val(invoice_row_id);
 				$(this).find("td:nth-child(1) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2();
 				$(this).find("td:nth-child(2) input").attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"});
 			});

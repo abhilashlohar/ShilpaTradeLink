@@ -51,6 +51,7 @@ class InventoryVoucherRowsTable extends Table
             'joinType' => 'INNER'
         ]);
 		$this->belongsTo('Invoices');
+		
     }
 
     /**
