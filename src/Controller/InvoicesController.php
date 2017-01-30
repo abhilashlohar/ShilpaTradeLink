@@ -306,17 +306,8 @@ class InvoicesController extends AppController
 				$invoice->due_payment=$invoice->grand_total-$invoice->total_amount_agst;
 			}
 			
-
-			
-			
-			
-			//pr($invoice); exit;
 			
             if ($this->Invoices->save($invoice)) {
-				
-				
-				
-				
 				$ledger_grand=$invoice->grand_total;
 				$ledger = $this->Invoices->Ledgers->newEntity();
 				$ledger->ledger_account_id = $sales_order->customer->ledger_account_id;
