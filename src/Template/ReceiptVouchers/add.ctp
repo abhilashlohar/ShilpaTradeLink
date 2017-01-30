@@ -100,6 +100,21 @@
 							<label class="control-label">Amount<span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','id'=>'total_received_amount']); ?>
 						</div>
+						<div class="form-group">
+							<label class="control-label">Receipt Type<span class="required" aria-required="true">*</span></label>
+							<div class="radio-list">
+								<div class="radio-inline" >
+								<?php echo $this->Form->radio(
+									'receipt_type',
+									[
+										['value' => 'New Ref', 'text' => 'New Ref','checked'],
+										['value' => 'Agst Ref', 'text' => 'Agst Ref'],
+										['value' => 'On Account', 'text' => 'On Account'],
+									]
+								); ?>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
@@ -109,7 +124,7 @@
 					</div>
 				</div>
 				<?php echo $this->Form->input('bill_to_bill', ['label' => false,'class' => 'form-control input-sm','type'=>'text','id'=>'bill_to_bill','style'=>'height:0px; border:none; widht:0px;']); ?>
-				<br/>
+			
 				<div id="bill_to_bill_show" style="display:none;">
 				<table width="100%">
 					<tr>
@@ -303,15 +318,7 @@ $(document).ready(function() {
 			url: url1,
 		}).done(function(response) {
 			$("#bill_to_bill").val(response);
-			var bill_amount=$("#bill_to_bill").val();
 			
-				if(bill_amount=='Yes'){
-					$('#bill_to_bill_show').show();
-				}
-				else
-				{
-					$('#bill_to_bill_show').hide();
-				}
 			});
 		
 		
@@ -326,7 +333,15 @@ $(document).ready(function() {
 		});
 	});
 	
-	
+		$('input[name="receipt_type"]').die().live("click",function() {
+		var receipt_mode=$(this).val();
+		
+		if(receipt_mode=="Agst Ref"){
+			$('#bill_to_bill_show').show();
+		}else{
+			$('#bill_to_bill_show').hide();
+		}
+	});
 		
 	calculation_for_total();
 	
