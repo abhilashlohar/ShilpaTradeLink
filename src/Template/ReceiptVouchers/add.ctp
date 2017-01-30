@@ -130,34 +130,11 @@
 					<tr>
 						<td width="45%" valign="top" id="pending_invpice_container"></td>
 						<td></td>
-						<td width="45%" valign="top">
-							<h4>Adjust received amount</h4>
-							<table class="table tableitm" id="main_tb" >
-								<thead>
-									<tr>
-										<th width="3%">Sr.No. </th>
-										<th width="30%">Type</th>
-										<th width="37%">Reference</th>
-										<th width="20%">Amount</th>
-										<th width="10%"></th>
-									</tr>
-								</thead>
-								<tbody id="main_tbody">
-								
-								</tbody>
-								<tfoot>
-									<tr>
-										<td colspan="3" align="right"><b>Total</b></td>
-										<td><?php echo $this->Form->input('total_of_breakups', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','readonly','value'=>'0.00']); ?></td>
-										<td></td>
-									</tr>
-								</tfoot>
-							</table>
-						</td>
+						
+						
 					</tr>
 				</table>
 				
-				<label class="control-label">Total adjusted amount</label> <input type="text" name="total_adjusted_amount" class="form-control input-sm" readonly="readonly" placeholder="Total Adjusted Amount" style="width:200px;"/>
 			</div>
 		</div>
 			<div class="form-actions">
@@ -181,16 +158,16 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-			total_adjusted_amount: {
-				equalTo: "#total_received_amount"
+			advance: {
+				min:0,
 			},
 			cheque_no :{
 				required: true,
 			},
 		},
 		messages: {
-			total_adjusted_amount: {
-				equalTo: "Please adjust complete received amount."
+			advance: {
+				equalTo: "min 0"
 			},
 		},
 		errorPlacement: function (error, element) { // render error placement for each input type
@@ -358,17 +335,12 @@ $(document).ready(function() {
 				total_left=total_left+qty;
 			} 
 			$('input[name="total_amount_agst"]').val(total_left.toFixed(2));	
+			var total_agst = $('input[name="total_amount_agst"]').val();
+			var total_received_amount= $('#total_received_amount').val();
+			var advance_amt=total_received_amount-total_agst;
+			$('input[name="advance"]').val(advance_amt.toFixed(2));
 			
 		});
-		
-		$("#main_tb tbody tr").each(function(){
-			var amount=parseFloat($(this).find("td:nth-child(4) input").val());
-			if(!amount){ amount=0; }
-			total_right=total_right+amount;
-			$('input[name="total_of_breakups"]').val(total_right.toFixed(2));	
-			}); 
-			sum=total_right+total_left;
-			$('input[name="total_adjusted_amount"]').val(sum.toFixed(2));	
 		
 	}
 	$('input[name="payment_mode"]').die().live("click",function() {
@@ -384,22 +356,6 @@ $(document).ready(function() {
 	
 });
 </script>
-
-<table id="sample_tb" style="display:none;">
-	<tbody >
-		<tr>
-			<td>0</td>
-			<td><?php 
-			$options=['New Ref'=>'New Ref','On Account'=>'On Account','Advance'=>'Advance'];
-			echo $this->Form->input('type', ['empty'=>'--select--','options' => $options,'label' => false,'class' => 'form-control input-sm type','placeholder' => 'Rate']); ?></td>
-			<td>
-				<?php echo $this->Form->input('new_ref', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Type New Ref','style'=>'display:none']); ?>
-			</td>
-			<td><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
-			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
-		</tr>
-	</tbody>
-</table>
 
 
 

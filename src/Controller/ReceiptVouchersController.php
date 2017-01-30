@@ -63,6 +63,7 @@ class ReceiptVouchersController extends AppController
 		$st_company_id = $session->read('st_company_id');
         
         if ($this->request->is('post')) {
+			
 			$last_ref_no=$this->ReceiptVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_ref_no){
 				$receiptVoucher->voucher_no=$last_ref_no->voucher_no+1;
@@ -78,11 +79,10 @@ class ReceiptVouchersController extends AppController
 					}
 				} 
 			}
-				foreach($this->request->data['new_ref_record'] as $new_ref_record){
-					if(!empty($new_ref_record['type'])){
-					$receipt_breakups[]=['ref_type'=>$new_ref_record['type'],'new_ref_no'=>@$new_ref_record['new_ref_no'],'invoice_id'=>0,'amount'=>$new_ref_record['amount']];
-					}
-				}
+			if(!empty($this->request->data['advance'])){
+			$receipt_breakups[]=['ref_type'=>'Advance','new_ref_no'=>'','invoice_id'=>0,'amount'=>$this->request->data['advance']];
+			}
+				
 			$this->request->data['receipt_breakups']=$receipt_breakups;
 			
             $receiptVoucher = $this->ReceiptVouchers->patchEntity($receiptVoucher, $this->request->data);
@@ -90,6 +90,7 @@ class ReceiptVouchersController extends AppController
 			$receiptVoucher->transaction_date=date("Y-m-d",strtotime($receiptVoucher->transaction_date));
 			$receiptVoucher->created_on=date("Y-m-d");
 			$receiptVoucher->company_id=$st_company_id;
+			$receiptVoucher->advance=$this->request->data['advance'];
             if ($this->ReceiptVouchers->save($receiptVoucher)) {
 				//Ledger posting for Received From Entity
 				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
