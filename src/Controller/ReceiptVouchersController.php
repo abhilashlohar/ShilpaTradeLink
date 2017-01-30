@@ -83,7 +83,7 @@ class ReceiptVouchersController extends AppController
 			$receipt_breakups[]=['ref_type'=>'Advance','new_ref_no'=>'','invoice_id'=>0,'amount'=>$this->request->data['advance']];
 			$receiptVoucher->advance_amount=$this->request->data['advance'];
 			}
-			else{
+			else if($this->request->data['receipt_type']='On Account'){
 			$receiptVoucher->advance_amount=$this->request->data['amount'];
 			}
 				

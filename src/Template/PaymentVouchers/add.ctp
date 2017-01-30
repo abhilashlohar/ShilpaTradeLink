@@ -83,57 +83,47 @@
 							echo $this->Form->input('cheque_no', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Cheque No']); ?>
 						</div>
 					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Narration<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('narration', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Narration']); ?>
-						</div>
-					</div>
 					
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Amount<span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Amount','id'=>'total_paid_amount','type'=>'text']); ?>
 						</div>
+						<div class="form-group">
+							<label class="control-label">Receipt Type<span class="required" aria-required="true">*</span></label>
+							<div class="radio-list">
+								<div class="radio-inline" >
+								<?php echo $this->Form->radio(
+									'receipt_type',
+									[
+										['value' => 'New Ref', 'text' => 'New Ref','checked'],
+										['value' => 'Agst Ref', 'text' => 'Agst Ref'],
+										['value' => 'On Account', 'text' => 'On Account'],
+									]
+								); ?>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Narration<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('narration', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Narration']); ?>
+						</div>
 					</div>
 				</div>
+				<?php echo $this->Form->input('bill_to_bill', ['label' => false,'class' => 'form-control input-sm','type'=>'text','id'=>'bill_to_bill','style'=>'height:0px; border:none; widht:0px;']); ?>
 			
-				
-			<br/>
-				<table width="100%">
-					<tr>
-						<td width="45%" valign="top" id="pending_invoice_container"></td>
-						<td></td>
-						<td width="45%" valign="top">
-							<h4>Adjust paid amount</h4>
-							<table class="table tableitm" id="main_tb" >
-								<thead>
-									<tr>
-										<th width="3%">Sr.No. </th>
-										<th width="30%">Type</th>
-										<th width="37%">Reference</th>
-										<th width="20%">Amount</th>
-										<th width="10%"></th>
-									</tr>
-								</thead>
-								<tbody id="main_tbody">
-								
-								</tbody>
-								<tfoot>
-									<tr>
-										<td colspan="3" align="right"><b>Total</b></td>
-										<td><?php echo $this->Form->input('total_of_breakups', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','readonly','value'=>'0.00']); ?></td>
-										<td></td>
-									</tr>
-								</tfoot>
-							</table>
-						</td>
-					</tr>
-				</table>
-				
-				<label class="control-label">Total adjusted amount</label> <input type="text" name="total_adjusted_amount" class="form-control input-sm" readonly="readonly" placeholder="Total Adjusted Amount" style="width:200px;"/>
+				<div id="bill_to_bill_show" style="display:none;">
+					<table width="100%">
+						<tr>
+							<td width="45%" valign="top" id="pending_invoice_container"></td>
+							<td></td>
+							
+						</tr>
+					</table>
+				</div>
 			</div>
-		
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary">ADD PAYMENT VOUCHER</button>
 			</div>
@@ -158,15 +148,12 @@ $(document).ready(function() {
 			cheque_no:{
 				required: true,
 			},
-			
-			total_adjusted_amount: {
-				equalTo: "#total_paid_amount"
+			advance: {
+				min:0,
 			},
 		},
 		messages: {
-			total_adjusted_amount: {
-				equalTo: "Please adjust complete paid amount."
-			},
+			
 		},
 		errorPlacement: function (error, element) { // render error placement for each input type
 			if (element.parent(".input-group").size() > 0) {
@@ -297,6 +284,20 @@ $(document).ready(function() {
 	
 	$('select[name="paid_to_id"]').die().live("change",function() {
 		var paid_to_id=$(this).find('option:selected').val();
+		var url1="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'BillToBillAccount']); ?>";
+		url1=url1+'/'+paid_to_id,
+		$.ajax({
+			url: url1,
+		}).done(function(response) {
+			$("#bill_to_bill").val(response);
+			var receipt_mode=$('input[name="receipt_type"]').val();
+			var bill_to_bill=$("#bill_to_bill").val();
+			if((receipt_mode=="Agst Ref")&&(bill_to_bill=='Yes')){
+			$('#bill_to_bill_show').show();
+			}else{
+			$('#bill_to_bill_show').hide();
+			}
+		});
 		
 		$("#pending_invoice_container").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 		var url="<?php echo $this->Url->build(['controller'=>'InvoiceBookings','action'=>'DueInvoiceBookingsForPayment']); ?>";
@@ -308,6 +309,17 @@ $(document).ready(function() {
 			
 		});
 	});
+	
+	$('input[name="receipt_type"]').die().live("click",function() {
+		var receipt_mode=$(this).val();
+		var bill_to_bill=$("#bill_to_bill").val();
+		if((receipt_mode=="Agst Ref")&&(bill_to_bill=='Yes')){
+			$('#bill_to_bill_show').show();
+		}else{
+			$('#bill_to_bill_show').hide();
+		}
+	});
+	
 	calculation_for_total();
 	$('input').live("keyup",function() {
 		calculation_for_total();
@@ -320,19 +332,13 @@ $(document).ready(function() {
 			if(val){
 				var qty=parseFloat($(this).find('.amount_box').val());
 				total_left=total_left+qty;
-			} 
+			} 	
 			$('input[name="total_amount_agst"]').val(total_left.toFixed(2));	
-			
+			var total_agst = $('input[name="total_amount_agst"]').val();
+			var total_paid_amount= $('#total_paid_amount').val();
+			var advance_amt=total_paid_amount-total_agst;
+			$('input[name="advance"]').val(advance_amt.toFixed(2));
 		});
-		
-		$("#main_tb tbody tr").each(function(){
-			var amount=parseFloat($(this).find("td:nth-child(4) input").val());
-			if(!amount){ amount=0; }
-			total_right=total_right+amount;
-			$('input[name="total_of_breakups"]').val(total_right.toFixed(2));	
-			}); 
-			sum=total_right+total_left;
-			$('input[name="total_adjusted_amount"]').val(sum.toFixed(2));	
 		
 	}
 	
@@ -355,8 +361,6 @@ $(document).ready(function() {
 		</tr>
 	</tbody>
 </table>
-
-
 
 <div id="myModal1" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
 	<div class="modal-dialog">

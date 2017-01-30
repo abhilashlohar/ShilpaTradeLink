@@ -125,7 +125,7 @@
 				</div>
 				<?php echo $this->Form->input('bill_to_bill', ['label' => false,'class' => 'form-control input-sm','type'=>'text','id'=>'bill_to_bill','style'=>'height:0px; border:none; widht:0px;']); ?>
 			
-				<div id="bill_to_bill_show" style="display:none;">
+			<div id="bill_to_bill_show" style="display:none;">
 				<table width="100%">
 					<tr>
 						<td width="45%" valign="top" id="pending_invpice_container"></td>
@@ -166,9 +166,7 @@ $(document).ready(function() {
 			},
 		},
 		messages: {
-			advance: {
-				equalTo: "min 0"
-			},
+			
 		},
 		errorPlacement: function (error, element) { // render error placement for each input type
 			if (element.parent(".input-group").size() > 0) {
@@ -278,7 +276,6 @@ $(document).ready(function() {
 			var invoice_amount=$(this).closest('tr').find('.amount_box').attr('invoice_amount');
 			$(this).closest('tr').find('.amount_box').val(invoice_amount);
 			calculation_for_total();
-   
 		}else{
 			$(this).closest('tr').find('.amount_box').attr('readonly','readonly');
 			$(this).closest('tr').find('.amount_box').val('');
@@ -295,11 +292,17 @@ $(document).ready(function() {
 			url: url1,
 		}).done(function(response) {
 			$("#bill_to_bill").val(response);
-			
+			var receipt_mode=$('input[name="receipt_type"]').val();
+			var bill_to_bill=$("#bill_to_bill").val();
+			if((receipt_mode=="Agst Ref")&&(bill_to_bill=='Yes')){
+			$('#bill_to_bill_show').show();
+			}else{
+			$('#bill_to_bill_show').hide();
+			}
 		});
 		
 		
-		$("#pending_invpice_container").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
+	$("#pending_invpice_container").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
 		var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'DueInvoicesForReceipt']); ?>";
 		url=url+'/'+received_from_id,
 		$.ajax({
@@ -310,15 +313,16 @@ $(document).ready(function() {
 		});
 	});
 	
-		$('input[name="receipt_type"]').die().live("click",function() {
+	$('input[name="receipt_type"]').die().live("click",function() {
 		var receipt_mode=$(this).val();
-		
-		if(receipt_mode=="Agst Ref"){
+		var bill_to_bill=$("#bill_to_bill").val();
+		if((receipt_mode=="Agst Ref")&&(bill_to_bill=='Yes')){
 			$('#bill_to_bill_show').show();
 		}else{
 			$('#bill_to_bill_show').hide();
 		}
 	});
+	
 		
 	calculation_for_total();
 	

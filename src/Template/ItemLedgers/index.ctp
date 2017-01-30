@@ -13,7 +13,7 @@
 						<tr>
 							<th>Sr. No.</th>
 							<th><?= $this->Paginator->sort('processed_on') ?></th>
-							<th>Quantity</th>
+							
 							<th>In</th>
 							<th>Out</th>
 						</tr>
@@ -26,9 +26,8 @@
 							
 							<td><?= h(++$page_no) ?></td>
 							<td><?= h(date("d-m-Y",strtotime($itemLedger->processed_on))) ?></td>
-							<td><?= $this->Number->format($itemLedger->quantity) ?></td>
-							<td><?php if($in_out_type=='In'){ echo $in_out_type; } else { echo '-'; } ?></td>
-							<td><?php if($in_out_type=='Out'){ echo $in_out_type; } else { echo '-'; } ?></td>
+							<td><?php if($in_out_type=='In'){ echo $this->Number->format($itemLedger->quantity); } else { echo '-'; } ?></td>
+							<td><?php if($in_out_type=='Out'){ echo $this->Number->format($itemLedger->quantity); } else { echo '-'; } ?></td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>
