@@ -30,7 +30,7 @@
 		<tr>
 			<td colspan="2">Advance</td>
 			<td><?php echo $this->Form->input('advance', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Advance']); ?></td>
-			<td align="right" colspan="2"></td>
+			<td align="right" ></td>
 			<td><input type="text" name="total_amount_agst" class="form-control input-sm" readonly="readonly" placeholder="Total" value="0.00"/></td>
 		</tr>
 	</tfoot>
