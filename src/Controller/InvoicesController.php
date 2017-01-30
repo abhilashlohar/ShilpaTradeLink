@@ -274,11 +274,11 @@ class InvoicesController extends AppController
 		if(!empty($this->request->data['invoice_breakups'])){
 				foreach($this->request->data['invoice_breakups'] as $invoice_breakup_record){
 						if(@$invoice_breakup_record['checkbox']){
-						$invoice_breakups[]=['receipt_voucher_id'=>$invoice_breakup_record['receipt_voucher_id'],'amount'=>$invoice_breakup_record['amount']];
+						$invoice_breakups[]=['receipt_voucher_id'=>$invoice_breakup_record['receipt_voucher_id'],'receipt_amount'=>$invoice_breakup_record['receipt_amount'],'amount'=>$invoice_breakup_record['amount']];
 					}
 				} 
 			}
-			
+			//pr($invoice_breakups); exit;
 		$this->request->data['invoice_breakups']=$invoice_breakups;
 		
 		$invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
@@ -308,7 +308,7 @@ class InvoicesController extends AppController
 			
             if ($this->Invoices->save($invoice)) {
 				
-				//pr($invoice); exit;
+				pr($invoice->invoice_breakups); exit;
 				
 				
 				$ledger_grand=$invoice->grand_total;

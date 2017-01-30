@@ -19,6 +19,7 @@
 				
 				<?php echo $this->Number->format($receiptVoucher->amount,[ 'places' => 2]); ?>
 				<input type="hidden" name="invoice_breakups[<?php echo $i; ?>][receipt_voucher_id]" value='<?php echo $receiptVoucher->id; ?>' />
+				<input type="hidden" name="invoice_breakups[<?php echo $i; ?>][receipt_amount]" value="<?php echo $receiptVoucher->amount; ?>" />
 			</td>
 			<td align="right" width="120">
 				<input type="text" name="invoice_breakups[<?php echo $i; ?>][amount]" class="form-control input-sm amount_box" placeholder="Amount" max="<?php echo $receiptVoucher->amount; ?>" readonly="readonly" amount="<?php echo $receiptVoucher->amount; ?>" />
