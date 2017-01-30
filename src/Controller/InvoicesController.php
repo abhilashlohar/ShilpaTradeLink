@@ -298,7 +298,13 @@ class InvoicesController extends AppController
 			$invoice->po_date=date("Y-m-d",strtotime($sales_order->po_date)); 
 			//pr($invoice->in3); exit;
 			$invoice->date_created=date("Y-m-d");
+			
+			//pr($invoice->total_amount_agst); exit;
+			if($invoice->payment_mode=='New_ref'){
 			$invoice->due_payment=$invoice->grand_total;
+			}else{
+				$invoice->due_payment=$invoice->grand_total-$invoice->total_amount_agst;
+			}
 			
 
 			
@@ -308,7 +314,7 @@ class InvoicesController extends AppController
 			
             if ($this->Invoices->save($invoice)) {
 				
-				//pr($invoice->invoice_breakups); exit;
+				
 				
 				
 				$ledger_grand=$invoice->grand_total;

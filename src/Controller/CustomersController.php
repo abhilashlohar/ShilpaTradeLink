@@ -248,10 +248,9 @@ class CustomersController extends AppController
 		
 		$Customer=$this->Customers->find()->where(['Customers.id'=>$customer_id])->first();
 		//pr($Customer); 
-		$ReceiptVoucher=$this->Customers->ReceiptVouchers->find()->where(['received_from_id'=>$Customer->ledger_account_id,'advance_amount'>='0'])->toArray();
+		$ReceiptVoucher=$this->Customers->ReceiptVouchers->find()->where(['received_from_id'=>$Customer->ledger_account_id,'advance_amount > '=>0.00])->toArray();
 		//pr($ReceiptVoucher); exit;
 		if(!$ReceiptVoucher){ echo 'Select paid to.'; exit; }
-		//$InvoiceBookings = $this->InvoiceBookings->find()->where(['company_id'=>$st_company_id,'vendor_id'=>$Vendor->id,'due_payment >'=>0]);
 		$this->set(compact('Customer','ReceiptVoucher'));
 	}
 }
