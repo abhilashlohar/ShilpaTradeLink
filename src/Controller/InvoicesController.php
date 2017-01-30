@@ -308,7 +308,7 @@ class InvoicesController extends AppController
 			
             if ($this->Invoices->save($invoice)) {
 				
-				pr($invoice->invoice_breakups); exit;
+				//pr($invoice->invoice_breakups); exit;
 				
 				
 				$ledger_grand=$invoice->grand_total;
