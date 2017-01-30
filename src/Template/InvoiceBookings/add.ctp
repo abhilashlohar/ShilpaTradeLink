@@ -46,7 +46,7 @@
 										<br/>
 										<?php echo date("d-m-Y"); ?>
 									</div>
-								</div>
+					</div>
 				</div><br/>
 				
 				<div class="row" style="display:none;">

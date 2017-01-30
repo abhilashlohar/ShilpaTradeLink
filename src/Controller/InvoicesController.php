@@ -316,7 +316,7 @@ class InvoicesController extends AppController
 					$query = $this->Invoices->ReceiptVouchers->query();
 					$query->update()
 						->set(['advance_amount' => $receipt_amt])
-						->where(['id' => $rec_id,'receipt_type' => 'Agst Ref'])
+						->where(['id' => $rec_id])
 						->execute();
 					//pr($rec_id);
 					
@@ -511,10 +511,22 @@ class InvoicesController extends AppController
 			$invoice->po_date=date("Y-m-d",strtotime($invoice->po_date)); 
 			$invoice->in3=$invoice->in3;
 			$invoice->due_payment=$invoice->grand_total;
+			//pr($invoice->invoiceBreakup); exit;
 			if ($this->Invoices->save($invoice)) {
-				
+				//pr($invoice); exit;
+				foreach($invoice->invoice_breakups as $invoice_breakup){
+					
+					$rec_id=$invoice_breakup->receipt_voucher_id;
+					$receipt_amt =$invoice_breakup->receipt_amount-$invoice_breakup->amount;
+					 
+					$query = $this->Invoices->ReceiptVouchers->query();
+					$query->update()
+						->set(['advance_amount' => $receipt_amt])
+						->where(['id' => $rec_id])
+						->execute();
+				}
 				$this->Invoices->Ledgers->deleteAll(['voucher_id' => $invoice->id, 'voucher_source' => 'Invoice']);
-				//pr($invoice->inventory_voucher_status); 
+				
 				if($invoice->inventory_voucher_status == 'Converted'){
 				///pr($invoice->id); exit;
 				$InventoryVoucher = $this->Invoices->InventoryVouchers->find()->where(['invoice_id' => $invoice->id])->first();
@@ -796,4 +808,17 @@ class InvoicesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	function AgstRefForPaymentEdit($in_id=null,$customer_id=null){
+		$this->viewBuilder()->layout('');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		//$Customer=$this->Invoices->Customers->find()->where(['Customers.id'=>$customer_id])->first();
+		$invoiceBreakups=$this->Invoices->InvoiceBreakups->find()->where(['InvoiceBreakups.invoice_id'=>$in_id])->toArray();
+		
+		//pr($Customer); 	//$ReceiptVoucher=$this->Invoices->ReceiptVouchers->find()->where(['received_from_id'=>$Customer->ledger_account_id,'advance_amount > '=>0.00])->toArray();
+		//pr($ReceiptVoucher); exit;
+		if(!$invoiceBreakups){ echo 'Select paid to.'; exit; }
+		$this->set(compact('invoiceBreakups'));
+	}
 }

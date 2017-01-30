@@ -252,5 +252,6 @@ class CustomersController extends AppController
 		//pr($ReceiptVoucher); exit;
 		if(!$ReceiptVoucher){ echo 'Select paid to.'; exit; }
 		$this->set(compact('Customer','ReceiptVoucher'));
-	}
+	}	
+	
 }

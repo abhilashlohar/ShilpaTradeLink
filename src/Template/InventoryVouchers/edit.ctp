@@ -17,9 +17,38 @@
 		<?php echo $this->Html->link('<i class="fa fa-files-o"></i> Pull Invoice','/Invoices?inventory_voucher=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
 		</div>
 	</div>
-	<div>
+<div class="portlet-body form">
 	<?php if(@$inventoryVoucher){ ?>
 		<?= $this->Form->create($inventoryVoucher,['id'=>'form_sample_3']) ?>
+		<div class="form-body">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-3 control-label">Customer</label>
+						<div class="col-md-9">
+						<?php echo @$Invoice->customer->customer_name; ?>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+				<div class="form-group">
+						<label class="col-md-3 control-label">Invoice No.</label>
+						<div class="col-md-9 padding-right-decrease">
+							<?= h(($Invoice->in1.'/IN-'.str_pad($Invoice->in2, 3, '0', STR_PAD_LEFT).'/'.$Invoice->in3.'/'.$Invoice->in4)) ?>
+						</div>
+						
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="form-group">
+						<label class="col-md-3 control-label">Date</label>
+						<div class="col-md-9">
+							<?php echo date("d-m-Y"); ?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<table border="1" width="80%" id="main_tb">
 			<thead>
 			<tr>

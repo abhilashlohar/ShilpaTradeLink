@@ -319,8 +319,45 @@
 					</div>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-6 control-label">Customer TIN</label>
+						<div class="col-md-6" id="due">
+							<?php echo $this->Form->input('customer_tin', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value' => @$invoice->customer->tin_no,'required']); ?><br/>
+							
+						</div>
+					</div>
+				</div>
+				<div class="col-md-5">
+					<div class="form-group">
+						<label class="col-md-6 control-label">Payment Type<span class="required" aria-required="true">*</span></label>
+						<div class="col-md-6" id="due">
+							<div class="radio-list">
+								<div class="radio-inline" >
+								<?php echo $this->Form->radio(
+									'payment_mode',
+									[
+										['value' => 'New_ref', 'text' => 'New_ref'],
+										['value' => 'Agst_ref', 'text' => 'Agst_ref']
+									]
+								); ?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<table width="100%">
+					<tr>
+						<td width="100%" align="center" valign="top" id="pending_invoice_container"></td>
+						<td></td>
+						
+					</tr>
+				</table>
+		</div>
 		</div>
 		<?php echo $this->Form->input('process_status', ['type' => 'hidden','value' => @$process_status]); ?>
+		<?php echo $this->Form->input('in_id', ['type' => 'hidden','value' => @$invoice->id]); ?>
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
@@ -722,6 +759,84 @@ $(document).ready(function() {
 		$('textarea[name="customer_address"]').val(addr);
 		$("#myModal12").hide();
     });
+	$(".check_row").die().live("click",function() {  
+	if($(this).is(':checked')){  
+			$(this).closest('tr').find('.amount_box').removeAttr('readonly');
+			var amount=$(this).closest('tr').find('.amount_box').attr('amount');
+			
+			$(this).closest('tr').find('.amount_box').val(amount);
+			calculation_for_total();
+   
+		}else{
+			$(this).closest('tr').find('.amount_box').attr('readonly','readonly');
+			$(this).closest('tr').find('.amount_box').val('');
+			calculation_for_total();
+		}
+	
+	});
+	
+	 $('input[type="radio"]').click(function(){ 
+	    var payment_mode_sel=$('input[name=payment_mode]:checked').val();
+		var customer_id=$('input[name="customer_id"]').val();
+		
+	    var in_id=$('input[name="in_id"]').val();
+		
+		
+		if(payment_mode_sel == 'Agst_ref'){ 
+		$("#pending_invoice_container").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
+		var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'AgstRefForPaymentEdit']); ?>";
+		
+		url=url+'/'+in_id,customer_id
+		
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$("#pending_invoice_container").html(response);
+			
+		});
+		}
+		else{
+			$("#pending_invoice_container").html('<div align="center"></div>');
+		}
+	});
+	var payment_mode_sel=$('input[name=payment_mode]:checked').val();
+		var customer_id=$('input[name="customer_id"]').val();
+		
+	    var in_id=$('input[name="in_id"]').val();
+		
+		
+		if(payment_mode_sel == 'Agst_ref'){ 
+		$("#pending_invoice_container").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
+		var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'AgstRefForPaymentEdit']); ?>";
+		
+		url=url+'/'+in_id,customer_id
+		
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$("#pending_invoice_container").html(response);
+			
+		});
+		}
+		else{
+			$("#pending_invoice_container").html('<div align="center"></div>');
+		}
+	calculation_for_total();
+	$('input').live("keyup",function() {
+		calculation_for_total();
+	});
+	function calculation_for_total(){  
+		var total_left=0; var total_right=0; var sum=0;
+		$("#due_receipt tbody tr.tr1").each(function(){ 
+			var val=$(this).find('td:nth-child(1) input[type="checkbox"]:checked').val();
+			if(val){
+				var qty=parseFloat($(this).find('.amount_box').val());
+				total_left=total_left+qty;
+			} 
+			$('input[name="total_amount_agst"]').val(total_left.toFixed(2));	
+			
+		});
+	}
 });
 </script>
 	 
