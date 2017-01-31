@@ -299,6 +299,9 @@ $(document).ready(function() {
 			},
 			account_second_subgroup_id:{
 				  required: true,
+			},
+			bill_to_bill_account:{
+				 required: true,
 			}
 		},
 
