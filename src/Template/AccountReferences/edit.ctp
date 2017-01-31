@@ -1,26 +1,146 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $accountReference->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $accountReference->id)]
-            )
-        ?></li>
-        <li><?= $this->Html->link(__('List Account References'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Ledger Accounts'), ['controller' => 'LedgerAccounts', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Ledger Account'), ['controller' => 'LedgerAccounts', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="accountReferences form large-9 medium-8 columns content">
-    <?= $this->Form->create($accountReference) ?>
-    <fieldset>
-        <legend><?= __('Edit Account Reference') ?></legend>
-        <?php
-            echo $this->Form->input('entity_description');
-            echo $this->Form->input('ledger_account_id', ['options' => $ledgerAccounts]);
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
-</div>
+
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption" >
+			<i class="icon-globe font-blue-steel"></i>
+			<span class="caption-subject font-blue-steel uppercase">Add Account References</span>
+		</div>
+	</div>
+	<div class="portlet-body form">
+		<!-- BEGIN FORM-->
+		 <?= $this->Form->create($accountReference) ?>
+			<div class="form-body">
+			<div class="row">
+				<div class="col-md-4" >
+						<div class="form-group">
+						<label class=" control-label">Entity Description<span class="required" aria-required="true">*</span></label>
+							<?php 
+							
+							echo $this->Form->input('entity_description',['label' => false,'class' => 'form-control input-sm '] ); ?>
+						
+						</div>
+				</div>
+	
+				<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Account Category<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('account_category_id', ['options'=>$AccountCategories,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+						</div>
+					</div>
+			
+					<div class="col-md-4">
+						<div class="form-group">
+						<label class="control-label">Account Group <span class="required" aria-required="true">*</span></label>
+							<div id="account_group_div">
+							<?php echo $this->Form->input('account_group_id', ['options' => $AccountGroups,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account Group']); ?>
+							</div>
+						</div>
+					</div>
+			</div>
+			
+			<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+						<label class="control-label">Account First Sub Group <span class="required" aria-required="true">*</span></label>
+							<div id="account_first_subgroup_div">
+							<?php echo $this->Form->input('account_first_subgroup_id', ['options'=>$AccountCategories,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account First Sub Group']); ?>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Account Second Sub Group <span class="required" aria-required="true">*</span></label>
+							<div id="account_second_subgroup_div">
+							<?php echo $this->Form->input('account_second_subgroup_id', ['options' => $AccountSecondSubgroups,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account Second Sub Group']); ?>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4" >
+						<div class="form-group">
+						<label class=" control-label">Ledger Account<span class="required" aria-required="true">*</span></label>
+							<div id="account_ledger_div">
+							<?php 
+							
+							echo $this->Form->input('ledger_account_id',['options' => $ledgerAccounts,'label' => false,'class' => 'form-control input-sm select2me'] ); ?>
+							</div>
+						</div>
+					</div>
+				</div>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">Edit ACCOUNT REFERENCE</button>
+			</div>
+		</div>
+		<?= $this->Form->end() ?>
+		<!-- END FORM-->
+	</div>
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<script>
+
+$(document).ready(function() {
+	
+	$('select[name="account_category_id"]').on("change",function() {
+	$('#account_group_div').html('Loading...');
+	var accountCategoryId=$('select[name="account_category_id"] option:selected').val();
+	var url="<?php echo $this->Url->build(['controller'=>'AccountGroups','action'=>'AccountGroupDropdown']); ?>";
+	url=url+'/'+accountCategoryId,
+	$.ajax({
+		url: url,
+		type: 'GET',
+	}).done(function(response) {
+		$('#account_group_div').html(response);
+		$('select[name="account_group_id"]').select2();
+	});
+});
+	
+	
+$('select[name="account_group_id"]').die().live("change",function() {
+
+	$('#account_first_subgroup_div').html('Loading...');
+	var accountGroupId=$('select[name="account_group_id"] option:selected').val();
+	var url="<?php echo $this->Url->build(['controller'=>'AccountFirstSubgroups','action'=>'AccountFirstSubgroupDropdown']); ?>";
+	url=url+'/'+accountGroupId,
+	
+	$.ajax({
+		url: url,
+		type: 'GET',
+	}).done(function(response) {
+		$('#account_first_subgroup_div').html(response);
+		$('select[name="account_first_subgroup_id"]').select2();
+	});
+});
+	
+$('select[name="account_first_subgroup_id"]').die().live("change",function() {
+	$('#account_second_subgroup_div').html('Loading...');
+	var accountFirstSubgroupId=$('select[name="account_first_subgroup_id"] option:selected').val();
+	
+	var url="<?php echo $this->Url->build(['controller'=>'AccountSecondSubgroups','action'=>'AccountSecondSubgroupDropdown']); ?>";
+	url=url+'/'+accountFirstSubgroupId,
+	
+	$.ajax({
+		url: url,
+		type: 'GET',
+	}).done(function(response) {
+		$('#account_second_subgroup_div').html(response);
+		$('select[name="account_second_subgroup_id"]').select2();
+	});
+});
+
+$('select[name="account_second_subgroup_id"]').die().live("change",function() {
+	
+	$('#account_ledger_div').html('Loading...');
+	var accountSecondSubgroupId=$('select[name="account_second_subgroup_id"] option:selected').val();
+	//alert(accountSecongSubgroupId);
+	var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'LedgerAccountDropdown']); ?>";
+	url=url+'/'+accountSecondSubgroupId,
+	$.ajax({
+		url: url,
+		type: 'GET',
+	}).done(function(response) {
+		$('#account_ledger_div').html(response);
+		$('select[name="ledger_account_id"]').select2();
+	});
+});	
+
+});
+</script>

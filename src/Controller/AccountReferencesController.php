@@ -37,6 +37,7 @@ class AccountReferencesController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $accountReference = $this->AccountReferences->get($id, [
             'contain' => ['LedgerAccounts']
         ]);
@@ -80,6 +81,7 @@ class AccountReferencesController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $accountReference = $this->AccountReferences->get($id, [
             'contain' => []
         ]);
@@ -93,8 +95,12 @@ class AccountReferencesController extends AppController
                 $this->Flash->error(__('The account reference could not be saved. Please, try again.'));
             }
         }
-        $ledgerAccounts = $this->AccountReferences->LedgerAccounts->find('list', ['limit' => 200]);
-        $this->set(compact('accountReference', 'ledgerAccounts'));
+		$AccountCategories = $this->Employees->AccountCategories->find('list');
+		$AccountGroups = $this->Employees->AccountGroups->find('list');
+		$AccountFirstSubgroups = $this->Employees->AccountFirstSubgroups->find('list');
+		$AccountSecondSubgroups = $this->Employees->AccountSecondSubgroups->find('list');
+        $ledgerAccounts = $this->AccountReferences->LedgerAccounts->find('list');
+        $this->set(compact('accountReference', 'ledgerAccounts','AccountGroups','AccountCategories','AccountFirstSubgroups','AccountSecondSubgroups'));
         $this->set('_serialize', ['accountReference']);
     }
 
