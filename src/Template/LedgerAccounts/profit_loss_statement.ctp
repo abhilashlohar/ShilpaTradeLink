@@ -4,7 +4,7 @@
 		<div class="portlet box blue">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-cogs"></i>Profit Loss Statement
+					<i class="fa fa-cogs"></i>Profit & Loss Statement
 				</div>
 			</div>
 			<div class="portlet-body">
