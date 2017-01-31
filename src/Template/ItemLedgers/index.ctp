@@ -16,6 +16,7 @@
 							<th>Party</th>
 							<th>Customer/Supplier Name</th>
 							<th>Voucher No.</th>
+							<th>Voucher Source</th>
 							<th>In</th>
 							<th>Out</th>
 						</tr>
@@ -47,6 +48,7 @@
 							<td><?= h($itemLedger->party_type) ?></td>
 							<td><?= h($party_name) ?></td>
 							<td><?= h($voucher_no) ?></td>
+							<td><?= h($itemLedger->source_model) ?></td>
 							<td><?php if($in_out_type=='In'){ echo $this->Number->format($itemLedger->quantity); } else { echo '-'; } ?></td>
 							<td><?php if($in_out_type=='Out'){ echo $this->Number->format($itemLedger->quantity); } else { echo '-'; } ?></td>
 						</tr>
