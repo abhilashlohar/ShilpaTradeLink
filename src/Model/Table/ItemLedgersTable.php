@@ -48,9 +48,11 @@ class ItemLedgersTable extends Table
             'joinType' => 'INNER'
         ]);
 		
-		 $this->belongsTo('Grns');
-		 $this->belongsTo('InventoryVouchers');
-		 $this->belongsTo('Vendors');
+		$this->belongsTo('Grns');
+		$this->belongsTo('InventoryVouchers');
+		$this->belongsTo('Vendors');
+		$this->belongsTo('Customers');
+		$this->belongsTo('Invoices');
     }
 
     /**

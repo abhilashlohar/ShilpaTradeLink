@@ -31,7 +31,7 @@ class ItemLedgersController extends AppController
 			$itemLedger->party_info=$result['party_info'];
 			$itemLedgers[]=$itemLedger;
 		} 
-		pr($itemLedgers); exit;
+		//pr($itemLedgers); exit;
 
         $this->set(compact('itemLedgers'));
         $this->set('_serialize', ['itemLedgers']);
@@ -47,6 +47,11 @@ class ItemLedgersController extends AppController
 		if($source_model=="Inventory Voucher"){
 			$InventoryVoucher=$this->ItemLedgers->InventoryVouchers->get($source_id);
 			return ['voucher_info'=>$InventoryVoucher,'party_type'=>'-','party_info'=>''];
+		}
+		if($source_model=="Invoices"){
+			$Invoice=$this->ItemLedgers->Invoices->get($source_id);
+			$Customer=$this->ItemLedgers->Customers->get($Invoice->customer_id);
+			return ['voucher_info'=>$Invoice,'party_type'=>'Customer','party_info'=>$Customer];
 		}
        //return $source_model.$source_id;
     }
