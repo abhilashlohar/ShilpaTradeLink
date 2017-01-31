@@ -84,7 +84,8 @@
 						<tr>
 							<th width="10%">Sr.No. </th>
 							<th width="60%">Items</th>
-							<th width="20%">Quantity</th>
+							<th width="10%">Quantity</th>
+							<th width="10%"></th>
 							<th width="10%"></th>
 							
 						</tr>
@@ -116,8 +117,7 @@
 								<td colspan="2">
 									<?php echo $this->Text->autoParagraph(h($purchase_order_rows->description)); ?>
 								</td>
-								<div id="TextBoxContainer">
-								</div>
+								
 							</tr>
 							
 						<?php $q++; endforeach; }?>

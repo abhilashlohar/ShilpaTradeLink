@@ -123,8 +123,15 @@ class CustomersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
 			
             $customer = $this->Customers->patchEntity($customer, $this->request->data);
-			
+			//pr(); exit;
             if ($this->Customers->save($customer)) {
+				
+				$query = $this->Customers->LedgerAccounts->query();
+					$query->update()
+						->set(['bill_to_bill_account' => $customer->bill_to_bill_account])
+						->set(['account_second_subgroup_id' => $customer->account_second_subgroup_id])
+						->where(['id' => $customer->ledger_account_id])
+						->execute();
                 $this->Flash->success(__('The customer has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
