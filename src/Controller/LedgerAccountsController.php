@@ -175,14 +175,14 @@ class LedgerAccountsController extends AppController
 		$this->set(compact('date'));
 	}
 	
-	public function BalanceSheet (){
+	public function ProfitLossStatement (){
 		$this->viewBuilder()->layout('index_layout');
 		$date=$this->request->query('date');
 		if($date){
 			$query=$this->LedgerAccounts->Ledgers->find();
-			$Ledgers_Assets=$query->select(['total_debit' => $query->func()->sum('debit'),'total_credit' => $query->func()->sum('credit')])
+			$Ledgers_Expense=$query->select(['total_debit' => $query->func()->sum('debit'),'total_credit' => $query->func()->sum('credit')])
 			->matching('LedgerAccounts.AccountSecondSubgroups.AccountFirstSubgroups.AccountGroups.AccountCategories', function ($q) {
-				return $q->where(['AccountCategories.id' => 1]);
+				return $q->where(['AccountCategories.id' => 4]);
 			})
 			->where(['transaction_date <='=>date('Y-m-d',strtotime($date))])
 			->contain(['LedgerAccounts'])
@@ -190,15 +190,15 @@ class LedgerAccountsController extends AppController
 			->autoFields(true)->toArray();
 			
 			$query2=$this->LedgerAccounts->Ledgers->find();
-			$Ledgers_Liablities=$query2->select(['total_debit' => $query2->func()->sum('debit'),'total_credit' => $query2->func()->sum('credit')])
+			$Ledgers_Income=$query2->select(['total_debit' => $query2->func()->sum('debit'),'total_credit' => $query2->func()->sum('credit')])
 			->matching('LedgerAccounts.AccountSecondSubgroups.AccountFirstSubgroups.AccountGroups.AccountCategories', function ($q) {
-				return $q->where(['AccountCategories.id' => 2]);
+				return $q->where(['AccountCategories.id' => 3]);
 			})
 			->where(['transaction_date <='=>date('Y-m-d',strtotime($date))])
 			->contain(['LedgerAccounts'])
 			->group(['ledger_account_id'])
 			->autoFields(true)->toArray();
-			$this->set(compact('Ledgers_Assets','Ledgers_Liablities'));
+			$this->set(compact('Ledgers_Expense','Ledgers_Income'));
 		}
 		$this->set(compact('date'));
 	}
