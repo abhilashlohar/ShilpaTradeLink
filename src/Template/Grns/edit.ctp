@@ -1,9 +1,10 @@
-<?php //pr($grn->item_serial_numbers); exit; 
-
-//pr(@$grn->purchase_order->purchase_order_rows[0]->quantity);
-
-?>
-
+<style>
+.sr_no{
+	float: left;
+	margin-left: 5px;
+	margin-top: 5px;
+}
+</style>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
