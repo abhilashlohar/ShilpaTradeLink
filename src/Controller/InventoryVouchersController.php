@@ -133,37 +133,14 @@ class InventoryVouchersController extends AppController
 					$items_with_rate[$inventory_voucher_row->sales_order_row_id]=@$items_with_rate[$inventory_voucher_row->sales_order_row_id]+($result->rate*$inventory_voucher_row->quantity);
 					}
 				}
-					$item_ledgers=$this->InventoryVouchers->ItemLedgers->find()->where(['ItemLedgers.in_out' => 'Out','company_id' => $st_company_id,'ItemLedgers.source_id' => $inventoryVoucher->id,'source_model' =>'Inventory Voucher']);
 					
-					$inv_qty=0;$inv_amt=0;$amt_total=0;
-					foreach($item_ledgers as $item_ledger){
-					$invqty=$item_ledger->quantity;
-					$invrate=$item_ledger->rate;
-					$inv_amt=$invqty*$invrate;
-					$amt_total=$amt_total+$inv_amt;
-					$inv_qty=$inv_qty+$invqty;
-					}
-					$inv_cost=$amt_total/$inv_qty;
-					foreach($Invoice->invoice_rows as $invoice_row){
-					$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
-					$itemLedger->item_id = $invoice_row->item_id;		
-					//pr(); exit;
-					$itemLedger->quantity = $invoice_row->quantity;
-					$itemLedger->source_model = 'Inventory Voucher';
-					$itemLedger->source_id = $inventory_voucher_row->inventory_voucher_id;
-					$itemLedger->in_out = 'IN';
-					$itemLedger->rate = $inv_cost;
-					$itemLedger->company_id = $st_company_id;
-					$itemLedger->processed_on = date("Y-m-d");
-					//pr($itemLedger); exit;
-					$this->InventoryVouchers->ItemLedgers->save($itemLedger);	
-					}
+			}
 						$this->Flash->success(__('The inventory voucher has been saved.'));
 						return $this->redirect(['action' => 'index']);
-					} else { 
-						$this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
-					}
-        }
+		} else { 
+			$this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
+		}
+    
 		$items = $this->InventoryVouchers->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']]);
         //$invoiceRows = $this->InventoryVouchers->InvoiceRows->find('list', ['limit' => 200]);
         $this->set(compact('inventoryVoucher', 'Invoice','items','last_iv_no','job_card_data'));

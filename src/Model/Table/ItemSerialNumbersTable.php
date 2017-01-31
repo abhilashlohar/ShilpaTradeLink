@@ -60,7 +60,6 @@ class ItemSerialNumbersTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->integer('serial_no')
             ->requirePresence('serial_no', 'create')
             ->notEmpty('serial_no');
 
