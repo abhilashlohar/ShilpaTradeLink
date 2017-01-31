@@ -142,7 +142,7 @@ class GrnsController extends AppController
 					$this->Flash->success(__('The grn has been saved.'));
 
 					return $this->redirect(['action' => 'index']);
-				} else { pr($grn); exit;
+				} else {// pr($grn); exit;
 					$this->Flash->error(__('The grn could not be saved. Please, try again.'));
 				}
 			}
@@ -168,11 +168,20 @@ class GrnsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 			$grn = $this->Grns->get($id, [
 				'contain' => [
-						'Companies','Vendors','PurchaseOrders'=>['PurchaseOrderRows','Grns'=>['GrnRows']],'GrnRows'=>['Items']
+						'Companies','ItemSerialNumbers','Vendors','PurchaseOrders'=>['PurchaseOrderRows','Grns'=>['GrnRows']],'GrnRows'=>['Items']
 					]
 			]);
 		
 			if ($this->request->is(['patch', 'post', 'put'])) {
+				$serial_numbers=$this->request->data['serial_numbers']; 
+			$item_serial_numbers=[];
+			foreach($serial_numbers as $item_id=>$data){
+				foreach($data as $sr)
+				$item_serial_numbers[]=['item_id'=>$item_id,'serial_no'=>$sr,'status'=>'In'];
+			}
+			//pr($item_serial_numbers); exit;
+			$this->request->data['item_serial_numbers']=$item_serial_numbers;
+			//
             $grn = $this->Grns->patchEntity($grn, $this->request->data);
 				if ($this->Grns->save($grn)) {
 					foreach($grn->grn_rows as $grn_row){

@@ -1,4 +1,4 @@
-<?php //pr($grn->purchase_order->grns->grn_rows[0]); exit; 
+<?php //pr($grn->item_serial_numbers); exit; 
 
 //pr(@$grn->purchase_order->purchase_order_rows[0]->quantity);
 
@@ -98,20 +98,26 @@
 								<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 								<td>
 									<?php echo $this->Form->input('q', ['type' => 'hidden','value'=>@$grn_rows->item_id]); 
+									echo $this->Form->input('q', ['type' => 'hidden','value'=>@$grn_rows->item->serial_number_enable]);
 									echo $grn_rows->item->name;
 									?>								
 								</td>
 								<td>
 								
-								<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$grn_rows->quantity-$grn_rows->processed_quantity,'min'=>'1','max'=>$total_items[$grn_rows->item_id]-$processed_items[$grn_rows->item_id]+$grn_rows->quantity]); ?>
+								<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quan quantity','placeholder'=>'Quantity','value' => @$grn_rows->quantity-$grn_rows->processed_quantity,'min'=>'1','max'=>$total_items[$grn_rows->item_id]-$processed_items[$grn_rows->item_id]+$grn_rows->quantity]); ?>
+								</td>
+								<td>
+									<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$grn_rows->id,'checked'=>"checked"]); ?></label>
 								</td>
 								
 							</tr>
 							<tr class="tr2" row_no='<?php echo @$grn_rows->id; ?>'>
-								<td colspan="2">
-									<?php echo $this->Text->autoParagraph(h($grn_rows->description)); ?>
-								</td>
-								<td></td>
+								<td>
+								<?php foreach($grn->item_serial_numbers as $item_serial_number){
+									if($item_serial_number->item_id == $grn_rows->item_id){ ?>
+									<?php echo $item_serial_number->serial_no; ?>
+
+								<?php }}?><br/></td>
 							</tr>
 						<?php $q++; endforeach; ?>
 					</tbody>
@@ -207,7 +213,7 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 	
-	$('.quantity').die().live("keyup",function() {
+	$('.quan').die().live("keyup",function() {
 		var asc=$(this).val();
 		var numbers =  /^[0-9]*\.?[0-9]*$/;
 		if(asc==0)
@@ -224,18 +230,59 @@ $(document).ready(function() {
 			return false;  
 		}
 	});
+	add_sr_textbox();
+		function add_sr_textbox(){ 
+		var r=0;
+		$("#main_tb tbody tr.tr1").each(function(){
+			var row_no=$(this).attr('row_no');
+			var val=$(this).find('td:nth-child(4) input[type="checkbox"]:checked').val();
+			var serial_number_enable=$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(2)').val();	
+			var item_id=$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(1)').val();
+			
+			var quantity=$(this).find('td:nth-child(3) input[type="text"]').val();
+			if(val){ var p=1;
+				$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input.sr_no').remove();
+				for (i = 0; i < quantity; i++) {
+					
+					$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<input type="text" class="sr_no" name="serial_numbers['+item_id+'][]" placeholder="'+p+' serial number" id="sr_no'+r+'" />');
+					p++;
+					r++;
+				}
+			}else{
+				$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input.sr_no').remove();
+			}
+		});
+	}
+	
+	$('.rename_check').die().live("click",function() { 
+		add_sr_textbox();
+		rename_rows();
+    });
+	$('.quantity').die().live("keyup",function() {
+		add_sr_textbox();
+		rename_rows();
+    });
 	rename_rows();
 	
 	
 	function rename_rows(){
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
-			
-				$(this).find('td:nth-child(2) input').attr({ name:"grn_rows["+row_no+"][item_id]"});
-				$(this).find('td:nth-child(3) input').attr({ name:"grn_rows["+row_no+"][quantity]", id:"grn_rows-"+row_no+"-quantity"}).removeAttr('readonly');
+			var val=$(this).find('td:nth-child(4) input[type="checkbox"]:checked').val();
+						
+			if(val){
+				$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(1)').attr({ name:"grn_rows["+val+"][item_id]"});
+				$(this).find('td:nth-child(3) input').attr({ name:"grn_rows["+val+"][quantity]", id:"grn_rows-"+val+"-quantity"}).removeAttr('readonly');
+				
 				$(this).css('background-color','#fffcda');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
-			
+			}else{
+				$(this).find('td:nth-child(2) input').attr({ name:"q"});
+				$(this).find('td:nth-child(3) input').attr({ name:"q", id:"q",readonly:"readonly"});
+				
+				$(this).css('background-color','#FFF');
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
+			}
 		});
 	}
 });		
