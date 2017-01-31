@@ -222,6 +222,7 @@ select
 				<!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
 				
 				<li><?php echo $this->Html->link('<i class="icon-home"></i> Dashboard','/Dashboard',array('escape'=>false)); ?></li>
+				
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-file-code-o"></i>
@@ -286,108 +287,7 @@ select
 						<li><?php echo $this->Html->link( 'View', '/InventoryVouchers' ); ?></li>
 					</ul>
 				</li>
-				
 				<li>
-					<a href="javascript:;">
-					<i class="fa fa-university"></i>
-					<span class="title">Companies</span>
-					<span class="arrow "></span>
-					</a>
-					<ul class="sub-menu">
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Company Groups','/company-groups',array('escape'=>false)); ?></li>
-						<li>
-							<a href="javascript:;">
-							<i class="icon-basket"></i>
-							<span class="title">Companies</span>
-							<span class="arrow "></span>
-							</a>
-							<ul class="sub-menu">
-								<li><?php echo $this->Html->link( 'Add', '/Companies/add' ); ?></li>
-								<li><?php echo $this->Html->link( 'View', '/Companies' ); ?></li>
-							</ul>
-						</li>
-					</ul>
-				</li>
-				
-				<li>
-					<a href="javascript:;">
-					<i class="fa fa-user"></i>
-					<span class="title">Customers</span>
-					<span class="arrow "></span>
-					</a>
-					<ul class="sub-menu">
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Customer Groups','/Customer-Groups',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Districts','/Districts',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Customers Segments','/customer-segs',array('escape'=>false)); ?></li>
-						<li>
-							<a href="javascript:;">
-							<i class="icon-basket"></i>
-							<span class="title">Customers</span>
-							<span class="arrow "></span>
-							</a>
-							<ul class="sub-menu">
-								<li><?php echo $this->Html->link( 'Add', '/Customers/add' ); ?></li>
-								<li><?php echo $this->Html->link( 'View', '/Customers' ); ?></li>
-							</ul>
-						</li>
-						
-					</ul>
-				</li>
-				<li>
-					<a href="javascript:;">
-					<i class="fa fa-puzzle-piece"></i>
-					<span class="title">Items</span>
-					<span class="arrow "></span>
-					</a>
-					<ul class="sub-menu">
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Categories','/Item-Categories',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Groups','/Item-Groups',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Sub-Groups','/Item-Sub-Groups',array('escape'=>false)); ?></li>
-						<!--<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Categories','/Categories',array('escape'=>false)); ?></li>-->
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Units','/units',array('escape'=>false)); ?></li>
-						<li>
-							<a href="javascript:;">
-							<i class="icon-basket"></i>
-							<span class="title">Items</span>
-							<span class="arrow "></span>
-							</a>
-							<ul class="sub-menu">
-								<li><?php echo $this->Html->link( 'Add', '/Items/add' ); ?></li>
-								<li><?php echo $this->Html->link( 'View', '/Items' ); ?></li>
-							</ul>
-						</li>
-					</ul>
-				</li>
-				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Transporter','/transporters',array('escape'=>false)); ?></li>
-				<li>
-					<a href="javascript:;">
-					<i class="fa fa-file-code-o"></i>
-					<span class="title">Employees</span>
-					<span class="arrow "></span>
-					</a>
-					<ul class="sub-menu">
-						<li><?php echo $this->Html->link( 'Create', '/employees/add' ); ?></li>
-						<li><?php echo $this->Html->link( 'View', '/employees' ); ?></li>
-					</ul>
-				</li>
-				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Logins','/Logins/Add',array('escape'=>false)); ?></li>
-				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Terms&Conditions','/Terms-Conditions',array('escape'=>false)); ?></li>
-				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Designations','/Designations',array('escape'=>false)); ?></li>
-				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Departments','/Departments',array('escape'=>false)); ?></li>
-				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Files','/Filenames',array('escape'=>false)); ?></li>
-				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Sale-Taxes','/SaleTaxes',array('escape'=>false)); ?></li>
-				<li>
-					<a href="javascript:;">
-					<i class="fa fa-puzzle-piece"></i>
-					<span class="title">Suppliers</span>
-					<span class="arrow "></span>
-					</a>
-					<ul class="sub-menu">
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Add','/Vendors/Add',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> List','/Vendors',array('escape'=>false)); ?></li>
-					</ul>
-				</li>
-					<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
 					<span class="title">Challans</span>
@@ -398,7 +298,6 @@ select
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Challans',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
-				
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
@@ -410,8 +309,6 @@ select
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Purchase-Orders',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
-				
-			
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
@@ -423,7 +320,6 @@ select
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Grns',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
-				
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
@@ -435,25 +331,129 @@ select
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/InvoiceBookings/',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
-				
-				<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Ledger Account','/ledgerAccounts',array('escape'=>false)); ?></li>
-				<li>
-
-				<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Daily Report','/ledgers',array('escape'=>false)); ?></li>
-
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-file-code-o"></i>
-					<span class="title">Account References</span>
+					<span class="title">Masters</span>
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<li><?php echo $this->Html->link( 'Create', '/AccountReferences/add' ); ?></li>
-						<li><?php echo $this->Html->link( 'View', '/AccountReferences' ); ?></li>
-						
+						<li>
+							<a href="javascript:;">
+							<i class="fa fa-university"></i>
+							<span class="title">Companies</span>
+							<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+								<li><?php echo $this->Html->link('<i class="icon-home"></i> Company Groups','/company-groups',array('escape'=>false)); ?></li>
+								<li>
+									<a href="javascript:;">
+									<i class="icon-basket"></i>
+									<span class="title">Companies</span>
+									<span class="arrow "></span>
+									</a>
+									<ul class="sub-menu">
+										<li><?php echo $this->Html->link( 'Add', '/Companies/add' ); ?></li>
+										<li><?php echo $this->Html->link( 'View', '/Companies' ); ?></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="javascript:;">
+							<i class="fa fa-user"></i>
+							<span class="title">Customers</span>
+							<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+								<li><?php echo $this->Html->link('<i class="icon-home"></i> Customer Groups','/Customer-Groups',array('escape'=>false)); ?></li>
+								<li><?php echo $this->Html->link('<i class="icon-home"></i> Districts','/Districts',array('escape'=>false)); ?></li>
+								<li><?php echo $this->Html->link('<i class="icon-home"></i> Customers Segments','/customer-segs',array('escape'=>false)); ?></li>
+								<li>
+									<a href="javascript:;">
+									<i class="icon-basket"></i>
+									<span class="title">Customers</span>
+									<span class="arrow "></span>
+									</a>
+									<ul class="sub-menu">
+										<li><?php echo $this->Html->link( 'Add', '/Customers/add' ); ?></li>
+										<li><?php echo $this->Html->link( 'View', '/Customers' ); ?></li>
+									</ul>
+								</li>
+								
+							</ul>
+						</li>
+						<li>
+							<a href="javascript:;">
+							<i class="fa fa-puzzle-piece"></i>
+							<span class="title">Items</span>
+							<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+								<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Categories','/Item-Categories',array('escape'=>false)); ?></li>
+								<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Groups','/Item-Groups',array('escape'=>false)); ?></li>
+								<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Sub-Groups','/Item-Sub-Groups',array('escape'=>false)); ?></li>
+								<!--<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Categories','/Categories',array('escape'=>false)); ?></li>-->
+								<li><?php echo $this->Html->link('<i class="icon-home"></i> Units','/units',array('escape'=>false)); ?></li>
+								<li>
+									<a href="javascript:;">
+									<i class="icon-basket"></i>
+									<span class="title">Items</span>
+									<span class="arrow "></span>
+									</a>
+									<ul class="sub-menu">
+										<li><?php echo $this->Html->link( 'Add', '/Items/add' ); ?></li>
+										<li><?php echo $this->Html->link( 'View', '/Items' ); ?></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Transporter','/transporters',array('escape'=>false)); ?></li>
+						<li>
+							<a href="javascript:;">
+							<i class="fa fa-file-code-o"></i>
+							<span class="title">Employees</span>
+							<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+								<li><?php echo $this->Html->link( 'Create', '/employees/add' ); ?></li>
+								<li><?php echo $this->Html->link( 'View', '/employees' ); ?></li>
+							</ul>
+						</li>
+						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Logins','/Logins/Add',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Terms&Conditions','/Terms-Conditions',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Designations','/Designations',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Departments','/Departments',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Files','/Filenames',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Sale-Taxes','/SaleTaxes',array('escape'=>false)); ?></li>
+						<li>
+							<a href="javascript:;">
+							<i class="fa fa-puzzle-piece"></i>
+							<span class="title">Suppliers</span>
+							<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+								<li><?php echo $this->Html->link('<i class="icon-home"></i> Add','/Vendors/Add',array('escape'=>false)); ?></li>
+								<li><?php echo $this->Html->link('<i class="icon-home"></i> List','/Vendors',array('escape'=>false)); ?></li>
+							</ul>
+						</li>
+						<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Ledger Account','/ledgerAccounts',array('escape'=>false)); ?></li>
+						<li>
+							<a href="javascript:;">
+							<i class="fa fa-file-code-o"></i>
+							<span class="title">Account References</span>
+							<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+								<li><?php echo $this->Html->link( 'Create', '/AccountReferences/add' ); ?></li>
+								<li><?php echo $this->Html->link( 'View', '/AccountReferences' ); ?></li>
+								
+							</ul>
+						</li>
+						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Quotation Close Reason','/QuotationCloseReasons',array('escape'=>false)); ?></li>	
+						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Leave Types','/LeaveTypes',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
-				
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
@@ -541,24 +541,31 @@ select
 						</li>
 					</ul>
 				</li>
-				
-				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Quotation Close Reason','/QuotationCloseReasons',array('escape'=>false)); ?></li>	
-				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Leave Types','/LeaveTypes',array('escape'=>false)); ?></li>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-file-code-o"></i>
-					<span class="title">Overdue Report</span>
+					<span class="title">Reports</span>
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<?php if(in_array(1,$allowed_pages)){
-						echo '<li>'.$this->Html->link( 'Overdue Report for Customers', '/Customers/Over-Due-Report' ).'</li>';
-						} ?>
+						<li>
+							<a href="javascript:;">
+							<i class="fa fa-file-code-o"></i>
+							<span class="title">Overdue Report</span>
+							<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+								<?php if(in_array(1,$allowed_pages)){
+								echo '<li>'.$this->Html->link( 'Overdue Report for Customers', '/Customers/Over-Due-Report' ).'</li>';
+								} ?>
+							</ul>
+						</li>
+						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Item Report','/Item-Ledgers/Stock-Report',array('escape'=>false)); ?></li>	
+						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Balance Sheet','/ledger-Accounts/Balance-Sheet',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Profit & Loss Statement','/ledger-Accounts/Profit-Loss-Statement',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Daily Report','/ledgers',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
-				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Item Report','/Item-Ledgers/Stock-Report',array('escape'=>false)); ?></li>	
-				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Balance Sheet','/ledger-Accounts/Balance-Sheet',array('escape'=>false)); ?></li>
-				<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Profit & Loss Statement','/ledger-Accounts/Profit-Loss-Statement',array('escape'=>false)); ?></li>				
 			</ul>
 			<!-- END SIDEBAR MENU -->
 		</div>
