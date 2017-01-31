@@ -147,4 +147,29 @@ class LedgerAccountsController extends AppController
 		echo $bill = $ledgerAccount->bill_to_bill_account;
 	}
 	
+	public function BalanceSheet (){
+		$this->viewBuilder()->layout('index_layout');
+		$date=$this->request->query('date');
+		if($date){
+			$query=$this->LedgerAccounts->Ledgers->find();
+			$Ledgers_Assets=$query->select(['total_debit' => $query->func()->sum('debit'),'total_credit' => $query->func()->sum('credit')])
+			->matching('LedgerAccounts.AccountSecondSubgroups.AccountFirstSubgroups.AccountGroups.AccountCategories', function ($q) {
+				return $q->where(['AccountCategories.id' => 1]);
+			})
+			->contain(['LedgerAccounts'])
+			->group(['ledger_account_id'])
+			->autoFields(true)->toArray();
+			
+			$query2=$this->LedgerAccounts->Ledgers->find();
+			$Ledgers_Liablities=$query2->select(['total_debit' => $query2->func()->sum('debit'),'total_credit' => $query2->func()->sum('credit')])
+			->matching('LedgerAccounts.AccountSecondSubgroups.AccountFirstSubgroups.AccountGroups.AccountCategories', function ($q) {
+				return $q->where(['AccountCategories.id' => 2]);
+			})
+			->contain(['LedgerAccounts'])
+			->group(['ledger_account_id'])
+			->autoFields(true)->toArray();
+			$this->set(compact('Ledgers_Assets','Ledgers_Liablities'));
+		}
+		$this->set(compact('date'));
+	}
 }

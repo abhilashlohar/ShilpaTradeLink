@@ -50,6 +50,13 @@ class LedgerAccountsTable extends Table
         $this->hasMany('Ledgers', [
             'foreignKey' => 'ledger_account_id'
         ]);
+		
+		$this->belongsTo('Customers', [
+            'foreignKey' => 'customer_id',
+            'joinType' => 'INNER'
+        ]);
+		
+		$this->belongsTo('AccountCategories');
     }
 
     /**

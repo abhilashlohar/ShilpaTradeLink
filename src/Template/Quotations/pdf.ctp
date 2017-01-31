@@ -162,7 +162,7 @@ $html .= '
 				<table>
 					<tr>
 						<td>Date</td>
-						<td>: '. h(date("d-m-Y",strtotime($quotation->created_on))) .'</td>
+						<td>: '. h($quotation->created_on->format("d-m-Y")) .'</td>
 					</tr>
 					<tr>
 						<td>Ref no</td>
