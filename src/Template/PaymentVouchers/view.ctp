@@ -98,7 +98,11 @@
 </table>
 </div>
 </br>
-
+<?php $count=0; foreach($paymentVoucher->payment_breakups as $data){
+			$count++;
+		}
+	if($count>0){
+?>
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size:14px;" class="maindiv">	
 <table class="table table-bordered table-condensed">
 	<thead> 
@@ -127,6 +131,8 @@
 		</tr>
 	</tbody>
 </table>
+
 </div>
+<?php } ?>
 </br>
 

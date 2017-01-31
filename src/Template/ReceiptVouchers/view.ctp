@@ -1,3 +1,4 @@
+
 <a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
 
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size: 14px;" class="maindiv">	
@@ -94,6 +95,11 @@
 </div>
 </br>
 
+<?php $count=0; foreach($receiptVoucher->receipt_breakups as $data){
+			$count++;
+		}
+	if($count>0){
+?>
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size: 14px;" class="maindiv">
 <table class="table table-bordered table-condensed">
 	<thead> 
@@ -122,6 +128,6 @@
 		</tr>
 	</tbody>
 </table>
-</br>	
-
+</br>		
 </div>
+<?php } ?>

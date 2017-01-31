@@ -74,15 +74,18 @@ class PaymentVouchersController extends AppController
 			
 			if(!empty($this->request->data['invoice_booking_record'])){
 				foreach($this->request->data['invoice_booking_record'] as $invoice_booking_record){
-						if(@$invoice_booking_record['checkbox']){
+					if(@$invoice_booking_record['checkbox']){
 						$payment_breakups[]=['ref_type'=>'Agst Ref','new_ref_no'=>'','invoice_booking_id'=>$invoice_booking_record['invoice_booking_id'],'amount'=>$invoice_booking_record['invoice_booking_amount']];
 					}
 				} 
 			}
-			if(!empty($this->request->data['advance'])){
-			$payment_breakups[]=['ref_type'=>'Advance','new_ref_no'=>'','invoice_booking_id'=>0,'amount'=>$this->request->data['advance']];
-			$paymentVoucher->advance_amount=$this->request->data['advance'];
-			else if($this->request->data['receipt_type']='On Account'){
+			if((!empty($this->request->data['advance'])) && ($this->request->data['receipt_type']=='Agst Ref')) {
+				if($this->request->data['advance']>0){
+					$payment_breakups[]=['ref_type'=>'Advance','new_ref_no'=>'','invoice_booking_id'=>0,'amount'=>$this->request->data['advance']];
+					$paymentVoucher->advance_amount=$this->request->data['advance'];
+				}
+			}
+			else if($this->request->data['receipt_type']!='On Account'){
 			$paymentVoucher->advance_amount=$this->request->data['amount'];
 			}
 				

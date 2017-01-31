@@ -79,11 +79,13 @@ class ReceiptVouchersController extends AppController
 					}
 				} 
 			}
-			if(!empty($this->request->data['advance'])){
+			if((!empty($this->request->data['advance'])) && ($this->request->data['receipt_type']=='Agst Ref')) {
+			if($this->request->data['advance']>0){
 			$receipt_breakups[]=['ref_type'=>'Advance','new_ref_no'=>'','invoice_id'=>0,'amount'=>$this->request->data['advance']];
 			$receiptVoucher->advance_amount=$this->request->data['advance'];
 			}
-			else if($this->request->data['receipt_type']='On Account'){
+			}
+			else if($this->request->data['receipt_type']!='On Account'){
 			$receiptVoucher->advance_amount=$this->request->data['amount'];
 			}
 				
