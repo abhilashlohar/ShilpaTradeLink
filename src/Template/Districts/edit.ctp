@@ -56,20 +56,27 @@ $(document).ready(function() {
 		rules: {
 			state:{
 				required: true,
-				lettersonly: true,
+				alphabetsAndSpacesOnly: true,
 				maxlength:30,
 			},
+			
 			district:{
 				required: true,
-				lettersonly: true,
+				alphabetsAndSpacesOnly: true,
 				maxlength:30,
 			},
 		
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
-		
+			district  : {
+				alphabetsAndSpacesOnly: "Enter Letters only",
+			},
+			state  : {
+				alphabetsAndSpacesOnly: "Enter Letters only",
+			},
 		},
+
 
 		errorPlacement: function (error, element) { // render error placement for each input type
 			if (element.parent(".input-group").size() > 0) {

@@ -192,6 +192,8 @@ $this->Form->templates([
 <script>
 $(document).ready(function() {
 	
+	jQuery.validator.addMethod("alphabetsAndSpacesOnly", function (value, element) {
+    return this.optional(element) || /^[a-zA-Z\s&.]+$/.test(value); });
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -206,7 +208,7 @@ $(document).ready(function() {
 			},
 			name  : {
 				  required: true,
-				  
+				    alphabetsAndSpacesOnly: true,
 			},
 			alias  : {
 				  required: true,
@@ -242,8 +244,8 @@ $(document).ready(function() {
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
-			membership: {
-				required: "Please select a Membership type"
+			name  : {
+				alphabetsAndSpacesOnly: "Enter Letters only",
 			},
 			service: {
 				required: "Please select  at least 2 types of Service",

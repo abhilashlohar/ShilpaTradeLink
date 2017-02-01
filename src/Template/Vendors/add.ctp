@@ -177,6 +177,9 @@
 <script>
 $(document).ready(function() {
 	//--------- FORM VALIDATION
+	jQuery.validator.addMethod("alphabetsAndSpacesOnly", function (value, element) {
+        return this.optional(element) || /^[a-zA-Z\s.,]+$/.test(value); });
+		
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
 	var success3 = $('.alert-success', form3);
@@ -187,6 +190,7 @@ $(document).ready(function() {
 		rules: {
 			company_name:{
 				required: true,
+				alphabetsAndSpacesOnly: true,
 			},
 			address  : {
 				  required: true,
@@ -228,13 +232,10 @@ $(document).ready(function() {
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
-			membership: {
-				required: "Please select a Membership type"
+			company_name: {
+				alphabetsAndSpacesOnly: "Enter Letters only",
 			},
-			service: {
-				required: "Please select  at least 2 types of Service",
-				minlength: jQuery.validator.format("Please select  at least {0} types of Service")
-			}
+			
 		},
 
 		errorPlacement: function (error, element) { // render error placement for each input type
@@ -375,7 +376,14 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		$("#main_tb tbody tr").each(function(){
 			
 			$(this).find("td:nth-child(1)").html(++i); --i;
-			$(this).find("td:nth-child(2) input").attr({name:"vendor_contact_persons["+i+"][name]",id:"vendor_contact_persons-"+i+"-name"}).rules("add", "required");
+			$(this).find("td:nth-child(2) input").attr({name:"vendor_contact_persons["+i+"][name]",id:"vendor_contact_persons-"+i+"-name"}).rules('add', {
+						required: true,
+						alphabetsAndSpacesOnly: true,
+						messages: {
+							alphabetsAndSpacesOnly: "Enter Letters Only.",
+						}
+					
+			});
 			$(this).find("td:nth-child(3) input").attr({name:"vendor_contact_persons["+i+"][email]",id:"vendor_contact_persons-"+i+"-email"}).rules("add", "required");
 			$(this).find("td:nth-child(4) input").attr({name:"vendor_contact_persons["+i+"][mobile]",id:"vendor_contact_persons-"+i+"-mobile"}).rules('add', {
 						required: true,
