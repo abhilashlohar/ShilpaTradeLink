@@ -76,7 +76,6 @@ $(document).ready(function() {
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
-			
 			name  : {
 				alphabetsAndSpacesOnly: "Enter Letters only",
 			},

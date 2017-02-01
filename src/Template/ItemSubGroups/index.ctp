@@ -31,7 +31,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-md-3">Name  <span class="required" aria-required="true">
+					<label class="control-label col-md-3">Name<span class="required" aria-required="true">
 					* </span>
 					</label>
 					<div class="col-md-9">

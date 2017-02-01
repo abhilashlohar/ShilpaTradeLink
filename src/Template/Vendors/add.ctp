@@ -178,7 +178,7 @@
 $(document).ready(function() {
 	//--------- FORM VALIDATION
 	jQuery.validator.addMethod("alphabetsAndSpacesOnly", function (value, element) {
-        return this.optional(element) || /^[a-zA-Z\s.,]+$/.test(value); });
+    return this.optional(element) || /^[a-zA-Z\s.,]+$/.test(value); });
 		
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
