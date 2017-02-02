@@ -514,16 +514,17 @@ class InvoicesController extends AppController
 			//pr($invoice->invoiceBreakup); exit;
 			if ($this->Invoices->save($invoice)) {
 				//pr($invoice); exit;
-				foreach($invoice->invoice_breakups as $invoice_breakup){
-					
-					$rec_id=$invoice_breakup->receipt_voucher_id;
-					$receipt_amt =$invoice_breakup->receipt_amount-$invoice_breakup->amount;
-					 
-					$query = $this->Invoices->ReceiptVouchers->query();
-					$query->update()
-						->set(['advance_amount' => $receipt_amt])
-						->where(['id' => $rec_id])
-						->execute();
+				if($invoice->invoice_breakups){
+					foreach($invoice->invoice_breakups as $invoice_breakup){
+						$rec_id=$invoice_breakup->receipt_voucher_id;
+						$receipt_amt =$invoice_breakup->receipt_amount-$invoice_breakup->amount;
+						 
+						$query = $this->Invoices->ReceiptVouchers->query();
+						$query->update()
+							->set(['advance_amount' => $receipt_amt])
+							->where(['id' => $rec_id])
+							->execute();
+					}
 				}
 				$this->Invoices->Ledgers->deleteAll(['voucher_id' => $invoice->id, 'voucher_source' => 'Invoice']);
 				

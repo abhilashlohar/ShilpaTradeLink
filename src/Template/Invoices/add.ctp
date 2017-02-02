@@ -288,7 +288,7 @@
 					<div class="form-group">
 						<label class="col-md-6 control-label">Credit Limits</label>
 						<div class="col-md-6" id="due">
-							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value' => @$sales_order->customer->credit_limit]); ?><br/>
+							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-md','placeholder'=>'','readonly','value' => @$sales_order->customer->credit_limit]); ?><br/>
 							<a href="#" role="button" id="update_credit_limit">Update Credit Limit</a>
 							<span id="update_credit_limit_wait"></span>
 						</div>
@@ -299,7 +299,7 @@
 					<div class="form-group">
 						<label class="col-md-6 control-label">Due Payment</label>
 						<div class="col-md-6" id="due">
-							<?php echo $this->Form->input('old_due_payment', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value'=>$old_due_payment]); ?>
+							<?php echo $this->Form->input('old_due_payment', ['label' => false,'class' => 'form-control input-md','placeholder'=>'','readonly','value'=>$old_due_payment]); ?>
 						</div>
 					</div>
 				</div>
@@ -307,12 +307,24 @@
 					<div class="form-group">
 						<label class="col-md-6 control-label">New Due Payment</label>
 						<div class="col-md-6" id="due">
-							<?php echo $this->Form->input('new_due_payment', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','max'=>@$sales_order->customer->credit_limit]); ?>
+							<?php echo $this->Form->input('new_due_payment', ['label' => false,'class' => 'form-control input-md','placeholder'=>'','readonly','max'=>@$sales_order->customer->credit_limit]); ?>
 						</div>
 					</div>
 				</div>
+			
+				
+				
 			</div><br/>
 			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-6 control-label">Temporary Limit</label>
+						<div class="col-md-6" id="due">
+							<?php echo $this->Form->input('temp_limit', ['label' => false,'class' => 'form-control input-md','placeholder'=>'']); ?>
+						</div>
+					</div>
+				</div>
+				
 				<div class="col-md-4">
 					<div class="form-group">
 						<label class="col-md-6 control-label">Customer TIN</label>
@@ -538,8 +550,19 @@ $(document).ready(function() {
 		});
     });
 	
+	$('input[name="temp_limit"]').die().live("keyup",function(){
+	var credit_limit=$('input[name="credit_limit"]').val();
+	var temp_limit=$('input[name="temp_limit"]').val();
+    var sum= parseFloat(temp_limit) + parseFloat(credit_limit);
+	$('input[name="new_due_payment"]').attr('max',sum).rules('add', {
+						required: true,
+						max: sum,
+						messages: {
+							max: "Credit Limit Exieded ."
+						}
+					});
+		});
 	
-
 	$('input[name="discount"],input[name="discount_per"],input[name="pnf"],input[name="fright_amount"],input[name="pnf_per"]').die().live("keyup",function() {
 			var asc=$(this).val();
 			var numbers =  /^[0-9]*\.?[0-9]*$/;
@@ -552,7 +575,6 @@ $(document).ready(function() {
 				return false;  
 			}
 	});
-	
 	
 	
 	

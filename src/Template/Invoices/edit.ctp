@@ -322,6 +322,14 @@
 			<div class="row">
 				<div class="col-md-4">
 					<div class="form-group">
+						<label class="col-md-6 control-label">Temporary Limit</label>
+						<div class="col-md-6" id="due">
+							<?php echo $this->Form->input('temp_limit', ['label' => false,'class' => 'form-control input-md','placeholder'=>'']); ?>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
 						<label class="col-md-6 control-label">Customer TIN</label>
 						<div class="col-md-6" id="due">
 							<?php echo $this->Form->input('customer_tin', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value' => @$invoice->customer->tin_no,'required']); ?><br/>
@@ -503,9 +511,8 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+	
 	if($("#discount_per").is(':checked')){
-		
-		
 		$("#discount_text").show();
 		$('input[name="discount"]').attr('readonly','readonly');
 		
@@ -669,15 +676,29 @@ $(document).ready(function() {
 			
 	
 			var credit_limit=parseFloat($('input[name="credit_limit"]').val());
-			$('input[name="new_due_payment"]').attr('max',credit_limit).rules('add', {
+			var temp_limit=$('input[name="temp_limit"]').val();
+			var sum= parseFloat(temp_limit) + parseFloat(credit_limit);
+			$('input[name="new_due_payment"]').attr('max',sum).rules('add', {
 						required: true,
-						max: credit_limit,
+						max: sum,
 						messages: {
 							max: "Credit Limit Exieded ."
 						}
 					});
 		
-		
+			$('input[name="temp_limit"]').die().live("keyup",function(){
+				var credit_limit=$('input[name="credit_limit"]').val();
+				var temp_limit=$('input[name="temp_limit"]').val();
+				var sum1= parseFloat(temp_limit) + parseFloat(credit_limit);
+					$('input[name="new_due_payment"]').attr('max',sum1).rules('add', {
+						required: true,
+						max: sum1,
+						messages: {
+							max: "Credit Limit Exieded ."
+						}
+					});
+			});
+			
 	$('.select_address').on("click",function() { 
 		open_address(); 
     });
