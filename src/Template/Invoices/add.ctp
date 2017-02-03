@@ -620,9 +620,11 @@ $(document).ready(function() {
 		calculate_total();
 	})
 	
-	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
+	$('#main_tb input,#tbl1 input').die().live("keyup","blur",function() { 
 		calculate_total();
     });
+	
+	
 	$('#main_tb input,#tbl2 select').die().live("change",function() { 
 		calculate_total();
     });
@@ -631,6 +633,10 @@ $(document).ready(function() {
 		rename_rows(); calculate_total();
     });
 	
+	$('.quantity').die().live("keyup",function() {
+		var qty =$(this).val();
+			rename_rows(); 
+    });
 	<?php if($process_status!="New"){ ?>
 	function rename_rows(){
 		var list = new Array();
@@ -647,8 +653,17 @@ $(document).ready(function() {
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) div#editor').attr("name","invoice_rows["+val+"][description]").attr("id","invoice_rows-"+val+"-description");
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				var s_tax=$(this).find('td:nth-child(6)').text();
-				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').attr("name","invoice_rows["+val+"][item_serial_numbers][]").attr("id","invoice_rows-"+val+"-item_serial_no");
-					
+				var qty=$(this).find('td:nth-child(3) input[type="text"]').val();
+				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').attr("name","invoice_rows["+val+"][item_serial_numbers][]").attr("id","invoice_rows-"+val+"-item_serial_no").attr('maxlength',qty).rules('add', {
+						required: true,
+						minlength: qty,
+						maxlength: qty,
+						messages: {
+							maxlength: "select serial number equal to quantity.",
+							minlength:  "select serial number equal to quantity."
+						}
+					});
+					$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				$(this).css('background-color','#fffcda');
 				
 				list.push(s_tax);
@@ -663,6 +678,7 @@ $(document).ready(function() {
 				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').attr({ name:"q"}).rules( "remove", "required" );
 				$(this).css('background-color','#FFF');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
+				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#FFF');
 			}
 			
 			var unique=list.filter(function(itm,i,a){

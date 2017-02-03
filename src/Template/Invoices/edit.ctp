@@ -1,4 +1,4 @@
-<?php //pr($invoice->sales_order->invoices); exit; ?>
+<?php //pr($serial_no); exit; ?>
 <style>
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
 	vertical-align: top !important;
@@ -197,9 +197,21 @@
 							<?php echo $sales_order_row->description; ?>
 							<?php echo $this->Form->textarea('q', ['label' => false,'class' => 'form-control input-sm autoExpand','style'=>['display:none'],'placeholder' => 'Description','required','value'=>$sales_order_row->description]); ?>
 							</td>
-							
 						</tr>
-						<?php } ?>
+						
+						<?php $options1=[];
+							foreach($sales_order_row->item->item_serial_numbers as $item_serial_number){
+								$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
+							} 
+							
+							$option1[]=$serial_no;
+							if($options1) { ?>
+							<tr class="tr3" row_no="<?= h($q) ?>">
+							<td></td>
+							<td colspan="5">
+							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','required','style'=>'width:100%']);  ?></td>
+							</tr><?php } ?>
+					<?php } ?>
 					<?php $q++; }  ?>
 				</tbody>
 			</table>
@@ -531,13 +543,10 @@ $(document).ready(function() {
 		$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').rules("add", "required");
 	});	
 	
-	
 	$('select[name="company_id"]').on("change",function() {
 		var alias=$('select[name="company_id"] option:selected').attr("alias");
 		$('input[name="in1"]').val(alias);
     });
-	
-	
 	
 	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() {
 		calculate_total();
@@ -556,6 +565,10 @@ $(document).ready(function() {
 		add_row();
     });
 	
+	$('.quantity').die().live("keyup",function() {
+		var qty =$(this).val();
+			rename_rows(); 
+    });
 	rename_rows(); calculate_total();
 	function rename_rows(){
 		var list = new Array();
@@ -574,7 +587,18 @@ $(document).ready(function() {
 				
 				$(this).css('background-color','#fffcda');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
+				var qty=$(this).find('td:nth-child(3) input[type="text"]').val();
+				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').attr("name","invoice_rows["+val+"][item_serial_numbers][]").attr("id","invoice_rows-"+val+"-item_serial_no").attr('maxlength',qty).rules('add', {
+						required: true,
+						minlength: qty,
+						maxlength: qty,
+						messages: {
+							maxlength: "select serial number equal to quantity.",
+							minlength: "select serial number equal to quantity."
+						}
+				});
 				
+				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				var s_tax=$(this).find('td:nth-child(6)').text();
 				
 				list.push(s_tax);
@@ -587,6 +611,7 @@ $(document).ready(function() {
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).css('background-color','#FFF');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
+				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#FFF');
 			}
 			var unique=list.filter(function(itm,i,a){
 				return i==a.indexOf(itm);
