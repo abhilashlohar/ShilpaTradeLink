@@ -85,6 +85,9 @@ class ItemsTable extends Table
 		$this->hasMany('JobCardRows', [
             'foreignKey' => 'item_id'
         ]);
+		$this->hasMany('ItemSerialNumbers', [
+            'foreignKey' => 'item_id'
+        ]);
     }
 
     /**

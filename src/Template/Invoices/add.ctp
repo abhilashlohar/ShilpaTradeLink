@@ -175,6 +175,16 @@
 							</td>
 							<td></td>
 						</tr>
+						
+						<?php $options1=[];
+							foreach($sales_order_rows->item->item_serial_numbers as $item_serial_number){
+								$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
+							} if($options1) { ?>
+							<tr class="tr3" row_no='<?php echo @$sales_order_rows->id; ?>'>
+							<td></td>
+							<td colspan="5">
+							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','required','style'=>'width:100%']);  ?></td>
+							</tr><?php } ?>
 					<?php $q++; endforeach; }?>
 				</tbody>
 			</table>
@@ -518,8 +528,6 @@ $(document).ready(function() {
 	
 	//--	 END OF VALIDATION
 	if($("#discount_per").is(':checked')){
-			
-			
 			$("#discount_text").show();
 			$('input[name="discount"]').attr('readonly','readonly');
 			
@@ -561,7 +569,7 @@ $(document).ready(function() {
 							max: "Credit Limit Exieded ."
 						}
 					});
-		});
+	});
 	
 	$('input[name="discount"],input[name="discount_per"],input[name="pnf"],input[name="fright_amount"],input[name="pnf_per"]').die().live("keyup",function() {
 			var asc=$(this).val();
@@ -629,8 +637,6 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
 			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
-			
-			
 			if(val){
 				$(this).find('td:nth-child(2) input').attr("name","invoice_rows["+val+"][item_id]").attr("id","invoice_rows-"+val+"-item_id").rules("add", "required");
 				$(this).find('td:nth-child(3) input').removeAttr("readonly").attr("name","invoice_rows["+val+"][quantity]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-quantity").rules("add", "required");
@@ -639,11 +645,11 @@ $(document).ready(function() {
 				
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').removeAttr("readonly").attr("name","invoice_rows["+val+"][description]").attr("id","invoice_rows-"+val+"-description").rules("add", "required");
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) div#editor').attr("name","invoice_rows["+val+"][description]").attr("id","invoice_rows-"+val+"-description");
-				
-				$(this).css('background-color','#fffcda');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
-				
 				var s_tax=$(this).find('td:nth-child(6)').text();
+				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').attr("name","invoice_rows["+val+"][item_serial_numbers][]").attr("id","invoice_rows-"+val+"-item_serial_no");
+					
+				$(this).css('background-color','#fffcda');
 				
 				list.push(s_tax);
 				
@@ -654,6 +660,7 @@ $(document).ready(function() {
 				$(this).find('td:nth-child(5) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
+				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').attr({ name:"q"}).rules( "remove", "required" );
 				$(this).css('background-color','#FFF');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
 			}

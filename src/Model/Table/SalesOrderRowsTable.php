@@ -36,7 +36,6 @@ class SalesOrderRowsTable extends Table
         $this->table('sales_order_rows');
         $this->displayField('id');
         $this->primaryKey('id');
-
         $this->belongsTo('SalesOrders', [
             'foreignKey' => 'sales_orders_id',
             'joinType' => 'INNER'

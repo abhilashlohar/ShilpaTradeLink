@@ -248,27 +248,32 @@ class InvoicesController extends AppController
      */
     public function add()
     {
+		
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$sales_order_id=@(int)$this->request->query('sales-order');
 		$sales_order=array(); $process_status='New';
 		if(!empty($sales_order_id)){
 			$sales_order = $this->Invoices->SalesOrders->get($sales_order_id, [
-				'contain' => [
-						'SalesOrderRows.Items' => function ($q) {
+				'contain' => ['SalesOrderRows.Items' => function ($q) {
 						   return $q
-								->where(['SalesOrderRows.quantity > SalesOrderRows.processed_quantity']);
+								->where(['SalesOrderRows.quantity > SalesOrderRows.processed_quantity'])
+								->contain(['ItemSerialNumbers'=>function ($q) {
+									return $q
+								->where(['ItemSerialNumbers.status' => 'In' ]); }]);
 						},'SalesOrderRows.SaleTaxes','Companies','Customers','Employees'
 					]
 			]);
+			
 			$process_status='Pulled From Sales-Order';
 			
 		}
 			
 		$this->set(compact('sales_order','process_status','sales_order_id'));
-		//pr($this->request->data); exit;
+		
         $invoice = $this->Invoices->newEntity();
         if ($this->request->is('post')) {
+		
 		$invoice_breakups=[];
 		if(!empty($this->request->data['invoice_breakups'])){
 				foreach($this->request->data['invoice_breakups'] as $invoice_breakup_record){
@@ -277,9 +282,14 @@ class InvoicesController extends AppController
 					}
 				} 
 			}
-		$this->request->data['invoice_breakups']=$invoice_breakups;
-		
-		$invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
+			$this->request->data['invoice_breakups']=$invoice_breakups;
+			$invoice = $this->Invoices->patchEntity($invoice, $this->request->data);
+			foreach($invoice->invoice_rows as $invoice_row){
+				if($invoice_row->item_serial_numbers){
+					$item_serial_no=implode(",",$invoice_row->item_serial_numbers );
+					$invoice_row->item_serial_number=$item_serial_no;
+				}
+			}			
 			
 			$last_in_no=$this->Invoices->find()->select(['in2'])->where(['company_id' => $sales_order->company_id])->order(['in2' => 'DESC'])->first();
 			if($last_in_no){
@@ -301,7 +311,6 @@ class InvoicesController extends AppController
 			}else{
 				$invoice->due_payment=$invoice->grand_total-$invoice->total_amount_agst;
 			}
-			
 			
             if ($this->Invoices->save($invoice)) {
 				//pr($invoice->invoice_breakups); 
@@ -349,7 +358,6 @@ class InvoicesController extends AppController
 				$ledger->voucher_source = 'Invoice';
 				if($ledger_pnf>0)
 				{
-					
 					$this->Invoices->Ledgers->save($ledger); 
 				}
 				
@@ -389,8 +397,7 @@ class InvoicesController extends AppController
 					$this->Invoices->Ledgers->save($ledger); 
 				}
 				
-				
-				 $discount=$invoice->discount;
+				$discount=$invoice->discount;
 				 $pf=$invoice->pnf;
 				 $exciseDuty=$invoice->exceise_duty;
 				 $sale_tax=$invoice->sale_tax_amount;
@@ -399,7 +406,17 @@ class InvoicesController extends AppController
 				foreach($invoice->invoice_rows as $invoice_row){
 					$amt=$invoice_row->amount;
 					$total_amt=$total_amt+$amt;
+					$item_serial_no=$invoice_row->item_serial_number;
+					$serial_no=explode(",",$item_serial_no);
+					foreach($serial_no as $serial){
+					$query = $this->Invoices->InvoiceRows->ItemSerialNumbers->query();
+						$query->update()
+							->set(['status' => 'Out'])
+							->where(['id' => $serial])
+							->execute();
+					}
 				}
+				
 				
 				if(!empty($sales_order_id)){
 					$invoice->check=array_filter($invoice->check);
@@ -470,8 +487,9 @@ class InvoicesController extends AppController
 				$old_due_payment+=$invoice_data->due_payment;
 			}
 		}
+		$item_serial_no=$this->Invoices->ItemSerialNumbers->find('list', ['limit' => 200]);
 		$employees = $this->Invoices->Employees->find('list', ['limit' => 200]);
-        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoicespay','creditlimit','old_due_payment'));
+        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoicespay','creditlimit','old_due_payment','item_serial_no'));
         $this->set('_serialize', ['invoice']);
     }
 	
