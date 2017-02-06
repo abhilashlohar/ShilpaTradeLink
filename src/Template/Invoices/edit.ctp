@@ -1,4 +1,4 @@
-<?php //pr($invoice->sales_order->invoices); exit; ?>
+<?php //pr($ItemSerialNumber); exit; ?>
 <style>
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
 	vertical-align: top !important;
@@ -197,9 +197,28 @@
 							<?php echo $sales_order_row->description; ?>
 							<?php echo $this->Form->textarea('q', ['label' => false,'class' => 'form-control input-sm autoExpand','style'=>['display:none'],'placeholder' => 'Description','required','value'=>$sales_order_row->description]); ?>
 							</td>
-							
 						</tr>
-						<?php } ?>
+						
+						<?php $options1=[]; $choosen=[];
+							if(sizeof(@$ItemSerialNumber[@$sales_order_row->item_id])>0){
+								foreach($ItemSerialNumber[@$sales_order_row->item_id] as $item_serial_number){
+									if($item_serial_number->status=="Out"){
+										$choosen[]=$item_serial_number->id;
+									}
+									$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
+								} 
+							}else if(sizeof(@$ItemSerialNumber2[@$sales_order_row->item_id])>0){
+								foreach($ItemSerialNumber2[@$sales_order_row->item_id] as $item_serial_number){
+									$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
+								} 
+							}
+							if($options1) { ?>
+							<tr class="tr3" row_no="<?= h($q) ?>">
+							<td></td>
+							<td colspan="5">
+							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','required','style'=>'width:100%','value'=>$choosen]);  ?></td>
+							</tr><?php } ?>
+					<?php } ?>
 					<?php $q++; }  ?>
 				</tbody>
 			</table>
@@ -320,6 +339,14 @@
 				</div>
 			</div>
 			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-6 control-label">Temporary Limit</label>
+						<div class="col-md-6" id="due">
+							<?php echo $this->Form->input('temp_limit', ['label' => false,'class' => 'form-control input-md','placeholder'=>'']); ?>
+						</div>
+					</div>
+				</div>
 				<div class="col-md-4">
 					<div class="form-group">
 						<label class="col-md-6 control-label">Customer TIN</label>
@@ -503,9 +530,8 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+	
 	if($("#discount_per").is(':checked')){
-		
-		
 		$("#discount_text").show();
 		$('input[name="discount"]').attr('readonly','readonly');
 		
@@ -524,13 +550,10 @@ $(document).ready(function() {
 		$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').rules("add", "required");
 	});	
 	
-	
 	$('select[name="company_id"]').on("change",function() {
 		var alias=$('select[name="company_id"] option:selected').attr("alias");
 		$('input[name="in1"]').val(alias);
     });
-	
-	
 	
 	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() {
 		calculate_total();
@@ -549,14 +572,17 @@ $(document).ready(function() {
 		add_row();
     });
 	
+	$('.quantity').die().live("keyup",function() {
+		var qty =$(this).val();
+			rename_rows(); 
+    });
 	rename_rows(); calculate_total();
 	function rename_rows(){
 		var list = new Array();
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
 			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
-			
-			if(val){ 
+		if(val){ 
 				$(this).find('td:nth-child(2) input').attr("name","invoice_rows["+val+"][item_id]").attr("id","invoice_rows-"+val+"-item_id").rules("add", "required");
 				$(this).find('td:nth-child(3) input').removeAttr("readonly").attr("name","invoice_rows["+val+"][quantity]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-quantity").rules("add", "required");
 				$(this).find('td:nth-child(4) input').attr("name","invoice_rows["+val+"][rate]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-rate").rules("add", "required");
@@ -567,7 +593,18 @@ $(document).ready(function() {
 				
 				$(this).css('background-color','#fffcda');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
+				var qty=$(this).find('td:nth-child(3) input[type="text"]').val();
+				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').attr("name","invoice_rows["+val+"][item_serial_numbers][]").attr("id","invoice_rows-"+val+"-item_serial_no").attr('maxlength',qty).rules('add', {
+						required: true,
+						minlength: qty,
+						maxlength: qty,
+						messages: {
+							maxlength: "select serial number equal to quantity.",
+							minlength: "select serial number equal to quantity."
+						}
+				});
 				
+				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				var s_tax=$(this).find('td:nth-child(6)').text();
 				
 				list.push(s_tax);
@@ -580,6 +617,7 @@ $(document).ready(function() {
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).css('background-color','#FFF');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
+				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#FFF');
 			}
 			var unique=list.filter(function(itm,i,a){
 				return i==a.indexOf(itm);
@@ -669,15 +707,29 @@ $(document).ready(function() {
 			
 	
 			var credit_limit=parseFloat($('input[name="credit_limit"]').val());
-			$('input[name="new_due_payment"]').attr('max',credit_limit).rules('add', {
+			var temp_limit=$('input[name="temp_limit"]').val();
+			var sum= parseFloat(temp_limit) + parseFloat(credit_limit);
+			$('input[name="new_due_payment"]').attr('max',sum).rules('add', {
 						required: true,
-						max: credit_limit,
+						max: sum,
 						messages: {
 							max: "Credit Limit Exieded ."
 						}
 					});
 		
-		
+			$('input[name="temp_limit"]').die().live("keyup",function(){
+				var credit_limit=$('input[name="credit_limit"]').val();
+				var temp_limit=$('input[name="temp_limit"]').val();
+				var sum1= parseFloat(temp_limit) + parseFloat(credit_limit);
+					$('input[name="new_due_payment"]').attr('max',sum1).rules('add', {
+						required: true,
+						max: sum1,
+						messages: {
+							max: "Credit Limit Exieded ."
+						}
+					});
+			});
+			
 	$('.select_address').on("click",function() { 
 		open_address(); 
     });

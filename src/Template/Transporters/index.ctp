@@ -27,7 +27,7 @@
 					<div class="col-md-9">
 						<div class="input-icon right">
 							<i class="fa"></i>
-							 <?php echo $this->Form->input('transporter_name', ['label' => false,'class' => 'form-control allAlpha']); ?>
+							 <?php echo $this->Form->input('transporter_name', ['label' => false,'class' => 'form-control firstupercase']); ?>
 						</div>
 					</div>
 				</div>
@@ -127,7 +127,8 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-	
+	jQuery.validator.addMethod("alphabetsAndSpacesOnly", function (value, element) {
+    return this.optional(element) || /^[a-zA-Z\s]+$/.test(value); });
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -139,7 +140,7 @@ $(document).ready(function() {
 		rules: {
 			transporter_name:{
 				required: true,
-				lettersonly: true,
+				alphabetsAndSpacesOnly: true,
 			},
 			mobile:{
 				required: true,
@@ -151,13 +152,9 @@ $(document).ready(function() {
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
-			membership: {
-				required: "Please select a Membership type"
+			transporter_name  : {
+				alphabetsAndSpacesOnly: "Enter Letters only",
 			},
-			service: {
-				required: "Please select  at least 2 types of Service",
-				minlength: jQuery.validator.format("Please select  at least {0} types of Service")
-			}
 		},
 
 		errorPlacement: function (error, element) { // render error placement for each input type
@@ -206,21 +203,7 @@ $(document).ready(function() {
 		}
 
 	});
-		
-	$('.allAlpha').live("keyup",function(){
-		var inputtxt=  $(this).val();
-		var numbers =  /^[a-zA-Z\s]+$/;
-		
-		if(inputtxt.match(numbers))  
-		{  
-		} 
-		else  
-		{  
-			$(this).val('');
-			return false;  
-		}
-	});
-
+	
 
 });
 </script>

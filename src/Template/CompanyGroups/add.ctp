@@ -81,6 +81,9 @@
 <script>
 $(document).ready(function() {
 	//--------- FORM VALIDATION
+	jQuery.validator.addMethod("alphabetsAndSpacesOnly", function (value, element) {
+    return this.optional(element) || /^[a-zA-Z\s]+$/.test(value); });
+	
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
 	var success3 = $('.alert-success', form3);
@@ -92,13 +95,14 @@ $(document).ready(function() {
 			name:{
 				required: true,
 				maxlength:30,
+				alphabetsAndSpacesOnly: true,
 			},
-			
-		
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
-		
+			name: {
+				alphabetsAndSpacesOnly: "Enter Letters only",
+			},
 		},
 
 		errorPlacement: function (error, element) { // render error placement for each input type

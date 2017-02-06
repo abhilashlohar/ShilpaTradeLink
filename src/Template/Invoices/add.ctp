@@ -175,6 +175,16 @@
 							</td>
 							<td></td>
 						</tr>
+						
+						<?php $options1=[];
+							foreach($sales_order_rows->item->item_serial_numbers as $item_serial_number){
+								$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
+							} if($options1) { ?>
+							<tr class="tr3" row_no='<?php echo @$sales_order_rows->id; ?>'>
+							<td></td>
+							<td colspan="5">
+							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','required','style'=>'width:100%']);  ?></td>
+							</tr><?php } ?>
 					<?php $q++; endforeach; }?>
 				</tbody>
 			</table>
@@ -288,7 +298,7 @@
 					<div class="form-group">
 						<label class="col-md-6 control-label">Credit Limits</label>
 						<div class="col-md-6" id="due">
-							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value' => @$sales_order->customer->credit_limit]); ?><br/>
+							<?php echo $this->Form->input('credit_limit', ['label' => false,'class' => 'form-control input-md','placeholder'=>'','readonly','value' => @$sales_order->customer->credit_limit]); ?><br/>
 							<a href="#" role="button" id="update_credit_limit">Update Credit Limit</a>
 							<span id="update_credit_limit_wait"></span>
 						</div>
@@ -299,7 +309,7 @@
 					<div class="form-group">
 						<label class="col-md-6 control-label">Due Payment</label>
 						<div class="col-md-6" id="due">
-							<?php echo $this->Form->input('old_due_payment', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','value'=>$old_due_payment]); ?>
+							<?php echo $this->Form->input('old_due_payment', ['label' => false,'class' => 'form-control input-md','placeholder'=>'','readonly','value'=>$old_due_payment]); ?>
 						</div>
 					</div>
 				</div>
@@ -307,12 +317,24 @@
 					<div class="form-group">
 						<label class="col-md-6 control-label">New Due Payment</label>
 						<div class="col-md-6" id="due">
-							<?php echo $this->Form->input('new_due_payment', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'','readonly','max'=>@$sales_order->customer->credit_limit]); ?>
+							<?php echo $this->Form->input('new_due_payment', ['label' => false,'class' => 'form-control input-md','placeholder'=>'','readonly','max'=>@$sales_order->customer->credit_limit]); ?>
 						</div>
 					</div>
 				</div>
+			
+				
+				
 			</div><br/>
 			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-6 control-label">Temporary Limit</label>
+						<div class="col-md-6" id="due">
+							<?php echo $this->Form->input('temp_limit', ['label' => false,'class' => 'form-control input-md','placeholder'=>'']); ?>
+						</div>
+					</div>
+				</div>
+				
 				<div class="col-md-4">
 					<div class="form-group">
 						<label class="col-md-6 control-label">Customer TIN</label>
@@ -506,8 +528,6 @@ $(document).ready(function() {
 	
 	//--	 END OF VALIDATION
 	if($("#discount_per").is(':checked')){
-			
-			
 			$("#discount_text").show();
 			$('input[name="discount"]').attr('readonly','readonly');
 			
@@ -538,8 +558,19 @@ $(document).ready(function() {
 		});
     });
 	
+	$('input[name="temp_limit"]').die().live("keyup",function(){
+	var credit_limit=$('input[name="credit_limit"]').val();
+	var temp_limit=$('input[name="temp_limit"]').val();
+    var sum= parseFloat(temp_limit) + parseFloat(credit_limit);
+	$('input[name="new_due_payment"]').attr('max',sum).rules('add', {
+						required: true,
+						max: sum,
+						messages: {
+							max: "Credit Limit Exieded ."
+						}
+					});
+	});
 	
-
 	$('input[name="discount"],input[name="discount_per"],input[name="pnf"],input[name="fright_amount"],input[name="pnf_per"]').die().live("keyup",function() {
 			var asc=$(this).val();
 			var numbers =  /^[0-9]*\.?[0-9]*$/;
@@ -552,7 +583,6 @@ $(document).ready(function() {
 				return false;  
 			}
 	});
-	
 	
 	
 	
@@ -590,9 +620,11 @@ $(document).ready(function() {
 		calculate_total();
 	})
 	
-	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
+	$('#main_tb input,#tbl1 input').die().live("keyup","blur",function() { 
 		calculate_total();
     });
+	
+	
 	$('#main_tb input,#tbl2 select').die().live("change",function() { 
 		calculate_total();
     });
@@ -601,6 +633,10 @@ $(document).ready(function() {
 		rename_rows(); calculate_total();
     });
 	
+	$('.quantity').die().live("keyup",function() {
+		var qty =$(this).val();
+			rename_rows(); 
+    });
 	<?php if($process_status!="New"){ ?>
 	function rename_rows(){
 		var list = new Array();
@@ -608,8 +644,7 @@ $(document).ready(function() {
 			var row_no=$(this).attr('row_no');
 			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
 			
-			
-			if(val){
+			if(val){ 
 				$(this).find('td:nth-child(2) input').attr("name","invoice_rows["+val+"][item_id]").attr("id","invoice_rows-"+val+"-item_id").rules("add", "required");
 				$(this).find('td:nth-child(3) input').removeAttr("readonly").attr("name","invoice_rows["+val+"][quantity]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-quantity").rules("add", "required");
 				$(this).find('td:nth-child(4) input').attr("name","invoice_rows["+val+"][rate]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-rate").rules("add", "required");
@@ -620,11 +655,21 @@ $(document).ready(function() {
 				
 				$(this).css('background-color','#fffcda');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
+				var qty=$(this).find('td:nth-child(3) input[type="text"]').val();
+				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').attr("name","invoice_rows["+val+"][item_serial_numbers][]").attr("id","invoice_rows-"+val+"-item_serial_no").attr('maxlength',qty).rules('add', {
+						required: true,
+						minlength: qty,
+						maxlength: qty,
+						messages: {
+							maxlength: "select serial number equal to quantity.",
+							minlength: "select serial number equal to quantity."
+						}
+				});
 				
+				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				var s_tax=$(this).find('td:nth-child(6)').text();
 				
 				list.push(s_tax);
-				
 			}else{
 				$(this).find('td:nth-child(2) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(3) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
@@ -632,10 +677,12 @@ $(document).ready(function() {
 				$(this).find('td:nth-child(5) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
+
 				$(this).css('background-color','#FFF');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
+
+				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#FFF');
 			}
-			
 			var unique=list.filter(function(itm,i,a){
 				return i==a.indexOf(itm);
 			});
@@ -644,6 +691,10 @@ $(document).ready(function() {
 			
 		});
 	}
+	
+	
+	
+	
 	
 	
 	function calculate_total(){

@@ -1,12 +1,12 @@
 <style>
-.padding-right-decrease{
-	padding-right: 0;
-}
-.padding-left-decrease{
-	padding-left: 0;
-}
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
 	vertical-align: top !important;
+}
+.page-content-wrapper .page-content {
+    padding: 5px;
+}
+.portlet.light {
+    padding: 4px 10px 4px 10px;
 }
 </style>
 
@@ -36,26 +36,20 @@
 		 <?= $this->Form->create($receiptVoucher,['type' => 'file','id'=>'form_sample_3']) ?>
 			<div class="form-body">
 				<div class="row">
-					<div class="col-md-9">
-					</div>
-					<div class="col-md-3">
+					<div class="col-md-3" >
 						<div class="form-group">
-							<label class="col-md-3 control-label">Date</label>
-							<div class="col-md-9">
-								<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
-							</div>
+						<label class=" control-label">Date</label>
+							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
 						</div>
 					</div>
-				</div>
-				<div class="row" style="margin-top:30px;">
-					<div class="col-md-4" >
+					<div class="col-md-3" >
 						<div class="form-group">
 						<label class=" control-label">Receipt Date<span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y")]); ?>
 						
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Recived Form<span class="required" aria-required="true">*</span></label>
 						
@@ -63,7 +57,7 @@
 						
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Bank/Cash<span class="required" aria-required="true">*</span></label>
 							

@@ -117,7 +117,9 @@
 								<?php } ?>
 								<?php
 								if($invoice->inventory_voucher_status=='Pending'){
+								if($inventory_voucher=="true"){
 								echo $this->Html->link('<i class="fa fa-repeat"></i>  Create Inventory Voucher','/Inventory-Vouchers/Add?Invoice='.$invoice->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+								 }
 								} ?>
 								
 							</td>

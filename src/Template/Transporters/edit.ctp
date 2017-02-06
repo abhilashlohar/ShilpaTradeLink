@@ -18,7 +18,7 @@
 					<div class="col-md-6">
 						<div class="input-icon right">
 							<i class="fa"></i>
-							 <?php echo $this->Form->input('transporter_name', ['label' => false,'class' => 'form-control']); ?>
+							 <?php echo $this->Form->input('transporter_name', ['label' => false,'class' => 'form-control firstupercase']); ?>
 						</div>
 					</div>
 				</div>
@@ -62,6 +62,10 @@
 $(document).ready(function() {
 	
 	//--------- FORM VALIDATION
+	
+	jQuery.validator.addMethod("alphabetsAndSpacesOnly", function (value, element) {
+    return this.optional(element) || /^[a-zA-Z\s]+$/.test(value); });
+	
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
 	var success3 = $('.alert-success', form3);
@@ -72,7 +76,7 @@ $(document).ready(function() {
 		rules: {
 			transporter_name:{
 				required: true,
-				lettersonly: true,
+				alphabetsAndSpacesOnly: true,
 			},
 			mobile:{
 				required: true,
@@ -84,13 +88,9 @@ $(document).ready(function() {
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
-			membership: {
-				required: "Please select a Membership type"
+			transporter_name  : {
+				alphabetsAndSpacesOnly: "Enter Letters only",
 			},
-			service: {
-				required: "Please select  at least 2 types of Service",
-				minlength: jQuery.validator.format("Please select  at least {0} types of Service")
-			}
 		},
 
 		errorPlacement: function (error, element) { // render error placement for each input type

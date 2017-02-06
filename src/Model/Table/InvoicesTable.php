@@ -68,12 +68,12 @@ class InvoicesTable extends Table
             'foreignKey' => 'invoice_id',
 			'saveStrategy' => 'replace'
         ]);
+		
 		$this->hasMany('InvoiceBreakups', [
             'foreignKey' => 'invoice_id',
 			'saveStrategy' => 'replace'
         ]);
-		
-		$this->belongsTo('CompanyBanks');
+		$this->hasMany('ItemSerialNumbers');
 		$this->belongsTo('SaleTaxes');
 		$this->belongsTo('Employees', [
             'foreignKey' => 'employee_id',

@@ -16,7 +16,7 @@
 					<div class="col-md-4">
 						<div class="input-icon right">
 							<i class="fa"></i>
-							 <?php echo $this->Form->input('name', ['label' => false,'class' => 'form-control']); ?>
+							 <?php echo $this->Form->input('name', ['label' => false,'class' => 'form-control firstupercase']); ?>
 						</div>
 					</div>
 				</div>
@@ -36,6 +36,8 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
+	jQuery.validator.addMethod("alphabetsAndSpacesOnly", function (value, element) {
+    return this.optional(element) || /^[a-zA-Z\s.]+$/.test(value); });
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -47,13 +49,15 @@ $(document).ready(function() {
 		rules: {
 			name:{
 				required: true,
-				lettersonly: true,
-				maxlength:30,
+				alphabetsAndSpacesOnly: true,
 			},
+			
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
-		
+		name  : {
+				alphabetsAndSpacesOnly: "Enter Letters only",
+			},
 		},
 
 		errorPlacement: function (error, element) { // render error placement for each input type
@@ -102,6 +106,7 @@ $(document).ready(function() {
 		}
 
 	});
+	
+
 });
 </script>
-

@@ -103,7 +103,6 @@
 								</td>
 									
 								<td>
-								
 									<?php echo $this->Form->input('q', ['label' => false,'type' => 'text','class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$purchase_order_rows->quantity-$purchase_order_rows->processed_quantity,'readonly','min'=>'1','max'=>@$purchase_order_rows->quantity-$purchase_order_rows->processed_quantity]); 
 									echo "In Purchase-Order Quantity:- ";
 									echo $purchase_order_rows->quantity;
@@ -234,11 +233,13 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
 			var val=$(this).find('td:nth-child(4) input[type="checkbox"]:checked').val();
-			var serial_number_enable=$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(2)').val();	
-			var item_id=$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(1)').val();
+			var serial_number_enable=$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(2)').val();
 			
+			var item_id=$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(1)').val();
 			var quantity=$(this).find('td:nth-child(3) input[type="text"]').val();
-			if(val){ var p=1;
+			if(val && serial_number_enable){ 
+			
+			var p=1;
 				$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input.sr_no').remove();
 				for (i = 0; i < quantity; i++) {
 					
