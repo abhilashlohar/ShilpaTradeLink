@@ -71,6 +71,7 @@ class InventoryVouchersTable extends Table
             'joinType' => 'INNER'
         ]);
 		$this->belongsTo('InvoiceRows');
+		$this->belongsTo('ItemSerialNumbers');
     }
 
     /**

@@ -65,8 +65,11 @@ class InventoryVouchersController extends AppController
 		
 		if(!empty($invoice_id)){
 			$Invoice = $this->InventoryVouchers->Invoices->get($invoice_id, [
-				'contain' => ['InvoiceRows'=>['Items'],'Creator', 'Companies','Customers','SalesOrders'=>['SalesOrderRows'=>['JobCardRows'=>['Items']]]]
+				'contain' => ['InvoiceRows'=>['Items'],'Creator', 'Companies','Customers','SalesOrders'=>['SalesOrderRows'=>['JobCardRows'=>['Items'=>['ItemSerialNumbers'=>function ($q) {
+									return $q
+								->where(['ItemSerialNumbers.status' => 'In' ]); }]]]]]
 			]);
+			//pr($Invoice); exit;
 		$job_card_data=[];
 			foreach($Invoice->sales_order->sales_order_rows as $sales_order_row){
 				$job_card_data[$sales_order_row->item_id]=$sales_order_row->job_card_rows;

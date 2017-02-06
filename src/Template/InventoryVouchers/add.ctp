@@ -87,6 +87,15 @@
 								<a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a>
 								</td>
 							</tr>
+							<?php $options1=[];
+							foreach($job_card_row->item->item_serial_numbers as $item_serial_number){
+								$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
+							} if($options1) { ?>
+							<tr class="tr2">
+							<td></td>
+							<td colspan="3">
+							<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.item_serial_numbers', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','required','style'=>'width:100%']);  ?></td>
+							</tr><?php } ?>
 						<?php $i++; } ?>
 						</tbody>
 					</table>
@@ -124,6 +133,11 @@ $(document).ready(function() {
 				$(this).find("td:nth-child(1) input[type=hidden]:nth-child(2)").attr({name:"inventory_voucher_rows["+i+"][invoice_row_item_id]"}).val(invoice_row_item_id);
 				$(this).find("td:nth-child(1) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2();
 				$(this).find("td:nth-child(2) input").attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"});
+				
+				
+			});
+			$(this).find("td:nth-child(2) table tbody tr.tr2").each(function(){
+				var qty=$(this).find('td:nth-child(2) table tbody tr td:nth-child(2) input[type="text"]').val();
 				
 			});
 		});
