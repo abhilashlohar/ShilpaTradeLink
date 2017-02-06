@@ -1,4 +1,4 @@
-<?php //pr($serial_no); exit; ?>
+<?php //pr($ItemSerialNumber); exit; ?>
 <style>
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
 	vertical-align: top !important;
@@ -199,17 +199,24 @@
 							</td>
 						</tr>
 						
-						<?php $options1=[];
-							foreach($sales_order_row->item->item_serial_numbers as $item_serial_number){
-								$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
-							} 
-							
-							$option1[]=$serial_no;
+						<?php $options1=[]; $choosen=[];
+							if(sizeof(@$ItemSerialNumber[@$sales_order_row->item_id])>0){
+								foreach($ItemSerialNumber[@$sales_order_row->item_id] as $item_serial_number){
+									if($item_serial_number->status=="Out"){
+										$choosen[]=$item_serial_number->id;
+									}
+									$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
+								} 
+							}else if(sizeof(@$ItemSerialNumber2[@$sales_order_row->item_id])>0){
+								foreach($ItemSerialNumber2[@$sales_order_row->item_id] as $item_serial_number){
+									$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
+								} 
+							}
 							if($options1) { ?>
 							<tr class="tr3" row_no="<?= h($q) ?>">
 							<td></td>
 							<td colspan="5">
-							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','required','style'=>'width:100%']);  ?></td>
+							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','required','style'=>'width:100%','value'=>$choosen]);  ?></td>
 							</tr><?php } ?>
 					<?php } ?>
 					<?php $q++; }  ?>
@@ -575,8 +582,7 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
 			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
-			
-			if(val){ 
+		if(val){ 
 				$(this).find('td:nth-child(2) input').attr("name","invoice_rows["+val+"][item_id]").attr("id","invoice_rows-"+val+"-item_id").rules("add", "required");
 				$(this).find('td:nth-child(3) input').removeAttr("readonly").attr("name","invoice_rows["+val+"][quantity]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-quantity").rules("add", "required");
 				$(this).find('td:nth-child(4) input').attr("name","invoice_rows["+val+"][rate]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-rate").rules("add", "required");
