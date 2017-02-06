@@ -302,6 +302,7 @@ $(document).ready(function() {
 			},
 			bill_to_bill_account:{
 				  required: true,
+
 			}
 		},
 

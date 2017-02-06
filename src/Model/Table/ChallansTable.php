@@ -81,6 +81,7 @@ class ChallansTable extends Table
 		]);
 			
 		$this->belongsTo('Filenames');
+		$this->belongsTo('ItemLedgers');
     }
 
     /**

@@ -53,6 +53,16 @@ class ItemLedgersController extends AppController
 			$Customer=$this->ItemLedgers->Customers->get($Invoice->customer_id);
 			return ['voucher_info'=>$Invoice,'party_type'=>'Customer','party_info'=>$Customer];
 		}
+		if($source_model=="Challan"){
+			$Challan=$this->ItemLedgers->Challans->get($source_id);
+			
+			if($Challan->challan_for=='Customer'){
+			$Party=$this->ItemLedgers->Customers->get($Challan->customer_id);
+			}else{
+			$Party=$this->ItemLedgers->Vendors->get($Challan->vendor_id);
+			}
+			return ['voucher_info'=>$Challan,'party_type'=>$Challan->challan_for,'party_info'=>$Party];
+		}
        //return $source_model.$source_id;
     }
 

@@ -86,7 +86,7 @@ class EmployeesController extends AppController
 			if (in_array($ext, $arr_ext)) {
 				move_uploaded_file($file['tmp_name'], WWW_ROOT . '/signatures/' . $setNewFileName . '.' . $ext);
 			}
-//pr($employee); exit;
+			//pr($employee); exit;
             if ($this->Employees->save($employee)) {
 				$ledgerAccount = $this->Employees->LedgerAccounts->newEntity();
 				$ledgerAccount->account_second_subgroup_id = $employee->account_second_subgroup_id;
@@ -151,6 +151,11 @@ class EmployeesController extends AppController
 			}
 			
             if ($this->Employees->save($employee)) {
+					$query = $this->Employees->LedgerAccounts->query();
+					$query->update()
+						->set(['account_second_subgroup_id' => $employee->account_second_subgroup_id])
+						->where(['id' => $employee->ledger_account_id])
+						->execute();
                 $this->Flash->success(__('The employee has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

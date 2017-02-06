@@ -14,7 +14,7 @@
 							<th>Sr. No.</th>
 							<th><?= $this->Paginator->sort('processed_on') ?></th>
 							<th>Party</th>
-							<th>Customer/Supplier Name</th>
+							<th>Customer/Supplier/Vendor Name</th>
 							<th>Voucher No.</th>
 							<th>Voucher Source</th>
 							<th>In</th>
@@ -23,9 +23,21 @@
 					</thead>
 					<tbody>
 						<?php foreach ($itemLedgers as $itemLedger): 
+						//pr($itemLedger->party_type); exit;
 						$in_out_type=$itemLedger->in_out;
 						$party=$itemLedger->party_type;
-						if($party=='Customer')
+						$source_model=$itemLedger->source_model;
+						if($source_model=='Challan')
+						{
+							//pr($itemLedger->party_info); exit;
+							if($itemLedger->party_type=='Vendor'){
+								$party_name=$itemLedger->party_info->company_name;
+							}else{
+								$party_name=$itemLedger->party_info->customer_name;
+							}
+							$voucher_no=$itemLedger->voucher_info->ch1.'/CH-'.str_pad($itemLedger->voucher_info->ch2, 3, '0', STR_PAD_LEFT).'/'.$itemLedger->voucher_info->ch3.'/'.$itemLedger->voucher_info->ch4;
+						}
+						else if($party=='Customer')
 						{
 							$party_name=$itemLedger->party_info->customer_name;
 							$voucher_no=$itemLedger->voucher_info->in1.'/IN-'.str_pad($itemLedger->voucher_info->in2, 3, '0', STR_PAD_LEFT).'/'.$itemLedger->voucher_info->in3.'/'.$itemLedger->voucher_info->in4;
@@ -40,8 +52,19 @@
 							$party_name='-';
 							$voucher_no=$itemLedger->voucher_info->iv1.'/IV-'.str_pad($itemLedger->voucher_info->iv2, 3, '0', STR_PAD_LEFT).'/'.$itemLedger->voucher_info->iv3.'/'.$itemLedger->voucher_info->iv4;
 						}
+						$status_color=false;
+						$status= '-';
+						if($in_out_type=='Out'){
+							if($itemLedger->voucher_info->challan_type=='Returnable'){
+								$status_color=true;
+								$status=$this->Number->format($itemLedger->quantity);
+							} else{
+								$status= $this->Number->format($itemLedger->quantity);
+							}
+						}
+							
 						?>
-						<tr>
+						<tr <?php if($status_color==true){ echo 'style="background-color:red;color:white"'; } ?>>
 							
 							<td><?= h(++$page_no) ?></td>
 							<td><?= h(date("d-m-Y",strtotime($itemLedger->processed_on))) ?></td>
@@ -50,7 +73,7 @@
 							<td><?= h($voucher_no) ?></td>
 							<td><?= h($itemLedger->source_model) ?></td>
 							<td><?php if($in_out_type=='In'){ echo $this->Number->format($itemLedger->quantity); } else { echo '-'; } ?></td>
-							<td><?php if($in_out_type=='Out'){ echo $this->Number->format($itemLedger->quantity); } else { echo '-'; } ?></td>
+							<td><?php echo $status; ?></td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>

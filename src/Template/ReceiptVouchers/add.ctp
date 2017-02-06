@@ -84,8 +84,7 @@
 									[
 										['value' => 'Cheque', 'text' => 'Cheque','checked'],
 										['value' => 'Cash', 'text' => 'Cash'],
-										['value' => 'NEFT', 'text' => 'NEFT'],
-										['value' => 'RTGS', 'text' => 'RTGS']
+										['value' => 'NEFT/RTGS', 'text' => 'NEFT/RTGS']
 									]
 								); ?>
 								</div>

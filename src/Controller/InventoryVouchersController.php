@@ -83,6 +83,7 @@ class InventoryVouchersController extends AppController
 		$inventoryVoucher = $this->InventoryVouchers->newEntity();
         if ($this->request->is('post')) {
 			$inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);
+			//pr($inventoryVoucher); exit;
 			$inventoryVoucher->iv1=$Invoice->in1;
 			$inventoryVoucher->iv2=$last_iv_no->iv2;
 			$inventoryVoucher->iv3=$Invoice->in3;
@@ -92,7 +93,7 @@ class InventoryVouchersController extends AppController
 			$inventoryVoucher->company_id=$st_company_id;
 			//pr($inventoryVoucher); exit;
             if ($this->InventoryVouchers->save($inventoryVoucher)) {
-				
+				//pr($inventoryVoucher); exit;
 				$query = $this->InventoryVouchers->Invoices->query();
 					$query->update()
 						->set(['inventory_voucher_status' => 'Converted'])
@@ -139,7 +140,7 @@ class InventoryVouchersController extends AppController
 					$out_ar[$inventory_voucher_row->invoice_row_id]=@$out_ar[$inventory_voucher_row->invoice_row_id]+($per_unit_cost*$inventory_voucher_row->quantity);
 				}
 				
-				foreach($out_ar as $key=>$val){
+				/* foreach($out_ar as $key=>$val){
 					$InvoiceRow=$this->InventoryVouchers->InvoiceRows->get($key);
 					$itemLedger = $this->InventoryVouchers->ItemLedgers->newEntity();
 					$itemLedger->item_id = $InvoiceRow->item_id;
@@ -151,13 +152,13 @@ class InventoryVouchersController extends AppController
 					$itemLedger->company_id = $st_company_id;
 					$itemLedger->processed_on = date("Y-m-d");
 					$this->InventoryVouchers->ItemLedgers->save($itemLedger);
-				}
-				
+				} */
+				//pr($inventoryVoucher); exit;
 					
 			}
 				$this->Flash->success(__('The inventory voucher has been saved.'));
 				return $this->redirect(['action' => 'index']);
-		} else { 
+		} else { //pr($inventoryVoucher); exit;
 			$this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
 		}
     
@@ -195,6 +196,7 @@ class InventoryVouchersController extends AppController
 			$inventoryVoucher->sales_order_id=$inventoryVoucher->sales_order_id;
 			
             if ($this->InventoryVouchers->save($inventoryVoucher)) {
+				//pr($inventoryVoucher); exit;
 				$inventoryVoucher->iv1=$inventoryVoucher->iv1;
 				$inventoryVoucher->iv2=$inventoryVoucher->iv2;
 				$inventoryVoucher->iv3=$inventoryVoucher->iv3;
@@ -249,7 +251,7 @@ class InventoryVouchersController extends AppController
 						
 					}  */
 					
-				
+				//pr($inventoryVoucher); exit;
                 $this->Flash->success(__('The inventory voucher has been saved.'));
 			
 

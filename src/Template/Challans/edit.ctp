@@ -147,6 +147,14 @@
 							</div>
 						</div>
 				</div>
+				<div class="col-md-3">
+						<div class="form-group">
+							<div class="radio-list" >
+							<label class="control-label">Pass Credit Note<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->radio('pass_credit_note',[['value' => 'Yes', 'text' => 'Yes'],['value' => 'No', 'text' => 'No']]); ?>
+							</div>
+						</div>
+				</div>
 		</div>
 		
 			<br/>

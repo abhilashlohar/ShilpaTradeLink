@@ -63,8 +63,10 @@
 				<tr class="main_tr">
 					<td>
 					<?= h($invoice_row->item->name) ?> (<?= h($invoice_row->quantity) ?>)
-					<?php echo $this->Form->input('invoice_row_quantity', ['type' => 'hidden','label' => false,'value' => $invoice_row->quantity]); ?>
 					<?php echo $this->Form->input('invoice_row_id', ['type' => 'hidden','label' => false,'value' => $invoice_row->id]); ?>
+					<?php echo $this->Form->input('invoice_row_item_id', ['type' => 'hidden','value'=>$invoice_row->item_id]); ?>
+					<?php //echo $this->Form->input('invoice_row_quantity', ['type' => 'hidden','label' => false,'value' => $invoice_row->quantity]); ?>
+
 					</td>
 					<td>
 					<table>
@@ -72,7 +74,8 @@
 						<?php foreach($inventoryVoucher->inventory_voucher_rows as $job_card_row){ ?>
 							<tr>
 								<td>
-								<?php echo $this->Form->input('invoice_row_id', ['type' => 'hidden','value'=>$invoice_row->id]); ?>
+								<?php echo $this->Form->input('invoice_row_id', ['type' => 'hidden','label' => false,'value' => $invoice_row->id]); ?>
+								<?php echo $this->Form->input('invoice_row_item_id', ['type' => 'hidden','value'=>$invoice_row->item_id]); ?>
 								<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.item_id', ['orphans' => $items,'label' => false,'class' => 'form-control input-sm','value' => $job_card_row->item_id]); ?>
 								</td>
 								<td>
@@ -118,11 +121,14 @@ $(document).ready(function() {
 	function rename_rows_name(){
 		var i=0; 
 		$("#main_tb tbody#maintbody tr.main_tr").each(function(){
-			var invoice_row_id=$(this).find("td:nth-child(1) input[type=hidden]:nth-child(1)").val();
+			var invoice_row_id=$(this).find("td:nth-child(1) input[name=invoice_row_id]:nth-child(1)").val();
+			var invoice_row_item_id=$(this).find("td:nth-child(1) input[name=invoice_row_item_id]:nth-child(2)").val();
+			
 			var sr=0;
 			$(this).find("td:nth-child(2) table tbody tr").each(function(){
 				i++; sr++;
-				$(this).find("td:nth-child(1) input[type=hidden]").attr({name:"inventory_voucher_rows["+i+"][invoice_row_id]"}).val(invoice_row_id);
+				$(this).find("td:nth-child(1) input[type=hidden]:nth-child(1)").attr({name:"inventory_voucher_rows["+i+"][invoice_row_id]"}).val(invoice_row_id);
+				$(this).find("td:nth-child(1) input[type=hidden]:nth-child(2)").attr({name:"inventory_voucher_rows["+i+"][invoice_row_item_id]"}).val(invoice_row_item_id);
 				$(this).find("td:nth-child(1) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2();
 				$(this).find("td:nth-child(2) input").attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"});
 			});

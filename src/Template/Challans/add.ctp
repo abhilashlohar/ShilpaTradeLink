@@ -16,7 +16,7 @@
 							<?php echo $this->Form->radio('challan_type',[['value' => 'Returnable', 'text' => 'Returnable'],['value' => 'Non Returnable', 'text' => 'Non Returnable']]); ?>
 							</div>
 						</div>
-					</div>
+				</div>
 				<div class="col-md-2">
 						<div class="form-group">
 							<div class="radio-list" >
@@ -24,7 +24,7 @@
 							<?php echo $this->Form->radio('challan_for',[['value' => 'Customer', 'text' => 'Customer','id' => 'id_radio1','checked'=>'checked'],['value' => 'Vendor', 'text' => 'Vendor','id' => 'id_radio2']]); ?>
 							</div>
 						</div>
-					</div>
+				</div>
 					
 					<div class="col-md-3" id="customer_div">
 						<div class="form-group">
@@ -147,6 +147,14 @@
 							<div class="row">
 							<?php 
 							echo $this->Form->input('transporter_id',['empty'=>'--Select--','options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+							</div>
+						</div>
+				</div>
+				<div class="col-md-3">
+						<div class="form-group">
+							<div class="radio-list" >
+							<label class="control-label">Pass Credit Note<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->radio('pass_credit_note',[['value' => 'Yes', 'text' => 'Yes'],['value' => 'No', 'text' => 'No']]); ?>
 							</div>
 						</div>
 				</div>
@@ -298,6 +306,12 @@ $(document).ready(function() {
 					required: true,	
 				},
 				invoice_booking_id:{
+					required: true,	
+				},
+				ch3:{
+					required: true,	
+				},
+				pass_credit_note:{
 					required: true,	
 				},
 			},

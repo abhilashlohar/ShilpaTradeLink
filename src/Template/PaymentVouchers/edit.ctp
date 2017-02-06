@@ -59,8 +59,7 @@
 									[
 										['value' => 'Cheque', 'text' => 'Cheque','id'=>'id_radio1'],
 										['value' => 'Cash', 'text' => 'Cash','id'=>'id_radio2'],
-										['value' => 'NEFT', 'text' => 'NEFT'],
-										['value' => 'RTGS', 'text' => 'RTGS']
+										['value' => 'NEFT/RTGS', 'text' => 'NEFT/RTGS']
 									]
 								); ?>
 								</div>

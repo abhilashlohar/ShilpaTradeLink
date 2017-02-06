@@ -55,10 +55,12 @@ class CreditNotesController extends AppController
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($id = null)
     {
 		
 		$this->viewBuilder()->layout('index_layout');
+		$challan_id=$this->request->query('Challan');
+		//pr($challan_id); exit;
         $creditNote = $this->CreditNotes->newEntity();
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
@@ -78,6 +80,11 @@ class CreditNotesController extends AppController
 			$creditNote->company_id=$st_company_id;
 			
 			if ($this->CreditNotes->save($creditNote)) {
+				$query = $this->CreditNotes->Challans->query();
+					$query->update()
+						->set(['pass_credit_note' => 'No'])
+						->where(['id' => $challan_id])
+						->execute();
 				$ledger = $this->CreditNotes->Ledgers->newEntity();
 				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $creditNote->purchase_acc_id;

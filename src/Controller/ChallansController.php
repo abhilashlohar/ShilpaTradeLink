@@ -149,6 +149,20 @@ class ChallansController extends AppController
 			$vendor_id=$challan->vendor_id;
 			
             if ($this->Challans->save($challan)) {
+					
+					foreach($challan->challan_rows as $challan_row){
+					$itemLedger = $this->Challans->ItemLedgers->newEntity();
+					$itemLedger->item_id = $challan_row->item_id;	
+					$itemLedger->quantity = $challan_row->quantity;
+					$itemLedger->source_model = 'Challan';
+					$itemLedger->source_id = $challan_row->challan_id;
+					$itemLedger->in_out = 'Out';
+					$itemLedger->rate = $challan_row->rate;
+					$itemLedger->company_id = $st_company_id;
+					$itemLedger->processed_on = date("Y-m-d");
+					$itemLedger->challan_type = $challan->challan_type;
+					//pr($itemLedger); exit;
+					$this->Challans->ItemLedgers->save($itemLedger);}
                 $this->Flash->success(__('The challan has been saved.'));
 
                   return $this->redirect(['action' => 'confirm/'.$challan->id]);
@@ -278,4 +292,11 @@ class ChallansController extends AppController
 		
         $this->set('id', $id);
     }
+	public function PendingChallanForCreditNote()
+    {
+		$this->viewBuilder()->layout('index_layout');
+		$challans = $this->paginate($this->Challans->find()->where(['pass_credit_note'=>'Yes'])->order(['Challans.id' => 'DESC']));
+		$this->set('challans', $challans);
+	
+	}
 }

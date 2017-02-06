@@ -63,9 +63,11 @@
 				<tr class="main_tr">
 					<td>
 					
+					
+					<?php echo $this->Form->input('invoice_row_id', ['type' => 'hidden','value'=>$invoice_row->id]); ?>
+					<?php echo $this->Form->input('invoice_row_item_id', ['type' => 'hidden','value'=>$invoice_row->item_id]); ?>
 					<?= h($invoice_row->item->name) ?> (<?= h($invoice_row->quantity) ?>)
 					<?php echo $this->Form->input('invoice_row_quantity', ['type' => 'hidden','label' => false,'value' => $invoice_row->quantity]); ?>
-					<?php echo $this->Form->input('invoice_row_id', ['type' => 'hidden','label' => false,'value' => $invoice_row->id]); ?>
 					
 					</td>
 					<td>
@@ -76,7 +78,7 @@
 								<td>
 								<?php echo $this->Form->input('invoice_row_id', ['type' => 'hidden','value'=>$invoice_row->id]); ?>
 								<?php echo $this->Form->input('invoice_row_item_id', ['type' => 'hidden','value'=>$invoice_row->item_id]); ?>
-								<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.item_id', ['orphans' => $items,'label' => false,'class' => 'form-control input-sm','value' => $job_card_row->item_id]); ?>
+								<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','value' => $job_card_row->item_id]); ?>
 								</td>
 								<td>
 								<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => $job_card_row->quantity]); ?>
@@ -108,6 +110,24 @@ $(document).ready(function() {
 		rename_rows_name();
     });
 	
+	function rename_rows_name(){
+		var i=0; 
+		$("#main_tb tbody#maintbody tr.main_tr").each(function(){
+				var invoice_row_id=$(this).find("td:nth-child(1) input[name=invoice_row_id]:nth-child(1)").val();
+				var invoice_row_item_id=$(this).find("td:nth-child(1) input[name=invoice_row_item_id]:nth-child(2)").val();
+				
+			
+			var sr=0;
+			$(this).find("td:nth-child(2) table tbody tr").each(function(){
+				i++; sr++; //alert(invoice_row_id);
+				$(this).find("td:nth-child(1) input[type=hidden]:nth-child(1)").attr({name:"inventory_voucher_rows["+i+"][invoice_row_id]"}).val(invoice_row_id);
+				$(this).find("td:nth-child(1) input[type=hidden]:nth-child(2)").attr({name:"inventory_voucher_rows["+i+"][invoice_row_item_id]"}).val(invoice_row_item_id);
+				$(this).find("td:nth-child(1) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2();
+				$(this).find("td:nth-child(2) input").attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"});
+				
+			});
+		});
+	}
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
@@ -117,29 +137,15 @@ $(document).ready(function() {
 			}
 		} 
     });
-	
-	function rename_rows_name(){
-		var i=0; 
-		$("#main_tb tbody#maintbody tr.main_tr").each(function(){
-			var invoice_row_id=$(this).find("td:nth-child(1) input[type=hidden][name=invoice_row_id]:nth-child(1)").val();
-			var sr=0;
-			$(this).find("td:nth-child(2) table tbody tr").each(function(){
-				i++; sr++;
-				$(this).find("td:nth-child(1) input[type=hidden]:nth-child(1)").attr({name:"inventory_voucher_rows["+i+"][invoice_row_id]"}).val(invoice_row_id);
-				$(this).find("td:nth-child(1) input[type=hidden]:nth-child(2)").attr({name:"inventory_voucher_rows["+i+"][invoice_row_item_id]"}).val(invoice_row_id);
-				$(this).find("td:nth-child(1) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2();
-				$(this).find("td:nth-child(2) input").attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"});
-			});
-		});
-	}
 });
 </script>
 <table id="sample_tb" style="display:none;">
 	<tbody>
 	<tr>
 		<td>
-		<?php echo $this->Form->input('invoice_row_id', ['type' => 'hidden']); ?>
-		<?php echo $this->Form->input('item_id', ['orphans' => $items,'empty'=>'--select--','label' => false,'class' => 'form-control input-sm']); ?>
+		<?php echo $this->Form->input('invoice_row_id', ['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
+		<?php echo $this->Form->input('invoice_row_item_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
+		<?php echo $this->Form->input('item_id', ['options' => $items,'empty'=>'--select--','label' => false,'class' => 'form-control input-sm']); ?>
 		</td>
 		<td>
 		<?php echo $this->Form->input('quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm']); ?>
