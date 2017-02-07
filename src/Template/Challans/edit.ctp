@@ -404,12 +404,12 @@ $(document).ready(function() {
 	//--	 END OF VALIDATION
 	
                 
-	rename_rows();
-	calculate_total();
+
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
-	
+	//rename_rows();
+	calculate_total();
 	var terms_conditions=$("#terms_conditions").text();
 	$('textarea[name="terms_conditions"]').val(terms_conditions);
 	

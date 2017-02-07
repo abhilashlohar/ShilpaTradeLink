@@ -162,7 +162,8 @@ class ChallansController extends AppController
 					$itemLedger->processed_on = date("Y-m-d");
 					$itemLedger->challan_type = $challan->challan_type;
 					//pr($itemLedger); exit;
-					$this->Challans->ItemLedgers->save($itemLedger);}
+					$this->Challans->ItemLedgers->save($itemLedger);
+					}
                 $this->Flash->success(__('The challan has been saved.'));
 
                   return $this->redirect(['action' => 'confirm/'.$challan->id]);
@@ -228,6 +229,21 @@ class ChallansController extends AppController
 			$challan->vendor_address ='';
 			}
             if ($this->Challans->save($challan)) {
+				
+				$this->Challans->ItemLedgers->deleteAll(['source_id' => $id, 'source_model' => 'Challan']);
+				foreach($challan->challan_rows as $challan_row){
+					$itemLedger = $this->Challans->ItemLedgers->newEntity();
+					$itemLedger->item_id = $challan_row->item_id;	
+					$itemLedger->quantity = $challan_row->quantity;
+					$itemLedger->source_model = 'Challan';
+					$itemLedger->source_id = $challan_row->challan_id;
+					$itemLedger->in_out = 'Out';
+					$itemLedger->rate = $challan_row->rate;
+					$itemLedger->company_id = $st_company_id;
+					$itemLedger->processed_on = date("Y-m-d");
+					$itemLedger->challan_type = $challan->challan_type;
+					//pr($itemLedger); exit;
+					$this->Challans->ItemLedgers->save($itemLedger);}
 				
                 $this->Flash->success(__('The challan has been saved.'));
 				return $this->redirect(['action' => 'index']);
