@@ -167,7 +167,7 @@
 					</tr>
 				</thead>
 				<tbody id="main_tbody">
-					<?php $q=1; foreach ($quotation->quotation_rows as $quotation_row): ?>
+					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_row): ?>
 						<tr class="tr1 preimp" row_no='<?php echo @$quotation_row->id; ?>'>
 							<td rowspan="2" width="10">
 								<?php echo $q; ?>
@@ -210,8 +210,7 @@
 						</tr>
 						<tr class="tr2 preimp" row_no='<?php echo @$quotation_row->id; ?>'>
 							<td colspan="4">
-							<?php echo $this->Form->textarea('quotation_rows['.$q.'][description]', ['type' => 'textarea','label' => false,'class' => 'form-control input-sm','style'=>['display:none'],'placeholder' => 'Description','rows'=>'1','value' => $quotation_row->description,'required']); ?>
-							<div contenteditable="true" id="editor" name="<?php echo 'quotation_rows['.$q.'][description]'; ?>"><?php echo @$quotation_row->description; ?></div>
+							<div class="note-editable" id="summer<?php echo $q; ?>" ><?php echo $quotation_row->description; ?></div>
 							</td>
 							<td></td>
 						</tr>
@@ -297,7 +296,6 @@
 			<td colspan="4"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','style'=>['display:none'],'rows'=>'1']); ?>
 			<div contenteditable="true" id="editor"></div>
 			</td>
-			
 			<td></td>
 		</tr>
 	</tbody>
@@ -332,13 +330,6 @@ $(document).ready(function() {
 		focusInvalid: true, // do not focus the last invalid input
 		ignore: "textarea:hidden",
 		rules: {
-			rules: {
-				company_id:{
-					required: true,
-				},
-				date : {
-					  required: true,
-				},
 				customer_id : {
 					  required: true,
 				},
@@ -381,7 +372,6 @@ $(document).ready(function() {
 					required: true,	
 				}
 			},
-		},
 
 		messages: { // custom messages for radio buttons and checkboxes
 			membership: {
@@ -411,7 +401,8 @@ $(document).ready(function() {
 			}
 		},
 
-		invalidHandler: function (event, validator) { //display error alert on form submit   
+		invalidHandler: function (event, validator) { //display error alert on form submit  
+			put_code_description()
 			success3.hide();
 			error3.show();
 			//Metronic.scrollTo(error3, -200);
@@ -433,6 +424,7 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			put_code_description()
 			success3.show();
 			error3.hide();
 			form[0].submit(); // submit the form
@@ -479,7 +471,7 @@ $(document).ready(function() {
 	}
 	rename_rows();
 	function rename_rows(){
-		var i=1;
+		var i=0;
 		$("#main_tb tbody tr.tr1").each(function(){
 			$(this).find('span.help-block-error').remove();
 			$(this).find("td:nth-child(1)").html(i);
@@ -501,10 +493,14 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(5) input").attr({name:"quotation_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
 		i++; });
 		
-		var i=1;
+		var i=0;
 		$("#main_tb tbody tr.tr2").each(function(){
-			$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"}).rules("add", "required");
-			$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
+			var htm=$(this).find('td:nth-child(1)').find('div.note-editable').html();
+			if(!htm){ htm=""; }
+			$(this).find('td:nth-child(1)').html('');
+			$(this).find('td:nth-child(1)').append('<div id=summer'+i+'>'+htm+'</div>');
+			$(this).find('td:nth-child(1)').find('div#summer'+i).summernote();
+			$(this).find('td:nth-child(1)').append('<textarea name="quotation_rows['+i+'][description]" style="display:;"></textarea>');
 		i++; });
 		
 		$("select.item_box").each(function(){
@@ -516,7 +512,13 @@ $(document).ready(function() {
 		});
 	}
 	
-	
+	function put_code_description(){
+		var i=0;
+		$("#main_tb tbody tr.tr2").each(function(){
+			var code=$(this).find('div#summer'+i).code();
+			$(this).find('td:nth-child(1) textarea').val(code);
+		i++; });
+	}
 	
 	$('#main_tb input').die().live("keyup","blur",function() { 
 		calculate_total();

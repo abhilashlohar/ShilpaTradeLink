@@ -47,8 +47,11 @@
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/jquery-tags-input/jquery.tagsinput.css'); ?>
-<?php echo $this->Html->css('/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css'); ?>
+
 <?php echo $this->Html->css('/assets/global/plugins/typeahead/typeahead.css'); ?>
+<?php echo $this->Html->css('/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css'); ?>
+<?php echo $this->Html->css('/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css'); ?>
+<?php echo $this->Html->css('/assets/global/plugins/bootstrap-summernote/summernote.css'); ?>
 <!-- END PAGE LEVEL STYLES -->
 <style media="print">
 	.hide_at_print {
@@ -633,6 +636,11 @@ select
 <?php echo $this->Html->script('/assets/global/plugins/uniform/jquery.uniform.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
+
+<?php echo $this->Html->script('/bootstrap-wysihtml5.js'); ?>
+
+
+
 <!-- END CORE PLUGINS -->
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js'); ?>
@@ -654,6 +662,7 @@ select
 
 <?php echo $this->Html->script('/assets/global/scripts/metronic.js'); ?>
 <?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js'); ?>
+
 <?php echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js'); ?>
 <?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js'); ?>
 <?php echo $this->Html->script('/assets/admin/pages/scripts/form-icheck.js'); ?>
@@ -681,6 +690,7 @@ select
 <?php echo $this->Html->script('/assets/global/plugins/typeahead/handlebars.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/typeahead/typeahead.bundle.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js'); ?>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -689,21 +699,32 @@ select
 <?php echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js'); ?>
 <?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js'); ?>
 <?php echo $this->Html->script('/assets/admin/pages/scripts/components-form-tools.js'); ?>
+
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js'); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-markdown/lib/markdown.js'); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-markdown/js/bootstrap-markdown.js'); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-summernote/summernote.min.js'); ?>
+<?php echo $this->Html->script('/assets/admin/pages/scripts/components-editors.js'); ?>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
 jQuery(document).ready(function() {    
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
+	
 	QuickSidebar.init(); // init quick sidebar
+	
 	Demo.init(); // init demo features
 	ComponentsFormTools.init();
+	ComponentsEditors.init();
 	UINotific8.init();
 	FormValidation.init();
 	TableManaged.init();
 	ComponentsPickers.init();
 	UIGeneral.init();
+	
 	FormiCheck.init(); // init page demo
 	ComponentsDropdowns.init();
+	
 });
 </script>
 <style>

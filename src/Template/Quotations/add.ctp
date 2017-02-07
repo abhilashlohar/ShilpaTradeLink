@@ -234,8 +234,7 @@ if(!empty($revision))
 					</tr>
 					<tr class="tr2 preimp" row_no='<?php echo @$quotation_rows->id; ?>'>
 						<td colspan="6">
-							<div contenteditable="true" id="editor" name="<?php echo 'quotation_rows['.$q.'][description]'; ?>"><?php echo @$quotation_rows->description; ?></div>
-							<?php echo $this->Form->textarea('quotation_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','required','style'=>['display:none'],'value' => @$quotation_rows->description]); ?>
+							<div class="note-editable" id="summer<?php echo $q; ?>" ><?php echo $quotation_rows->description; ?></div>
 						</td>
 							
 					</tr>
@@ -255,7 +254,7 @@ if(!empty($revision))
 				</tfoot>
 			</table>
 			<label class="control-label">Additional Note (Optional): </label>
-			<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control wysihtml5','value' => @$quotation->additional_note]); ?>
+			<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control','value' => @$quotation->additional_note]); ?>
 			<br/>
 			
 			
@@ -329,8 +328,7 @@ if(!empty($revision))
 		</tr>
 		<tr class="tr2 preimp">
 			<td colspan="4">
-				<div contenteditable="true" id="editor"></div>
-				<?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Description','rows'=>'1','required','style'=>['display:none']]); ?>
+				
 			</td>
 			<td></td>
 		</tr>
@@ -341,14 +339,6 @@ if(!empty($revision))
 <style>
 #sortable li{
 	cursor: -webkit-grab;
-}
-div.editable {
-    border: 1px solid #ccc;
-    padding: 5px;white-space: pre;
-	
-}
-[contenteditable] {
-  white-space : pre-wrap;
 }
 </style>
 <?php echo $this->Html->css('/drag_drop/jquery-ui.css'); ?>
@@ -449,6 +439,7 @@ $(document).ready(function() {
 		},
 
 		invalidHandler: function (event, validator) { //display error alert on form submit   
+			put_code_description();
 			success3.hide();
 			error3.show();
 			
@@ -471,6 +462,7 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			put_code_description();
 			success3.show();
 			error3.hide();
 			form[0].submit(); // submit the form
@@ -519,6 +511,8 @@ $(document).ready(function() {
 			if(r==2){ w++; r=0; }
 		});
 		rename_rows();
+		
+		
 	}
 	rename_rows();
 	function rename_rows(){
@@ -549,8 +543,12 @@ $(document).ready(function() {
 		
 		var i=0;
 		$("#main_tb tbody tr.tr2").each(function(){
-			$(this).find("td:nth-child(1) textarea").attr({name:"quotation_rows["+i+"][description]", id:"quotation_rows-"+i+"-description"}).rules("add", "required");
-			$(this).find('td:nth-child(1) div#editor').attr({name:"quotation_rows["+i+"][description]"});
+			var htm=$(this).find('td:nth-child(1)').find('div.note-editable').html();
+			if(!htm){ htm=""; }
+			$(this).find('td:nth-child(1)').html('');
+			$(this).find('td:nth-child(1)').append('<div id=summer'+i+'>'+htm+'</div>');
+			$(this).find('td:nth-child(1)').find('div#summer'+i).summernote();
+			$(this).find('td:nth-child(1)').append('<textarea name="quotation_rows['+i+'][description]" style="display:none;"></textarea>');
 		i++; });
 		
 		$("select.item_box").each(function(){
@@ -564,6 +562,14 @@ $(document).ready(function() {
 		calculate_total();
 	}
 	
+	
+	function put_code_description(){
+		var i=0;
+		$("#main_tb tbody tr.tr2").each(function(){
+			var code=$(this).find('div#summer'+i).code();
+			$(this).find('td:nth-child(1) textarea').val(code);
+		i++; });
+	}
 	$('#main_tb input').die().live("keyup","blur",function() { 
 		calculate_total();
     });
@@ -810,12 +816,16 @@ $(document).ready(function() {
 			}
 	}
 
-			$("#select_all").change(function(){ 
-				$(".check_value").prop('checked', $(this).prop("checked"));
-				$.uniform.update(); 
-			});
+	$("#select_all").change(function(){ 
+		$(".check_value").prop('checked', $(this).prop("checked"));
+		$.uniform.update(); 
+	});
 
-			
+	$("div.note-editable").die().live('blur',function(){ 
+		var htm=$(this).html();
+		$(this).closest('textarea.note-codable').val(htm);
+	});
+		
 
 
 	
@@ -825,7 +835,7 @@ $(document).ready(function() {
 </script>
 
 	 
-<div id="myModal1" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
+<div id="myModal1" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: ; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-body" id="result_ajax">
