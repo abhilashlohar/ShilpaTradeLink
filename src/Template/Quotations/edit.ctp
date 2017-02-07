@@ -328,7 +328,6 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
-		ignore: "textarea:hidden",
 		rules: {
 				customer_id : {
 					  required: true,
@@ -340,10 +339,9 @@ $(document).ready(function() {
 				employee_id:{
 					required: true
 				},
-				category_id:{
+				item_group_id:{
 					required: true,
 				},
-				
 				finalisation_date:{
 					required: true,
 				},
@@ -355,9 +353,9 @@ $(document).ready(function() {
 				},
 				customer_contact_no: {
 					  required: true,
-					  integer: true,
+					  digits: true,
 					  minlength: 10,
-					  min: 0
+					  maxlength: 10,
 				},
 				subject:{
 					required: true,	
