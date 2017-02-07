@@ -75,7 +75,8 @@
 						<tr>
 							<th width="10%">Sr.No. </th>
 							<th width="70%">Items</th>
-							<th width="20%">Quantity</th>
+							<th width="15%">Quantity</th>
+							<th width="5%"></th>
 							
 						</tr>
 					</thead>
@@ -113,7 +114,7 @@
 								
 							</tr>
 							<tr class="tr2" row_no='<?php echo @$grn_rows->id; ?>'>
-								<td colspan="2">
+								<td colspan="3">
 								<?php foreach($grn->item_serial_numbers as $item_serial_number){
 									if($item_serial_number->item_id == $grn_rows->item_id){ ?>
 									<?php echo $item_serial_number->serial_no; ?>
