@@ -74,15 +74,20 @@ class InventoryVouchersController extends AppController
 			//pr($invoice_row);exit;
 			$item_id=$invoice_row->item_id;
 			$invoice_row_id=$invoice_row->id;
-			$item = $this->InventoryVouchers->Items->find()->where(['Items.id'=>$item_id])->first();
-			$inventoryVouchers = $this->InventoryVouchers->InventoryVoucherRows->find()->where(['invoice_row_id'=>$invoice_row_id]);
-			//pr($item); exit;
+			$item = $this->InventoryVouchers->Items->get($item_id);
+			
+			$inventoryVouchers = $this->InventoryVouchers->InventoryVoucherRows->find()->where(['invoice_id'=>$invoice_id,'left_item_id'=>$item_id]);
+			
 
 			 if($inventoryVouchers->count()==0){
+				 //fetch data from jobcard
 				$Invoice = $this->InventoryVouchers->Invoices->get($invoice_id);
 				$sales_order_id=$Invoice->sales_order_id;
-				$JobCardRows=$this->InventoryVouchers->JobCardRows->find()->where(['sales_order_id'=>$sales_order_id,'item_id'=>$item_id]);
+				$SalesOrderRow=$this->InventoryVouchers->SalesOrderRows->find()->where(['sales_order_id'=>$sales_order_id,'item_id'=>$item_id])->first();
+				$SalesOrderRowID=$SalesOrderRow->id;
 				
+				$JobCardRows=$this->InventoryVouchers->JobCardRows->find()->where(['sales_order_id'=>$sales_order_id,'sales_order_row_id'=>$SalesOrderRowID]);
+				//pr($JobCardRows); exit;
 			}else{
 				$inventoryVoucherRows = $this->paginate($this->InventoryVouchers->InventoryVoucherRows->find()->where(['invoice_row_id'=>$invoice_row_id]));
 				//pr($inventoryVoucherRows);exit;
