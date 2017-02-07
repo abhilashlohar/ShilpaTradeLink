@@ -55,6 +55,7 @@ class InventoryVouchersController extends AppController
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
+	 
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
@@ -64,14 +65,14 @@ class InventoryVouchersController extends AppController
 		$invoice_id=@(int)$this->request->query('Invoice');
 		$item_id=@(int)$this->request->query('item_id');
 		
-		//pr($query); exit;
 		
 		if(empty($item_id) && !empty($invoice_id)){
 			$row=$this->InventoryVouchers->Invoices->get($invoice_id, [
-				'contain' => ['InvoiceRows']]);
+				'contain' => ['InvoiceRows'=> function ($q) {
+				return $q->where(['inventory_voucher_status !='=>'Pending']);
+				}]]);
 				
 			$invoice_row = $row->invoice_rows[0];
-			//pr($invoice_row);exit;
 			$item_id=$invoice_row->item_id;
 			$invoice_row_id=$invoice_row->id;
 			$item = $this->InventoryVouchers->Items->get($item_id);
