@@ -26,12 +26,13 @@ class ItemLedgersController extends AppController
 		$itemLedgers=[];
 		foreach($itemLedgers2 as $itemLedger){
 			$result=$this->GetVoucherParty($itemLedger->source_model,$itemLedger->source_id);
+			
 			$itemLedger->voucher_info=$result['voucher_info'];
 			$itemLedger->party_type=$result['party_type'];
 			$itemLedger->party_info=$result['party_info'];
 			$itemLedgers[]=$itemLedger;
 		} 
-		//pr($itemLedgers); exit;
+		//
 
         $this->set(compact('itemLedgers'));
         $this->set('_serialize', ['itemLedgers']);
@@ -39,11 +40,14 @@ class ItemLedgersController extends AppController
 	
 	public function GetVoucherParty($source_model=null,$source_id=null)
     {
+		return $source_model.$source_id;
 		if($source_model=="Grns"){
 			$Grn=$this->ItemLedgers->Grns->get($source_id);
+			pr($Grn->voucher_info); exit;
 			$Vendor=$this->ItemLedgers->Vendors->get($Grn->vendor_id);
 			return ['voucher_info'=>$Grn,'party_type'=>'Supplier','party_info'=>$Vendor];
 		}
+		
 		if($source_model=="Inventory Voucher"){
 			$InventoryVoucher=$this->ItemLedgers->InventoryVouchers->get($source_id);
 			return ['voucher_info'=>$InventoryVoucher,'party_type'=>'-','party_info'=>''];

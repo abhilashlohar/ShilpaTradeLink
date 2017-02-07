@@ -37,6 +37,7 @@ class InvoiceRowsTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 		$this->belongsTo('ItemSerialnumbers');
+		$this->belongsTo('InventoryVouchers');
         $this->belongsTo('Invoices', [
             'foreignKey' => 'invoice_id',
             'joinType' => 'INNER'

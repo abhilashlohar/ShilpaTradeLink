@@ -26,6 +26,7 @@
 						//pr($itemLedger->party_type); exit;
 						$in_out_type=$itemLedger->in_out;
 						$party=$itemLedger->party_type;
+						//pr($itemLedger->party_type); exit;
 						$source_model=$itemLedger->source_model;
 						if($source_model=='Challan')
 						{
