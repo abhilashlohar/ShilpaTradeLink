@@ -474,7 +474,7 @@ $(document).ready(function() {
 		var i=0;
 		$("#main_tb tbody tr.tr1").each(function(){
 			$(this).find('span.help-block-error').remove();
-			$(this).find("td:nth-child(1)").html(i);
+			$(this).find("td:nth-child(1)").html(++i); i--;
 			$(this).find("td:nth-child(2) select.item_box").select2().attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).rules("add", "required");
 			$(this).find("td:nth-child(2) input[type=hidden]:eq(0)").attr({name:"quotation_rows["+i+"][height]", id:"quotation_rows-"+i+"-height"});
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
@@ -500,7 +500,7 @@ $(document).ready(function() {
 			$(this).find('td:nth-child(1)').html('');
 			$(this).find('td:nth-child(1)').append('<div id=summer'+i+'>'+htm+'</div>');
 			$(this).find('td:nth-child(1)').find('div#summer'+i).summernote();
-			$(this).find('td:nth-child(1)').append('<textarea name="quotation_rows['+i+'][description]" style="display:;"></textarea>');
+			$(this).find('td:nth-child(1)').append('<textarea name="quotation_rows['+i+'][description]" style="display:none;"></textarea>');
 		i++; });
 		
 		$("select.item_box").each(function(){
