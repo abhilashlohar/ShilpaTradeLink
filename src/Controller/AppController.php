@@ -66,8 +66,11 @@ class AppController extends Controller
 				$this->loadModel('Employees');
 				$sessionEmployee=$this->Employees->get($login->employee_id);
 				
-				$this->loadModel('Companies');
-				$sessionCompany=$this->Companies->get($st_company_id);
+				if($st_company_id){
+					$this->loadModel('Companies');
+					$sessionCompany=$this->Companies->get($st_company_id);
+					$this->set('s_company_name',$sessionCompany->name);
+				}
 				if($st_year_id){
 					$this->loadModel('FinancialYears');
 					$sessionYears=$this->FinancialYears->get($st_year_id);
@@ -76,7 +79,7 @@ class AppController extends Controller
 				}
 				
 				$this->set('s_employee_name',$sessionEmployee->name);
-				$this->set('s_company_name',$sessionCompany->name);
+				
 				
 			}
 		}
