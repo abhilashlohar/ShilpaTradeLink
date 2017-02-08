@@ -35,7 +35,10 @@ class FinancialYearsTable extends Table
         $this->table('financial_years');
         $this->displayField('id');
         $this->primaryKey('id');
-
+		 $this->hasMany('FinancialMonths', [
+            'foreignKey' => 'financial_year_id',
+		
+        ]);
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'

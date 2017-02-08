@@ -32,12 +32,10 @@ class FinancialYearsController extends AppController
 			$financialYear->date_from=date("Y-m-d",strtotime($financialYear->date_from)); 
 			$financialYear->date_to=date("Y-m-d",strtotime($financialYear->date_to));
 			if ($this->FinancialYears->save($financialYear)) {
-                $this->Flash->success(__('The financial year has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+				$this->Flash->success(__('The financial year has been saved.'));
+				return $this->redirect(['action' => 'index']);
             } else {
-			
-                $this->Flash->error(__('The financial year could not be saved. Please, try again.'));
+				$this->Flash->error(__('The financial year could not be saved. Please, try again.'));
             }
 		}
 			$this->set(compact('financialYear'));
@@ -165,7 +163,19 @@ class FinancialYearsController extends AppController
 			$this->request->session()->write('st_year_id',$financialYear_id);
 			return $this->redirect("/Dashboard");
 			}
-			$financialYears = $this->paginate($this->FinancialYears->find()->where(['company_id'=>$st_company_id]));
+			$financialYears = $this->paginate($this->FinancialYears->find()->where(['company_id'=>$st_company_id,'status' =>'Open']));
+			
+			$count=0;
+			foreach($financialYears as $data){
+					$count++;
+			}
+				if($count==1){
+					foreach($financialYears as $financialYear){
+						$this->request->session()->write('st_year_id',$financialYear->id);
+						break;
+					}
+					return $this->redirect('/Dashboard');
+				}
 			
 			$this->set(compact('financialYears'));
 			$this->set('_serialize', ['financialYears']);

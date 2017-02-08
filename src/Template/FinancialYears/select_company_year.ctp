@@ -20,7 +20,7 @@
 						<td><?= h($i) ?></td>
 						<td><?= h(date("d-m-Y",strtotime($financialYear->date_from)))?> - <?= h(date("d-m-Y",strtotime($financialYear->date_to)))?></td>
 						<td class="actions">
-							<?= $this->Form->postLink(__('Switch'),'/Financial-Years/selectCompanyYear/'.$financialYear->id, ['confirm' => __('Are you sure you want to switch ?')]) ?></td>
+							<?= $this->Form->postLink(__('Select'),'/Financial-Years/selectCompanyYear/'.$financialYear->id) ?></td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>

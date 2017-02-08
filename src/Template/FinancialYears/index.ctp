@@ -83,7 +83,7 @@
 						<td><?= h($financialYear->status) ?></td>
 						<td class="actions">
 							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $financialYear->id]) ?>
-                </td>
+						</td>
 					</tr>
             <?php endforeach; ?>
 				</tbody>
