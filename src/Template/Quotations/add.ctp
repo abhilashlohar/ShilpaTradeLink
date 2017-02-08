@@ -233,7 +233,7 @@ if(!empty($revision))
 							<td  width="70"><a class="btn btn-xs btn-default addrow"  href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 					</tr>
 					<tr class="tr2 preimp" row_no='<?php echo @$quotation_rows->id; ?>'>
-						<td colspan="6">
+						<td colspan="6" class="main">
 							<div class="note-editable" id="summer<?php echo $q; ?>" ><?php echo $quotation_rows->description; ?></div>
 						</td>
 							
@@ -548,7 +548,7 @@ $(document).ready(function() {
 			$(this).find('td:nth-child(1)').html('');
 			$(this).find('td:nth-child(1)').append('<div id=summer'+i+'>'+htm+'</div>');
 			$(this).find('td:nth-child(1)').find('div#summer'+i).summernote();
-			$(this).find('td:nth-child(1)').append('<textarea name="quotation_rows['+i+'][description]" style="display:none;"></textarea>');
+			$(this).find('td.main:nth-child(1)').append('<textarea name="quotation_rows['+i+'][description]" style="display:none;"></textarea>');
 		i++; });
 		
 		$("select.item_box").each(function(){

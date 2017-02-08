@@ -407,7 +407,6 @@ class QuotationsController extends AppController
 		$Company = $this->Quotations->Companies->get($st_company_id);
 		
         if ($this->request->is(['patch', 'post', 'put'])) {
-			pr($this->request->data); exit;
         	$this->request->data["finalisation_date"]=date("Y-m-d",strtotime($this->request->data["finalisation_date"]));
             $quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
 			$quotation->created_by=$s_employee_id;
@@ -415,7 +414,6 @@ class QuotationsController extends AppController
 			$quotation->finalisation_date=date("Y-m-d",strtotime($quotation->finalisation_date));
 			$quotation->company_id=$st_company_id;
 			//$quotation->company_id=$st_company_id;
-			pr($quotation); exit;
             if ($this->Quotations->save($quotation)) {
 				
 				

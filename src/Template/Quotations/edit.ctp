@@ -209,7 +209,7 @@
 							<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
 						<tr class="tr2 preimp" row_no='<?php echo @$quotation_row->id; ?>'>
-							<td colspan="4">
+							<td colspan="4" class="main">
 							<div class="note-editable" id="summer<?php echo $q; ?>" ><?php echo $quotation_row->description; ?></div>
 							</td>
 							<td></td>
@@ -293,7 +293,7 @@
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 		<tr class="tr2 preimp">
-			<td colspan="4"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','style'=>['display:none'],'rows'=>'1']); ?>
+			<td colspan="4" class="main"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','style'=>['display:none'],'rows'=>'1']); ?>
 			<div contenteditable="true" id="editor"></div>
 			</td>
 			<td></td>
@@ -498,7 +498,7 @@ $(document).ready(function() {
 			$(this).find('td:nth-child(1)').html('');
 			$(this).find('td:nth-child(1)').append('<div id=summer'+i+'>'+htm+'</div>');
 			$(this).find('td:nth-child(1)').find('div#summer'+i).summernote();
-			$(this).find('td:nth-child(1)').append('<textarea name="quotation_rows['+i+'][description]" style="display:none;"></textarea>');
+			$(this).find('td.main:nth-child(1)').append('<textarea name="quotation_rows['+i+'][description]" style="display:none;"></textarea>');
 		i++; });
 		
 		$("select.item_box").each(function(){

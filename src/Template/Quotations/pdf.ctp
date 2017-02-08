@@ -41,7 +41,7 @@ $html = '
 	table.table_rows tr.odd{
 		page-break-inside: avoid;
 	}
-	.table_rows, .table_rows th, .table_rows td {
+	.table_rows, .table_rows th.main, .table_rows td.main {
 	   border: 1px solid  #000;border-collapse: collapse;padding:2px; 
 	}
 	.itemrow tbody td{
@@ -188,26 +188,26 @@ $html.='<br/>
 <table width="100%" class="table_rows itemrow">
 	<thead>
 		<tr>
-			<th style="white-space: nowrap;">S No</th>
-			<th>Item Description</th>
-			<th>Unit</th>
-			<th>Quantity</th>
-			<th>Rate</th>
-			<th>Amount</th>
+			<th style="white-space: nowrap;" class="main">S No</th>
+			<th class="main">Item Description</th>
+			<th class="main">Unit</th>
+			<th class="main">Quantity</th>
+			<th class="main">Rate</th>
+			<th class="main">Amount</th>
 		</tr>
 	</thead>
-	<tbody>
+	<tbody id="item_row_body">
 ';
 
 $sr=0; foreach ($quotation->quotation_rows as $quotationRows): $sr++; 
 $html.='
 	<tr>
-		<td style="padding-top:8px;padding-bottom:5px;" valign="top" align="center">'. h($sr) .'</td>
-		<td style="padding-top:8px;padding-bottom:5px;" valign="top" width="100%">'. $quotationRows->description .'<div style="height:'.$quotationRows->height.'"></div></td>
-		<td style="padding-top:8px;padding-bottom:5px;" align="center" valign="top">'. h($quotationRows->item->unit->name) .'</td>
-		<td style="padding-top:8px;padding-bottom:5px;" align="center" valign="top">'. h($quotationRows->quantity) .'</td>
-		<td style="padding-top:8px;padding-bottom:5px;" align="right" valign="top">'. $this->Number->format($quotationRows->rate,[ 'places' => 2]).'</td>
-		<td style="padding-top:8px;padding-bottom:5px;" align="right" valign="top">'. $this->Number->format($quotationRows->amount,[ 'places' => 2]) .'</td>
+		<td style="padding-top:8px;padding-bottom:5px;" valign="top" align="center" class="main">'. h($sr) .'</td>
+		<td style="padding-top:8px;padding-bottom:5px;" valign="top" width="100%" class="main">'. $quotationRows->description .'<div style="height:'.$quotationRows->height.'"></div></td>
+		<td style="padding-top:8px;padding-bottom:5px;" align="center" valign="top"class="main">'. h($quotationRows->item->unit->name) .'</td>
+		<td style="padding-top:8px;padding-bottom:5px;" align="center" valign="top" class="main">'. h($quotationRows->quantity) .'</td>
+		<td style="padding-top:8px;padding-bottom:5px;" align="right" valign="top"class="main">'. $this->Number->format($quotationRows->rate,[ 'places' => 2]).'</td>
+		<td style="padding-top:8px;padding-bottom:5px;" align="right" valign="top" class="main">'. $this->Number->format($quotationRows->amount,[ 'places' => 2]) .'</td>
 	</tr>';
 endforeach;
 
