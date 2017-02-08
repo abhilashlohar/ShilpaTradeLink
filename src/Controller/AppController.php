@@ -68,13 +68,16 @@ class AppController extends Controller
 				
 				$this->loadModel('Companies');
 				$sessionCompany=$this->Companies->get($st_company_id);
+				if($st_year_id){
+					$this->loadModel('FinancialYears');
+					$sessionYears=$this->FinancialYears->get($st_year_id);
+					$this->set('s_year_from',date("Y",strtotime($sessionYears->date_from)));
+					$this->set('s_year_to',date("Y",strtotime($sessionYears->date_to)));
+				}
 				
-				$this->loadModel('FinancialYears');
-				$sessionYears=$this->FinancialYears->get($st_year_id);
 				$this->set('s_employee_name',$sessionEmployee->name);
 				$this->set('s_company_name',$sessionCompany->name);
-				$this->set('s_year_from',date("Y",strtotime($sessionYears->date_from)));
-				$this->set('s_year_to',date("Y",strtotime($sessionYears->date_to)));
+				
 			}
 		}
 		if(!empty($st_login_id)){

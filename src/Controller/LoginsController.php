@@ -96,6 +96,7 @@ class LoginsController extends AppController
 		$this->viewBuilder()->layout('login_layout');
 		$session = $this->request->session();
 		$st_login_id = $session->read('st_login_id');
+		
 		$login=$this->Logins->get($st_login_id);
 		
 		if(!empty($company_id)){
