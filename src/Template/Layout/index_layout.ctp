@@ -142,14 +142,20 @@ select
 	<!-- BEGIN HEADER INNER -->
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
-		<div class="page-logo" style="padding-top:5px;">
+		<div class="page-logo" style="padding-top:5px; width: 500px;">
 			<span style="color: #cd2831;font-weight: bold;font-size: 17px;" class="myshortlogo">Mogra Group</span>
 			<br/><span style="color: #FFF;font-size: 12px;">
 			<?php 
 			$session = $this->request->session(); 
 			echo $this->viewVars['s_company_name'];
 			?>
+			( 
+			<?php
+			echo $this->viewVars['s_year_from']; echo ' - '; echo $this->viewVars['s_year_to'];
+			?>
+			)
 			</span>
+			
 			<div class="menu-toggler sidebar-toggler hide">
 				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
 			</div>
@@ -185,8 +191,12 @@ select
 					<ul class="dropdown-menu dropdown-menu-default">
 						<li>
 							<?php 
-							//
 							echo $this->Html->link('<i class="fa fa-random"></i> Switch Company','/Logins/Switch-Company',array('escape'=>false)); ?>
+						
+						</li>
+						<li>
+							<?php 
+							echo $this->Html->link('<i class="fa fa-random"></i> Switch Financial Year','/FinancialYears/selectCompanyYear',array('escape'=>false)); ?>
 						</li>
 						<li>
 							<?php echo $this->Html->link('<i class="icon-key"></i> Log Out','/Logins/logout',array('escape'=>false)); ?>

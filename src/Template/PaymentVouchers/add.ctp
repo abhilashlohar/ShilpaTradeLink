@@ -15,7 +15,8 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Add Payment Voucher</span>
+			<span class="caption-subject font-blue-steel uppercase">Add Payment Voucher</span></br>
+			<h6>(Financial Year : <?php echo date("Y",strtotime($financial_year->date_from)); echo ' - '; echo date("Y",strtotime($financial_year->date_to)); ?>)</h6>
 		</div>
 	</div>
 	<div class="portlet-body form">
@@ -25,7 +26,9 @@
 			<div class="row">
 				
 				<div class="col-md-9">
+					
 				</div>
+				
 				<div class="col-md-3">
 					<div class="form-group">
 						<label class="col-md-3 control-label">Date</label>
@@ -39,7 +42,7 @@
 					<div class="col-md-4" >
 						<div class="form-group">
 						<label class=" control-label">Transaction Date<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Transaction Date','value' => date("d-m-Y")]); ?>
+							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Transaction Date','value' => date("d-m-Y"),'data-date-start-date' => date("d-m-Y",strtotime($financial_year->date_from)),'data-date-end-date' => date("d-m-Y",strtotime($financial_year->date_to))]); ?>
 						
 						</div>
 					</div>
@@ -50,7 +53,7 @@
 							echo $this->Form->input('paid_to_id', ['options'=>$paidTos,'empty'=>'--Select-','label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
-				<div class="col-md-4">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Cash/Bank<span class="required" aria-required="true">*</span></label>
 							<?php 

@@ -39,6 +39,7 @@ class DebitNotesTable extends Table
         $this->primaryKey('id');
 		$this->belongsTo('Ledgers');
 		$this->belongsTo('VouchersReferences');
+		$this->belongsTo('FinancialYears');
 		$this->belongsTo('SalesAccs', [
 			'className' => 'LedgerAccounts',
             'foreignKey' => 'sales_acc_id',

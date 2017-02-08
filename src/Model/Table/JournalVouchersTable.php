@@ -36,6 +36,7 @@ class JournalVouchersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 		$this->belongsTo('VouchersReferences');
+		$this->belongsTo('FinancialYears');
 		$this->belongsTo('Ledgers');
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',

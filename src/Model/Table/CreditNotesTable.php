@@ -38,6 +38,7 @@ class CreditNotesTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');$this->belongsTo('Ledgers');
 		$this->belongsTo('VouchersReferences');
+		$this->belongsTo('FinancialYears');
 		$this->belongsTo('Challans');
 		
 		$this->belongsTo('PurchaseAccs', [

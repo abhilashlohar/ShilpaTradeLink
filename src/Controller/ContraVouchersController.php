@@ -63,6 +63,8 @@ class ContraVouchersController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+        $st_year_id = $session->read('st_year_id');
+		$financial_year = $this->ReceiptVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
         
         if ($this->request->is('post')) {
 			$last_ref_no=$this->ContraVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
@@ -138,7 +140,7 @@ class ContraVouchersController extends AppController
 		
 		$companies = $this->ContraVouchers->Companies->find('all');
         
-        $this->set(compact('contraVoucher', 'cashBankFroms', 'cashBankTos','companies','ErrorcashBankTos','ErrorcashBankFroms'));
+        $this->set(compact('contraVoucher', 'cashBankFroms', 'cashBankTos','companies','ErrorcashBankTos','ErrorcashBankFroms','financial_year'));
         $this->set('_serialize', ['contraVoucher']);
     }
 
@@ -155,6 +157,8 @@ class ContraVouchersController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+        $st_year_id = $session->read('st_year_id');
+		$financial_year = $this->ContraVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
         
 		$contraVoucher = $this->ContraVouchers->get($id, [
             'contain' => []
@@ -224,7 +228,7 @@ class ContraVouchersController extends AppController
 		
 		$companies = $this->ContraVouchers->Companies->find('all');
         
-        $this->set(compact('contraVoucher', 'cashBankFroms', 'cashBankTos','companies'));
+        $this->set(compact('contraVoucher', 'cashBankFroms', 'cashBankTos','companies','financial_year'));
         $this->set('_serialize', ['contraVoucher']);
     }
 

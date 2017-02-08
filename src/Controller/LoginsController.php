@@ -30,11 +30,21 @@ class LoginsController extends AppController
 				$Employee=$this->Logins->Employees->get($employee_id, [
 					'contain' => ['Companies']
 				]);
+				$count=0;
 				foreach($Employee->companies as $company){
-					$this->request->session()->write('st_company_id',$company->id);
-					break;
+					$count++;
 				}
-				return $this->redirect("/Dashboard");
+				if($count==1){
+					foreach($Employee->companies as $company){
+						$this->request->session()->write('st_company_id',$company->id);
+						break;
+					}
+					return $this->redirect(['controller'=>'Financial-Years','action' => 'selectCompanyYear']);
+				}
+				else
+				{
+					return $this->redirect(['controller'=>'Logins','action' => 'Switch-Company']);
+				}
 			}
 		}
 		
@@ -83,11 +93,7 @@ class LoginsController extends AppController
     }
 	
 	function SwitchCompany($company_id=null){
-		$this->viewBuilder()->layout('index_layout');
-		
-		
-		
-		
+		$this->viewBuilder()->layout('login_layout');
 		$session = $this->request->session();
 		$st_login_id = $session->read('st_login_id');
 		$login=$this->Logins->get($st_login_id);
@@ -96,15 +102,11 @@ class LoginsController extends AppController
 			$this->request->allowMethod(['post', 'delete']);
 			$this->request->session()->write('st_company_id',$company_id);
 			
-			return $this->redirect(['action' => 'Switch-Company']);
+			return $this->redirect(['controller'=>'Financial-Years','action' => 'selectCompanyYear']);
 		}
-		
-		
-		
 		$Employee=$this->Logins->Employees->get($login->employee_id, [
 						'contain' => ['Companies']
-					]);
-				
+		]);
 		$this->set(compact('st_login_id','Employee'));
 	}
 	

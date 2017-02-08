@@ -657,7 +657,7 @@ $(document).ready(function() {
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				var qty=$(this).find('td:nth-child(3) input[type="text"]').val();
 				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').attr("name","invoice_rows["+val+"][item_serial_numbers][]").attr("id","invoice_rows-"+val+"-item_serial_no").attr('maxlength',qty).rules('add', {
-						required: true,
+						
 						minlength: qty,
 						maxlength: qty,
 						messages: {

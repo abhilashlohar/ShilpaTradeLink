@@ -35,11 +35,10 @@
 				</div>
 			</div>
 				<div class="row" style="margin-top:30px;">
-				<div class="col-md-4" >
+					<div class="col-md-4" >
 						<div class="form-group">
-						<label class=" control-label">Receipt Date<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y")]); ?>
-						
+							<label class=" control-label">Transaction Date<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y"),'data-date-start-date' => date("d-m-Y",strtotime($financial_year->date_from)),'data-date-end-date' => date("d-m-Y",strtotime($financial_year->date_to))]); ?>
 						</div>
 					</div>
 					<div class="col-md-4">

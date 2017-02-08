@@ -61,6 +61,8 @@ class ReceiptVouchersController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		$st_year_id = $session->read('st_year_id');
+		$financial_year = $this->ReceiptVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
         
         if ($this->request->is('post')) {
 			
@@ -181,7 +183,7 @@ class ReceiptVouchersController extends AppController
 		
 		//pr($customers->bill_to_bill_account); exit;
 		$Invoices = $this->ReceiptVouchers->Invoices->find()->where(['company_id'=>$st_company_id,'due_payment >'=>0]);		
-        $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies','ErrorreceivedFroms','ErrorbankCashes','customers'));
+        $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies','ErrorreceivedFroms','ErrorbankCashes','customers','financial_year'));
         $this->set('_serialize', ['receiptVoucher']);
     }
 
@@ -198,7 +200,8 @@ class ReceiptVouchersController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-        
+        $st_year_id = $session->read('st_year_id');
+		$financial_year = $this->ReceiptVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
         $receiptVoucher = $this->ReceiptVouchers->get($id, [
             'contain' => []
         ]);
@@ -260,7 +263,7 @@ class ReceiptVouchersController extends AppController
 		$bankCashes = $this->ReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
 		
         $companies = $this->ReceiptVouchers->Companies->find('all');		
-        $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies'));
+        $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies','financial_year'));
         $this->set('_serialize', ['receiptVoucher']);
     }
 

@@ -34,6 +34,7 @@ class PaymentVouchersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 		$this->belongsTo('VouchersReferences');
+		$this->belongsTo('FinancialYears');
 		$this->belongsTo('Ledgers');
 		$this->belongsTo('InvoiceBookings');
 		$this->belongsTo('Companies', [

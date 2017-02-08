@@ -65,7 +65,9 @@ class CreditNotesController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-        
+        $st_year_id = $session->read('st_year_id');
+		$financial_year = $this->CreditNotes->FinancialYears->find()->where(['id'=>$st_year_id])->first();
+    
 		 if ($this->request->is('post')) {
 			$last_ref_no=$this->CreditNotes->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_ref_no){
@@ -139,7 +141,7 @@ class CreditNotesController extends AppController
 			$Errorparties='true';
 		}
 		$companies = $this->CreditNotes->Companies->find('all');
-        $this->set(compact('creditNote', 'purchaseAccs', 'parties', 'companies','ErrorpurchaseAccs','Errorparties'));
+        $this->set(compact('creditNote', 'purchaseAccs', 'parties', 'companies','ErrorpurchaseAccs','Errorparties','financial_year'));
         $this->set('_serialize', ['debitNote']);
  }
 
@@ -157,7 +159,9 @@ class CreditNotesController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-        
+        $st_year_id = $session->read('st_year_id');
+		$financial_year = $this->CreditNotes->FinancialYears->find()->where(['id'=>$st_year_id])->first();
+    
         $creditNote = $this->CreditNotes->get($id, [
             'contain' => []
         ]);
@@ -220,7 +224,7 @@ class CreditNotesController extends AppController
 		$parties = $this->CreditNotes->Parties->find('list')->where(['Parties.id IN' => $where]);
 		
 		$companies = $this->CreditNotes->Companies->find('all');
-        $this->set(compact('creditNote', 'purchaseAccs', 'parties', 'companies'));
+        $this->set(compact('creditNote', 'purchaseAccs', 'parties', 'companies','financial_year'));
         $this->set('_serialize', ['debitNote']);
  
     }

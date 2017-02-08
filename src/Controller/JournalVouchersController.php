@@ -64,7 +64,9 @@ class JournalVouchersController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-        
+        $st_year_id = $session->read('st_year_id');
+		$financial_year = $this->JournalVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
+    
 		if ($this->request->is('post')) {
 			$last_ref_no=$this->JournalVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_ref_no){
@@ -130,7 +132,7 @@ class JournalVouchersController extends AppController
 			
 		$companies = $this->JournalVouchers->Companies->find('all');
         
-        $this->set(compact('journalVoucher', 'ledgers','companies','Errorledgers'));
+        $this->set(compact('journalVoucher', 'ledgers','companies','Errorledgers','financial_year'));
         $this->set('_serialize', ['journalVoucher']);
     }
 
@@ -147,7 +149,9 @@ class JournalVouchersController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-        
+        $st_year_id = $session->read('st_year_id');
+		$financial_year = $this->JournalVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
+    
         $journalVoucher = $this->JournalVouchers->get($id, [
             'contain' => ['Companies','JournalVoucherRows'=>['LedgerAccounts'],'Companies','Creator']
         ]);
@@ -200,7 +204,7 @@ class JournalVouchersController extends AppController
 
 		$ledgers = $this->JournalVouchers->LedgerAccounts->find('list')->where(['LedgerAccounts.id IN' => $where]);
         $companies = $this->JournalVouchers->Companies->find('all');
-        $this->set(compact('journalVoucher', 'companies','ledgers'));
+        $this->set(compact('journalVoucher', 'companies','ledgers','financial_year'));
         $this->set('_serialize', ['journalVoucher']);
     }
 

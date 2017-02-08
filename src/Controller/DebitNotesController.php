@@ -63,7 +63,9 @@ class DebitNotesController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-        
+        $st_year_id = $session->read('st_year_id');
+		$financial_year = $this->DebitNotes->FinancialYears->find()->where(['id'=>$st_year_id])->first();
+    
         if ($this->request->is('post')) {
 			$last_ref_no=$this->DebitNotes->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_ref_no){
@@ -138,7 +140,7 @@ class DebitNotesController extends AppController
 		
 		
 		$companies = $this->DebitNotes->Companies->find('all');
-        $this->set(compact('debitNote', 'salesAccs', 'parties', 'companies','ErrorsalesAccs','Errorparties'));
+        $this->set(compact('debitNote', 'salesAccs', 'parties', 'companies','ErrorsalesAccs','Errorparties','financial_year'));
         $this->set('_serialize', ['debitNote']);
     }
 
@@ -155,7 +157,9 @@ class DebitNotesController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-        
+        $st_year_id = $session->read('st_year_id');
+		$financial_year = $this->DebitNotes->FinancialYears->find()->where(['id'=>$st_year_id])->first();
+    
         $debitNote = $this->DebitNotes->get($id, [
             'contain' => []
         ]);
@@ -219,7 +223,7 @@ class DebitNotesController extends AppController
 		$parties = $this->DebitNotes->Parties->find('list')->where(['Parties.id IN' => $where]);
 		
 		$companies = $this->DebitNotes->Companies->find('all');
-        $this->set(compact('debitNote', 'salesAccs', 'parties', 'companies'));
+        $this->set(compact('debitNote', 'salesAccs', 'parties', 'companies','financial_year'));
         $this->set('_serialize', ['debitNote']);
     }
 

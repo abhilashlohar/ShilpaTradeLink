@@ -38,6 +38,7 @@ class ReceiptVouchersTable extends Table
         $this->primaryKey('id');
 		
 		$this->belongsTo('VouchersReferences');
+		$this->belongsTo('FinancialYears');
 		$this->belongsTo('Ledgers');
 		$this->belongsTo('Invoices');
 		$this->belongsTo('Customers');

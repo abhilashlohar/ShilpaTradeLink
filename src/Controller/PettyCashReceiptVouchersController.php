@@ -60,7 +60,9 @@ class PettyCashReceiptVouchersController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-        
+        $st_year_id = $session->read('st_year_id');
+		$financial_year = $this->PettyCashReceiptVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
+    
         if ($this->request->is('post')) {
 			$last_ref_no=$this->PettyCashReceiptVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_ref_no){
@@ -132,7 +134,7 @@ class PettyCashReceiptVouchersController extends AppController
 			$ErrorbankCashes='true';
 		}
 	 $companies = $this->PettyCashReceiptVouchers->Companies->find('all');
-        $this->set(compact('pettyCashReceiptVoucher', 'receivedFroms', 'bankCashes','companies','ErrorbankCashes','ErrorreceivedFroms'));
+        $this->set(compact('pettyCashReceiptVoucher', 'receivedFroms', 'bankCashes','companies','ErrorbankCashes','ErrorreceivedFroms','financial_year'));
         $this->set('_serialize', ['pettyCashReceiptVoucher']);
     }
 
@@ -150,7 +152,9 @@ class PettyCashReceiptVouchersController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-        
+        $st_year_id = $session->read('st_year_id');
+		$financial_year = $this->PettyCashReceiptVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
+    
         $pettyCashReceiptVoucher = $this->PettyCashReceiptVouchers->get($id, [
             'contain' => []
         ]);
@@ -212,7 +216,7 @@ class PettyCashReceiptVouchersController extends AppController
 		}
 		$bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
 		$companies = $this->PettyCashReceiptVouchers->Companies->find('all');
-        $this->set(compact('pettyCashReceiptVoucher', 'receivedFroms', 'bankCashes','companies'));
+        $this->set(compact('pettyCashReceiptVoucher', 'receivedFroms', 'bankCashes','companies','financial_year'));
         $this->set('_serialize', ['pettyCashReceiptVoucher']);
  
     }

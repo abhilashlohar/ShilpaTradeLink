@@ -55,6 +55,7 @@ class AppController extends Controller
 		}else{
 			$st_login_id = $session->read('st_login_id');
 			$st_company_id = $session->read('st_company_id');
+			$st_year_id =  $session->read('st_year_id');
 			if(empty($st_login_id)){
 				return $this->redirect("/login");
 			}else{
@@ -68,8 +69,12 @@ class AppController extends Controller
 				$this->loadModel('Companies');
 				$sessionCompany=$this->Companies->get($st_company_id);
 				
+				$this->loadModel('FinancialYears');
+				$sessionYears=$this->FinancialYears->get($st_year_id);
 				$this->set('s_employee_name',$sessionEmployee->name);
 				$this->set('s_company_name',$sessionCompany->name);
+				$this->set('s_year_from',date("Y",strtotime($sessionYears->date_from)));
+				$this->set('s_year_to',date("Y",strtotime($sessionYears->date_to)));
 			}
 		}
 		if(!empty($st_login_id)){

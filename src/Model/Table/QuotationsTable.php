@@ -36,6 +36,9 @@ class QuotationsTable extends Table
         $this->table('quotations');
         $this->displayField('ref_no');
         $this->primaryKey('id');
+		
+		
+		$this->belongsTo('FinancialYears');
 
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',

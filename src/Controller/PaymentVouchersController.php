@@ -61,7 +61,8 @@ class PaymentVouchersController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-        
+		$st_year_id = $session->read('st_year_id');
+		$financial_year = $this->PaymentVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
 		if ($this->request->is('post')) {
 			$last_ref_no=$this->PaymentVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_ref_no){
@@ -185,7 +186,7 @@ class PaymentVouchersController extends AppController
 		
         $companies = $this->PaymentVouchers->Companies->find('all');
 		
-        $this->set(compact('paymentVoucher', 'paidTos', 'bankCashes','companies','ErrorpaidTos','ErrorbankCashes'));
+        $this->set(compact('paymentVoucher', 'paidTos', 'bankCashes','companies','ErrorpaidTos','ErrorbankCashes','financial_year'));
         $this->set('_serialize', ['paymentVoucher']);
     }
 
@@ -204,7 +205,8 @@ class PaymentVouchersController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-        
+        $st_year_id = $session->read('st_year_id');
+		$financial_year = $this->PaymentVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
         $paymentVoucher = $this->PaymentVouchers->get($id, [
             'contain' => ['PaidTos','BankCashes','Companies']
 		
@@ -268,7 +270,7 @@ class PaymentVouchersController extends AppController
 		$bankCashes = $this->PaymentVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
 		
         $companies = $this->PaymentVouchers->Companies->find('all');	
-        $this->set(compact('paymentVoucher', 'paidTos', 'bankCashes','companies'));
+        $this->set(compact('paymentVoucher', 'paidTos', 'bankCashes','companies','financial_year'));
         $this->set('_serialize', ['paymentVoucher']);
  
     }

@@ -490,7 +490,7 @@ class InvoicesController extends AppController
      */
     public function edit($id = null)
     {
-		$this->viewBuilder()->layout('index_layout');
+		
 		
         $invoice = $this->Invoices->get($id, [
             'contain' => ['ItemSerialNumbers','InvoiceRows','SalesOrders' => ['Invoices'=>['InvoiceRows'],'SalesOrderRows' => ['Items'=>['ItemSerialNumbers'],'SaleTaxes']],'Companies','Customers','Employees','SaleTaxes']
