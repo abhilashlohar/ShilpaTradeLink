@@ -327,7 +327,7 @@ if(!empty($revision))
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 		<tr class="tr2 preimp">
-			<td colspan="4">
+			<td colspan="4" class="main">
 				
 			</td>
 			<td></td>
