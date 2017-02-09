@@ -21,12 +21,15 @@ class FinancialMonthsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 			$session = $this->request->session();
 			$st_company_id = $session->read('st_company_id');
+			$st_year_id = $session->read('st_year_id');
         $this->paginate = [
             'contain' => ['FinancialYears']
         ];
-        $financialMonths = $this->paginate($this->FinancialMonths);
+        $financialMonths = $this->paginate($this->FinancialMonths->find()->where(['financial_year_id'=>$st_year_id]));
 		
-        $this->set(compact('financialMonths'));
+		$last_closed = $this->FinancialMonths->find()->select(['id'])->where(['status' => 'Closed','financial_year_id'=>$st_year_id])->order(['id' => 'DESC'])->first();
+		$l_close = $last_closed->id;
+        $this->set(compact('financialMonths','l_close'));
         $this->set('_serialize', ['financialMonths']);
     }
 

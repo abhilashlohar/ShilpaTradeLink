@@ -43,7 +43,7 @@ class LoginsController extends AppController
 				}
 				else
 				{
-					return $this->redirect(['controller'=>'Logins','action' => 'Switch-Company']);
+					return $this->redirect(['action' => 'Switch-Company']);
 				}
 			}
 		}

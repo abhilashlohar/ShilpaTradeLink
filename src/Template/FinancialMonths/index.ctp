@@ -26,12 +26,13 @@
 				</thead>
 				<tbody>
 					
-					 <?php $i=0; $count=1; $j=0; foreach ($financialMonths as $financialMonth): 
+					 <?php $i=0; $count=1; $j=1; foreach ($financialMonths as $financialMonth): 
+						
 							if($financialMonth->status=='Closed'){
 								$count++;
 							}
 							if($financialMonth->status=='Open'){
-								$j=$i+1;
+								$j=$i-1;
 							}
 							$month = substr($financialMonth->month,0,2);
 							$year = substr($financialMonth->month,3,6);
@@ -51,10 +52,15 @@
 						} ?>
 						
 						<?php if($financialMonth->status=='Closed'){
-							if($j>=$i){
-							echo $this->Form->postLink('<i class="fa fa-plus-circle"> Open</i> ',['action' =>'open', $financialMonth->id],['escape' => false,'class' => 'btn btn-xs green tooltips','data-original-title'=>'Opened','confirm' => __('Are you sure, you want to Open ?', $financialMonth->id)]
+							if($financialMonth->id == $l_close){
+								echo $this->Form->postLink('<i class="fa fa-plus-circle"> Open</i> ',['action' =>'open', $financialMonth->id],['escape' => false,'class' => 'btn btn-xs green tooltips','data-original-title'=>'Opened','confirm' => __('Are you sure, you want to Open ?', $financialMonth->id)]
 							);
 							}
+							else{
+								echo ' ';
+							}	
+								
+									
 						} ?>
 						</td>
 					</tr>
