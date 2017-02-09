@@ -22,14 +22,28 @@ class FinancialMonthsController extends AppController
 			$session = $this->request->session();
 			$st_company_id = $session->read('st_company_id');
 			$st_year_id = $session->read('st_year_id');
-        $this->paginate = [
+			$financial_year = $this->FinancialMonths->FinancialYears->find()->where(['id'=>$st_year_id])->first();
+			$start_date = $financial_year->date_from;
+			$lastyear = strtotime("-1 year", strtotime($start_date));
+			$firstDate = date("Y-m-d", $lastyear);
+			
+			$last_financial_year = $this->FinancialMonths->FinancialYears->find()->where(['date_from >=' => $firstDate,'date_to <' => $start_date,'company_id' => $st_company_id])->first();
+			if($last_financial_year){
+				$l_year_status=$last_financial_year->status;
+			}
+			else{
+				$l_year_status=' ';
+			}
+			 $this->paginate = [
             'contain' => ['FinancialYears']
         ];
         $financialMonths = $this->paginate($this->FinancialMonths->find()->where(['financial_year_id'=>$st_year_id]));
 		
 		$last_closed = $this->FinancialMonths->find()->select(['id'])->where(['status' => 'Closed','financial_year_id'=>$st_year_id])->order(['id' => 'DESC'])->first();
+		if($last_closed){
 		$l_close = $last_closed->id;
-        $this->set(compact('financialMonths','l_close'));
+		}
+        $this->set(compact('financialMonths','l_close','l_year_status'));
         $this->set('_serialize', ['financialMonths']);
     }
 

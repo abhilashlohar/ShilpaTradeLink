@@ -21,7 +21,7 @@
 						<th><?php echo 'Month'; ?></th>
 						<th><?php echo 'Year'; ?></th>
 						<th><?php echo 'Status'; ?></th>
-						<th class="actions"><?= __('Actions') ?></th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -45,13 +45,13 @@
 						<td><?= h($financialMonth->status) ?></td>
 						<td class="actions">
 						<?php if($financialMonth->status=='Open'){
-							if($count>=$i){
+							if(($count>=$i) && (($l_year_status=='Closed')|| ($l_year_status==' '))){
 								echo $this->Form->postLink('<i class="fa fa-minus-circle"> Closed</i> ',['action' =>'closed', $financialMonth->id],['escape' => false,'class' => 'btn btn-xs red tooltips','data-original-title'=>'Closed','confirm' => __('Are you sure, you want to Closed ?', $financialMonth->id)]
 								);
 							}
 						} ?>
 						
-						<?php if($financialMonth->status=='Closed'){
+						<?php if(($financialMonth->status=='Closed') && (($l_year_status=='Closed')|| ($l_year_status==' '))){
 							if($financialMonth->id == $l_close){
 								echo $this->Form->postLink('<i class="fa fa-plus-circle"> Open</i> ',['action' =>'open', $financialMonth->id],['escape' => false,'class' => 'btn btn-xs green tooltips','data-original-title'=>'Opened','confirm' => __('Are you sure, you want to Open ?', $financialMonth->id)]
 							);
