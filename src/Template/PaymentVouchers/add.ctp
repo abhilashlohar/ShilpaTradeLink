@@ -16,7 +16,7 @@
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Add Payment Voucher</span></br>
-			<h6>(Financial Year : <?php echo date("Y",strtotime($financial_year->date_from)); echo ' - '; echo date("Y",strtotime($financial_year->date_to)); ?>)</h6>
+			
 		</div>
 	</div>
 	<div class="portlet-body form">

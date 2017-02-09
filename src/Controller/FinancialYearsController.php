@@ -27,11 +27,34 @@ class FinancialYearsController extends AppController
 			//pr($this->request->data);
 			//exit;
 			$financialYear = $this->FinancialYears->patchEntity($financialYear, $this->request->data);
-			
 			$financialYear->company_id=$st_company_id;
 			$financialYear->date_from=date("Y-m-d",strtotime($financialYear->date_from)); 
 			$financialYear->date_to=date("Y-m-d",strtotime($financialYear->date_to));
+			
 			if ($this->FinancialYears->save($financialYear)) {
+				$date1  = $financialYear->date_from;
+				$date2  = $financialYear->date_to;
+				$output = [];
+				$time   = strtotime($date1);
+				$last   = date('m-Y', strtotime($date2));
+
+				do {
+					$month = date('m-Y', $time);
+					$total = date('t', $time);
+
+					$output[] =  $month;
+
+					$time = strtotime('+1 month', $time);
+				} while ($month != $last);
+			
+				foreach ($output as $dt) {
+				
+				$financial_month = $this->FinancialYears->FinancialMonths->newEntity();
+				$financial_month->financial_year_id=$financialYear->id;
+				$financial_month->month=$dt;
+				$financial_month->status='Open';
+				$this->FinancialYears->FinancialMonths->save($financial_month);
+				}
 				$this->Flash->success(__('The financial year has been saved.'));
 				return $this->redirect(['action' => 'index']);
             } else {

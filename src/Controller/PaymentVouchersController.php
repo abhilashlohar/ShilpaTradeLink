@@ -212,8 +212,8 @@ class PaymentVouchersController extends AppController
 		
 		  ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
 			
+            $paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
 			$paymentVoucher->company_id=$st_company_id;
 			$paymentVoucher->edited_on=date("Y-m-d");
 			$paymentVoucher->transaction_date=date("Y-m-d",strtotime($paymentVoucher->transaction_date));
