@@ -211,7 +211,17 @@ class PaymentVouchersController extends AppController
             'contain' => ['PaidTos','BankCashes','Companies']
 		
 		  ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+		 $check_date= $paymentVoucher->transaction_date;
+		 $last_financial_year = $this->PaymentVouchers->FinancialYears->find()->where(['date_from >=' => $check_date,'company_id' => $st_company_id])->first();
+		 pr($last_financial_year);
+		 exit;
+			if($last_financial_year){
+				$l_year_status=$last_financial_year->status;
+			}
+			else{
+				$l_year_status=' ';
+			}
+			if ($this->request->is(['patch', 'post', 'put'])) {
 			
             $paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
 			$paymentVoucher->company_id=$st_company_id;

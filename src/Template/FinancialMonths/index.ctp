@@ -31,9 +31,7 @@
 							if($financialMonth->status=='Closed'){
 								$count++;
 							}
-							if($financialMonth->status=='Open'){
-								$j=$i-1;
-							}
+							
 							$month = substr($financialMonth->month,0,2);
 							$year = substr($financialMonth->month,3,6);
 							$monthName = date('F', mktime(0, 0, 0, $month,10)); 

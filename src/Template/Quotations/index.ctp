@@ -100,7 +100,7 @@ if(!empty($status)){
 				</table>
 				</form>
 				<?php $page_no=$this->Paginator->current('Quotations'); $page_no=($page_no-1)*20; ?>
-				<table class="table table-bordered table-striped table-hover">
+				<table class="table table-bordered table-striped">
 					<thead>
 						<tr>
 							<th>Sr. No.</th>
@@ -128,8 +128,9 @@ if(!empty($status)){
 						?>
 						<tr>
 							<td><?= h(++$page_no) ?>
+							<?php if($quotation->revision > 0) { ?>
 							<button type="button" class="btn btn-xs tooltips revision_show" value="<?=$quotation->id ?>" style="margin-left:5px;" data-original-title="Revisions"><i class="fa fa-plus-circle"></i></button>
-							<button type="button" class="btn btn-xs tooltips revision_hide" id="revision_hide" value="<?=$quotation->id ?>" style="margin-left:5px; display:none;"><i class="fa fa-minus-circle"></i></button></td>
+							<button type="button" class="btn btn-xs tooltips revision_hide" id="revision_hide" value="<?=$quotation->id ?>" style="margin-left:5px; display:none;"><i class="fa fa-minus-circle"></i></button><?php } ?></td>
 							
 							<td><?= h(($quotation->qt1.'/QT-'.str_pad($quotation->qt2, 3, '0', STR_PAD_LEFT).'/'.$quotation->qt3.'/'.$quotation->qt4)) ?></td>
 							<td><?= h($quotation->customer->customer_name) ?></td>

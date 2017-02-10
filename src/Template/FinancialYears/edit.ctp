@@ -37,22 +37,7 @@
 					</div>
 				</div>
 				</br>
-				<div class="form-group col-md-12">
-					<label class="control-label col-md-3">Status<span class="required" aria-required="true">
-					* </span>
-					</label>
-					<div class="col-md-9">
-						<div class="input-icon right">
-							<i class="fa"></i>
-							 <?php echo $this->Form->radio(
-									'status',
-									[
-										['value' => 'Open', 'text' => 'Open', 'checked'],
-										['value' => 'Closed', 'text' => 'Closed']
-									]); ?>
-						</div>
-					</div>
-				</div>
+				
 			</div>
 				<div class="row">
 					<div class="col-md-offset-4 col-md-8">

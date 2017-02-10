@@ -21,9 +21,9 @@ class FinancialYearsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 			$session = $this->request->session();
 			$st_company_id = $session->read('st_company_id');
-
-		$financialYear = $this->FinancialYears->newEntity();
-        if ($this->request->is('post')) {
+			$st_year_id = $session->read('st_year_id');
+			$financialYear = $this->FinancialYears->newEntity();
+			if ($this->request->is('post')) {
 			//pr($this->request->data);
 			//exit;
 			$financialYear = $this->FinancialYears->patchEntity($financialYear, $this->request->data);
@@ -63,13 +63,25 @@ class FinancialYearsController extends AppController
 		}
 			$this->set(compact('financialYear'));
 			$this->set('_serialize', ['financialYear']);
-		
+			
+			$financial_year = $this->FinancialYears->find()->where(['id'=>$st_year_id])->first();
+			$start_date = $financial_year->date_from;
+			$lastyear = strtotime("-1 year", strtotime($start_date));
+			$firstDate = date("Y-m-d", $lastyear);
+			
+			$last_financial_year = $this->FinancialYears->find()->where(['date_from >=' => $firstDate,'date_to <' => $start_date,'company_id' => $st_company_id])->first();
+			if($last_financial_year){
+				$l_year_status=$last_financial_year->status;
+			}
+			else{
+				$l_year_status=' ';
+			}
 			$this->paginate = [
 				'contain' => ['Companies']
 			];
 			$financialYears = $this->paginate($this->FinancialYears->find()->where(['company_id'=>$st_company_id]));
 			
-			$this->set(compact('financialYears'));
+			$this->set(compact('financialYears','l_year_status'));
 			$this->set('_serialize', ['financialYears']);
     }
 
@@ -202,5 +214,29 @@ class FinancialYearsController extends AppController
 			
 			$this->set(compact('financialYears'));
 			$this->set('_serialize', ['financialYears']);
+    }
+	
+	public function closed($id = null)
+    {
+        $financialYear = $this->FinancialYears->get($id);
+		$financialYear->status='Closed';
+		 if ($this->FinancialYears->save($financialYear)) {
+            $this->Flash->success(__('The Financial Year has been Closed.'));
+        } else {
+            $this->Flash->error(__('The Financial Year could not be Closed. Please, try again.'));
+        }
+		return $this->redirect(['action' => 'index']);
+    }
+	
+	public function open($id = null)
+    {
+        $financialYear = $this->FinancialYears->get($id);
+		$financialYear->status='Open';
+		if ($this->FinancialYears->save($financialYear)) {
+             $this->Flash->success(__('The Financial Year has been Closed.'));
+        } else {
+            $this->Flash->error(__('The Financial Year could not be Closed. Please, try again.'));
+        }
+		return $this->redirect(['action' => 'index']);
     }
 }

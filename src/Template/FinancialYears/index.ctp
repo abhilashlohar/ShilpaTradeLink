@@ -36,22 +36,7 @@
 					</div>
 				</div>
 				</br>
-				<div class="form-group col-md-12">
-					<label class="control-label col-md-3">Status<span class="required" aria-required="true">
-					* </span>
-					</label>
-					<div class="col-md-9">
-						<div class="input-icon right">
-							<i class="fa"></i>
-							 <?php echo $this->Form->radio(
-									'status',
-									[
-										['value' => 'Open', 'text' => 'Open', 'checked'],
-										['value' => 'Closed', 'text' => 'Closed']
-									]); ?>
-						</div>
-					</div>
-				</div>
+			
 				<div class="row">
 					<div class="col-md-offset-4 col-md-8">
 						<button type="submit" class="btn btn-primary">Add Financial Year</button>
@@ -73,16 +58,34 @@
 						<th><?= $this->Paginator->sort('date_to') ?></th>
 						<th><?= $this->Paginator->sort('status') ?></th>
 						<th class="actions"><?= __('Actions') ?></th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
-					  <?php foreach ($financialYears as $financialYear): ?>
+				
+					  <?php $i =0; $count=1; foreach ($financialYears as $financialYear): 
+							
+					  ?>
 					<tr>
+						<?php ++$i; ?>
 						<td><?= h(date("d-m-Y",strtotime($financialYear->date_from)))?>
 						<td><?= h(date("d-m-Y",strtotime($financialYear->date_to)))?>
 						<td><?= h($financialYear->status) ?></td>
 						<td class="actions">
 							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $financialYear->id]) ?>
+						</td>
+						<td>
+							<?php if($financialYear->status=='Open'){
+									echo $this->Form->postLink('<i class="fa fa-minus-circle"> Closed</i> ',['action' =>'closed', $financialYear->id],['escape' => false,'class' => 'btn btn-xs red tooltips','data-original-title'=>'Closed','confirm' => __('Are you sure, you want to Closed ?', $financialYear->id)]
+									);
+								}
+							
+							 ?>
+							<?php if($financialYear->status=='Closed'){
+									echo $this->Form->postLink('<i class="fa fa-plus-circle"> Open</i> ',['action' =>'open', $financialYear->id],['escape' => false,'class' => 'btn btn-xs green tooltips','data-original-title'=>'Opened','confirm' => __('Are you sure, you want to Open ?', $financialYear->id)]
+									);
+							}
+							?>
 						</td>
 					</tr>
             <?php endforeach; ?>
