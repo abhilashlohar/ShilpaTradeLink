@@ -496,4 +496,14 @@ class QuotationsController extends AppController
 		return $this->redirect(['action' => 'index']);
     }
 	
+	public function download($id=null) { 
+		$file = $this->Quotations->getFile($id);
+	   // a view.
+	   $this->response->file(
+		  $file['files/content'],
+		  ['download' => true]
+	   );
+	   return $this->response;
+	}
+	
 }

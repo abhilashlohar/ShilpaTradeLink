@@ -183,7 +183,7 @@
 							<tr class="tr3" row_no='<?php echo @$sales_order_rows->id; ?>'>
 							<td></td>
 							<td colspan="5">
-							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','required','style'=>'width:100%']);  ?></td>
+							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','style'=>'width:100%']);  ?></td>
 							</tr><?php } ?>
 					<?php $q++; endforeach; }?>
 				</tbody>

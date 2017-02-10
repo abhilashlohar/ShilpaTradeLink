@@ -216,7 +216,7 @@
 							<tr class="tr3" row_no="<?= h($q) ?>">
 							<td></td>
 							<td colspan="5">
-							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','required','style'=>'width:100%','value'=>$choosen]);  ?></td>
+							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','style'=>'width:100%','value'=>$choosen]);  ?></td>
 							</tr><?php } ?>
 					<?php } ?>
 					<?php $q++; }  ?>

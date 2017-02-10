@@ -8,9 +8,15 @@ $edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Add']);
 		<td valign="top" style="background: #FFF;">
 		<div class="list-group">
 			<a href="<?php echo $list_url; ?>" class="list-group-item"><i class="fa fa-chevron-left"></i> Back to Quotations </a>
+			<!--
 			<?php if($quotation->revision==$revision){ ?>
 			<a  data-toggle="modal" class="list-group-item" href="#myModal2"><i class="fa fa-envelope"></i> Email to Customer </a>
-			<?php } ?>
+			
+			<?php } ?>  
+			-->
+			<?php	echo $this->Html->link('<i class="fa fa-download"></i>Download ','/Quotations/Pdf/'.$id,array('escape'=>false,'class'=>'','download'=>"true"));
+							 ?>
+			<a href="<?php echo $pdf_url/$quotation->id; ?>" class="list-group-item" download="true"><i class="fa fa-download"></i>Download</a>
 			<?php if($quotation->status=='Pending' AND $quotation->revision==$revision){ ?>
 				<div class="btn-group dropup" style=" width: 100%; ">
 					<button type="button" class="list-group-item dropdown-toggle" data-toggle="dropdown" style=" width: 100%; text-align: left; "><i class="fa fa-pencil-square-o" width="100%"></i>Edit</button>
