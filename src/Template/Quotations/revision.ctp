@@ -5,6 +5,7 @@
 		<?php $i=0; foreach ($quotations as $quotation): $i++;?>
 			
 			<tr>
+			<td ><?php echo ' (#R'.$quotation->revision.' )'; ?></td>
 			<td colspan="2"><?= h($quotation->customer->customer_name) ?></td>
 			<td><?= h($quotation->employee->name) ?></td>
 			<td><?= h($quotation->item_group->name) ?></td>
