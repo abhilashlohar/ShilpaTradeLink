@@ -1,3 +1,5 @@
+<a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
+
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 80%;font-size:14px;">
 <table width="100%">
 	<tr>
@@ -35,9 +37,7 @@
 					<td><label style="font-size:105%"><b>Required Date</b></label></td>
 					<td>:</td>
 					<td><?= h($jobCard->required_date=date("d-m-Y",strtotime($jobCard->required_date))) ?></td>
-					<td><label style="font-size:105%"><b>Dispatch Name</b></label></td>
-					<td>:</td>
-					<td><?= h($jobCard->dispatch_name) ?></td>
+					
 				</tr>
 				<tr>
 					<td valign="top"><label style="font-size:105%"><b>Dispatch Destination</b></label></td>

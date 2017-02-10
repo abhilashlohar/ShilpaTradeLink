@@ -14,9 +14,9 @@ $edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Add']);
 			
 			<?php } ?>  
 			-->
-			<?php	echo $this->Html->link('<i class="fa fa-download"></i>Download ','/Quotations/Pdf/'.$id,array('escape'=>false,'class'=>'','download'=>"true"));
-							 ?>
-			<a href="<?php echo $pdf_url/$quotation->id; ?>" class="list-group-item" download="true"><i class="fa fa-download"></i>Download</a>
+			<?php	echo $this->Html->link('<i class="fa fa-download"></i>Download ',['action' => 'pdf', $quotation->id],array('escape'=>false,'class'=>'list-group-item')); ?>
+		
+			
 			<?php if($quotation->status=='Pending' AND $quotation->revision==$revision){ ?>
 				<div class="btn-group dropup" style=" width: 100%; ">
 					<button type="button" class="list-group-item dropdown-toggle" data-toggle="dropdown" style=" width: 100%; text-align: left; "><i class="fa fa-pencil-square-o" width="100%"></i>Edit</button>
