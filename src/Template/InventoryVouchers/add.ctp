@@ -164,9 +164,7 @@ $(document).ready(function() {
 		var j=0; 
 		
 			$("#main_table tbody#maintbody tr.tr1").each(function(){
-				//var invoice_id=$(this).find("td:nth-child(1) input[name=invoice_id]:nth-child(1)").val();
-				//alert(invoice_id);
-				//$(this).find("td:nth-child(1) input[type=hidden]:nth-child(1)").attr({name:"inventory_voucher_rows["+i+"][invoice_row_id]"}).val(invoice_id);
+				
 				$(this).find("td:nth-child(1) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2();
 				$(this).find("td:nth-child(2) input").attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"});
 				i++;
@@ -177,6 +175,20 @@ $(document).ready(function() {
 				});	
 							
 	}
+	$('select[name="item_id"]').die().live("change",function() {
+		var select_item_id=$(this).find('option:selected').val();
+		 alert(select_item_id);
+		var url1="<?php echo $this->Url->build(['controller'=>'InventoryVouchers','action'=>'ItemSerialNumber']); ?>";
+		url1=url1+'/'+select_item_id,
+		$.ajax({
+			url: url1,
+		}).done(function(response) {
+			alert(response);
+		});
+		
+	
+	});
+	
 });
 </script>
 

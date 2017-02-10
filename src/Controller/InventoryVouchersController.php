@@ -97,9 +97,22 @@ class InventoryVouchersController extends AppController
 				);
  			}
   		 $this->set(compact('JobCardRows','InventoryVoucherRows','item','invoice_row','row'));
-		 $inventoryVoucher = $this->InventoryVouchers->newEntity();
-         if ($this->request->is('post')) {
+		 
+		 $Invoicesexists = $this->InventoryVouchers->InventoryVoucherRows->exists(['invoice_id' => $invoice_id]);
+		
+		 if(!$Invoicesexists){
+		  $inventoryVoucher = $this->InventoryVouchers->newEntity();
+		 } else {
+			$inventoryVouchersrows = $this->InventoryVouchers->InventoryVoucherRows->find()->where(['invoice_id'=>$invoice_id])->first();
+			$inventoryVoucher = $this->InventoryVouchers->get($inventoryVouchersrows->inventory_voucher_id);
+			  if ($this->request->is('post')) {
+				  
+			  }
+		}
+        if ($this->request->is('post')) {
+		//pr($this->request->data); exit;
 			$inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);
+				
  				$inventoryVoucher->iv1=$invoice_data->in1;
  				$inventoryVoucher->iv3=$invoice_data->in3;
 				$inventoryVoucher->iv4='16-17';
@@ -109,9 +122,8 @@ class InventoryVouchersController extends AppController
  				foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
 					$inventory_voucher_row->invoice_id=$invoice_id;
 					$inventory_voucher_row->left_item_id=$item_id;
-				} 
+		} 
 		if ($this->InventoryVouchers->save($inventoryVoucher)) { 
-				
 				foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
  					foreach($inventory_voucher_row->item_serial_numbers as $item_serial_number){
   					$query = $this->InventoryVouchers->ItemSerialNumbers->query();
@@ -140,7 +152,8 @@ class InventoryVouchersController extends AppController
 						$this->Flash->success(__('The inventory voucher has been saved.'));
 						return $this->redirect(['action' => 'Index']);
 				}
-		} }else {  
+		} 
+		}else {  
 			$this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
 		}
     
@@ -265,5 +278,18 @@ class InventoryVouchersController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    } 
+	
+	public function ItemSerialNumber($select_item_id = null)
+    {
+		$this->viewBuilder()->layout('');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$Item=$this->InventoryVouchers->Items->find()->where(['id'=>$select_item_id])->first();
+		pr($Item); exit;
+		if(!$Item){ echo 'Select paid to.'; exit; }
+		//$InvoiceBookings = $this->InvoiceBookings->find()->where(['company_id'=>$st_company_id,'vendor_id'=>$Vendor->id,'due_payment >'=>0]);
+		 $this->set(compact('Item'));
     }
 }
