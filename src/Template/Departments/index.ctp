@@ -92,8 +92,7 @@ $(document).ready(function() {
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
 			name:{
-				required: true,
-				alphabetsAndSpacesOnly: true,
+				required: true
 			},
 			
 		},

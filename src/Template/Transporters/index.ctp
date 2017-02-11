@@ -139,8 +139,8 @@ $(document).ready(function() {
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
 			transporter_name:{
-				required: true,
-				alphabetsAndSpacesOnly: true,
+				required: true
+				
 			},
 			mobile:{
 				required: true,

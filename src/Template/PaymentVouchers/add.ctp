@@ -24,12 +24,7 @@
 		 <?= $this->Form->create($paymentVoucher,['type' => 'file','id'=>'form_sample_3']) ?>
 		<div class="form-body">
 			<div class="row">
-				
-				<div class="col-md-9">
-					
-				</div>
-				
-				<div class="col-md-3">
+			   <div class="col-md-3">
 					<div class="form-group">
 						<label class="col-md-3 control-label">Date</label>
 						<div class="col-md-9">
@@ -37,23 +32,22 @@
 						</div>
 					</div>
 				</div>
-			</div>
-				<div class="row" style="margin-top:30px;">
-					<div class="col-md-4" >
+
+					<div class="col-md-3">
 						<div class="form-group">
 						<label class=" control-label">Transaction Date<span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Transaction Date','value' => date("d-m-Y"),'data-date-start-date' => date("d-m-Y",strtotime($financial_year->date_from)),'data-date-end-date' => date("d-m-Y",strtotime($financial_year->date_to))]); ?>
 						
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Paid To <span class="required" aria-required="true">*</span></label>
 							<?php 
 							echo $this->Form->input('paid_to_id', ['options'=>$paidTos,'empty'=>'--Select-','label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Cash/Bank<span class="required" aria-required="true">*</span></label>
 							<?php 
@@ -61,10 +55,11 @@
 						</div>
 						
 					</div>
-				
-				</div>
-				<div class="row">
-					<div class="col-md-4">
+
+
+			</div>
+			  <div class="row">
+					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Mode of Payment<span class="required" aria-required="true">*</span></label>
 							<div class="radio-list">
@@ -79,20 +74,31 @@
 								</div>
                                 
 							</div>
+                             <div class="form-group" id="chq_no">
+						     <?php echo $this->Form->input('cheque_no', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Cheque No']); ?>
+						     </div>
+
 						</div>
-						<div class="form-group" id="chq_no">
-							<label class="control-label">Cheque No<span class="required" aria-required="true">*</span></label>
-							<?php 
-							echo $this->Form->input('cheque_no', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Cheque No']); ?>
-						</div>
+						
 					</div>
 					
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Amount<span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Amount','id'=>'total_paid_amount','type'=>'text']); ?>
 						</div>
+				   </div>
+					<div class="col-md-3">
 						<div class="form-group">
+							<label class="control-label">Narration<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('narration', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Narration']); ?>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-4">
+					<div class="form-group">
 							<label class="control-label">Receipt Type<span class="required" aria-required="true">*</span></label>
 							<div class="radio-list">
 								<div class="radio-inline" >
@@ -107,14 +113,10 @@
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Narration<span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('narration', ['label' => false,'class' => 'form-control input-sm','placeholder' => 'Narration']); ?>
-						</div>
-					</div>
+					</div>	
 				</div>
+
+				
 				<?php echo $this->Form->input('bill_to_bill', ['label' => false,'class' => 'form-control input-sm','type'=>'text','id'=>'bill_to_bill','style'=>'height:0px; border:none; widht:0px;']); ?>
 			
 				<div id="bill_to_bill_show" style="display:none;">
