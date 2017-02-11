@@ -8,7 +8,7 @@
 		<td align="right" width="50%" style="font-size: 14px;">
 		<span style="font-size: 20px;"><?= h($jobCard->company->name) ?></span><br/>
 		<span style="font-size: 15px;"><?= $this->Text->autoParagraph(h($jobCard->company->address)) ?></span>
-		<span style="font-size: 15px;"><?= h($jobCard->company->landline_no) ?></span><br/>
+		<span style="font-size: 15px;"> <i class="fa fa-phone" aria-hidden="true"></i> <?= h($jobCard->company->landline_no) ?></span> |
 		<span style="font-size: 15px;"><?= h($jobCard->company->mobile_no) ?></span>
 		</td>
 	</tr>
