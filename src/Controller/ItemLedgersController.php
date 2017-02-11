@@ -192,4 +192,73 @@ class ItemLedgersController extends AppController
 		
         $this->set(compact('itemLedgers'));
     }
+	
+	 public function materialindentreport(){
+		$this->viewBuilder()->layout('index_layout'); 
+		//$Items = $this->ItemLedgers->Items->find()->where(['source'=>'Purchessed/Manufactured'])->orWhere(['source'=>'Purchessed']); 
+		
+		
+		$salesOrders=$this->ItemLedgers->SalesOrders->find()
+			->select(['total_rows'=>$this->ItemLedgers->SalesOrders->find()->func()->count('SalesOrderRows.id')])
+			->leftJoinWith('SalesOrderRows', function ($q) {
+				return $q->where(['SalesOrderRows.processed_quantity < SalesOrderRows.quantity']);
+			})
+			->group(['SalesOrders.id'])
+			->autoFields(true)
+			->having(['total_rows >' => 0])
+			->contain(['SalesOrderRows'])
+			->toArray();
+			//pr($salesOrders); 
+			$sales=array();
+			foreach($salesOrders as $data){
+				
+				$item_id=$data['sales_order_rows'][0]['item_id'];
+				$quantity=$data['sales_order_rows'][0]['quantity'];
+				$processed_quantity=$data['sales_order_rows'][0]['processed_quantity'];
+				$Sales_Order_stock=$quantity-$processed_quantity;
+				$sales[$item_id]=$Sales_Order_stock;
+			}
+		
+		
+		
+		
+		$ItemLedgers = $this->ItemLedgers->find();
+				$totalInCase = $ItemLedgers->newExpr()
+					->addCase(
+						$ItemLedgers->newExpr()->add(['in_out' => 'In']),
+						$ItemLedgers->newExpr()->add(['quantity']),
+						'integer'
+					);
+				$totalOutCase = $ItemLedgers->newExpr()
+					->addCase(
+						$ItemLedgers->newExpr()->add(['in_out' => 'Out']),
+						$ItemLedgers->newExpr()->add(['quantity']),
+						'integer'
+					);
+
+				$ItemLedgers->select([
+					'total_in' => $ItemLedgers->func()->sum($totalInCase),
+					'total_out' => $ItemLedgers->func()->sum($totalOutCase),'id','item_id'
+				])
+				->group('item_id')
+				->autoFields(true)
+				->contain(['Items' => function($q){
+					return $q->where(['Items.source'=>'Purchessed/Manufactured'])->orWhere(['Items.source'=>'Purchessed']);
+				}]);
+				
+		foreach ($ItemLedgers as $itemLedger){
+			$item_name=$itemLedger->item->name;
+			$item_id=$itemLedger->item->id;
+			$Current_Stock=$itemLedger->total_in-$itemLedger->total_out;
+			
+			
+			$material_report[]=array('item_name'=>$item_name,'item_id'=>$item_id,'Current_Stock'=>$Current_Stock,'sales_order'=>$sales);
+			
+		} 
+		//pr($material_report); 
+		 $this->set(compact('material_report'));
+			
+	 }
+	
+	
 }
