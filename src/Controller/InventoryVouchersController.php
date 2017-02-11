@@ -65,84 +65,142 @@ class InventoryVouchersController extends AppController
 		$invoice_id=@(int)$this->request->query('invoice');
 		$item_id=@(int)$this->request->query('item_id');
 		$invoice_data=$this->InventoryVouchers->Invoices->get($invoice_id);
-		
-		if(empty($item_id) && !empty($invoice_id)){
+		/* echo $item_id; 
+		echo "ef"; 
+		echo $invoice_id;  */
+		if(empty($item_id) && !empty($invoice_id)){ 
 			$row=$this->InventoryVouchers->Invoices->get($invoice_id, [
 				'contain' => ['InvoiceRows'=> function ($q) {
 				return $q->where(['inventory_voucher_status '=>'Pending']);
 				}]]);
 			$invoice_row = $row->invoice_rows[0];
+			//pr($invoice_row); //exit;
 			$item_id=$invoice_row->item_id;
 			$invoice_row_id=$invoice_row->id;
 		}
 		$item = $this->InventoryVouchers->Items->get($item_id);
  		$inventoryVouchers = $this->InventoryVouchers->InventoryVoucherRows->find()->where(['invoice_id'=>$invoice_id,'left_item_id'=>$item_id]);
+		
+		if($inventoryVouchers->count()==0){
+			$Invoice = $this->InventoryVouchers->Invoices->get($invoice_id);
+			$sales_order_id=$Invoice->sales_order_id;
+			$SalesOrderRow=$this->InventoryVouchers->SalesOrderRows->find()->where(['sales_order_id'=>$sales_order_id,'item_id'=>$item_id])->first();
+			$SalesOrderRowID=$SalesOrderRow->id;
 			
-			if($inventoryVouchers->count()==0){
-				$Invoice = $this->InventoryVouchers->Invoices->get($invoice_id);
-				$sales_order_id=$Invoice->sales_order_id;
-				$SalesOrderRow=$this->InventoryVouchers->SalesOrderRows->find()->where(['sales_order_id'=>$sales_order_id,'item_id'=>$item_id])->first();
-				$SalesOrderRowID=$SalesOrderRow->id;
-				
-				$JobCardRows=$this->paginate(
-				$this->InventoryVouchers->JobCardRows->find()->contain(['Items'=>['ItemSerialNumbers'=>		function ($q) {  return $q
-								->where(['ItemSerialNumbers.status' => 'In' ]); }]])
-				->where(['sales_order_id'=>$sales_order_id,'sales_order_row_id'=>$SalesOrderRowID])
-				);	 
- 			}else{ 
-				$InventoryVoucherRows=$this->paginate(
-				$this->InventoryVouchers->InventoryVoucherRows->find()->contain(['Items'=>['ItemSerialNumbers'=>		function ($q) {  return $q
-								->where(['ItemSerialNumbers.status' => 'In' ]); }]])
-				->where(['invoice_id'=>$invoice_id,'left_item_id'=>$item_id])
-				);
- 			}
-  		 $this->set(compact('JobCardRows','InventoryVoucherRows','item','invoice_row','row'));
+			$JobCardRows=$this->paginate(
+			$this->InventoryVouchers->JobCardRows->find()->contain(['Items'=>['ItemSerialNumbers'=>		function ($q) {  return $q
+							->where(['ItemSerialNumbers.status' => 'In' ]); }]])
+			->where(['sales_order_id'=>$sales_order_id,'sales_order_row_id'=>$SalesOrderRowID])
+			);	 
+		}else{ 
+			$InventoryVoucherRows=$this->paginate(
+			$this->InventoryVouchers->InventoryVoucherRows->find()->contain(['Items'=>['ItemSerialNumbers'=>		function ($q) {  return $q
+							->where(['ItemSerialNumbers.status' => 'In' ]); }]])
+			->where(['invoice_id'=>$invoice_id,'left_item_id'=>$item_id])
+			);
+		}
+  		$this->set(compact('JobCardRows','InventoryVoucherRows','item','invoice_row','row'));
 		 
 		 $Invoicesexists = $this->InventoryVouchers->InventoryVoucherRows->exists(['invoice_id' => $invoice_id]);
 		
 		 if(!$Invoicesexists){
-		  $inventoryVoucher = $this->InventoryVouchers->newEntity();
-		 } else {
-			$inventoryVouchersrows = $this->InventoryVouchers->InventoryVoucherRows->find()->where(['invoice_id'=>$invoice_id])->first();
-			$inventoryVoucher = $this->InventoryVouchers->get($inventoryVouchersrows->inventory_voucher_id);
-			  if ($this->request->is('post')) {
-				  
-			  }
-		}
-        if ($this->request->is('post')) {
-		//pr($this->request->data); exit;
-			$inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);
-				
- 				$inventoryVoucher->iv1=$invoice_data->in1;
+			$inventoryVoucher = $this->InventoryVouchers->newEntity();
+			if ($this->request->is('post')) {	
+				$inventoryVoucher = $this->InventoryVouchers->patchEntity($inventoryVoucher, $this->request->data);
+				$inventoryVoucher->iv1=$invoice_data->in1;
  				$inventoryVoucher->iv3=$invoice_data->in3;
 				$inventoryVoucher->iv4='16-17';
 				$inventoryVoucher->invoice_id=$invoice_id;
 				$inventoryVoucher->created_by=$s_employee_id; 
 				$inventoryVoucher->company_id=$st_company_id;
- 				foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
-					$inventory_voucher_row->invoice_id=$invoice_id;
-					$inventory_voucher_row->left_item_id=$item_id;
-		} 
-		if ($this->InventoryVouchers->save($inventoryVoucher)) { 
-				foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
+					foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
+						$inventory_voucher_row->invoice_id=$invoice_id;
+						$inventory_voucher_row->left_item_id=$item_id;
+			} 
+				if ($this->InventoryVouchers->save($inventoryVoucher)) { 
+					foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
+						foreach($inventory_voucher_row->item_serial_numbers as $item_serial_number){
+						$query = $this->InventoryVouchers->ItemSerialNumbers->query();
+						$query->update()
+							->set(['status' => 'Out','inventory_voucher_id' => $inventory_voucher_row->inventory_voucher_id])
+							->where(['id' => $item_serial_number])
+							->execute();
+						}
+					}
+							$query = $this->InventoryVouchers->InvoiceRows->query();
+							$query->update()
+									->set(['inventory_voucher_status' => 'Done'])
+									->where(['id' => $invoice_row_id])
+									->execute();
+							$row=$this->InventoryVouchers->Invoices->get($invoice_id, [
+									'contain' => ['InvoiceRows'=> function ($q) {
+										return $q->where(['inventory_voucher_status '=>'Pending']);
+										}]]);
+							$total=sizeof($row->invoice_rows);
+						if($total>0) {
+								$invoice_row = $row->invoice_rows[0];
+								$item_id=$invoice_row->item_id;
+								$this->Flash->success(__('The inventory voucher has been saved.'));
+								return $this->redirect(['action' => 'Add?Invoice='.$invoice_id.'&item_id='.$item_id]);
+						} else {
+								$this->Flash->success(__('The inventory voucher has been saved.'));
+								return $this->redirect(['action' => 'Index']);
+						}
+				} 
+			}
+			else {  
+			$this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
+			}	
+		
+		} else { 
+			$inventoryVouchersrows = $this->InventoryVouchers->InventoryVoucherRows->find()->where(['invoice_id'=>$invoice_id])->first();
+			$inventoryVoucher = $this->InventoryVouchers->get($inventoryVouchersrows->inventory_voucher_id);
+			if ($this->request->is(['patch', 'post', 'put'])) { 
+            $inventoryVoucher = $this->InventoryVouchers->InventoryVoucherRows->patchEntity($inventoryVoucher, $this->request->data);
+				foreach($inventoryVoucher->inventory_voucher_rows as  $key=>$inventory_voucher_row){
+					$query = $this->InventoryVouchers->InventoryVoucherRows->query();
+					$query->insert(['invoice_id', 'left_item_id', 'item_id', 'quantity', 'inventory_voucher_id'])
+						->values([
+							'invoice_id' => $invoice_id,
+							'left_item_id' => $item_id,
+							'item_id' => $inventory_voucher_row['item_id'],
+							'quantity' => $inventory_voucher_row['quantity'],
+							'inventory_voucher_id' => $inventoryVouchersrows->inventory_voucher_id
+							
+						])
+						->execute();
+				} 
+				
+				
+
+				
+			
+				/* foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
+					 
  					foreach($inventory_voucher_row->item_serial_numbers as $item_serial_number){
-  					$query = $this->InventoryVouchers->ItemSerialNumbers->query();
+						
+						$query = $this->InventoryVouchers->ItemSerialNumbers->query();
 						$query->update()
 							->set(['status' => 'Out','inventory_voucher_id' => $inventory_voucher_row->inventory_voucher_id])
 							->where(['id' => $item_serial_number])
 							->execute();
 					}
-				}
+				} */
+				
  				$query = $this->InventoryVouchers->InvoiceRows->query();
 				$query->update()
 						->set(['inventory_voucher_status' => 'Done'])
 						->where(['id' => $invoice_row_id])
 						->execute();
- 				$row=$this->InventoryVouchers->Invoices->get($invoice_id, [
+					//echo "else"; exit;	
+						 $row=$this->InventoryVouchers->Invoices->get($invoice_id, [
 						'contain' => ['InvoiceRows'=> function ($q) {
 							return $q->where(['inventory_voucher_status '=>'Pending']);
 							}]]);
 							$total=sizeof($row->invoice_rows);
+					
+					echo $total; 
+					exit;	
 				if($total>0) {
 						$invoice_row = $row->invoice_rows[0];
 						$item_id=$invoice_row->item_id;
@@ -152,10 +210,10 @@ class InventoryVouchersController extends AppController
 						$this->Flash->success(__('The inventory voucher has been saved.'));
 						return $this->redirect(['action' => 'Index']);
 				}
-		} 
-		}else {  
-			$this->Flash->error(__('The inventory voucher could not be saved. Please, try again.'));
-		}
+			
+			}
+		 }
+
     
 		$items = $this->InventoryVouchers->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']]);
         //$invoiceRows = $this->InventoryVouchers->InvoiceRows->find('list', ['limit' => 200]);
@@ -286,9 +344,17 @@ class InventoryVouchersController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
-		$Item=$this->InventoryVouchers->Items->find()->where(['id'=>$select_item_id])->first();
+		
+		$Item=$this->InventoryVouchers->Items->find()->where(['serial_number_enable'=>'1','id'=>$select_item_id])->first();
+		$InventoryVoucherRows=$this->paginate(
+			$this->InventoryVouchers->Items->find()->contain(['ItemSerialNumbers'=>		
+			function ($q) {  
+						return $q
+							->where(['ItemSerialNumbers.status' => 'In' ]); }])
+			->where(['serial_number_enable'=>'1','id'=>$select_item_id])
+			);
 		pr($Item); exit;
-		if(!$Item){ echo 'Select paid to.'; exit; }
+		if(empty($Item)){ echo 'Select paid to.'; exit; }
 		//$InvoiceBookings = $this->InvoiceBookings->find()->where(['company_id'=>$st_company_id,'vendor_id'=>$Vendor->id,'due_payment >'=>0]);
 		 $this->set(compact('Item'));
     }

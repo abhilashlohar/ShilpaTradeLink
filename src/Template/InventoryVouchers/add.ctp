@@ -68,7 +68,7 @@
 							<tr class="tr1">
 								<td>
 								<?php echo $this->Form->input('invoice_id', ['type'=>'hidden','value' => @$invoice_row->invoice_id]); ?>
-								<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','value' => $job_card_row->item_id]); ?>
+								<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm select_item','value' => $job_card_row->item_id]); ?>
 								</td>
 								<td>
 								<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => $job_card_row->quantity]); ?>
@@ -115,7 +115,8 @@
 							<tr class="tr1">
 								<td>
 								<?php echo $this->Form->input('invoice_id', ['type'=>'hidden','value' => @$invoice_row->invoice_id]); ?>
-								<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','value' => $job_card_row->item_id]); ?>
+								<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm select_item','value' => $job_card_row->item_id]); ?>
+								
 								</td>
 								<td>
 								<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => $job_card_row->quantity]); ?>
@@ -153,7 +154,7 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-	rename_rows_name();
+	//rename_rows_name();
 	$('.addrow').die().live("click",function() { 
 		var tr1=$("#sample_tb tbody").html();
 		$(this).closest('table tbody').append(tr1);
@@ -175,15 +176,15 @@ $(document).ready(function() {
 				});	
 							
 	}
-	$('select[name="item_id"]').die().live("change",function() {
+	$('.select_item').die().live("change",function() { alert();
 		var select_item_id=$(this).find('option:selected').val();
 		 alert(select_item_id);
 		var url1="<?php echo $this->Url->build(['controller'=>'InventoryVouchers','action'=>'ItemSerialNumber']); ?>";
 		url1=url1+'/'+select_item_id,
 		$.ajax({
 			url: url1,
-		}).done(function(response) {
-			alert(response);
+		}).done(function(response) { alert(response);
+			$("#serial_no_box").html(response);
 		});
 		
 	
@@ -194,11 +195,11 @@ $(document).ready(function() {
 
 <table id="sample_tb" style="display:none;">
 	<tbody>
-	<tr>
+	<tr class="tr1">
 		<td>
-		<?php echo $this->Form->input('invoice_row_id', ['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
-		<?php echo $this->Form->input('invoice_row_item_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
-		<?php echo $this->Form->input('item_id', ['options' => $items,'empty'=>'--select--','label' => false,'class' => 'form-control input-sm']); ?>
+		<?php echo $this->Form->input('invoice_row_id', ['class' => 'form-control input-sm ','type'=>'hidden','label'=>false]); ?>
+		<?php echo $this->Form->input('invoice_row_item_id',['class' => 'form-control input-sm item_id','type'=>'hidden','label'=>false]); ?>
+		<?php echo $this->Form->input('item_id', ['options' => $items,'empty'=>'--select--','label' => false,'class' => 'form-control input-sm select_item']); ?>
 		</td>
 		<td>
 		<?php echo $this->Form->input('quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm']); ?>
@@ -207,5 +208,13 @@ $(document).ready(function() {
 		<a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a>
 		</td>
 	</tr>
+	<tr>
+		<td></td>
+		<td width="45%" valign="top" id="pending_invpice_container">erfefrwe</td>
+		
+	</tr>
+				
+				
+			
 	</tbody>
 </table>
