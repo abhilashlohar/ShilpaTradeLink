@@ -43,6 +43,7 @@ class FinancialYearsTable extends Table
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
+        $this->belongsTo('ReceiptVouchers');
     }
 
     /**

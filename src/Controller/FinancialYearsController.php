@@ -239,4 +239,51 @@ class FinancialYearsController extends AppController
         }
 		return $this->redirect(['action' => 'index']);
     }
+
+
+    public function checkFinancialYear($financial_date)
+    {
+    	//$financial_date = '2016-02-01';//return [2,67];
+    	 $FinancialYears = $this->FinancialYears->find()->toArray();
+
+ 		foreach ($FinancialYears as $FinancialYear) {
+ 			$date_from = date("d-m-Y",strtotime($FinancialYear->date_from));
+ 			$date_to = date("d-m-Y",strtotime($FinancialYear->date_to));
+ 		    while (strtotime($date_from) <= strtotime($date_to)) {
+              $date_from = date ("Y-m-d", strtotime("+1 day", strtotime($date_from)));
+              if($date_from == $financial_date)
+                 {  
+                 	if($FinancialYear->status == "Open") 
+                 	{
+                 		$financialYear_id = $FinancialYear->id;
+        				$FinancialYear_month = $this->FinancialYears->FinancialMonths->find()->where(['FinancialMonths.financial_year_id'=>$financialYear_id]);
+        				foreach ($FinancialYear_month as $FinancialYear_months) {
+        					$finl_date = date("m-Y",strtotime($financial_date));
+        					
+        					if($finl_date == $FinancialYear_months->month)
+        					{
+        						if($FinancialYear_months->status == "Open")
+        						{
+        							echo "Open";
+        						}
+        						else
+        						{
+        							echo "Close";
+        						}
+        					}
+        					 
+        				}
+
+                 	}
+                 	else
+                 	{
+                 		return ['Response'=> 'Close'];
+                 	}	
+                 }	
+			}
+		}
+    }
+
+  
+
 }

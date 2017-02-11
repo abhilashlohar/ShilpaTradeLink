@@ -196,7 +196,10 @@ class ReceiptVouchersController extends AppController
      */
     public function edit($id = null)
     {
-		$this->viewBuilder()->layout('index_layout');
+    	
+
+
+    	$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
@@ -205,6 +208,14 @@ class ReceiptVouchersController extends AppController
         $receiptVoucher = $this->ReceiptVouchers->get($id, [
             'contain' => []
         ]);
+
+        
+
+         $Em = new FinancialYearsController;
+	    $financial_year_data = $Em->checkFinancialYear($receiptVoucher->transaction_date);
+       
+
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $receiptVoucher = $this->ReceiptVouchers->patchEntity($receiptVoucher, $this->request->data);
 			$receiptVoucher->edited_by=$s_employee_id;
@@ -263,7 +274,7 @@ class ReceiptVouchersController extends AppController
 		$bankCashes = $this->ReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
 		
         $companies = $this->ReceiptVouchers->Companies->find('all');		
-        $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies','financial_year'));
+        $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies','financial_year','financial_year_data'));
         $this->set('_serialize', ['receiptVoucher']);
     }
 
