@@ -69,6 +69,7 @@ class LedgersController extends AppController
      */
     public function add()
     {
+		
         $ledger = $this->Ledgers->newEntity();
         if ($this->request->is('post')) {
             $ledger = $this->Ledgers->patchEntity($ledger, $this->request->data);
@@ -131,4 +132,86 @@ class LedgersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function openingBalance()
+    {
+		$this->viewBuilder()->layout('index_layout');
+        $ledger = $this->Ledgers->newEntity();
+		
+			
+        if ($this->request->is('post')) {
+			
+			$total_row=sizeof($this->request->data['reference_no']);
+			$financial_year_from=strtotime($this->viewVars['s_year_from']); 
+			$financial_year_to=strtotime($this->viewVars['s_year_to']); 
+			
+		
+		   for($row=0; $row<$total_row; $row++)
+		   {
+				$query = $this->Ledgers->query();
+				$query->insert(['transaction_date', 'ledger_account_id', 'voucher_source', 'credit', 'debit'])
+					->values([
+						'transaction_date' => date('Y-m-d', strtotime($this->request->data['transaction_date'])),
+						'ledger_account_id' => $this->request->data['ledger_account_id'],
+						'voucher_source' => $this->request->data['voucher_source'],
+						'credit' => $this->request->data['credit'][$row],
+						'debit' => $this->request->data['debit'][$row]
+					])
+					->execute();
+				
+				$query1 = $this->Ledgers->ReferenceDetails->query();
+				$query1->insert(['reference_no', 'ledger_account_id', 'financial_year_from', 'financial_year_to', 'credit', 'debit'])
+					->values([
+						'financial_year_from' => $financial_year_from,
+						'financial_year_to' => $financial_year_to,
+						'ledger_account_id' => $this->request->data['ledger_account_id'],
+						'reference_no' => $this->request->data['reference_no'][$row],
+						'credit' => $this->request->data['credit'][$row],
+						'debit' => $this->request->data['debit'][$row]
+					])
+					->execute();
+		   }
+        }
+		
+		/*
+		$query = $this->Ledgers->query();
+			$query->insert(['reference_no','transaction_date', 'ledger_account_id', 'voucher_source', 'credit', 'debit','amount'])
+				->values([
+					'transaction_date' => date('Y-m-d', strtotime($this->request->data['transaction_date'])),
+					'ledger_account_id' => $this->request->data['ledger_account_id'],
+					'reference_no' => $this->request->data['reference_no'][0],
+					'voucher_source' => $this->request->data['voucher_source'],
+					'credit' => $this->request->data['credit'][0],
+					'debit' => $this->request->data['debit'][0],
+					'amount' => $this->request->data['amount'][0],
+				])
+				->execute();
+		
+		*/
+        $ledgerAccounts = $this->Ledgers->LedgerAccounts->find('list', ['limit' => 200]);
+        $this->set(compact('ledger', 'ledgerAccounts'));
+        $this->set('_serialize', ['ledger']);
+    }
+	public function checkReferenceNo()
+    {
+		$reference_no=$this->request->query['reference_no'][0];
+		$financial_year_from=strtotime($this->viewVars['s_year_from']); 
+		$financial_year_to=strtotime($this->viewVars['s_year_to']);
+		
+		$ReferenceDetails=$this->Ledgers->ReferenceDetails->find()
+		->where(['reference_no' => $reference_no,'financial_year_from'=>$financial_year_from,'financial_year_to'=>$financial_year_to])
+		->count();
+		
+		if(empty($ReferenceDetails))
+		{
+			$output="true";
+		}
+		else
+		{
+			$output="false";
+		}
+		
+		$this->response->body($output);
+		return $this->response;
+	}
 }
