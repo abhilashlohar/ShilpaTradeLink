@@ -9,10 +9,10 @@
 		</div>
 		<div class="actions">
 		<?php if($inventory_voucher!="true"){ ?>
-			<?php
-			if($status=='Pending'){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
-			if($status=='Cancel'){ $class3='btn btn-primary'; }else{ $class3='btn btn-default'; }
-			?>
+		<?php
+		if($status=='Pending' || $status==''){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
+		if($status=='Cancel'){ $class3='btn btn-primary'; }else{ $class3='btn btn-default'; }
+		?>
 			
 			<?= $this->Html->link(
 				'Pending',

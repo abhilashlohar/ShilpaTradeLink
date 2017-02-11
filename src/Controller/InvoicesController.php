@@ -75,7 +75,7 @@ class InvoicesController extends AppController
 			$where['inventory_voucher_status']='Pending';
 			
 		}else{
-			if($status=='Pending'){
+			if($status=='Pending' || $status==''){
 				$where['status']='';
 			}
 			elseif($status=='Cancel'){
