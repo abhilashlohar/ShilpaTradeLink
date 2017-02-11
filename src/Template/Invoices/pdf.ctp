@@ -329,7 +329,7 @@ $html .= '<div id="footer" class="avoid_break">';
 					$html.='</table>';	
 					}
 			$html.='</td>
-					<td style="text-align:right;">'.h($invoice->fright_text).'</td>
+					<td style="text-align:right;">'.$this->Text->autoParagraph(h($invoice->fright_text)).'</td>
 					<td style="text-align:right;">'. $this->Number->format($invoice->fright_amount,[ 'places' => 2]).'</td>
 				</tr>
 				<tr>
