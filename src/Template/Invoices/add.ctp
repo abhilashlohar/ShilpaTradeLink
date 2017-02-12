@@ -645,6 +645,7 @@ $(document).ready(function() {
 			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
 			
 			if(val){ 
+			
 				$(this).find('td:nth-child(2) input').attr("name","invoice_rows["+val+"][item_id]").attr("id","invoice_rows-"+val+"-item_id").rules("add", "required");
 				$(this).find('td:nth-child(3) input').removeAttr("readonly").attr("name","invoice_rows["+val+"][quantity]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-quantity").rules("add", "required");
 				$(this).find('td:nth-child(4) input').attr("name","invoice_rows["+val+"][rate]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-rate").rules("add", "required");
@@ -656,19 +657,22 @@ $(document).ready(function() {
 				$(this).css('background-color','#fffcda');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				var qty=$(this).find('td:nth-child(3) input[type="text"]').val();
-				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').attr("name","invoice_rows["+val+"][item_serial_numbers][]").attr("id","invoice_rows-"+val+"-item_serial_no").attr('maxlength',qty).rules('add', {
-						
-						minlength: qty,
-						maxlength: qty,
-						messages: {
-							maxlength: "select serial number equal to quantity.",
-							minlength: "select serial number equal to quantity."
-						}
-				});
+				var serial_l=$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').length;
+				if(serial_l>0){
+					$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').attr("name","invoice_rows["+val+"][item_serial_numbers][]").attr("id","invoice_rows-"+val+"-item_serial_no").attr('maxlength',qty).rules('add', {
+							minlength: qty,
+							maxlength: qty,
+							messages: {
+								maxlength: "select serial number equal to quantity.",
+								minlength: "select serial number equal to quantity."
+							}
+					});
+				}
+				
 				
 				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				var s_tax=$(this).find('td:nth-child(6)').text();
-				
+				alert(s_tax);
 				list.push(s_tax);
 			}else{
 				$(this).find('td:nth-child(2) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
@@ -683,6 +687,7 @@ $(document).ready(function() {
 
 				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#FFF');
 			}
+			
 			var unique=list.filter(function(itm,i,a){
 				return i==a.indexOf(itm);
 			});
