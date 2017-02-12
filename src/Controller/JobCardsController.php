@@ -16,9 +16,15 @@ class JobCardsController extends AppController
      *
      * @return \Cake\Network\Response|null
      */
-    public function index()
+    public function index($status=null)
     {
 		$this->viewBuilder()->layout('index_layout');
+		
+		if($status==null or $status=='Pending'){
+			$where['status']='Pending';
+		}elseif($status=='Closed'){
+			$where['status']='Closed';
+		}
 		$inventory_voucher_status=$this->request->query('inventory_voucher');
 		//pr($inventory_voucher_status); exit;
         $this->paginate = [
@@ -27,9 +33,9 @@ class JobCardsController extends AppController
 		if($inventory_voucher_status=='true'){
 			$jobCards = $this->paginate($this->JobCards->find()->where(['status' => 'Pending']));
 		}else{
-			$jobCards = $this->paginate($this->JobCards->find()->order(['JobCards.id' => 'DESC']));
+			$jobCards = $this->paginate($this->JobCards->find()->where($where)->order(['JobCards.id' => 'DESC']));
 		}
-        $this->set(compact('jobCards'));
+        $this->set(compact('jobCards','status'));
         $this->set('_serialize', ['jobCards']);
     }
 
@@ -287,4 +293,19 @@ class JobCardsController extends AppController
         $this->set('_serialize', ['jobCards']);
 	
 	}
+	
+	public function close($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+		$JobCard = $this->JobCards->get($id);
+		$JobCard->status="Closed";
+		if ($this->JobCards->save($JobCard)) {
+			$this->Flash->success(__('The job card has closed.'));
+		} else {
+			$this->Flash->error(__('The job card could not be closed. Please, try again.'));
+		}
+		
+        
+        return $this->redirect(['action' => 'index']);
+    }
 }

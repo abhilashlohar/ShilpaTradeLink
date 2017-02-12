@@ -1,9 +1,25 @@
 <div class="portlet light bordered">
 <div class="portlet-title">
-<div class="caption">
-    <i class="icon-globe font-blue-steel"></i>
-	<span class="caption-subject font-blue-steel uppercase">Job Cards</span> 
-</div>
+	<div class="caption">
+		<i class="icon-globe font-blue-steel"></i>
+		<span class="caption-subject font-blue-steel uppercase">Job Cards</span>
+	</div>
+	<div class="actions">
+		<?php
+			if($status==null or $status=='Pending'){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
+			if($status=='Closed'){ $class3='btn btn-primary'; }else{ $class3='btn btn-default'; }
+			?>
+		<?= $this->Html->link(
+			'Pending',
+			'/JobCards/index/Pending',
+			['class' => $class1]
+		); ?>
+		<?= $this->Html->link(
+			'Closed',
+			'/JobCards/index/Closed',
+			['class' => $class3]
+		); ?>
+	</div>
 <div class="portlet-body">
 	<div class="row">
 		<div class="col-md-12">
@@ -29,7 +45,16 @@
 					
 					<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $jobCard->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','target'=>'blank','data-original-title'=>'View')); ?>
 					<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $jobCard->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
-					
+					<?php if($status==null or $status=='Pending'){ ?>
+					<?= $this->Form->postLink('Close',
+						['action' => 'close', $jobCard->id], 
+						[
+							'escape' => false,
+							'class'=>'btn btn-xs red tooltips','data-original-title'=>'Close',
+							'confirm' => __('Are you sure ?')
+						]
+					) ?>
+					<?php } ?>
 					</td>
 				</tr>
 		    <?php endforeach; ?>

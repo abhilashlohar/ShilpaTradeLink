@@ -225,12 +225,15 @@
 				</tfoot>
 			</table>
 			<label class="control-label">Additional Note (Optional): </label>
-			<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control wysihtml5']); ?>
+			<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control']); ?>
 			<br/>
 			
-			<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a><a  role="button" class="btn btn-xs btn-primary updatetc" >Update </a>
-			<?php echo $this->Form->input('terms_conditions', ['label' => false,'class' => 'form-control','required','style'=>'display:none']); ?>
-			<div contenteditable="true" id="editor" name="terms_conditions"><?php echo $quotation->terms_conditions; ?></div>
+			
+			<div id="t_c_box">
+				<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a> <a  role="button" class="btn btn-xs btn-primary updatetc" >Update </a>
+				<div name="terms_conditions_box" id="terms_conditions_box" class="summernote_1"><?php echo $quotation->terms_conditions; ?></div>
+				<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control','value' => @$quotation->terms_conditions,'required','style'=>'display:none']); ?>
+			</div>
 			<br/>
 			<ol id="sortable">
 			  
@@ -516,6 +519,9 @@ $(document).ready(function() {
 			var code=$(this).find('div#summer'+i).code();
 			$(this).find('td:nth-child(1) textarea').val(code);
 		i++; });
+		
+		var code=$('#terms_conditions_box').code();
+		$('textarea[name="terms_conditions"]').val(code);
 	}
 	
 	$('#main_tb input').die().live("keyup","blur",function() { 
@@ -653,12 +659,13 @@ $(document).ready(function() {
 		$("#sortable li").each(function(){
 			var tc=$(this).text();
 			++inc;
-			$('#terms_conditions').append(inc+". "+tc+"<br/>");
+			$('#terms_conditions').append('<p>'+tc+'</p>');
 		});
 		var terms_conditions=$("#terms_conditions").html();
-		$('div[name="terms_conditions"]').html(terms_conditions);
+		$('#terms_conditions_box').closest('#t_c_box').find('div[class="note-editable"]').html(terms_conditions);
 		$("#sortable li").remove();
-		$('textarea[name="terms_conditions"]').val(terms_conditions);
+		var code=$('#terms_conditions_box').code();
+		$('textarea[name="terms_conditions"]').val(code);
 	}
 	
 	$(".updatetc").die().on("click",function(){
