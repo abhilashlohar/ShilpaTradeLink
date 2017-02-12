@@ -196,7 +196,19 @@ class ItemLedgersController extends AppController
 	 public function materialindentreport(){
 		$this->viewBuilder()->layout('index_layout'); 
 		//$Items = $this->ItemLedgers->Items->find()->where(['source'=>'Purchessed/Manufactured'])->orWhere(['source'=>'Purchessed']); 
+		$mit=$this->ItemLedgers->newEntity();
 		
+		if ($this->request->is(['post'])) {
+			$check=$this->request->data['check']; 
+			$suggestindent=$this->request->data['suggestindent']; 
+			$to_send=[];
+			foreach($check as $item_id){
+				$to_send[$item_id]=$suggestindent[$item_id];
+			}
+			echo json_encode($to_send); exit;
+			//rwjihf dfgdf?3qrrg
+
+		}
 		
 		$salesOrders=$this->ItemLedgers->SalesOrders->find()
 			->select(['total_rows'=>$this->ItemLedgers->SalesOrders->find()->func()->count('SalesOrderRows.id')])
@@ -263,7 +275,7 @@ class ItemLedgersController extends AppController
 			
 		} 
 			
-		$this->set(compact('material_report'));
+		$this->set(compact('material_report','mit'));
 			
 	 }
 	

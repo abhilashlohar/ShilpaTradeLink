@@ -5,10 +5,12 @@
 			<span class="caption-subject font-blue-steel uppercase">Material Indent Report</span>
 		</div>
 		<div class="portlet-body">
+			<?= $this->Form->create($mit) ?>
 			<div class="row">
 				<div class="col-md-12">
+				
 				<?php $page_no=$this->Paginator->current('ItemLedgers'); $page_no=($page_no-1)*20; ?>
-				<table class="table tableitm">
+				<table class="table tableitm" id="main_tb">
 					<thead>
 						<tr>
 							<th>Sr. No.</th>
@@ -30,19 +32,27 @@
 							$job_card_qty=$data['job_card_qty'];
 
 						?>
-						<tr>
+						<tr class="tr1" row_no='<?php echo @$i; ?>'>
 						<td><?php echo $i; ?> </td>
 						<td><?php echo $item_name; ?></td>
 						<td><?php echo $Current_Stock; ?></td>
 						<td><?php echo @$sales_order; ?></td>
 						<td><?php echo $job_card_qty; ?></td>
 						<td><?php echo $Current_Stock-@$sales_order-$job_card_qty; ?></td>
-						<td><label><?php echo $this->Form->input('check.'.$i, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$item_id]); ?></label>
+						<td><label><?php echo $this->Form->input('check[]', ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$item_id,'hiddenField'=>false]); echo $item_id; ?>
+						
+						<?php echo $this->Form->input('suggestindent.'.$item_id, ['label' => false,'type'=>'text','value' => @abs($Current_Stock-@$sales_order-$job_card_qty)]); ?>
+						
+						
+						</label>
 						</td>						
 						</tr>
 						<?php } ?>
 					</tbody>
 				</table>
+					<div class="form-actions">
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
 				<div class="paginator">
 					<ul class="pagination">
 						
@@ -51,6 +61,7 @@
 				</div>
 				</div>
 			</div>
+			<?= $this->Form->end() ?>		
 		</div>
 	</div>
 </div>
@@ -60,8 +71,33 @@
 
 $(document).ready(function() {
 	$('.rename_check').die().live("click",function() {
-		alert();
-		//rename_rows();
-    })	
+		//alert();
+		rename_rows();
+    })
+	var p=0;
+	function rename_rows(){ 
+		$("#main_tb tbody tr.tr1").each(function(){
+			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
+			if(val){
+				/* //var item_id=$(this).find('td:nth-child(7) input[type="hidden"]:nth-child(1)').val();
+				var suggestindent=$(this).find('td:nth-child(7) input[type="hidden"]:nth-child(2)').val();
+				var qty=$(this).find('td:nth-child(7) input[type="hidden"]:nth-child(3)').val();
+				//alert(item_id);
+				$(this).find('td:nth-child(7) input[type="hidden"]:nth-child(1)').attr({ name:"item_id"}).val(val);
+				$(this).find('td:nth-child(7) input[type="hidden"]:nth-child(2)').attr({ name:"suggestindent"}).val(suggestindent);
+				$(this).find('td:nth-child(7) input[type="hidden"]:nth-child(3)').attr({ name:"qty"}).val(qty); */
+				
+				
+				$(this).css('background-color','#fffcda');
+				
+			}else{
+				/* $(this).find('td:nth-child(2) input').attr({ name:"q"});
+				$(this).find('td:nth-child(3) input').attr({ name:"q", id:"q",readonly:"readonly"}); */
+				
+				$(this).css('background-color','#FFF');
+				
+			}
+		});
+	}	
 });		
 </script>
