@@ -142,52 +142,47 @@ class LedgersController extends AppController
         if ($this->request->is('post')) {
 			
 			$total_row=sizeof($this->request->data['reference_no']);
-			$financial_year_from=strtotime($this->viewVars['s_year_from']); 
-			$financial_year_to=strtotime($this->viewVars['s_year_to']); 
-			
-		
+			$financial_year=$this->viewVars['s_year_from'].'-'.$this->viewVars['s_year_to'];
+			$session = $this->request->session();
+			$company_id = $session->read('st_company_id');
 		   for($row=0; $row<$total_row; $row++)
 		   {
 				$query = $this->Ledgers->query();
-				$query->insert(['transaction_date', 'ledger_account_id', 'voucher_source', 'credit', 'debit'])
+				$query->insert(['transaction_date', 'ledger_account_id', 'voucher_source', 'credit', 'debit','company_id'])
 					->values([
 						'transaction_date' => date('Y-m-d', strtotime($this->request->data['transaction_date'])),
 						'ledger_account_id' => $this->request->data['ledger_account_id'],
 						'voucher_source' => $this->request->data['voucher_source'],
 						'credit' => $this->request->data['credit'][$row],
-						'debit' => $this->request->data['debit'][$row]
+						'debit' => $this->request->data['debit'][$row],
+						'company_id' => $company_id
 					])
 					->execute();
 				
 				$query1 = $this->Ledgers->ReferenceDetails->query();
-				$query1->insert(['reference_no', 'ledger_account_id', 'financial_year_from', 'financial_year_to', 'credit', 'debit'])
+				$query1->insert(['reference_no', 'ledger_account_id', 'financial_year', 'credit', 'debit'])
 					->values([
-						'financial_year_from' => $financial_year_from,
-						'financial_year_to' => $financial_year_to,
+						'financial_year' => $financial_year,
 						'ledger_account_id' => $this->request->data['ledger_account_id'],
 						'reference_no' => $this->request->data['reference_no'][$row],
 						'credit' => $this->request->data['credit'][$row],
 						'debit' => $this->request->data['debit'][$row]
 					])
 					->execute();
+					
+					$query2 = $this->Ledgers->ReferenceBalances->query();
+				$query2->insert(['reference_no', 'ledger_account_id',  'balance'])
+					->values([
+						'reference_no' => $this->request->data['reference_no'][$row],
+						'ledger_account_id' => $this->request->data['ledger_account_id'],
+						'balance' => $this->request->data['credit'][$row]+$this->request->data['debit'][$row]
+					])
+					->execute();
 		   }
+		   return $this->redirect(['action' => 'Opening_balance']);
         }
 		
-		/*
-		$query = $this->Ledgers->query();
-			$query->insert(['reference_no','transaction_date', 'ledger_account_id', 'voucher_source', 'credit', 'debit','amount'])
-				->values([
-					'transaction_date' => date('Y-m-d', strtotime($this->request->data['transaction_date'])),
-					'ledger_account_id' => $this->request->data['ledger_account_id'],
-					'reference_no' => $this->request->data['reference_no'][0],
-					'voucher_source' => $this->request->data['voucher_source'],
-					'credit' => $this->request->data['credit'][0],
-					'debit' => $this->request->data['debit'][0],
-					'amount' => $this->request->data['amount'][0],
-				])
-				->execute();
 		
-		*/
         $ledgerAccounts = $this->Ledgers->LedgerAccounts->find('list', ['limit' => 200]);
         $this->set(compact('ledger', 'ledgerAccounts'));
         $this->set('_serialize', ['ledger']);
@@ -195,11 +190,10 @@ class LedgersController extends AppController
 	public function checkReferenceNo()
     {
 		$reference_no=$this->request->query['reference_no'][0];
-		$financial_year_from=strtotime($this->viewVars['s_year_from']); 
-		$financial_year_to=strtotime($this->viewVars['s_year_to']);
+		$financial_year=$this->viewVars['s_year_from'].'-'.$this->viewVars['s_year_to'];
 		
 		$ReferenceDetails=$this->Ledgers->ReferenceDetails->find()
-		->where(['reference_no' => $reference_no,'financial_year_from'=>$financial_year_from,'financial_year_to'=>$financial_year_to])
+		->where(['reference_no' => $reference_no,'financial_year'=>$financial_year])
 		->count();
 		
 		if(empty($ReferenceDetails))

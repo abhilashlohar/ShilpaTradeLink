@@ -42,6 +42,7 @@ class LedgersTable extends Table
             'joinType' => 'INNER'
         ]);
 		$this->belongsTo('ReferenceDetails');
+		$this->belongsTo('ReferenceBalances');
     }
 
     /**
@@ -55,7 +56,7 @@ class LedgersTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
-/*
+
         $validator
             ->decimal('debit')
             ->requirePresence('debit', 'create')
@@ -65,7 +66,7 @@ class LedgersTable extends Table
             ->decimal('credit')
             ->requirePresence('credit', 'create')
             ->notEmpty('credit');
-*/
+
         $validator
             ->requirePresence('voucher_source', 'create')
             ->notEmpty('voucher_source');

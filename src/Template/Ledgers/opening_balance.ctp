@@ -13,9 +13,9 @@
 	<td></td>
 	</tr>
 	<tr>
-	<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'','label'=>false]) ?></td>
-	<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'','label'=>false]) ?></td>
-	<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'','label'=>false]) ?></td>
+	<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'distinctreference','label'=>false,'id'=>'reference_no_1']) ?></td>
+	<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'','label'=>false, 'value'=>0]) ?></td>
+	<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'','label'=>false, 'value'=>0]) ?></td>
 	<td><?= $this->Form->button(__('<i class="fa fa-plus"></i>'),['type'=>'button','class'=>'add_row','label'=>false]) ?></td>
 	</tr>
 	</table>
@@ -26,9 +26,9 @@
 </div>
 <table class="table table-bordered" id="temp_table" style="display:none;">
 	<tr>
-	<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'','label'=>false]) ?></td>
-	<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'','label'=>false]) ?></td>
-	<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'','label'=>false]) ?></td>
+	<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'distinctreference','label'=>false,'id'=>'reference_no_2']) ?></td>
+	<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'','label'=>false, 'value'=>0]) ?></td>
+	<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'','label'=>false, 'value'=>0]) ?></td>
 	<td><?= $this->Form->button(__('<i class="fa fa-plus"></i>'),['type'=>'button','class'=>'add_row','label'=>false]) ?><?= $this->Form->button(__('<i class="fa fa-minus"></i>'),['type'=>'button','class'=>'remove_row','label'=>false]) ?></td>
 	</tr>
 	</table>
@@ -36,6 +36,70 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
+	
+	$( document ).on( 'click', '.add_row', function() {
+		var new_line=$('#temp_table').html();
+		$("#main_table").append(new_line);
+		var i=1;
+		var len=$("[name^=reference_no]").length;
+		
+		$("[name^=reference_no]").each(function () {
+			
+			$(this).attr('id','reference_no_'+i);
+			
+			$(this).rules("add", {
+				required: true,
+				noSpace: true,
+				notEqualToGroup: ['.distinctreference']
+			});
+			i++;
+		});
+	});
+	$( document ).on( 'click', '.remove_row', function() {
+		$(this).closest("#main_table tr").remove();
+		var i=1;
+		
+		$("[name^=reference_no]").each(function () {
+			
+			$(this).attr('id','reference_no_'+i);
+			i++;
+			$(this).rules("add", {
+				required: true,
+			});
+		});
+	});
+
+	
+	////////////////  Validation  ////////////////////////
+	
+	jQuery.validator.addMethod("noSpace", function(value, element) { 
+	  return value.indexOf(" ") < 0 && value != ""; 
+	}, "No space please and don't leave it empty");
+	
+	jQuery.validator.addMethod("notEqualToGroup", function (value, element, options) {
+    // get all the elements passed here with the same class
+    var elems = $(element).parents('form').find(options[0]);
+    // the value of the current element
+    var valueToCompare = value;
+    // count
+    var matchesFound = 0;
+    // loop each element and compare its value with the current value
+    // and increase the count every time we find one
+    jQuery.each(elems, function () {
+        thisVal = $(this).val();
+        if (thisVal == valueToCompare) {
+            matchesFound++;
+        }
+    });
+    // count should be either 0 or 1 max
+    if (this.optional(element) || matchesFound <= 1) {
+        //elems.removeClass('error');
+        return true;
+    } else {
+        //elems.addClass('error');
+    }
+}, jQuery.format("Please enter a Unique Value."));
+
 	//--------- FORM VALIDATION
 	var form3 = $('#opening_balance');
 	var error3 = $('.alert-danger', form3);
@@ -53,8 +117,9 @@ $(document).ready(function() {
 				},
 				'reference_no[]':{
 					required: true,
+					noSpace: true,
+					notEqualToGroup: ['.distinctreference'],
 					remote:"<?php echo $this->Url->build(['controller'=>'Ledgers','action'=>'check_reference_no']); ?>"
-					
 				}
 			},
 
@@ -113,12 +178,6 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
-	$( document ).on( 'click', '.add_row', function() {
-		var new_line=$('#temp_table').html();
-		$("#main_table").append(new_line);
-	});
-	$( document ).on( 'click', '.remove_row', function() {
-		$(this).closest("#main_table tr").remove();
-	});
+	
 });	
 </script>
