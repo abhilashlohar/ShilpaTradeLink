@@ -6,6 +6,9 @@
 #main_tb td,th{
 	padding:3px;
 }
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+	vertical-align: top !important;
+}
 </style>
 <div class="portlet light bordered">
 	<div class="portlet-title">
@@ -49,102 +52,47 @@
 				</div>
 			</div>
 		</div>
-		<?php if(empty($InventoryVoucherRows)){ ?>
-		<table border="1" width="80%" >
-			<thead>
-			<tr>
-				<th width="40%">PRODUCTION</th>
-				<th>CONSUMPTION</th>
-			</tr>
-			</thead>
-			<tbody >
-			<?php $i=0; ?>
-				<tr >
-					<td><?= h($item->name) ?> (<?= h($invoice_row->quantity) ?>)</td>
-					<td>
-					<table id="main_table">
-						<tbody id="maintbody">
-						<?php  foreach($JobCardRows as $job_card_row){ ?>
-							<tr class="tr1 preimp" row_no='<?php echo $i; ?>'>
-								<td>
-								<?php echo $this->Form->input('invoice_id', ['type'=>'hidden','value' => @$invoice_row->invoice_id]); ?>
-								<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm select_item','value' => $job_card_row->item_id]); ?>
-								</td>
-								<td>
-								<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => $job_card_row->quantity]); ?>
-								</td>
-								<td>
-								<a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a>
-								</td>
-							</tr>
-							<?php 
-							$options1=[];
-							foreach($job_card_row->item->item_serial_numbers as $item_serial_number){
-								$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
-							} if($options1) { ?>
-							<tr class="tr2 preimp" row_no='<?php echo $i; ?>'>
-							<td></td>
-							<td colspan="3">
-							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','required','style'=>'width:100%']);  ?></td>
-							</tr><?php } ?>
-							
-						<?php $i++; } ?>
-						</tbody>
-					</table>
-					</td>
-				</tr>
-			<?php //} ?>			
-			</tbody>
-		</table>
-		<?php } else { ?>
-		<table border="1" width="80%" >
-			<thead>
-			<tr>
-				<th width="40%">PRODUCTION</th>
-				<th>CONSUMPTION</th>
-			</tr>
-			</thead>
-			<tbody >
-			<?php  ?>
-				<tr >
-					<td><?= h($item->name) ?> (<?= h($invoice_row->quantity) ?>)</td>
-					<td>
-					<table id="main_table">
-						<tbody id="maintbody">
-						<?php $i=0; foreach($JobCardRows as $job_card_row){ ?>
-							<tr class="tr1" row_no='<?php echo $i; ?>'>
-								<td>
-								<?php echo $this->Form->input('invoice_id', ['type'=>'hidden','value' => @$invoice_row->invoice_id]); ?>
-								<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm select_item select2me','value' => $job_card_row->item_id]); ?>
-								
-								</td>
-								<td>
-								<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => $job_card_row->quantity]); ?>
-								</td>
-								<td>
-								<a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a>
-								</td>
-							</tr>
-							<?php 
-							$options1=[];
-							foreach($job_card_row->item->item_serial_numbers as $item_serial_number){
-								$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
-							} if($options1) { ?>
-							<tr class="tr2" row_no='<?php echo $i; ?>'>
-							<td></td>
-							<td colspan="3">
-							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','required','style'=>'width:100%']);  ?></td>
-							</tr><?php } ?>
-							
-						<?php $i++; } ?>
-						</tbody>
-					</table>
-					</td>
-				</tr>
-			<?php// } ?>			
-			</tbody>
-		</table>
+		<div width="80px">
+		<?php foreach($display_items as $item_id=>$item_name){ ?>
+			<?php echo $this->Html->link($item_name,'/Inventory-Vouchers/add?invoice='.$invoice_id.'&item_id='.$item_id); ?><br/>
 		<?php } ?>
+		</div>
+		<div class="row">
+		<div class="col-md-6"> 
+		<table id="main_table" class="table table-bordered">
+			<tbody id="maintbody">
+			<?php $i=0; foreach($JobCardRows as $job_card_row){ ?>
+				<tr class="tr1 preimp" row_no='<?php echo $i; ?>'>
+					<td width="70%">
+					<?php echo $this->Form->input('invoice_id', ['type'=>'hidden','value' => @$invoice_row->invoice_id]); ?>
+					<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm select_item','value' => $job_card_row->item_id]); ?>
+					</td>
+					<td>
+					<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => $job_card_row->quantity]); ?>
+					
+					<?php 
+					$options1=[];
+					foreach($job_card_row->item->item_serial_numbers as $item_serial_number){
+						$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
+					} ?>
+					<div class="serial_containor">
+					<?php if($options1) { ?>
+						
+						<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','required','style'=>'width:100%']);  ?></td>
+					<?php } ?>
+					</div>
+					</td>
+					<td>
+					<a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a>
+					</td>
+				</tr>
+				
+				
+			<?php $i++; } ?>
+			</tbody>
+		</table>
+		</div>
+		</div>
 
 		<button type="submit" class="btn btn-primary" >NEXT</button>
 		<?= $this->Form->end() ?>
@@ -211,21 +159,22 @@ $(document).ready(function() {
 				});	
 											
 	}
-$('.select_item').die().live("change",function() {
+	$('.select_item').die().live("change",function() {
+		var t=$(this);
   		var select_item_id=$(this).find('option:selected').val();
-		var row_no=$(this).closest('tr').attr('row_no');
-		alert(row_no);
+		
 		var url1="<?php echo $this->Url->build(['controller'=>'InventoryVouchers','action'=>'ItemSerialNumber']); ?>";
 		url1=url1+'/'+select_item_id,
 		$.ajax({
 			url: url1,
 		}).done(function(response) { 
-		alert(response);
-  			$('tr.tr2[row_no='+row_no+']').find('td:nth-child(2)').html(response);
+  			$(t).closest('tr').find('div.serial_containor').html(response);
+			$(t).closest('tr').find('div.serial_containor select').select2();
 			rename_rows_name();
 		});
 		
-	
+		
+		
 	});
 	
 });

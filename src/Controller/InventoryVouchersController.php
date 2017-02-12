@@ -62,16 +62,38 @@ class InventoryVouchersController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		$invoice_id=@(int)$this->request->query('invoice');
 		$item_id=@(int)$this->request->query('item_id');
-		$invoice_data=$this->InventoryVouchers->Invoices->get($invoice_id);
-		/* echo $item_id; 
-		echo "ef"; 
-		echo $invoice_id;  */
-		if(empty($item_id) && !empty($invoice_id)){ 
+		$invoice_data=$this->InventoryVouchers->Invoices->get($invoice_id,[
+			'contain'=>['InvoiceRows'=>['Items']]
+		]);
+		$display_items=[];
+		$sales_order_id=$invoice_data->sales_order_id;
+		foreach($invoice_data->invoice_rows as $invoice_row){ 
+			$SalesOrderRow=$this->InventoryVouchers->SalesOrderRows->find()->where(['sales_order_id'=>$sales_order_id,'item_id'=>$invoice_row->item_id])->first();
+			if($invoice_row->item->source=='Purchessed/Manufactured'){ 
+				if($SalesOrderRow->source_type=="Manufactured"){
+					$display_items[$invoice_row->item->id]=$invoice_row->item->name; 
+				}
+			}elseif($invoice_row->item->source=='Assembled' or $invoice_row->item->source=='Manufactured'){
+				$display_items[$invoice_row->item->id]=$invoice_row->item->name; 
+			}
+		}
+		
+		
+		foreach($display_items as $item_id=>$item_name){
+			$query = $this->InventoryVouchers->InvoiceRows->query();
+			$query->update()
+				->set(['inventory_voucher_applicable' => 'Yes'])
+				->where(['invoice_id' => $invoice_id,'item_id'=>$item_id])
+				->execute();
+		}
+			
+						
+		if(empty($item_id) && !empty($invoice_id)){
 			$row=$this->InventoryVouchers->Invoices->get($invoice_id, [
 				'contain' => ['InvoiceRows'=> function ($q) {
-				return $q->where(['InvoiceRows.inventory_voucher_status'=>'Pending']);
+				return $q->where(['InvoiceRows.inventory_voucher_status'=>'Pending','InvoiceRows.inventory_voucher_applicable'=>'Yes']);
 				}]]);
-				//pr($row->invoice_rows); exit;
+				
 			$invoice_row = $row->invoice_rows[0];
 			
 			$item_id=$invoice_row->item_id;
@@ -92,13 +114,11 @@ class InventoryVouchersController extends AppController
 			->where(['sales_order_id'=>$sales_order_id,'sales_order_row_id'=>$SalesOrderRowID])
 			);	 
 		}else{ 
-			$InventoryVoucherRows=$this->paginate(
-			$this->InventoryVouchers->InventoryVoucherRows->find()->contain(['Items'=>['ItemSerialNumbers'=>		function ($q) {  return $q
+			$InventoryVoucherRows=$this->InventoryVouchers->InventoryVoucherRows->find()->contain(['Items'=>['ItemSerialNumbers'=>		function ($q) {  return $q
 							->where(['ItemSerialNumbers.status' => 'In' ]); }]])
-			->where(['invoice_id'=>$invoice_id,'left_item_id'=>$item_id])
-			);
+			->where(['invoice_id'=>$invoice_id,'left_item_id'=>$item_id]);
 		}
-  		$this->set(compact('JobCardRows','InventoryVoucherRows','item','invoice_row','row'));
+  		$this->set(compact('JobCardRows','InventoryVoucherRows','item','invoice_row','row','display_items','invoice_id'));
 		 
 		 $Invoicesexists = $this->InventoryVouchers->InventoryVoucherRows->exists(['invoice_id' => $invoice_id]);
 		
@@ -227,7 +247,7 @@ class InventoryVouchersController extends AppController
     
 		$items = $this->InventoryVouchers->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']]);
         //$invoiceRows = $this->InventoryVouchers->InvoiceRows->find('list', ['limit' => 200]);
-        $this->set(compact('inventoryVoucher', 'Invoice','items','last_iv_no','job_card_data'));
+        $this->set(compact('inventoryVoucher', 'Invoice','items','last_iv_no','job_card_data','invoice_data'));
         $this->set('_serialize', ['inventoryVoucher']);
     }
 
