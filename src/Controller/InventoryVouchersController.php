@@ -179,8 +179,8 @@ class InventoryVouchersController extends AppController
 				//pr($inventoryVoucher->inventory_voucher_rows); exit;
 				foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row){
 					
-					$total_size=(int()@$inventory_voucher_row['item_serial_numbers']);
-						echo($total_size);
+					$total_size=sizeof((int)@$inventory_voucher_row['item_serial_numbers']);
+						//echo($total_size);
 						if(!empty($total_size)){
 							foreach($inventory_voucher_row['item_serial_numbers'] as $item_serial_number){
 								//pr($item_serial_number);  exit;
