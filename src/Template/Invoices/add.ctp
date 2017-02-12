@@ -672,7 +672,7 @@ $(document).ready(function() {
 				
 				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				var s_tax=$(this).find('td:nth-child(6)').text();
-				alert(s_tax);
+				
 				list.push(s_tax);
 			}else{
 				$(this).find('td:nth-child(2) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
