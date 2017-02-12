@@ -48,7 +48,6 @@
 					<div class="form-group">
 							<label class=" control-label">Transaction Date<span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y"),'data-date-start-date' => date("d-m-Y",strtotime($financial_year->date_from)),'data-date-end-date' => date("d-m-Y",strtotime($financial_year->date_to))]); ?>
-						
 						</div>
 				</div>
 
@@ -135,7 +134,30 @@
 							</div>
 						</div>
 					 </div>
-
+					<div class="col-md-12">
+						<div class="form-group">
+						<?php echo $this->Form->button('<i class="fa fa-plus"></i> New Ref', ['label' => false,'class' => 'btn btn-primary new_ref','type'=>'button']); ?>
+						<?php echo $this->Form->button('<i class="fa fa-plus"></i> Agst Ref', ['label' => false,'class' => 'btn btn-primary agst_ref','type'=>'button']); ?>
+						<?php echo $this->Form->button('<i class="fa fa-plus"></i> Advance', ['label' => false,'class' => 'btn btn-primary adv_ref','type'=>'button']); ?>
+						</div>
+					</div>
+				  </div>
+				  <div class="row">
+					<div class="col-md-12">
+						<table class="table table-bordered" id="main_table" style="text-align:center;">
+						<thead>
+						<tr>
+						<td>Ref. Type</td>
+						<td>Ref. No.</td>
+						<td>Credit</td>
+						<td>Debit</td>
+						<td></td>
+						</tr>
+						</thead>
+						<tbody>
+						</tbody>
+						</table>
+					</div>
 				  </div>
 				<?php echo $this->Form->input('bill_to_bill', ['label' => false,'class' => 'form-control input-sm','type'=>'text','id'=>'bill_to_bill','style'=>'height:0px; border:none; widht:0px;']); ?>
 			
@@ -156,6 +178,40 @@
 			</div>
 		</div>
 		<?= $this->Form->end() ?>
+		
+		<table class="table table-bordered" id="new_ref" style="display:none;">
+			<tbody>
+			<tr>
+			<td>New Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'New Reference']) ?></td>
+			<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control distinctreference','label'=>false,'id'=>'reference_no_2']) ?></td>
+			<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
+			<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
+			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
+			</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered" id="agst_ref" style="display:none;">
+		<tbody>
+			<tr>
+			<td>Agst Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Against Reference']) ?></td>
+			<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control ','label'=>false,'id'=>'reference_no_2']) ?></td>
+			<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
+			<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
+			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
+			</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered" id="adv_ref" style="display:none;">
+		<tbody>
+			<tr>
+			<td>Adv Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Advance Reference']) ?></td>
+			<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control distinctreference','label'=>false,'id'=>'reference_no_2']) ?></td>
+			<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
+			<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
+			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
+			</tr>
+			</tbody>
+		</table>
 		<!-- END FORM-->
 	</div>
 
@@ -163,6 +219,109 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
+	
+	$( document ).on( 'click', '.new_ref', function() {
+		var new_line=$('#new_ref tbody').html();
+		$("#main_table tbody").append(new_line);
+		var i=1;
+		var len=$("[name^=reference_no]").length;
+		
+		$("[name^=reference_no]").each(function () {
+			
+			$(this).attr('id','reference_no_'+i);
+			
+			$(this).rules("add", {
+				required: true,
+				noSpace: true,
+				notEqualToGroup: ['.distinctreference']
+			});
+			i++;
+		});
+	});
+	$( document ).on( 'click', '.agst_ref', function() {
+		var new_line=$('#agst_ref tbody').html();
+		$("#main_table tbody").append(new_line);
+		var i=1;
+		var len=$("[name^=reference_no]").length;
+		
+		$("[name^=reference_no]").each(function () {
+			
+			$(this).attr('id','reference_no_'+i);
+			
+			$(this).rules("add", {
+				required: true,
+				noSpace: true,
+				notEqualToGroup: ['.distinctreference']
+			});
+			i++;
+		});
+	});
+	$( document ).on( 'click', '.adv_ref', function() {
+		var new_line=$('#adv_ref tbody').html();
+		$("#main_table tbody").append(new_line);
+		var i=1;
+		var len=$("[name^=reference_no]").length;
+		
+		$("[name^=reference_no]").each(function () {
+			
+			$(this).attr('id','reference_no_'+i);
+			
+			$(this).rules("add", {
+				required: true,
+				noSpace: true,
+				notEqualToGroup: ['.distinctreference']
+			});
+			i++;
+		});
+	});
+	$( document ).on( 'click', '.remove_row', function() {
+		$(this).closest("#main_table tr").remove();
+		var i=1;
+		var len=$("[name^=reference_no]").length;
+		
+		$("[name^=reference_no]").each(function () {
+			
+			$(this).attr('id','reference_no_'+i);
+			
+			$(this).rules("add", {
+				required: true,
+				noSpace: true,
+				notEqualToGroup: ['.distinctreference']
+			});
+			i++;
+		});
+	});
+	
+	////////////////  Validation  ////////////////////////
+	
+	jQuery.validator.addMethod("noSpace", function(value, element) { 
+	  return value.indexOf(" ") < 0 && value != ""; 
+	}, "No space please and don't leave it empty");
+	
+	jQuery.validator.addMethod("notEqualToGroup", function (value, element, options) {
+    // get all the elements passed here with the same class
+    var elems = $(element).parents('form').find(options[0]);
+    // the value of the current element
+    var valueToCompare = value;
+    // count
+    var matchesFound = 0;
+    // loop each element and compare its value with the current value
+    // and increase the count every time we find one
+    jQuery.each(elems, function () {
+        thisVal = $(this).val();
+        if (thisVal == valueToCompare) {
+            matchesFound++;
+        }
+    });
+    // count should be either 0 or 1 max
+    if (this.optional(element) || matchesFound <= 1) {
+        //elems.removeClass('error');
+        return true;
+    } else {
+        //elems.addClass('error');
+    }
+}, jQuery.format("Please enter a Unique Value."));
+
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -178,9 +337,17 @@ $(document).ready(function() {
 			cheque_no :{
 				required: true,
 			},
+			'reference_no[]':{
+					required: true,
+					noSpace: true,
+					notEqualToGroup: ['.distinctreference'],
+					remote:"<?php echo $this->Url->build(['controller'=>'Ledgers','action'=>'check_reference_no']); ?>"
+				}
 		},
 		messages: {
-			
+			'reference_no[]': {
+				remote: "Reference no. is alredy taken."
+			},
 		},
 		errorPlacement: function (error, element) { // render error placement for each input type
 			if (element.parent(".input-group").size() > 0) {

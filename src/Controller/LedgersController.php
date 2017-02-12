@@ -160,22 +160,24 @@ class LedgersController extends AppController
 					->execute();
 				
 				$query1 = $this->Ledgers->ReferenceDetails->query();
-				$query1->insert(['reference_no', 'ledger_account_id', 'financial_year', 'credit', 'debit'])
+				$query1->insert(['reference_no', 'ledger_account_id', 'financial_year', 'credit', 'debit', 'reference_type'])
 					->values([
 						'financial_year' => $financial_year,
 						'ledger_account_id' => $this->request->data['ledger_account_id'],
 						'reference_no' => $this->request->data['reference_no'][$row],
 						'credit' => $this->request->data['credit'][$row],
-						'debit' => $this->request->data['debit'][$row]
+						'debit' => $this->request->data['debit'][$row],
+						'reference_type' => 'New Reference'
 					])
 					->execute();
 					
 					$query2 = $this->Ledgers->ReferenceBalances->query();
-				$query2->insert(['reference_no', 'ledger_account_id',  'balance'])
+				$query2->insert(['reference_no', 'ledger_account_id', 'credit', 'debit'])
 					->values([
 						'reference_no' => $this->request->data['reference_no'][$row],
 						'ledger_account_id' => $this->request->data['ledger_account_id'],
-						'balance' => $this->request->data['credit'][$row]+$this->request->data['debit'][$row]
+						'credit' => $this->request->data['credit'][$row],
+						'debit' => $this->request->data['debit'][$row]
 					])
 					->execute();
 		   }
