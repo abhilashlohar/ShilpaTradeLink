@@ -1,3 +1,4 @@
+<?php //pr($inventoryVoucher->inventory_voucher_rows); exit;?>
 <a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 70%;font-size: 12px;" class="maindiv">
 <table width="100%" class="divHeader" border="0">
@@ -31,68 +32,52 @@
 	</tr>
 </table>	
 </br>
-				<table width="100%" id="main_tb" border="1">
-					<thead>
-						<th width="30%" class="text-center"><label class="control-label">Production</label></th>
-						<th align="center" class="text-center"><label class="control-label">Consumption</label></th>
-					</thead>
-					<tbody id="maintbody"><?php $p=0; $q=0; $r=0; ?>
-					<?php 
-					foreach ($inventoryVoucher->sales_order->sales_order_rows as $sales_order_row): ?> 
-						
-						<tr class="main_tr">
-							<td valign="top" align="center">
-							<?php echo $this->Form->input('sales_order_id', ['type'=>'text','empty'=>'--Select--','class' => 'form-control input-sm','label'=>false,'value'=>$sales_order_row->id,'type'=>'hidden']); ?>
-							<?php echo $this->Form->input('sales_order_row_quantity', ['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$sales_order_row->quantity]); ?>
-							<br/><b><?= h($sales_order_row->item->name) ?> ( <?= h($sales_order_row->quantity) ?> )</b>
-							</td>
-							
-							<td>
-							<?php if(sizeof($sales_order_row->inventory_voucher_rows)>0){ ?>
-							<?php  $page_no=$this->Paginator->current('SalesOrders'); $page_no=($page_no-1)*20; ?>	
-							<div>
-								
-								<table class="table">
-									<thead>
-										<th>Sr</th>
-										<th width="60%">Item</th>
-										<th>Quantity</th>
-										<th width="15%"></th>
-									</thead>
-									<tbody>
-										<?php  foreach($sales_order_row->inventory_voucher_rows as $inventory_voucher_row): ?> 
-											<tr>
-												<td align="center"><?= h(++$page_no) ?></td>
-												<td><?= h($inventory_voucher_row->item->name) ?></td>
-												<td><?= h($inventory_voucher_row->quantity) ?></td>
-											</tr>
-										<?php $p++;  endforeach; ?>
-									</tbody>
-								</table>
-							</div>
-							<?php } ?>
-							</td>
-							
-						</tr>
-						<?php  endforeach; ?>
-					</tbody>
+<?php if(!empty($inventoryVoucher)){ ?>
+<div class="portlet-body form">
+<table class="table table-bordered table-condensed">
+	<thead> 
+		<th width="30%"></th>
+		<th>
+			<table width="97%" align="center">
+				<tr>
+					<td>Item</td>
+					<td width="5%">Quantity</td>
+				</tr>
+			</table>
+		</th>
+	</thead>
+	
+	<tbody>
+		<?php foreach ($inventoryVoucher->invoice->invoice_rows as $invoice_row): ?>
+		<tr>
+			<td valign="top">
+			<b><?= $invoice_row->item->name ?> ( <?= h($invoice_row->quantity) ?> )</b>
+			</td>
+			<td>
+				<table width="100%">
+					<?php foreach($inventoryVoucher->inventory_voucher_rows as $inventory_voucher_row): ?> 
+					<?php if($inventory_voucher_row->left_item_id == $invoice_row->item->id){ ?>
+					<tr>
+						<td><?= $inventory_voucher_row->item->name?></td>
+						<td width="5%"><?= $inventory_voucher_row->quantity?></td>
+					</tr>
+					<?php } endforeach; ?>
 				</table>
+			</td>
+		</tr>
+		<?php endforeach; ?>
+	</tbody>
+	
+</table>
+</br>
+
+</div>
+<?php } ?>
+	
 <table width="100%" class="divFooter">
 	<tr>
 		<td align="right">
-		<table>
-			<tr>
-				<td align="center">
-				<span style="font-size:17px;">For</span> <span style="font-size: 17px;font-weight: bold;"><?= h($inventoryVoucher->company->name)?><br/></span>
-				<?php 
-				 echo $this->Html->Image('/signatures/'.$inventoryVoucher->creator->signature,['height'=>'50px','style'=>'height:50px;']); 
-				 ?></br>
-				<span style="font-size: 15px;font-weight: bold;">Authorised Signatory</span>
-				</br>
-				<span style="font-size:15px;"><?= h($inventoryVoucher->creator->name) ?></span><br/>
-				</td>
-			</tr>
-		</table>
+	
 		</td>
 	</tr>
 </table>	
