@@ -8,7 +8,7 @@
 			<div class="row">
 				<div class="col-md-12">
 				<?php $page_no=$this->Paginator->current('ItemLedgers'); $page_no=($page_no-1)*20; ?>
-				<table class="table table-bordered table-striped table-hover">
+				<table class="table tableitm">
 					<thead>
 						<tr>
 							<th>Sr. No.</th>
@@ -17,6 +17,7 @@
 							<th>Sales Order </th>
 							<th>Job card  </th>
 							<th>Suggested Indent</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -35,7 +36,9 @@
 						<td><?php echo $Current_Stock; ?></td>
 						<td><?php echo @$sales_order; ?></td>
 						<td><?php echo $job_card_qty; ?></td>
-						<td><?php echo $Current_Stock-@$sales_order-$job_card_qty; ?></td>						
+						<td><?php echo $Current_Stock-@$sales_order-$job_card_qty; ?></td>
+						<td><label><?php echo $this->Form->input('check.'.$i, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$item_id]); ?></label>
+						</td>						
 						</tr>
 						<?php } ?>
 					</tbody>
@@ -51,3 +54,14 @@
 		</div>
 	</div>
 </div>
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+
+<script>
+
+$(document).ready(function() {
+	$('.rename_check').die().live("click",function() {
+		alert();
+		//rename_rows();
+    })	
+});		
+</script>
