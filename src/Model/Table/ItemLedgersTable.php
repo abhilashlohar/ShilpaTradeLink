@@ -55,6 +55,7 @@ class ItemLedgersTable extends Table
 		$this->belongsTo('Invoices');
 		$this->belongsTo('Challans');
 		$this->belongsTo('SalesOrders');
+		$this->belongsTo('JobCards');
     }
 
     /**

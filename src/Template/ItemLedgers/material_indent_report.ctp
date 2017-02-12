@@ -26,15 +26,16 @@
 							$item_id=$data['item_id'];
 							$Current_Stock=$data['Current_Stock'];
 							$sales_order=$data['sales_order'];
+							$job_card_qty=$data['job_card_qty'];
 
 						?>
 						<tr>
 						<td><?php echo $i; ?> </td>
 						<td><?php echo $item_name; ?></td>
 						<td><?php echo $Current_Stock; ?></td>
-						<td><?php echo @$sales_order[$item_id]; ?></td>
-						<td>0</td>
-						<td>0</td>						
+						<td><?php echo @$sales_order; ?></td>
+						<td><?php echo $job_card_qty; ?></td>
+						<td><?php echo $Current_Stock-@$sales_order-$job_card_qty; ?></td>						
 						</tr>
 						<?php } ?>
 					</tbody>

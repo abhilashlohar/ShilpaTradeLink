@@ -219,8 +219,15 @@ class ItemLedgersController extends AppController
 				$sales[$item_id]=$Sales_Order_stock;
 			}
 		
+		$JobCards=$this->ItemLedgers->JobCards->find()->where(['status'=>'Pending'])->contain(['JobCardRows']);
 		
-		
+		$job_card_items=[];
+		foreach($JobCards as $JobCard){
+			foreach($JobCard->job_card_rows as $job_card_row){
+				$job_card_items[$job_card_row->item_id]=@$job_card_items[$job_card_row->item_id]+$job_card_row->quantity;
+			}
+		}		
+		//pr($job_card_items); exit;
 		
 		$ItemLedgers = $this->ItemLedgers->find();
 				$totalInCase = $ItemLedgers->newExpr()
@@ -252,11 +259,11 @@ class ItemLedgersController extends AppController
 			$Current_Stock=$itemLedger->total_in-$itemLedger->total_out;
 			
 			
-			$material_report[]=array('item_name'=>$item_name,'item_id'=>$item_id,'Current_Stock'=>$Current_Stock,'sales_order'=>$sales);
+			$material_report[]=array('item_name'=>$item_name,'item_id'=>$item_id,'Current_Stock'=>$Current_Stock,'sales_order'=>@$sales[$item_id],'job_card_qty'=>@$job_card_items[$item_id]);
 			
 		} 
-		//pr($material_report); 
-		 $this->set(compact('material_report'));
+			
+		$this->set(compact('material_report'));
 			
 	 }
 	
