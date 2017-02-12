@@ -211,6 +211,11 @@ class PaymentVouchersController extends AppController
             'contain' => ['PaidTos','BankCashes','Companies']
 		
 		  ]);
+
+        $Em = new FinancialYearsController;
+	    $financial_year_data = $Em->checkFinancialYear($paymentVoucher->transaction_date);
+
+
 		 $check_date= $paymentVoucher->transaction_date;
 		 
 		
@@ -273,7 +278,7 @@ class PaymentVouchersController extends AppController
 		$bankCashes = $this->PaymentVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
 		
         $companies = $this->PaymentVouchers->Companies->find('all');	
-        $this->set(compact('paymentVoucher', 'paidTos', 'bankCashes','companies','financial_year'));
+        $this->set(compact('paymentVoucher', 'paidTos', 'bankCashes','companies','financial_year','financial_year_data'));
         $this->set('_serialize', ['paymentVoucher']);
  
     }

@@ -243,7 +243,8 @@ class FinancialYearsController extends AppController
 
     public function checkFinancialYear($financial_date)
     {
-    	//$financial_date = '2016-02-01';//return [2,67];
+    	 $financial_date = date("Y-m-d",strtotime($financial_date));
+        
     	 $FinancialYears = $this->FinancialYears->find()->toArray();
 
  		foreach ($FinancialYears as $FinancialYear) {

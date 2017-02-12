@@ -1,4 +1,7 @@
-<?php //pr($journalVoucher->journal_voucher_rows); exit; ?>
+<?php if($financial_year_data['Response'] == "Close" ){
+ 			echo "Financial Year Closed"; 
+
+ 		} else { ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
@@ -245,3 +248,4 @@ $(document).ready(function() {
 	
 });
 </script>
+<?php } ?>

@@ -1,4 +1,7 @@
-<?php  //pr($ledgerAccounts); exit ?>
+<?php if($financial_year_data['Response'] == "Close" ){
+ 			echo "Financial Year Closed"; 
+
+ 		} else { ?>
 
 <div class="portlet light bordered">
 	<div class="portlet-title">
@@ -223,5 +226,5 @@ $(document).ready(function() {
             }
 });
 </script>
-
+<?php } ?>
 

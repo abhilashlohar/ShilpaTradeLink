@@ -155,6 +155,11 @@ class JournalVouchersController extends AppController
         $journalVoucher = $this->JournalVouchers->get($id, [
             'contain' => ['Companies','JournalVoucherRows'=>['LedgerAccounts'],'Companies','Creator']
         ]);
+
+        $Em = new FinancialYearsController;
+	    $financial_year_data = $Em->checkFinancialYear($journalVoucher->transaction_date);
+
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $journalVoucher = $this->JournalVouchers->patchEntity($journalVoucher, $this->request->data);
 			$journalVoucher->edited_by=$s_employee_id;
@@ -204,7 +209,7 @@ class JournalVouchersController extends AppController
 
 		$ledgers = $this->JournalVouchers->LedgerAccounts->find('list')->where(['LedgerAccounts.id IN' => $where]);
         $companies = $this->JournalVouchers->Companies->find('all');
-        $this->set(compact('journalVoucher', 'companies','ledgers','financial_year'));
+        $this->set(compact('journalVoucher', 'companies','ledgers','financial_year','financial_year_data'));
         $this->set('_serialize', ['journalVoucher']);
     }
 
