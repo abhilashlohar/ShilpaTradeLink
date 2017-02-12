@@ -55,7 +55,7 @@ if(!empty($revision))
 									$merge=$customer->customer_name.'	('.$customer->alias.')';
 								}
 								
-								$options[]=['text' =>$merge, 'value' => $customer->id, 'employee_id' => $customer->employee_id,'file' => sizeof($customer->filenames)];
+								$options[]=['text' =>$merge, 'value' => $customer->id, 'employee_id' => $customer->employee_id,'file' => ($csizeofustomer->filenames)];
 
 							}
 							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>

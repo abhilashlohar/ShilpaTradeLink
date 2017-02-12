@@ -1,4 +1,7 @@
+<?php if($financial_year_data['Response'] == "Close" ){
+ 			echo "Financial Year Closed"; 
 
+ 		} else { ?>
 <style>
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
 	vertical-align: top !important;
@@ -34,9 +37,27 @@
 						</div>
 					</div>
 					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Supplier <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('vendor_id', ['options'=>$vendors,'empty'=>'--Select--','label' => false,'class' => 'form-control input-sm select2me']); ?>
+					 <div class="form-group">
+						<label class="control-label">Supplier <span class="required" aria-required="true">*
+						 </span></label>
+						<?php
+							$options=array();
+							//pr($vendor); exit();
+							foreach($vendor as $vendors){
+								if(empty($vendors->alias)){
+									$merge=$vendors->company_name;
+								}else{
+									$merge=$vendors->company_name.'('.$vendors->alias.')';
+								}
+								
+								$options[]=['text' =>$merge, 'value' => $vendors->id, 'payment_terms' => $vendors->payment_terms];
+
+							}
+							echo $this->Form->input('vendor_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$vendor->id]); ?>
+
+
+					
+							<label id="payment_terms"></label>
 						</div>
 					</div>
 					<div class="col-md-2">
@@ -444,3 +465,23 @@ $(document).ready(function() {
 		</tr>
 	</tbody>
 </table>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $('select[name="vendor_id"]').on("change",function() {
+      var payment_terms = $('select[name="vendor_id"] option:selected').attr("payment_terms");
+		if(typeof payment_terms !== "undefined")
+		{ $("#payment_terms").text('Payment Terms :' + payment_terms); }
+		else{ $("#payment_terms").text(''); }
+	});
+
+	var payment_terms = $('select[name="vendor_id"] option:selected').attr("payment_terms");
+		if(typeof payment_terms !== "undefined")
+		{ $("#payment_terms").text('Payment Terms :' + payment_terms); }
+		else{ $("#payment_terms").text(''); }
+});
+</script>
+
+
+<?php } ?>

@@ -32,7 +32,25 @@
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Supplier <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('vendor_id', ['options'=>$vendors,'empty'=>'--Select--','label' => false,'class' => 'form-control input-sm select2me']); ?>
+
+									<?php
+							$options=array();
+							//pr($vendor); exit();
+							foreach($vendor as $vendors){
+								if(empty($vendors->alias)){
+									$merge=$vendors->company_name;
+								}else{
+									$merge=$vendors->company_name.'('.$vendors->alias.')';
+								}
+								
+								$options[]=['text' =>$merge, 'value' => $vendors->id, 'payment_terms' => $vendors->payment_terms];
+
+							}
+							echo $this->Form->input('vendor_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$vendor->id]); ?>
+
+
+					
+							<label id="payment_terms"></label>
 						</div>
 					</div>
 					<div class="col-md-2">
@@ -456,3 +474,40 @@ $(document).ready(function() {
 		</tr>
 	</tbody>
 </table>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("select.vendor").change(function(){
+       var vid = $(".vendor option:selected").val();
+       var url = "<?php echo $this->Url->build(['controller'=>'PurchaseOrders','action'=>'vid']);?>";
+       url=url+'/'+vid,
+        $.ajax({
+		url: url,
+		type: 'GET',
+	}).done(function(response) {
+		//alert(response);
+		$('#vendrid').html(response);
+		//$('select[name="account_second_subgroup_id"]').select2();
+	});
+
+
+
+
+    });
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('select[name="vendor_id"]').on("change",function() {
+      var payment_terms = $('select[name="vendor_id"] option:selected').attr("payment_terms");
+		if(typeof payment_terms !== "undefined")
+		{ $("#payment_terms").text('Payment Terms :' + payment_terms); }
+		else{ $("#payment_terms").text(''); }
+		
+		
+		
+    });
+});
+</script>
+	

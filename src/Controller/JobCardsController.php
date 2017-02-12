@@ -139,6 +139,9 @@ class JobCardsController extends AppController
 				},'JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
         ]);
 		
+
+		$Em = new FinancialYearsController;
+	    $financial_year_data = $Em->checkFinancialYear($jobCard->created_on);
 				
         if ($this->request->is(['patch', 'post', 'put'])) {
             $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
@@ -167,7 +170,7 @@ class JobCardsController extends AppController
         }
 		
 		$items = $this->JobCards->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']]);
-        $this->set(compact('jobCard', 'salesOrders', 'companies','items'));
+        $this->set(compact('jobCard', 'salesOrders', 'companies','items','financial_year_data'));
         $this->set('_serialize', ['jobCard']);
     }
 

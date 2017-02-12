@@ -359,7 +359,12 @@ class SalesOrdersController extends AppController
         $salesOrder = $this->SalesOrders->get($id, [
             'contain' => ['SalesOrderRows' => ['Items','JobCardRows'],'Invoices' => ['InvoiceRows']]
         ]);
-		
+		//pr($salesOrder); exit;
+
+		$Em = new FinancialYearsController;
+	    $financial_year_data = $Em->checkFinancialYear($salesOrder->created_on);
+	    
+
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		
 		$session = $this->request->session();
@@ -375,8 +380,11 @@ class SalesOrdersController extends AppController
 			$salesOrder->edited_on=date("Y-m-d");
 			$salesOrder->edited_on_time= date("Y-m-d h:i:sA");
 			
+
+
+
             if ($this->SalesOrders->save($salesOrder)) {
-				//pr($salesOrder); exit;
+				
 				foreach($salesOrder->sales_order_rows as $sales_order_row){
 					$job_card_row_ids=explode(',',$sales_order_row->job_card_row_ids);
 					foreach($job_card_row_ids as $job_card_row_id){
@@ -421,7 +429,7 @@ class SalesOrdersController extends AppController
 		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
 		$Filenames = $this->SalesOrders->Filenames->find()->where(['customer_id' => $salesOrder->customer_id]);
 		
-        $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','Filenames'));
+        $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','Filenames','financial_year_data'));
         $this->set('_serialize', ['salesOrder']);
     }
 

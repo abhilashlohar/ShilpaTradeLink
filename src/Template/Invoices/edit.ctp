@@ -1,4 +1,7 @@
-<?php //pr($ItemSerialNumber); exit; ?>
+<?php if($financial_year_data['Response'] == "Close" ){
+ 			echo "Financial Year Closed"; 
+
+ 		} else { ?>
 <style>
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
 	vertical-align: top !important;
@@ -932,4 +935,4 @@ $(document).ready(function() {
 	</div>
 </div>
 
-
+<?php } ?>

@@ -1,4 +1,7 @@
-<?php //pr($salesOrder); exit; ?>
+<?php if($financial_year_data['Response'] == "Close" ){
+ 			echo "Financial Year Closed"; 
+
+ 		} else { ?>
 <style>
 .disabledbutton {
     pointer-events: none;
@@ -989,3 +992,4 @@ $(document).ready(function() {
 		</div>
 	</div>
 </div>
+<?php } ?>

@@ -172,6 +172,9 @@ class GrnsController extends AppController
 					]
 			]);
 		
+		$Em = new FinancialYearsController;
+	    $financial_year_data = $Em->checkFinancialYear($grn->date_created);
+
 			if ($this->request->is(['patch', 'post', 'put'])) {
 				$serial_numbers=$this->request->data['serial_numbers']; 
 			$item_serial_numbers=[];
@@ -208,7 +211,7 @@ class GrnsController extends AppController
 			}
         $purchaseOrders = $this->Grns->PurchaseOrders->find('list', ['limit' => 200]);
         $companies = $this->Grns->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('grn', 'purchaseOrders', 'companies'));
+        $this->set(compact('grn', 'purchaseOrders', 'companies','financial_year_data'));
         $this->set('_serialize', ['grn']);
     }
 

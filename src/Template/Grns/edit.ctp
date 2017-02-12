@@ -1,3 +1,7 @@
+<?php if($financial_year_data['Response'] == "Close" ){
+ 			echo "Financial Year Closed"; 
+
+ 		} else { ?>
 <style>
 .sr_no{
 	float: left;
@@ -289,3 +293,4 @@ $(document).ready(function() {
 	}
 });		
 </script>
+<?php } ?>

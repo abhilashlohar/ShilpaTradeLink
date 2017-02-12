@@ -55,6 +55,8 @@ class PurchaseOrdersController extends AppController
 		$this->set(compact('url'));
     }
 
+    
+
     /**
      * View method
      *
@@ -118,12 +120,12 @@ class PurchaseOrdersController extends AppController
 			'keyField' => function ($row) {
 				return $row['file1'] . '-' . $row['file2'];
 			}])->where(['file1' => 'BE']);
-        $vendors = $this->PurchaseOrders->Vendors->find('list');
+        $vendor = $this->PurchaseOrders->Vendors->find();
 		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
 		$customers = $this->PurchaseOrders->Customers->find('all');
 		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']]);
 		$transporters = $this->PurchaseOrders->Transporters->find('list');
-        $this->set(compact('purchaseOrder', 'Company', 'vendors','filenames','items','SaleTaxes','transporters','customers'));
+        $this->set(compact('purchaseOrder', 'Company', 'vendor','filenames','items','SaleTaxes','transporters','customers'));
         $this->set('_serialize', ['purchaseOrder']);
     }
 
@@ -145,6 +147,11 @@ class PurchaseOrdersController extends AppController
         $purchaseOrder = $this->PurchaseOrders->get($id, [
             'contain' => ['PurchaseOrderRows']
         ]);
+
+          $Em = new FinancialYearsController;
+        $financial_year_data = $Em->checkFinancialYear($purchaseOrder->date_created);
+
+
         if ($this->request->is(['patch', 'post', 'put'])) {
 			
             $purchaseOrder = $this->PurchaseOrders->patchEntity($purchaseOrder, $this->request->data);
@@ -167,13 +174,13 @@ class PurchaseOrdersController extends AppController
 			'keyField' => function ($row) {
 				return $row['file1'] . '-' . $row['file2'];
 			}])->where(['file1' => 'BE']);
-		$vendors = $this->PurchaseOrders->Vendors->find('list');
+		$vendor = $this->PurchaseOrders->Vendors->find();
 		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
 		$customers = $this->PurchaseOrders->Customers->find('all');
 		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']]);
 		$transporters = $this->PurchaseOrders->Transporters->find('list');
        
-        $this->set(compact('purchaseOrder', 'Company', 'vendors','filenames','customers','SaleTaxes','transporters','items'));
+        $this->set(compact('purchaseOrder', 'Company', 'vendor','filenames','customers','SaleTaxes','transporters','items','financial_year_data'));
         $this->set('_serialize', ['purchaseOrder']);
     }
 

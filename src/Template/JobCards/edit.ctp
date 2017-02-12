@@ -1,4 +1,6 @@
-<?php //pr($jobCard); exit; ?>
+<?php if($financial_year_data['Response'] == "Close" ){
+ 			echo "Financial Year Closed"; 
+  } else { ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
@@ -343,4 +345,4 @@ var form3 = $('#form_sample_3');
 		
 	</tbody>
 </table>
-
+<?php } ?>

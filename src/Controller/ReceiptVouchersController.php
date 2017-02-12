@@ -211,7 +211,7 @@ class ReceiptVouchersController extends AppController
 
         
 
-         $Em = new FinancialYearsController;
+        $Em = new FinancialYearsController;
 	    $financial_year_data = $Em->checkFinancialYear($receiptVoucher->transaction_date);
        
 
