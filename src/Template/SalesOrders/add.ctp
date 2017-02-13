@@ -243,9 +243,8 @@ if(!empty($copy))
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
 						<tr class="tr2 maintr" row_no='<?php echo @$sales_order_rows->id; ?>'>
-							<td colspan="6">
-							<div contenteditable="true" id="editor" name="<?php echo 'sales_order_rows['.$q.'][description]'; ?>"><?php echo @$sales_order_rows->description; ?></div>
-							<?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','placeholder'=>'Description','style'=>['display:none'],'required','value' => @$sales_order_rows->description]); ?>
+							<td colspan="6" class="main">
+								<div class="note-editable"><?php echo $sales_order_rows->description; ?></div>
 							</td>
 							<td></td>
 						</tr>
@@ -439,12 +438,7 @@ if(!empty($copy))
 			<td width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 		<tr class="tr2 preimp maintr">
-			<td colspan="6">
-			<div contenteditable="true" id="editor"></div>
-			<?php echo $this->Form->textarea('description', ['label' => false,'style'=>['display:none'],'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','required']); ?>
-			</td>
-			
-			
+			<td colspan="6" class="main"></td>
 		</tr>
 	</tbody>
 </table>
@@ -559,6 +553,8 @@ $(document).ready(function() {
 		},
 
 		invalidHandler: function (event, validator) { //display error alert on form submit   
+			put_code_description();
+			//put_code_description();
 			success3.hide();
 			error3.show();
 			//Metronic.scrollTo(error3, -200);
@@ -580,6 +576,7 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			//put_code_description();
 			success3.show();
 			error3.hide();
 			form[0].submit(); // submit the form
@@ -677,12 +674,12 @@ $(document).ready(function() {
 		});
 		rename_rows();
 	}
-	
+	rename_rows();
 	function rename_rows(){
 		var i=0;
 		
 		$("#main_tb tbody tr.tr1").each(function(){
-			$(this).find('span.help-block-error').remove();
+		    $(this).find('span.help-block-error').remove();
 			$(this).find("td:nth-child(1)").html(++i); --i;
 			$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
@@ -716,11 +713,17 @@ $(document).ready(function() {
 		
 		var i=0;
 		$("#main_tb tbody tr.tr2").each(function(){
-			$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
-			$(this).find('td:nth-child(1) div#editor').attr({name:"sales_order_rows["+i+"][description]"});
-
+			var htm=$(this).find('td:nth-child(1)').find('div.note-editable').html();
+			
+			if(!htm){ htm=""; }
+			$(this).find('td:nth-child(1)').html('');
+			$(this).find('td:nth-child(1)').append('<div id=summer'+i+'>'+htm+'</div>');
+			$(this).find('td:nth-child(1)').find('div#summer'+i).summernote();
+			$(this).find('td.main:nth-child(1)').append('<textarea name="sales_order_rows['+i+'][description]"style="display:none;"></textarea>');
 		i++; });
 		
+		
+
 		$("select.item_box").each(function(){
 			var popup_id=$(this).attr('popup_id');
 			var item_id=$(this).val();
@@ -729,6 +732,14 @@ $(document).ready(function() {
 			}
 		});
 	}
+
+	function put_code_description(){
+			var i=1;
+			$("#main_tb tbody tr.tr2").each(function(){
+				var code=$(this).find('div#summer'+i).code();
+				$(this).find('td:nth-child(1) textarea').val(code);
+			i++; });
+		}
 	
 	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
 		calculate_total();
