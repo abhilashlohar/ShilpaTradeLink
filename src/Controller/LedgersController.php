@@ -145,41 +145,45 @@ class LedgersController extends AppController
 			$financial_year=$this->viewVars['s_year_from'].'-'.$this->viewVars['s_year_to'];
 			$session = $this->request->session();
 			$company_id = $session->read('st_company_id');
-		   for($row=0; $row<$total_row; $row++)
-		   {
+		    for($row=0; $row<$total_row; $row++)
+		    {
+			   ////////////////  Ledger ////////////////////////////////
 				$query = $this->Ledgers->query();
 				$query->insert(['transaction_date', 'ledger_account_id', 'voucher_source', 'credit', 'debit','company_id'])
-					->values([
-						'transaction_date' => date('Y-m-d', strtotime($this->request->data['transaction_date'])),
-						'ledger_account_id' => $this->request->data['ledger_account_id'],
-						'voucher_source' => $this->request->data['voucher_source'],
-						'credit' => $this->request->data['credit'][$row],
-						'debit' => $this->request->data['debit'][$row],
-						'company_id' => $company_id
-					])
-					->execute();
-				
+				->values([
+					'transaction_date' => date('Y-m-d', strtotime($this->request->data['transaction_date'])),
+					'ledger_account_id' => $this->request->data['ledger_account_id'],
+					'voucher_source' => $this->request->data['voucher_source'],
+					'credit' => $this->request->data['credit'][$row],
+					'debit' => $this->request->data['debit'][$row],
+					'company_id' => $company_id
+				])
+				->execute();
+			
+				////////////////  ReferenceDetails ////////////////////////////////
 				$query1 = $this->Ledgers->ReferenceDetails->query();
 				$query1->insert(['reference_no', 'ledger_account_id', 'financial_year', 'credit', 'debit', 'reference_type'])
-					->values([
-						'financial_year' => $financial_year,
-						'ledger_account_id' => $this->request->data['ledger_account_id'],
-						'reference_no' => $this->request->data['reference_no'][$row],
-						'credit' => $this->request->data['credit'][$row],
-						'debit' => $this->request->data['debit'][$row],
-						'reference_type' => 'New Reference'
-					])
-					->execute();
-					
-					$query2 = $this->Ledgers->ReferenceBalances->query();
-				$query2->insert(['reference_no', 'ledger_account_id', 'credit', 'debit'])
-					->values([
-						'reference_no' => $this->request->data['reference_no'][$row],
-						'ledger_account_id' => $this->request->data['ledger_account_id'],
-						'credit' => $this->request->data['credit'][$row],
-						'debit' => $this->request->data['debit'][$row]
-					])
-					->execute();
+				->values([
+					'financial_year' => $financial_year,
+					'ledger_account_id' => $this->request->data['ledger_account_id'],
+					'reference_no' => $this->request->data['reference_no'][$row],
+					'credit' => $this->request->data['credit'][$row],
+					'debit' => $this->request->data['debit'][$row],
+					'reference_type' => 'New Reference'
+				])
+				->execute();
+				
+				////////////////  ReferenceBalances ////////////////////////////////
+				$query2 = $this->Ledgers->ReferenceBalances->query();
+				$query2->insert(['reference_no', 'ledger_account_id', 'financial_year', 'credit', 'debit'])
+				->values([
+					'reference_no' => $this->request->data['reference_no'][$row],
+					'ledger_account_id' => $this->request->data['ledger_account_id'],
+					'financial_year' => $financial_year,
+					'credit' => $this->request->data['credit'][$row],
+					'debit' => $this->request->data['debit'][$row]
+				])
+				->execute();
 		   }
 		   return $this->redirect(['action' => 'Opening_balance']);
         }
