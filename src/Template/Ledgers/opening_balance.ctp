@@ -119,7 +119,15 @@ $(document).ready(function() {
 					required: true,
 					noSpace: true,
 					notEqualToGroup: ['.distinctreference'],
-					remote:"<?php echo $this->Url->build(['controller'=>'Ledgers','action'=>'check_reference_no']); ?>"
+					remote : {
+                    url: '<?php echo $this->Url->build(['controller'=>'Ledgers','action'=>'check_reference_no']); ?>',
+                    type: "get",
+                    data:
+                        {
+                            ledger_account_id: function(){return $('select[name=ledger_account_id] option:selected').val();}
+                        },
+					},
+
 				}
 			},
 

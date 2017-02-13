@@ -142,7 +142,6 @@ class LedgersController extends AppController
         if ($this->request->is('post')) {
 			
 			$total_row=sizeof($this->request->data['reference_no']);
-			$financial_year=$this->viewVars['s_year_from'].'-'.$this->viewVars['s_year_to'];
 			$session = $this->request->session();
 			$company_id = $session->read('st_company_id');
 		    for($row=0; $row<$total_row; $row++)
@@ -162,9 +161,8 @@ class LedgersController extends AppController
 			
 				////////////////  ReferenceDetails ////////////////////////////////
 				$query1 = $this->Ledgers->ReferenceDetails->query();
-				$query1->insert(['reference_no', 'ledger_account_id', 'financial_year', 'credit', 'debit', 'reference_type'])
+				$query1->insert(['reference_no', 'ledger_account_id', 'credit', 'debit', 'reference_type'])
 				->values([
-					'financial_year' => $financial_year,
 					'ledger_account_id' => $this->request->data['ledger_account_id'],
 					'reference_no' => $this->request->data['reference_no'][$row],
 					'credit' => $this->request->data['credit'][$row],
@@ -175,11 +173,10 @@ class LedgersController extends AppController
 				
 				////////////////  ReferenceBalances ////////////////////////////////
 				$query2 = $this->Ledgers->ReferenceBalances->query();
-				$query2->insert(['reference_no', 'ledger_account_id', 'financial_year', 'credit', 'debit'])
+				$query2->insert(['reference_no', 'ledger_account_id', 'credit', 'debit'])
 				->values([
 					'reference_no' => $this->request->data['reference_no'][$row],
 					'ledger_account_id' => $this->request->data['ledger_account_id'],
-					'financial_year' => $financial_year,
 					'credit' => $this->request->data['credit'][$row],
 					'debit' => $this->request->data['debit'][$row]
 				])
@@ -196,10 +193,10 @@ class LedgersController extends AppController
 	public function checkReferenceNo()
     {
 		$reference_no=$this->request->query['reference_no'][0];
-		$financial_year=$this->viewVars['s_year_from'].'-'.$this->viewVars['s_year_to'];
+		$ledger_account_id=$this->request->query['ledger_account_id'];
 		
-		$ReferenceDetails=$this->Ledgers->ReferenceDetails->find()
-		->where(['reference_no' => $reference_no,'financial_year'=>$financial_year])
+		$ReferenceDetails=$this->Ledgers->ReferenceBalances->find()
+		->where(['reference_no' => $reference_no,'ledger_account_id' => $ledger_account_id])
 		->count();
 		
 		if(empty($ReferenceDetails))

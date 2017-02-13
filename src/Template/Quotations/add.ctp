@@ -195,10 +195,7 @@ if(!empty($revision))
 						<th width="70"></th>
 					</tr>
 				</thead>
-				
-
-				
-				<?php if(!empty($copy)|| !empty($revision)){ ?>
+			 <?php if(!empty($copy)|| !empty($revision)){ ?>
 				<tbody id="main_tbody">
 					<?php $q=0; foreach ($quotation->quotation_rows as $quotation_rows): ?>
 					<tr class="tr1 preimp" row_no='<?php echo @$quotation_rows->id; ?>'>

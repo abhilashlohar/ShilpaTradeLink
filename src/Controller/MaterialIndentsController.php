@@ -41,7 +41,7 @@ class MaterialIndentsController extends AppController
     {
         $this->viewBuilder()->layout('index_layout');
 		$materialIndent = $this->MaterialIndents->get($id, [
-            'contain' => ['Companies','Creator', 'JobCards'=>['Customers'], 'MaterialIndentRows'=>['Items']]
+            'contain' => ['Companies','Creator',  'MaterialIndentRows'=>['Items']]
         ]);
 
         $this->set('materialIndent', $materialIndent);
@@ -79,11 +79,18 @@ class MaterialIndentsController extends AppController
 			}
 			$this->set(compact('material_items'));
 		}
-		
-		
+
 		
 		
 		$materialIndent = $this->MaterialIndents->newEntity();
+		
+		$last_company_no=$this->MaterialIndents->find()->select(['mi_number'])->where(['company_id' => $st_company_id])->order(['mi_number' => 'DESC'])->first();
+		if(!empty($last_company_no)){
+			$materialIndent->mi_number=$last_company_no->mi_number+1;
+		}else{
+			$materialIndent->mi_number=1;
+		}
+		
         if ($this->request->is('post')) {
 			
             $materialIndent = $this->MaterialIndents->patchEntity($materialIndent, $this->request->data);
@@ -125,9 +132,14 @@ class MaterialIndentsController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
         $materialIndent = $this->MaterialIndents->get($id, [
-            'contain' => []
-        ]);
+            'contain' => ['MaterialIndentRows'=>['Items']]
+        ]); 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $materialIndent = $this->MaterialIndents->patchEntity($materialIndent, $this->request->data);
             if ($this->MaterialIndents->save($materialIndent)) {
@@ -139,7 +151,7 @@ class MaterialIndentsController extends AppController
             }
         }
         $companies = $this->MaterialIndents->Companies->find('list', ['limit' => 200]);
-        $jobCards = $this->MaterialIndents->JobCards->find('list', ['limit' => 200]);
+      
         $this->set(compact('materialIndent', 'companies', 'jobCards'));
         $this->set('_serialize', ['materialIndent']);
     }
