@@ -45,10 +45,6 @@ class MaterialIndentsTable extends Table
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('JobCards', [
-            'foreignKey' => 'job_card_id',
-            'joinType' => 'INNER'
-        ]);
         $this->hasMany('MaterialIndentRows', [
             'foreignKey' => 'material_indent_id',
 			'saveStrategy' => 'replace'
@@ -97,7 +93,7 @@ class MaterialIndentsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['company_id'], 'Companies'));
-        $rules->add($rules->existsIn(['job_card_id'], 'JobCards'));
+        //$rules->add($rules->existsIn(['job_card_id'], 'JobCards'));
 
         return $rules;
     }
