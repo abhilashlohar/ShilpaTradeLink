@@ -145,7 +145,7 @@ class MaterialIndentsController extends AppController
             }
         }
         $companies = $this->MaterialIndents->Companies->find('list', ['limit' => 200]);
-       // $jobCards = $this->MaterialIndents->JobCards->find('list', ['limit' => 200]);
+      
         $this->set(compact('materialIndent', 'companies', 'jobCards'));
         $this->set('_serialize', ['materialIndent']);
     }
