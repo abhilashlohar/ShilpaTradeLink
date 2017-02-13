@@ -54,6 +54,14 @@ class ReceiptVouchersController extends AppController
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
+	 
+	public function fetchReferenceNo($ledger_account_id=null)
+    {
+		$this->viewBuilder()->layout('ajax_layout');
+		echo $ledger_account_id;
+		$ReferenceDetails=$this->ReceiptVouchers->ReferenceBalances->find()->where(['ledger_account_id' => $ledger_account_id])->toArray();
+		$this->set(compact(['ReferenceDetails']));
+	}
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
@@ -65,6 +73,32 @@ class ReceiptVouchersController extends AppController
 		$financial_year = $this->ReceiptVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
         
         if ($this->request->is('post')) {
+			//pr($this->request->data);
+			//exit;
+			$total_row=sizeof($this->request->data['reference_no']);
+			for($row=0; $row<$total_row; $row++)
+		    {
+				////////////////  ReferenceDetails ////////////////////////////////
+				$query1 = $this->ReceiptVouchers->ReferenceDetails->query();
+				$query1->insert(['reference_no', 'ledger_account_id', 'credit', 'debit', 'reference_type'])
+				->values([
+					'ledger_account_id' => $this->request->data['received_from_id'],
+					'reference_no' => $this->request->data['reference_no'][$row],
+					'credit' => $this->request->data['credit'][$row],
+					'reference_type' => $this->request->data['reference_type'][$row]
+				])
+				->execute();
+				
+				////////////////  ReferenceBalances ////////////////////////////////
+				$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
+				$query2->insert(['reference_no', 'ledger_account_id', 'credit', 'debit'])
+				->values([
+					'reference_no' => $this->request->data['reference_no'][$row],
+					'ledger_account_id' => $this->request->data['received_from_id'],
+					'credit' => $this->request->data['credit'][$row],
+				])
+				->execute();
+			}
 			
 			$last_ref_no=$this->ReceiptVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_ref_no){
@@ -73,26 +107,6 @@ class ReceiptVouchersController extends AppController
 				$receiptVoucher->voucher_no=1;
 			}
 				
-			$receipt_breakups=[];
-			if(!empty($this->request->data['invoice_record'])){
-				foreach($this->request->data['invoice_record'] as $invoice_record){
-					if(@$invoice_record['checkbox']){
-						$receipt_breakups[]=['ref_type'=>'Agst Ref','new_ref_no'=>'','invoice_id'=>$invoice_record['invoice_id'],'amount'=>$invoice_record['invoice_amount']];
-					}
-				} 
-			}
-			if((!empty($this->request->data['advance'])) && ($this->request->data['receipt_type']=='Agst Ref')) {
-			if($this->request->data['advance']>0){
-			$receipt_breakups[]=['ref_type'=>'Advance','new_ref_no'=>'','invoice_id'=>0,'amount'=>$this->request->data['advance']];
-			$receiptVoucher->advance_amount=$this->request->data['advance'];
-			}
-			}
-			else if($this->request->data['receipt_type']!='On Account'){
-			$receiptVoucher->advance_amount=$this->request->data['amount'];
-			}
-				
-			$this->request->data['receipt_breakups']=$receipt_breakups;
-			
             $receiptVoucher = $this->ReceiptVouchers->patchEntity($receiptVoucher, $this->request->data);
 			$receiptVoucher->created_by=$s_employee_id;
 			$receiptVoucher->transaction_date=date("Y-m-d",strtotime($receiptVoucher->transaction_date));
@@ -116,34 +130,11 @@ class ReceiptVouchersController extends AppController
 				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $receiptVoucher->received_from_id;
 				$ledger->debit = 0;
-				$ledger->credit = $receiptVoucher->amount;;
+				$ledger->credit = $receiptVoucher->amount;
 				$ledger->voucher_id = $receiptVoucher->id;
 				$ledger->voucher_source = 'Receipt Voucher';
 				$ledger->transaction_date = $receiptVoucher->transaction_date;
 				$this->ReceiptVouchers->Ledgers->save($ledger); 
-				
-				//Invoice Update 
-				$i=0;
-				foreach($receiptVoucher->receipt_breakups as $data)
-				{
-					if($data->invoice_id>0){
-					$invoice_id=$data->invoice_id;
-					$amount=$data->amount;
-					$Invoices=$this->ReceiptVouchers->Invoices->find()->where(['id'=>$invoice_id]);
-					
-					foreach($Invoices as $data1)
-					{
-					$due_payment=$data1->due_payment;
-					}
-					$remaining=$due_payment-$amount;
-					$query = $this->ReceiptVouchers->Invoices->query();
-					$query->update()
-					->set(['due_payment' => $remaining])
-					->where(['id' => $invoice_id])
-					->execute();
-					}
-					$i++;
-				}
 			
 				$this->Flash->success(__('The Receipt-Voucher:'.str_pad($receiptVoucher->id, 4, '0', STR_PAD_LEFT)).' has been genereted.');
 				return $this->redirect(['action' => 'view/'.$receiptVoucher->id]);

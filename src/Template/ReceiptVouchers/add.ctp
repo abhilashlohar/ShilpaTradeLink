@@ -53,7 +53,7 @@
 
 				<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Recived Form<span class="required" aria-required="true">*</span></label>
+							<label class="control-label">Received From<span class="required" aria-required="true">*</span></label>
 						
 							<?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','label' => false,'options' =>$receivedFroms,'class' => 'form-control input-sm select2me']); ?>
 						
@@ -116,24 +116,6 @@
 
 				</div>
 				<div class="row">
-
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Receipt Type<span class="required" aria-required="true">*</span></label>
-							<div class="radio-list">
-								<div class="radio-inline" >
-								<?php echo $this->Form->radio(
-									'receipt_type',
-									[
-										['value' => 'New Ref', 'text' => 'New Ref','checked'],
-										['value' => 'Agst Ref', 'text' => 'Agst Ref'],
-										['value' => 'On Account', 'text' => 'On Account'],
-									]
-								); ?>
-								</div>
-							</div>
-						</div>
-					 </div>
 					<div class="col-md-12">
 						<div class="form-group">
 						<?php echo $this->Form->button('<i class="fa fa-plus"></i> New Ref', ['label' => false,'class' => 'btn btn-primary new_ref','type'=>'button']); ?>
@@ -150,7 +132,6 @@
 						<td>Ref. Type</td>
 						<td>Ref. No.</td>
 						<td>Credit</td>
-						<td>Debit</td>
 						<td></td>
 						</tr>
 						</thead>
@@ -185,7 +166,6 @@
 			<td>New Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'New Reference']) ?></td>
 			<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control distinctreference','label'=>false,'id'=>'reference_no_2']) ?></td>
 			<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
-			<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
 			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
 			</tr>
 			</tbody>
@@ -196,7 +176,6 @@
 			<td>Agst Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Against Reference']) ?></td>
 			<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control ','label'=>false,'id'=>'reference_no_2']) ?></td>
 			<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
-			<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
 			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
 			</tr>
 			</tbody>
@@ -207,7 +186,6 @@
 			<td>Adv Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Advance Reference']) ?></td>
 			<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control distinctreference','label'=>false,'id'=>'reference_no_2']) ?></td>
 			<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
-			<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
 			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
 			</tr>
 			</tbody>
@@ -219,6 +197,37 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
+	
+	$('select[name="received_from_id"]').live("change",function() {
+		var received_from_id=$(this).val();
+		
+		var url="<?php echo $this->Url->build(['controller'=>'ReceiptVouchers','action'=>'fetchReferenceNo']); ?>";
+		url=url+'/'+received_from_id,
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'text'
+		}).done(function(response) {
+			alert(response);
+		});
+		
+	});
+	$('input[name="amount"]').live("blur",function() {
+		var val=$(this).val();
+		$(this).val(parseFloat($(this).val()).toFixed(2));
+	});
+	
+	
+
+	$('input[name="payment_mode"]').die().live("click",function() {
+		var payment_mode=$(this).val();
+		
+		if(payment_mode=="Cheque"){
+			$("#chq_no").show();
+		}else{
+			$("#chq_no").hide();
+		}
+	});
 	
 	$( document ).on( 'click', '.new_ref', function() {
 		var new_line=$('#new_ref tbody').html();
@@ -341,7 +350,14 @@ $(document).ready(function() {
 					required: true,
 					noSpace: true,
 					notEqualToGroup: ['.distinctreference'],
-					remote:"<?php echo $this->Url->build(['controller'=>'Ledgers','action'=>'check_reference_no']); ?>"
+					remote : {
+                    url: '<?php echo $this->Url->build(['controller'=>'Ledgers','action'=>'check_reference_no']); ?>',
+                    type: "get",
+                    data:
+                        {
+                            ledger_account_id: function(){return $('select[name=received_from_id] option:selected').val();}
+                        },
+					},
 				}
 		},
 		messages: {
@@ -396,163 +412,10 @@ $(document).ready(function() {
 
 	});
 	
-	$('.addrow').die().live("click",function() { 
-		add_row();
-    });
 	
 	
-	$('.deleterow').die().live("click",function() {
-		var l=$(this).closest("table tbody").find("tr").length;
-		if(l>1){
-			$(this).closest('tr').remove();
-			rename_rows_new_ref();
-		}
-    });
 	
-	add_row();
-	function add_row(){
-		var tr1=$("#sample_tb tbody tr").clone();
-		$("#main_tb tbody#main_tbody").append(tr1);
-		rename_rows_new_ref();
-	}
-	
-	function rename_rows_new_ref(){
-		var i=0;
-		$("#main_tb tbody#main_tbody tr").each(function(){
-			$(this).find("td:nth-child(1)").html(++i); i--;
-			$(this).find("td:nth-child(2) select").attr({name:"new_ref_record["+i+"][type]", id:"new_ref_record-"+i+"-type"});
-			
-			var type=$(this).find("td:nth-child(2) option:selected").val();
-			if(type=='On Account' || type==''){
-				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"new_ref_record["+i+"][q]", id:"new_ref_record-"+i+"-q"});
-			}else{
-				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"new_ref_record["+i+"][new_ref_no]", id:"new_ref_record-"+i+"-new_ref_no"});
-			}
-			
-			$(this).find("td:nth-child(4) input").attr({name:"new_ref_record["+i+"][amount]", id:"new_ref_record-"+i+"-amount"});
-			i++;
-			
-		});
-	}
-	
-	$('.type').die().live("change",function() {
-		var type=$(this).find('option:selected').val();
-		if(type=='On Account' || type==''){
-			$(this).closest('tr').find('td:nth-child(3)').find('input:eq(0)').hide();
-		}else{
-			$(this).closest('tr').find('td:nth-child(3)').find('input:eq(0)').show();
-		}
-		rename_rows_new_ref();
-	});
-	
-	
-	$('input[name="amount"]').live("blur",function() {
-		var val=$(this).val();
-		$(this).val(parseFloat($(this).val()).toFixed(2));
-	});
-	
-	$(".check_row").die().live("click",function() {
-		if($(this).is(':checked')){
-			$(this).closest('tr').find('.amount_box').removeAttr('readonly');
-			var invoice_amount=$(this).closest('tr').find('.amount_box').attr('invoice_amount');
-			$(this).closest('tr').find('.amount_box').val(invoice_amount);
-			calculation_for_total();
-		}else{
-			$(this).closest('tr').find('.amount_box').attr('readonly','readonly');
-			$(this).closest('tr').find('.amount_box').val('');
-			calculation_for_total();
-		}
-	});
-	
-		
-	$('select[name="received_from_id"]').die().live("change",function() {
-		var received_from_id=$(this).find('option:selected').val();
-		var url1="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'BillToBillAccount']); ?>";
-		url1=url1+'/'+received_from_id,
-		$.ajax({
-			url: url1,
-		}).done(function(response) {
-			$("#bill_to_bill").val(response);
-			var receipt_mode=$('input[name="receipt_type"]').val();
-			var bill_to_bill=$("#bill_to_bill").val();
-			if((receipt_mode=="Agst Ref")&&(bill_to_bill=='Yes')){
-			$('#bill_to_bill_show').show();
-			}else{
-			$('#bill_to_bill_show').hide();
-			}
-		});
-		
-		
-	$("#pending_invpice_container").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
-		var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'DueInvoicesForReceipt']); ?>";
-		url=url+'/'+received_from_id,
-		$.ajax({
-			url: url,
-		}).done(function(response) {
-			$("#pending_invpice_container").html(response);
-			
-		});
-	});
-	
-	$('input[name="receipt_type"]').die().live("click",function() {
-		var receipt_mode=$(this).val();
-		var bill_to_bill=$("#bill_to_bill").val();
-		if((receipt_mode=="Agst Ref")&&(bill_to_bill=='Yes')){
-			$('#bill_to_bill_show').show();
-		}else{
-			$('#bill_to_bill_show').hide();
-		}
-	});
-	
-		
-	calculation_for_total();
-	
-	$('input').live("keyup",function() {
-		calculation_for_total();
-	});
-	
-	function calculation_for_total(){  
-		var total_left=0; var total_right=0; var sum=0;
-		$("#due_receipt tbody tr.tr1").each(function(){ 
-			var val=$(this).find('td:nth-child(1) input[type="checkbox"]:checked').val();
-			if(val){
-				var qty=parseFloat($(this).find('.amount_box').val());
-				total_left=total_left+qty;
-			} 
-			$('input[name="total_amount_agst"]').val(total_left.toFixed(2));	
-			var total_agst = $('input[name="total_amount_agst"]').val();
-			var total_received_amount= $('#total_received_amount').val();
-			var advance_amt=total_received_amount-total_agst;
-			$('input[name="advance"]').val(advance_amt.toFixed(2));
-			
-		});
-		
-	}
-	$('input[name="payment_mode"]').die().live("click",function() {
-		var payment_mode=$(this).val();
-		
-		if(payment_mode=="Cheque"){
-			$("#chq_no").show();
-		}else{
-			$("#chq_no").hide();
-		}
-	});
 	
 	
 });
 </script>
-
-
-
-<div id="myModal1" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-body" id="result_ajax">
-				Please select received from
-			</div>
-			<div class="modal-footer">
-				<button class="btn default closebtn">Close</button>
-			</div>
-		</div>
-	</div>
-</div>
