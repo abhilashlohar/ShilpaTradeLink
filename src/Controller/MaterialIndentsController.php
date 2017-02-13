@@ -53,13 +53,28 @@ class MaterialIndentsController extends AppController
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($material=null)
     {
+		
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		
+		if(!empty($material)){
+			$Employees=$this->MaterialIndents->Employees->get($s_employee_id);
+			$employee_name=$Employees->name; 
+			$company=$this->MaterialIndents->Companies->get($st_company_id);
+			$company_name=$company->name;
+			$material_items=array();
+			$materials=json_decode($material);
+			foreach($materials as $key=>$value){
+				$item=$this->MaterialIndents->Items->get($key);
+				$item_name=$item->name;
+				$material_items[]=array('item_name'=>$item_name,'item_id'=>$key,'quantity'=>$value,'company_id'=>$st_company_id,'employee_name'=>$employee_name,'company_name'=>$company_name);
+			}
+			$this->set(compact('material_items'));
+		}
+	
 		$job_card_id=@(int)$this->request->query('job-cards');
 		//pr($job_card_id); exit;
 		if(!empty($job_card_id)){
@@ -97,7 +112,9 @@ class MaterialIndentsController extends AppController
 		
 		$materialIndent = $this->MaterialIndents->newEntity();
         if ($this->request->is('post')) {
-			//pr($this->request->data);
+			
+			//echo $this->request->is; 
+			pr($this->request->data['quantity']); exit;
             $materialIndent = $this->MaterialIndents->patchEntity($materialIndent, $this->request->data);
 			//pr($materialIndent); exit;
 			$materialIndent->created_by=$s_employee_id; 
