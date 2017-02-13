@@ -59,15 +59,9 @@ class MaterialIndentRowsTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->integer('quantity')
-            ->requirePresence('quantity', 'create')
-            ->notEmpty('quantity');
+       
 
-        $validator
-            ->integer('approved_purchased_quantity')
-            ->requirePresence('approved_purchased_quantity', 'create')
-            ->notEmpty('approved_purchased_quantity');
+       
 
         return $validator;
     }

@@ -21,7 +21,7 @@ class MaterialIndentsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		
         $this->paginate = [
-            'contain' => ['JobCards']
+            'contain' => []
         ];
 		$materialIndents = $this->paginate($this->MaterialIndents->find()->order(['MaterialIndents.id' => 'DESC']));
        
@@ -55,7 +55,6 @@ class MaterialIndentsController extends AppController
      */
     public function add($material=null)
     {
-		
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
@@ -75,58 +74,18 @@ class MaterialIndentsController extends AppController
 			$this->set(compact('material_items'));
 		}
 	
-		$job_card_id=@(int)$this->request->query('job-cards');
-		//pr($job_card_id); exit;
-		if(!empty($job_card_id)){
-			$jobCards = $this->MaterialIndents->JobCards->get($job_card_id, [
-				'contain' => ['JobCardRows'=> ['Items'],'Customers']
-			]);
-			
-			$query = $this->MaterialIndents->ItemLedgers->find();
-			$totalInCase = $query->newExpr()
-				->addCase(
-					$query->newExpr()->add(['in_out' => 'In']),
-					$query->newExpr()->add(['quantity']),
-					'integer'
-				);
-			$totalOutCase = $query->newExpr()
-				->addCase(
-					$query->newExpr()->add(['in_out' => 'Out']),
-					$query->newExpr()->add(['quantity']),
-					'integer'
-				);
 
-			$query->select([
-				'total_in' => $query->func()->sum($totalInCase),
-				'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
-			])
-			->group('item_id');
-			
-			$current_stock=[];
-			foreach($query as $data){
-				$current_stock[$data->item_id]=['total_in'=>$data->total_in,'total_out'=>$data->total_out];
-				
-			} 
-			//pr($current_stock); exit;
-		}
 		
 		$materialIndent = $this->MaterialIndents->newEntity();
         if ($this->request->is('post')) {
 			
-			//echo $this->request->is; 
-			pr($this->request->data['quantity']); exit;
             $materialIndent = $this->MaterialIndents->patchEntity($materialIndent, $this->request->data);
-			//pr($materialIndent); exit;
 			$materialIndent->created_by=$s_employee_id; 
-			$materialIndent->job_card_id=$job_card_id;
 			$materialIndent->created_on=date("Y-m-d");
 			$materialIndent->company_id=$st_company_id;
-			$materialIndent->required_date=date("Y-m-d",strtotime($materialIndent->required_date)); 
-					
-			//pr($materialIndent->required_date); exit;
-			
+			pr($materialIndent); exit;
             if ($this->MaterialIndents->save($materialIndent)) {
-				
+				//pr($materialIndent); exit;
 				
 				
                 $this->Flash->success(__('The material indent has been saved.'));
@@ -136,17 +95,17 @@ class MaterialIndentsController extends AppController
                 $this->Flash->error(__('The material indent could not be saved. Please, try again.'));
             }
         }
-		$last_mi_no=$this->MaterialIndents->find()->select(['mi2'])->where(['company_id' => $st_company_id])->order(['mi2' => 'DESC'])->first();
+		/* $last_mi_no=$this->MaterialIndents->find()->select(['mi2'])->where(['company_id' => $st_company_id])->order(['mi2' => 'DESC'])->first();
 			if($last_mi_no){
 				@$last_mi_no->mi2=$last_mi_no->mi2+1;
 			}else{
 				@$last_mi_no->mi2=1;
-			}
+			} */
 		
         $companies = $this->MaterialIndents->Companies->find('list', ['limit' => 200]);
         $items = $this->MaterialIndents->Items->find('list', ['limit' => 200]);
         //$jobCards = $this->MaterialIndents->JobCards->find('list', ['limit' => 200]);
-        $this->set(compact('materialIndent', 'companies', 'jobCards','items','current_stock','last_mi_no'));
+        $this->set(compact('materialIndent', 'companies','items','current_stock'));
         $this->set('_serialize', ['materialIndent']);
     }
 
