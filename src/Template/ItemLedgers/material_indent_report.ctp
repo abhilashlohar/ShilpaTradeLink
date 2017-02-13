@@ -60,7 +60,7 @@
 
 $(document).ready(function() {
 	$('.rename_check').die().live("click",function() {
-		alert();
+		
 		//rename_rows();
     })	
 });		
