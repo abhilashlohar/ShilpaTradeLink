@@ -80,8 +80,28 @@ With reference to your price list we are pleased to place an order for the follo
 								<th width="70"></th>
 							</tr>
 						</thead>
-						<tbody>
-							
+						
+						<tbody><?php if(!empty($material_items_for_purchases)){  ?>
+							<?php $q=1; foreach ($material_items_for_purchases as $material_items_for_purchase): ?>
+								<tr class="tr1" row_no='<?php echo @$material_items_for_purchase->item_id; ?>'>
+									<td rowspan="2"><?= h($q) ?></td>
+									<td>
+									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'type'=>'hidden','value'=>$material_items_for_purchase['item_id']]); ?>
+									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.material_indent_id', ['label' => false,'type'=>'hidden','value'=>$material_items_for_purchase['material_indent_id']]);  ?>
+									<?php echo $material_items_for_purchase['item_name']; ?></td>
+									<td><?php echo $material_items_for_purchase['quantity']; ?>
+									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['label' => false,'type'=>'hidden','value'=>$material_items_for_purchase['quantity']]); ?></td>
+									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.rate', ['label' => false,'type'=>'text']); ?></td>
+									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.amount', ['label' => false,'type'=>'text']); ?></td>
+									<td></td>
+									
+								</tr>
+								<tr class="tr2" row_no='<?php echo @$material_items_for_purchase->item_id; ?>'>
+									<td colspan="5"><?php echo $this->Form->textarea('purchase_order_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'5',]); ?></td>
+									<td></td>
+								</tr>
+						<?php $q++; endforeach; ?>
+						<?php } ?>
 						</tbody>
 						<tfoot>
 						
@@ -240,7 +260,7 @@ $( "#sortable" ).disableSelection();
 } );
 </script>
 <script>
-$(document).ready(function() {
+$(document).ready(function() { 
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -266,7 +286,6 @@ $(document).ready(function() {
 				po4:{
 					required: true,
 				},
-				
 			},
 		},
 		messages: { // custom messages for radio buttons and checkboxes
@@ -300,7 +319,7 @@ $(document).ready(function() {
 		invalidHandler: function (event, validator) { //display error alert on form submit   
 			success3.hide();
 			error3.show();
-			//Metronic.scrollTo(error3, -200);
+			Metronic.scrollTo(error3, -200);
 		},
 
 		highlight: function (element) { // hightlight error inputs
@@ -326,47 +345,16 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+
 	
 	
-	$('.quantity').die().live("keyup",function() {
-		var asc=$(this).val();
-		var numbers =  /^[0-9]*\.?[0-9]*$/;
-		if(asc==0)
-		{
-			$(this).val('');
-			return false; 
-		}
-		else if(asc.match(numbers))  
-		{  
-		} 
-		else  
-		{  
-			$(this).val('');
-			return false;  
-		}
-	});
+		<?php if(empty($purchaseOrder->purchase_order_rows)){ ?>
+		add_row();
+		<?php } ?> 
 	
-		$("#saletax").on('click',function(){
-			if($(this).is(':click')){ 
-				$("#pnf_text").show();
-				$('input[name="pnf"]').css('display','block');
-			}else{
-				$("#pnf_text").hide();
-				$('input[name="pnf"]').removeAttr('readonly');
-			}
-		});
-		
-		$("#pnfper").on('click',function(){
-		if($(this).is(':checked')){
-			$("#pnf_text").show();
-			$('input[name="pnf"]').attr('readonly','readonly');
-		}else{
-			$("#pnf_text").hide();
-			$('input[name="pnf"]').removeAttr('readonly');
-		}
-	});
 	
-	$("#discount_per").on('click',function(){
+	
+		$("#discount_per").on('click',function(){
 		if($(this).is(':checked')){
 			$("#discount_text").show();
 			$('input[name="discount"]').attr('readonly','readonly');
@@ -375,19 +363,21 @@ $(document).ready(function() {
 			$('input[name="discount"]').removeAttr('readonly');
 		}
 		calculate_total();
-	});
+	})
 
 	$('select[name="company_id"]').on("change",function() {
 		var alias=$('select[name="company_id"] option:selected').attr("alias");
 		$('input[name="po1"]').val(alias);
     });
+
+	rename_rows();
+	calculate_total();
 	
-	add_row();
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
 	
-	function add_row(){
+	function add_row(){  
 		var tr1=$("#sample_tb tbody tr.tr1").clone();
 		$("#main_tb tbody").append(tr1);
 		var tr2=$("#sample_tb tbody tr.tr2").clone();
@@ -416,28 +406,33 @@ $(document).ready(function() {
 		} 
     });
 	
-	function rename_rows(){
-	var i=0;
-		$("#main_tb tbody tr.tr1").each(function(){
-			i++;
-			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").select2().attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"}).rules("add", "required");
-			$(this).find("td:nth-child(3) input").attr({name:"purchase_order_rows["+i+"][quantity]", id:"purchase_order_rows-"+i+"-quantity"}).rules("add", "required");
-			$(this).find("td:nth-child(4) input").attr({name:"purchase_order_rows["+i+"][rate]", id:"purchase_order_rows-"+i+"-rate"}).rules("add", "required");
-			$(this).find("td:nth-child(5) input").attr("name","purchase_order_rows["+i+"][amount]");
-		});
-		var i=0;
-		
-		$("#main_tb tbody tr.tr2").each(function(){
-			i++;
-			$(this).find("td:nth-child(1) textarea").attr({name:"purchase_order_rows["+i+"][description]", id:"purchase_order_rows-"+i+"-description"}).rules("add", "required");
-		});
-		
-			
-	}
 	
-	$('#main_tb input').die().live("keyup","blur",function() { 
-	calculate_total();
+	function rename_rows(){
+			var i=0;
+			$("#main_tb tbody tr.tr1").each(function(){
+				i++;
+				$(this).find("td:nth-child(1)").html(i);
+				var mi=$(this).find("td:nth-child(2) input[type='hidden']:nth-child(2)").val();
+				//alert(mi);
+				if(mi=0){
+					$(this).find("td:nth-child(2) input[type='hidden']:td:nth-child(1)").attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"});
+					$(this).find("td:nth-child(2) input[type='hidden']:td:nth-child(2)").attr({name:"purchase_order_rows["+i+"][material_indent_id]", id:"purchase_order_rows-"+i+"-material_indent_id"});
+				}else{
+					$(this).find("td:nth-child(2) select").select2().attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"});
+				}
+				
+				$(this).find("td:nth-child(3) input").attr({name:"purchase_order_rows["+i+"][quantity]", id:"purchase_order_rows-"+i+"-quantity"}).rules("add", "required");
+				$(this).find("td:nth-child(4) input").attr({name:"purchase_order_rows["+i+"][rate]", id:"purchase_order_rows-"+i+"-rate"}).rules("add", "required");
+				$(this).find("td:nth-child(5) input").attr("name","purchase_order_rows["+i+"][amount]");
+			});
+			var i=0;
+			$("#main_tb tbody tr.tr2").each(function(){ 
+				i++;
+				$(this).find("td:nth-child(1) textarea").attr({name:"purchase_order_rows["+i+"][description]", id:"purchase_order_rows-"+i+"-description"}).rules("add", "required");
+			});
+		}
+		$('#main_tb input').die().live("keyup","blur",function() { 
+		calculate_total();
     });
 	
 	function calculate_total(){
@@ -450,19 +445,26 @@ $(document).ready(function() {
 			total=total+Amount;
 		});
 		$('input[name="total"]').val(total.toFixed(2));
+		
 	}
 	
-	$('select[name=sale_tax_per]').die().live("change",function() {
+	$('select[name=sale_tax_per]').die().live("change",function() { 
 		var description=$('select[name=sale_tax_per] option:selected').attr('description');
+		//alert(description);
 		$('input[name=sale_tax_description]').val(description);
     });
+	
+	/* $('select[name=sale_tax_per]').die().live("change",function() {
+		var description=$('select[name=sale_tax_per] option:selected').attr('description');
+		$('input[name=sale_tax_description]').val(description);
+    }); */
 });
 </script>
-<table id="sample_tb" style="display:none;">
+<table id="sample_tb" style="display:;">
 	<tbody>
 		<tr class="tr1">
 			<td rowspan="2" width="10">0</td>
-			<td><?php echo $this->Form->input('q', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen']); ?></td>
+			<td><?php echo $this->Form->input('q', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm ']); ?></td>
 			<td width="100"><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
 			<td width="130"><?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate']); ?></td>
 			<td width="130"><?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>

@@ -59,6 +59,12 @@ class MaterialIndentsController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		
+		$material_items_for_purchase=[];
+		$material_items_for_purchase[]=array('item_name'=>'Kgn212','item_id'=>'144','quantity'=>'25','company_id'=>'25','employee_name'=>'Gopal','company_name'=>'STL','material_indent_id'=>'2');
+		$to=json_encode($material_items_for_purchase);
+		$this->redirect(['controller'=>'PurchaseOrders','action' => 'add/'.$to.'']);
+		
 		if(!empty($material)){
 			$Employees=$this->MaterialIndents->Employees->get($s_employee_id);
 			$employee_name=$Employees->name; 
@@ -73,7 +79,7 @@ class MaterialIndentsController extends AppController
 			}
 			$this->set(compact('material_items'));
 		}
-	
+
 		
 		
 		$materialIndent = $this->MaterialIndents->newEntity();
@@ -126,9 +132,14 @@ class MaterialIndentsController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
         $materialIndent = $this->MaterialIndents->get($id, [
-            'contain' => []
-        ]);
+            'contain' => ['MaterialIndentRows'=>['Items']]
+        ]); 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $materialIndent = $this->MaterialIndents->patchEntity($materialIndent, $this->request->data);
             if ($this->MaterialIndents->save($materialIndent)) {
@@ -140,7 +151,7 @@ class MaterialIndentsController extends AppController
             }
         }
         $companies = $this->MaterialIndents->Companies->find('list', ['limit' => 200]);
-        $jobCards = $this->MaterialIndents->JobCards->find('list', ['limit' => 200]);
+      
         $this->set(compact('materialIndent', 'companies', 'jobCards'));
         $this->set('_serialize', ['materialIndent']);
     }

@@ -72,7 +72,7 @@ class PurchaseOrderRowsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['purchase_order_id'], 'PurchaseOrders'));
-        $rules->add($rules->existsIn(['item_id'], 'Items'));
+        //$rules->add($rules->existsIn(['item_id'], 'Items'));
 
         return $rules;
     }

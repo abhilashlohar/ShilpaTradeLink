@@ -140,7 +140,7 @@
 							$item_ar[$invoice_row->item_id]=$invoice_row->quantity;
 						}
 					}
-					$q=1; foreach ($salesOrder->sales_order_rows as $sales_order_rows): 
+					$q=0; foreach ($salesOrder->sales_order_rows as $sales_order_rows): 
 					if(@$item_ar[$sales_order_rows->item_id]==$sales_order_rows->quantity){
 						$disable_class="disabledbutton";
 					}else{ $disable_class=""; } ?>
@@ -207,18 +207,18 @@
 						<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 					</tr>
 					<tr class="tr2 <?php echo $disable_class; ?> main_tr" row_no='<?php echo @$sales_order_rows->id; ?>'>
-						<td colspan="6">
-						<div contenteditable="true" id="editor" name="<?php echo 'sales_order_rows['.$q.'][description]'; ?>"><?php echo @$sales_order_rows->description; ?></div>
-						<?php echo $this->Form->textarea('sales_order_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','style'=>['display:none'],'placeholder' => 'Description','required','value'=>$sales_order_rows->description]); ?>
+						<td colspan="6" class="main">
+							<div class="note-editable"><?php echo $sales_order_rows->description; ?></div>
 						</td>
 						<td></td>
 					</tr>
+
 					<?php $q++; endforeach; ?>
 				</tbody>
 			</table>
 			<table class="table tableitm" id="tbl2">
 				<tr>
-					<td  align="right">
+					<td  align="right" class="main">
 					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discountper']); ?></label>(in %)</b>
 					
 					<?php if($salesOrder->discount_type=='1'){ ?>
@@ -535,6 +535,7 @@ $(document).ready(function() {
 		},
 
 		invalidHandler: function (event, validator) { //display error alert on form submit   
+			put_code_description();
 			success3.hide();
 			error3.show();
 			//Metronic.scrollTo(error3, -200);
@@ -556,6 +557,7 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			put_code_description();
 			success3.show();
 			error3.hide();
 			form[0].submit(); // submit the form
@@ -654,10 +656,10 @@ $(document).ready(function() {
 		});
 	
 	function rename_rows(){
-		var i=1; 
+		var i=0; 
 		$("#main_tb tbody tr.tr1").each(function(){
 			$(this).find('span.help-block-error').remove();
-			$(this).find("td:nth-child(1)").html(i);
+			$(this).find("td:nth-child(1)").html(++i); i--;
 			$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 			$(this).find("td:nth-child(2) input[type=hidden]:eq(0)").attr({name:"sales_order_rows["+i+"][height]", id:"sales_order_rows-"+i+"-height"});
 			$(this).find("td:nth-child(2) input[type=hidden]:eq(1)").attr({name:"sales_order_rows["+i+"][processed_quantity]", id:"sales_order_rows-"+i+"-processed_quantity"});
@@ -684,17 +686,36 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(7) input:eq( 1 )").val(ledger_account_id);
 		i++; });
 		
-		var i=1;
+		var i=0;
 		$("#main_tb tbody tr.tr2").each(function(){
-			$(this).find("td:nth-child(1) textarea").attr("name","sales_order_rows["+i+"][description]");
-			$(this).find('td:nth-child(1) div#editor').attr({name:"sales_order_rows["+i+"][description]"});
+		var htm=$(this).find('td:nth-child(1)').find('div.note-editable').html();
+			
+			if(!htm){ htm=""; }
+			$(this).find('td:nth-child(1)').html('');
+			$(this).find('td:nth-child(1)').append('<div id=summer'+i+'>'+htm+'</div>');
+			$(this).find('td:nth-child(1)').find('div#summer'+i).summernote();
+			$(this).find('td.main:nth-child(1)').append('<textarea name="sales_order_rows['+i+'][description]"style="display:none;"></textarea>');
+
 
 		i++; });
 		calculate_total();
 	}
 	
 		
-
+	function put_code_description(){
+			var i=0;
+			$("#main_tb tbody#main_tbody tr.tr2").each(function(){
+				var code=$(this).find('div#summer'+i).code();
+				$(this).find('td:nth-child(1) textarea').val(code);
+			i++; });
+		}
+	
+	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
+		calculate_total();
+    });
+	$('#main_tb select').die().live("change",function() {
+		calculate_total();
+    });
 		
 	
 		function calculate_total(){ 
