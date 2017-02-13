@@ -58,7 +58,7 @@ class ReceiptVouchersController extends AppController
 	public function fetchReferenceNo($ledger_account_id=null)
     {
 		$this->viewBuilder()->layout('ajax_layout');
-		echo $ledger_account_id;
+	
 		$ReferenceDetails=$this->ReceiptVouchers->ReferenceBalances->find()->where(['ledger_account_id' => $ledger_account_id])->toArray();
 		$this->set(compact(['ReferenceDetails']));
 	}
@@ -73,31 +73,43 @@ class ReceiptVouchersController extends AppController
 		$financial_year = $this->ReceiptVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
         
         if ($this->request->is('post')) {
-			//pr($this->request->data);
-			//exit;
+			
 			$total_row=sizeof($this->request->data['reference_no']);
+			exit;
 			for($row=0; $row<$total_row; $row++)
 		    {
 				////////////////  ReferenceDetails ////////////////////////////////
 				$query1 = $this->ReceiptVouchers->ReferenceDetails->query();
-				$query1->insert(['reference_no', 'ledger_account_id', 'credit', 'debit', 'reference_type'])
+				$query1->insert(['reference_no', 'ledger_account_id', 'debit', 'reference_type'])
 				->values([
 					'ledger_account_id' => $this->request->data['received_from_id'],
 					'reference_no' => $this->request->data['reference_no'][$row],
-					'credit' => $this->request->data['credit'][$row],
+					'debit' => $this->request->data['debit'][$row],
 					'reference_type' => $this->request->data['reference_type'][$row]
 				])
 				->execute();
 				
 				////////////////  ReferenceBalances ////////////////////////////////
-				$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
-				$query2->insert(['reference_no', 'ledger_account_id', 'credit', 'debit'])
-				->values([
-					'reference_no' => $this->request->data['reference_no'][$row],
-					'ledger_account_id' => $this->request->data['received_from_id'],
-					'credit' => $this->request->data['credit'][$row],
-				])
-				->execute();
+				if($this->request->data['reference_type'][$row]=='Against Reference')
+				{
+					$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
+					$query2->update()
+						->set(['debit' => $this->request->data['debit'][$row]])
+						->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['received_from_id']])
+						->execute();
+				}
+				else
+				{
+					$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
+					$query2->insert(['reference_no', 'ledger_account_id', 'debit'])
+					->values([
+						'reference_no' => $this->request->data['reference_no'][$row],
+						'ledger_account_id' => $this->request->data['received_from_id'],
+						'debit' => $this->request->data['debit'][$row],
+					])
+					->execute();
+				}
+				
 			}
 			
 			$last_ref_no=$this->ReceiptVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();

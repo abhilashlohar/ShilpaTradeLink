@@ -1,5 +1,15 @@
 <?php
-
-pr($ReferenceDetails);
-
+ $this->Form->templates([
+				'inputContainer' => '{{content}}'
+			]); 
+		
+foreach($ReferenceDetails as $ReferenceDetail)
+{
+	$amount=$ReferenceDetail->credit-$ReferenceDetail->debit;
+	if($amount>0)
+	{
+		$itemGroups[]=['text'=>$ReferenceDetail->reference_no, 'value' =>$ReferenceDetail->reference_no,  'amount' => $amount];
+	}
+}
 ?>
+<?php echo $this->Form->input('against_references_no', ['empty'=>'--Select-','label' => false,'options' =>$itemGroups,'class' => 'form-control input-sm select2me']); ?>

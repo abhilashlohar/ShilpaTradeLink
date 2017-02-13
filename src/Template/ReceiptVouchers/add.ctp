@@ -131,7 +131,7 @@
 						<tr>
 						<td>Ref. Type</td>
 						<td>Ref. No.</td>
-						<td>Credit</td>
+						<td>Amount</td>
 						<td></td>
 						</tr>
 						</thead>
@@ -165,17 +165,17 @@
 			<tr>
 			<td>New Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'New Reference']) ?></td>
 			<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control distinctreference','label'=>false,'id'=>'reference_no_2']) ?></td>
-			<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
+			<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
 			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
 			</tr>
 			</tbody>
 		</table>
 		<table class="table table-bordered" id="agst_ref" style="display:none;">
 		<tbody>
-			<tr>
-			<td>Agst Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Against Reference']) ?></td>
-			<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control ','label'=>false,'id'=>'reference_no_2']) ?></td>
-			<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
+			<tr class="against_references_no">
+			<td>Agst Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Against Reference']) ?><?= $this->Form->hidden('reference_no[]',['type'=>'text','class'=>'form-control ','label'=>false,'id'=>'reference_no_2']) ?></td>
+			<td id="against_references_no"></td>
+			<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
 			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
 			</tr>
 			</tbody>
@@ -185,7 +185,7 @@
 			<tr>
 			<td>Adv Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Advance Reference']) ?></td>
 			<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control distinctreference','label'=>false,'id'=>'reference_no_2']) ?></td>
-			<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
+			<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
 			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
 			</tr>
 			</tbody>
@@ -198,6 +198,17 @@
 <script>
 $(document).ready(function() {
 	
+	/*$( document ).on( 'keyup', 'input[name="debit[]"]', function() {
+		
+	});*/
+	
+	$('select[name="against_references_no"]').live("change",function() {
+		var against_references_no=$(this).val();
+		var amount=eval($('option:selected',this).attr('amount'));
+		
+		$(this).closest('tr').find('input[name="reference_no[]"]').val(against_references_no);
+		$(this).closest('tr').find('input[name="debit[]"]').val(amount);
+	});
 	$('select[name="received_from_id"]').live("change",function() {
 		var received_from_id=$(this).val();
 		
@@ -208,11 +219,12 @@ $(document).ready(function() {
 			type: 'GET',
 			dataType: 'text'
 		}).done(function(response) {
-			alert(response);
+			$("#main_table tbody").find('tr.against_references_no').remove();
+			$('#against_references_no').html(response);
 		});
 		
 	});
-	$('input[name="amount"]').live("blur",function() {
+	$('input[name="amount"],[name^=debit]').live("blur",function() {
 		var val=$(this).val();
 		$(this).val(parseFloat($(this).val()).toFixed(2));
 	});
@@ -339,6 +351,7 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
+		gnore: ":hidden",
 		rules: {
 			advance: {
 				min:0,
@@ -405,9 +418,27 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			success3.show();
-			error3.hide();
-			form[0].submit(); // submit the form
+			var amount=parseFloat($('input[name="amount"]').val());
+		
+				var debit=0;
+				$("[name^=debit]").each(function () {
+					debit=debit+parseFloat($(this).val());
+					
+				});
+				
+				if(amount==debit)
+				{
+					success3.show();
+					error3.hide();
+					form[0].submit();
+				}
+				else
+				{
+					alert("Amount mismatch.");
+				}
+				
+			
+			// // submit the form
 		}
 
 	});
