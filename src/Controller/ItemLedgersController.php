@@ -205,8 +205,10 @@ class ItemLedgersController extends AppController
 			foreach($check as $item_id){
 				$to_send[$item_id]=$suggestindent[$item_id];
 			}
-			echo json_encode($to_send); exit;
 
+			$to=json_encode($to_send); 
+			//rwjihf dfgdf?3qrrg
+			$this->redirect(['controller'=>'MaterialIndents','action' => 'add/'.$to.'']);
 		}
 		
 		$salesOrders=$this->ItemLedgers->SalesOrders->find()

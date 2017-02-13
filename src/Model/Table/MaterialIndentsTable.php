@@ -40,7 +40,7 @@ class MaterialIndentsTable extends Table
 		$this->belongsTo('Customers');
 		$this->belongsTo('Items');
 		$this->belongsTo('ItemLedgers');
-	
+	   $this->belongsTo('Employees');
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
