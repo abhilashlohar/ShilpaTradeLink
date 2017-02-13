@@ -206,7 +206,6 @@ class ItemLedgersController extends AppController
 				$to_send[$item_id]=$suggestindent[$item_id];
 			}
 			echo json_encode($to_send); exit;
-			//rwjihf dfgdf?3qrrg
 
 		}
 		
