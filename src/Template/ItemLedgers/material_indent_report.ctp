@@ -71,8 +71,7 @@
 
 $(document).ready(function() {
 	$('.rename_check').die().live("click",function() {
-		//alert();
-		rename_rows();
+ 		rename_rows();
     })
 	var p=0;
 	function rename_rows(){ 
@@ -86,15 +85,11 @@ $(document).ready(function() {
 				$(this).find('td:nth-child(7) input[type="hidden"]:nth-child(1)').attr({ name:"item_id"}).val(val);
 				$(this).find('td:nth-child(7) input[type="hidden"]:nth-child(2)').attr({ name:"suggestindent"}).val(suggestindent);
 				$(this).find('td:nth-child(7) input[type="hidden"]:nth-child(3)').attr({ name:"qty"}).val(qty); */
-				
-				
-				$(this).css('background-color','#fffcda');
-				
-			}else{
+ 				$(this).css('background-color','#fffcda');
+ 			}else{
 				/* $(this).find('td:nth-child(2) input').attr({ name:"q"});
 				$(this).find('td:nth-child(3) input').attr({ name:"q", id:"q",readonly:"readonly"}); */
-				
-				$(this).css('background-color','#FFF');
+ 				$(this).css('background-color','#FFF');
 				
 			}
 		});
