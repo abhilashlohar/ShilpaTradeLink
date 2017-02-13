@@ -14,14 +14,14 @@
 <br>
 <div style="border:solid 3px #0685a8;margin-bottom:5px;margin-top: 5px;"></div></br>
 <div class="portlet-body form">
-<?= $this->Form->create($materialIndent)?>
+<?= $this->Form->create($materialIndent); ?>
 <div class="form-body">
  <div class="row">
 	<div class="col-md-4">
 		<div class="form-group">
 			<label class="col-md-5" style="font-size:118%"><b>Material Indent No:</b></label>
 			<div class="col-md-7">
-			<?= h($materialIndent->mi1.'/MI'.str_pad($materialIndent->mi2, 3, '0', STR_PAD_LEFT).'/'.$materialIndent->mi3.'/'.$materialIndent->mi4) ?>
+			<?=  h($materialIndent->mi1.'/MI'.str_pad($materialIndent->mi2, 3, '0', STR_PAD_LEFT).'/'.$materialIndent->mi3.'/'.$materialIndent->mi4) ?>
 			 </div>
 		</div>
 	</div>

@@ -41,7 +41,7 @@ class MaterialIndentsController extends AppController
     {
         $this->viewBuilder()->layout('index_layout');
 		$materialIndent = $this->MaterialIndents->get($id, [
-            'contain' => ['Companies','Creator', 'JobCards'=>['Customers'], 'MaterialIndentRows'=>['Items']]
+            'contain' => ['Companies','Creator',  'MaterialIndentRows'=>['Items']]
         ]);
 
         $this->set('materialIndent', $materialIndent);
@@ -74,9 +74,17 @@ class MaterialIndentsController extends AppController
 			$this->set(compact('material_items'));
 		}
 	
-
+		
 		
 		$materialIndent = $this->MaterialIndents->newEntity();
+		
+		$last_company_no=$this->MaterialIndents->find()->select(['mi_number'])->where(['company_id' => $st_company_id])->order(['mi_number' => 'DESC'])->first();
+		if(!empty($last_company_no)){
+			$materialIndent->mi_number=$last_company_no->mi_number+1;
+		}else{
+			$materialIndent->mi_number=1;
+		}
+		
         if ($this->request->is('post')) {
 			
             $materialIndent = $this->MaterialIndents->patchEntity($materialIndent, $this->request->data);
