@@ -94,5 +94,8 @@ $(document).ready(function() {
 			}
 		});
 	}	
+		
+		//rename_rows();
+    
 });		
 </script>
