@@ -39,7 +39,11 @@
 						<td><?php echo @$sales_order; ?></td>
 						<td><?php echo $job_card_qty; ?></td>
 						<td><?php echo $Current_Stock-@$sales_order-$job_card_qty; ?></td>
+<<<<<<< HEAD
 						<td><label><?php echo $this->Form->input('check[]', ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$item_id,'hiddenField'=>false]);  ?>
+=======
+						<td><label><?php echo $this->Form->input('check[]', ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$item_id,'hiddenField'=>false]);?>
+>>>>>>> origin/master
 						
 						<?php echo $this->Form->input('suggestindent.'.$item_id, ['label' => false,'type'=>'hidden','value' => @abs($Current_Stock-@$sales_order-$job_card_qty)]); ?>
 						
