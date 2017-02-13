@@ -126,9 +126,14 @@ class MaterialIndentsController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$s_employee_id=$this->viewVars['s_employee_id'];
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
         $materialIndent = $this->MaterialIndents->get($id, [
-            'contain' => []
-        ]);
+            'contain' => ['MaterialIndentRows'=>['Items']]
+        ]); 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $materialIndent = $this->MaterialIndents->patchEntity($materialIndent, $this->request->data);
             if ($this->MaterialIndents->save($materialIndent)) {
@@ -140,7 +145,7 @@ class MaterialIndentsController extends AppController
             }
         }
         $companies = $this->MaterialIndents->Companies->find('list', ['limit' => 200]);
-        $jobCards = $this->MaterialIndents->JobCards->find('list', ['limit' => 200]);
+       // $jobCards = $this->MaterialIndents->JobCards->find('list', ['limit' => 200]);
         $this->set(compact('materialIndent', 'companies', 'jobCards'));
         $this->set('_serialize', ['materialIndent']);
     }
