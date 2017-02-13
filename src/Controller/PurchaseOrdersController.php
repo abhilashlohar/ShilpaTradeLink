@@ -80,13 +80,29 @@ class PurchaseOrdersController extends AppController
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($material=null)
     {
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$Company = $this->PurchaseOrders->Companies->get($st_company_id);
+		
+		if(!empty($material)){ //
+			$Employees=$this->PurchaseOrders->Employees->get($s_employee_id);
+			$employee_name=$Employees->name; 
+			$company=$this->PurchaseOrders->Companies->get($st_company_id);
+			$company_name=$company->name;
+			$material_items=array(); 
+			//$materials=json_decode($material);
+			//echo $materials; exit;
+			$material_items_for_purchases=[];
+				$material_items_for_purchases[]=array('item_name'=>'Kgn212','item_id'=>'144','quantity'=>'25','company_id'=>'25','employee_name'=>'Gopal','company_name'=>'STL','material_indent_id'=>'2');
+			//pr($material_items_for_purchase); exit;
+			$this->set(compact('material_items_for_purchases'));
+		}
+		
+		
 		//pr($Company); exit;
         $purchaseOrder = $this->PurchaseOrders->newEntity();
         if ($this->request->is('post')) {
@@ -97,19 +113,21 @@ class PurchaseOrdersController extends AppController
 				$purchaseOrder->po2=1;
 			}
             $purchaseOrder = $this->PurchaseOrders->patchEntity($purchaseOrder, $this->request->data);
+			
 			$purchaseOrder->delivery_date=date("Y-m-d",strtotime($purchaseOrder->delivery_date));
 			$purchaseOrder->created_by=$s_employee_id; 
 			$purchaseOrder->company_id=$st_company_id;
 			$purchaseOrder->sale_tax_description=$purchaseOrder->sale_tax_description; 
 			//pr($purchaseOrder->material_to_be_transported);exit;
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
+			
             if ($this->PurchaseOrders->save($purchaseOrder)) {
-				//pr($purchaseOrder);exit;
+				//pr($purchaseOrder); exit;
 				
                 $this->Flash->success(__('The purchase order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else {
+            } else { pr($purchaseOrder); exit;
                 $this->Flash->error(__('The purchase order could not be saved. Please, try again.'));
             }
         }
