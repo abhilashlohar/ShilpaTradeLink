@@ -83,7 +83,7 @@ class MaterialIndentsController extends AppController
 			$materialIndent->created_by=$s_employee_id; 
 			$materialIndent->created_on=date("Y-m-d");
 			$materialIndent->company_id=$st_company_id;
-			pr($materialIndent); exit;
+			
             if ($this->MaterialIndents->save($materialIndent)) {
 				//pr($materialIndent); exit;
 				
