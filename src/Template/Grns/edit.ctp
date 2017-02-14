@@ -91,7 +91,6 @@
 								foreach($data->grn_rows as $data2){
 									//pr(@$data2->quantity);
 									$processed_items[$data2->item_id]=@$processed_items[$data2->item_id]+$data2->quantity;
-									
 								}
 							}
 							foreach($grn->purchase_order->purchase_order_rows as $data3){
