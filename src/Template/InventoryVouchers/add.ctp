@@ -58,17 +58,17 @@
 		<?php } ?>
 		</div>
 		<div class="row">
-		<div class="col-md-6"> 
+		<div class="col-md-8"> 
 		<table id="main_table" class="table table-bordered">
 			<tbody id="maintbody">
 			<?php $i=0; foreach($JobCardRows as $job_card_row){ ?>
 				<tr class="tr1 preimp" row_no='<?php echo $i; ?>'>
-					<td width="70%">
+					<td width="60%">
 					<?php echo $this->Form->input('invoice_id', ['type'=>'hidden','value' => @$invoice_row->invoice_id]); ?>
-					<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm select_item','value' => $job_card_row->item_id]); ?>
+					<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.item_id', ['options' => $items,'empty'=>'--select--','label' => false,'class' => 'form-control input-sm select_item','value' => $job_card_row->item_id]); ?>
 					</td>
 					<td>
-					<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => $job_card_row->quantity]); ?>
+					<?php echo $this->Form->input('inventory_voucher_rows.'.$i.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm qty_bx','value' => $job_card_row->quantity]); ?>
 					
 					<?php 
 					$options1=[];
@@ -77,8 +77,7 @@
 					} ?>
 					<div class="serial_containor">
 					<?php if($options1) { ?>
-						
-						<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','required','style'=>'width:100%']);  ?></td>
+						<?php echo $this->Form->input('q', ['label'=>'Select Serial Number','options' => $options1,'multiple' => 'multiple','class'=>'form-control ','required','style'=>'width:100%']);  ?></td>
 					<?php } ?>
 					</div>
 					</td>
@@ -109,7 +108,6 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
-		ignore: "textarea:hidden",
 		rules: {
 			item_serial_numbers:{
 				required: true,
@@ -140,42 +138,63 @@ $(document).ready(function() {
 			}
 		} 
     });
-	function rename_rows_name(){ 
-		var i=0; 
-		var j=0; 
-		
-			$("#main_table tbody#maintbody tr.tr1").each(function(){
-				
-				$(this).find("td:nth-child(1) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2();
-				$(this).find("td:nth-child(2) input").attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"});
-				i++;
-				});
-			$("#main_table tbody#maintbody tr.tr2").each(function(){
-				var row_no=$(this).closest('tr').attr('row_no');
-				var qty=$('#main_table tbody#maintbody tr.tr1[row_no='+row_no+']').find("td:nth-child(2) input").val();
-				//alert(qty);
-				$(this).find("td:nth-child(2) select").attr({name:"inventory_voucher_rows["+j+"][item_serial_numbers][]",id:"inventory_voucher_rows-"+j+"-item_serial_no"}).select2();
-				j++;
-				});	
-											
-	}
+	
+	$('.qty_bx').die().live("keyup",function() {
+		validate_serial();
+    });
+	
 	$('.select_item').die().live("change",function() {
 		var t=$(this);
   		var select_item_id=$(this).find('option:selected').val();
-		
 		var url1="<?php echo $this->Url->build(['controller'=>'InventoryVouchers','action'=>'ItemSerialNumber']); ?>";
 		url1=url1+'/'+select_item_id,
 		$.ajax({
 			url: url1,
-		}).done(function(response) { 
+		}).done(function(response) {
+			alert(response);
   			$(t).closest('tr').find('div.serial_containor').html(response);
 			$(t).closest('tr').find('div.serial_containor select').select2();
 			rename_rows_name();
 		});
-		
-		
-		
 	});
+	
+	
+	validate_serial();
+	function validate_serial(){
+		$("#main_table tbody#maintbody tr.tr1").each(function(){
+			var qty=$(this).find('td:nth-child(2) input:nth-child(1)').val();
+			if($(this).find('td:nth-child(2) select').length >0 ){
+				$(this).find('td:nth-child(2) select').rules('add', {
+						required: true,
+						minlength: qty,
+						maxlength: qty,
+						messages: {
+							maxlength: "select serial number equal to quantity.",
+							minlength: "select serial number equal to quantity.",
+						}
+				});
+			}
+			
+			
+		});	
+	}
+	
+	
+	function rename_rows_name(){ 
+		var i=0;
+		$("#main_table tbody#maintbody tr.tr1").each(function(){
+			$(this).find("td:nth-child(1) select").attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2().rules('add', {required: true});
+					
+			$(this).find("td:nth-child(2) input").attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"}).rules('add', {
+							required: true,
+							digits: true
+					});
+			$(this).find("td:nth-child(2) select").attr({name:"inventory_voucher_rows["+i+"][serial_no][]", id:"inventory_voucher_rows-"+i+"-serial_no"}).select2();
+			
+			i++;
+		});
+	}
+	
 	
 });
 </script>
@@ -189,16 +208,12 @@ $(document).ready(function() {
 		<?php echo $this->Form->input('item_id', ['options' => $items,'empty'=>'--select--','label' => false,'class' => 'form-control input-sm select_item']); ?>
 		</td>
 		<td>
-		<?php echo $this->Form->input('quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm']); ?>
+		<?php echo $this->Form->input('quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm qty_bx']); ?>
+		<div class="serial_containor"></div>
 		</td>
 		<td>
 		<a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a>
 		</td>
-	</tr>
-	<tr class="tr2 preimp">
-		<td></td>
-		<td colspan="3" id="serial_no_box"></td>
-		
 	</tr>
 				
 				
