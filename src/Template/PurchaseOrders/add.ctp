@@ -1,4 +1,4 @@
-
+<?php //pr($material_items_for_purchases); exit;?>
 
 <div class="portlet light bordered">
 	<div class="portlet-title">
@@ -83,11 +83,12 @@ With reference to your price list we are pleased to place an order for the follo
 						
 						<tbody><?php if(!empty($material_items_for_purchases)){  ?>
 							<?php $q=1; foreach ($material_items_for_purchases as $material_items_for_purchase): ?>
+								
 								<tr class="tr1" row_no='<?php echo @$material_items_for_purchase->item_id; ?>'>
 									<td rowspan="2"><?= h($q) ?></td>
 									<td>
 									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'type'=>'hidden','value'=>$material_items_for_purchase['item_id']]); ?>
-									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.material_indent_id', ['label' => false,'type'=>'hidden','value'=>$material_items_for_purchase['material_indent_id']]);  ?>
+									<?php //echo $this->Form->input('purchase_order_rows.'.$q.'.material_indent_id', ['label' => false,'type'=>'hidden','value'=>$material_items_for_purchase['material_indent_id']]);  ?>
 									<?php echo $material_items_for_purchase['item_name']; ?></td>
 									<td><?php echo $material_items_for_purchase['quantity']; ?>
 									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['label' => false,'type'=>'hidden','value'=>$material_items_for_purchase['quantity']]); ?></td>
@@ -460,7 +461,7 @@ $(document).ready(function() {
     }); */
 });
 </script>
-<table id="sample_tb" style="display:;">
+<table id="sample_tb" style="display:none;">
 	<tbody>
 		<tr class="tr1">
 			<td rowspan="2" width="10">0</td>

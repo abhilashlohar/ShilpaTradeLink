@@ -43,7 +43,7 @@ class ItemLedgersController extends AppController
 		return $source_model.$source_id;
 		if($source_model=="Grns"){
 			$Grn=$this->ItemLedgers->Grns->get($source_id);
-			pr($Grn->voucher_info); exit;
+			//pr($Grn->voucher_info); exit;
 			$Vendor=$this->ItemLedgers->Vendors->get($Grn->vendor_id);
 			return ['voucher_info'=>$Grn,'party_type'=>'Supplier','party_info'=>$Vendor];
 		}
@@ -196,12 +196,12 @@ class ItemLedgersController extends AppController
 	 public function materialindentreport(){
 		$this->viewBuilder()->layout('index_layout'); 
 		//$Items = $this->ItemLedgers->Items->find()->where(['source'=>'Purchessed/Manufactured'])->orWhere(['source'=>'Purchessed']); 
-		$material_items_for_purchase=[];
+		/* $material_items_for_purchase=[];
 		$material_items_for_purchase[]=array('item_name'=>'Kgn212','item_id'=>'144','quantity'=>'25','company_id'=>'25','employee_name'=>'Gopal','company_name'=>'STL','material_indent_id'=>'2');
 		
 		$to=json_encode($material_items_for_purchase);
 		//pr($to); exit;
-		$this->redirect(['controller'=>'PurchaseOrders','action' => 'add/'.$to.'']);
+		$this->redirect(['controller'=>'PurchaseOrders','action' => 'add/'.$to.'']); */
 		$mit=$this->ItemLedgers->newEntity();
 		
 		if ($this->request->is(['post'])) {
@@ -214,6 +214,7 @@ class ItemLedgersController extends AppController
 
 			$to=json_encode($to_send); 
 			//rwjihf dfgdf?3qrrg
+			//$this->redirect(['controller'=>'PurchaseOrders','action' => 'add/'.$to.'']);
 			$this->redirect(['controller'=>'MaterialIndents','action' => 'add/'.$to.'']);
 		}
 		

@@ -1,3 +1,4 @@
+<?php //pr($material_report); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -80,17 +81,8 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
 			if(val){
-				/* //var item_id=$(this).find('td:nth-child(7) input[type="hidden"]:nth-child(1)').val();
-				var suggestindent=$(this).find('td:nth-child(7) input[type="hidden"]:nth-child(2)').val();
-				var qty=$(this).find('td:nth-child(7) input[type="hidden"]:nth-child(3)').val();
-				//alert(item_id);
-				$(this).find('td:nth-child(7) input[type="hidden"]:nth-child(1)').attr({ name:"item_id"}).val(val);
-				$(this).find('td:nth-child(7) input[type="hidden"]:nth-child(2)').attr({ name:"suggestindent"}).val(suggestindent);
-				$(this).find('td:nth-child(7) input[type="hidden"]:nth-child(3)').attr({ name:"qty"}).val(qty); */
- 				$(this).css('background-color','#fffcda');
+				$(this).css('background-color','#fffcda');
  			}else{
-				/* $(this).find('td:nth-child(2) input').attr({ name:"q"});
-				$(this).find('td:nth-child(3) input').attr({ name:"q", id:"q",readonly:"readonly"}); */
  				$(this).css('background-color','#FFF');
 				
 			}

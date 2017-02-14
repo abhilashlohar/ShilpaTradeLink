@@ -88,19 +88,24 @@ class PurchaseOrdersController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		$Company = $this->PurchaseOrders->Companies->get($st_company_id);
 		
-		if(!empty($material)){ //
+		//if(!empty($material)){ 
 			$Employees=$this->PurchaseOrders->Employees->get($s_employee_id);
 			$employee_name=$Employees->name; 
 			$company=$this->PurchaseOrders->Companies->get($st_company_id);
 			$company_name=$company->name;
-			$material_items=array(); 
+			//$material_items=array(); 
 			//$materials=json_decode($material);
 			//echo $materials; exit;
 			$material_items_for_purchases=[];
-				$material_items_for_purchases[]=array('item_name'=>'Kgn212','item_id'=>'144','quantity'=>'25','company_id'=>'25','employee_name'=>'Gopal','company_name'=>'STL','material_indent_id'=>'2');
+				//foreach($materials as $key=>$value){
+				//$item=$this->PurchaseOrders->Items->get($key);
+				//$item_name=$item->name;
+				$material_items_for_purchases[]=array('item_name'=>'Kgn212','item_id'=>'144','quantity'=>'25','company_id'=>'25','employee_name'=>'pri','company_name'=>'STL','material_indent_id'=>'2');
+				$material_items_for_purchases[]=array('item_name'=>'Kgn212','item_id'=>'144','quantity'=>'52','company_id'=>'25','employee_name'=>'Gopal','company_name'=>'GPL','material_indent_id'=>'3');
+			//}
 			//pr($material_items_for_purchase); exit;
 			$this->set(compact('material_items_for_purchases'));
-		}
+		//}
 		
 		
 		//pr($Company); exit;

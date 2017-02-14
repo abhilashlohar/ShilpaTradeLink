@@ -38,7 +38,7 @@ class PurchaseOrdersTable extends Table
         $this->table('purchase_orders');
         $this->displayField('id');
         $this->primaryKey('id');
-
+		$this->belongsTo('Items');
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'

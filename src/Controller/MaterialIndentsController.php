@@ -60,10 +60,10 @@ class MaterialIndentsController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
-		$material_items_for_purchase=[];
+		/* $material_items_for_purchase=[];
 		$material_items_for_purchase[]=array('item_name'=>'Kgn212','item_id'=>'144','quantity'=>'25','company_id'=>'25','employee_name'=>'Gopal','company_name'=>'STL','material_indent_id'=>'2');
 		$to=json_encode($material_items_for_purchase);
-		$this->redirect(['controller'=>'PurchaseOrders','action' => 'add/'.$to.'']);
+		$this->redirect(['controller'=>'PurchaseOrders','action' => 'add/'.$to.'']); */
 		
 		if(!empty($material)){
 			$Employees=$this->MaterialIndents->Employees->get($s_employee_id);
