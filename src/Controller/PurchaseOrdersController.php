@@ -177,9 +177,10 @@ class PurchaseOrdersController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		
         $purchaseOrder = $this->PurchaseOrders->get($id, [
-            'contain' => ['PurchaseOrderRows'=>['MaterialIndent'],'PurchaseOrderRows'=>['Items']]
+            'contain' => ['PurchaseOrderRows']
         ]);
-		$Em = new FinancialYearsController;
+
+          $Em = new FinancialYearsController;
         $financial_year_data = $Em->checkFinancialYear($purchaseOrder->date_created);
 
 
