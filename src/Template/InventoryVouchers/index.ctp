@@ -23,12 +23,9 @@
 						<?php $i=0; foreach ($inventoryVouchers as $inventoryVoucher): $i++; ?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
-							<td><?= h(($inventoryVoucher->iv1.'/IV-'.str_pad($inventoryVoucher->iv2, 3, '0', STR_PAD_LEFT).'/'.$inventoryVoucher->iv3.'/'.$inventoryVoucher->iv4)) ?></td>
-						
+							<td><?= h($inventoryVoucher->iv_number) ?></td>
 							<td>
-							
-							
-							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $inventoryVoucher->id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
+							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit?invoice='.$inventoryVoucher->invoice_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

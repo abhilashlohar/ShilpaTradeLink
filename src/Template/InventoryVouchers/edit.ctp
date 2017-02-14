@@ -29,11 +29,20 @@
 					</thead>
 					<tbody id="maintbody">
 					<?php foreach($InventoryVoucherRows as $InventoryVoucherRow){ ?>
-						<tr>
-							<td>Item</td>
-							<td>Quntity</td>
-							<td>Serial Number</td>
+						<tr class="main" >
+							<td>
+								<?php 
+								$item_option=[];
+								foreach($Items as $Item){
+									$item_option[]=['text' =>$Item->name, 'value' => $Item->id, 'serial_number_enable' => (int)$Item->serial_number_enable];
+								}
+								echo $this->Form->input('q', ['empty'=>'Select','options' => $item_option,'label' => false,'class' => 'form-control input-sm select_item','value'=>$InventoryVoucherRow->item_id]); ?>
+							</td>
+							<td>
+								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm qty_bx','placeholder' => 'Quntity','value'=>$InventoryVoucherRow->quantity]); ?>
+							</td>
 							<td></td>
+							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
 					<?php } ?>
 					</tbody>
@@ -118,9 +127,24 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 	
-	add_row();
+	var l=$("#main_table tbody#maintbody tr.main").length;
+	
+	
 	$('.addrow').die().live("click",function() { 
 		add_row();
+    });
+	
+	$('.deleterow').die().live("click",function() {
+		var l=$(this).closest("table tbody").find("tr").length;
+		if (confirm("Are you sure to remove row ?") == true) {
+			if(l>1){
+				var row_no=$(this).closest("tr").attr("row_no");
+				var del="tr[row_no="+row_no+"]";
+				$(del).remove();
+				
+				//rename_rows();
+			}
+		} 
     });
 	
 	function add_row(){
@@ -128,7 +152,7 @@ $(document).ready(function() {
 		$("#main_table tbody#maintbody").append(tr1);
 		rename_rows();
 	}
-	
+	rename_rows();
 	function rename_rows(){
 		var i=0;
 		$("#main_table tbody#maintbody tr.main").each(function(){
@@ -136,8 +160,10 @@ $(document).ready(function() {
 			$(this).find('td:nth-child(1) select').attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).rules("add", "required");
 			$(this).find('td:nth-child(2) input').attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"}).rules("add", "required");
 			if($(this).find('td:nth-child(3) select').length>0){
-				$(this).find('td:nth-child(3) select').attr({name:"inventory_voucher_rows["+i+"][serial_number_data][]", id:"inventory_voucher_rows-"+i+"-serial_number_data"}).select2().rules("add", "required");
+				$(this).find('td:nth-child(3) select').attr({name:"inventory_voucher_rows["+i+"][serial_number_data][]", id:"inventory_voucher_rows-"+i+"-serial_number_data"}).rules("add", "required");
 			}
+			
+			
 		i++; });
 	}
 	
@@ -146,13 +172,13 @@ $(document).ready(function() {
 		var row_no=$(this).closest('tr').attr('row_no');
   		var select_item_id=$(this).find('option:selected').val();
 		var url1="<?php echo $this->Url->build(['controller'=>'InventoryVouchers','action'=>'ItemSerialNumber']); ?>";
-		url1=url1+'/'+select_item_id,
+		url1=url1+'/'+select_item_id+'/<?php echo $invoice_id; ?>/<?php echo $q_item_id; ?>',
 		$.ajax({
 			url: url1,
 		}).done(function(response) {
   			$(t).closest('tr').find('td:nth-child(3)').html(response);
+			$(t).closest('tr').find('td:nth-child(3) select').attr({name:"inventory_voucher_rows["+row_no+"][serial_number_data][]", id:"inventory_voucher_rows-"+row_no+"-serial_number_data"});
 			$(t).closest('tr').find('td:nth-child(3) select').select2();
-			$(t).closest('tr').find('td:nth-child(3) select').attr({name:"inventory_voucher_rows["+row_no+"][quantity]", id:"inventory_voucher_rows-"+row_no+"-quantity"}).select2();
 		});
 	});
 	
@@ -160,17 +186,39 @@ $(document).ready(function() {
 		$("#main_table tbody#maintbody tr.main").each(function(){
 			var qty=$(this).find('td:nth-child(2) input').val();
 			if($(this).find('td:nth-child(3) select').length>0){
-				$(this).find('td:nth-child(3) select').rules('add', {
-						required: true,
-						minlength: qty,
-						maxlength: qty,
-						messages: {
-							maxlength: "select serial number equal to quantity.",
-							minlength: "select serial number equal to quantity.",
-						}
-				});
+				$(this).find('td:nth-child(3) select').attr('test',qty).rules('add', {
+							required: true,
+							minlength: qty,
+							maxlength: qty,
+							messages: {
+								maxlength: "select serial number equal to quantity.",
+								minlength: "select serial number equal to quantity."
+							}
+					});
 			}
 		});	
+	}
+	
+	if(l==0){
+		add_row();
+	}else{
+		$("#main_table tbody#maintbody tr.main").each(function(){
+			var t=$(this).find('td:nth-child(1) select');
+			if(t.val()){
+				var row_no=t.closest('tr').attr('row_no');
+				var select_item_id=t.find('option:selected').val();
+				var url1="<?php echo $this->Url->build(['controller'=>'InventoryVouchers','action'=>'ItemSerialNumber']); ?>";
+				url1=url1+'/'+select_item_id+'/<?php echo $invoice_id; ?>/<?php echo $q_item_id; ?>',
+				$.ajax({
+					url: url1,
+				}).done(function(response) {
+					$(t).closest('tr').find('td:nth-child(3)').html(response);
+					$(t).closest('tr').find('td:nth-child(3) select').attr({name:"inventory_voucher_rows["+row_no+"][serial_number_data][]", id:"inventory_voucher_rows-"+row_no+"-serial_number_data"});
+					$(t).closest('tr').find('td:nth-child(3) select').select2();
+					validate_serial();
+				});
+			}
+		});
 	}
 	
 	$('.qty_bx').die().live("keyup",function() {

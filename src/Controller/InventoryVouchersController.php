@@ -258,10 +258,74 @@ class InventoryVouchersController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		$invoice_id=@(int)$this->request->query('invoice');
 		$q_item_id=@(int)$this->request->query('item-id');
-        
+        $s_employee_id=$this->viewVars['s_employee_id'];
+		
 		$InventoryVoucher = $this->InventoryVouchers->newEntity();
 		if ($this->request->is(['post'])) {
-			echo 'hello'; exit;
+			$InventoryVoucher=$this->InventoryVouchers->find()->where(['invoice_id'=>$invoice_id]);
+			if($InventoryVoucher->count()==0){
+				$last_iv_number=$this->InventoryVouchers->find()->select(['iv_number'])->where(['company_id' => $st_company_id])->order(['iv_number' => 'DESC'])->first();
+				if($last_iv_number){
+					$iv_number=$last_iv_number->iv_number+1;
+				}else{
+					$iv_number=1;
+				}
+				
+				$query2 = $this->InventoryVouchers->query();
+				$query2->insert(['invoice_id', 'iv_number', 'created_by', 'company_id'])
+				->values([
+					'invoice_id' => $invoice_id,
+					'iv_number' => $iv_number,
+					'created_by' => $s_employee_id,
+					'company_id'=>$st_company_id
+				])
+				->execute();
+			}
+			$InventoryVoucher=$this->InventoryVouchers->find()->where(['invoice_id'=>$invoice_id])->first();
+			$inventory_voucher_id=$InventoryVoucher->id;
+			
+			$query = $this->InventoryVouchers->InventoryVoucherRows->query();
+			$query->delete()
+				->where(['left_item_id' => $q_item_id,'invoice_id'=>$invoice_id])
+				->execute();
+				
+			$query = $this->InventoryVouchers->ItemSerialNumbers->query();
+			$query->update()
+				->set(['status' => 'In','iv_invoice_id'=>0,'q_item_id'=>0])
+				->where(['iv_invoice_id' => $invoice_id,'q_item_id'=>$q_item_id])
+				->execute();
+				
+			$inventory_voucher_rows=$this->request->data['inventory_voucher_rows'];
+			foreach($inventory_voucher_rows as $inventory_voucher_row){
+				$query3 = $this->InventoryVouchers->InventoryVoucherRows->query();
+				$query3->insert(['inventory_voucher_id', 'item_id', 'quantity', 'left_item_id', 'invoice_id'])
+				->values([
+					'inventory_voucher_id' => $inventory_voucher_id,
+					'item_id' => $inventory_voucher_row['item_id'],
+					'quantity' => $inventory_voucher_row['quantity'],
+					'left_item_id'=>$q_item_id,
+					'invoice_id'=>$invoice_id,
+				])
+				->execute();
+				
+				
+						
+				foreach($inventory_voucher_row['serial_number_data'] as $serial_id){
+					$query = $this->InventoryVouchers->ItemSerialNumbers->query();
+					$query->update()
+						->set(['status' => 'Out','iv_invoice_id'=>$invoice_id,'q_item_id'=>$q_item_id])
+						->where(['id' => $serial_id])
+						->execute();
+				}
+			}
+			
+			$query5 = $this->InventoryVouchers->InvoiceRows->query();
+			$query5->update()
+				->set(['inventory_voucher_status' => 'Done'])
+				->where(['invoice_id'=>$invoice_id,'item_id'=>$q_item_id])
+				->execute();
+			
+			
 		}
 		
 		$invoice_data=$this->InventoryVouchers->Invoices->get($invoice_id,[
@@ -288,6 +352,25 @@ class InventoryVouchersController extends AppController
 				->where(['invoice_id' => $invoice_id,'item_id'=>$item_id])
 				->execute();
 		}
+		$Invoice=$this->InventoryVouchers->Invoices->get($invoice_id, [
+				'contain' => ['InvoiceRows'=> function ($q) {
+				return $q->where(['InvoiceRows.inventory_voucher_applicable'=>'Yes','InvoiceRows.inventory_voucher_status'=>'Pending']);
+				}]]);
+		
+		if(sizeof($Invoice->invoice_rows)==0){
+			$query = $this->InventoryVouchers->query();
+			$query->update()
+				->set(['status' => 'Completed'])
+				->where(['invoice_id' => $invoice_id])
+				->execute();
+				
+			$query = $this->InventoryVouchers->Invoices->query();
+			$query->update()
+				->set(['inventory_voucher_status' => 'Completed'])
+				->where(['Invoices.id' => $invoice_id])
+				->execute();
+		}
+				
 		if(empty($q_item_id) && !empty($invoice_id)){
 			$Invoice=$this->InventoryVouchers->Invoices->get($invoice_id, [
 				'contain' => ['InvoiceRows'=> function ($q) {
@@ -302,12 +385,12 @@ class InventoryVouchersController extends AppController
 		}
 		
 		if(!empty($q_item_id) && !empty($invoice_id)){
-			$InventoryVoucherRows=$this->InventoryVouchers->InventoryVoucherRows->find()->where(['invoice_id'=>$invoice_id,'left_item_id'=>$q_item_id])->toArray();
+			$InventoryVoucherRows=$this->InventoryVouchers->InventoryVoucherRows->find()->where(['invoice_id'=>$invoice_id,'left_item_id'=>$q_item_id]);
 		}
 		
 		
 		$Items=$this->InventoryVouchers->Items->find();
-		$this->set(compact('display_items','invoice_id','q_item_id','InventoryVoucherRows','Items','InventoryVoucher'));
+		$this->set(compact('display_items','invoice_id','q_item_id','InventoryVoucherRows','Items','InventoryVoucher','selected_seials'));
     }
 
     /**
@@ -330,17 +413,20 @@ class InventoryVouchersController extends AppController
         return $this->redirect(['action' => 'index']);
     } 
 	
-	public function ItemSerialNumber($select_item_id = null)
+	public function ItemSerialNumber($select_item_id = null,$invoice_id = null,$q_item_id = null)
     {
+		//echo $select_item_id; echo $invoice_id; echo $q_item_id; exit;
 		$this->viewBuilder()->layout('');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$flag=0;
 		$Item=$this->InventoryVouchers->Items->get($select_item_id);
 		if($Item->serial_number_enable=="1"){
-			$SerialNumbers=$this->InventoryVouchers->ItemSerialNumbers->find()->where(['item_id'=>$select_item_id,'status'=>'In']);
+			$SerialNumbers=$this->InventoryVouchers->ItemSerialNumbers->find()->where(['item_id'=>$select_item_id,'status'=>'In'])->orWhere(['item_id'=>$select_item_id,'iv_invoice_id'=>$invoice_id,'q_item_id'=>$q_item_id,'status'=>'Out']);
+			
+			$selectedSerialNumbers=$this->InventoryVouchers->ItemSerialNumbers->find()->where(['item_id'=>$select_item_id,'iv_invoice_id'=>$invoice_id,'q_item_id'=>$q_item_id,'status'=>'Out']);
 			$falg=1;
 		}
-		 $this->set(compact('SerialNumbers','falg','select_item_id'));
+		$this->set(compact('SerialNumbers','falg','select_item_id','invoice_id','q_item_id','selectedSerialNumbers'));
     }
 }
