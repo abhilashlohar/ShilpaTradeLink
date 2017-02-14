@@ -91,7 +91,6 @@
 								foreach($data->grn_rows as $data2){
 									//pr(@$data2->quantity);
 									$processed_items[$data2->item_id]=@$processed_items[$data2->item_id]+$data2->quantity;
-									
 								}
 							}
 							foreach($grn->purchase_order->purchase_order_rows as $data3){
@@ -237,16 +236,19 @@ $(document).ready(function() {
 		}
 	});
 	add_sr_textbox();
-		function add_sr_textbox(){ 
+	
+		function add_sr_textbox(){
 		var r=0;
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
 			var val=$(this).find('td:nth-child(4) input[type="checkbox"]:checked').val();
-			var serial_number_enable=$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(2)').val();	
-			var item_id=$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(1)').val();
+			var serial_number_enable=$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(2)').val();
 			
+			var item_id=$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(1)').val();
 			var quantity=$(this).find('td:nth-child(3) input[type="text"]').val();
-			if(val){ var p=1;
+			if(val && serial_number_enable){ 
+			
+			var p=1;
 				$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input.sr_no').remove();
 				for (i = 0; i < quantity; i++) {
 					

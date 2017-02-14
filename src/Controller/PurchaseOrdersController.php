@@ -88,16 +88,21 @@ class PurchaseOrdersController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		$Company = $this->PurchaseOrders->Companies->get($st_company_id);
 		
-		if(!empty($material)){ //
-			$Employees=$this->PurchaseOrders->Employees->get($s_employee_id);
-			$employee_name=$Employees->name; 
-			$company=$this->PurchaseOrders->Companies->get($st_company_id);
-			$company_name=$company->name;
+		if(!empty($material)){ 
+			//$Employees=$this->PurchaseOrders->Employees->get($s_employee_id);
+			//$employee_name=$Employees->name; 
+			//$company=$this->PurchaseOrders->Companies->get($st_company_id);
+			//$company_name=$company->name;
 			$material_items=array(); 
-			//$materials=json_decode($material);
-			//echo $materials; exit;
+			$materials=json_decode($material);
+			pr($materials); exit;
 			$material_items_for_purchases=[];
-				$material_items_for_purchases[]=array('item_name'=>'Kgn212','item_id'=>'144','quantity'=>'25','company_id'=>'25','employee_name'=>'Gopal','company_name'=>'STL','material_indent_id'=>'2');
+				//foreach($materials as $key=>$value){
+				//$item=$this->PurchaseOrders->Items->get($key);
+				//$item_name=$item->name;
+				//$material_items_for_purchases[]=array('item_name'=>'Kgn212','item_id'=>'41','quantity'=>'99','material_indent_id'=>'2','processed_quantity'=>'20');
+			//$material_items_for_purchases[]=array('item_name'=>'3hp','item_id'=>'58','quantity'=>'99','material_indent_id'=>'3','processed_quantity'=>'5');
+			//}
 			//pr($material_items_for_purchase); exit;
 			$this->set(compact('material_items_for_purchases'));
 		}
@@ -122,8 +127,17 @@ class PurchaseOrdersController extends AppController
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
 			
             if ($this->PurchaseOrders->save($purchaseOrder)) {
-				//pr($purchaseOrder); exit;
-				
+		
+				$i=0; 
+					foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
+						if($purchase_order_row->material_indent_id){
+							$qty=$purchase_order_row->quantity;
+							$material_indent_row=$this->PurchaseOrders->MaterialIndentRows->find()->where(['material_indent_id'=>$purchase_order_row->material_indent_id,'item_id'=>$purchase_order_row->item_id])->first();
+							$material_indent_row->processed_quantity=$material_indent_row->processed_quantity+$qty;
+							$this->PurchaseOrders->MaterialIndentRows->save($material_indent_row);
+						}
+						$i++;
+					}
                 $this->Flash->success(__('The purchase order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -177,6 +191,17 @@ class PurchaseOrdersController extends AppController
 			$purchaseOrder->delivery_date=date("Y-m-d",strtotime($purchaseOrder->delivery_date));
 			$purchaseOrder->company_id=$st_company_id;
             if ($this->PurchaseOrders->save($purchaseOrder)) {
+				
+				$i=0; 
+					foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
+						if($purchase_order_row->material_indent_id){
+							$material_indent_row=$this->PurchaseOrders->MaterialIndentRows->find()->where(['material_indent_id'=>$purchase_order_row->material_indent_id,'item_id'=>$purchase_order_row->item_id])->first();
+							
+							$material_indent_row->processed_quantity=$material_indent_row->processed_quantity-@$purchaseOrder->getOriginal('purchase_order_rows')[$i]->quantity+$purchase_order_row->quantity;
+							$this->PurchaseOrders->MaterialIndentRows->save($material_indent_row);
+						}
+						$i++;
+					}
                 $this->Flash->success(__('The purchase order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

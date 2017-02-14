@@ -95,6 +95,7 @@ class GrnsController extends AppController
 			}else{
 				$grn->grn2=1;
 			}
+			if($this->request->data['serial_numbers']){
 			$serial_numbers=$this->request->data['serial_numbers']; 
 			$item_serial_numbers=[];
 			foreach($serial_numbers as $item_id=>$data){
@@ -104,7 +105,7 @@ class GrnsController extends AppController
 			
 			$this->request->data['item_serial_numbers']=$item_serial_numbers;
 			//pr($this->request->data); exit;
-			
+			}
 			$grn = $this->Grns->patchEntity($grn, $this->request->data);
 			$grn->date_created=date("Y-m-d");
 			$grn->purchase_order_id=$purchase_order_id;

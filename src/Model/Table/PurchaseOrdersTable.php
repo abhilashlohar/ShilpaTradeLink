@@ -38,7 +38,7 @@ class PurchaseOrdersTable extends Table
         $this->table('purchase_orders');
         $this->displayField('id');
         $this->primaryKey('id');
-
+		$this->belongsTo('Items');
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
@@ -49,7 +49,8 @@ class PurchaseOrdersTable extends Table
             'joinType' => 'INNER'
         ]);
 		
-		 $this->belongsTo('Filenames');
+		$this->belongsTo('Filenames');
+		$this->belongsTo('MaterialIndentRows');
 		
         $this->belongsTo('Vendors', [
             'foreignKey' => 'vendor_id',
