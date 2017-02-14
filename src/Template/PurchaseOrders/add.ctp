@@ -88,7 +88,7 @@ With reference to your price list we are pleased to place an order for the follo
 									<td rowspan="2"><?= h($q) ?></td>
 									<td>
 									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'type'=>'hidden','value'=>$material_items_for_purchase['item_id']]); ?>
-									<?php //echo $this->Form->input('purchase_order_rows.'.$q.'.material_indent_id', ['label' => false,'type'=>'hidden','value'=>$material_items_for_purchase['material_indent_id']]);  ?>
+									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.material_indent_id', ['label' => false,'type'=>'hidden','value'=>$material_items_for_purchase['material_indent_id']]);  ?>
 									<?php echo $material_items_for_purchase['item_name']; ?></td>
 									<td><?php echo $material_items_for_purchase['quantity']; ?>
 									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['label' => false,'type'=>'hidden','value'=>$material_items_for_purchase['quantity']]); ?></td>
