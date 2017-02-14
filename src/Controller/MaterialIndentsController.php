@@ -181,35 +181,16 @@ class MaterialIndentsController extends AppController
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		$materialIndent = $this->MaterialIndents->newEntity();
+		$mi = $this->MaterialIndents->newEntity();
 		
 		if ($this->request->is('post')) {
-			$check=$this->request->data; 
-			//$quantity=$this->request->data['quantity']; 
-
-			$check=$this->request->data['check']; 
-			$quantity=$this->request->data['qantity'];
-			$item_id=$this->request->data['item_id']; 	
-			$to_send=[];
-			
-			pr($item_id); echo "<br>";
-			pr($check); echo "<br>";
-			pr($quantity); echo "<br>";
-			
-			
-			
-			
-			exit;
-			$to_send=[];
-			foreach($check as $item_id){
-				$to_send[$item_id]=$qantity[$item_id];
-			}
-
-			$to=json_encode($to_send); 
-			echo $to; exit;
+ 			$check=json_encode($this->request->data['selected_data']); 
+			//pr($check); exit;
+ 			$this->redirect(['controller'=>'PurchaseOrders','action' => 'add/'.$check.'']);
 		}
+		
 		$materialIndents=$this->MaterialIndents->find()->contain(['MaterialIndentRows'=>['Items']])->toArray();
-		$this->set(compact('materialIndents','materialIndent'));
+		$this->set(compact('materialIndents','mi'));
 		
 		
 		
