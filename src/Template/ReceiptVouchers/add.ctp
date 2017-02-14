@@ -198,9 +198,9 @@
 <script>
 $(document).ready(function() {
 	
-	/*$( document ).on( 'keyup', 'input[name="debit[]"]', function() {
-		
-	});*/
+	$( document ).on( 'keyup', 'input[name="debit[]"]', function() {
+			debit=debit+parseFloat($(this).val());
+	});
 	
 	$('select[name="against_references_no"]').live("change",function() {
 		var against_references_no=$(this).val();
@@ -423,7 +423,6 @@ $(document).ready(function() {
 				var debit=0;
 				$("[name^=debit]").each(function () {
 					debit=debit+parseFloat($(this).val());
-					
 				});
 				
 				if(amount==debit)
