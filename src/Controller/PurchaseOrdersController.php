@@ -95,7 +95,7 @@ class PurchaseOrdersController extends AppController
 			//$company_name=$company->name;
 			$material_items=array(); 
 			$materials=json_decode($material);
-			echo $materials; exit;
+			pr($materials); exit;
 			$material_items_for_purchases=[];
 				//foreach($materials as $key=>$value){
 				//$item=$this->PurchaseOrders->Items->get($key);
@@ -105,7 +105,7 @@ class PurchaseOrdersController extends AppController
 			//}
 			//pr($material_items_for_purchase); exit;
 			$this->set(compact('material_items_for_purchases'));
-		//}
+		}
 		
 		
 		//pr($Company); exit;
