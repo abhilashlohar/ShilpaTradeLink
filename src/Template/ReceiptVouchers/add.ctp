@@ -156,7 +156,7 @@
 		</div>
 			<div class="form-actions">
 				
-				<?= $this->Form->button(__(' ADD RECEIPT VOUCHER'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit','onclick' => 'this.disabled=true;return true;']) ?>
+				<?= $this->Form->button(__('ADD RECEIPT VOUCHER'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit','onclick' => 'this.disabled=true;return true;']) ?>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>
@@ -360,7 +360,7 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
-		gnore: ":hidden",
+		ignore: ":hidden",
 		rules: {
 			advance: {
 				min:0,

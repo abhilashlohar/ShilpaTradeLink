@@ -76,41 +76,7 @@ class ReceiptVouchersController extends AppController
 			
 			$total_row=sizeof($this->request->data['reference_no']);
 			
-			for($row=0; $row<$total_row; $row++)
-		    {
-				////////////////  ReferenceDetails ////////////////////////////////
-				$query1 = $this->ReceiptVouchers->ReferenceDetails->query();
-				$query1->insert(['reference_no', 'ledger_account_id', 'debit', 'reference_type'])
-				->values([
-					'ledger_account_id' => $this->request->data['received_from_id'],
-					'reference_no' => $this->request->data['reference_no'][$row],
-					'debit' => $this->request->data['debit'][$row],
-					'reference_type' => $this->request->data['reference_type'][$row]
-				])
-				->execute();
-				
-				////////////////  ReferenceBalances ////////////////////////////////
-				if($this->request->data['reference_type'][$row]=='Against Reference')
-				{
-					$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
-					$query2->update()
-						->set(['debit' => $this->request->data['debit'][$row]])
-						->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['received_from_id']])
-						->execute();
-				}
-				else
-				{
-					$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
-					$query2->insert(['reference_no', 'ledger_account_id', 'debit'])
-					->values([
-						'reference_no' => $this->request->data['reference_no'][$row],
-						'ledger_account_id' => $this->request->data['received_from_id'],
-						'debit' => $this->request->data['debit'][$row],
-					])
-					->execute();
-				}
-				
-			}
+			
 			
 			$last_ref_no=$this->ReceiptVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_ref_no){
@@ -124,6 +90,8 @@ class ReceiptVouchersController extends AppController
 			$receiptVoucher->transaction_date=date("Y-m-d",strtotime($receiptVoucher->transaction_date));
 			$receiptVoucher->created_on=date("Y-m-d");
 			$receiptVoucher->company_id=$st_company_id;
+			
+			
 			
             if ($this->ReceiptVouchers->save($receiptVoucher)) {
 				//Ledger posting for Received From Entity
@@ -147,13 +115,50 @@ class ReceiptVouchersController extends AppController
 				$ledger->voucher_source = 'Receipt Voucher';
 				$ledger->transaction_date = $receiptVoucher->transaction_date;
 				$this->ReceiptVouchers->Ledgers->save($ledger); 
-			
+				
+				for($row=0; $row<$total_row; $row++)
+				{
+					////////////////  ReferenceDetails ////////////////////////////////
+					$query1 = $this->ReceiptVouchers->ReferenceDetails->query();
+					$query1->insert(['reference_no', 'ledger_account_id', 'receipt_voucher_id', 'debit', 'reference_type'])
+					->values([
+						'ledger_account_id' => $this->request->data['received_from_id'],
+						'receipt_voucher_id' => $receiptVoucher->id,
+						'reference_no' => $this->request->data['reference_no'][$row],
+						'debit' => $this->request->data['debit'][$row],
+						'reference_type' => $this->request->data['reference_type'][$row]
+					])
+					->execute();
+					
+					////////////////  ReferenceBalances ////////////////////////////////
+					if($this->request->data['reference_type'][$row]=='Against Reference')
+					{
+						$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
+						$query2->update()
+							->set(['debit' => $this->request->data['debit'][$row]])
+							->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['received_from_id']])
+							->execute();
+					}
+					else
+					{
+						$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
+						$query2->insert(['reference_no', 'ledger_account_id', 'debit'])
+						->values([
+							'reference_no' => $this->request->data['reference_no'][$row],
+							'ledger_account_id' => $this->request->data['received_from_id'],
+							'debit' => $this->request->data['debit'][$row],
+						])
+						->execute();
+					}
+					
+				}
 				$this->Flash->success(__('The Receipt-Voucher:'.str_pad($receiptVoucher->id, 4, '0', STR_PAD_LEFT)).' has been genereted.');
 				return $this->redirect(['action' => 'view/'.$receiptVoucher->id]);
            
 			} else {
                 $this->Flash->error(__('The receipt voucher could not be saved. Please, try again.'));
             }
+			
         }
 		$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get(3, [
             'contain' => ['VoucherLedgerAccounts']
@@ -199,20 +204,21 @@ class ReceiptVouchersController extends AppController
      */
     public function edit($id = null)
     {
-    	
-
-
     	$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
         $st_year_id = $session->read('st_year_id');
 		$financial_year = $this->ReceiptVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
-        $receiptVoucher = $this->ReceiptVouchers->get($id, [
-            'contain' => []
-        ]);
-
-        
+        $receiptVoucher = $this->ReceiptVouchers->get($id);
+		
+		
+		$ReferenceDetails = $this->ReceiptVouchers->ReferenceDetails->find()->where(['ledger_account_id'=>$receiptVoucher->received_from_id,'receipt_voucher_id'=>$id])->toArray();
+		foreach($ReferenceDetails as $ReferenceDetail)
+		{
+			$ReferenceBalances[] = $this->ReceiptVouchers->ReferenceBalances->find()->where(['ledger_account_id'=>$ReferenceDetail->ledger_account_id,'reference_no'=>$ReferenceDetail->reference_no])->toArray();
+		}
+		
 
         $Em = new FinancialYearsController;
 	    $financial_year_data = $Em->checkFinancialYear($receiptVoucher->transaction_date);
@@ -220,6 +226,8 @@ class ReceiptVouchersController extends AppController
 
 
         if ($this->request->is(['patch', 'post', 'put'])) {
+			$total_row=sizeof($this->request->data['reference_no']);
+			
             $receiptVoucher = $this->ReceiptVouchers->patchEntity($receiptVoucher, $this->request->data);
 			$receiptVoucher->edited_by=$s_employee_id;
 				$receiptVoucher->transaction_date=date("Y-m-d",strtotime($receiptVoucher->transaction_date));
@@ -251,6 +259,90 @@ class ReceiptVouchersController extends AppController
 				$ledger->voucher_source = 'Receipt Voucher';
 				$ledger->transaction_date = $receiptVoucher->transaction_date;
 				$this->ReceiptVouchers->Ledgers->save($ledger);
+				
+				for($row=0; $row<$total_row; $row++)
+				{
+					if(!empty($this->request->data['old_amount'][$row]))
+					{				////////////////  ReferenceDetails ////////////////////////////////
+				
+				
+						$query1 = $this->ReceiptVouchers->ReferenceDetails->query();
+						$query1->update()
+						->set(['debit' => $this->request->data['debit'][$row]])
+						->where([
+							'ledger_account_id' => $this->request->data['received_from_id'],
+							'receipt_voucher_id' => $receiptVoucher->id,
+							'reference_no' => $this->request->data['reference_no'][$row],
+							'reference_type' => $this->request->data['reference_type'][$row]
+						])
+						->execute();
+						
+						////////////////  ReferenceBalances ////////////////////////////////
+						if($this->request->data['reference_type'][$row]=='Against Reference')
+						{
+							
+							$res=$this->ReceiptVouchers->ReferenceBalances->find()->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['received_from_id']])->first();
+							
+							echo $q=$res->debit-$this->request->data['old_amount'][$row]+ $this->request->data['debit'][$row];
+							
+							$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
+							$query2->update()
+								->set(['debit' => $q])
+								->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['received_from_id']])
+								->execute();
+						}
+						else
+						{ 
+							$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
+							$query2->update()
+							->set(['debit' => $this->request->data['debit'][$row]])
+							->where([
+								'reference_no' => $this->request->data['reference_no'][$row],
+								'ledger_account_id' => $this->request->data['received_from_id']
+							])
+							->execute();
+							
+						}
+
+					}
+					else
+					{
+						////////////////  ReferenceDetails ////////////////////////////////
+						$query1 = $this->ReceiptVouchers->ReferenceDetails->query();
+						$query1->insert(['reference_no', 'ledger_account_id', 'receipt_voucher_id', 'debit', 'reference_type'])
+						->values([
+							'ledger_account_id' => $this->request->data['received_from_id'],
+							'receipt_voucher_id' => $receiptVoucher->id,
+							'reference_no' => $this->request->data['reference_no'][$row],
+							'debit' => $this->request->data['debit'][$row],
+							'reference_type' => $this->request->data['reference_type'][$row]
+						])
+						->execute();
+						
+						////////////////  ReferenceBalances ////////////////////////////////
+						if($this->request->data['reference_type'][$row]=='Against Reference')
+						{
+							$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
+							$query2->update()
+								->set(['debit' => $this->request->data['debit'][$row]])
+								->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['received_from_id']])
+								->execute();
+						}
+						else
+						{
+							$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
+							$query2->insert(['reference_no', 'ledger_account_id', 'debit'])
+							->values([
+								'reference_no' => $this->request->data['reference_no'][$row],
+								'ledger_account_id' => $this->request->data['received_from_id'],
+								'debit' => $this->request->data['debit'][$row],
+							])
+							->execute();
+						}
+					}
+					
+				}
+				
                 $this->Flash->success(__('The receipt voucher has been saved.'));
 				return $this->redirect(['action' => 'view/'.$receiptVoucher->id]);
             } else {
@@ -277,7 +369,7 @@ class ReceiptVouchersController extends AppController
 		$bankCashes = $this->ReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
 		
         $companies = $this->ReceiptVouchers->Companies->find('all');		
-        $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies','financial_year','financial_year_data'));
+        $this->set(compact('ReferenceDetails','ReferenceBalances','receiptVoucher', 'receivedFroms', 'bankCashes','companies','financial_year','financial_year_data'));
         $this->set('_serialize', ['receiptVoucher']);
     }
 
