@@ -90,15 +90,15 @@ With reference to your price list we are pleased to place an order for the follo
 									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'type'=>'hidden','value'=>$material_items_for_purchase['item_id']]); ?>
 									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.material_indent_id', ['label' => false,'type'=>'hidden','value'=>$material_items_for_purchase['material_indent_id']]);  ?>
 									<?php echo $material_items_for_purchase['item_name']; ?></td>
-									<td><?php echo $material_items_for_purchase['quantity']; ?>
-									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['label' => false,'type'=>'hidden','value'=>$material_items_for_purchase['quantity']]); ?></td>
+									<td>
+									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['label' => false,'type'=>'text','value'=>$material_items_for_purchase['quantity']-$material_items_for_purchase['processed_quantity'],'max'=>@$material_items_for_purchase['quantity']-$material_items_for_purchase['processed_quantity']]); ?></td>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.rate', ['label' => false,'type'=>'text']); ?></td>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.amount', ['label' => false,'type'=>'text']); ?></td>
-									<td></td>
+									<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 									
 								</tr>
 								<tr class="tr2" row_no='<?php echo @$material_items_for_purchase->item_id; ?>'>
-									<td colspan="5"><?php echo $this->Form->textarea('purchase_order_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'5',]); ?></td>
+									<td colspan="4"><?php echo $this->Form->textarea('purchase_order_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1',]); ?></td>
 									<td></td>
 								</tr>
 						<?php $q++; endforeach; ?>

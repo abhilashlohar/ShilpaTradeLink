@@ -49,7 +49,8 @@ class PurchaseOrdersTable extends Table
             'joinType' => 'INNER'
         ]);
 		
-		 $this->belongsTo('Filenames');
+		$this->belongsTo('Filenames');
+		$this->belongsTo('MaterialIndentRows');
 		
         $this->belongsTo('Vendors', [
             'foreignKey' => 'vendor_id',
