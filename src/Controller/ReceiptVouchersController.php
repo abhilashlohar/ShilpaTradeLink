@@ -75,7 +75,7 @@ class ReceiptVouchersController extends AppController
         if ($this->request->is('post')) {
 			
 			$total_row=sizeof($this->request->data['reference_no']);
-			exit;
+			
 			for($row=0; $row<$total_row; $row++)
 		    {
 				////////////////  ReferenceDetails ////////////////////////////////

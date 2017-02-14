@@ -155,7 +155,8 @@
 			</div>
 		</div>
 			<div class="form-actions">
-				<button type="submit" class="btn btn-primary">ADD RECEIPT VOUCHER</button>
+				
+				<?= $this->Form->button(__(' ADD RECEIPT VOUCHER'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit','onclick' => 'this.disabled=true;return true;']) ?>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>
@@ -199,7 +200,15 @@
 $(document).ready(function() {
 	
 	$( document ).on( 'keyup', 'input[name="debit[]"]', function() {
-			debit=debit+parseFloat($(this).val());
+			var debit=parseFloat($(this).val());
+			var amount=$(this).closest('tr').find('select[name="against_references_no"] option:selected').attr('amount');
+			amount=parseFloat(amount);
+
+			if(amount<debit)
+			{
+				$(this).val(amount);
+			}
+				
 	});
 	
 	$('select[name="against_references_no"]').live("change",function() {
@@ -399,6 +408,7 @@ $(document).ready(function() {
 		invalidHandler: function (event, validator) { //display error alert on form submit   
 			success3.hide();
 			error3.show();
+			$("#add_submit").removeAttr("disabled");
 			//Metronic.scrollTo(error3, -200);
 		},
 
@@ -433,6 +443,7 @@ $(document).ready(function() {
 				}
 				else
 				{
+					$("#add_submit").removeAttr("disabled");
 					alert("Amount mismatch.");
 				}
 				

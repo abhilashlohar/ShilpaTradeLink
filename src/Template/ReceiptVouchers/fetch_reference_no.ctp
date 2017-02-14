@@ -6,6 +6,7 @@
 foreach($ReferenceDetails as $ReferenceDetail)
 {
 	$amount=$ReferenceDetail->credit-$ReferenceDetail->debit;
+	
 	if($amount>0)
 	{
 		$itemGroups[]=['text'=>$ReferenceDetail->reference_no, 'value' =>$ReferenceDetail->reference_no,  'amount' => $amount];
