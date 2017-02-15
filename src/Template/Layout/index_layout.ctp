@@ -452,6 +452,8 @@ select
 							</ul>
 						</li>
 						<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Ledger Account','/ledgerAccounts',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Financial Year','/financialYears',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Financial Month','/financialMonths',array('escape'=>false)); ?></li>
 						<li>
 							<a href="javascript:;">
 							<i class="fa fa-file-code-o"></i>
