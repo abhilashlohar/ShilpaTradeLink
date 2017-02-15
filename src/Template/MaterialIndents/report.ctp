@@ -14,7 +14,7 @@
 			<div class="portlet-body">
 				<div class="table-scrollable">
 					<?= $this->Form->create($mi,['id'=>'form_sample_3']) ?>
-					<table class="table table-condensed table-hover">
+					<table class="table table-condensed">
 						<thead>
 							<tr>
 								<th>Material Indent</th>
