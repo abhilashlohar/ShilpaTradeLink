@@ -175,6 +175,7 @@ class MaterialIndentsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
 	public function report()
 	{
 		$this->viewBuilder()->layout('index_layout');
@@ -184,7 +185,8 @@ class MaterialIndentsController extends AppController
 		$mi = $this->MaterialIndents->newEntity();
 		
 		if ($this->request->is('post')) {
-			
+			pr($this->request->data['selected_data']);
+			exit;
  			$check=json_encode($this->request->data['selected_data']); 
 			$this->redirect(['controller'=>'PurchaseOrders','action' => 'add/'.$check.'']);
 		}
