@@ -88,6 +88,28 @@ class PurchaseOrdersController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		$Company = $this->PurchaseOrders->Companies->get($st_company_id);
 		
+		 $st_year_id = $session->read('st_year_id');
+
+       $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+       $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+       $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+       $tody1 = date("Y-m-d");
+
+       $fromdate = strtotime($fromdate1);
+       $todate = strtotime($todate1); 
+       $tody = strtotime($tody1);
+
+      if($fromdate >= $tody || $todate <= $tody)
+       {
+       	   $chkdate = 'Not Found';
+       }
+       else
+       {
+       	  $chkdate = 'Found';
+       }
+
+
+
 		if(!empty($material)){ 
 			//$Employees=$this->PurchaseOrders->Employees->get($s_employee_id);
 			//$employee_name=$Employees->name; 
@@ -157,7 +179,7 @@ class PurchaseOrdersController extends AppController
 		$customers = $this->PurchaseOrders->Customers->find('all');
 		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']]);
 		$transporters = $this->PurchaseOrders->Transporters->find('list');
-        $this->set(compact('purchaseOrder', 'Company', 'vendor','filenames','items','SaleTaxes','transporters','customers'));
+        $this->set(compact('purchaseOrder', 'Company', 'vendor','filenames','items','SaleTaxes','transporters','customers','chkdate'));
         $this->set('_serialize', ['purchaseOrder']);
     }
 

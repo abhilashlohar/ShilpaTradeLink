@@ -426,10 +426,10 @@ if(!empty($copy))
 						</div>
 					</div>
 				</div>
-			
 			</td>
 			<td width="100"><?php echo $this->Form->input('unit[]', ['type' => 'type','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
-			<td width="100"><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Rate','step'=>"0.01"]); ?></td>
+			<td width="100"><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Rate','step'=>"0.01"]); ?>
+			</td>
 			<td width="100"><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td width="100"><?php 
 			$options=['Yes'=>'Yes','No'=>'No'];
@@ -458,7 +458,6 @@ if(!empty($copy))
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
 	var success3 = $('.alert-success', form3);
