@@ -175,11 +175,13 @@
 							</td>
 							<td></td>
 						</tr>
-						
-						<?php $options1=[];
+				
+						<?php 
+
+						$options1=[];
 							foreach($sales_order_rows->item->item_serial_numbers as $item_serial_number){
 								$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
-							} if($options1) { ?>
+							} if($sales_order_rows->item->serial_number_enable==1) { ?>
 							<tr class="tr3" row_no='<?php echo @$sales_order_rows->id; ?>'>
 							<td></td>
 							<td colspan="5">
@@ -637,6 +639,7 @@ $(document).ready(function() {
 		var qty =$(this).val();
 			rename_rows(); 
     });
+	
 	<?php if($process_status!="New"){ ?>
 	function rename_rows(){
 		var list = new Array();
@@ -660,6 +663,7 @@ $(document).ready(function() {
 				var serial_l=$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').length;
 				if(serial_l>0){
 					$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').attr("name","invoice_rows["+val+"][item_serial_numbers][]").attr("id","invoice_rows-"+val+"-item_serial_no").attr('maxlength',qty).rules('add', {
+						    required: true,
 							minlength: qty,
 							maxlength: qty,
 							messages: {
@@ -681,7 +685,7 @@ $(document).ready(function() {
 				$(this).find('td:nth-child(5) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
-
+				
 				$(this).css('background-color','#FFF');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
 

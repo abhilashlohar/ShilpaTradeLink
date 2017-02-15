@@ -151,7 +151,7 @@
 					}
 					
 					foreach($invoice->invoice_rows as $current_invoice_row){
-						$existing_rows[$current_invoice_row->item_id]=$existing_rows[$current_invoice_row->item_id]-$current_invoice_row->quantity;
+						@$existing_rows[$current_invoice_row->item_id]=$existing_rows[$current_invoice_row->item_id]-$current_invoice_row->quantity;
 						$current_rows[]=$current_invoice_row->item_id;
 						$current_row_items[$current_invoice_row->item_id]=$current_invoice_row->quantity;
 					}
@@ -173,7 +173,7 @@
 								<span>Max: <?= h($sales_order_row->quantity-@$existing_rows[$sales_order_row->item_id]) ?></span>
 							</td>
 							<td>
-								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$sales_order_row->rate,'readonly']); ?>
+								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$sales_order_row->rate]); ?>
 							</td>
 							<td>
 								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$sales_order_row->amount]); ?>
@@ -215,11 +215,11 @@
 									$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
 								} 
 							}
-							if($options1) { ?>
+							if($sales_order_row->item->serial_number_enable==1) { ?>
 							<tr class="tr3" row_no="<?= h($q) ?>">
 							<td></td>
 							<td colspan="5">
-							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','style'=>'width:100%','value'=>$choosen]);  ?></td>
+							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','style'=>'width:100%','value'=>$choosen,'readonly']);  ?></td>
 							</tr><?php } ?>
 					<?php } ?>
 					<?php $q++; }  ?>
@@ -600,15 +600,18 @@ $(document).ready(function() {
 				
 				list.push(s_tax);
 				var qty=$(this).find('td:nth-child(3) input[type="text"]').val();
-				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').attr("name","invoice_rows["+val+"][item_serial_numbers][]").attr("id","invoice_rows-"+val+"-item_serial_no").attr('maxlength',qty).rules('add', {
-						
-						minlength: qty,
-						maxlength: qty,
-						messages: {
-							maxlength: "select serial number equal to quantity.",
-							minlength: "select serial number equal to quantity.",
-						},
-				});
+				var serial_l=$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').length;
+				if(serial_l>0){
+					$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').removeAttr("readonly").attr("name","invoice_rows["+val+"][item_serial_numbers][]").attr("id","invoice_rows-"+val+"-item_serial_no").attr('maxlength',qty).rules('add', {
+						    required: true,
+							minlength: qty,
+							maxlength: qty,
+							messages: {
+								maxlength: "select serial number equal to quantity.",
+								minlength: "select serial number equal to quantity."
+							}
+					});
+				}
 				
 				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				

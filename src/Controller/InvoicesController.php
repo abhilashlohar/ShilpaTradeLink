@@ -494,14 +494,19 @@ class InvoicesController extends AppController
         $invoice = $this->Invoices->get($id, [
             'contain' => ['ItemSerialNumbers','InvoiceRows','SalesOrders' => ['Invoices'=>['InvoiceRows'],'SalesOrderRows' => ['Items'=>['ItemSerialNumbers'],'SaleTaxes']],'Companies','Customers','Employees','SaleTaxes']
         ]);
+		foreach($invoice->sales_order->sales_order_rows as $sales_order_row){
+			foreach($sales_order_row->item->item_serial_numbers as $item_serial_number){
+				$ItemSerialNumber2[$item_serial_number->item_id]=$this->Invoices->ItemSerialNumbers->find()->where(['item_id'=>$item_serial_number->item_id,'status'=>'In'])->toArray();
+			}
+		}
 		
 		foreach($invoice->invoice_rows as $invoice_row){
-			if($invoice_row->item_serial_number){
 			
-			$ItemSerialNumber_In[$invoice_row->item_id]= explode(",",$invoice_row->item_serial_number);
+			if($invoice_row->item_serial_number){
+			@$ItemSerialNumber_In[$invoice_row->item_id]= explode(",",$invoice_row->item_serial_number);
 			$ItemSerialNumber[$invoice_row->item_id]=$this->Invoices->ItemSerialNumbers->find()->where(['item_id'=>$invoice_row->item_id,'status'=>'In'])->orWhere(['ItemSerialNumbers.invoice_id'=>$invoice->id,'item_id'=>$invoice_row->item_id,'status'=>'Out'])->toArray();
 			}
-			$ItemSerialNumber2[$invoice_row->item_id]=$this->Invoices->ItemSerialNumbers->find()->where(['item_id'=>$invoice_row->item_id,'status'=>'In']);
+			//$ItemSerialNumber2[$invoice_row->item_id]=$this->Invoices->ItemSerialNumbers->find()->where(['item_id'=>$invoice_row->item_id,'status'=>'In']);
 				
 			}
 		
@@ -519,17 +524,18 @@ class InvoicesController extends AppController
 			$invoice->in3=$invoice->in3;
 			$invoice->due_payment=$invoice->grand_total;
 			
-			foreach($ItemSerialNumber_In as $key=>$serial_no){
-				
-				foreach($serial_no as $data){
-					$query = $this->Invoices->InvoiceRows->ItemSerialNumbers->query();
-					$query->update()
-						->set(['status' => 'In','invoice_id' => 0])
-						->where(['id' => $data])
-						->execute(); 
+			if(@$ItemSerialNumber_In){
+				foreach(@$ItemSerialNumber_In as $key=>$serial_no){
+					
+					foreach($serial_no as $data){
+						$query = $this->Invoices->InvoiceRows->ItemSerialNumbers->query();
+						$query->update()
+							->set(['status' => 'In','invoice_id' => 0])
+							->where(['id' => $data])
+							->execute(); 
+					}
 				}
 			}
-		
 			foreach($invoice->invoice_rows as $invoice_row){
 				if($invoice_row->item_serial_numbers){
 					$item_serial_no=implode(",",$invoice_row->item_serial_numbers );
