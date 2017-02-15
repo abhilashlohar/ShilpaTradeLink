@@ -254,8 +254,31 @@ class InvoicesController extends AppController
 			
 			$process_status='Pulled From Sales-Order';
 		}
-			
-		$this->set(compact('sales_order','process_status','sales_order_id'));
+
+		$session = $this->request->session();
+		$st_year_id = $session->read('st_year_id');
+		
+	   $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+       $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+       $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+       $tody1 = date("Y-m-d");
+
+       $fromdate = strtotime($fromdate1);
+       $todate = strtotime($todate1); 
+       $tody = strtotime($tody1);
+
+      if($fromdate >= $tody || $todate <= $tody)
+       {
+       	   $chkdate = 'Not Found';
+       }
+       else
+       {
+       	  $chkdate = 'Found';
+       }
+
+
+
+		$this->set(compact('sales_order','process_status','sales_order_id','chkdate'));
 		
         $invoice = $this->Invoices->newEntity();
         if ($this->request->is('post')) {
