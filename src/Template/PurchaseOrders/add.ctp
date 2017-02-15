@@ -58,6 +58,9 @@
 							<label class="control-label">Date</label>
 							<?php echo $this->Form->input('date_created', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
 						</div>
+							<span style="color: red;"><?php if($chkdate == 'Not Found'){  ?>
+					You are not in Current Financial Year
+				<?php } ?></span>	
 					</div>
 				</div>	
 				<div class="row">
@@ -232,7 +235,12 @@ With reference to your price list we are pleased to place an order for the follo
 				
 			</div>
 			<div class="form-actions">
-				 <button type="submit" class="btn blue-hoki">Add Purchase Order</button>
+					<?php if($chkdate == 'Not Found'){  ?>
+					<label class="btn btn-danger"> You are not in Current Financial Year </label>
+				<?php } else { ?>
+					<button type="submit" class="btn blue-hoki">Add Purchase Order</button>
+				<?php } ?>	
+				 
 			</div>
 		<?= $this->Form->end() ?>
 		<!-- END FORM-->

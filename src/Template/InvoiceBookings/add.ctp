@@ -46,6 +46,9 @@
 										<br/>
 										<?php echo date("d-m-Y"); ?>
 									</div>
+					<span style="color: red;"><?php if($chkdate == 'Not Found'){  ?>
+					You are not in Current Financial Year
+				<?php } ?></span>				
 					</div>
 				</div><br/>
 				
@@ -89,7 +92,12 @@
 						<div class="form-actions">
 						<div class="row">
 							<div class="col-md-3">
-								<button type="submit" class="btn btn-primary">BOOK INVOICE</button>
+									<?php if($chkdate == 'Not Found'){  ?>
+					<label class="btn btn-danger"> You are not in Current Financial Year </label>
+				<?php } else { ?>
+					<button type="submit" class="btn btn-primary">BOOK INVOICE</button>
+				<?php } ?>	
+								
 							</div>
 						</div>
 					</div>
