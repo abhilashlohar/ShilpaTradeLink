@@ -37,6 +37,9 @@ class PaymentVouchersTable extends Table
 		$this->belongsTo('FinancialYears');
 		$this->belongsTo('Ledgers');
 		$this->belongsTo('InvoiceBookings');
+		
+		$this->belongsTo('ReferenceDetails');
+		$this->belongsTo('ReferenceBalances');
 		$this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'

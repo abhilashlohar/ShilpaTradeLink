@@ -111,23 +111,24 @@
 						<tbody>
 						<?php
 						$ref_no=0;
-						foreach($ReferenceBalances as $ReferenceBalancee=>$key)
+						
+						if(!empty($ReferenceBalances))
 						{
-							foreach($key as $ReferenceBalance)
+							foreach($ReferenceBalances as $ReferenceBalancee=>$key)
 							{
-								$ReferenceBalance_amount=$ReferenceBalance->credit-$ReferenceBalance->debit;
-	
-								if($ReferenceBalance_amount>0)
+								foreach($key as $ReferenceBalance)
 								{
-									$itemGroups[]=['text'=>$ReferenceBalance->reference_no, 'value' =>$ReferenceBalance->reference_no,  'amount' => $ReferenceBalance_amount];
+									$ReferenceBalance_amount=$ReferenceBalance->credit-$ReferenceBalance->debit;
+		
+									if($ReferenceBalance_amount>0)
+									{
+										$itemGroups[]=['text'=>$ReferenceBalance->reference_no, 'value' =>$ReferenceBalance->reference_no,  'amount' => $ReferenceBalance_amount];
+									}
 								}
 							}
 						}
-						
-						
 						foreach($ReferenceDetails as $ReferenceDetail)
 						{				
-							
 							$ref_no++;
 							if($ReferenceDetail->reference_type=='New Reference')
 							{
@@ -202,7 +203,9 @@
 		<tbody>
 			<tr class="against_references_no">
 			<td>Agst Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Against Reference']) ?><?= $this->Form->hidden('reference_no[]',['type'=>'text','class'=>'form-control ','label'=>false,'id'=>'reference_no_2']) ?></td>
-			<td id="against_references_no"></td>
+			<td id="against_references_no">
+			<?php echo $this->Form->input('against_references_no', ['empty'=>'--Select-','label' => false,'options' =>$itemGroups,'class' => 'form-control input-sm']); ?>
+			</td>
 			<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
 			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
 			</tr>
@@ -228,6 +231,7 @@
 <script>
 $(document).ready(function() {
 	
+	
 	$( document ).on( 'keyup', 'input[name="debit[]"]', function() {
 			var debit=parseFloat($(this).val());
 			var amount=$(this).closest('tr').find('select[name="against_references_no"] option:selected').attr('amount');
@@ -247,21 +251,28 @@ $(document).ready(function() {
 		$(this).closest('tr').find('input[name="reference_no[]"]').val(against_references_no);
 		$(this).closest('tr').find('input[name="debit[]"]').val(amount);
 	});
-	$('select[name="received_from_id"]').live("change",function() {
-		var received_from_id=$(this).val();
+	<?php
+	if(empty($ReferenceDetails))
+	{
+		?>
 		
-		var url="<?php echo $this->Url->build(['controller'=>'ReceiptVouchers','action'=>'fetchReferenceNo']); ?>";
-		url=url+'/'+received_from_id,
-		$.ajax({
-			url: url,
-			type: 'GET',
-			dataType: 'text'
-		}).done(function(response) {
-			$("#main_table tbody").find('tr.against_references_no').remove();
-			$('#against_references_no').html(response);
-		});
-		
-	});
+			var received_from_id=$('select[name="received_from_id"] option:selected').val();
+			
+			var url="<?php echo $this->Url->build(['controller'=>'ReceiptVouchers','action'=>'fetchReferenceNo']); ?>";
+			url=url+'/'+received_from_id,
+			$.ajax({
+				url: url,
+				type: 'GET',
+				dataType: 'text'
+			}).done(function(response) {
+				$("#main_table tbody").find('tr.against_references_no').remove();
+				$('#against_references_no').html(response);
+			});
+			
+		<?php
+	}
+	?>
+	
 	$('input[name="amount"],[name^=debit]').live("blur",function() {
 		var val=$(this).val();
 		$(this).val(parseFloat($(this).val()).toFixed(2));
@@ -334,21 +345,63 @@ $(document).ready(function() {
 		});
 	});
 	$( document ).on( 'click', '.remove_row', function() {
-		$(this).closest("#main_table tr").remove();
-		var i=1;
-		var len=$("[name^=reference_no]").length;
 		
-		$("[name^=reference_no]").each(function () {
+		var current_obj=$(this).closest("#main_table tr");
+		
+		var old_amount=$(this).closest("#main_table tr").find('input[name="old_amount[]"]').val();
+		
+		if(old_amount)
+		{
+			alert(old_amount);
+			var reference_type=$(this).closest("#main_table tr").find('input[name="reference_type[]"]').val();
+			var reference_no=$(this).closest("#main_table tr").find('input[name="reference_no[]"]').val();
+			var ledger_account_id=$('select[name="received_from_id"] option:selected').val();
 			
-			$(this).attr('id','reference_no_'+i);
 			
-			$(this).rules("add", {
-				required: true,
-				noSpace: true,
-				notEqualToGroup: ['.distinctreference']
+			var receipt_voucher_id='<?php echo $receipt_voucher_id; ?>';
+			
+			var url="<?php echo $this->Url->build(['controller'=>'ReceiptVouchers','action'=>'deleteReceiptRow']); ?>";
+			url=url+'/'+reference_type+'/'+old_amount+'/'+ledger_account_id+'/'+receipt_voucher_id+'/'+reference_no,
+			$.ajax({
+				url: url,
+				type: 'GET',
+				dataType: 'text'
+			}).done(function(response) {
+				
+				current_obj.remove();
+				var i=1;
+				var len=$("[name^=reference_no]").length;
+				
+				$("[name^=reference_no]").each(function () {
+					
+					$(this).attr('id','reference_no_'+i);
+					$(this).rules("add", {
+						required: true,
+						noSpace: true,
+						notEqualToGroup: ['.distinctreference']
+					});
+					i++;
+				});
 			});
-			i++;
-		});
+		}
+		else
+		{
+			current_obj.closest("#main_table tr").remove();
+				var i=1;
+				var len=$("[name^=reference_no]").length;
+				
+				$("[name^=reference_no]").each(function () {
+					
+					$(this).attr('id','reference_no_'+i);
+					$(this).rules("add", {
+						required: true,
+						noSpace: true,
+						notEqualToGroup: ['.distinctreference']
+					});
+					i++;
+				});
+		}
+		
 	});
 	
 	////////////////  Validation  ////////////////////////

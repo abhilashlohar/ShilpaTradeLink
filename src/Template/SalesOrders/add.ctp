@@ -43,6 +43,9 @@ if(!empty($copy))
 						<div class="col-md-9">
 							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
 						</div>
+					<span style="color: red;"><?php if($chkdate == 'Not Found'){  ?>
+					You are not in Current Financial Year
+				<?php } ?></span>	
 					</div>
 				</div>
 			</div><br/>
@@ -372,8 +375,12 @@ if(!empty($copy))
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
-					<button type="submit" class="btn btn-primary">ADD SALES ORDER</button>
-				</div>
+					<?php if($chkdate == 'Not Found'){  ?>
+					<label class="btn btn-danger"> You are not in Current Financial Year </label>
+				<?php } else { ?>
+					<button type="submit" class="btn btn-primary" >ADD SALES ORDER</button>
+				<?php } ?>	
+					</div>
 			</div>
 		</div>
 		

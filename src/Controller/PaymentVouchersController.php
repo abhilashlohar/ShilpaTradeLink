@@ -49,6 +49,13 @@ class PaymentVouchersController extends AppController
         $this->set('_serialize', ['paymentVoucher']);
     }
 
+	public function fetchReferenceNo($ledger_account_id=null)
+    {
+		$this->viewBuilder()->layout('ajax_layout');
+	
+		$ReferenceBalances=$this->PaymentVouchers->ReferenceBalances->find()->where(['ledger_account_id' => $ledger_account_id])->toArray();
+		$this->set(compact(['ReferenceBalances']));
+	}
     /**
      * Add method
      *
@@ -63,7 +70,11 @@ class PaymentVouchersController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		$st_year_id = $session->read('st_year_id');
 		$financial_year = $this->PaymentVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
+		
 		if ($this->request->is('post')) {
+			
+			$total_row=sizeof($this->request->data['reference_no']);
+			
 			$last_ref_no=$this->PaymentVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_ref_no){
 				$paymentVoucher->voucher_no=$last_ref_no->voucher_no+1;
@@ -71,27 +82,6 @@ class PaymentVouchersController extends AppController
 				$paymentVoucher->voucher_no=1;
 			}
 						
-			$payment_breakups=[];
-			
-			if(!empty($this->request->data['invoice_booking_record'])){
-				foreach($this->request->data['invoice_booking_record'] as $invoice_booking_record){
-					if(@$invoice_booking_record['checkbox']){
-						$payment_breakups[]=['ref_type'=>'Agst Ref','new_ref_no'=>'','invoice_booking_id'=>$invoice_booking_record['invoice_booking_id'],'amount'=>$invoice_booking_record['invoice_booking_amount']];
-					}
-				} 
-			}
-			if((!empty($this->request->data['advance'])) && ($this->request->data['receipt_type']=='Agst Ref')) {
-				if($this->request->data['advance']>0){
-					$payment_breakups[]=['ref_type'=>'Advance','new_ref_no'=>'','invoice_booking_id'=>0,'amount'=>$this->request->data['advance']];
-					$paymentVoucher->advance_amount=$this->request->data['advance'];
-				}
-			}
-			else if($this->request->data['receipt_type']!='On Account'){
-			$paymentVoucher->advance_amount=$this->request->data['amount'];
-			}
-				
-			$this->request->data['payment_breakups']=$payment_breakups;
-			
 			$paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
 			
 			$paymentVoucher->created_by=$s_employee_id;
@@ -123,30 +113,43 @@ class PaymentVouchersController extends AppController
 				$ledger->voucher_source = 'Payment Voucher';
 				$this->PaymentVouchers->Ledgers->save($ledger); 
 				
-					
-				//InvoiceBooking Update 
-				$i=0;
-				foreach($paymentVoucher->payment_breakups as $data)
+				for($row=0; $row<$total_row; $row++)
 				{
-					if($data->invoice_booking_id>0){
-					$invoice_booking_id=$data->invoice_booking_id;
-					$amount=$data->amount;
-					$InvoiceBookings=$this->PaymentVouchers->InvoiceBookings->find()->where(['id'=>$invoice_booking_id]);
-					
-					foreach($InvoiceBookings as $data1)
-					{
-					$due_payment=$data1->due_payment;
-					}
-					$remaining=$due_payment-$amount;
-					$query = $this->PaymentVouchers->InvoiceBookings->query();
-					$query->update()
-					->set(['due_payment' => $remaining])
-					->where(['id' => $invoice_booking_id])
+					////////////////  ReferenceDetails ////////////////////////////////
+					$query1 = $this->PaymentVouchers->ReferenceDetails->query();
+					$query1->insert(['reference_no', 'ledger_account_id', 'payment_voucher_id', 'credit', 'reference_type'])
+					->values([
+						'ledger_account_id' => $this->request->data['paid_to_id'],
+						'payment_voucher_id' => $paymentVoucher->id,
+						'reference_no' => $this->request->data['reference_no'][$row],
+						'credit' => $this->request->data['credit'][$row],
+						'reference_type' => $this->request->data['reference_type'][$row]
+					])
 					->execute();
+					
+					////////////////  ReferenceBalances ////////////////////////////////
+					if($this->request->data['reference_type'][$row]=='Against Reference')
+					{
+						$query2 = $this->PaymentVouchers->ReferenceBalances->query();
+						$query2->update()
+							->set(['credit' => $this->request->data['credit'][$row]])
+							->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['paid_to_id']])
+							->execute();
 					}
-					$i++;
+					else
+					{
+						$query2 = $this->PaymentVouchers->ReferenceBalances->query();
+						$query2->insert(['reference_no', 'ledger_account_id', 'credit'])
+						->values([
+							'reference_no' => $this->request->data['reference_no'][$row],
+							'ledger_account_id' => $this->request->data['paid_to_id'],
+							'credit' => $this->request->data['credit'][$row],
+						])
+						->execute();
+					}
+					
 				}
-			
+				
 				$this->Flash->success(__('The Payment-Voucher:'.str_pad($paymentVoucher->voucher_no, 4, '0', STR_PAD_LEFT)).' has been genereted.');
 				return $this->redirect(['action' => 'view/'.$paymentVoucher->id]);
             } else {
@@ -216,8 +219,19 @@ class PaymentVouchersController extends AppController
 	    $financial_year_data = $Em->checkFinancialYear($paymentVoucher->transaction_date);
 
 
-		 $check_date= $paymentVoucher->transaction_date;
-		 
+		$check_date= $paymentVoucher->transaction_date;
+		 $payment_voucher_id=$id;
+		$ReferenceDetails = $this->PaymentVouchers->ReferenceDetails->find()->where(['ledger_account_id'=>$paymentVoucher->paid_to_id,'payment_voucher_id'=>$id])->toArray();
+		if(!empty($ReferenceDetails))
+		{
+			foreach($ReferenceDetails as $ReferenceDetail)
+			{
+				$ReferenceBalances[] = $this->PaymentVouchers->ReferenceBalances->find()->where(['ledger_account_id'=>$ReferenceDetail->ledger_account_id,'reference_no'=>$ReferenceDetail->reference_no])->toArray();
+			}
+		}
+		else{
+			$ReferenceBalances='';
+		}
 		
 			if ($this->request->is(['patch', 'post', 'put'])) {
 			
@@ -278,7 +292,7 @@ class PaymentVouchersController extends AppController
 		$bankCashes = $this->PaymentVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
 		
         $companies = $this->PaymentVouchers->Companies->find('all');	
-        $this->set(compact('paymentVoucher', 'paidTos', 'bankCashes','companies','financial_year','financial_year_data'));
+        $this->set(compact('ReferenceDetails','ReferenceBalances','paymentVoucher', 'paidTos', 'bankCashes','companies','financial_year','financial_year_data'));
         $this->set('_serialize', ['paymentVoucher']);
  
     }
