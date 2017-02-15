@@ -317,6 +317,8 @@ class InventoryVouchersController extends AppController
 						->where(['id' => $serial_id])
 						->execute();
 				}
+				
+				
 			}
 			
 			$query5 = $this->InventoryVouchers->InvoiceRows->query();
