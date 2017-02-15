@@ -62,6 +62,44 @@ class ReceiptVouchersController extends AppController
 		$ReferenceDetails=$this->ReceiptVouchers->ReferenceBalances->find()->where(['ledger_account_id' => $ledger_account_id])->toArray();
 		$this->set(compact(['ReferenceDetails']));
 	}
+	public function deleteReceiptRow($reference_type=null,$old_amount=null,$ledger_account_id=null,$receipt_voucher_id=null,$reference_no=null)
+    {
+		$query1 = $this->ReceiptVouchers->ReferenceDetails->query();
+		$query1->delete()
+		->where([
+			'ledger_account_id' => $ledger_account_id,
+			'receipt_voucher_id' => $receipt_voucher_id,
+			'reference_no' => $reference_no,
+			'reference_type' => $reference_type
+		])
+		->execute();
+		
+		if($reference_type=='Against Reference')
+		{
+			$res=$this->ReceiptVouchers->ReferenceBalances->find()->where(['reference_no' => $reference_no,'ledger_account_id' => $ledger_account_id])->first();
+			
+			$q=$res->debit-$old_amount;
+			
+			$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
+			$query2->update()
+				->set(['debit' => $q])
+				->where(['reference_no' => $reference_no,'ledger_account_id' => $ledger_account_id])
+				->execute();
+		}
+		else
+		{ 
+			$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
+			$query2->delete()
+			->where([
+				'reference_no' => $reference_no,
+				'ledger_account_id' => $ledger_account_id
+			])
+			->execute();
+			
+		}
+		exit;
+	
+	}
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
@@ -189,7 +227,6 @@ class ReceiptVouchersController extends AppController
 		
         $companies = $this->ReceiptVouchers->Companies->find('all');
 		
-		//pr($customers->bill_to_bill_account); exit;
 		$Invoices = $this->ReceiptVouchers->Invoices->find()->where(['company_id'=>$st_company_id,'due_payment >'=>0]);		
         $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies','ErrorreceivedFroms','ErrorbankCashes','customers','financial_year'));
         $this->set('_serialize', ['receiptVoucher']);
@@ -209,14 +246,21 @@ class ReceiptVouchersController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
         $st_year_id = $session->read('st_year_id');
+		$receipt_voucher_id=$id;
 		$financial_year = $this->ReceiptVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
         $receiptVoucher = $this->ReceiptVouchers->get($id);
 		
 		
 		$ReferenceDetails = $this->ReceiptVouchers->ReferenceDetails->find()->where(['ledger_account_id'=>$receiptVoucher->received_from_id,'receipt_voucher_id'=>$id])->toArray();
-		foreach($ReferenceDetails as $ReferenceDetail)
+		if(!empty($ReferenceDetails))
 		{
-			$ReferenceBalances[] = $this->ReceiptVouchers->ReferenceBalances->find()->where(['ledger_account_id'=>$ReferenceDetail->ledger_account_id,'reference_no'=>$ReferenceDetail->reference_no])->toArray();
+			foreach($ReferenceDetails as $ReferenceDetail)
+			{
+				$ReferenceBalances[] = $this->ReceiptVouchers->ReferenceBalances->find()->where(['ledger_account_id'=>$ReferenceDetail->ledger_account_id,'reference_no'=>$ReferenceDetail->reference_no])->toArray();
+			}
+		}
+		else{
+			$ReferenceBalances='';
 		}
 		
 
@@ -283,7 +327,7 @@ class ReceiptVouchersController extends AppController
 							
 							$res=$this->ReceiptVouchers->ReferenceBalances->find()->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['received_from_id']])->first();
 							
-							echo $q=$res->debit-$this->request->data['old_amount'][$row]+ $this->request->data['debit'][$row];
+							 $q=$res->debit-$this->request->data['old_amount'][$row]+ $this->request->data['debit'][$row];
 							
 							$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
 							$query2->update()
@@ -369,7 +413,7 @@ class ReceiptVouchersController extends AppController
 		$bankCashes = $this->ReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
 		
         $companies = $this->ReceiptVouchers->Companies->find('all');		
-        $this->set(compact('ReferenceDetails','ReferenceBalances','receiptVoucher', 'receivedFroms', 'bankCashes','companies','financial_year','financial_year_data'));
+        $this->set(compact('ReferenceDetails','ReferenceBalances','receiptVoucher', 'receivedFroms', 'bankCashes','companies','financial_year','financial_year_data','receipt_voucher_id'));
         $this->set('_serialize', ['receiptVoucher']);
     }
 
