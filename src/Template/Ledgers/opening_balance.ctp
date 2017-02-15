@@ -1,10 +1,32 @@
 
-<div class="ledgers form large-9 medium-8 columns content">
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="icon-globe font-blue-steel"></i>
+			<span class="caption-subject font-blue-steel uppercase">Opening Balance</span>
+		</div>
+	</div>
+	<div class="portlet-body form">
+
     <?= $this->Form->create($ledger,['id'=>'opening_balance']) ?>
-    
-	<?= $this->Form->input('ledger_account_id', ['options' => $ledgerAccounts]) ?>
-	<?= $this->Form->input('transaction_date',['type'=>'text','class'=>'date-picker','data-date-format'=>'d-m-yyyy']) ?>
-	<?= $this->Form->hidden('voucher_source',['value'=>'Opening Balance']) ?>
+    <div class="form-body">
+		<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="col-md-6 control-label">Ledger</label>
+					<?= $this->Form->input('ledger_account_id', ['options' => $ledgerAccounts,'label' => false]) ?>
+						</div>
+				</div>
+				<div class="col-md-2">
+						<div class="form-group">
+							<label class="control-label">Date</label>
+							<?= $this->Form->input('transaction_date',['type'=>'text','label' => false,'class'=>'date-picker','data-date-format'=>'d-m-yyyy']) ?>
+						</div>
+					</div>
+				
+				
+			<?= $this->Form->hidden('voucher_source',['value'=>'Opening Balance']) ?>
+			</div>
 	<table class="table table-bordered" id="main_table">
 	<tr>
 	<td>Ref. No.</td>
@@ -19,10 +41,11 @@
 	<td><?= $this->Form->button(__('<i class="fa fa-plus"></i>'),['type'=>'button','class'=>'add_row','label'=>false]) ?></td>
 	</tr>
 	</table>
-	
+	</div>
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
 	
+</div>
 </div>
 <table class="table table-bordered" id="temp_table" style="display:none;">
 	<tr>
