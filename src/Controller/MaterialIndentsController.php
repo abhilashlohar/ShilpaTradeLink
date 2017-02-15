@@ -185,9 +185,10 @@ class MaterialIndentsController extends AppController
 		$mi = $this->MaterialIndents->newEntity();
 		
 		if ($this->request->is('post')) {
-			pr($this->request->data['selected_data']);
-			exit;
- 			$check=json_encode($this->request->data['selected_data']); 
+			
+			$mi_data=$this->request->data['selected_data'];
+			
+ 			$check=json_encode(); 
 			$this->redirect(['controller'=>'PurchaseOrders','action' => 'add/'.$check.'']);
 		}
 		
