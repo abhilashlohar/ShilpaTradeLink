@@ -231,7 +231,12 @@
 <script>
 $(document).ready(function() {
 	
-	
+	if ($('#id_radio1').is(':checked')) {
+			$('#chq_no').show('fast');
+		}
+		else{
+			$('#chq_no').hide('fast');
+            }
 	$( document ).on( 'keyup', 'input[name="debit[]"]', function() {
 			var debit=parseFloat($(this).val());
 			var amount=$(this).closest('tr').find('select[name="against_references_no"] option:selected').attr('amount');
@@ -252,10 +257,10 @@ $(document).ready(function() {
 		$(this).closest('tr').find('input[name="debit[]"]').val(amount);
 	});
 	<?php
-	if(empty($ReferenceDetails))
+	if(empty($ReferenceBalances) || empty($itemGroups))
 	{
 		?>
-		
+		alert();
 			var received_from_id=$('select[name="received_from_id"] option:selected').val();
 			
 			var url="<?php echo $this->Url->build(['controller'=>'ReceiptVouchers','action'=>'fetchReferenceNo']); ?>";
@@ -352,7 +357,6 @@ $(document).ready(function() {
 		
 		if(old_amount)
 		{
-			alert(old_amount);
 			var reference_type=$(this).closest("#main_table tr").find('input[name="reference_type[]"]').val();
 			var reference_no=$(this).closest("#main_table tr").find('input[name="reference_no[]"]').val();
 			var ledger_account_id=$('select[name="received_from_id"] option:selected').val();

@@ -54,7 +54,48 @@ class PaymentVouchersController extends AppController
 		$this->viewBuilder()->layout('ajax_layout');
 	
 		$ReferenceBalances=$this->PaymentVouchers->ReferenceBalances->find()->where(['ledger_account_id' => $ledger_account_id])->toArray();
+		
 		$this->set(compact(['ReferenceBalances']));
+	}
+	public function deleteReceiptRow($reference_type=null,$old_amount=null,$ledger_account_id=null,$payment_voucher_id=null,$reference_no=null)
+    {
+		
+		$query1 = $this->PaymentVouchers->ReferenceDetails->query();
+		$query1->delete()
+		->where([
+			'ledger_account_id' => $ledger_account_id,
+			'payment_voucher_id' => $payment_voucher_id,
+			'reference_no' => $reference_no,
+			'reference_type' => $reference_type
+		])
+		->execute();
+		
+		
+		if($reference_type=='Against Reference')
+		{
+			$res=$this->PaymentVouchers->ReferenceBalances->find()->where(['reference_no' => $reference_no,'ledger_account_id' => $ledger_account_id])->first();
+			
+			$q=$res->credit-$old_amount;
+			
+			$query2 = $this->PaymentVouchers->ReferenceBalances->query();
+			$query2->update()
+				->set(['credit' => $q])
+				->where(['reference_no' => $reference_no,'ledger_account_id' => $ledger_account_id])
+				->execute();
+		}
+		else
+		{ 
+			$query2 = $this->PaymentVouchers->ReferenceBalances->query();
+			$query2->delete()
+			->where([
+				'reference_no' => $reference_no,
+				'ledger_account_id' => $ledger_account_id
+			])
+			->execute();
+			
+		}
+		exit;
+	
 	}
     /**
      * Add method
@@ -233,6 +274,7 @@ class PaymentVouchersController extends AppController
 			$ReferenceBalances='';
 		}
 		
+		
 			if ($this->request->is(['patch', 'post', 'put'])) {
 			
             $paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
@@ -240,6 +282,7 @@ class PaymentVouchersController extends AppController
 			$paymentVoucher->edited_on=date("Y-m-d");
 			$paymentVoucher->transaction_date=date("Y-m-d",strtotime($paymentVoucher->transaction_date));
 			$paymentVoucher->edited_by=$s_employee_id;
+			$total_row=sizeof($this->request->data['reference_no']);
             if ($this->PaymentVouchers->save($paymentVoucher))
 			{
 				
@@ -264,6 +307,90 @@ class PaymentVouchersController extends AppController
 					$ledger->transaction_date = $paymentVoucher->transaction_date;
 					$ledger->voucher_source = 'Payment Voucher';
 					$this->PaymentVouchers->Ledgers->save($ledger); 
+					
+					for($row=0; $row<$total_row; $row++)
+					{
+						if(!empty($this->request->data['old_amount'][$row]))
+						{				////////////////  ReferenceDetails ////////////////////////////////
+					
+					
+							$query1 = $this->PaymentVouchers->ReferenceDetails->query();
+							$query1->update()
+							->set(['credit' => $this->request->data['credit'][$row]])
+							->where([
+								'ledger_account_id' => $this->request->data['paid_to_id'],
+								'payment_voucher_id' => $paymentVoucher->id,
+								'reference_no' => $this->request->data['reference_no'][$row],
+								'reference_type' => $this->request->data['reference_type'][$row]
+							])
+							->execute();
+							
+							////////////////  ReferenceBalances ////////////////////////////////
+							if($this->request->data['reference_type'][$row]=='Against Reference')
+							{
+								
+								$res=$this->PaymentVouchers->ReferenceBalances->find()->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['paid_to_id']])->first();
+								
+								 $q=$res->credit-$this->request->data['old_amount'][$row]+ $this->request->data['credit'][$row];
+								
+								$query2 = $this->PaymentVouchers->ReferenceBalances->query();
+								$query2->update()
+									->set(['credit' => $q])
+									->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['paid_to_id']])
+									->execute();
+							}
+							else
+							{ 
+								$query2 = $this->PaymentVouchers->ReferenceBalances->query();
+								$query2->update()
+								->set(['credit' => $this->request->data['credit'][$row]])
+								->where([
+									'reference_no' => $this->request->data['reference_no'][$row],
+									'ledger_account_id' => $this->request->data['paid_to_id']
+								])
+								->execute();
+								
+							}
+
+						}
+						else
+						{
+							////////////////  ReferenceDetails ////////////////////////////////
+							$query1 = $this->PaymentVouchers->ReferenceDetails->query();
+							$query1->insert(['reference_no', 'ledger_account_id', 'payment_voucher_id', 'credit', 'reference_type'])
+							->values([
+								'ledger_account_id' => $this->request->data['paid_to_id'],
+								'payment_voucher_id' => $paymentVoucher->id,
+								'reference_no' => $this->request->data['reference_no'][$row],
+								'credit' => $this->request->data['credit'][$row],
+								'reference_type' => $this->request->data['reference_type'][$row]
+							])
+							->execute();
+							
+							////////////////  ReferenceBalances ////////////////////////////////
+							if($this->request->data['reference_type'][$row]=='Against Reference')
+							{
+								$query2 = $this->PaymentVouchers->ReferenceBalances->query();
+								$query2->update()
+									->set(['credit' => $this->request->data['credit'][$row]])
+									->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['paid_to_id']])
+									->execute();
+							}
+							else
+							{
+								$query2 = $this->PaymentVouchers->ReferenceBalances->query();
+								$query2->insert(['reference_no', 'ledger_account_id', 'credit'])
+								->values([
+									'reference_no' => $this->request->data['reference_no'][$row],
+									'ledger_account_id' => $this->request->data['paid_to_id'],
+									'credit' => $this->request->data['credit'][$row],
+								])
+								->execute();
+							}
+						}
+						
+					}
+				
 					$this->Flash->success(__('The payment voucher has been saved.'));
 					return $this->redirect(['action' => 'view/'.$paymentVoucher->id]);
 				} 
@@ -292,7 +419,7 @@ class PaymentVouchersController extends AppController
 		$bankCashes = $this->PaymentVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
 		
         $companies = $this->PaymentVouchers->Companies->find('all');	
-        $this->set(compact('ReferenceDetails','ReferenceBalances','paymentVoucher', 'paidTos', 'bankCashes','companies','financial_year','financial_year_data'));
+        $this->set(compact('payment_voucher_id','ReferenceDetails','ReferenceBalances','paymentVoucher', 'paidTos', 'bankCashes','companies','financial_year','financial_year_data'));
         $this->set('_serialize', ['paymentVoucher']);
  
     }

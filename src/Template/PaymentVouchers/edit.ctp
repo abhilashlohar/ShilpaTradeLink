@@ -128,6 +128,8 @@
 								}
 							}
 						}
+						
+						
 						foreach($ReferenceDetails as $ReferenceDetail)
 						{				
 							$ref_no++;
@@ -226,12 +228,18 @@
 	</div>
 
 <?php
+
 		}
 		echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
 	
-	alert();
+	if ($('#id_radio1').is(':checked')) {
+			$('#chq_no').show('fast');
+		}
+		else{
+			$('#chq_no').hide('fast');
+            }
 	$( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 			var credit=parseFloat($(this).val());
 			var amount=$(this).closest('tr').find('select[name="against_references_no"] option:selected').attr('amount');
@@ -252,7 +260,7 @@ $(document).ready(function() {
 		$(this).closest('tr').find('input[name="credit[]"]').val(amount);
 	});
 	<?php
-	if(empty($ReferenceDetails))
+	if(empty($ReferenceBalances) || empty($itemGroups))
 	{
 		?>
 		
@@ -353,16 +361,15 @@ $(document).ready(function() {
 		
 		if(old_amount)
 		{
-			alert(old_amount);
 			var reference_type=$(this).closest("#main_table tr").find('input[name="reference_type[]"]').val();
 			var reference_no=$(this).closest("#main_table tr").find('input[name="reference_no[]"]').val();
 			var ledger_account_id=$('select[name="paid_to_id"] option:selected').val();
-			
 			
 			var payment_voucher_id='<?php echo $payment_voucher_id; ?>';
 			
 			var url="<?php echo $this->Url->build(['controller'=>'PaymentVouchers','action'=>'deleteReceiptRow']); ?>";
 			url=url+'/'+reference_type+'/'+old_amount+'/'+ledger_account_id+'/'+payment_voucher_id+'/'+reference_no,
+			
 			$.ajax({
 				url: url,
 				type: 'GET',
