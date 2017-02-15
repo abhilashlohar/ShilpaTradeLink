@@ -126,6 +126,31 @@ class ChallansController extends AppController
 		$Company = $this->Challans->Companies->get($st_company_id);
 		$challan = $this->Challans->newEntity();
        
+
+		  $st_year_id = $session->read('st_year_id');
+
+       $SessionCheckDate = $this->FinancialYears->get($st_year_id);
+       $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
+       $todate1 = date("Y-m-d",strtotime($SessionCheckDate->date_to)); 
+       $tody1 = date("Y-m-d");
+
+       $fromdate = strtotime($fromdate1);
+       $todate = strtotime($todate1); 
+       $tody = strtotime($tody1);
+
+      if($fromdate >= $tody || $todate <= $tody)
+       {
+       	   $chkdate = 'Not Found';
+       }
+       else
+       {
+       	  $chkdate = 'Found';
+       }
+
+
+
+
+
 		if ($this->request->is('post')) {
 			
             $challan = $this->Challans->patchEntity($challan, $this->request->data);
@@ -185,7 +210,7 @@ class ChallansController extends AppController
 			'keyField' => function ($row) {
 				return $row['file1'] . '-' . $row['file2'];
 			}]);
-        $this->set(compact('challan', 'customers', 'Company', 'invoices', 'transporters','items','vendors','filenames','invoice_bookings'));
+        $this->set(compact('challan', 'customers', 'Company', 'invoices', 'transporters','items','vendors','filenames','invoice_bookings','chkdate'));
         $this->set('_serialize', ['challan']);
     }
     /**

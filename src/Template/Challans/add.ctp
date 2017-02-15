@@ -59,6 +59,9 @@
 							<label class="control-label">Date</label>
 							<?php echo $this->Form->input('created_on', ['type' => 'text','label' => false,'class' => 'form-control input-sm','value' => date("d-m-Y"),'readonly']); ?>
 						</div>
+						<span style="color: red;"><?php if($chkdate == 'Not Found'){  ?>
+					You are not in Current Financial Year
+				<?php } ?></span>
 					</div>
 				</div>
 				<div class="row">
@@ -201,7 +204,12 @@
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
+					<?php if($chkdate == 'Not Found'){  ?>
+					<label class="btn btn-danger"> You are not in Current Financial Year </label>
+				<?php } else { ?>
 					<button type="submit" class="btn btn-primary" >GENERATE CHALLAN</button>
+				<?php } ?>	
+					
 				</div>
 			</div>
 		</div>
