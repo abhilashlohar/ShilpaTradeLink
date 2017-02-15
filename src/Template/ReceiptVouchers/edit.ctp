@@ -260,7 +260,7 @@ $(document).ready(function() {
 	if(empty($ReferenceBalances) || empty($itemGroups))
 	{
 		?>
-		alert();
+		
 			var received_from_id=$('select[name="received_from_id"] option:selected').val();
 			
 			var url="<?php echo $this->Url->build(['controller'=>'ReceiptVouchers','action'=>'fetchReferenceNo']); ?>";
