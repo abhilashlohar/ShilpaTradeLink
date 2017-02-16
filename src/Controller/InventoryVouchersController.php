@@ -327,6 +327,7 @@ class InventoryVouchersController extends AppController
 						->execute();
 				}
 				
+
 				$itemLedgers = $this->InventoryVouchers->ItemLedgers->find()->where(['item_id'=>$inventory_voucher_row['item_id'],'in_out'=>'In','rate_updated'=>'Yes'])->toArray();
 				$rate=0; $count=0; $total_rate=0;
 				foreach($itemLedgers as $itemLedger){
@@ -355,6 +356,7 @@ class InventoryVouchersController extends AppController
 					'processed_on'=>date("Y-m-d")
 				])
 				->execute();
+
 			}
 		
 			$query= $this->InventoryVouchers->ItemLedgers->query();

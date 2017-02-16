@@ -123,7 +123,7 @@
 						<?php echo $this->Form->button('<i class="fa fa-plus"></i> Advance', ['label' => false,'class' => 'btn btn-primary adv_ref','type'=>'button']); ?>
 						</div>
 					</div>
-				  </div>
+				 </div>
 				  <div class="row">
 					<div class="col-md-12">
 						<table class="table table-bordered" id="main_table" style="text-align:center;">
@@ -156,7 +156,7 @@
 		</div>
 			<div class="form-actions">
 				
-				<?= $this->Form->button(__('ADD RECEIPT VOUCHER'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit','onclick' => 'this.disabled=true;return true;']) ?>
+				<?= $this->Form->button(__('ADD RECEIPT VOUCHER'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>
@@ -427,7 +427,7 @@ $(document).ready(function() {
 				.closest('.form-group').removeClass('has-error'); // set success class to the control group
 		},
 
-		submitHandler: function (form) {
+		submitHandler: function (form) { alert();
 			var amount=parseFloat($('input[name="amount"]').val());
 		
 				var debit=0;

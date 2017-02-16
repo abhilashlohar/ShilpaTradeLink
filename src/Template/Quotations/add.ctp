@@ -260,7 +260,10 @@ if(!empty($revision))
 			
 			<div id="t_c_box">
 				<label class="control-label">Commercial Terms & Conditions: </label> <a href="#" role="button" class="select_term_condition btn btn-xs btn-primary">Select </a> <a  role="button" class="btn btn-xs btn-primary updatetc" >Update </a>
-				<div name="terms_conditions_box" id="terms_conditions_box" class="summernote_1"></div>
+				<div name="terms_conditions_box" id="terms_conditions_box" class="summernote_1">
+					<?php echo $quotation->terms_conditions; ?>
+
+				</div>
 				<?php echo $this->Form->input('terms_conditions', ['label'=>false,'class' => 'form-control','value' => @$quotation->terms_conditions,'required','style'=>'display:none']); ?>
 			</div>
 			<br/>

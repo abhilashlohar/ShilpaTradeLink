@@ -158,7 +158,7 @@ if(!empty($copy))
 
 								<div class="row">
 									<div class="col-md-10 padding-right-decrease">
-										<?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_box','placeholder'=>'Item','value' => @$quotation_rows->item->id ,'popup_id'=>$q]); ?>
+										<?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm  item_box','placeholder'=>'Item','value' => @$quotation_rows->item->id ,'popup_id'=>$q]); ?>
 									</div>
 									<div class="col-md-1 padding-left-decrease">
 										<a href="#" class="btn btn-default btn-sm popup_btn" role="button" popup_id="<?php echo $q; ?>"> <i class="fa fa-info-circle"></i> </a>
@@ -196,8 +196,7 @@ if(!empty($copy))
 						</tr>
 						<tr class="tr2 maintr" row_no='<?php echo @$quotation_rows->id; ?>'>
 							<td colspan="6">
-							<div contenteditable="true" id="editor" name="<?php echo 'sales_order_rows['.$q.'][description]'; ?>"><?php echo @$quotation_rows->description; ?></div>
-							<?php echo $this->Form->input('sales_order_rows.'.$q.'.description', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm','style'=>['display:none'],'placeholder'=>'Description','required','value' => @$quotation_rows->description]); ?>
+							<div class="note-editable" id="summer<?php echo $q; ?>" ><?php echo $quotation_rows->description; ?></div>
 							</td>
 							<td></td>
 						</tr>
@@ -247,7 +246,7 @@ if(!empty($copy))
 						</tr>
 						<tr class="tr2 maintr" row_no='<?php echo @$sales_order_rows->id; ?>'>
 							<td colspan="6" class="main">
-								<div class="note-editable"><?php echo $sales_order_rows->description; ?></div>
+								<div class="note-editable" id="summer<?php echo $q; ?>" ><?php echo $quotation_rows->description; ?></div>
 							</td>
 							<td></td>
 						</tr>
@@ -560,7 +559,6 @@ $(document).ready(function() {
 
 		invalidHandler: function (event, validator) { //display error alert on form submit   
 			put_code_description();
-			//put_code_description();
 			success3.hide();
 			error3.show();
 			//Metronic.scrollTo(error3, -200);
@@ -582,7 +580,7 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			//put_code_description();
+			put_code_description();
 			success3.show();
 			error3.hide();
 			form[0].submit(); // submit the form
@@ -740,8 +738,8 @@ $(document).ready(function() {
 	}
 
 	function put_code_description(){
-			var i=1;
-			$("#main_tb tbody tr.tr2").each(function(){
+			var i=0;
+			$("#main_tb tbody#main_tbody tr.tr2").each(function(){
 				var code=$(this).find('div#summer'+i).code();
 				$(this).find('td:nth-child(1) textarea').val(code);
 			i++; });

@@ -261,7 +261,7 @@ class PaymentVouchersController extends AppController
 
 
 		$check_date= $paymentVoucher->transaction_date;
-		 $payment_voucher_id=$id;
+		$payment_voucher_id=$id;
 		$ReferenceDetails = $this->PaymentVouchers->ReferenceDetails->find()->where(['ledger_account_id'=>$paymentVoucher->paid_to_id,'payment_voucher_id'=>$id])->toArray();
 		if(!empty($ReferenceDetails))
 		{
