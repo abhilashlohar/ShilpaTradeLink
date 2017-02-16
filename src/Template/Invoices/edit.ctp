@@ -219,7 +219,7 @@
 							<tr class="tr3" row_no="<?= h($q) ?>">
 							<td></td>
 							<td colspan="5">
-							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','style'=>'width:100%','value'=>$choosen,'readonly']);  ?></td>
+							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control','style'=>'width:100%','value'=>$choosen,'readonly']);  ?></td>
 							</tr><?php } ?>
 					<?php } ?>
 					<?php $q++; }  ?>
@@ -469,7 +469,7 @@
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-md-offset-3 col-md-9">
-					<?= $this->Form->button(__('UPDATE INVOICE'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit','onclick' => 'this.disabled=true;return true;']) ?>
+					<?= $this->Form->button(__('UPDATE INVOICE'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
 				</div>
 			</div>
 		</div>
