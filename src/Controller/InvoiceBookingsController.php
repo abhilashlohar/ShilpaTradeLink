@@ -425,7 +425,7 @@ class InvoiceBookingsController extends AppController
 							$query2->insert(['reference_no', 'ledger_account_id', 'debit'])
 							->values([
 								'reference_no' => $this->request->data['reference_no'][$row],
-								'ledger_account_id' => $this->request->data['received_from_id'],
+								'ledger_account_id' => $this->request->data['vendor_ledger_id'],
 								'debit' => $this->request->data['debit'][$row],
 							])
 							->execute();
@@ -487,11 +487,12 @@ class InvoiceBookingsController extends AppController
 	}
 	public function deleteReceiptRow($reference_type=null,$old_amount=null,$ledger_account_id=null,$invoice_booking_id=null,$reference_no=null)
     {
+		
 		$query1 = $this->InvoiceBookings->ReferenceDetails->query();
 		$query1->delete()
 		->where([
 			'ledger_account_id' => $ledger_account_id,
-			'receipt_voucher_id' => $invoice_booking_id,
+			'invoice_booking_id' => $invoice_booking_id,
 			'reference_no' => $reference_no,
 			'reference_type' => $reference_type
 		])

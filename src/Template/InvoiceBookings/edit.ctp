@@ -417,19 +417,20 @@ $(document).ready(function() {
 		{
 			var reference_type=$(this).closest("#main_table tr").find('input[name="reference_type[]"]').val();
 			var reference_no=$(this).closest("#main_table tr").find('input[name="reference_no[]"]').val();
-			var ledger_account_id=$('select[name="received_from_id"] option:selected').val();
+			var ledger_account_id=$('input[name="vendor_ledger_id"]').val();
 			
 			
 			var invoice_booking_id='<?php echo $invoice_booking_id; ?>';
 			
-			var url="<?php echo $this->Url->build(['controller'=>'ReceiptVouchers','action'=>'deleteReceiptRow']); ?>";
+			var url="<?php echo $this->Url->build(['controller'=>'InvoiceBookings','action'=>'deleteReceiptRow']); ?>";
 			url=url+'/'+reference_type+'/'+old_amount+'/'+ledger_account_id+'/'+invoice_booking_id+'/'+reference_no,
+			
 			$.ajax({
 				url: url,
 				type: 'GET',
 				dataType: 'text'
 			}).done(function(response) {
-				
+				alert(response);
 				current_obj.remove();
 				var i=1;
 				var len=$("[name^=reference_no]").length;
