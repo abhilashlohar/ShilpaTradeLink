@@ -391,7 +391,7 @@
 			   <?php if($chkdate == 'Not Found'){  ?>
 					<label class="btn btn-danger"> You are not in Current Financial Year </label>
 				<?php } else { ?>
-					<?= $this->Form->button(__('ADD INVOICE'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit','onclick' => 'this.disabled=true;return true;']) ?>
+					<?= $this->Form->button(__('ADD INVOICE'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
 				<?php } ?>	
 
 				</div>
@@ -464,7 +464,7 @@
 <script>
 $(document).ready(function() {
 	
-	$( document ).on( 'keyup', 'input[name="credit[]"]', function() { 
+$( document ).on( 'keyup', 'input[name="credit[]"]', function() { 
 			var credit=parseFloat($(this).val());
 			var amount=$(this).closest('tr').find('select[name="against_references_no"] option:selected').attr('amount');
 			amount=parseFloat(amount);
@@ -488,7 +488,7 @@ $(document).ready(function() {
 	});
 	
 	/////////////////////////////////////////////////
-	var received_from_id='<?php echo $invoice->customer->ledger_account_id; ?>';
+	var received_from_id='<?php echo $sales_order->customer->ledger_account_id; ?>';
 		
 		var url="<?php echo $this->Url->build(['controller'=>'PaymentVouchers','action'=>'fetchReferenceNo']); ?>";
 		url=url+'/'+received_from_id,
@@ -501,7 +501,7 @@ $(document).ready(function() {
 			$('#against_references_no').html(response);
 		});
 	//////////////////////////////////////////////////
-
+	
 	$( document ).on( 'click', '.new_ref', function() {
 		var new_line=$('#new_ref tbody').html();
 		$("#main_table tbody").append(new_line);
@@ -520,6 +520,7 @@ $(document).ready(function() {
 			i++;
 		});
 	});
+	
 	$( document ).on( 'click', '.agst_ref', function() {
 		var new_line=$('#agst_ref tbody').html();
 		$("#main_table tbody").append(new_line);
@@ -538,6 +539,7 @@ $(document).ready(function() {
 			i++;
 		});
 	});
+	
 	$( document ).on( 'click', '.adv_ref', function() {
 		var new_line=$('#adv_ref tbody').html();
 		$("#main_table tbody").append(new_line);
@@ -556,94 +558,60 @@ $(document).ready(function() {
 			i++;
 		});
 	});
+	
 	$( document ).on( 'click', '.remove_row', function() {
 		
 		var current_obj=$(this).closest("#main_table tr");
 		
 		var old_amount=$(this).closest("#main_table tr").find('input[name="old_amount[]"]').val();
 		
-		if(old_amount)
-		{
-			var reference_type=$(this).closest("#main_table tr").find('input[name="reference_type[]"]').val();
-			var reference_no=$(this).closest("#main_table tr").find('input[name="reference_no[]"]').val();
-			var ledger_account_id='<?php echo $invoice->customer->ledger_account_id; ?>';
-			
-			var invoice_id='<?php echo $invoice_id; ?>';
-			
-			var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'deleteReceiptRow']); ?>";
-			url=url+'/'+reference_type+'/'+old_amount+'/'+ledger_account_id+'/'+invoice_id+'/'+reference_no,
-			
-			$.ajax({
-				url: url,
-				type: 'GET',
-				dataType: 'text'
-			}).done(function(response) {
+		
+		current_obj.closest("#main_table tr").remove();
+			var i=1;
+			var len=$("[name^=reference_no]").length;
+
+			$("[name^=reference_no]").each(function () {
 				
-				current_obj.remove();
-				var i=1;
-				var len=$("[name^=reference_no]").length;
-				
-				$("[name^=reference_no]").each(function () {
-					
-					$(this).attr('id','reference_no_'+i);
-					$(this).rules("add", {
-						required: true,
-						noSpace: true,
-						notEqualToGroup: ['.distinctreference']
-					});
-					i++;
-				});
+				$(this).attr('id','reference_no_'+i);
+				$(this).rules("add", {
+					required: true,
+					noSpace: true,
+					notEqualToGroup: ['.distinctreference']
 			});
-		}
-		else
-		{
-			current_obj.closest("#main_table tr").remove();
-				var i=1;
-				var len=$("[name^=reference_no]").length;
-				
-				$("[name^=reference_no]").each(function () {
-					
-					$(this).attr('id','reference_no_'+i);
-					$(this).rules("add", {
-						required: true,
-						noSpace: true,
-						notEqualToGroup: ['.distinctreference']
-					});
-					i++;
-				});
-		}
+			i++;
+		});
+		
 		
 	});
-	
+
 	jQuery.validator.addMethod("noSpace", function(value, element) { 
 	  return value.indexOf(" ") < 0 && value != ""; 
 	}, "No space please and don't leave it empty");
 	
 	jQuery.validator.addMethod("notEqualToGroup", function (value, element, options) {
-    // get all the elements passed here with the same class
-    var elems = $(element).parents('form').find(options[0]);
-    // the value of the current element
-    var valueToCompare = value;
-    // count
-    var matchesFound = 0;
-    // loop each element and compare its value with the current value
-    // and increase the count every time we find one
-    jQuery.each(elems, function () {
-        thisVal = $(this).val();
-        if (thisVal == valueToCompare) {
-            matchesFound++;
-        }
-    });
-    // count should be either 0 or 1 max
-    if (this.optional(element) || matchesFound <= 1) {
-        //elems.removeClass('error');
-        return true;
-    } else {
-        //elems.addClass('error');
-    }
-}, jQuery.format("Please enter a Unique Value."));
-		
-		
+		// get all the elements passed here with the same class
+		var elems = $(element).parents('form').find(options[0]);
+		// the value of the current element
+		var valueToCompare = value;
+		// count
+		var matchesFound = 0;
+		// loop each element and compare its value with the current value
+		// and increase the count every time we find one
+		jQuery.each(elems, function () {
+			thisVal = $(this).val();
+			if (thisVal == valueToCompare) {
+				matchesFound++;
+			}
+		});
+		// count should be either 0 or 1 max
+		if (this.optional(element) || matchesFound <= 1) {
+			//elems.removeClass('error');
+			return true;
+		} else {
+			//elems.addClass('error');
+		}
+	}, jQuery.format("Please enter a Unique Value."));
+	
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -700,7 +668,7 @@ $(document).ready(function() {
                     type: "get",
                     data:
                         {
-                            ledger_account_id: '<?php echo $invoice->customer->ledger_account_id; ?>'
+                            ledger_account_id: '<?php echo $sales_order->customer->ledger_account_id; ?>'
                         },
 					},
 				},
@@ -790,6 +758,7 @@ $(document).ready(function() {
 	});
 	
 	//--	 END OF VALIDATION
+	
 	if($("#discount_per").is(':checked')){
 			$("#discount_text").show();
 			$('input[name="discount"]').attr('readonly','readonly');
@@ -893,6 +862,7 @@ $(document).ready(function() {
     });
 	
 	$('.rename_check').die().live("click",function() {
+	
 		rename_rows(); calculate_total();
     });
 	
@@ -1140,7 +1110,6 @@ $(document).ready(function() {
 			
 		});
 	}
-	
 	
 });
 </script>
