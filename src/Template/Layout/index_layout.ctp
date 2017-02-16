@@ -312,6 +312,7 @@ select
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> Pending Challan','/Challans/PendingChallanForCreditNote',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
+				<li><?php echo $this->Html->link('<i class="icon-home"></i> Material Indents','/MaterialIndents',array('escape'=>false)); ?></li>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
