@@ -453,18 +453,8 @@ select
 							</ul>
 						</li>
 						<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Ledger Account','/ledgerAccounts',array('escape'=>false)); ?></li>
-						<li>
-							<a href="javascript:;">
-							<i class="fa fa-file-code-o"></i>
-							<span class="title">Account References</span>
-							<span class="arrow "></span>
-							</a>
-							<ul class="sub-menu">
-								<li><?php echo $this->Html->link( 'Create', '/AccountReferences/add' ); ?></li>
-								<li><?php echo $this->Html->link( 'View', '/AccountReferences' ); ?></li>
-								
-							</ul>
-						</li>
+						<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Account References','/AccountReferences',array('escape'=>false)); ?></li>
+						
 						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Quotation Close Reason','/QuotationCloseReasons',array('escape'=>false)); ?></li>	
 						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Leave Types','/LeaveTypes',array('escape'=>false)); ?></li>
 					</ul>

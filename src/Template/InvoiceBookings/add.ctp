@@ -399,7 +399,7 @@ $(document).ready(function() {
 			url: url,
 			type: 'GET',
 			dataType: 'text'
-		}).done(function(response) { alert(response);
+		}).done(function(response) { //alert(response);
 			$("#main_table tbody").find('tr.against_references_no').remove();
 			$('#against_references_no').html(response);
 		});

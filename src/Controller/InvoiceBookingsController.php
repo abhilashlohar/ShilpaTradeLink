@@ -108,7 +108,7 @@ class InvoiceBookingsController extends AppController
 		
 		$this->set(compact('grn','last_ib_no','discount','tot_pnf','tot_sale_tax','chkdate'));
 		$invoiceBooking = $this->InvoiceBookings->newEntity();
-		if ($this->request->is('post')) {
+		if ($this->request->is('post')) { exit;
             $invoiceBooking = $this->InvoiceBookings->patchEntity($invoiceBooking, $this->request->data);
 			
 			$invoiceBooking->grn_id=$grn_id; 
@@ -340,7 +340,7 @@ class InvoiceBookingsController extends AppController
 		$this->viewBuilder()->layout('ajax_layout');
 	
 		$ReferenceDetails=$this->InvoiceBookings->ReferenceBalances->find()->where(['ledger_account_id' => $ledger_account_id])->toArray();
-		//pr($ReferenceDetails);
+		//pr($ReferenceDetails); exit;
 		$this->set(compact(['ReferenceDetails']));
 	}
 
