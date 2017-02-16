@@ -123,7 +123,7 @@
 						<?php echo $this->Form->button('<i class="fa fa-plus"></i> Advance', ['label' => false,'class' => 'btn btn-primary adv_ref','type'=>'button']); ?>
 						</div>
 					</div>
-				  </div>
+				 </div>
 				  <div class="row">
 					<div class="col-md-12">
 						<table class="table table-bordered" id="main_table" style="text-align:center;">

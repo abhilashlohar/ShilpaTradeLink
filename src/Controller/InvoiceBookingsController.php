@@ -334,5 +334,14 @@ class InvoiceBookingsController extends AppController
 		$InvoiceBookings = $this->InvoiceBookings->find()->where(['company_id'=>$st_company_id,'vendor_id'=>$Vendor->id,'due_payment >'=>0]);
 		 $this->set(compact('InvoiceBookings','Vendor'));
 	}
+	
+	public function fetchReferenceNo($ledger_account_id=null)
+    {
+		$this->viewBuilder()->layout('ajax_layout');
+	
+		$ReferenceDetails=$this->InvoiceBookings->ReferenceBalances->find()->where(['ledger_account_id' => $ledger_account_id])->toArray();
+		//pr($ReferenceDetails);
+		$this->set(compact(['ReferenceDetails']));
+	}
 
 }

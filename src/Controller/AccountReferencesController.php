@@ -23,7 +23,8 @@ class AccountReferencesController extends AppController
             'contain' => ['LedgerAccounts']
         ];
         $accountReferences = $this->paginate($this->AccountReferences);
-
+        $accountReferences = $this->AccountReferences->find('all')->toArray();
+		//pr($accountReferences); exit;
         $this->set(compact('accountReferences'));
         $this->set('_serialize', ['accountReferences']);
     }
