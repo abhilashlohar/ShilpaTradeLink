@@ -80,6 +80,8 @@ class InvoiceBookingsTable extends Table
 		$this->belongsTo('ItemLedgers');
 		$this->belongsTo('AccountReferences');
 		$this->belongsTo('Ledgers');
+		$this->belongsTo('ReferenceBalances');
+		$this->belongsTo('ReferenceDetails');
 		
 		$this->hasMany('InvoiceBookingRows', [
             'foreignKey' => 'invoice_booking_id',

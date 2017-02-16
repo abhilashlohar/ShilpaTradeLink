@@ -29,7 +29,7 @@
 						<div class="form-group">
 							<label class="control-label">Supplier </label>
 							<br/>
-							
+							<?php echo $this->Form->input('vendor_ledger_id', ['label' => false,'class' => 'form-control input-sm','type' =>'hidden','value'=>@$grn->vendor->ledger_account_id]); ?>
 							<?php echo @$grn->vendor->company_name; ?>
 						</div>
 					</div>
@@ -255,103 +255,11 @@
 <?php echo $this->Html->css('/drag_drop/jquery-ui.css'); ?>
 <?php echo $this->Html->script('/drag_drop/jquery-1.12.4.js'); ?>
 <?php echo $this->Html->script('/drag_drop/jquery-ui.js'); ?>
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 
 <script>
 $(document).ready(function() {
-	//--------- FORM VALIDATION
-	var form3 = $('#form_sample_3');
-	var error3 = $('.alert-danger', form3);
-	var success3 = $('.alert-success', form3);
-	form3.validate({
-		errorElement: 'span', //default input error message container
-		errorClass: 'help-block help-block-error', // default input error message class
-		focusInvalid: true, // do not focus the last invalid input
-		
-		
-			rules: {
-				invoice_no:{
-					required: true,
-				},
-			},
 	
-
-		messages: { // custom messages for radio buttons and checkboxes
-			membership: {
-				required: "Please select a Membership type"
-			},
-			service: {
-				required: "Please select  at least 2 types of Service",
-				minlength: jQuery.validator.format("Please select  at least {0} types of Service")
-			}
-		},
-
-		errorPlacement: function (error, element) { // render error placement for each input type
-			if (element.parent(".input-group").size() > 0) {
-				error.insertAfter(element.parent(".input-group"));
-			} else if (element.attr("data-error-container")) { 
-				error.appendTo(element.attr("data-error-container"));
-			} else if (element.parents('.radio-list').size() > 0) { 
-				error.appendTo(element.parents('.radio-list').attr("data-error-container"));
-			} else if (element.parents('.radio-inline').size() > 0) { 
-				error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
-			} else if (element.parents('.checkbox-list').size() > 0) {
-				error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
-			} else if (element.parents('.checkbox-inline').size() > 0) { 
-				error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
-			} else {
-				error.insertAfter(element); // for other inputs, just perform default behavior
-			}
-		},
-
-		invalidHandler: function (event, validator) { //display error alert on form submit   
-			success3.hide();
-			error3.show();
-			Metronic.scrollTo(error3, -200);
-		},
-
-		highlight: function (element) { // hightlight error inputs
-		   $(element)
-				.closest('.form-group').addClass('has-error'); // set error class to the control group
-		},
-
-		unhighlight: function (element) { // revert the change done by hightlight
-			$(element)
-				.closest('.form-group').removeClass('has-error'); // set error class to the control group
-		},
-
-		success: function (label) {
-			label
-				.closest('.form-group').removeClass('has-error'); // set success class to the control group
-		},
-
-		submitHandler: function (form) {
-			q="ok";
-			$("#main_tb tbody tr.tr1").each(function(){
-				var it=$(this).find("td:nth-child(2) select").val();
-				var w=$(this).find("td:nth-child(3) input").val();
-				var r=$(this).find("td:nth-child(4) input").val();
-				if(it=="" || w=="" || r==""){
-					q="e";
-				}
-			});
-			$("#main_tb tbody tr.tr2").each(function(){
-				var d=$(this).find("td:nth-child(1) textarea").val();
-				if(d==""){
-					q="e";
-				}
-			});
-			if(q=="e"){
-				$("#row_error").show();
-				return false;
-			}else{
-				success3.show();
-				error3.hide();
-				form[0].submit(); // submit the form
-			}
-		}
-
-	});
-	//--	 END OF VALIDATION
 	
    calculate_total();
 	$('#main_tb input').die().live("keyup","blur",function() { 
@@ -389,17 +297,17 @@ $(document).ready(function() {
 		$(this).closest('tr').find('input[name="debit[]"]').val(amount);
 	});
 	
-	var received_from_id=$(this).find('input[name="vendor_id"]').val();
+	var received_from_id=$(this).find('input[name="vendor_ledger_id"]').val();
 		
 	//alert(received_from_id); 
 		var url="<?php echo $this->Url->build(['controller'=>'InvoiceBookings','action'=>'fetchReferenceNo']); ?>";
 		url=url+'/'+received_from_id,
-		alert(url); 
+		
 		$.ajax({
 			url: url,
 			type: 'GET',
 			dataType: 'text'
-		}).done(function(response) { //alert(response);
+		}).done(function(response) { 
 			$("#main_table tbody").find('tr.against_references_no').remove();
 			$('#against_references_no').html(response);
 		});
@@ -410,17 +318,7 @@ $(document).ready(function() {
 		$(this).val(parseFloat($(this).val()).toFixed(2));
 	});
 	
-	
 
-	$('input[name="payment_mode"]').die().live("click",function() {
-		var payment_mode=$(this).val();
-		
-		if(payment_mode=="Cheque"){
-			$("#chq_no").show();
-		}else{
-			$("#chq_no").hide();
-		}
-	});
 	
 	$( document ).on( 'click', '.new_ref', function() {
 		var new_line=$('#new_ref tbody').html();
@@ -524,11 +422,12 @@ $(document).ready(function() {
     }
 }, jQuery.format("Please enter a Unique Value."));
 
+
 	//--------- FORM VALIDATION
-	var form3 = $('#form_sample_3');
-	var error3 = $('.alert-danger', form3);
-	var success3 = $('.alert-success', form3);
-	form3.validate({
+	var form3 = $('#form_sample_3');	
+	var error3 = $('.alert-danger', form3); 
+	var success3 = $('.alert-success', form3); 
+	form3.validate({  
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
@@ -549,7 +448,7 @@ $(document).ready(function() {
                     type: "get",
                     data:
                         {
-                            ledger_account_id: function(){return $('select[name=received_from_id] option:selected').val();}
+                            ledger_account_id: function(){return $('input[name=vendor_ledger_id]').val();}
                         },
 					},
 				}
@@ -598,9 +497,11 @@ $(document).ready(function() {
 			label
 				.closest('.form-group').removeClass('has-error'); // set success class to the control group
 		},
+		
 
-		submitHandler: function (form) { alert();
-			var amount=parseFloat($('input[name="amount"]').val());
+		submitHandler: function (form) { 
+			var amount=parseFloat($('input[name="total"]').val());
+			
 		
 				var debit=0;
 				$("[name^=debit]").each(function () {

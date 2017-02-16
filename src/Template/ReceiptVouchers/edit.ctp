@@ -230,13 +230,7 @@
 		echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-	
-	if ($('#id_radio1').is(':checked')) {
-			$('#chq_no').show('fast');
-		}
-		else{
-			$('#chq_no').hide('fast');
-            }
+
 	$( document ).on( 'keyup', 'input[name="debit[]"]', function() {
 			var debit=parseFloat($(this).val());
 			var amount=$(this).closest('tr').find('select[name="against_references_no"] option:selected').attr('amount');
@@ -260,7 +254,7 @@ $(document).ready(function() {
 	if(empty($ReferenceBalances) || empty($itemGroups))
 	{
 		?>
-		
+			
 			var received_from_id=$('select[name="received_from_id"] option:selected').val();
 			
 			var url="<?php echo $this->Url->build(['controller'=>'ReceiptVouchers','action'=>'fetchReferenceNo']); ?>";
