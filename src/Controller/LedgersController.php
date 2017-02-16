@@ -192,7 +192,6 @@ class LedgersController extends AppController
     }
 	public function checkReferenceNo()
     {
-		
 		$reference_no=$this->request->query['reference_no'][0];
 		$ledger_account_id=$this->request->query['ledger_account_id'];
 		

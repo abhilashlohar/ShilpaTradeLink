@@ -488,7 +488,7 @@ $(document).ready(function() {
 	});
 	
 	/////////////////////////////////////////////////
-	var received_from_id='<?php echo $sales_order->customer->ledger_account_id; ?>';
+	var received_from_id='<?php echo $invoice->customer->ledger_account_id; ?>';
 		
 		var url="<?php echo $this->Url->build(['controller'=>'PaymentVouchers','action'=>'fetchReferenceNo']); ?>";
 		url=url+'/'+received_from_id,
@@ -557,21 +557,62 @@ $(document).ready(function() {
 		});
 	});
 	$( document ).on( 'click', '.remove_row', function() {
-		$(this).closest("#main_table tr").remove();
-		var i=1;
-		var len=$("[name^=reference_no]").length;
 		
-		$("[name^=reference_no]").each(function () {
+		var current_obj=$(this).closest("#main_table tr");
+		
+		var old_amount=$(this).closest("#main_table tr").find('input[name="old_amount[]"]').val();
+		
+		if(old_amount)
+		{
+			var reference_type=$(this).closest("#main_table tr").find('input[name="reference_type[]"]').val();
+			var reference_no=$(this).closest("#main_table tr").find('input[name="reference_no[]"]').val();
+			var ledger_account_id='<?php echo $invoice->customer->ledger_account_id; ?>';
 			
-			$(this).attr('id','reference_no_'+i);
+			var invoice_id='<?php echo $invoice_id; ?>';
 			
-			$(this).rules("add", {
-				required: true,
-				noSpace: true,
-				notEqualToGroup: ['.distinctreference']
+			var url="<?php echo $this->Url->build(['controller'=>'Invoice','action'=>'deleteReceiptRow']); ?>";
+			url=url+'/'+reference_type+'/'+old_amount+'/'+ledger_account_id+'/'+invoice_id+'/'+reference_no,
+			
+			$.ajax({
+				url: url,
+				type: 'GET',
+				dataType: 'text'
+			}).done(function(response) {
+				
+				current_obj.remove();
+				var i=1;
+				var len=$("[name^=reference_no]").length;
+				
+				$("[name^=reference_no]").each(function () {
+					
+					$(this).attr('id','reference_no_'+i);
+					$(this).rules("add", {
+						required: true,
+						noSpace: true,
+						notEqualToGroup: ['.distinctreference']
+					});
+					i++;
+				});
 			});
-			i++;
-		});
+		}
+		else
+		{
+			current_obj.closest("#main_table tr").remove();
+				var i=1;
+				var len=$("[name^=reference_no]").length;
+				
+				$("[name^=reference_no]").each(function () {
+					
+					$(this).attr('id','reference_no_'+i);
+					$(this).rules("add", {
+						required: true,
+						noSpace: true,
+						notEqualToGroup: ['.distinctreference']
+					});
+					i++;
+				});
+		}
+		
 	});
 	
 	jQuery.validator.addMethod("noSpace", function(value, element) { 
@@ -659,7 +700,7 @@ $(document).ready(function() {
                     type: "get",
                     data:
                         {
-                            ledger_account_id: '<?php echo $sales_order->customer->ledger_account_id; ?>'
+                            ledger_account_id: '<?php echo $invoice->customer->ledger_account_id; ?>'
                         },
 					},
 				},
