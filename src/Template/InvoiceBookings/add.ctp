@@ -27,7 +27,7 @@
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Supplier </label>
+							<label class="control-label">Supplier</label>
 							<br/>
 							<?php echo @$grn->vendor->company_name; ?>
 						</div>

@@ -10,18 +10,42 @@
 				<ul class="nav nav-tabs tabs-left">
 					<?php foreach($display_items as $item_id=>$display_item){ ?>
 					<li <?php if($q_item_id==$item_id){ echo 'class="active"'; } ?> >
-						<?php	echo $this->Html->link($display_item,'/Inventory-Vouchers/edit?invoice='.$invoice_id.'&item-id='.$item_id); ?>
+						<?php	echo $this->Html->link($display_item.' ( '.$q_qty. ' )','/Inventory-Vouchers/edit?invoice='.$invoice_id.'&item-id='.$item_id.'&item-qty='.$q_qty); ?>
+					
 					</li>
 					<?php } ?>
 				</ul>
 			</div>
-			<div class="col-md-7">
+			<div class="col-md-7"> 
 				<?= $this->Form->create($InventoryVoucher,['id'=>'form_sample_3']) ?>
+				<table class="table tableitm" id="main_tb">
+					<tbody>
+					<tr class="tr1">
+						
+						<?php 
+						if($q_sno==1){
+							if($is_in_made=='no'){
+								for($i=1;$i<=$q_qty;$i++){ ?>
+								<td><?php echo $this->Form->input('serial_numbers['.$i.']', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Serial no '.$i]); ?><?php	
+								} 
+							}
+							else {
+							$i=1;
+								foreach($q_ItemSerialNumbers as $q_ItemSerialNumber){ ?>
+								<td><?php echo $this->Form->input('serial_numbers['.$i.']', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Serial no '.$i, 'value'=>$q_ItemSerialNumber->serial_no]); ?><?php $i++;	
+								} 	
+							}
+						}
+						?>
+						</td>
+					</tr>
+					</tbody>
+				</table>
 				<table id="main_table"  class="table table-condensed table-hover">
 					<thead>
 						<tr>
 							<th>Item</th>
-							<th style="width: 80px;">Quntity</th>
+							<th style="width: 80px;">Quantity</th>
 							<th style="width: 200px;">Serial Number</th>
 							<th></th>
 							<th></th>
@@ -39,7 +63,7 @@
 								echo $this->Form->input('q', ['empty'=>'Select','options' => $item_option,'label' => false,'class' => 'form-control input-sm select_item','value'=>$InventoryVoucherRow->item_id]); ?>
 							</td>
 							<td>
-								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm qty_bx','placeholder' => 'Quntity','value'=>$InventoryVoucherRow->quantity]); ?>
+								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm qty_bx','placeholder' => 'Quantity','value'=>$InventoryVoucherRow->quantity]); ?>
 							</td>
 							<td></td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
@@ -126,6 +150,7 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
+
 	
 	var l=$("#main_table tbody#maintbody tr.main").length;
 	
@@ -244,5 +269,16 @@ $(document).ready(function() {
 			<td></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
+	</tbody>
+</table>
+
+<table id="sample_tb" style="display:none;">
+	<tbody>	
+			<tr class="tr1">
+					
+					<td width="100"><?php echo $this->Form->input('unit[]', ['type' => 'type','label' => false,'class' => 'form-control input-sm','placeholder' => 'Serial Number']); ?></td>
+								
+		</tr>
+			
 	</tbody>
 </table>
