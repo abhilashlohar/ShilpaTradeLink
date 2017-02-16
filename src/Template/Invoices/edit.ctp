@@ -649,10 +649,8 @@ $(document).ready(function() {
 			var ledger_account_id='<?php echo $invoice->customer->ledger_account_id; ?>';
 				var invoice_id='<?php echo $invoice_id; ?>';
 			
-			var url="<?php echo $this->Url->build(['controller'=>'Invoice','action'=>'deleteReceiptRow']); ?>";
+			var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'deleteReceiptRow']); ?>";
 			url=url+'/'+reference_type+'/'+old_amount+'/'+ledger_account_id+'/'+invoice_id+'/'+reference_no,
-			
-			
 			
 			$.ajax({
 				url: url,
