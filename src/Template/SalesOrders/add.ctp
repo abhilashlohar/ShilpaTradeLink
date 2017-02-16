@@ -738,8 +738,8 @@ $(document).ready(function() {
 	}
 
 	function put_code_description(){
-			var i=1;
-			$("#main_tb tbody tr.tr2").each(function(){
+			var i=0;
+			$("#main_tb tbody#main_tbody tr.tr2").each(function(){
 				var code=$(this).find('div#summer'+i).code();
 				$(this).find('td:nth-child(1) textarea').val(code);
 			i++; });
