@@ -282,7 +282,7 @@ select
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<li><?php echo $this->Html->link( 'Create', '/Invoices/add' ); ?></li>
+						<li><?php echo $this->Html->link( 'Create', '/SalesOrders/index?pull-request=true' ); ?></li>
 						<li><?php echo $this->Html->link( 'View', '/Invoices' ); ?></li>
 						
 					</ul>
