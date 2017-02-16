@@ -156,7 +156,7 @@
 		</div>
 			<div class="form-actions">
 				
-				<?= $this->Form->button(__('ADD RECEIPT VOUCHER'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit','onclick' => 'this.disabled=true;return true;']) ?>
+				<?= $this->Form->button(__('ADD RECEIPT VOUCHER'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>
@@ -427,7 +427,7 @@ $(document).ready(function() {
 				.closest('.form-group').removeClass('has-error'); // set success class to the control group
 		},
 
-		submitHandler: function (form) {
+		submitHandler: function (form) { alert();
 			var amount=parseFloat($('input[name="amount"]').val());
 		
 				var debit=0;
