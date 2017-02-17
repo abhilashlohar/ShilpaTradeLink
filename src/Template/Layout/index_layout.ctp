@@ -331,7 +331,7 @@ select
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Create','/Grns/Add',array('escape'=>false)); ?></li>
+						<li><?php echo $this->Html->link('<i class="icon-home"></i> Create','/PurchaseOrders/index?pull-request=true',array('escape'=>false)); ?></li>
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Grns',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
