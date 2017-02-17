@@ -560,7 +560,10 @@ $(document).ready(function() {
 		$(this).closest('tr').find('input[name="credit[]"]').val(amount);
 	});
 	
-		
+	<?php
+	if(empty($ReferenceBalances) || empty($itemGroups))
+	{
+		?>	
 		var received_from_id='<?php echo $invoice->customer->ledger_account_id; ?>';
 	
 		var url="<?php echo $this->Url->build(['controller'=>'PaymentVouchers','action'=>'fetchReferenceNo']); ?>";
@@ -574,6 +577,9 @@ $(document).ready(function() {
 			$('#against_references_no').html(response);
 		});
 			
+			<?php
+	}
+	?>
 		
 	
 	$('input[name="amount"],[name^=credit]').live("blur",function() {
