@@ -229,6 +229,11 @@ $(document).ready(function() {
 			dataType: 'text'
 		}).done(function(response) {
 			$("#main_table tbody").find('tr.against_references_no').remove();
+			if(!response)
+			{
+				$('#agst_ref').remove();
+				
+			}
 			$('#against_references_no').html(response);
 		});
 		

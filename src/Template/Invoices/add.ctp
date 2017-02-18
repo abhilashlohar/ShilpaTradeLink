@@ -501,6 +501,7 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 			if(!response)
 			{
 				$('#agst_ref').remove();
+				
 			}
 			$('#against_references_no').html(response);
 		});
