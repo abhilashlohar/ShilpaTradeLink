@@ -51,7 +51,7 @@
 						}
 						else{
 							$party_name='-';
-							$voucher_no=$itemLedger->voucher_info->iv1.'/IV-'.str_pad($itemLedger->voucher_info->iv2, 3, '0', STR_PAD_LEFT).'/'.$itemLedger->voucher_info->iv3.'/'.$itemLedger->voucher_info->iv4;
+							$voucher_no=$itemLedger->voucher_info->iv_number;
 						}
 						$status_color=false;
 						$status= '-';
