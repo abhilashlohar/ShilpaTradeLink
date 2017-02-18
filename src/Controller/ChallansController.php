@@ -146,11 +146,6 @@ class ChallansController extends AppController
        {
        	  $chkdate = 'Found';
        }
-
-
-
-
-
 		if ($this->request->is('post')) {
 			
             $challan = $this->Challans->patchEntity($challan, $this->request->data);
@@ -192,7 +187,7 @@ class ChallansController extends AppController
                 $this->Flash->success(__('The challan has been saved.'));
 
                   return $this->redirect(['action' => 'confirm/'.$challan->id]);
-            } else {
+            } else { pr($challan); exit;
 				
                 $this->Flash->error(__('The challan could not be saved. Please, try again.'));
             }

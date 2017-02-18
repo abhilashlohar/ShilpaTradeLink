@@ -203,11 +203,11 @@
 			</table>
 			
 			<label class="control-label">Documents  </label>
-			<?php echo $this->Form->textarea('documents', ['label' => false,'class' => 'form-control wysihtml5']); ?>
+			<?php echo $this->Form->textarea('documents', ['label' => false,'class' => 'form-control']); ?>
 			<br/>
 			
 			<label class="control-label">Reference Detail  </label>
-			<?php echo $this->Form->textarea('reference_detail', ['label' => false,'class' => 'form-control wysihtml5']); ?>
+			<?php echo $this->Form->textarea('reference_detail', ['label' => false,'class' => 'form-control']); ?>
 			<br/>
 			
 
