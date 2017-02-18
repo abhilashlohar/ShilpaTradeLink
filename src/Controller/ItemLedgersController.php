@@ -25,31 +25,33 @@ class ItemLedgersController extends AppController
         $itemLedgers2 = $this->paginate($this->ItemLedgers->find()->where(['item_id'=>$item_id])->order(['processed_on'=>'DESC']));
 		$itemLedgers=[];
 		foreach($itemLedgers2 as $itemLedger){
-			$result=$this->GetVoucherParty($itemLedger->source_model,$itemLedger->source_id);
 			
+			$result=$this->GetVoucherParty($itemLedger->source_model,$itemLedger->source_id);
 			$itemLedger->voucher_info=$result['voucher_info'];
 			$itemLedger->party_type=$result['party_type'];
 			$itemLedger->party_info=$result['party_info'];
 			$itemLedgers[]=$itemLedger;
 		} 
-		//
-
+		
         $this->set(compact('itemLedgers'));
         $this->set('_serialize', ['itemLedgers']);
     }
 	
 	public function GetVoucherParty($source_model=null,$source_id=null)
     {
-		return $source_model.$source_id;
+		
+		//return $source_model.$source_id;
+		
 		if($source_model=="Grns"){
 			$Grn=$this->ItemLedgers->Grns->get($source_id);
-			//pr($Grn->voucher_info); exit;
+			
 			$Vendor=$this->ItemLedgers->Vendors->get($Grn->vendor_id);
 			return ['voucher_info'=>$Grn,'party_type'=>'Supplier','party_info'=>$Vendor];
 		}
 		
-		if($source_model=="Inventory Voucher"){
+		if($source_model=="Inventory Vouchers"){ //echo "IV"; exit;
 			$InventoryVoucher=$this->ItemLedgers->InventoryVouchers->get($source_id);
+			//pr($InventoryVoucher); exit;
 			return ['voucher_info'=>$InventoryVoucher,'party_type'=>'-','party_info'=>''];
 		}
 		if($source_model=="Invoices"){
@@ -67,7 +69,7 @@ class ItemLedgersController extends AppController
 			}
 			return ['voucher_info'=>$Challan,'party_type'=>$Challan->challan_for,'party_info'=>$Party];
 		}
-       //return $source_model.$source_id;
+       return $source_model.$source_id;
     }
 
     /**
