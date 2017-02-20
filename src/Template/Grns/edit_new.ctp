@@ -1,4 +1,7 @@
+<?php if($financial_year_data['Response'] == "Close" ){
+ 			echo "Financial Year Closed"; 
 
+ 		} else { ?>
 
 <?php $this->Form->templates([
      'inputContainer' => '{{content}}'
@@ -115,9 +118,9 @@
 								<td colspan="3">
 								<?php  $i=1; foreach($grn->item_serial_numbers as $item_serial_number){
 									if($item_serial_number->item_id == $grn_rows->item_id){ ?>
-									<div>
+									<div style="margin-bottom:6px;">
 									<?php echo $this->Form->input('serial_numbers['.$grn_rows->item_id.'][]', ['label' => false,'type'=>'text','class'=>'sr_no','ids'=>'sr_no['.$i.']','value' => $item_serial_number->serial_no]); ?>
-								</div>
+									</div>
 								<?php  $i++; }  }?><br/></td>
 							</tr>
 						<?php $q++; endforeach; ?>
@@ -257,10 +260,10 @@ $(document).ready(function() {
 					if(qty > l){
 						l=l+1;
 						for(i=l;i<=qty;i++){
-						$('.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<div><input type="text" class="sr_no" name="serial_numbers['+item_id+'][]" ids="sr_no['+i+']" id="sr_no'+r+row_no+'"/></div>');
-						$('.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input#sr_no'+r+row_no).rules('add', {required: true});
-						r++;	
-						//$('.tr2[row_no="'+row_no+'"]').find('input[ids="sr_no['+i+']"]').remove();
+						$('.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<div style="margin-bottom:6px;"><input type="text" class="sr_no" name="serial_numbers['+item_id+']['+l+']" ids="sr_no['+i+']" id="sr_no'+l+row_no+'"/></div>');
+						
+						$('.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input#sr_no'+l+row_no).rules('add', {required: true});
+						l++;
 						}
 					}
 				}
@@ -328,3 +331,4 @@ $(document).ready(function() {
 	}
 });		
 </script>
+<?php } ?>

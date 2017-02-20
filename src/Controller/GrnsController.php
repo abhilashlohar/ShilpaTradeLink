@@ -311,7 +311,7 @@ class GrnsController extends AppController
 	    $financial_year_data = $Em->checkFinancialYear($grn->date_created);
 
 			if ($this->request->is(['patch', 'post', 'put'])) {
-				$serial_numbers=$this->request->data['serial_numbers']; 
+			$serial_numbers=$this->request->data['serial_numbers']; 
 			$item_serial_numbers=[];
 			foreach($serial_numbers as $item_id=>$data){
 				foreach($data as $sr)
