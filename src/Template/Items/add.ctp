@@ -317,23 +317,23 @@ $('input[name="serial_number_enable"]').die().live("change",function() {
 	   var quantity=$('input[name="ob_quantity"]').val();
 	   
 		if(serial_number=='Yes'){ 
-			var p=0;
+			var p=1;
 			var r=0;
+			//$('#itm_srl_num').remove();
 			for (i = 0; i < quantity; i++) {
-				$('#itm_srl_num').remove();
+				
 			$('#itm_srl_num').append('<input type="text" class="sr_no" name="serial_numbers['+p+'][]" placeholder="'+p+' serial number" id="sr_no'+r+'" />');
 			p++;
 			r++;
 			}
 		}
 		else{
-			//$('#itm_srl_num').remove();
-			alert();
+			
 		}
 	   
    }
    $('input[name="ob_quantity"]').die().live("keyup",function() {
-		$('#itm_srl_num').remove();
+		//$('#itm_srl_num').remove();
 		add_sr_textbox();
 		
     });
