@@ -59,7 +59,7 @@
 					<div class="col-md-3">
 						<label class="control-label">serial_number_enable</label>
 						<div class="checkbox-list">
-							<?php echo $this->Form->radio('serial_number_enable',[['value' => 'Yes', 'text' => 'Yes'],['value' => 'No', 'text' => 'No']]); ?>
+							<?php echo $this->Form->radio('serial_number_enable',[['value' => '1', 'text' => 'Yes'],['value' => '0', 'text' => 'No']]); ?>
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -82,9 +82,9 @@
 					</div>
 				</div>
 				<div class="row">
-					<div  id="itm_srl_num">
+					<div id="itm_srl_num">
 					
-					</div>
+					</div><br/>
 				</div>
 				<hr>
 				<div class="row">
@@ -308,7 +308,6 @@ $('select[name="item_group_id"]').die().live("change",function() {
 });
 
 $('input[name="serial_number_enable"]').die().live("change",function() {
-	
 	add_sr_textbox();
 		
    });
@@ -316,24 +315,23 @@ $('input[name="serial_number_enable"]').die().live("change",function() {
 	   var serial_number=$('input[name=serial_number_enable]:checked').val(); 
 	   var quantity=$('input[name="ob_quantity"]').val();
 	   
-		if(serial_number=='Yes'){ 
+		if(serial_number=='1'){ 
 			var p=1;
 			var r=0;
-			//$('#itm_srl_num').remove();
+			$('#itm_srl_num').find('input.sr_no').remove();
 			for (i = 0; i < quantity; i++) {
-				
-			$('#itm_srl_num').append('<input type="text" class="sr_no" name="serial_numbers['+p+'][]" placeholder="'+p+' serial number" id="sr_no'+r+'" />');
+			$('#itm_srl_num').append('<input type="text" class="sr_no" name="serial_numbers['+r+'][]" placeholder="'+p+' serial number" id="sr_no'+r+'" />');
 			p++;
 			r++;
 			}
 		}
-		else{
-			
+		else if(serial_number=='0'){ 
+			$('#itm_srl_num').find('input.sr_no').remove();
 		}
 	   
    }
-   $('input[name="ob_quantity"]').die().live("keyup",function() {
-		//$('#itm_srl_num').remove();
+   $('input[name="ob_quantity"]').die().live("blur",function() {
+		//$('#itm_srl_num').find('input.sr_no').remove();
 		add_sr_textbox();
 		
     });
