@@ -77,7 +77,7 @@
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Value </label>
-							<?php echo $this->Form->input('ob_value', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Value','readonly']); ?>
+							<?php echo $this->Form->input('ob_value', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Value']); ?>
 						</div>
 					</div>
 				</div>
@@ -254,13 +254,23 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 	
-	$('input[name="ob_quantity"],input[name="ob_rate"]').die().live("keyup",function() { 
+	$('input[name="ob_quantity"],input[name="ob_rate"]').die().live("blur",function() { 
 		var ob_quantity=parseFloat($('input[name="ob_quantity"]').val());
 		if(isNaN(ob_quantity)) { var ob_quantity = 0; }
 		var ob_rate=parseFloat($('input[name="ob_rate"]').val());
 		if(isNaN(ob_rate)) { var ob_rate = 0; }
 		var total=ob_quantity*ob_rate;
 		$('input[name="ob_value"]').val(total.toFixed(2));
+    });
+	$('input[name="ob_value"]').die().live("blur",function() { 
+		var ob_quantity=parseFloat($('input[name="ob_quantity"]').val());
+		if(isNaN(ob_quantity)) { var ob_quantity = 0; }
+		var ob_value=parseFloat($('input[name="ob_value"]').val());
+		if(isNaN(ob_value)) { var ob_value = 0; }
+		
+		var total=ob_value/ob_quantity;
+	
+		$('input[name="ob_rate"]').val(total.toFixed(2));
     });
 	$('.allLetter').keyup(function(){
 	var inputtxt=  $(this).val();
@@ -330,8 +340,8 @@ $('input[name="serial_number_enable"]').die().live("change",function() {
 		}
 	   
    }
-   $('input[name="ob_quantity"]').die().live("blur",function() {
-		//$('#itm_srl_num').find('input.sr_no').remove();
+   $('input[name="ob_quantity"]').die().live("keyup",function() {
+	  $('#itm_srl_num').find('input.sr_no').remove();
 		add_sr_textbox();
 		
     });
