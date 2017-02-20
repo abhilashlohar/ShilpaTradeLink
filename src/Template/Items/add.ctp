@@ -53,8 +53,15 @@
 						</div>
 					</div>
 				</div>
+				
 				<h4>Opening Balance</h4>
 				<div class="row">
+					<div class="col-md-3">
+						<label class="control-label">serial_number_enable</label>
+						<div class="checkbox-list">
+							<?php echo $this->Form->radio('serial_number_enable',[['value' => 'Yes', 'text' => 'Yes'],['value' => 'No', 'text' => 'No']]); ?>
+						</div>
+					</div>
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Quantity </label>
@@ -73,6 +80,9 @@
 							<?php echo $this->Form->input('ob_value', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Value','readonly']); ?>
 						</div>
 					</div>
+				</div>
+				<div class="row">
+				
 				</div>
 				<hr>
 				<div class="row">
@@ -109,12 +119,7 @@
 							<?php echo $this->Form->input('freeze'); ?>
 						</div>
 					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<br/>
-							<?php echo $this->Form->input('serial_number_enable'); ?>
-						</div>
-					</div>
+					
 				</div>
 				
 				<div class="row">
@@ -299,6 +304,10 @@ $('select[name="item_group_id"]').die().live("change",function() {
 		
 	});
 });
-	
+
+$('input[name="serial_number_enable"]').die().live("change",function() {
+	var serial_number=$('input[name=serial_number_enable]:checked').val(); 
+	alert(serial_number);
+});
 });
 </script>
