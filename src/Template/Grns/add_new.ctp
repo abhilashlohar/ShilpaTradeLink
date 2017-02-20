@@ -331,7 +331,6 @@ $(document).ready(function() {
 			if(val){
 				$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(1)').attr({ name:"grn_rows["+val+"][item_id]"});
 				$(this).find('td:nth-child(3) input').attr({ name:"grn_rows["+val+"][quantity]", id:"grn_rows-"+val+"-quantity"}).removeAttr('readonly');
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').attr({ name:"serial_numbers['+item_id+'][]"}).rules("add", "required");
 				$(this).css('background-color','#fffcda');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
 			}else{
