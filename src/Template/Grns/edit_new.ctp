@@ -276,7 +276,7 @@ $(document).ready(function() {
 				}
 		});
 	}
-		function add_sr_textbox(){
+		/* function add_sr_textbox(){
 		var r=0;
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
@@ -299,7 +299,7 @@ $(document).ready(function() {
 				$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input.sr_no').remove();
 			}
 		});
-	}
+	} */
 	
 	$('.rename_check').die().live("click",function() { 
 		rename_rows();
