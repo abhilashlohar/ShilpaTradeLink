@@ -1,10 +1,4 @@
-<style>
-.sr_no{
-	float: left;
-	margin-left: 5px;
-	margin-top: 5px;
-}
-</style>
+
 <?php $this->Form->templates([
      'inputContainer' => '{{content}}'
                                                 ]); 
@@ -120,7 +114,7 @@
 								</td>
 							</tr>
 							<tr class="tr2" row_no='<?php echo @$purchase_order_rows->id; ?>'>
-								<td colspan="4">
+								<td colspan="3">
 									<?php echo $this->Text->autoParagraph(h($purchase_order_rows->description)); ?>
 								</td>
 								
@@ -258,6 +252,7 @@ $(document).ready(function() {
 						
 						for(i=l;i>qty;i--){
 						$('.tr2[row_no="'+row_no+'"]').find('input[ids="sr_no['+i+']"]').remove();
+						
 						}
 					}
 					if(qty > l){
@@ -265,7 +260,8 @@ $(document).ready(function() {
 						r=r+1;
 						for(i=l;i<=qty;i++){
 						
-						$('.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<div><input type="text" class="sr_no" name="serial_numbers['+item_id+'][]" ids="sr_no['+i+']" id="sr_no'+r+row_no+'"/></div>');
+						$('.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<div><input type="text" class="sr_no" name="serial_numbers['+item_id+']['+r+']" ids="sr_no['+i+']" id="sr_no'+r+row_no+'"/></div>');
+						
 						$('.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input#sr_no'+r+row_no).rules('add', {required: true});
 						r++;	//$('.tr2[row_no="'+row_no+'"]').find('input[ids="sr_no['+i+']"]').remove();
 						}
@@ -274,6 +270,7 @@ $(document).ready(function() {
 				
 				else{
 				$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input.sr_no').remove();
+				$('.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input.sr_no').rules( "remove", "required" );
 				}
 			
 		});
