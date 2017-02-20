@@ -100,9 +100,13 @@ class VendorsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $vendor = $this->Vendors->patchEntity($vendor, $this->request->data);
             if ($this->Vendors->save($vendor)) {
+				$query = $this->Vendors->LedgerAccounts->query();
+					$query->update()
+						->set(['account_second_subgroup_id' => $vendor->account_second_subgroup_id])
+						->where(['id' => $vendor->ledger_account_id])
+						->execute();
                 $this->Flash->success(__('The vendor has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+				return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The vendor could not be saved. Please, try again.'));
             }

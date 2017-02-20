@@ -169,7 +169,7 @@ $(document).ready(function() {
 	//--------- FORM VALIDATION
 	jQuery.validator.addMethod("alphabetsAndSpacesOnly", function (value, element) {
     return this.optional(element) || /^[a-zA-Z\s.,]+$/.test(value); });
-	
+		
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
 	var success3 = $('.alert-success', form3);
@@ -225,6 +225,7 @@ $(document).ready(function() {
 			company_name: {
 				alphabetsAndSpacesOnly: "Enter Letters only",
 			},
+			
 		},
 
 		errorPlacement: function (error, element) { // render error placement for each input type
@@ -287,8 +288,6 @@ $(document).ready(function() {
 		}
 
 	});
-	//--	 END OF VALIDATION
-
 	
 	$('select[name="account_category_id"]').on("change",function() {
 	$('#account_group_div').html('Loading...');
@@ -334,7 +333,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 	});
 });	
 	rename_rows();
-	//$('.default_btn:first').attr('checked','checked'); $.uniform.update();
+	//add_row(); $('.default_btn:first').attr('checked','checked'); $.uniform.update();
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
@@ -360,6 +359,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		var tr=$("#sample_tb tbody tr").clone();
 		$("#main_tb tbody").append(tr);
 		rename_rows();
+		
 	}
 	
 	function rename_rows(){
@@ -367,7 +367,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		$("#main_tb tbody tr").each(function(){
 			
 			$(this).find("td:nth-child(1)").html(++i); --i;
-			$(this).find("td:nth-child(2) input").attr({name:"vendor_contact_persons["+i+"][name]",id:"vendor_contact_persons-"+i+"-name"})rules('add', {
+			$(this).find("td:nth-child(2) input").attr({name:"vendor_contact_persons["+i+"][name]",id:"vendor_contact_persons-"+i+"-name"}).rules('add', {
 						required: true,
 						alphabetsAndSpacesOnly: true,
 						messages: {
@@ -381,13 +381,12 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 						number: true,
 						minlength:10,
 					});
-			$(this).find("td:nth-child(5) input[type=checkbox]").attr({name:"vendor_contact_persons["+i+"][default_person]", id:"vendor_contact_persons-"+i+"-default_person"});
+			$(this).find("td:nth-child(5) input[type=checkbox]").attr("name","vendor_contact_persons["+i+"][default_person]");
 			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
 			if (test) { test.uniform(); }
 			i++;
 		});	
 	}
-	
 });
 </script>
 
@@ -398,10 +397,8 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			<td><?php echo $this->Form->input('name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Name']); ?></td>
 			<td><?php echo $this->Form->input('email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email']); ?></td>
 			<td><?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Mobile','maxlength'=>10]); ?></td>
-			<td width="90"><?php echo $this->Form->input('default_person', ['type'=>'checkbox','label' => false,'class' => 'form-control default_btn']); ?></td>
+			<td width="90"><?php echo $this->Form->input('q', ['type'=>'checkbox','label' => false,'class' => 'form-control default_btn','value'=>1]); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 	</tbody>
 </table>
-
-
