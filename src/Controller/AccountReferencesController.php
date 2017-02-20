@@ -19,9 +19,7 @@ class AccountReferencesController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $this->paginate = [
-            'contain' => ['LedgerAccounts']
-        ];
+        
         $accountReferences = $this->paginate($this->AccountReferences);
         $accountReferences = $this->AccountReferences->find('all')->toArray();
 		//pr($accountReferences); exit;
@@ -67,7 +65,7 @@ class AccountReferencesController extends AppController
                 $this->Flash->error(__('The account reference could not be saved. Please, try again.'));
             }
         }
-        $ledgerAccounts = $this->AccountReferences->LedgerAccounts->find('list', ['limit' => 200]);
+        //$ledgerAccounts = $this->AccountReferences->LedgerAccounts->find('list', ['limit' => 200]);
 		$AccountCategories = $this->AccountReferences->AccountCategories->find('list');
         $this->set(compact('accountReference', 'ledgerAccounts','AccountCategories'));
         $this->set('_serialize', ['accountReference']);
@@ -88,6 +86,8 @@ class AccountReferencesController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $accountReference = $this->AccountReferences->patchEntity($accountReference, $this->request->data);
+			
+			$accountReference->account_first_subgroup_id=$accountReference->account_first_subgroup_id;
             if ($this->AccountReferences->save($accountReference)) {
                 $this->Flash->success(__('The account reference has been saved.'));
 

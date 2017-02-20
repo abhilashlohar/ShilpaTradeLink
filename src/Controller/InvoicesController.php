@@ -361,7 +361,7 @@ class InvoicesController extends AppController
 			}else{
 				$invoice->due_payment=$invoice->grand_total-$invoice->total_amount_agst;
 			}
-			
+			//pr($invoice->fright_ledger_account); exit;
             if ($this->Invoices->save($invoice)) {
 		
 				
@@ -382,9 +382,9 @@ class InvoicesController extends AppController
 				} 
 				//Ledger posting for Account Reference
 				$ledger_pnf=$invoice->total_after_pnf;
-				$accountReferences=$this->Invoices->AccountReferences->get(1);
+				//$accountReferences=$this->Invoices->AccountReferences->get(1);
 				$ledger = $this->Invoices->Ledgers->newEntity();
-				$ledger->ledger_account_id = $accountReferences->ledger_account_id;
+				$ledger->ledger_account_id = $invoice->sales_ledger_account;
 				$ledger->debit = 0;
 				$ledger->credit = $invoice->total_after_pnf;
 				$ledger->voucher_id = $invoice->id;
@@ -418,9 +418,9 @@ class InvoicesController extends AppController
 				//Ledger posting for Fright Amount
 				
 				$ledger_fright= $invoice->fright_amount;
-				$accountReferences=$this->Invoices->AccountReferences->get(3);
+				//$accountReferences=$this->Invoices->AccountReferences->get(3);
 				$ledger = $this->Invoices->Ledgers->newEntity();
-				$ledger->ledger_account_id = $accountReferences->ledger_account_id;
+				$ledger->ledger_account_id = $invoice->fright_ledger_account;
 				$ledger->debit = 0;
 				$ledger->credit = $invoice->fright_amount;
 				$ledger->voucher_id = $invoice->id;
@@ -560,9 +560,24 @@ class InvoicesController extends AppController
 				$old_due_payment+=$invoice_data->due_payment;
 			}
 		}
+		
+		$AccountReference_for_sale= $this->Invoices->AccountReferences->get(1);
+		$account_first_subgroup_id=$AccountReference_for_sale->account_first_subgroup_id;
+		$AccountReference_for_fright= $this->Invoices->AccountReferences->get(3);
+		$account_first_subgroup_id_for_fright=$AccountReference_for_fright->account_first_subgroup_id;
+		//$ac_first_grp_id=$AccountReference->account_first_subgroup_id;
+		
+		$ledger_account_details = $this->Invoices->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups' => function($q) use($account_first_subgroup_id){
+			return $q->where(['AccountFirstSubgroups.id'=>$account_first_subgroup_id]);
+		}]])->toArray();
+		
+		$ledger_account_details_for_fright = $this->Invoices->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups' => function($q) use($account_first_subgroup_id_for_fright){
+			return $q->where(['AccountFirstSubgroups.id'=>$account_first_subgroup_id_for_fright]);
+		}]])->toArray();
+		//pr($ledger_account_details_for_fright); exit;
 		$item_serial_no=$this->Invoices->ItemSerialNumbers->find('list', ['limit' => 200]);
 		$employees = $this->Invoices->Employees->find('list', ['limit' => 200]);
-        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoicespay','creditlimit','old_due_payment','item_serial_no'));
+        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoicespay','creditlimit','old_due_payment','item_serial_no','ledger_account_details','ledger_account_details_for_fright'));
         $this->set('_serialize', ['invoice']);
     }
 	

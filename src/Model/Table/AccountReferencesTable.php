@@ -36,10 +36,7 @@ class AccountReferencesTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
-        $this->belongsTo('LedgerAccounts', [
-            'foreignKey' => 'ledger_account_id',
-            'joinType' => 'INNER'
-        ]);
+        $this->belongsTo('LedgerAccounts');
 		$this->belongsTo('AccountCategories');
 		$this->belongsTo('AccountGroups');
 		$this->belongsTo('AccountFirstSubgroups');
@@ -74,7 +71,7 @@ class AccountReferencesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['ledger_account_id'], 'LedgerAccounts'));
+       // $rules->add($rules->existsIn(['ledger_account_id'], 'LedgerAccounts'));
 
         return $rules;
     }

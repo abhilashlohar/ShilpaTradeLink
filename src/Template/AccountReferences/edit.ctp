@@ -3,7 +3,7 @@
 	<div class="portlet-title">
 		<div class="caption" >
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Add Account References</span>
+			<span class="caption-subject font-blue-steel uppercase">Edit Account References</span>
 		</div>
 	</div>
 	<div class="portlet-body form">
@@ -48,24 +48,7 @@
 						</div>
 					</div>
 					
-					<div class="col-md-4">
-						<div class="form-group">
-							<label class="control-label">Account Second Sub Group <span class="required" aria-required="true">*</span></label>
-							<div id="account_second_subgroup_div">
-							<?php echo $this->Form->input('account_second_subgroup_id', ['options' => $AccountSecondSubgroups,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account Second Sub Group']); ?>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4" >
-						<div class="form-group">
-						<label class=" control-label">Ledger Account<span class="required" aria-required="true">*</span></label>
-							<div id="account_ledger_div">
-							<?php 
-							
-							echo $this->Form->input('ledger_account_id',['options' => $ledgerAccounts,'label' => false,'class' => 'form-control input-sm select2me'] ); ?>
-							</div>
-						</div>
-					</div>
+					
 				</div>
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary">Edit ACCOUNT REFERENCE</button>
@@ -110,7 +93,7 @@ $('select[name="account_group_id"]').die().live("change",function() {
 	});
 });
 	
-$('select[name="account_first_subgroup_id"]').die().live("change",function() {
+/* $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 	$('#account_second_subgroup_div').html('Loading...');
 	var accountFirstSubgroupId=$('select[name="account_first_subgroup_id"] option:selected').val();
 	
@@ -140,7 +123,7 @@ $('select[name="account_second_subgroup_id"]').die().live("change",function() {
 		$('#account_ledger_div').html(response);
 		$('select[name="ledger_account_id"]').select2();
 	});
-});	
+});	 */
 
 });
 </script>

@@ -99,6 +99,9 @@ class InvoicesTable extends Table
         ]);
 		
 		$this->belongsTo('AccountReferences');
+		$this->belongsTo('AccountFirstSubgroups');
+		$this->belongsTo('AccountSecondSubgroups');
+		$this->belongsTo('LedgerAccounts');
 		$this->belongsTo('ReceiptVouchers');
 		$this->belongsTo('Ledgers');
 		
