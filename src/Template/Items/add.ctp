@@ -82,7 +82,9 @@
 					</div>
 				</div>
 				<div class="row">
-				
+					<div  id="itm_srl_num">
+					
+					</div>
 				</div>
 				<hr>
 				<div class="row">
@@ -306,8 +308,34 @@ $('select[name="item_group_id"]').die().live("change",function() {
 });
 
 $('input[name="serial_number_enable"]').die().live("change",function() {
-	var serial_number=$('input[name=serial_number_enable]:checked').val(); 
-	alert(serial_number);
-});
+	
+	add_sr_textbox();
+		
+   });
+   function add_sr_textbox(){
+	   var serial_number=$('input[name=serial_number_enable]:checked').val(); 
+	   var quantity=$('input[name="ob_quantity"]').val();
+	   
+		if(serial_number=='Yes'){ 
+			var p=0;
+			var r=0;
+			for (i = 0; i < quantity; i++) {
+				
+			$('#itm_srl_num').append('<input type="text" class="sr_no" name="serial_numbers['+p+'][]" placeholder="'+p+' serial number" id="sr_no'+r+'" />');
+			p++;
+			r++;
+			}
+		}
+		else{
+			//$('#itm_srl_num').remove();
+			alert();
+		}
+	   
+   }
+   $('input[name="ob_quantity"]').die().live("keyup",function() {
+		add_sr_textbox();
+		
+    });
+   
 });
 </script>
