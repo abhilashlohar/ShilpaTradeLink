@@ -76,7 +76,6 @@ class CustomersController extends AppController
             if ($this->Customers->save($customer)) {
 				
 				$ledgerAccount = $this->Customers->LedgerAccounts->newEntity();
-				
 				$ledgerAccount->account_second_subgroup_id = $customer->account_second_subgroup_id;
 				$ledgerAccount->name = $customer->customer_name;
 				$ledgerAccount->bill_to_bill_account = $billTobill;
