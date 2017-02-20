@@ -199,7 +199,7 @@ $(document).ready(function() {
 			},
 			logo   :{
 				required: true,
-				accept: "image/png"
+				//accept: "image/png"
 			},
 			address : {
 				  required: true,

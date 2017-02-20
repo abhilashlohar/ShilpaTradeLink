@@ -733,12 +733,16 @@ $(document).ready(function() {
 		$("#myModal2").hide();
     });
 	
-	function copy_term_condition_to_textarea(){
+	$(".updatetc").die().on("click",function(){
+		copy_term_condition_to_textarea();
+	})
+	
+	function copy_term_condition_to_textarea(){ 
 		$('#terms_conditions').html("");
 		var inc=0;
 		$("#sortable li").each(function(){
 			var tc=$(this).text();
-			++inc;
+			++inc; 
 			$('#terms_conditions').append('<p>'+tc+'</p>');
 		});
 		var terms_conditions=$("#terms_conditions").html();
@@ -749,9 +753,7 @@ $(document).ready(function() {
 		$('textarea[name="terms_conditions"]').val(code);
 	}
 	
-	$(".updatetc").die().on("click",function(){
-		copy_term_condition_to_textarea();
-	})
+	
 
 	$("select.item_box").die().live("change",function(){
 		var popup_id=$(this).attr('popup_id');

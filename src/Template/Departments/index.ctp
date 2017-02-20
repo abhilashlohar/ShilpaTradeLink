@@ -24,7 +24,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-offset-4 col-md-8">
-						<button type="submit" class="btn btn-primary">Add Dipartment</button>
+						<button type="submit" class="btn btn-primary">Add Department</button>
 					</div>
 				</div>
 			</div>

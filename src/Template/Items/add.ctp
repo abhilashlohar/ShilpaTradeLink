@@ -125,7 +125,7 @@
 					<div class="col-md-4">
 						<label class="control-label">Source</label>
 						<div class="checkbox-list">
-							<?php echo $this->Form->radio('source',[['value' => 'Assembled', 'text' => 'Assembled'],['value' => 'Purchessed', 'text' => 'Purchessed'],['value' => 'Manufactured', 'text' => 'Manufactured'],['value'=>'Purchessed/Manufactured','text'=>'Purchessed/Manufactured']]); ?>
+							<?php echo $this->Form->radio('source',[['value' => 'Assembled', 'text' => 'Assembled'],['value' => 'Purchassed', 'text' => 'Purchessed'],['value' => 'Manufactured', 'text' => 'Manufactured'],['value'=>'Purchassed/Manufactured','text'=>'Purchessed/Manufactured']]); ?>
 						</div>
 					</div>
 				</div>
