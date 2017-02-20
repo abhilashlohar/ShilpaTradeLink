@@ -142,7 +142,7 @@ select
 	<!-- BEGIN HEADER INNER -->
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
-		<div class="page-logo" style="padding-top:5px; width: 500px;">
+		<div class="page-logo" style="padding-top:5px; width: auto;">
 			<span style="color: #cd2831;font-weight: bold;font-size: 17px;" class="myshortlogo">Mogra Group</span>
 			<br/><span style="color: #FFF;font-size: 12px;">
 			<?php 
@@ -165,7 +165,7 @@ select
 			<ul class="nav navbar-nav">
 				<li class="mega-menu-dropdown mega-menu-full">
 					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle">
-					Full Mega <i class="fa fa-angle-down"></i>
+					Masters & Setup <i class="fa fa-angle-down"></i>
 					</a>
 					<ul class="dropdown-menu">
 						<li>
@@ -176,29 +176,11 @@ select
 										<div class="row">
 											<div class="col-md-4">
 												<ul class="mega-menu-submenu">
-													<li>
-														<h3>Layouts</h3>
-													</li>
-													<li>
-														<a href="index_horizontal_menu.html">
-														<i class="fa fa-angle-right"></i> Dashboard & Mega Menu </a>
-													</li>
-													<li>
-														<a href="layout_horizontal_sidebar_menu.html">
-														<i class="fa fa-angle-right"></i> Horizontal & Sidebar Menu </a>
-													</li>
-													<li>
-														<a href="layout_fontawesome_icons.html">
-														<i class="fa fa-angle-right"></i> Layout with Fontawesome</a>
-													</li>
-													<li>
-														<a href="layout_glyphicons.html">
-														<i class="fa fa-angle-right"></i> Layout with Glyphicon</a>
-													</li>
-													<li>
-														<a href="layout_full_height_portlet.html">
-														<i class="fa fa-angle-right"></i> Full Height Portlet <span class="badge badge-roundless badge-danger">new</span></a>
-													</li>
+													<li><?php echo $this->Html->link('Customer Groups','/Customer-Groups',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link('Districts','/Districts',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link('Customers Segments','/customer-segs',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link( 'Add new customer', '/Customers/add' ); ?></li>
+													<li><?php echo $this->Html->link( 'List customers', '/Customers' ); ?></li>
 													<li>
 														<a href="layout_full_height_content.html">
 														<i class="fa fa-angle-right"></i> Full Height Content <span class="badge badge-roundless badge-warning">new</span></a>
