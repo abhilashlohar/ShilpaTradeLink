@@ -122,6 +122,11 @@ class SaleTaxesController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $saleTax = $this->SaleTaxes->patchEntity($saleTax, $this->request->data);
             if ($this->SaleTaxes->save($saleTax)) {
+					$query = $this->SaleTaxes->LedgerAccounts->query();
+					$query->update()
+						->set(['account_second_subgroup_id' => $saleTax->account_second_subgroup_id])
+						->where(['id' => $saleTax->ledger_account_id])
+						->execute();
                 $this->Flash->success(__('The sale tax has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

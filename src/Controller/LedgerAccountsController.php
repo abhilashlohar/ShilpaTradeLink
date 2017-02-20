@@ -37,7 +37,7 @@ class LedgerAccountsController extends AppController
         $this->set(compact('ledgerAccount', 'accountSecondSubgroups'));
         $this->set('_serialize', ['ledgerAccount']);
 		
-		$ledgerAccounts = $this->paginate($this->LedgerAccounts->find()->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]]));
+		$ledgerAccounts = $this->LedgerAccounts->find()->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]]);
 		$this->set(compact('ledgerAccounts'));
         $this->set('_serialize', ['ledgerAccounts']);
     }
@@ -70,6 +70,8 @@ class LedgerAccountsController extends AppController
         $ledgerAccount = $this->LedgerAccounts->newEntity();
         if ($this->request->is('post')) {
             $ledgerAccount = $this->LedgerAccounts->patchEntity($ledgerAccount, $this->request->data);
+			$ledgerAccount->source_model='Ledger Account';
+			
             if ($this->LedgerAccounts->save($ledgerAccount)) {
                 $this->Flash->success(__('The ledger account has been saved.'));
 
@@ -93,11 +95,13 @@ class LedgerAccountsController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $ledgerAccount = $this->LedgerAccounts->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $ledgerAccount = $this->LedgerAccounts->patchEntity($ledgerAccount, $this->request->data);
+			$ledgerAccount->source_model='Ledger Account';
             if ($this->LedgerAccounts->save($ledgerAccount)) {
                 $this->Flash->success(__('The ledger account has been saved.'));
 

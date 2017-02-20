@@ -1,32 +1,47 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $ledgerAccount->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $ledgerAccount->id)]
-            )
-        ?></li>
-        <li><?= $this->Html->link(__('List Ledger Accounts'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Account Second Subgroups'), ['controller' => 'AccountSecondSubgroups', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Account Second Subgroup'), ['controller' => 'AccountSecondSubgroups', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Sources'), ['controller' => 'Sources', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Source'), ['controller' => 'Sources', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Ledgers'), ['controller' => 'Ledgers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Ledger'), ['controller' => 'Ledgers', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="ledgerAccounts form large-9 medium-8 columns content">
-    <?= $this->Form->create($ledgerAccount) ?>
-    <fieldset>
-        <legend><?= __('Edit Ledger Account') ?></legend>
-        <?php
-            echo $this->Form->input('account_second_subgroup_id', ['options' => $accountSecondSubgroups]);
-            echo $this->Form->input('name');
-            echo $this->Form->input('source_model');
-            echo $this->Form->input('source_id', ['options' => $sources]);
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="icon-globe font-blue-steel"></i>
+			<span class="caption-subject font-blue-steel uppercase">Ledger Account</span>
+		</div>
+		<div class="actions">
+			<?php echo $this->Html->link('Ledger Account','/LedgerAccounts/',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+			<?php echo $this->Html->link('Account Group','/AccountGroups/',array('escape'=>false,'class'=>'btn btn-default')); ?>
+			<?php echo $this->Html->link('Account First Sub Group','/AccountFirstSubgroups/',array('escape'=>false,'class'=>'btn btn-default')); ?>
+			<?php echo $this->Html->link('Account Second Sub Group','/AccountSecondSubgroups/',array('escape'=>false,'class'=>'btn btn-default')); ?>
+		</div>
+	</div>
+	 <div class="portlet-body form">
+		<!-- BEGIN FORM-->
+		<div class="row ">
+		<div class="col-md-12">
+		<?= $this->Form->create($ledgerAccount) ?>
+			<div class="form-body">
+				<div class="form-group">
+					<div class="col-md-5">
+					<label class="control-label">Account Second Sub Group <span class="required" aria-required="true">*</span></label>
+						<?php 
+						echo $this->Form->input('account_second_subgroup_id', ['options' => $accountSecondSubgroups,'empty' => "--Select--",'label' => false,'class' => 'form-control input-sm select2me ','required']); 
+						?>
+					</div>
+					<div class="col-md-5">
+					<label class="control-label">Name <span class="required" aria-required="true">*</span></label>
+						<?php 
+						echo $this->Form->input('name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Name']); 
+						?>
+					</div>
+					
+					<div class="col-md-2">
+					<label class="control-label"> <span class="required" aria-required="true"></span> </label><br/>
+						<?php 
+						echo $this->Form->button(__('EDIT'),['class'=>'btn btn-primary']); 
+						?>
+					</div>
+				</div>
+			</div>
+		<?= $this->Form->end() ?>
+		</div>
+		<!-- END FORM-->
+		</div>
+	</div>
 </div>
