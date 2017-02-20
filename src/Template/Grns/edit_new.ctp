@@ -291,7 +291,7 @@ $(document).ready(function() {
 				$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input.sr_no').remove();
 				for (i = 1; i <= quantity; i++) {
 					
-					$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<input type="text" class="sr_no" name="serial_numbers['+item_id+'][]" placeholder="'+p+' serial number" id="sr_no'+r+'" ids="sr_no['+i+']" />');
+					$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<input type="text" class="sr_no" name="serial_numbers['+item_id+'][]" placeholder="'+p+' serial number" id="sr_no'+r+'" ids="sr_no['+i+']",id="sr_no['+r+']" />').rules("add", "required");
 					p++;
 					r++;
 				}

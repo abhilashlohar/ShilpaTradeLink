@@ -240,9 +240,10 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 	//$('input[name="showthis"]').hide();
+
 	function update_sr_textbox(){
+	
 		var r=0;
-		
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
 			var serial_number_enable=$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(2)').val();
@@ -261,9 +262,11 @@ $(document).ready(function() {
 					}
 					if(qty > l){
 						l=l+1;
+						r=r+1;
 						for(i=l;i<=qty;i++){
-						$('.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<input type="text" class="sr_no" name="serial_numbers['+item_id+'][]" ids="sr_no['+i+']"/>');
-						//$('.tr2[row_no="'+row_no+'"]').find('input[ids="sr_no['+i+']"]').remove();
+						
+						$('.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<input type="text" class="sr_no" name="serial_numbers['+item_id+'][]" ids="sr_no['+i+']" id="sr_no'+r+row_no+'"/>');
+						r++;	//$('.tr2[row_no="'+row_no+'"]').find('input[ids="sr_no['+i+']"]').remove();
 						}
 					}
 				}
@@ -271,10 +274,11 @@ $(document).ready(function() {
 				else{
 				$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input.sr_no').remove();
 				}
+			
 		});
 	}
 	
-	function add_sr_textbox(){
+	/* function add_sr_textbox(){
 		var r=0;
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
@@ -289,7 +293,7 @@ $(document).ready(function() {
 				$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('input.sr_no').remove();
 				for (i = 1; i <=quantity; i++) {
 					
-					$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<input type="text" class="sr_no" name="serial_numbers['+item_id+'][]" placeholder="'+p+' serial number" id="sr_no'+r+'"/>');
+					$('tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<input type="text" class="sr_no" name="serial_numbers['+item_id+'][]" placeholder="'+p+' serial number" id="sr_no'+r+'"/>').rules("add", "required");
 					p++;
 					r++;
 				}
@@ -298,17 +302,12 @@ $(document).ready(function() {
 			}
 		});
 	}
-	function append_sr_textbox(){
-		var r=0;
-		var row_no=$("#main_tb tbody tr.tr2").attr('row_no');
-		var l=$('.tr2[row_no="'+row_no+'"]').find('input').length;
-		alert(l);
-	}
-	
+ */
 	
 	$('.rename_check').die().live("click",function() { 
-		rename_rows();
 		update_sr_textbox();
+		rename_rows();
+	
     });
 	$('.quantity').die().live("blur",function() {
 		update_sr_textbox();
@@ -318,7 +317,11 @@ $(document).ready(function() {
 	
 	
 	var p=0;
+	
 	function rename_rows(){
+				
+		var r=1;
+
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
 			
@@ -328,7 +331,7 @@ $(document).ready(function() {
 			if(val){
 				$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(1)').attr({ name:"grn_rows["+val+"][item_id]"});
 				$(this).find('td:nth-child(3) input').attr({ name:"grn_rows["+val+"][quantity]", id:"grn_rows-"+val+"-quantity"}).removeAttr('readonly');
-				
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').attr({ name:"serial_numbers['+item_id+'][]"}).rules("add", "required");
 				$(this).css('background-color','#fffcda');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
 			}else{
