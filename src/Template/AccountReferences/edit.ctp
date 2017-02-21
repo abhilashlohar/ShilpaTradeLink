@@ -43,7 +43,7 @@
 						<div class="form-group">
 						<label class="control-label">Account First Sub Group <span class="required" aria-required="true">*</span></label>
 							<div id="account_first_subgroup_div">
-							<?php echo $this->Form->input('account_first_subgroup_id', ['options'=>$AccountCategories,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account First Sub Group']); ?>
+							<?php echo $this->Form->input('account_first_subgroup_id', ['options'=>$AccountFirstSubgroups,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Account First Sub Group']); ?>
 							</div>
 						</div>
 					</div>
