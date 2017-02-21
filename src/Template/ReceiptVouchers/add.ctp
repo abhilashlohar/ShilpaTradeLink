@@ -432,7 +432,7 @@ $(document).ready(function() {
 				.closest('.form-group').removeClass('has-error'); // set success class to the control group
 		},
 
-		submitHandler: function (form) { alert();
+		submitHandler: function (form) { 
 			var amount=parseFloat($('input[name="amount"]').val());
 		
 				var debit=0;
