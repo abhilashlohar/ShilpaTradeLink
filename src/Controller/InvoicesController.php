@@ -716,9 +716,9 @@ class InvoicesController extends AppController
 				} 
 				//Ledger posting for Account Reference
 				$ledger_pnf=$invoice->total_after_pnf;
-				$accountReferences=$this->Invoices->AccountReferences->get(1);
+				//$accountReferences=$this->Invoices->AccountReferences->get(1);
 				$ledger = $this->Invoices->Ledgers->newEntity();
-				$ledger->ledger_account_id = $accountReferences->ledger_account_id;
+				$ledger->ledger_account_id = $invoice->sales_ledger_account;
 				$ledger->debit = 0;
 				$ledger->credit = $invoice->total_after_pnf;
 				$ledger->voucher_id = $invoice->id;
@@ -751,9 +751,9 @@ class InvoicesController extends AppController
 				
 				//Ledger posting for Fright Amount
 				$ledger_fright= $invoice->fright_amount;
-				$accountReferences=$this->Invoices->AccountReferences->get(3);
+				//$accountReferences=$this->Invoices->AccountReferences->get(3);
 				$ledger = $this->Invoices->Ledgers->newEntity();
-				$ledger->ledger_account_id = $accountReferences->ledger_account_id;
+				$ledger->ledger_account_id = $invoice->fright_ledger_account;
 				$ledger->debit = 0;
 				$ledger->credit = $invoice->fright_amount;
 				$ledger->voucher_id = $invoice->id;
