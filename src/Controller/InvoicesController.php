@@ -554,13 +554,25 @@ class InvoicesController extends AppController
 		$transporters = $this->Invoices->Transporters->find('list', ['limit' => 200]);
 		$termsConditions = $this->Invoices->TermsConditions->find('all',['limit' => 200]);
 		$SaleTaxes = $this->Invoices->SaleTaxes->find('all')->where(['freeze'=>0]);
-		if(!empty($sales_order->customer_id)){
-		$dueInvoicespay = $this->Invoices->find()->where(['customer_id'=>$sales_order->customer_id,'due_payment !='=>0]);
-			$old_due_payment=0; foreach ($dueInvoicespay as $invoice_data){ 
-				$old_due_payment+=$invoice_data->due_payment;
-			}
-		}
 		
+		if(!empty($sales_order->customer_id)){
+			
+		$customer_ledger = $this->Invoices->LedgerAccounts->find()->where(['LedgerAccounts.source_id'=>$sales_order->customer_id,'LedgerAccounts.source_model'=>'Customers'])->toArray();
+		
+		$customer_reference_details = $this->Invoices->ReferenceDetails->find()->where(['ReferenceDetails.ledger_account_id'=>$customer_ledger[0]->id])->toArray();
+		$total_credit=0;
+		$total_debit=0;
+		$old_due_payment=0;
+		foreach($customer_reference_details as $customer_reference_detail){
+			if($customer_reference_detail->debit==0){
+				$total_credit=$total_credit+$customer_reference_detail->credit;
+			}
+			else{
+				$total_debit=$total_debit+$customer_reference_detail->debit;
+			}
+		}}
+		$old_due_payment=$total_credit-$total_debit;
+		//pr($old_due_payment); exit;	
 		$AccountReference_for_sale= $this->Invoices->AccountReferences->get(1);
 		$account_first_subgroup_id=$AccountReference_for_sale->account_first_subgroup_id;
 		$AccountReference_for_fright= $this->Invoices->AccountReferences->get(3);
@@ -930,12 +942,26 @@ class InvoicesController extends AppController
 				->group(['SalesOrders.id'])
 				->autoFields(true)
 				->having(['total_rows >' => 0]);
-		$dueInvoicespay = $this->Invoices->find()->where(['customer_id'=>$invoice->customer_id,'due_payment !='=>0]);
+				
+		//pr($invoice->grand_total); exit;		
+		$customer_ledger = $this->Invoices->LedgerAccounts->find()->where(['LedgerAccounts.source_id'=>$invoice->customer_id,'LedgerAccounts.source_model'=>'Customers'])->toArray();
 		
-			$due_paisa=0; foreach ($dueInvoicespay as $invoice_data){ 
-				$due_paisa+=$invoice_data->due_payment;
+		$customer_reference_details = $this->Invoices->ReferenceDetails->find()->where(['ReferenceDetails.ledger_account_id'=>$customer_ledger[0]->id])->toArray();
+		$total_credit=0;
+		$total_debit=0;
+		$old_due_payment=0;
+		foreach($customer_reference_details as $customer_reference_detail){
+			if($customer_reference_detail->debit==0){
+				$total_credit=$total_credit+$customer_reference_detail->credit;
+			}
+			else{
+				$total_debit=$total_debit+$customer_reference_detail->debit;
+			}
 		}
-		$old_due_payment=$due_paisa-$invoice->due_payment;
+		$temp_due_payment=$total_credit-$total_debit;
+		$old_due_payment=$temp_due_payment-$invoice->grand_total;
+		
+		//$old_due_payment=$due_paisa-$invoice->due_payment;
 		$AccountReference_for_sale= $this->Invoices->AccountReferences->get(1);
 		$account_first_subgroup_id=$AccountReference_for_sale->account_first_subgroup_id;
 		$AccountReference_for_fright= $this->Invoices->AccountReferences->get(3);
