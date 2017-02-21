@@ -44,8 +44,10 @@ class ReceiptVouchersController extends AppController
         $receiptVoucher = $this->ReceiptVouchers->get($id, [
             'contain' => ['ReceivedFroms', 'BankCashes','Companies','Creator','ReceiptBreakups'=>['Invoices']]
         ]);
-
+		$ReferenceDetails=$this->ReceiptVouchers->ReferenceDetails->find()->where(['ReferenceDetails.receipt_voucher_id' => $id])->toArray();
+		//pr($ReferenceDetails); exit;
         $this->set('receiptVoucher', $receiptVoucher);
+		 $this->set(compact('ReferenceDetails'));
         $this->set('_serialize', ['receiptVoucher']);
     }
 

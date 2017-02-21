@@ -69,7 +69,7 @@
 							<?php 
 							
 							$arrblood=array(""=>"Select Blood Group", 'A+'=>"A+",'A-'=>"A-",'B+'=>"B+",'B-'=>"B-",'AB+'=>"AB+",'AB-'=>"AB-",'O+'=>"O+",'O-'=>"O-");
-							echo $this->Form->input('blood_group', ['options'=>$arrblood,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Blood Group']);?>
+							echo $this->Form->input('blood_group', ['options'=>$arrblood,'label' => false,'class' => 'form-control select2me','placeholder'=>'Blood Group']);?>
 						</div>
 					</div>
 				
@@ -93,14 +93,14 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Department <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('dipartment_id', ['empty' => 'Select Department','options' => $departments,'label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('dipartment_id', ['empty' => 'Select Department','options' => $departments,'label' => false,'class' => 'form-control select2me']); ?>
 						</div>
 					</div>
 					
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Designation <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('designation_id', ['empty' => 'Select Designation','options'=>$designations,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Designation']); ?>
+							<?php echo $this->Form->input('designation_id', ['empty' => 'Select Designation','options'=>$designations,'label' => false,'class' => 'form-control select2me','placeholder'=>'Designation']); ?>
 						</div>
 					</div>
 					
@@ -193,7 +193,7 @@
 						<div class="form-group">
 							<label class="control-label">Signature <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('signature', ['type' => 'file','label' => false]);?>
-							<span class="help-block">Only PNG format is allowed | Upload transparent Signature of size 420 x 165 </span>
+							<span class="help-block">Upload transparent Signature of size 420 x 165 </span>
 						</div>
 					</div>
 				</div>
@@ -383,9 +383,6 @@ $(document).ready(function() {
 			},
 			residence_address:{
 				required: true,
-			},
-			signature : {
-				  required: true,
 			},
 			marital_status:{
 				 required: true,
