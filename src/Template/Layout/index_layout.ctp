@@ -598,6 +598,7 @@ select
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
 
+<?php echo $this->Html->script('/bootstrap-wysihtml5.js'); ?>
 
 
 
@@ -646,7 +647,9 @@ select
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery-tags-input/jquery.tagsinput.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js'); ?>
-
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js'); ?>
+<?php echo $this->Html->script('/assets/global/plugins/typeahead/handlebars.min.js'); ?>
+<?php echo $this->Html->script('/assets/global/plugins/typeahead/typeahead.bundle.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js'); ?>
 <!-- END PAGE LEVEL PLUGINS -->
@@ -658,7 +661,7 @@ select
 <?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js'); ?>
 <?php echo $this->Html->script('/assets/admin/pages/scripts/components-form-tools.js'); ?>
 
-
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-markdown/lib/markdown.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-markdown/js/bootstrap-markdown.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-summernote/summernote.min.js'); ?>
@@ -669,15 +672,18 @@ jQuery(document).ready(function() {
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
 	
+	QuickSidebar.init(); // init quick sidebar
 	
+	Demo.init(); // init demo features
 	ComponentsFormTools.init();
 	ComponentsEditors.init();
-	
+	UINotific8.init();
 	FormValidation.init();
 	TableManaged.init();
 	ComponentsPickers.init();
 	UIGeneral.init();
 	
+	FormiCheck.init(); // init page demo
 	ComponentsDropdowns.init();
 	
 });

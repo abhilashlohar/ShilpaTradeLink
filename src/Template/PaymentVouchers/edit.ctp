@@ -188,7 +188,7 @@
 			</div>
 		
 			<div class="form-actions">
-				<?= $this->Form->button(__('UPDATE PAYMENT VOUCHER'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
+				<?= $this->Form->button(__('UPDATE PAYMENT VOUCHER'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit','onclick' => 'this.disabled=true;return true;']) ?>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>
