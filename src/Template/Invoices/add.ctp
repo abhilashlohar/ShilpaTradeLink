@@ -18,9 +18,9 @@
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
-						<label class="col-md-3 control-label">Sales Ledger Account<span class="required" aria-required="true">*</span></label>
-						<div class="col-md-9">
-							<?php echo $this->Form->input('sales_ledger_account', ['empty' => "--Select--",'label' => false,'options' => $ledger_account_details,'class' => 'form-control input-sm select2me']); ?>
+						<label class="col-md-4 control-label">Sales Account<span class="required" aria-required="true">*</span></label>
+						<div class="col-md-8">
+							<?php echo $this->Form->input('sales_ledger_account', ['empty' => "--Select--",'label' => false,'options' => $ledger_account_details,'class' => 'form-control input-sm select2me','required']); ?>
 						</div>
 					</div>
 				</div>
@@ -287,9 +287,9 @@
 					<?php echo $this->Form->input('fright_text', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional text for Fright Amount','style'=>['text-align:right']]); ?>
 					</td>
 					<td>
-					<label class="col-md-3 control-label">Fright Ledger Account<span class="required" aria-required="true">*</span></label>
+					<label class="col-md-3 control-label">Fright Account<span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('fright_ledger_account', ['empty' => "--Select--",'label' => false,'options' =>$ledger_account_details_for_fright,'class' => 'form-control input-sm select2me']); ?>
+							<?php echo $this->Form->input('fright_ledger_account', ['empty' => "--Select--",'label' => false,'options' =>$ledger_account_details_for_fright,'class' => 'form-control input-sm select2me','required']); ?>
 						</div>
 					<?php echo $this->Form->input('fright_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01,'value'=>@$sales_order->fright_amount]); ?></td>
 				</tr>
@@ -855,15 +855,17 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 		calculate_total();
 	})
 	
-	$("#discount_per").on('click',function(){
+	$("#discount_per").on('click',function(){  
 		if($(this).is(':checked')){
 			$("#discount_text").show();
 			$('input[name="discount"]').attr('readonly','readonly');
+			calculate_total();
 		}else{ 
 			$("#discount_text").hide();
 			$('input[name="discount"]').removeAttr('readonly');
 			$('input[name="discount_per"]').val(0);
 			$('input[name="discount"]').val(0);
+			
 		}
 		calculate_total();
 	})
@@ -871,7 +873,24 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 	$('#main_tb input,#tbl1 input').die().live("keyup","blur",function() { 
 		calculate_total();
     });
-	
+	$('input[name="discount_per"]').die().live("keyup",function() {
+		calculate_total();
+    });
+	$('input[name="discount"]').die().live("keyup",function() {
+		calculate_total();
+    });
+	$('input[name="pnf_per"]').die().live("keyup",function() {
+		calculate_total();
+    });
+	$('input[name="pnf"]').die().live("keyup",function() {
+		calculate_total();
+    });
+	$('input[name="exceise_duty"]').die().live("keyup",function() {
+		calculate_total();
+    });
+	$('input[name="fright_amount"]').die().live("keyup",function() {
+		calculate_total();
+    });
 	
 	$('#main_tb input,#tbl2 select').die().live("change",function() { 
 		calculate_total();
@@ -952,7 +971,7 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 	
 	
 	
-	
+	//
 	
 	
 	function calculate_total(){

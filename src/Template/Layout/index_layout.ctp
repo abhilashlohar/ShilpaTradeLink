@@ -181,127 +181,45 @@ select
 													<li><?php echo $this->Html->link('Customers Segments','/customer-segs',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link( 'Add new customer', '/Customers/add' ); ?></li>
 													<li><?php echo $this->Html->link( 'List customers', '/Customers' ); ?></li>
-													<li>
-														<a href="layout_full_height_content.html">
-														<i class="fa fa-angle-right"></i> Full Height Content <span class="badge badge-roundless badge-warning">new</span></a>
-													</li>
-													<li>
-														<a href="layout_horizontal_menu1.html">
-														<i class="fa fa-angle-right"></i> Horizontal Mega Menu 1 </a>
-													</li>
+													<li><?php echo $this->Html->link('Transporter','/transporters',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link('Terms&Conditions','/Terms-Conditions',array('escape'=>false)); ?></li>
 												</ul>
 											</div>
 											<div class="col-md-4">
 												<ul class="mega-menu-submenu">
-													<li>
-														<h3>More Layouts</h3>
-													</li>
-													<li>
-														<a href="layout_horizontal_menu2.html">
-														<i class="fa fa-angle-right"></i> Horizontal Mega Menu 2 </a>
-													</li>
-													<li>
-														<a href="layout_search_on_header1.html">
-														<i class="fa fa-angle-right"></i> Search Box On Header 1 </a>
-													</li>
-													<li>
-														<a href="layout_search_on_header2.html">
-														<i class="fa fa-angle-right"></i> Search Box On Header 2 </a>
-													</li>
-													<li>
-														<a href="layout_sidebar_search_option1.html">
-														<i class="fa fa-angle-right"></i> Sidebar Search Option 1 </a>
-													</li>
-													<li>
-														<a href="layout_sidebar_search_option2.html">
-														<i class="fa fa-angle-right"></i> Sidebar Search Option 2 </a>
-													</li>
-													<li>
-														<a href="layout_sidebar_reversed.html">
-														<i class="fa fa-angle-right"></i> Right Sidebar Page </a>
-													</li>
-													<li>
-														<a href="layout_sidebar_fixed.html">
-														<i class="fa fa-angle-right"></i> Sidebar Fixed Page </a>
-													</li>
+													<li><?php echo $this->Html->link('Item Categories','/Item-Categories',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link('Item Groups','/Item-Groups',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link('Item Sub-Groups','/Item-Sub-Groups',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link( 'Units','/units',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link( 'Add New Item', '/Items/add' ); ?></li>
+													<li><?php echo $this->Html->link('List Items', '/Items' ); ?></li>
+													<li><?php echo $this->Html->link('Sale-Taxes','/SaleTaxes',array('escape'=>false)); ?></li>
 												</ul>
 											</div>
 											<div class="col-md-4">
 												<ul class="mega-menu-submenu">
-													<li>
-														<h3>Even More!</h3>
-													</li>
-													<li>
-														<a href="layout_sidebar_closed.html">
-														<i class="fa fa-angle-right"></i> Sidebar Closed Page </a>
-													</li>
-													<li>
-														<a href="layout_ajax.html">
-														<i class="fa fa-angle-right"></i> Content Loading via Ajax </a>
-													</li>
-													<li>
-														<a href="layout_disabled_menu.html">
-														<i class="fa fa-angle-right"></i> Disabled Menu Links </a>
-													</li>
-													<li>
-														<a href="layout_blank_page.html">
-														<i class="fa fa-angle-right"></i> Blank Page </a>
-													</li>
-													<li>
-														<a href="layout_boxed_page.html">
-														<i class="fa fa-angle-right"></i> Boxed Page </a>
-													</li>
-													<li>
-														<a href="layout_language_bar.html">
-														<i class="fa fa-angle-right"></i> Language Switch Bar </a>
-													</li>
+													<li><?php echo $this->Html->link(' Add New Suppliers','/Vendors/Add',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link('List Suppliers','/Vendors',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link(' Add Employees Suppliers','/employees/Add',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link('List Employees','/employees',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link( 'Designations','/Designations',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link('Departments','/Departments',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link('Files','/Filenames',array('escape'=>false)); ?></li>
 												</ul>
 											</div>
 										</div>
 									</div>
 									<div class="col-md-4">
-										<div id="accordion" class="panel-group">
-											<div class="panel panel-success">
-												<div class="panel-heading">
-													<h4 class="panel-title">
-													<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapsed">
-													Mega Menu Info #1 </a>
-													</h4>
-												</div>
-												<div id="collapseOne" class="panel-collapse in">
-													<div class="panel-body">
-														 Metronic Mega Menu Works for fixed and responsive layout and has the facility to include (almost) any Bootstrap elements.
-													</div>
-												</div>
-											</div>
-											<div class="panel panel-danger">
-												<div class="panel-heading">
-													<h4 class="panel-title">
-													<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed">
-													Mega Menu Info #2 </a>
-													</h4>
-												</div>
-												<div id="collapseTwo" class="panel-collapse collapse">
-													<div class="panel-body">
-														 Metronic Mega Menu Works for fixed and responsive layout and has the facility to include (almost) any Bootstrap elements.
-													</div>
-												</div>
-											</div>
-											<div class="panel panel-info">
-												<div class="panel-heading">
-													<h4 class="panel-title">
-													<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-													Mega Menu Info #3 </a>
-													</h4>
-												</div>
-												<div id="collapseThree" class="panel-collapse collapse">
-													<div class="panel-body">
-														 Metronic Mega Menu Works for fixed and responsive layout and has the facility to include (almost) any Bootstrap elements.
-													</div>
-												</div>
-											</div>
+												<ul class="mega-menu-submenu">
+													<li><?php echo $this->Html->link(' Logins','/Logins/Add',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link(' Ledger Accounts','/ledgerAccounts',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link('Account References','/AccountReferences',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link('Opening Balance','/ledgers/opening-balance/',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link( 'Quotation Close Reason','/QuotationCloseReasons',array('escape'=>false)); ?></li>	
+													<li><?php echo $this->Html->link('Leave Types','/LeaveTypes',array('escape'=>false)); ?></li>
+													<li></li>
+												</ul>
 										</div>
-									</div>
 								</div>
 							</div>
 						</li>
@@ -494,119 +412,7 @@ select
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/InvoiceBookings/',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
-				<li>
-					<a href="javascript:;">
-					<i class="fa fa-file-code-o"></i>
-					<span class="title">Masters</span>
-					<span class="arrow "></span>
-					</a>
-					<ul class="sub-menu">
-						<li>
-							<a href="javascript:;">
-							<i class="fa fa-university"></i>
-							<span class="title">Companies</span>
-							<span class="arrow "></span>
-							</a>
-							<ul class="sub-menu">
-								<li><?php echo $this->Html->link('<i class="icon-home"></i> Company Groups','/company-groups',array('escape'=>false)); ?></li>
-								<li>
-									<a href="javascript:;">
-									<i class="icon-basket"></i>
-									<span class="title">Companies</span>
-									<span class="arrow "></span>
-									</a>
-									<ul class="sub-menu">
-										<li><?php echo $this->Html->link( 'Add', '/Companies/add' ); ?></li>
-										<li><?php echo $this->Html->link( 'View', '/Companies' ); ?></li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-						<li>
-							<a href="javascript:;">
-							<i class="fa fa-user"></i>
-							<span class="title">Customers</span>
-							<span class="arrow "></span>
-							</a>
-							<ul class="sub-menu">
-								<li><?php echo $this->Html->link('<i class="icon-home"></i> Customer Groups','/Customer-Groups',array('escape'=>false)); ?></li>
-								<li><?php echo $this->Html->link('<i class="icon-home"></i> Districts','/Districts',array('escape'=>false)); ?></li>
-								<li><?php echo $this->Html->link('<i class="icon-home"></i> Customers Segments','/customer-segs',array('escape'=>false)); ?></li>
-								<li>
-									<a href="javascript:;">
-									<i class="icon-basket"></i>
-									<span class="title">Customers</span>
-									<span class="arrow "></span>
-									</a>
-									<ul class="sub-menu">
-										<li><?php echo $this->Html->link( 'Add', '/Customers/add' ); ?></li>
-										<li><?php echo $this->Html->link( 'View', '/Customers' ); ?></li>
-									</ul>
-								</li>
-								
-							</ul>
-						</li>
-						<li>
-							<a href="javascript:;">
-							<i class="fa fa-puzzle-piece"></i>
-							<span class="title">Items</span>
-							<span class="arrow "></span>
-							</a>
-							<ul class="sub-menu">
-								<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Categories','/Item-Categories',array('escape'=>false)); ?></li>
-								<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Groups','/Item-Groups',array('escape'=>false)); ?></li>
-								<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Sub-Groups','/Item-Sub-Groups',array('escape'=>false)); ?></li>
-								<!--<li><?php echo $this->Html->link('<i class="icon-home"></i> Item Categories','/Categories',array('escape'=>false)); ?></li>-->
-								<li><?php echo $this->Html->link('<i class="icon-home"></i> Units','/units',array('escape'=>false)); ?></li>
-								<li>
-									<a href="javascript:;">
-									<i class="icon-basket"></i>
-									<span class="title">Items</span>
-									<span class="arrow "></span>
-									</a>
-									<ul class="sub-menu">
-										<li><?php echo $this->Html->link( 'Add', '/Items/add' ); ?></li>
-										<li><?php echo $this->Html->link( 'View', '/Items' ); ?></li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Transporter','/transporters',array('escape'=>false)); ?></li>
-						<li>
-							<a href="javascript:;">
-							<i class="fa fa-file-code-o"></i>
-							<span class="title">Employees</span>
-							<span class="arrow "></span>
-							</a>
-							<ul class="sub-menu">
-								<li><?php echo $this->Html->link( 'Create', '/employees/add' ); ?></li>
-								<li><?php echo $this->Html->link( 'View', '/employees' ); ?></li>
-							</ul>
-						</li>
-						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Logins','/Logins/Add',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Terms&Conditions','/Terms-Conditions',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Designations','/Designations',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Departments','/Departments',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Files','/Filenames',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Sale-Taxes','/SaleTaxes',array('escape'=>false)); ?></li>
-						<li>
-							<a href="javascript:;">
-							<i class="fa fa-puzzle-piece"></i>
-							<span class="title">Suppliers</span>
-							<span class="arrow "></span>
-							</a>
-							<ul class="sub-menu">
-								<li><?php echo $this->Html->link('<i class="icon-home"></i> Add','/Vendors/Add',array('escape'=>false)); ?></li>
-								<li><?php echo $this->Html->link('<i class="icon-home"></i> List','/Vendors',array('escape'=>false)); ?></li>
-							</ul>
-						</li>
-						<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Ledger Account','/ledgerAccounts',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Account References','/AccountReferences',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Opening Balance','/ledgers/opening-balance/',array('escape'=>false)); ?></li>
-						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Quotation Close Reason','/QuotationCloseReasons',array('escape'=>false)); ?></li>	
-						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Leave Types','/LeaveTypes',array('escape'=>false)); ?></li>
-					</ul>
-				</li>
+
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
