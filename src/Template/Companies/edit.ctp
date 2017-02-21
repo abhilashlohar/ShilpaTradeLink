@@ -224,9 +224,7 @@ $(document).ready(function() {
 			inventory_status :{
 				required: true,
 			},
-			logo   :{
-				required: true,
-			},
+			
 			address : {
 				  required: true,
 			},
