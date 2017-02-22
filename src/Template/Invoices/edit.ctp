@@ -224,7 +224,7 @@
 							if($sales_order_row->item->serial_number_enable==1) { ?>
 							<tr class="tr3" row_no="<?= h($q) ?>">
 							<td></td>
-							<td colspan="5">
+							<td colspan="6">
 							<?php echo $this->Form->input('q', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control','style'=>'width:100%','value'=>$choosen,'readonly']);  ?></td>
 							</tr><?php } ?>
 					<?php } ?>
