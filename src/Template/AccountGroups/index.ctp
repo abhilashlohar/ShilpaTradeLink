@@ -23,7 +23,7 @@
 					<div class="col-md-5">
 					<label class="control-label">Account Category <span class="required" aria-required="true">*</span></label>
 						<?php 
-						echo $this->Form->input('account_category_id', ['empty' => "--Select--",'label' => false,'class' => 'form-control select2me ','required']); 
+						echo $this->Form->input('account_category_id', ['empty' => "--Select--",'label' => false,'class' => 'form-control select2me ','required','id'=>'search']); 
 						?>
 					</div>
 					<div class="col-md-5">
@@ -49,20 +49,9 @@
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
-				<form method="GET" >
-					<table class="table table-condensed" style="margin-top:20px;">
-						<tbody>
-							<tr>
-								<td><input type="text" name="Account_category" class="form-control input-sm" placeholder="Account Category" value="<?php echo @$Account_category; ?>"></td>
-								<td><input type="text" name="name" class="form-control input-sm" placeholder="Group Name" value="<?php echo @$name; ?>"></td>
-								<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
-							</tr>
-						</tbody>
-					</table>
-				</form>
 				
 				<?php $page_no=$this->Paginator->current('Account Categories'); $page_no=($page_no-1)*20; ?>
-				<table class="table table-bordered table-striped table-hover">
+				<table class="table table-bordered table-striped table-hover" id="main_tble">
 						<thead>
 							<tr>
 								<th>S.No</th>
@@ -99,17 +88,24 @@
 						<?php endforeach; ?>
 					</tbody>
 				</table>
-				<div class="paginator">
-					<ul class="pagination">
-						<?= $this->Paginator->prev('< ' . __('previous')) ?>
-						<?= $this->Paginator->numbers() ?>
-						<?= $this->Paginator->next(__('next') . ' >') ?>
-					</ul>
-					<p><?= $this->Paginator->counter() ?></p>
-				</div>
+				
 			</div>
 		</div>
 	</div>
 </div>
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<script>
+$(document).ready(function() {
+var $rows = $('#main_tble tbody tr');
+	$('#search').on('change',function() {
+		
+		var val = $.trim($(this).find('option:selected').text()).replace(/ +/g, ' ').toLowerCase();
 
+		$rows.show().filter(function() {
+			var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+			return !~text.indexOf(val);
+		}).hide();
+	});	
+});
+</script>
 

@@ -19,25 +19,26 @@
 			<div class="col-md-7"> 
 				<?= $this->Form->create($InventoryVoucher,['id'=>'form_sample_3']) ?>
 				<table class="table tableitm" id="main_tb">
-					<tbody>
+					<tbody id="m_tbody">
+
 					<tr class="tr1">
 						
 						<?php 
 						if($q_sno==1){
 							if($is_in_made=='no'){
 								for($i=1;$i<=$q_qty;$i++){ ?>
-								<td><?php echo $this->Form->input('serial_numbers['.$i.']', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Serial no '.$i]); ?><?php	
+								<td><?php echo $this->Form->input('serial_numbers['.$i.']', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Serial no '.$i,'id'=>'sr_no'.$i]); ?></td><?php	
 								} 
 							}
 							else {
 							$i=1;
 								foreach($q_ItemSerialNumbers as $q_ItemSerialNumber){ ?>
-								<td><?php echo $this->Form->input('serial_numbers['.$i.']', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Serial no '.$i, 'value'=>$q_ItemSerialNumber->serial_no]); ?><?php $i++;	
+								<td><?php echo $this->Form->input('serial_numbers['.$i.']', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Serial no '.$i, 'value'=>$q_ItemSerialNumber->serial_no,'id'=>'sr_no'.$i]); ?></td><?php $i++;	
 								} 	
 							}
 						}
 						?>
-						</td>
+						
 					</tr>
 					</tbody>
 				</table>
@@ -178,10 +179,12 @@ $(document).ready(function() {
 		rename_rows();
 	}
 	rename_rows();
+	rename_rows1();
 	function rename_rows(){
 		var i=0;
 		$("#main_table tbody#maintbody tr.main").each(function(){
 			$(this).attr('row_no',i);
+
 			$(this).find('td:nth-child(1) select').attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).rules("add", "required");
 			$(this).find('td:nth-child(2) input').attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"}).rules("add", "required");
 			if($(this).find('td:nth-child(3) select').length>0){
@@ -190,6 +193,14 @@ $(document).ready(function() {
 			
 			
 		i++; });
+	}
+	
+	function rename_rows1(){
+		var i=1;
+		$("#main_tb tbody#m_tbody tr.tr1 td").each(function(){
+			$(this).find('input').attr({name:"serial_numbers["+i+"]",  id:"sr_no"+i}).rules("add", "required");
+			i++; 
+		});
 	}
 	
 	$('.select_item').die().live("change",function() {

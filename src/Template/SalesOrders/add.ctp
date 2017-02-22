@@ -246,7 +246,7 @@ if(!empty($copy))
 						</tr>
 						<tr class="tr2 maintr" row_no='<?php echo @$sales_order_rows->id; ?>'>
 							<td colspan="6" class="main">
-								<div class="note-editable" id="summer<?php echo $q; ?>" ><?php echo $quotation_rows->description; ?></div>
+								<div class="note-editable" id="summer<?php echo $q; ?>" ><?php echo $sales_order_rows->description; ?></div>
 							</td>
 							<td></td>
 						</tr>

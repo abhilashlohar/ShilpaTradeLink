@@ -5,10 +5,10 @@
 			<span class="caption-subject font-blue-steel uppercase">Account First Sub-Group</span> 
 		</div>
 		<div class="actions">
-			<?php echo $this->Html->link('Ledger Account','/LedgerAccounts/',array('escape'=>false,'class'=>'btn btn-default')); ?>
 			<?php echo $this->Html->link('Account Group','/AccountGroups/',array('escape'=>false,'class'=>'btn btn-default')); ?>
 			<?php echo $this->Html->link('Account First Sub Group','/AccountFirstSubgroups/',array('escape'=>false,'class'=>'btn btn-primary')); ?>
 			<?php echo $this->Html->link('Account Second Sub Group','/AccountSecondSubgroups/',array('escape'=>false,'class'=>'btn btn-default')); ?>
+			<?php echo $this->Html->link('Ledger Account','/LedgerAccounts/',array('escape'=>false,'class'=>'btn btn-default')); ?>
 		</div>
 		<div class="portlet-body form">
 		<!-- BEGIN FORM-->
@@ -20,7 +20,7 @@
 					<div class="col-md-5">
 					<label class="control-label">Account Group <span class="required" aria-required="true">*</span></label>
 						<?php 
-						echo $this->Form->input('account_group_id', ['options' => $accountGroups,'empty' => "--Select--",'label' => false,'class' => 'form-control select2me ','required']); 
+						echo $this->Form->input('account_group_id', ['options' => $accountGroups,'empty' => "--Select--",'label' => false,'id'=>'search','class' => 'form-control select2me ','required']); 
 						?>
 					</div>
 					<div class="col-md-5">
@@ -46,20 +46,7 @@
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
-				<form method="GET" >
-					<table class="table table-condensed" style="margin-top:20px;">
-						<tbody>
-							<tr>
-								<td><input type="text" name="Account_group" class="form-control input-sm" placeholder="Account Group" value="<?php echo @$Account_group; ?>"></td>
-								<td><input type="text" name="name" class="form-control input-sm" placeholder="First Sub-Group Name" value="<?php echo @$name; ?>"></td>
-								<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
-							</tr>
-						</tbody>
-					</table>
-				</form>
-				
-				<?php $page_no=$this->Paginator->current('Account Group Name'); $page_no=($page_no-1)*20; ?>
-				<table class="table table-bordered table-striped table-hover">
+				<table class="table table-bordered table-striped table-hover" id="main_tble">
 						<thead>
 							<tr>
 								<th>S.No</th>
@@ -71,9 +58,9 @@
 					
 					</thead>
 					<tbody>
-					 <?php foreach ($accountFirstSubgroups as $accountFirstSubgroup): ?>
+					 <?php $i=0; foreach ($accountFirstSubgroups as $accountFirstSubgroup): ?>
 						<tr>
-							<td><?= h(++$page_no) ?></td>
+							<td><?= h(++$i) ?></td>
 							<td><?= h($accountFirstSubgroup->account_group->account_category->name) ?></td>
 							<td><?= h($accountFirstSubgroup->account_group->name) ?></td>
 							<td><?= h($accountFirstSubgroup->name) ?></td>
@@ -98,18 +85,25 @@
 						<?php endforeach; ?>
 					</tbody>
 				</table>
-				<div class="paginator">
-					<ul class="pagination">
-						<?= $this->Paginator->prev('< ' . __('previous')) ?>
-						<?= $this->Paginator->numbers() ?>
-						<?= $this->Paginator->next(__('next') . ' >') ?>
-					</ul>
-					<p><?= $this->Paginator->counter() ?></p>
-				</div>
+				
 			</div>
 		</div>
 	</div>
 </div>
 
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<script>
+$(document).ready(function() {
+var $rows = $('#main_tble tbody tr');
+	$('#search').on('change',function() {
+		
+		var val = $.trim($(this).find('option:selected').text()).replace(/ +/g, ' ').toLowerCase();
 
+		$rows.show().filter(function() {
+			var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+			return !~text.indexOf(val);
+		}).hide();
+	});	
+});
+</script>
 
