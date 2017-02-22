@@ -19,8 +19,7 @@
 			<div class="form-body">
 			<div class="row">
 				<div class="form-group">
-					<label class="control-label col-md-3">Account Category <span class="required" aria-required="true">
-					* </span>
+					<label class="control-label col-md-3">Account Category
 					</label>
 					<div class="col-md-4">
 						<div class="input-icon right">
@@ -30,10 +29,10 @@
 					</div>
 				</div>
 				</div>
+				</br>
 				<div class="row">
 					<div class="form-group">
-					<label class="control-label col-md-3">Account Group <span class="required" aria-required="true">
-					* </span>
+					<label class="control-label col-md-3">Account Group 
 					</label>
 					<div class="col-md-4">
 						<div class="input-icon right">
@@ -45,10 +44,11 @@
 					</div>
 					</div>
 				</div>
+				</br>
+
 				<div class="row">
 				<div class="form-group">
-					<label class="control-label col-md-3">Account First Sub Group <span class="required" aria-required="true">
-					* </span>
+					<label class="control-label col-md-3">Account First Sub Group
 					</label>
 					<div class="col-md-4">
 						<div class="input-icon right">
@@ -60,6 +60,8 @@
 					</div>
 				</div>
 				</div>
+				</br>
+
 				<div class="row">
 				<div class="form-group">
 					<label class="control-label col-md-3">Account Second Sub Group <span class="required" aria-required="true">
@@ -75,6 +77,8 @@
 					</div>
 				</div>
 				</div>
+				</br>
+
 				<div class="row">
 					<div class="form-group">
 					<label class="control-label col-md-3">Name<span class="required" aria-required="true">
@@ -90,6 +94,8 @@
 					</div>
 				</div>	
 				</div>
+				</br>
+
 					<div class="col-md-2">
 					<label class="control-label"> <span class="required" aria-required="true"></span> </label><br/>
 						<?php 
@@ -107,6 +113,7 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
+	
 	$('select[name="account_category_id"]').on("change",function() {
 	$('#account_group_div').html('Loading...');
 	var accountCategoryId=$('select[name="account_category_id"] option:selected').val();
