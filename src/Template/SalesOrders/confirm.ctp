@@ -8,8 +8,6 @@ $edit_url=$this->Url->build(['controller'=>'SalesOrders','action'=>'Edit']);
 		<td valign="top" style="background: #FFF;">
 		<div class="list-group">
 			<a href="<?php echo $list_url; ?>" class="list-group-item"><i class="fa fa-chevron-left"></i> Back to Sales Orders </a>
-			<a href="#" class="list-group-item"><i class="fa fa-envelope"></i> Email to Customer </a>
-			
 			<?php  foreach($salesorder->sales_order_rows as $sales_order_row){
 			if($sales_order_row->processed_quantity != $sales_order_row->quantity){ ?>
 			<a href="<?php echo $edit_url.'/'.$id; ?>" class="list-group-item"><i class="fa fa-edit"></i> Edit </a>

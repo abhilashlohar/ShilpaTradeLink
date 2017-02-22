@@ -231,12 +231,11 @@ class CustomersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		
-        $this->paginate = [
-            'contain' => ['Invoices']
-        ];
         $customers = $this->paginate($this->Customers->find());
+        $ReferenceDetails = $this->Customers->ReferenceDetails->find()->toArray();
+		//pr($customers); exit;
 
-        $this->set(compact('customers'));
+        $this->set(compact('customers','ReferenceDetails'));
         $this->set('_serialize', ['customers']);
     }
 	

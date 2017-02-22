@@ -1,3 +1,21 @@
+<?php 
+if($sales_order->customer->tin_no==''){?>
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+			<h4 class="modal-title">Modal Title</h4>
+		</div>
+		<div class="modal-body">
+			 Modal body goes here
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn blue">Save changes</button>
+		</div>
+	</div>
+	
+<?php } else { ?>
+
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -1189,5 +1207,5 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 		</div>
 	</div>
 </div>
-
+<?php } ?>
 

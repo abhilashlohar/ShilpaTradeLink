@@ -176,14 +176,18 @@ select
 										<div class="row">
 											<div class="col-md-4">
 												<ul class="mega-menu-submenu">
+													<li><?php echo $this->Html->link(' Logins','/Logins/Add',array('escape'=>false)); ?></li>
+													<li class="divider"></li>
 													<li><?php echo $this->Html->link('Customer Groups','/Customer-Groups',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link('Districts','/Districts',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('Customers Segments','/customer-segs',array('escape'=>false)); ?></li>
+													<li class="divider"></li>
 													<li><?php echo $this->Html->link( 'Add new customer', '/Customers/add' ); ?></li>
 													<li><?php echo $this->Html->link( 'List customers', '/Customers' ); ?></li>
+													<li class="divider"></li>
 													<li><?php echo $this->Html->link('Transporters','/transporters',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('Terms&Conditions','/Terms-Conditions',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link(' Logins','/Logins/Add',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link('Districts','/Districts',array('escape'=>false)); ?></li>
+													
 												</ul>
 											</div>
 											<div class="col-md-4">
@@ -192,8 +196,10 @@ select
 													<li><?php echo $this->Html->link('Item Groups','/Item-Groups',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('Item Sub-Groups','/Item-Sub-Groups',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link( 'Units','/units',array('escape'=>false)); ?></li>
+													<li class="divider"></li>
 													<li><?php echo $this->Html->link( 'Add New Item', '/Items/add' ); ?></li>
 													<li><?php echo $this->Html->link('List Items', '/Items' ); ?></li>
+													<li class="divider"></li>
 													<li><?php echo $this->Html->link('Sale-Taxes','/SaleTaxes',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('Files','/Filenames',array('escape'=>false)); ?></li>
 												</ul>
@@ -202,11 +208,13 @@ select
 												<ul class="mega-menu-submenu">
 													<li><?php echo $this->Html->link(' Add New Suppliers','/Vendors/Add',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('List Suppliers','/Vendors',array('escape'=>false)); ?></li>
+													<li class="divider"></li>
 													<li><?php echo $this->Html->link(' Add Employees','/employees/Add',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('List Employees','/employees',array('escape'=>false)); ?></li>
+													<li class="divider"></li>
 													<li><?php echo $this->Html->link(' Add Companies','/Companies/add',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('List Companies','/Companies',array('escape'=>false)); ?></li>
-													
+													<li class="divider"></li>
 													<li><?php echo $this->Html->link( 'Designations','/Designations',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('Departments','/Departments',array('escape'=>false)); ?></li>
 													

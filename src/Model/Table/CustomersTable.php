@@ -117,6 +117,7 @@ class CustomersTable extends Table
             'joinType' => 'INNER'
         ]);
 		$this->belongsTo('ReceiptVouchers');
+		$this->belongsTo('ReferenceDetails');
 		
     }
 

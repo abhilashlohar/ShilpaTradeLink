@@ -121,7 +121,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Transporter</label>
-							<?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+							<?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'empty' => "--Select--",'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">

@@ -1,3 +1,4 @@
+<?php //pr($customers); exit;?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -17,23 +18,31 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($customers as $customer): 
+					<?php foreach ($customers as $customer){ 
+					//pr($customer->ledger_account_id); exit;
 					$due=0;
-						foreach($customer->invoices as $invoice){
-							$due+=$invoice->due_payment;
+					$total_credit=0;
+					$total_debit=0;
+						foreach($ReferenceDetails as $ReferenceDetail){
+							if($ReferenceDetail->ledger_account_id==$customer->ledger_account_id){
+								if($ReferenceDetail->credit==0){
+								$total_debit+=$ReferenceDetail->debit;
+								}else{
+								$total_credit+=$ReferenceDetail->credit;
+								}
+							
+						}
+						$due=$total_credit-$total_debit;
 						} ?>
 					<tr>
 						<td><?= h(++$page_no) ?></td>
 						<td><?= h($customer->customer_name) ?></td>
 						<td>
-						<?= $this->Html->link(
-							$this->Number->format($due,[ 'places' => 2]),
-							'/Invoices/Due-Invoices/'.$customer->id,
-							['target' => '_blank']
-						); ?>
+						<?=$this->Number->format($due,[ 'places' => 2]);
+						 ?>
 						</td>
 					</tr>
-					<?php endforeach; ?>
+					<?php } ?>
 				</tbody>
 			</table>
 		</div>
