@@ -570,8 +570,10 @@ class InvoicesController extends AppController
 			else{
 				$total_debit=$total_debit+$customer_reference_detail->debit;
 			}
-		}}
-		$old_due_payment=$total_credit-$total_debit;
+		}
+				$old_due_payment=$total_credit-$total_debit;
+
+		}
 		//pr($old_due_payment); exit;	
 		$AccountReference_for_sale= $this->Invoices->AccountReferences->get(1);
 		$account_first_subgroup_id=$AccountReference_for_sale->account_first_subgroup_id;

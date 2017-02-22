@@ -1,18 +1,25 @@
 <?php 
 if($sales_order->customer->tin_no==''){?>
-	<div class="modal-content">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-			<h4 class="modal-title">Modal Title</h4>
-		</div>
-		<div class="modal-body">
-			 Modal body goes here
-		</div>
-		<div class="modal-footer">
-			<button type="button" class="btn default" data-dismiss="modal">Close</button>
-			<button type="button" class="btn blue">Save changes</button>
+	<div class="modal fade in"  ></div>
+	<div id="myModaltin" class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body" >
+				Please Enter Tin Number For <b><?php echo $sales_order->customer->customer_name; ?></b>
+			</div>
+			<div class="modal-footer">
+				<button class="btn default closetin">Close</button>
+			</div>
 		</div>
 	</div>
+</div>
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+<script>
+$(document).ready(function() {
+$('.closetin').on("click",function() { 
+		$("#myModaltin").hide();
+    });
+});
+</script>
 	
 <?php } else { ?>
 
@@ -1070,6 +1077,7 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 	$('.closebtn').on("click",function() { 
 		$("#myModal12").hide();
     });
+	
 	
 	
 	$('select[name="customer_id"]').on("change",function() {

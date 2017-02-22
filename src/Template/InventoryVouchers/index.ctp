@@ -24,9 +24,11 @@
 						<tr>
 							<td><?= h(++$page_no) ?></td>
 							<td><?= h($inventoryVoucher->iv_number) ?></td>
+							<?php if(in_array(10,$allowed_pages)){  ?>
 							<td>
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit?invoice='.$inventoryVoucher->invoice_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 							</td>
+							<?php } ?>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>

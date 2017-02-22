@@ -206,13 +206,13 @@ select
 											</div>
 											<div class="col-md-4">
 												<ul class="mega-menu-submenu">
-													<li><?php echo $this->Html->link(' Add New Suppliers','/Vendors/Add',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link(' Add New Supplier','/Vendors/Add',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('List Suppliers','/Vendors',array('escape'=>false)); ?></li>
 													<li class="divider"></li>
-													<li><?php echo $this->Html->link(' Add Employees','/employees/Add',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link(' Add New  Employee','/employees/Add',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('List Employees','/employees',array('escape'=>false)); ?></li>
 													<li class="divider"></li>
-													<li><?php echo $this->Html->link(' Add Companies','/Companies/add',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link(' Add New Company','/Companies/add',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('List Companies','/Companies',array('escape'=>false)); ?></li>
 													<li class="divider"></li>
 													<li><?php echo $this->Html->link( 'Designations','/Designations',array('escape'=>false)); ?></li>
@@ -348,7 +348,7 @@ select
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<?php if(in_array(1,$allowed_pages)){
+						<?php if(in_array(5,$allowed_pages)){
 						echo '<li>'.$this->Html->link( 'Create', '/Job-Cards/Pending-Salesorder-For-Jobcard' ).'</li>';
 						} ?>
 						<li><?php echo $this->Html->link( 'View', '/Job-Cards' ); ?></li>
@@ -361,7 +361,9 @@ select
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<li><?php echo $this->Html->link( 'Create', '/SalesOrders/index?pull-request=true' ); ?></li>
+						<?php if(in_array(7,$allowed_pages)){
+						echo '<li>'.$this->Html->link( 'Create', '/SalesOrders/index?pull-request=true' ).'</li>';
+						} ?>
 						<li><?php echo $this->Html->link( 'View', '/Invoices' ); ?></li>
 						
 					</ul>
@@ -373,7 +375,7 @@ select
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<?php if(in_array(1,$allowed_pages)){
+						<?php if(in_array(9,$allowed_pages)){
 						echo '<li>'.$this->Html->link( 'Create', '/Invoices?inventory_voucher=true' ).'</li>';
 						} ?>
 						<li><?php echo $this->Html->link( 'View', '/InventoryVouchers' ); ?></li>
@@ -386,7 +388,9 @@ select
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Create','/Challans/Add',array('escape'=>false)); ?></li>
+						<?php if(in_array(11,$allowed_pages)){
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/Challans/Add',array('escape'=>false)).'</li>';
+						} ?>
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Challans',array('escape'=>false)); ?></li>
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> Pending Challan','/Challans/PendingChallanForCreditNote',array('escape'=>false)); ?></li>
 					</ul>
@@ -399,7 +403,9 @@ select
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Create','/Purchase-Orders/Add',array('escape'=>false)); ?></li>
+						<?php if(in_array(13,$allowed_pages)){
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/Purchase-Orders/Add',array('escape'=>false)).'</li>';
+						} ?>
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Purchase-Orders',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
@@ -410,7 +416,9 @@ select
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Create','/PurchaseOrders/index?pull-request=true',array('escape'=>false)); ?></li>
+						<?php if(in_array(15,$allowed_pages)){
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/PurchaseOrders/index?pull-request=true',array('escape'=>false)).'</li>';
+						} ?>
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Grns',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
@@ -421,7 +429,9 @@ select
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> Create','/Grns/index?pull-request=true',array('escape'=>false)); ?></li>
+						<?php if(in_array(17,$allowed_pages)){
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/Grns/index?pull-request=true',array('escape'=>false)).'</li>';
+						} ?>
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/InvoiceBookings/',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
