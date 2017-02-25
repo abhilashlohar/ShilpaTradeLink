@@ -82,19 +82,30 @@ class InvoicesController extends AppController
 			}	
 		}
 		if($inventory_voucher=='true'){
-			$invoice_rows=$this->paginate($this->Invoices->find()->contain(['InvoiceRows'=>['Items'=>function ($q) {
-				return $q->where(['source!='=>'Purchessed']);
+			$invoices=[];
+			$invoices_data=$this->paginate($this->Invoices->find()->contain(['InvoiceRows'=>['Items'=>function ($q) {
+				return $q->where(['source !='=>'Purchessed']);
 				}]])->where(['company_id'=>$st_company_id,'inventory_voucher_status'=>'Pending'])->order(['Invoices.id' => 'DESC']));
-				if(sizeof($invoice_rows)>0){
-					foreach($invoice_rows as $invoice_row){
-						$invoices[]=$invoice_row;
+			
+				foreach($invoices_data as $invoice){
+					$sales_order_id=$invoice->sales_order_id;
+					$invoice_rows=$invoice->invoice_rows;
+						if(sizeof($invoice_rows)>0){
+							foreach($invoice_rows as $invoice_row)
+							{
+								$SalesOrderRow=$this->Invoices->SalesOrderRows->find()->where(['sales_order_id'=>$sales_order_id,'item_id'=>$invoice_row->item_id])->first();
+								if($invoice_row->item->source=='Purchessed/Manufactured'){ 
+									if($SalesOrderRow->source_type=="Manufactured"){
+									$invoices[]=$invoice; 
+									}
+								}
+								elseif($invoice_row->item->source=='Assembled' or $invoice_row->item->source=='Manufactured'){
+								$invoices[]=$invoice; 
+								}
+							}	
+						}
 					}
-				}
-				else{
-				$invoices=[];
-				}
-			}
-			else{
+			}else{
 			$invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
 		}
 		

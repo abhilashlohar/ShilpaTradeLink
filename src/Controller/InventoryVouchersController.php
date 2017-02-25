@@ -474,17 +474,13 @@ class InventoryVouchersController extends AppController
 				'contain' => ['InvoiceRows'=> function ($q) {
 				return $q->where(['InvoiceRows.inventory_voucher_applicable'=>'Yes']);
 				}]]);
-			if($Invoice->invoice_rows){
+
 			$invoice_row = $Invoice->invoice_rows[0];
 			$item_id=$invoice_row->item_id;
 			$invoice_row_id=$invoice_row->id;
 			$qty=$invoice_row->quantity;
-		
 			return $this->redirect(['action' => 'edit?invoice='.$invoice_id.'&item_id='.$item_id.'&item-qty='.$qty]);
-			}
-			else{
-			return $this->redirect(['action' => 'index']);
-			}
+			
 		}
 		
 		if(!empty($q_item_id) && !empty($invoice_id)){
