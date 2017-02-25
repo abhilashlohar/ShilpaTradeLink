@@ -218,7 +218,6 @@ class InventoryVouchersController extends AppController
 							}]]);
 							$total=sizeof($row->invoice_rows);
 					
-						
 				if($total>0) {
 						$invoice_row = $row->invoice_rows[0];
 						$item_id=$invoice_row->item_id;
