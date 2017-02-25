@@ -56,6 +56,12 @@
 				<h4>Opening Balance</h4>
 				<div class="row">
 					<div class="col-md-3">
+						<label class="control-label">serial_number_enable</label>
+						<div class="checkbox-list">
+							<?php echo $this->Form->radio('serial_number_enable',[['value' => '1', 'text' => 'Yes'],['value' => '0', 'text' => 'No']]); ?>
+						</div>
+					</div>
+					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Quantity </label>
 							<?php echo $this->Form->input('ob_quantity', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity']); ?>
@@ -63,18 +69,17 @@
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Rate</label>
+							<label class="control-label">Rate </label>
 							<?php echo $this->Form->input('ob_rate', ['label' => false,'type'=>'text','class' => 'form-control input-sm allLetter','placeholder'=>'Rate']); ?>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Value</label>
-							<?php echo $this->Form->input('ob_value', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Value','readonly']); ?>
+							<label class="control-label">Value </label>
+							<?php echo $this->Form->input('ob_value', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Value']); ?>
 						</div>
 					</div>
 				</div>
-				<hr>
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group">

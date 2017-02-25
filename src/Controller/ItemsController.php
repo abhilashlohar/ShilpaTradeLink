@@ -105,6 +105,7 @@ class ItemsController extends AppController
 						$ItemSerialNumber->item_id = $item->id;
 						$ItemSerialNumber->serial_no = $serial_number[0];
 						$ItemSerialNumber->status = 'In';
+						$ItemSerialNumber->master_item_id = $item->id;
 						$this->Items->ItemSerialNumbers->save($ItemSerialNumber);
 					}
 				}
