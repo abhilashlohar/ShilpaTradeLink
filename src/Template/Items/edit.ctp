@@ -321,6 +321,10 @@ $('input[name="ob_quantity"]').die().live("blur",function() {
 	update_sr_textbox();
  });
  
+ $('input[name="serial_number_enable"]').die().live("change",function() {
+	update_sr_textbox();
+});
+ 
 function update_sr_textbox(){
 		var r=0;
 		var serial_number=$('input[name=serial_number_enable]:checked').val(); 
@@ -347,9 +351,9 @@ function update_sr_textbox(){
 					}
 				}
 				
-				else{
-				$('itm_srl_num').find('input.sr_no').remove();
-				}
+		else{
+				$('#itm_srl_num').find('input.sr_no').remove();
+		}
 	}
 	
 });

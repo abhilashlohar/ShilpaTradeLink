@@ -140,7 +140,10 @@ class ItemsController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
         $item = $this->Items->get($id, [
-            'contain' => ['Companies','ItemSerialNumbers']
+            'contain' => ['Companies','ItemSerialNumbers'=> function ($q) use($id) {
+						   return $q
+								->where(['master_item_id'=> $id]);
+						}]
         ]);
 	
         if ($this->request->is(['patch', 'post', 'put'])) {
