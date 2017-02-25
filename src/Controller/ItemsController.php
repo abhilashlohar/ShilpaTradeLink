@@ -94,7 +94,7 @@ class ItemsController extends AppController
 					$itemLedger->quantity = $item->ob_quantity;
 					$itemLedger->company_id = $st_company_id;
 					$itemLedger->source_model = 'Items';
-					//$itemLedger->source_id = $grn->id;
+					$itemLedger->source_id =  $item_id;
 					$itemLedger->in_out = 'In';
 					$itemLedger->processed_on = date("Y-m-d");
 					$this->Items->ItemLedgers->save($itemLedger);
@@ -137,12 +137,39 @@ class ItemsController extends AppController
     public function edit($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
         $item = $this->Items->get($id, [
-            'contain' => ['Companies']
+            'contain' => ['Companies','ItemSerialNumbers']
         ]);
+	
         if ($this->request->is(['patch', 'post', 'put'])) {
             $item = $this->Items->patchEntity($item, $this->request->data);
             if ($this->Items->save($item)) {
+				$item_id=$item->id;
+				$this->Items->ItemLedgers->deleteAll(['source_id' => $item_id, 'source_model' => 'Items']);
+				$this->Items->ItemSerialNumbers->deleteAll(['master_item_id' => $item_id]);
+				$itemLedger = $this->Items->ItemLedgers->newEntity();
+					$itemLedger->item_id = $item_id;
+					$itemLedger->quantity = $item->ob_quantity;
+					$itemLedger->company_id = $st_company_id;
+					$itemLedger->source_model = 'Items';
+					$itemLedger->source_id = $item_id;
+					$itemLedger->in_out = 'In';
+					$itemLedger->processed_on = date("Y-m-d");
+					$this->Items->ItemLedgers->save($itemLedger);
+					
+				if($item->serial_number_enable=="1"){
+					foreach($item->serial_numbers as $serial_number) {
+						$ItemSerialNumber = $this->Items->ItemSerialNumbers->newEntity();
+						$ItemSerialNumber->item_id = $item->id;
+						$ItemSerialNumber->serial_no = $serial_number[0];
+						$ItemSerialNumber->status = 'In';
+						$ItemSerialNumber->master_item_id = $item->id;
+						$this->Items->ItemSerialNumbers->save($ItemSerialNumber);
+					}
+				}
+				
                 $this->Flash->success(__('The item has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

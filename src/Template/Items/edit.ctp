@@ -81,6 +81,22 @@
 					</div>
 				</div>
 				<div class="row">
+					<div class="col-md-3" id="itm_srl_num">
+					<?php $i=1; foreach($item->item_serial_numbers as $item_serial_number){
+						if($item_serial_number->status=='Out')
+						{
+							echo $this->Form->input('serial_numbers['.$i.'][]', ['label' => false,'type'=>'text','class'=>'sr_no','ids'=>'sr_no['.$i.']','value' => $item_serial_number->serial_no,'readonly'=>'readonly']); 
+						}
+						else{
+							echo $this->Form->input('serial_numbers['.$i.'][]', ['label' => false,'type'=>'text','class'=>'sr_no','ids'=>'sr_no['.$i.']','value' => $item_serial_number->serial_no ]); 
+						}
+						 $i++; 
+					}
+					?>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Dynamic Cost <span class="required" aria-required="true">*</span></label>
@@ -301,6 +317,40 @@ $('select[name="item_group_id"]').die().live("change",function() {
 		$('#item_sub_group_div').html(response);
 	});
 });
+$('input[name="ob_quantity"]').die().live("blur",function() {
+	update_sr_textbox();
+ });
+ 
+function update_sr_textbox(){
+		var r=0;
+		var serial_number=$('input[name=serial_number_enable]:checked').val(); 
+		var quantity=$('input[name="ob_quantity"]').val();
+		var l=$('#itm_srl_num').find('input').length;
+		
+		if(serial_number==1){ 
+			
+					if(quantity < l){
+				
+						for(i=l;i>quantity;i--){
+						$('#itm_srl_num').find('input[ids="sr_no['+i+']"]').remove();
+						}
+					}
+					
+					if(quantity > l){
+						l=l+1;
+						for(i=l;i<=quantity;i++){
+						$('#itm_srl_num').append('<div style="margin-bottom:6px;"><input type="text" class="sr_no" name="serial_numbers['+i+'][]" ids="sr_no['+i+']" id="sr_no'+l+'"/></div>');
+						
+						$('#itm_srl_num').find('input#sr_no'+l).rules('add', {required: true});
+						l++;
+						}
+					}
+				}
+				
+				else{
+				$('itm_srl_num').find('input.sr_no').remove();
+				}
+	}
 	
 });
 </script>
