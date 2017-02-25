@@ -86,8 +86,9 @@
 						<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'Employees','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?> <?php } ?>
 						<?php if($ledgerAccount->source_model == 'Vendors'){ ?>
 						<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'Vendors','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?> <?php } ?>
+						
 						<?php if($ledgerAccount->source_model == 'Ledger Account'){ ?>
-						<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'ledgerAccounts','action' => 'Edit', $ledgerAccount->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?> <?php } ?></td>
+						<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'LedgerAccounts','action' => 'Edit', $ledgerAccount->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?> <?php } ?></td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>

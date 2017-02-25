@@ -137,14 +137,19 @@ class AccountSecondSubgroupsController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
+		$AccountSecondSubgroupsexists = $this->AccountSecondSubgroups->LedgerAccounts->exists(['account_second_subgroup_id' => $id]);
+		
+		if(!$AccountSecondSubgroupsexists){
         $accountSecondSubgroup = $this->AccountSecondSubgroups->get($id);
         if ($this->AccountSecondSubgroups->delete($accountSecondSubgroup)) {
-            $this->Flash->success(__('The account second subgroup has been deleted.'));
+            $this->Flash->success(__('The account first subgroup has been deleted.'));
         } else {
-            $this->Flash->error(__('The account second subgroup could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The account first subgroup could not be deleted. Please, try again.'));
         }
-
-        return $this->redirect(['action' => 'index']);
+		}else{
+			$this->Flash->error(__('Once the account second subgroup has generated with Ledger Accounts, the account second group cannot be deleted.'));
+		}
+		return $this->redirect(['action' => 'index']);
     }
 	
 	public function AccountSecondSubgroupDropdown($accountFirstSubgroupId = null)

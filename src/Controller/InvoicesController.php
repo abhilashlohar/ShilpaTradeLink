@@ -83,7 +83,7 @@ class InvoicesController extends AppController
 		}
 		if($inventory_voucher=='true'){
 			$invoice_rows=$this->paginate($this->Invoices->find()->contain(['InvoiceRows'=>['Items'=>function ($q) {
-				return $q->where(['source !='=>'Purchessed']);
+				return $q->where(['source!='=>'Purchessed']);
 				}]])->where(['company_id'=>$st_company_id,'inventory_voucher_status'=>'Pending'])->order(['Invoices.id' => 'DESC']));
 				if(sizeof($invoice_rows)>0){
 					foreach($invoice_rows as $invoice_row){
@@ -93,7 +93,8 @@ class InvoicesController extends AppController
 				else{
 				$invoices=[];
 				}
-			}else{
+			}
+			else{
 			$invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
 		}
 		

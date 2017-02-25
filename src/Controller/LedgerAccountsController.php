@@ -22,7 +22,7 @@ class LedgerAccountsController extends AppController
 		$ledgerAccount = $this->LedgerAccounts->newEntity();
         if ($this->request->is('post')) {
             $ledgerAccount = $this->LedgerAccounts->patchEntity($ledgerAccount, $this->request->data);
-			
+			$ledgerAccount->source_model='Ledger Account';
             if ($this->LedgerAccounts->save($ledgerAccount)) {
                 $this->Flash->success(__('The ledger account has been saved.'));
 
