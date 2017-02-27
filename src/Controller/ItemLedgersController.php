@@ -22,7 +22,7 @@ class ItemLedgersController extends AppController
         $this->paginate = [
             'contain' => ['Items']
         ];
-        $itemLedgers2 = $this->paginate($this->ItemLedgers->find()->where(['item_id'=>$item_id])->order(['processed_on'=>'DESC']));
+        $itemLedgers2 = $this->paginate($this->ItemLedgers->find()->where(['ItemLedgers.item_id'=>$item_id])->order(['processed_on'=>'DESC']));
 		$itemLedgers=[];
 		foreach($itemLedgers2 as $itemLedger){
 			if($itemLedger->source_model =='Items'){
