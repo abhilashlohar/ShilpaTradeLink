@@ -52,10 +52,7 @@
 						else if($party=='Item')
 						{
 							$party_name='-';
-							$voucher_no=$itemLedger->voucher_info->grn1.'/GRN-'.str_pad($itemLedger->voucher_info->grn2, 3, '0', STR_PAD_LEFT).'/'.$itemLedger->voucher_info->grn3.'/'.$itemLedger->voucher_info->grn4;
 							$voucher_no='-';
-							
-							
 						}
 						else{
 							$party_name='-';

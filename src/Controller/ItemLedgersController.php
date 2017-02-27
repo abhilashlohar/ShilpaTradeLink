@@ -25,11 +25,16 @@ class ItemLedgersController extends AppController
         $itemLedgers2 = $this->paginate($this->ItemLedgers->find()->where(['item_id'=>$item_id])->order(['processed_on'=>'DESC']));
 		$itemLedgers=[];
 		foreach($itemLedgers2 as $itemLedger){
-			
-			$result=$this->GetVoucherParty($itemLedger->source_model,$itemLedger->source_id);
-			$itemLedger->voucher_info=$result['voucher_info'];
-			$itemLedger->party_type=$result['party_type'];
-			$itemLedger->party_info=$result['party_info'];
+			if($itemLedger->source_model =='Items'){
+				$itemLedger->voucher_info='-';
+				$itemLedger->party_type='Item';
+				$itemLedger->party_info='-'; 
+			}else{
+				$result=$this->GetVoucherParty($itemLedger->source_model,$itemLedger->source_id);
+				$itemLedger->voucher_info=$result['voucher_info'];
+				$itemLedger->party_type=$result['party_type'];
+				$itemLedger->party_info=$result['party_info']; 	
+			}
 			$itemLedgers[]=$itemLedger;
 		} 
 		
@@ -69,10 +74,10 @@ class ItemLedgersController extends AppController
 			}
 			return ['voucher_info'=>$Challan,'party_type'=>$Challan->challan_for,'party_info'=>$Party];
 		}
-		if($source_model=="Items"){ 
+		/* if($source_model=="Items"){ 
 			$Item=$this->ItemLedgers->Items->get($source_id);
 			return ['voucher_info'=>$Item,'party_type'=>'Item','party_info'=>'-'];
-		}
+		} */
        return $source_model.$source_id;
     }
 
