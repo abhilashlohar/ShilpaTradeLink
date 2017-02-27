@@ -97,6 +97,7 @@ class ItemsController extends AppController
 					$itemLedger->source_id =  $item_id;
 					$itemLedger->in_out = 'In';
 					$itemLedger->processed_on = date("Y-m-d");
+
 					$this->Items->ItemLedgers->save($itemLedger);
 					
 				if($item->serial_number_enable=="1"){
@@ -155,7 +156,7 @@ class ItemsController extends AppController
 				$this->Items->ItemSerialNumbers->deleteAll(['master_item_id' => $item_id,'status'=>'In']);
 				$itemLedger = $this->Items->ItemLedgers->newEntity();
 					$itemLedger->item_id = $item_id;
-					$itemLedger->quantity = $item->ob_quantity_load;
+					$itemLedger->quantity = $item->ob_quantity;
 					$itemLedger->company_id = $st_company_id;
 					$itemLedger->source_model = 'Items';
 					$itemLedger->source_id = $item_id;
