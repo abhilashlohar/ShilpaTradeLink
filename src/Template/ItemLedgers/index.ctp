@@ -23,10 +23,10 @@
 					</thead>
 					<tbody>
 						<?php foreach ($itemLedgers as $itemLedger): 
-						//pr($itemLedger->party_type); exit;
+						
 						$in_out_type=$itemLedger->in_out;
 						$party=$itemLedger->party_type;
-						//pr($itemLedger->party_type); exit;
+						
 						$source_model=$itemLedger->source_model;
 						if($source_model=='Challan')
 						{
@@ -46,7 +46,15 @@
 						else if($party=='Supplier')
 						{
 							$party_name=$itemLedger->party_info->company_name;
+							$voucher_no='-';
+							
+						}
+						else if($party=='Item')
+						{
+							$party_name='-';
 							$voucher_no=$itemLedger->voucher_info->grn1.'/GRN-'.str_pad($itemLedger->voucher_info->grn2, 3, '0', STR_PAD_LEFT).'/'.$itemLedger->voucher_info->grn3.'/'.$itemLedger->voucher_info->grn4;
+							$voucher_no='-';
+							
 							
 						}
 						else{
@@ -69,7 +77,10 @@
 							
 							<td><?= h(++$page_no) ?></td>
 							<td><?= h(date("d-m-Y",strtotime($itemLedger->processed_on))) ?></td>
-							<td><?= h($itemLedger->party_type) ?></td>
+							<?php if($party=='Item'){ ?>
+							<td><?php echo "-"; ?></td>
+						    <?php } else { ?>
+							<td><?= h($itemLedger->party_type)?></td><?php } ?>
 							<td><?= h($party_name) ?></td>
 							<td><?= h($voucher_no) ?></td>
 							<td><?= h($itemLedger->source_model) ?></td>

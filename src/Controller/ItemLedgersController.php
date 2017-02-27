@@ -69,6 +69,10 @@ class ItemLedgersController extends AppController
 			}
 			return ['voucher_info'=>$Challan,'party_type'=>$Challan->challan_for,'party_info'=>$Party];
 		}
+		if($source_model=="Items"){ 
+			$Item=$this->ItemLedgers->Items->get($source_id);
+			return ['voucher_info'=>$Item,'party_type'=>'Item','party_info'=>'-'];
+		}
        return $source_model.$source_id;
     }
 
