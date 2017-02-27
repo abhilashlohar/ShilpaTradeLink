@@ -1,3 +1,13 @@
+<?php 
+$total_qty=sizeof($item->item_serial_numbers);
+
+$min_qty=0; foreach($item->item_serial_numbers as $item_serial_number){
+		if($item_serial_number->status=='Out')
+		{
+			$min_qty++;
+		}
+	}
+?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -58,13 +68,16 @@
 					<div class="col-md-3">
 						<label class="control-label">serial_number_enable</label>
 						<div class="checkbox-list">
-							<?php echo $this->Form->radio('serial_number_enable',[['value' => '1', 'text' => 'Yes'],['value' => '0', 'text' => 'No']]); ?>
+							<?php if($min_qty>0){
+								echo $this->Form->radio('serial_number_enable',[['value' => '1', 'text' => 'Yes']]); }else{ 
+								echo $this->Form->radio('serial_number_enable',[['value' => '1', 'text' => 'Yes'],['value' => '0', 'text' => 'No']]);	}	?>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Quantity </label>
-							<?php echo $this->Form->input('ob_quantity', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity']); ?>
+							<?php echo $this->Form->input('ob_quantity', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity']); ?>
+							<?php echo $this->Form->input('ob_quantity_load', ['label' => false,'class' => 'form-control input-sm','min'=>$min_qty,'placeholder'=>'Quantity','value'=>$total_qty]); ?>
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -82,17 +95,24 @@
 				</div>
 				<div class="row">
 					<div class="col-md-3" id="itm_srl_num">
-					<?php $i=1; foreach($item->item_serial_numbers as $item_serial_number){
-						if($item_serial_number->status=='Out')
+					<?php $i=0; foreach($item->item_serial_numbers as $item_serial_number)   {
+						if($item_serial_number->status=='In')
 						{
-							echo $this->Form->input('serial_numbers['.$i.'][]', ['label' => false,'type'=>'text','class'=>'sr_no','ids'=>'sr_no['.$i.']','value' => $item_serial_number->serial_no,'readonly'=>'readonly']); 
-						}
-						else{
 							echo $this->Form->input('serial_numbers['.$i.'][]', ['label' => false,'type'=>'text','class'=>'sr_no','ids'=>'sr_no['.$i.']','value' => $item_serial_number->serial_no ]); 
+							$i++;
 						}
-						 $i++; 
+						
+						
 					}
 					?>
+					</div>
+					<div class="col-md-3">
+						<?php foreach($item->item_serial_numbers as $item_serial_number){
+							if($item_serial_number->status=='Out'){
+							echo $this->Form->input('total_out_qty', ['label' => false,'type'=>'hidden','readonly','class'=>'sr_no','value' => $min_qty ]); 
+							echo $item_serial_number->serial_no; ?><br/><?php
+							}
+						}?>
 					</div>
 				</div>
 				<hr>
@@ -130,12 +150,7 @@
 							<?php echo $this->Form->input('freeze'); ?>
 						</div>
 					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<br/>
-							<?php echo $this->Form->input('serial_number_enable'); ?>
-						</div>
-					</div>
+					
 				</div>
 				
 				<div class="row">
@@ -268,13 +283,19 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
-	
-	$('input[name="ob_quantity"],input[name="ob_rate"]').die().live("keyup",function() { 
-		var ob_quantity=parseFloat($('input[name="ob_quantity"]').val());
-		if(isNaN(ob_quantity)) { var ob_quantity = 0; }
+	var ob_quantity_load=parseFloat($('input[name="ob_quantity_load"]').val());
+		if(isNaN(ob_quantity_load)) { var ob_quantity_load = 0; }
 		var ob_rate=parseFloat($('input[name="ob_rate"]').val());
 		if(isNaN(ob_rate)) { var ob_rate = 0; }
-		var total=ob_quantity*ob_rate;
+		var total=ob_quantity_load*ob_rate;
+		$('input[name="ob_value"]').val(total.toFixed(2));
+
+	$('input[name="ob_quantity_load"],input[name="ob_rate"]').die().live("keyup",function() { 
+		var ob_quantity_load=parseFloat($('input[name="ob_quantity_load"]').val());
+		if(isNaN(ob_quantity_load)) { var ob_quantity_load = 0; }
+		var ob_rate=parseFloat($('input[name="ob_rate"]').val());
+		if(isNaN(ob_rate)) { var ob_rate = 0; }
+		var total=ob_quantity_load*ob_rate;
 		$('input[name="ob_value"]').val(total.toFixed(2));
     });
 	$('.allLetter').keyup(function(){
@@ -325,21 +346,31 @@ $('input[name="ob_quantity"]').die().live("blur",function() {
 	update_sr_textbox();
 });
  
+ $('input[name="ob_quantity_load"]').die().live("change",function() {
+	var total_out=$('input[name="ob_quantity_load"]').val();
+	var total_out_qty=$('input[name="total_out_qty"]').val();
+	var tatal_quantity=total_out-total_out_qty;
+	$('input[name="ob_quantity"]').val(tatal_quantity.toFixed());
+	update_sr_textbox();
+});
+ 
 function update_sr_textbox(){
 		var r=0;
 		var serial_number=$('input[name=serial_number_enable]:checked').val(); 
 		var quantity=$('input[name="ob_quantity"]').val();
 		var l=$('#itm_srl_num').find('input').length;
-		
+		//var total_out_qty=$('input[name="total_out_qty"]').val();
+		//alert(quantity);
+		//alert(l);
 		if(serial_number==1){ 
 			
 					if(quantity < l){
 				
-						for(i=l;i>quantity;i--){
+						for(i=l;i>=quantity;i--){ 
 						$('#itm_srl_num').find('input[ids="sr_no['+i+']"]').remove();
 						}
 					}
-					
+					//
 					if(quantity > l){
 						l=l+1;
 						for(i=l;i<=quantity;i++){

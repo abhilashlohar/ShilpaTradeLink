@@ -114,7 +114,7 @@ class ItemsController extends AppController
                 $this->Flash->success(__('The item has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else { pr($item); exit;
+            } else { 
                 $this->Flash->error(__('The item could not be saved. Please, try again.'));
             }
         }
@@ -148,13 +148,14 @@ class ItemsController extends AppController
 	
         if ($this->request->is(['patch', 'post', 'put'])) {
             $item = $this->Items->patchEntity($item, $this->request->data);
+			$item->ob_quantity=$item->ob_quantity_load;
             if ($this->Items->save($item)) {
 				$item_id=$item->id;
 				$this->Items->ItemLedgers->deleteAll(['source_id' => $item_id, 'source_model' => 'Items']);
-				$this->Items->ItemSerialNumbers->deleteAll(['master_item_id' => $item_id]);
+				$this->Items->ItemSerialNumbers->deleteAll(['master_item_id' => $item_id,'status'=>'In']);
 				$itemLedger = $this->Items->ItemLedgers->newEntity();
 					$itemLedger->item_id = $item_id;
-					$itemLedger->quantity = $item->ob_quantity;
+					$itemLedger->quantity = $item->ob_quantity_load;
 					$itemLedger->company_id = $st_company_id;
 					$itemLedger->source_model = 'Items';
 					$itemLedger->source_id = $item_id;
@@ -162,8 +163,9 @@ class ItemsController extends AppController
 					$itemLedger->processed_on = date("Y-m-d");
 					$this->Items->ItemLedgers->save($itemLedger);
 					
-				if($item->serial_number_enable=="1"){
+				if($item->serial_number_enable=="1"){ 
 					foreach($item->serial_numbers as $serial_number) {
+						
 						$ItemSerialNumber = $this->Items->ItemSerialNumbers->newEntity();
 						$ItemSerialNumber->item_id = $item->id;
 						$ItemSerialNumber->serial_no = $serial_number[0];
