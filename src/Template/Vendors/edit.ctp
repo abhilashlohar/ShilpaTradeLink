@@ -140,7 +140,7 @@
 					</thead>
 					<tbody>
 						<?php $i=0; foreach($vendor->vendor_contact_persons as $vendor_contact_person){ $i++;
-						if($vendor_contact_person->default_person =='1'){ $checked2="Checked"; } else{ $checked2=""; } ?>
+						if($vendor_contact_person->default_person =='1'){ $checked2="Checked"; } else{ $checked2=" "; } ?>
 						<tr>
 							<td><?= h($i) ?></td>
 							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Name','value'=>$vendor_contact_person->name,'required']); ?></td>
