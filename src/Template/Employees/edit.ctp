@@ -390,9 +390,6 @@ $(document).ready(function() {
 			residence_address:{
 				required: true,
 			},
-			signature : {
-				  required: true,
-			},
 			marital_status:{
 				 required: true,
 			},

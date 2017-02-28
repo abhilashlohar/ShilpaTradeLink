@@ -149,7 +149,8 @@ class ItemsController extends AppController
 	
         if ($this->request->is(['patch', 'post', 'put'])) {
             $item = $this->Items->patchEntity($item, $this->request->data);
-			$item->ob_quantity=$item->ob_quantity_load;
+			//pr($item->ob_quantity); exit;
+			$item->ob_quantity=$item->ob_quantity;
             if ($this->Items->save($item)) {
 				$item_id=$item->id;
 				$this->Items->ItemLedgers->deleteAll(['source_id' => $item_id, 'source_model' => 'Items']);
@@ -162,9 +163,12 @@ class ItemsController extends AppController
 					$itemLedger->source_id = $item_id;
 					$itemLedger->in_out = 'In';
 					$itemLedger->processed_on = date("Y-m-d");
-					$this->Items->ItemLedgers->save($itemLedger);
+					if($item->ob_quantity>0)
+					{
+						$this->Items->ItemLedgers->save($itemLedger);
+					}
 					
-				if($item->serial_number_enable=="1"){ 
+				if($item->serial_number_enable=="1" && $item->ob_quantity>0){ 
 					foreach($item->serial_numbers as $serial_number) {
 						
 						$ItemSerialNumber = $this->Items->ItemSerialNumbers->newEntity();
@@ -173,6 +177,7 @@ class ItemsController extends AppController
 						$ItemSerialNumber->status = 'In';
 						$ItemSerialNumber->master_item_id = $item->id;
 						$this->Items->ItemSerialNumbers->save($ItemSerialNumber);
+						
 					}
 				}
 				

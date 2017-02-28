@@ -78,7 +78,9 @@ $min_qty=0; foreach($item->item_serial_numbers as $item_serial_number){
 							<label class="control-label">Quantity </label>
 							
 							<?php echo $this->Form->input('ob_quantity_load', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity']); ?>
-							<?php echo $this->Form->input('ob_quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm','min'=>$min_qty,'placeholder'=>'Quantity','value'=>$total_qty]); ?>
+							<?php if($item->serial_number_enable==1){ ?>
+							<?php echo $this->Form->input('ob_quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm','min'=>$min_qty,'placeholder'=>'Quantity','value'=>$total_qty]); }else{?>
+							<?php echo $this->Form->input('ob_quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity']); }?>
 							
 						</div>
 					</div>
@@ -103,8 +105,6 @@ $min_qty=0; foreach($item->item_serial_numbers as $item_serial_number){
 							echo $this->Form->input('serial_numbers['.$i.'][]', ['label' => false,'type'=>'text','class'=>'sr_no','ids'=>'sr_no['.$i.']','value' => $item_serial_number->serial_no ]); 
 							$i++;
 						}
-						
-						
 					}
 					?>
 					</div>
@@ -304,6 +304,16 @@ $(document).ready(function() {
 		var total=ob_quantity*ob_rate;
 		$('input[name="ob_value"]').val(total.toFixed(2));
     });
+	$('input[name="ob_value"]').die().live("blur",function() { 
+		var ob_quantity=parseFloat($('input[name="ob_quantity"]').val());
+		if(isNaN(ob_quantity)) { var ob_quantity = 0; }
+		var ob_value=parseFloat($('input[name="ob_value"]').val());
+		if(isNaN(ob_value)) { var ob_value = 0; }
+		
+		var total=ob_value/ob_quantity;
+	
+		$('input[name="ob_rate"]').val(total.toFixed(2));
+    });
 	$('.allLetter').keyup(function(){
 	var inputtxt=  $(this).val();
 	var numbers =  /^[0-9]*\.?[0-9]*$/;
@@ -345,24 +355,30 @@ $('select[name="item_group_id"]').die().live("change",function() {
 	});
 });
 $('input[name="ob_quantity"]').die().live("blur",function() {
+	var serial_number=$('input[name=serial_number_enable]:checked').val(); 
+	if(serial_number==1){
+		update_ob_quantity_load();
+	}
 	update_sr_textbox();
  });
  
  $('input[name="serial_number_enable"]').die().live("change",function() {
+	update_ob_quantity_load();
 	update_sr_textbox();
 });
+var total_qty_out=$('input[name="total_out_qty"]').val();
 
-
-var serial_number=$('input[name=serial_number_enable]:checked').val(); 
-
-if(serial_number==1){
- $('input[name="ob_quantity"]').die().live("change",function() {
+function update_ob_quantity_load(){ 
 	var total_out=$('input[name="ob_quantity"]').val();
-	var total_out_qty=$('input[name="total_out_qty"]').val();
+	if(total_qty_out==0){
+		var total_out_qty=0;	
+	}
+	else{
+		var total_out_qty=$('input[name="total_out_qty"]').val();
+	}
 	var tatal_quantity=total_out-total_out_qty;
 	$('input[name="ob_quantity_load"]').val(tatal_quantity.toFixed());
 	update_sr_textbox();
-});
 }
 
 function update_sr_textbox(){
@@ -378,14 +394,16 @@ function update_sr_textbox(){
 					if(quantity < l){
 				
 						for(i=l;i>=quantity;i--){ 
-						$('#itm_srl_num').find('input[ids="sr_no['+i+']"]').remove();
+						
+						$('input[ids="sr_no['+i+']"]').remove();
+						//$('botmdiv['+i+']').remove();
 						}
 					}
 					//
 					if(quantity > l){
-						l=l+1;
-						for(i=l;i<=quantity;i++){
-						$('#itm_srl_num').append('<div style="margin-bottom:6px;"><input type="text" class="sr_no" name="serial_numbers['+i+'][]" ids="sr_no['+i+']" id="sr_no'+l+'"/></div>');
+						//l=l+1;
+						for(i=l;i<quantity;i++){
+						$('#itm_srl_num').append('<div style="margin-bottom:6px;" class="botmdiv['+i+']"><input type="text" class="sr_no" name="serial_numbers['+i+'][]" ids="sr_no['+i+']" id="sr_no'+l+'"/></div>');
 						
 						$('#itm_srl_num').find('input#sr_no'+l).rules('add', {required: true});
 						l++;

@@ -19,7 +19,7 @@ class VendorsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $vendors = $this->paginate($this->Vendors);
+        $vendors = $this->paginate($this->Vendors->find()->order(['Vendors.company_name' => 'ASC']));
 
         $this->set(compact('vendors'));
         $this->set('_serialize', ['vendors']);

@@ -13,13 +13,13 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Customer Name <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('customer_name', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Enter Customer Name']); ?>
+							<?php echo $this->Form->input('customer_name', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Enter Customer Name']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Alise <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('alias', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Enter Customer Alise']); ?>
+							<?php echo $this->Form->input('alias', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Enter Customer Alise']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -198,8 +198,8 @@
 						<tr>
 						<td><?= h($ii) ?></td>
 						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.contact_person', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Contact Person','value'=>$customer_contacts->contact_person,'required']); ?></td>
-						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.telephone', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Telephone','value'=>$customer_contacts->telephone,'maxlength'=>15]); ?></td>
-						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Mobile','value'=>$customer_contacts->mobile]); ?></td>
+						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.telephone', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Telephone','value'=>$customer_contacts->telephone,'maxlength'=>15]); ?></td>
+						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','value'=>$customer_contacts->mobile]); ?></td>
 						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.email', ['type' => 'email','label' => false,'class' => 'form-control input-sm ','placeholder' => 'Email','value'=>$customer_contacts->email,'required']); ?></td>
 						<td><?php echo $this->Form->input('customer_contacts.'.$ii.'.designation', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Designation','value'=>$customer_contacts->designation,'required']); ?></td>
 						<td width="90"><?php echo $this->Form->input('customer_contacts.'.$ii.'.default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2',"checked"=>$checked2]); ?></td>
