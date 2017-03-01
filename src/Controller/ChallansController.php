@@ -48,7 +48,7 @@ class ChallansController extends AppController
 			$To=date("Y-m-d",strtotime($this->request->query('To')));
 			$where['created_on <=']=$To;
 		}
-		$challans=$this->paginate($this->Challans->find()->where($where)->where(['challan_type' => 'Returnable','challans.company_id'=>$st_company_id]));
+		$challans=$this->paginate($this->Challans->find()->where($where)->where(['challan_type' => 'Returnable','Challans.company_id'=>$st_company_id]));
         
         $this->set(compact('challans'));
         $this->set('_serialize', ['challans']);

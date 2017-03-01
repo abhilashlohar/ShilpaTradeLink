@@ -22,17 +22,33 @@
 						<div align="center"><h4>Expense</h4></div>
 						<table class="table table-condensed table-hover">
 							<tbody>
-							<?php $Total_Liablities=0; 
+							<?php $Total_Liablities=0; $Total_exp_Dr=0; $Total_exp_Cr=0; 
 							foreach($Ledgers_Expense as $Ledger){ 
 							$Total_Liablities+=$Ledger->total_debit-$Ledger->total_credit; ?>
 								<tr>
 									<td><?= h($Ledger->ledger_account->name) ?></td>
-									<td style=" text-align: right; "><?= h($Ledger->total_debit-$Ledger->total_credit) ?></td>
+									<?php if($Ledger->total_debit>$Ledger->total_credit){?>
+										<td style=" text-align: right; "><?= h($Ledger->total_debit-$Ledger->total_credit); echo "Dr" ;
+										$Total_exp_Dr+=$Ledger->total_debit-$Ledger->total_credit; 
+										?></td>
+									<?php } else { ?>
+											
+										<td style=" text-align: right; "><?= h(abs($Ledger->total_debit-$Ledger->total_credit)); echo "Cr" ;
+										$Total_exp_Cr+=$Ledger->total_debit-$Ledger->total_credit; 
+										?></td>
+									<?php } ?>
 								</tr>
 							<?php } ?>
+								<?php $Total_exp_Dr= abs($Total_exp_Dr);  $Total_exp_Cr= abs($Total_exp_Cr); ?>
 								<tr>
 									<th>Total Expense</th>
-									<th style=" text-align: right; "><?= h($Total_Liablities) ?></th>
+									<?php  if($Total_exp_Dr>$Total_exp_Cr){ 
+										$Total_Liablities=abs($Total_exp_Dr)-abs($Total_exp_Cr);?>
+										<th style=" text-align: right; "><?= h (abs($Total_Liablities)); ?>Dr</th>
+									<?php } else { 
+										$Total_Liablities=abs($Total_exp_Dr)-abs($Total_exp_Cr); ?>
+										<th style=" text-align: right; "><?= h(abs($Total_Liablities)); ?>Cr</th>
+									<?php } ?>
 								</tr>
 							</tbody>
 						</table>
@@ -41,17 +57,33 @@
 						<div align="center"><h4>Income</h4></div>
 						<table class="table table-condensed">
 							<tbody>
-							<?php $Total_Assets=0; 
+							<?php $Total_Assets=0; $Total_Dr=0; $Total_Cr=0;
 							foreach($Ledgers_Income as $Ledger){ 
 							$Total_Assets+=$Ledger->total_debit-$Ledger->total_credit; ?>
 								<tr>
 									<td><?= h($Ledger->ledger_account->name) ?></td>
-									<td style=" text-align: right; "><?= h($Ledger->total_debit-$Ledger->total_credit) ?></td>
+									<?php if($Ledger->total_debit>$Ledger->total_credit){?>
+										<td style=" text-align: right; "><?= h($Ledger->total_debit-$Ledger->total_credit); echo "Dr" ;
+										$Total_Dr+=$Ledger->total_debit-$Ledger->total_credit; 
+										?></td>
+									<?php } else { ?>
+											
+										<td style=" text-align: right; "><?= h(abs($Ledger->total_debit-$Ledger->total_credit)); echo "Cr" ;
+										$Total_Cr+=$Ledger->total_debit-$Ledger->total_credit; 
+										?></td>
+									<?php } ?>
 								</tr>
 							<?php } ?>
+								<?php $Total_Dr= abs($Total_Dr); ?>
+								<?php $Total_Cr= abs($Total_Cr); ?>
+								
 								<tr>
 									<th>Total Income</th>
-									<th style=" text-align: right; "><?= h($Total_Assets) ?></th>
+									<?php  if($Total_Dr>$Total_Cr){ $Total_Assets=abs($Total_Dr)-abs($Total_Cr);  ?>
+										<th style=" text-align: right; "><?= h(abs($Total_Assets)); ?>Dr</th>
+									<?php } else { $Total_Assets=abs($Total_Dr)-abs($Total_Cr); ?>
+										<th style=" text-align: right; "><?= h(abs($Total_Assets)); ?>Cr</th>
+									<?php } ?>
 								</tr>
 							</tbody>
 						</table>
