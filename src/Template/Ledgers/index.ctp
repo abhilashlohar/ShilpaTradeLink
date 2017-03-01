@@ -76,8 +76,8 @@
 						
 						?>
 						</td>
-						<td><?= $this->Number->format($ledger->debit) ?></td>
-						<td><?= $this->Number->format($ledger->credit) ?></td>
+						<td align="right"><?= $this->Number->format($ledger->debit) ?></td>
+						<td align="right"><?= $this->Number->format($ledger->credit) ?></td>
 				</tr>
 				<?php endforeach; ?>
 				</tbody>
