@@ -47,22 +47,20 @@
 			
 			<tr>
 				<td>Paid To 
-				<?= h($paymentVoucher->PaidTo->name) ?></td>
-			</tr>
-			<tr>
-				<td>Rupees <?php echo ucwords($this->NumberWords->convert_number_to_words($paymentVoucher->amount)) ?> Only </td>
+				<b><?= h($paymentVoucher->PaidTo->name) ?></b></td>
 			</tr>
 			
-			<tr>
-				<td>via <?= h($paymentVoucher->payment_mode) ?> </td>
-			</tr>
-			<tr>
-				<td>On Account Of <?= h($paymentVoucher->BankCash->name) ?> </td>
-			</tr>
-			<tr>
-				<td><?= $this->Text->autoParagraph(h($paymentVoucher->narration)) ?> </td>
-			</tr>
 		</tfoot>
+	</table>
+		
+	<table width="100%">
+		<?php  foreach($ReferenceDetails as $ReferenceDetail){   ?>
+		<tr>
+			<td width="30%"><?=h($ReferenceDetail->reference_type) ?></td>
+			<td><?=h($ReferenceDetail->reference_no) ?></td>
+			<td>Rs.<?=h($ReferenceDetail->credit) ?></td>
+		</tr>
+		<?php  } ?>
 	</table>
 	
 	<div style="border:solid 1px ;"></div>
@@ -72,67 +70,42 @@
 				<table>
 					<tr>
 						<td style="font-size: 16px;font-weight: bold;">
-						Rs: <?=h($paymentVoucher->amount) ?>
+						Rs: <?=h($paymentVoucher->amount) ?></td>
+					</tr>
+					<tr>
+						<td>Rupees <?php echo ucwords($this->NumberWords->convert_number_to_words($paymentVoucher->amount)) ?> Only </td>
+					</tr>
+			
+					<tr>
+						<td>via <?= h($paymentVoucher->payment_mode) ?> </td>
+					</tr>
+					<tr>
+						<td>On Account Of <?= h($paymentVoucher->BankCash->name) ?> </td>
+					</tr>
+					<tr>
+						<td><?= $this->Text->autoParagraph(h($paymentVoucher->narration)) ?> </td>
 					</tr>
 				</table>
 			</td>
+			 <td align="left" valign="top">
+				<table>
+					<tr>
+						<td align="right" width="15%"> 
+						<?php 
+						 echo $this->Html->Image('/signatures/'.$paymentVoucher->creator->signature,['height'=>'50px','style'=>'height:50px;']); 
+						 ?></br>
+							<span><b>Prepared By</b></span><br/>
+							<span><?= h($paymentVoucher->creator->name) ?></span><br/>
+						</td>
+					</tr>
+				</table>
+			 </td>
 			
 		</tr>
 	</table>
 	<br/>
-	<table width="100%" class="table_rows ">
-    <tr>
-	<td align="center" width="25%"> 
-	
-	</td>
-	   <td align="right" width="15%"> 
-	
-		 <?php 
-		 echo $this->Html->Image('/signatures/'.$paymentVoucher->creator->signature,['height'=>'50px','style'=>'height:50px;']); 
-		 ?></br>
-		 </hr>
-		 <span><b>Prepared By</b></span><br/>
-		 <span><?= h($paymentVoucher->creator->name) ?></span><br/>
-		</td>
-	 </tr>
-</table>
-</div>
-</br>
-<?php $count=0; foreach($paymentVoucher->payment_breakups as $data){
-			$count++;
-		}
-	if($count>0){
-?>
-<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size:14px;" class="maindiv">	
-<table class="table table-bordered table-condensed">
-	<thead> 
-		<th>Sr.No</th>
-		<th>Reference Type</th>
-		<th>Invoice Booking No / Ref No.</th>
-		<th>Amount</th>
-			
-	</thead>
-	<tbody>
-		<?php $i=0; $sum=0; foreach ($paymentVoucher->payment_breakups as $payment_breakup): 
-		$url_path="/invoice-bookings/view/".$payment_breakup->invoice_booking_id;
-		?>
-		<tr>
-			<td><?php echo ++$i;?></td>
-			<td><?= h($payment_breakup->ref_type) ?></td>
-			
-			<td><?php if($payment_breakup->invoice_booking_id) { ?><?php echo $this->Html->link(($payment_breakup->invoice_booking->ib1.'/IB-'.str_pad($payment_breakup->invoice_booking->ib2, 3, '0', STR_PAD_LEFT).'/'.$payment_breakup->invoice_booking->ib3.'/'.$payment_breakup->invoice_booking->ib4),$url_path,['target' => '_blank']); ?><?php } else { ?><?= h($payment_breakup->new_ref_no) ?> <?php }?></td>
-			<td><?= h($payment_breakup->amount) ?></td>
-			
-			<?php $sum= $sum+$payment_breakup->amount; ?>
-		</tr>
-		<?php endforeach; ?>
-		<tr>
-			<td colspan="3" align="right" style="font-weight:bold;">Total</td><td style="font-weight:bold;"><?php echo $sum;?></td>
-		</tr>
-	</tbody>
-</table>
 
 </div>
-<?php } ?>
 </br>
+
 

@@ -211,4 +211,34 @@ class LedgersController extends AppController
 		$this->response->body($output);
 		return $this->response;
 	}
+	public function AccountStatement (){
+		$this->viewBuilder()->layout('index_layout');
+		
+		$ledger_account_id=$this->request->query('ledger_account_id');
+		if($ledger_account_id){
+		$transaction_from_date= date('Y-m-d', strtotime($this->request->query['From']));
+		$transaction_to_date= date('Y-m-d', strtotime($this->request->query['To']));
+		
+		
+		$Ledger_Account_data = $this->Ledgers->LedgerAccounts->get($ledger_account_id, [
+            'contain' => ['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]]
+        ]);
+			
+			//pr($Ledger_Account_data->account_second_subgroup->account_first_subgroup->account_group->account_category->name); exit;
+			
+		$Ledgers_rows=$this->Ledgers->find()
+		->contain(['LedgerAccounts'])
+		->where(['ledger_account_id'=>$ledger_account_id])
+		->where(function($exp) use($transaction_from_date,$transaction_to_date) {
+			return $exp->between('transaction_date', $transaction_from_date, $transaction_to_date, 'date');
+		})->toArray();
+
+		
+		$query = $this->Ledgers->find();
+		$total_balance=$query->select(['total_debit' => $query->func()->sum('debit'),'total_credit' => $query->func()->sum('credit')])->where(['Ledgers.ledger_account_id' => $ledger_account_id,'Ledgers.transaction_date <'=>$transaction_from_date])->toArray();
+		
+		}
+		$ledger=$this->Ledgers->LedgerAccounts->find('list');
+		$this->set(compact('ledger','Ledgers_rows','total_balance','ledger_account_id','transaction_from_date','transaction_to_date','Ledger_Account_data'));
+	}
 }

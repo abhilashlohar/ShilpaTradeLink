@@ -45,9 +45,11 @@
 									<?php  if($Total_exp_Dr>$Total_exp_Cr){ 
 										$Total_Liablities=abs($Total_exp_Dr)-abs($Total_exp_Cr);?>
 										<th style=" text-align: right; "><?= h (abs($Total_Liablities)); ?>Dr</th>
-									<?php } else { 
+									<?php } else if($Total_exp_Dr<$Total_exp_Cr) { 
 										$Total_Liablities=abs($Total_exp_Dr)-abs($Total_exp_Cr); ?>
 										<th style=" text-align: right; "><?= h(abs($Total_Liablities)); ?>Cr</th>
+									<?php } else { ?>
+									<th style=" text-align: right; "><?php echo "0" ?></th>
 									<?php } ?>
 								</tr>
 							</tbody>
@@ -81,8 +83,10 @@
 									<th>Total Income</th>
 									<?php  if($Total_Dr>$Total_Cr){ $Total_Assets=abs($Total_Dr)-abs($Total_Cr);  ?>
 										<th style=" text-align: right; "><?= h(abs($Total_Assets)); ?>Dr</th>
-									<?php } else { $Total_Assets=abs($Total_Dr)-abs($Total_Cr); ?>
+									<?php } else if($Total_Dr<$Total_Cr) { $Total_Assets=abs($Total_Dr)-abs($Total_Cr); ?>
 										<th style=" text-align: right; "><?= h(abs($Total_Assets)); ?>Cr</th>
+									<?php } else { ?>
+									<th style=" text-align: right; "><?php echo "0" ?></th>
 									<?php } ?>
 								</tr>
 							</tbody>

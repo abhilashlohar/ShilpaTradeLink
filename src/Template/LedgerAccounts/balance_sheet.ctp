@@ -28,12 +28,12 @@
 								<tr>
 									<td><?= h($Ledger->ledger_account->name) ?></td>
 									<?php if($Ledger->total_debit>$Ledger->total_credit){?>
-										<td style=" text-align: right; "><?= h($Ledger->total_debit-$Ledger->total_credit); echo "Dr" ;
+										<td style=" text-align: right; "><?= h($Ledger->total_debit-$Ledger->total_credit); echo " Dr" ;
 										$Total_lib_Dr+=$Ledger->total_debit-$Ledger->total_credit; 
 										?></td>
 									<?php } else { ?>
 											
-										<td style=" text-align: right; "><?= h(abs($Ledger->total_debit-$Ledger->total_credit)); echo "Cr" ;
+										<td style=" text-align: right; "><?= h(abs($Ledger->total_debit-$Ledger->total_credit)); echo " Cr" ;
 										$Total_lib_Cr+=$Ledger->total_debit-$Ledger->total_credit; 
 										?></td>
 									<?php } ?>
@@ -44,10 +44,12 @@
 									<th>Total Liablities</th>
 									<?php  if($Total_lib_Dr>$Total_lib_Cr){ 
 										$Total_Liablities=abs($Total_lib_Dr)-abs($Total_lib_Cr);?>
-										<th style=" text-align: right; "><?= h (abs($Total_Liablities)); ?>Dr</th>
-									<?php } else { 
+										<th style=" text-align: right; "><?= h (abs($Total_Liablities)); ?> Dr</th>
+									<?php } else if ($Total_lib_Dr<$Total_lib_Cr) { 
 										$Total_Liablities=abs($Total_lib_Dr)-abs($Total_lib_Cr); ?>
 										<th style=" text-align: right; "><?= h(abs($Total_Liablities)); ?>Cr</th>
+									<?php } else { ?>
+									<th style=" text-align: right; "><?php echo "0" ?></th>
 									<?php } ?>
 								</tr>
 							</tbody>
@@ -64,12 +66,12 @@
 								<tr>
 									<td><?= h($Ledger->ledger_account->name) ?></td>
 									<?php if($Ledger->total_debit>$Ledger->total_credit){?>
-										<td style=" text-align: right; "><?= h($Ledger->total_debit-$Ledger->total_credit); echo "Dr" ;
+										<td style=" text-align: right; "><?= h($Ledger->total_debit-$Ledger->total_credit); echo " Dr" ;
 										$Total_Dr+=$Ledger->total_debit-$Ledger->total_credit; 
 										?></td>
 									<?php } else { ?>
 											
-										<td style=" text-align: right; "><?= h(abs($Ledger->total_debit-$Ledger->total_credit)); echo "Cr" ;
+										<td style=" text-align: right; "><?= h(abs($Ledger->total_debit-$Ledger->total_credit)); echo " Cr" ;
 										$Total_Cr+=$Ledger->total_debit-$Ledger->total_credit; 
 										?></td>
 									<?php } ?>
@@ -79,9 +81,11 @@
 								<tr>
 								<th>Total Assets</th>
 									<?php  if($Total_Dr>$Total_Cr){ $Total_Assets=abs($Total_Dr)-abs($Total_Cr);  ?>
-										<th style=" text-align: right; "><?= h($Total_Assets); ?>Dr</th>
-									<?php } else { $Total_Assets=abs($Total_Dr)-abs($Total_Cr); ?>
+										<th style=" text-align: right; "><?= h($Total_Assets ); ?> Dr</th>
+									<?php } else if($Total_Dr<$Total_Cr){ $Total_Assets=abs($Total_Dr)-abs($Total_Cr); ?>
 										<th style=" text-align: right; "><?= h(abs($Total_Assets)); ?>Cr</th>
+									<?php } else { ?>
+									<th style=" text-align: right; "><?php echo "0" ?></th>
 									<?php } ?>
 								</tr>
 							</tbody>

@@ -209,4 +209,5 @@ class LedgerAccountsController extends AppController
 		}
 		$this->set(compact('date'));
 	}
+	
 }

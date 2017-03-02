@@ -44,8 +44,10 @@ class PaymentVouchersController extends AppController
         $paymentVoucher = $this->PaymentVouchers->get($id, [
             'contain' => ['PaidTos','BankCashes','Companies','Creator','PaymentBreakups'=>['InvoiceBookings']]
         ]);
+		$ReferenceDetails=$this->PaymentVouchers->ReferenceDetails->find()->where(['ReferenceDetails.payment_voucher_id' => $id])->toArray();
 
         $this->set('paymentVoucher', $paymentVoucher);
+		 $this->set(compact('ReferenceDetails'));
         $this->set('_serialize', ['paymentVoucher']);
     }
 
