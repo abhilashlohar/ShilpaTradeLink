@@ -13,14 +13,14 @@ class LoginsController extends AppController
 	public function index()
     {
        $this->viewBuilder()->layout('login_layout');
-	   
+	   $number=2;
 	   $login = $this->Logins->newEntity();
 	   if ($this->request->is('post')) 
 		{
 			$username=$this->request->data["username"];
 			$password=$this->request->data["password"];
 			$query = $this->Logins->findAllByUsernameAndPassword($username, $password);
-			$number = $query->count();
+			$number = $query->count(); 
 			foreach ($query as $row) {
 				$login_id=$row["id"];
 				$employee_id=$row["employee_id"];
@@ -48,7 +48,7 @@ class LoginsController extends AppController
 			}
 		}
 		
-		$this->set(compact('login'));
+		$this->set(compact('login','number'));
 		$this->set('_serialize', ['login']);
     }
 	

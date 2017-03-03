@@ -15,6 +15,7 @@
 <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 <?php echo $this->Html->script('/assets/global/plugins/pace/pace.min.js'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/pace/themes/pace-theme-flash.css'); ?>
+<?php //echo $this->Html->css('/assets/global/css/print.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/font-awesome/css/font-awesome.min.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/simple-line-icons/simple-line-icons.min.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap/css/bootstrap.min.css'); ?>
@@ -443,6 +444,7 @@ select
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
+						<ul class="page-sidebar-menu page-sidebar-menu-hover-submenu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> Voucher Refrences','/VouchersReferences',array('escape'=>false)); ?></li>
 						<li>
 							<a href="javascript:;">
@@ -521,6 +523,7 @@ select
 								<li><?php echo $this->Html->link( 'View', '/JournalVouchers' ); ?></li>
 							</ul>
 						</li>
+					</ul>
 					</ul>
 				</li>
 				<li>

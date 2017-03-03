@@ -28,13 +28,13 @@
 					<td>
 						<div class="row">
 							<div class="col-md-4">
-									<?php echo $this->Form->input('ledger_account_id', ['empty'=>'--Select--','options' => $ledger,'empty' => "--Select Product--",'label' => false,'class' => 'form-control input-sm select2me','required','value'=>$ledger_account_id]); ?>
+									<?php echo $this->Form->input('ledger_account_id', ['empty'=>'--Select--','options' => $ledger,'empty' => "--Select Ledger Account--",'label' => false,'class' => 'form-control input-sm select2me','required','value'=>$ledger_account_id]); ?>
 							</div>
 							<div class="col-md-4">
-								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('d-m-Y', strtotime($transaction_from_date)); ?>"  data-date-format="dd-mm-yyyy" >
+								<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @date('d-m-Y', strtotime($transaction_from_date));  ?>" required data-date-format="dd-mm-yyyy" >
 							</div>
 							<div class="col-md-4">
-								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @date('d-m-Y', strtotime($transaction_to_date)); ?>"  data-date-format="dd-mm-yyyy" >
+								<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To"  value="<?php echo @date('d-m-Y', strtotime($transaction_to_date)); ?>" required  data-date-format="dd-mm-yyyy" >
 							</div>
 						</div>
 					</td>
@@ -76,7 +76,7 @@
 						<?= $this->Number->format(abs($opening_balance),[ 'places' => 2])?>
 						<?php echo " Cr"; } 
 					else{ 
-						echo $opening_balance; }
+						echo "0.00"; }
 					?>
 			</div>
 		</div>
@@ -87,11 +87,10 @@
 				<thead>
 					<tr>
 						<th>Transaction Date</th>
-						<th>Ledger Account</th>
 						<th>Source</th>
 						<th>Reference</th>
-						<th >Dr</th>
-						<th >Cr</th>
+						<th style="text-align:right;">Dr</th>
+						<th style="text-align:right;">Cr</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -113,7 +112,6 @@
 				?>
 				<tr>
 						<td><?php echo date("d-m-Y",strtotime($ledger->transaction_date)); ?></td>
-						<td><?= h($ledger->ledger_account->name); ?></td>
 						<td><?= h($ledger->voucher_source); ?></td>
 						<td>
 						<?php if(!empty($url_path)){
@@ -131,7 +129,7 @@
 				</tr>
 				<?php endforeach; ?>
 				<tr>
-					<td colspan="4" align="right">Total</td>
+					<td colspan="3" align="right">Total</td>
 					<td align="right" ><?= $this->Number->format( $total_debit,[ 'places' => 2])?> Dr</td>
 					<td align="right" ><?= $this->Number->format( $total_credit,[ 'places' => 2])?> Cr</td>
 					

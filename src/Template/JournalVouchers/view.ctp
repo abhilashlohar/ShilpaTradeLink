@@ -1,21 +1,28 @@
 <?php //pr($journalVoucher->journal_voucher_rows); exit; ?>
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 95%;font-size: 14px;" class="maindiv" >	
+
 <table width="100%" class="divHeader">
-		<tr>
-			<td width="50%"><?php echo $this->Html->image('/logos/'.$journalVoucher->company->logo, ['width' => '40%']); ?></td>
-			<td align="right" width="50%" style="font-size: 12px;">
-			<span style="font-size: 14px;"><?= h($journalVoucher->company->name) ?></span><br/>
-			<span><?= $this->Text->autoParagraph(h($journalVoucher->company->address)) ?></span>
-			<span><?= h($journalVoucher->company->mobile_no) ?></span>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">JOURNAL VOUCHER</div>
-				<div style="border:solid 2px #0685a8;margin-bottom:5px;margin-top: 5px;"></div>
-			</td>
-		</tr>
-	</table>
+			<tr>
+				<td width="50%"><?php echo $this->Html->image('/logos/'.$journalVoucher->company->logo, ['width' => '40%']); ?></td>
+				<td colspan="2" align="right">
+				<span style="font-size: 14px;"><?= h($journalVoucher->company->name) ?></span>
+				</td>
+			</tr>
+			<tr>
+				<td width="50%" valign="bottom">
+				<div align="right" style="font-size: 28px;font-weight: bold;color: #0685a8;">JOURNAL VOUCHER</div>
+				</td>
+				<td align="right" width="35%" style="font-size: 12px;">
+				<span><?= $this->Text->autoParagraph(h($journalVoucher->company->address)) ?></span>
+				<span><?= h($journalVoucher->company->mobile_no) ?></span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" >
+					<div style="border:solid 2px #0685a8;margin-top: 5px; margin-top:15px;"></div>
+				</td>
+			</tr>
+</table>
 	<table width="100%">
 		<tr>
 			<td width="50%" valign="top" align="left">

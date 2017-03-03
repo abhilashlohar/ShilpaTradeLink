@@ -12,6 +12,11 @@ $this->Form->templates([
 			<span>
 			Enter your login ID and password. </span>
 		</div>
+		<?php if($number==0){?>
+			<div class="alert alert-danger ">
+				<span>Enter Correct login ID and password. </span>
+			</div>
+		<?php } ?>
          <?php
 		if(!empty($wrong))
 		{
