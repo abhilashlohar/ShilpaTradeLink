@@ -36,15 +36,15 @@
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th><?= $this->Paginator->sort('id') ?></th>
-						<th><?= $this->Paginator->sort('name') ?></th>
+						<th><?php echo "S.No" ?></th>
+						<th><?php echo "Name" ?></th>
 						<th class="actions"><?= __('Actions') ?></th>
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($departments as $department): ?>
+					<?php  $i=0; foreach ($departments as $department): $i++; ?>
 					<tr>
-						<td><?= $this->Number->format($department->id) ?></td>
+						<td><?= h($i) ?></td>
 						<td><?= h($department->name) ?></td>
 						<td class="actions">
 							 <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $department->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>

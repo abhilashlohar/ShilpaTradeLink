@@ -141,15 +141,6 @@ class CustomersTable extends Table
             ->requirePresence('alias', 'create')
             ->notEmpty('customer_name');
 		
-		$validator->add(
-				'customer_name', 
-				['unique' => [
-					'rule' => 'validateUnique', 
-					'provider' => 'table', 
-					'message' => 'Not unique']
-				]
-			);
-			
 		$validator
 			->integer('payment_terms')
 			->add('payment_terms', [

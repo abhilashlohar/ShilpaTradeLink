@@ -274,7 +274,7 @@ $(document).ready(function() {
 		rules: {
 			customer_name:{
 				required: true,
-				alphabetsAndSpacesOnly: true,
+				
 			},
 			district_id : {
 				  required: true,
@@ -311,10 +311,6 @@ $(document).ready(function() {
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
-			customer_name: {
-				alphabetsAndSpacesOnly: "Enter Letters only",
-			},
-			
 			service: {
 				required: "Please select  at least 2 types of Service",
 				minlength: jQuery.validator.format("Please select  at least {0} types of Service")

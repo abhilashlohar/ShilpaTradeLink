@@ -91,7 +91,7 @@ class DistrictsController extends AppController
 				//]));
      //  }
 	   
-	    $listdistricts = $this->paginate($this->Districts->find()->where($where));
+	    $listdistricts = $this->paginate($this->Districts->find()->where($where)->order(['Districts.district' => 'ASC']));
 		
         $this->set(compact('alldistricts','listdistricts'));
         $this->set('_serialize', ['alldistricts']);

@@ -264,7 +264,6 @@ $(document).ready(function() {
 		rules: {
 			customer_name:{
 				required: true,
-				alphabetsAndSpacesOnly: true,
 			},
 			district_id : {
 				  required: true,
@@ -302,9 +301,7 @@ $(document).ready(function() {
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
-			customer_name: {
-				alphabetsAndSpacesOnly: "Enter Letters only",
-			},
+			
 			
 		},
 

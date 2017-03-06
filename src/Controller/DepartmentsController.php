@@ -34,7 +34,7 @@ class DepartmentsController extends AppController
         $this->set(compact('department'));
         $this->set('_serialize', ['department']);
 		
-        $departments = $this->paginate($this->Departments->find());
+        $departments = $this->paginate($this->Departments->find()->order(['Departments.name' => 'ASC']));
 
         $this->set(compact('departments'));
         $this->set('_serialize', ['departments']);

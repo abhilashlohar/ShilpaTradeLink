@@ -17,7 +17,7 @@ $edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Add']);
 			<?php	echo $this->Html->link('<i class="fa fa-download"></i>Download ',['action' => 'pdf', $quotation->id],array('escape'=>false,'class'=>'list-group-item')); ?>
 		
 			
-			<?php if($quotation->status=='Pending' AND $quotation->revision==$revision){ ?>
+			<?php if($quotation->status=='Pending' AND $quotation->revision==$revision AND in_array(2,$allowed_pages) ){ ?>
 				<div class="btn-group dropup" style=" width: 100%; ">
 					<button type="button" class="list-group-item dropdown-toggle" data-toggle="dropdown" style=" width: 100%; text-align: left; "><i class="fa fa-pencil-square-o" width="100%"></i>Edit</button>
 					<ul class="dropdown-menu" role="menu" style=" margin-left: 50px; margin-bottom:-100px; ">

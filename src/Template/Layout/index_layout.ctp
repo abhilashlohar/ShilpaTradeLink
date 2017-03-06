@@ -318,7 +318,7 @@ select
 				
 				<li>
 					<a href="javascript:;">
-					<i class="fa fa-file-code-o"></i>
+					<i class="icon-docs"></i>
 					<span class="title">Quotations</span>
 					<span class="arrow "></span>
 					</a>
@@ -331,7 +331,7 @@ select
 				</li>
 				<li>
 					<a href="javascript:;">
-					<i class="fa fa-file-code-o"></i>
+					<i class="icon-basket"></i>
 					<span class="title">Sales Orders</span>
 					<span class="arrow "></span>
 					</a>
@@ -344,7 +344,7 @@ select
 				</li>
 				<li>
 					<a href="javascript:;">
-					<i class="fa fa-file-code-o"></i>
+					<i class="icon-handbag"></i>
 					<span class="title">Job Cards</span>
 					<span class="arrow "></span>
 					</a>
@@ -357,7 +357,7 @@ select
 				</li>
 				<li>
 					<a href="javascript:;">
-					<i class="fa fa-file-code-o"></i>
+					<i class="fa fa-shopping-cart"></i>
 					<span class="title">Invoices</span>
 					<span class="arrow "></span>
 					</a>
@@ -371,7 +371,7 @@ select
 				</li>
 				<li>
 					<a href="javascript:;">
-					<i class="fa fa-file-code-o"></i>
+					<i class="fa fa-gift"></i>
 					<span class="title">Inventory Voucher</span>
 					<span class="arrow "></span>
 					</a>
@@ -528,7 +528,7 @@ select
 				</li>
 				<li>
 					<a href="javascript:;">
-					<i class="fa fa-file-code-o"></i>
+					<i class="fa fa-bar-chart-o"></i>
 					<span class="title">Reports</span>
 					<span class="arrow "></span>
 					</a>

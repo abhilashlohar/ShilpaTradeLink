@@ -44,7 +44,7 @@ class TransportersController extends AppController
         $this->set(compact('transporter'));
         $this->set('_serialize', ['transporter']);
 		
-        $transporters = $this->paginate($this->Transporters->find()->where($where));
+        $transporters = $this->paginate($this->Transporters->find()->where($where)->order(['Transporters.transporter_name' => 'ASC']));
 
         $this->set(compact('transporters','status'));
         $this->set('_serialize', ['transporters']);

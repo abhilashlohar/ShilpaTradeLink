@@ -55,6 +55,7 @@
 				</div>
 				</form>
 			<div class="table-scrollable">
+			<?php $page_no=$this->Paginator->current('Districts'); $page_no=($page_no-1)*20; ?>
 			<table class="table table-hover">
 				 <thead>
 					<tr>
@@ -67,7 +68,7 @@
 				<tbody>
 					<?php $i=0; foreach ($listdistricts as $district): $i++; ?>
 					<tr>
-						<td><?= $i ?></td>
+						<td><?= h(++$page_no) ?></td>
 						<td><?= h($district->state) ?></td>
 						<td><?= h($district->district) ?></td>
 						<td class="actions">

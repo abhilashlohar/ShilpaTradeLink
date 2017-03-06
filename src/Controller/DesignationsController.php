@@ -34,7 +34,7 @@ class DesignationsController extends AppController
         $this->set(compact('designation'));
         $this->set('_serialize', ['designation']);
 		
-        $designations = $this->paginate($this->Designations->find());
+        $designations = $this->paginate($this->Designations->find()->order(['Designations.name' => 'ASC']));
 
         $this->set(compact('designations'));
         $this->set('_serialize', ['designations']);
