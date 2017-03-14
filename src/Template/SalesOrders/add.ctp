@@ -64,7 +64,7 @@ if(!empty($copy))
 									$merge=$customer->customer_name.'	('.$customer->alias.')';
 								}
 								
-								$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id, 'transporter_id' => $customer->transporter_id, 'documents_courier_id' => $customer->customer_address[0]->transporter_id, 'dispatch_address' => $customer->customer_address[0]->address];
+								$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id, 'transporter_id' => $customer->transporter_id, 'documents_courier_id' => @$customer->customer_address[0]->transporter_id, 'dispatch_address' => @$customer->customer_address[0]->address];
 							}
 							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
 						</div>
