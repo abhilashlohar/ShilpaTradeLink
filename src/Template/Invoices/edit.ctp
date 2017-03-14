@@ -160,6 +160,7 @@
 						@$existing_rows[$current_invoice_row->item_id]=$existing_rows[$current_invoice_row->item_id]-$current_invoice_row->quantity;
 						$current_rows[]=$current_invoice_row->item_id;
 						$current_row_items[$current_invoice_row->item_id]=$current_invoice_row->quantity;
+						$descriptions[$current_invoice_row->item_id]=$current_invoice_row->description;
 					}
 					$q=0; 
 					foreach ($invoice->sales_order->sales_order_rows as $sales_order_row){ ?>
@@ -203,8 +204,10 @@
 						</tr>
 						<tr class="tr2" row_no="<?= h($q) ?>">
 							<td colspan="7">
-							<?php echo $sales_order_row->description; ?>
-							<?php echo $this->Form->textarea('q', ['label' => false,'class' => 'form-control input-sm autoExpand','style'=>['display:none'],'placeholder' => 'Description','required','value'=>$sales_order_row->description]); ?>
+							<div contenteditable="true" id="editor" ><?php echo @$descriptions[$sales_order_row->item_id]; ?></div>
+							<?php echo $this->Form->input('q', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm ','placeholder'=>'Description','style'=>['display:none'],'value' => @$descriptions[$sales_order_row->item_id],'readonly','required']); ?>
+							
+							
 							</td>
 						</tr>
 						
