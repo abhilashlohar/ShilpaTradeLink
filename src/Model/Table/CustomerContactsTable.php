@@ -92,7 +92,7 @@ class CustomerContactsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email']));
+       // $rules->add($rules->isUnique(['email']));
         $rules->add($rules->existsIn(['customer_id'], 'Customers'));
 
         return $rules;

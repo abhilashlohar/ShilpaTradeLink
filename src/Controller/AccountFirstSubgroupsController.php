@@ -158,7 +158,7 @@ class AccountFirstSubgroupsController extends AppController
 	public function AccountFirstSubgroupDropdown($accountGroupId = null)
     {
         $this->viewBuilder()->layout('');
-		$accountFirstSubgroups = $this->AccountFirstSubgroups->find('list')->where(['account_group_id'=>$accountGroupId]);
+		$accountFirstSubgroups = $this->AccountFirstSubgroups->find('list')->where(['account_group_id'=>$accountGroupId])->order(['AccountFirstSubgroups.name' => 'ASC']);
 		$this->set(compact('accountFirstSubgroups'));
     }
 }

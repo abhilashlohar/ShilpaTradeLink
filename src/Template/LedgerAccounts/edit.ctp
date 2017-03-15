@@ -24,7 +24,7 @@
 					<div class="col-md-4">
 						<div class="input-icon right">
 							<i class="fa"></i>
-							<?php echo $this->Form->input('account_category_id', ['options'=>$AccountCategories,'empty' => "--Select Account Category--",'label' => false,'class' => 'form-control input-sm select2me']); ?>
+							<?php echo $this->Form->input('account_category_id', ['options'=>$AccountCategories,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 				</div>
@@ -38,7 +38,7 @@
 						<div class="input-icon right">
 							<i class="fa"></i>
 							<div id="account_group_div">
-							<?php echo $this->Form->input('account_group_id', ['options' => $AccountGroups,'label' => false,'class' => 'form-control input-sm select2me','empty'=>'--Select Account Group--']); ?>
+							<?php echo $this->Form->input('account_group_id', ['options' => $AccountGroups,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 							</div>
 						</div>
 					</div>
@@ -54,7 +54,7 @@
 						<div class="input-icon right">
 							<i class="fa"></i>
 							<div id="account_first_subgroup_div">
-							<?php echo $this->Form->input('account_first_subgroup_id', ['options' => $AccountFirstSubgroups,'label' => false,'class' => 'form-control input-sm select2me','empty'=>'--Select Account First Sub Group--']); ?>
+							<?php echo $this->Form->input('account_first_subgroup_id', ['options' => $AccountFirstSubgroups,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 							</div>
 						</div>
 					</div>
@@ -71,7 +71,7 @@
 						<div class="input-icon right">
 							<i class="fa"></i>
 							<div id="account_second_subgroup_div">
-							<?php echo $this->Form->input('account_second_subgroup_id', ['options' => $AccountSecondSubgroups,'label' => false,'class' => 'form-control input-sm select2me','empty'=>'--Select Account Second Sub Group--']); ?>
+							<?php echo $this->Form->input('account_second_subgroup_id', ['options' => $AccountSecondSubgroups,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 							</div>
 						</div>
 					</div>

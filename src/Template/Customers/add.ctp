@@ -500,10 +500,8 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			$(this).find("td:nth-child(1)").html(++i); --i;
 			$(this).find("td:nth-child(2) input").attr({name:"customer_contacts["+i+"][contact_person]", id:"customer_contacts-"+i+"-contact_person"}).rules('add', {
 						required: true,
-						alphabetsAndSpacesOnly: true,
-						messages: {
-							alphabetsAndSpacesOnly: "Enter Letters Only.",
-						}
+						//alphabetsAndSpacesOnly: true,
+						
 					
 			});
 			
@@ -521,7 +519,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			$(this).find("td:nth-child(5) input").attr({name:"customer_contacts["+i+"][email]", id:"customer_contacts-"+i+"-email"}).rules("add", "required");
 			$(this).find("td:nth-child(6) input").attr({name:"customer_contacts["+i+"][designation]", id:"customer_contacts-"+i+"-designation"}).rules('add', {
 						required: true,
-						alphabetsAndSpacesOnly: true,
+						//alphabetsAndSpacesOnly: true,
 						messages: {
 							alphabetsAndSpacesOnly: "Enter Letters Only.",
 						}

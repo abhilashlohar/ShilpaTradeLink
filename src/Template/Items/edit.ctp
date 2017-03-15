@@ -35,7 +35,7 @@ $min_qty=0; foreach($item->item_serial_numbers as $item_serial_number){
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Unit <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('unit_id', ['options' => $units,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Name']); ?>
+							<?php echo $this->Form->input('unit_id', ['options' => $units,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Name']); ?>
 						</div>
 					</div>
 				</div>

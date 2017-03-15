@@ -119,8 +119,8 @@ class ItemsController extends AppController
                 $this->Flash->error(__('The item could not be saved. Please, try again.'));
             }
         }
-		$ItemCategories = $this->Items->ItemCategories->find('list');
-        $units = $this->Items->Units->find('list');
+		$ItemCategories = $this->Items->ItemCategories->find('list')->order(['ItemCategories.name' => 'ASC']);
+        $units = $this->Items->Units->find('list')->order(['Units.name' => 'ASC']);
 		$Companies = $this->Items->Companies->find('list');
 		//$sources = $this->Items->Sources->find('list', ['Sources' => 200]);
         $this->set(compact('item','ItemCategories', 'units', 'Companies','sources'));
@@ -188,10 +188,10 @@ class ItemsController extends AppController
                 $this->Flash->error(__('The item could not be saved. Please, try again.'));
             }
         }
-		$ItemCategories = $this->Items->ItemCategories->find('list');
-		$ItemGroups = $this->Items->ItemGroups->find('list')->where(['item_category_id'=>$item->item_category_id]);
-		$ItemSubGroups = $this->Items->ItemSubGroups->find('list')->where(['item_group_id'=>$item->item_group_id]);
-        $units = $this->Items->Units->find('list');
+		$ItemCategories = $this->Items->ItemCategories->find('list')->order(['ItemCategories.name' => 'ASC']);
+		$ItemGroups = $this->Items->ItemGroups->find('list')->where(['item_category_id'=>$item->item_category_id])->order(['ItemGroups.name' => 'ASC']);
+		$ItemSubGroups = $this->Items->ItemSubGroups->find('list')->where(['item_group_id'=>$item->item_group_id])->order(['ItemSubGroups.name' => 'ASC']);
+        $units = $this->Items->Units->find('list')->order(['Units.name' => 'ASC']);
 		$Companies = $this->Items->Companies->find('list');
 		//$sources = $this->Items->Sources->find('list', ['Sources' => 200]);
         $this->set(compact('item','ItemCategories','ItemGroups','ItemSubGroups', 'units', 'Companies'));

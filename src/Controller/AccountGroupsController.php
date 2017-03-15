@@ -170,7 +170,7 @@ class AccountGroupsController extends AppController
 	public function AccountGroupDropdown($accountCategoryId = null)
     {
         $this->viewBuilder()->layout('');
-		$accountGroups = $this->AccountGroups->find('list')->where(['account_category_id'=>$accountCategoryId]);
+		$accountGroups = $this->AccountGroups->find('list')->where(['account_category_id'=>$accountCategoryId])->order(['AccountGroups.name' => 'ASC']);
 		$this->set(compact('accountGroups'));
     }
 }

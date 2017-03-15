@@ -19,10 +19,14 @@ class LedgerAccountsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
 		$ledgerAccount = $this->LedgerAccounts->newEntity();
+		
         if ($this->request->is('post')) {
             $ledgerAccount = $this->LedgerAccounts->patchEntity($ledgerAccount, $this->request->data);
 			$ledgerAccount->source_model='Ledger Account';
+			$ledgerAccount->company_id = $st_company_id;
             if ($this->LedgerAccounts->save($ledgerAccount)) {
                 $this->Flash->success(__('The ledger account has been saved.'));
 
@@ -33,11 +37,13 @@ class LedgerAccountsController extends AppController
 		}	
 		
         $accountSecondSubgroups = $this->LedgerAccounts->AccountSecondSubgroups->find('list', ['limit' => 200]);
+		 //$companies = $this->LedgerAccounts->Companies->find('list');
         //$sources = $this->LedgerAccounts->Sources->find('list', ['limit' => 200]);
         $this->set(compact('ledgerAccount', 'accountSecondSubgroups'));
         $this->set('_serialize', ['ledgerAccount']);
 		
-		$ledgerAccounts = $this->LedgerAccounts->find()->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]]);
+		$ledgerAccounts = $this->LedgerAccounts->find()->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories']]]])->where(['LedgerAccounts.company_id'=>$st_company_id]);
+		
 		$this->set(compact('ledgerAccounts'));
         $this->set('_serialize', ['ledgerAccounts']);
     }
@@ -96,11 +102,15 @@ class LedgerAccountsController extends AppController
     public function edit($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
         $ledgerAccount = $this->LedgerAccounts->get($id, [
-            'contain' => []
+            'contain' => ['AccountSecondSubgroups'=>['AccountFirstSubgroups']]
         ]);
+		//pr($ledgerAccount); exit;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $ledgerAccount = $this->LedgerAccounts->patchEntity($ledgerAccount, $this->request->data);
+			$ledgerAccount->company_id = $st_company_id;
 			$ledgerAccount->source_model='Ledger Account';
             if ($this->LedgerAccounts->save($ledgerAccount)) {
                 $this->Flash->success(__('The ledger account has been saved.'));
@@ -130,7 +140,11 @@ class LedgerAccountsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $ledgerAccount = $this->LedgerAccounts->get($id);
-        if ($this->LedgerAccounts->delete($ledgerAccount)) {
+		$ledgers = $this->LedgerAccounts->Ledgers->exists(['Ledgers.ledger_account_id' => $id]);
+		//pr($ledgers); exit;
+
+        if ($ledgers==0) {
+			$this->LedgerAccounts->delete($ledgerAccount);
             $this->Flash->success(__('The ledger account has been deleted.'));
         } else {
             $this->Flash->error(__('The ledger account could not be deleted. Please, try again.'));

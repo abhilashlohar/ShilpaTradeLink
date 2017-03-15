@@ -114,7 +114,7 @@ $(document).ready(function() {
 			name:{
 				required: true,
 				maxlength:40,
-				alphabetsAndSpacesOnly: true,
+				//alphabetsAndSpacesOnly: true,
 			},
 		
 		},

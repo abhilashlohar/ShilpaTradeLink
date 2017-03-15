@@ -573,7 +573,7 @@ class InvoicesController extends AppController
 		->having(['total_rows >' => 0]);
 		
 		$items = $this->Invoices->Items->find('list');
-		$transporters = $this->Invoices->Transporters->find('list', ['limit' => 200]);
+		$transporters = $this->Invoices->Transporters->find('list', ['limit' => 200])->order(['Transporters.transporter_name' => 'ASC']);
 		$termsConditions = $this->Invoices->TermsConditions->find('all',['limit' => 200]);
 		$SaleTaxes = $this->Invoices->SaleTaxes->find('all')->where(['freeze'=>0]);
 		
@@ -605,11 +605,11 @@ class InvoicesController extends AppController
 		
 		$ledger_account_details = $this->Invoices->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups' => function($q) use($account_first_subgroup_id){
 			return $q->where(['AccountFirstSubgroups.id'=>$account_first_subgroup_id]);
-		}]])->toArray();
+		}]])->order(['LedgerAccounts.name' => 'ASC'])->toArray();
 		
 		$ledger_account_details_for_fright = $this->Invoices->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups' => function($q) use($account_first_subgroup_id_for_fright){
 			return $q->where(['AccountFirstSubgroups.id'=>$account_first_subgroup_id_for_fright]);
-		}]])->toArray();
+		}]])->order(['LedgerAccounts.name' => 'ASC'])->toArray();
 		//pr($ledger_account_details_for_fright); exit;
 		$item_serial_no=$this->Invoices->ItemSerialNumbers->find('list', ['limit' => 200]);
 		$employees = $this->Invoices->Employees->find('list', ['limit' => 200]);
@@ -992,11 +992,11 @@ class InvoicesController extends AppController
 		$account_first_subgroup_id_for_fright=$AccountReference_for_fright->account_first_subgroup_id;
 		$ledger_account_details = $this->Invoices->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups' => function($q) use($account_first_subgroup_id){
 			return $q->where(['AccountFirstSubgroups.id'=>$account_first_subgroup_id]);
-		}]])->toArray();
+		}]])->order(['LedgerAccounts.name' => 'ASC'])->toArray();
 		
 		$ledger_account_details_for_fright = $this->Invoices->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups' => function($q) use($account_first_subgroup_id_for_fright){
 			return $q->where(['AccountFirstSubgroups.id'=>$account_first_subgroup_id_for_fright]);
-		}]])->toArray();
+		}]])->order(['LedgerAccounts.name' => 'ASC'])->toArray();
 		
 		$items = $this->Invoices->Items->find('list',['limit' => 200]);
 		$transporters = $this->Invoices->Transporters->find('list', ['limit' => 200]);

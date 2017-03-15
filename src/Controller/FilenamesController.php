@@ -36,7 +36,7 @@ class FilenamesController extends AppController
 		$filename = $this->Filenames->newEntity();
 		
 		$file_inc_be=$this->Filenames->find()->select(['file2'])->where(['file1' => 'BE'])->order(['file2' => 'DESC'])->first();
-        $customers = $this->Filenames->Customers->find('list', ['limit' => 200]);
+        $customers = $this->Filenames->Customers->find('all')->order(['Customers.customer_name' => 'ASC']);
         $this->set(compact('filename', 'customers','file_inc_be'));
         $this->set('_serialize', ['filename']);
 		
@@ -85,7 +85,7 @@ class FilenamesController extends AppController
 		$where=[];
 		
 		$file_inc_dc=$this->Filenames->find()->select(['file2'])->where(['file1' => 'DC'])->order(['file2' => 'DESC'])->first();
-        $customers = $this->Filenames->Customers->find('list', ['limit' => 200]);
+        $customers = $this->Filenames->Customers->find('all')->order(['Customers.customer_name' => 'ASC']);
         $this->set(compact('filename', 'customers','file_inc_dc'));
         $this->set('_serialize', ['filename']);
 
