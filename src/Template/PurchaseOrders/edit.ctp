@@ -207,33 +207,28 @@
 							echo $this->Form->input('road_permit_form47',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Road permit form 47']); ?>
 						</div>
 					</div>
-					
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Customer <span class="required" aria-required="true">*</span></label>
-							<?php 
-							foreach($customers as $customer){
-								if(empty($customer->alias)){
-									$merge=$customer->customer_name;
-								}else{
-									$merge=$customer->customer_name.'	('.$customer->alias.')';
-								}
-								$option[]=['text' =>$merge, 'value' => $customer->id];
-									
-								}
-							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $option,'class' => 'form-control input-sm select2me']); ?>
-						</div>
-						
-					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Excise Duty <span class="required" aria-required="true">*</span></label>
-							<?php 
-							echo $this->Form->input('excise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Excise Duty']); ?>
-						</div>
-					</div>
+				</div>
 			
-			</div>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group">
+							<div class="radio-list" >
+							<label class="control-label">Excise for customer</label>
+							<?php echo $this->Form->radio('is_exceise_for_customer',[['value' => 'Yes', 'text' => 'Yes'],['value' => 'No', 'text' => 'No']]); ?>
+							</div>
+						</div>
+					</div>
+					<div id="ex_div" style="display:none;">
+						<div class="col-md-3" id="qwert"></div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label">Excise Duty </label>
+								<?php 
+								echo $this->Form->input('excise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Excise Duty']); ?>
+							</div>
+						</div>
+					</div>
+				</div>
 			<div class="form-actions">
 				 <button type="submit" class="btn blue-hoki">Update Purchase Order</button>
 			</div>
@@ -483,6 +478,46 @@ $(document).ready(function(){
 		if(typeof payment_terms !== "undefined")
 		{ $("#payment_terms").text('Payment Terms :' + payment_terms); }
 		else{ $("#payment_terms").text(''); }
+		
+	
+	
+	var file=$(this).find('option:selected').val();
+	var url = "<?php echo $this->Url->build(['controller'=>'PurchaseOrders','action'=>'customerFromFilename']);?>";
+	url=url+'/'+file,
+	$.ajax({
+		url: url,
+		type: 'GET',
+	}).done(function(response) {
+		$('#qwert').html(response);
+	});
+		
+	$('select[name="po3"]').on("change",function() {
+		var file=$(this).find('option:selected').val();
+		var url = "<?php echo $this->Url->build(['controller'=>'PurchaseOrders','action'=>'customerFromFilename']);?>";
+		url=url+'/'+file,
+        $.ajax({
+			url: url,
+			type: 'GET',
+		}).done(function(response) {
+			$('#qwert').html(response);
+		});
+	});
+	
+	$('input[type=radio][name="is_exceise_for_customer"]').on("click",function() {
+		var ex=$(this).val();
+		if(ex=="Yes"){
+			$('#ex_div').show();
+		}else{
+			$('#ex_div').hide();
+		}
+	});
+	
+	var ex=$('input[type=radio][name="is_exceise_for_customer"]:checked').val();
+	if(ex=="Yes"){
+		$('#ex_div').show();
+	}else{
+		$('#ex_div').hide();
+	}
 });
 </script>
 

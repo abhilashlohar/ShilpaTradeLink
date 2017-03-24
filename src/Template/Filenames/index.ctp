@@ -52,6 +52,7 @@
 
 
 					echo $this->Form->input('customer_id', ['required','empty' => "--Select--",'options' => $options,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+
 					</div>
 					<div class="col-md-3">
 						<?php echo $this->Form->button(__('ADD'),['class'=>'btn btn-primary']); ?>

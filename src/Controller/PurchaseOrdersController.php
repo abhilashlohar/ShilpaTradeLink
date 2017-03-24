@@ -113,6 +113,7 @@ class PurchaseOrdersController extends AppController
 		if(!empty($material)){ 
 			$material_items=array(); 
 			$materials=json_decode($material);
+
 			$material_items_for_purchases=[];
 				
 			$this->set(compact('material_items_for_purchases'));
