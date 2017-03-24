@@ -672,3 +672,16 @@ $(document).ready(function() {
 });
 
 </script>
+
+<div id="myModal1" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body" id="result_ajax">
+				
+			</div>
+			<div class="modal-footer">
+				<button class="btn default closebtn">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
