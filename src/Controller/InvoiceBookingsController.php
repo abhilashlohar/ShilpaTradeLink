@@ -171,7 +171,7 @@ class InvoiceBookingsController extends AppController
 				$ledger->voucher_id = $invoiceBooking->id;
 				$ledger->company_id = $invoiceBooking->company_id;
 				$ledger->voucher_source = 'Invoice Booking';
-				$ledger->transaction_date = $invoiceBooking->created_on;
+				$ledger->transaction_date = $invoiceBooking->supplier_date;
 				$this->InvoiceBookings->Ledgers->save($ledger);
 				
 				//Ledger posting for bankcash
@@ -182,7 +182,7 @@ class InvoiceBookingsController extends AppController
 				$ledger->credit =$invoiceBooking->total;
 				$ledger->voucher_id = $invoiceBooking->id;
 				$ledger->company_id = $invoiceBooking->company_id;
-				$ledger->transaction_date = $invoiceBooking->created_on;
+				$ledger->transaction_date = $invoiceBooking->supplier_date;
 				$ledger->voucher_source = 'Invoice Booking';
 				$this->InvoiceBookings->Ledgers->save($ledger);
 				
@@ -333,7 +333,7 @@ class InvoiceBookingsController extends AppController
 				$ledger->voucher_id = $invoiceBooking->id;
 				$ledger->voucher_source = 'Invoice Booking';
 				$ledger->company_id = $invoiceBooking->company_id;
-				$ledger->transaction_date = $invoiceBooking->created_on;
+				$ledger->transaction_date = $invoiceBooking->supplier_date;
 				$this->InvoiceBookings->Ledgers->save($ledger);
 				
 				
@@ -346,7 +346,7 @@ class InvoiceBookingsController extends AppController
 				$ledger->debit = 0;
 				$ledger->credit =$invoiceBooking->total;
 				$ledger->voucher_id = $invoiceBooking->id;
-				$ledger->transaction_date = $invoiceBooking->created_on;
+				$ledger->transaction_date = $invoiceBooking->supplier_date;
 				$ledger->company_id = $invoiceBooking->company_id;
 				$ledger->voucher_source = 'Invoice Booking';
 				$this->InvoiceBookings->Ledgers->save($ledger);
