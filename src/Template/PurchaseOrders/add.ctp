@@ -1,5 +1,8 @@
-<?php //pr($material_items_for_purchases); exit;?>
-
+<style>
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+	vertical-align: top !important;
+}
+</style>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -13,7 +16,7 @@
 			<div class="form-body">
 				<div class="row">
 					
-					<div class="col-md-4">
+					<div class="col-md-5">
 						<div class="form-group">
 							<label class="control-label">Purchase Order No. <span class="required" aria-required="true">*</span></label>
 							<div class="row">
@@ -21,7 +24,7 @@
 									<?php echo $this->Form->input('po1', ['label' => false,'class' => 'form-control input-sm','readonly','value'=>$Company->alias]); ?>
 								</div>
 								<div class="col-md-4">
-									<?php echo $this->Form->input('po3', ['options'=>$filenames,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+									<?php echo $this->Form->input('po3', ['empty'=>'--Select--','options'=>$filenames,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 								</div>
 								<div class="col-md-4">
 									<?php echo $this->Form->input('po4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
@@ -203,35 +206,28 @@ With reference to your price list we are pleased to place an order for the follo
 							echo $this->Form->input('road_permit_form47',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Road permit form 47']); ?>
 						</div>
 					</div>
-					
-					
+				</div>
+				
+				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Customer <span class="required" aria-required="true">*</span></label>
-							<?php 
-							foreach($customers as $customer){
-								if(empty($customer->alias)){
-									$merge=$customer->customer_name;
-								}else{
-									$merge=$customer->customer_name.'	('.$customer->alias.')';
-								}
-								$option[]=['text' =>$merge, 'value' => $customer->id];
-									
-								}
-							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $option,'class' => 'form-control input-sm select2me']); ?>
+							<div class="radio-list" >
+							<label class="control-label">Excise for customer</label>
+							<?php echo $this->Form->radio('is_exceise_for_customer',[['value' => 'Yes', 'text' => 'Yes'],['value' => 'No', 'text' => 'No']],['value'=>'No']); ?>
+							</div>
 						</div>
-						
 					</div>
-					
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Excise Duty </label>
-							<?php 
-							echo $this->Form->input('excise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Excise Duty']); ?>
+					<div id="ex_div" style="display:none;">
+						<div class="col-md-3" id="qwert"></div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label">Excise Duty </label>
+								<?php 
+								echo $this->Form->input('excise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Excise Duty']); ?>
+							</div>
 						</div>
 					</div>
 				</div>
-				
 				
 			</div>
 			<div class="form-actions">
@@ -279,7 +275,6 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-			rules: {
 				company_id:{
 					required: true,
 				},
@@ -295,8 +290,10 @@ $(document).ready(function() {
 				po4:{
 					required: true,
 				},
+				excise_duty:{
+					required: true,
+				},
 			},
-		},
 		messages: { // custom messages for radio buttons and checkboxes
 			membership: {
 				required: "Please select a Membership type"
@@ -328,7 +325,7 @@ $(document).ready(function() {
 		invalidHandler: function (event, validator) { //display error alert on form submit   
 			success3.hide();
 			error3.show();
-			Metronic.scrollTo(error3, -200);
+			//Metronic.scrollTo(error3, -200);
 		},
 
 		highlight: function (element) { // hightlight error inputs
@@ -459,14 +456,10 @@ $(document).ready(function() {
 	
 	$('select[name=sale_tax_per]').die().live("change",function() { 
 		var description=$('select[name=sale_tax_per] option:selected').attr('description');
-		//alert(description);
 		$('input[name=sale_tax_description]').val(description);
     });
 	
-	/* $('select[name=sale_tax_per]').die().live("change",function() {
-		var description=$('select[name=sale_tax_per] option:selected').attr('description');
-		$('input[name=sale_tax_description]').val(description);
-    }); */
+	
 });
 </script>
 <table id="sample_tb" style="display:none;">
@@ -494,13 +487,13 @@ $(document).ready(function(){
        var url = "<?php echo $this->Url->build(['controller'=>'PurchaseOrders','action'=>'vid']);?>";
        url=url+'/'+vid,
         $.ajax({
-		url: url,
-		type: 'GET',
-	}).done(function(response) {
-		//alert(response);
-		$('#vendrid').html(response);
-		//$('select[name="account_second_subgroup_id"]').select2();
-	});
+			url: url,
+			type: 'GET',
+		}).done(function(response) {
+			//alert(response);
+			$('#vendrid').html(response);
+			//$('select[name="account_second_subgroup_id"]').select2();
+		});
 
 
 
@@ -515,10 +508,28 @@ $(document).ready(function(){
 		if(typeof payment_terms !== "undefined")
 		{ $("#payment_terms").text('Payment Terms :' + payment_terms); }
 		else{ $("#payment_terms").text(''); }
-		
-		
-		
     });
+	
+	$('select[name="po3"]').on("change",function() {
+		var file=$(this).find('option:selected').val();
+		var url = "<?php echo $this->Url->build(['controller'=>'PurchaseOrders','action'=>'customerFromFilename']);?>";
+		url=url+'/'+file,
+        $.ajax({
+			url: url,
+			type: 'GET',
+		}).done(function(response) {
+			$('#qwert').html(response);
+		});
+	});
+	
+	$('input[type=radio][name="is_exceise_for_customer"]').on("click",function() {
+		var ex=$(this).val();
+		if(ex=="Yes"){
+			$('#ex_div').show();
+		}else{
+			$('#ex_div').hide();
+		}
+	});
 });
 </script>
 	

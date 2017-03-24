@@ -1,4 +1,3 @@
-
 <?php 
 require_once(ROOT . DS  .'vendor' . DS  . 'dompdf' . DS . 'autoload.inc.php');
 use Dompdf\Dompdf;
@@ -98,7 +97,7 @@ $html.='
 
 <table width="100%" class="table_rows itemrow">
 		<tr>
-			<td colspan=6 align="">';
+			<td colspan=6 align="" >';
 				$html.='
 					<table  valign="center" width="100%" style="margin-top: 0px;" class="table2">
 						<tr>
@@ -106,13 +105,10 @@ $html.='
 								<span><b>'. h($purchaseOrder->vendor->company_name) .'</b></span><br/>
 								<div style="height:5px;"></div>
 								'. $this->Text->autoParagraph(h($purchaseOrder->vendor->address)) .'
-								<span>TIN : '. h($purchaseOrder->company->tin_no) .'</span><br/>
-								<span>PAN : '. h($purchaseOrder->company->pan_no) .'</span>
-								<br/>
-								<span>CIN : '. h($purchaseOrder->company->cin_no) .'</span>
+								
 							</td>
-							<td width="50%" valign="top" align="right">
-								<table width="100%">
+							<td width="50%" valign="top" align="right" >
+								<table width="100%" style="border-left: 1px solid black;">
 									<tr>
 										<td width="55" valign="top" style="vertical-align: top;">PO No.</td>
 										<td width="25" valign="top">:</td>
@@ -123,6 +119,21 @@ $html.='
 										<td valign="top">:</td>
 										<td valign="top">'. h(date("d-m-Y",strtotime($purchaseOrder->date_created))) .'</td>
 									</tr>
+									<tr>
+										<td valign="top" style="vertical-align: top;">TIN</td>
+										<td valign="top">:</td>
+										<td valign="top">'. h($purchaseOrder->company->tin_no) .'</td>
+									</tr>
+									<tr>
+										<td valign="top" style="vertical-align: top;">PAN</td>
+										<td valign="top">:</td>
+										<td valign="top">'. h($purchaseOrder->company->pan_no) .'</td>
+									</tr>
+									<tr>
+										<td valign="top" style="vertical-align: top;">CIN</td>
+										<td valign="top">:</td>
+										<td valign="top">'. h($purchaseOrder->company->cin_no) .'</td>
+									</tr>
 								</table>
 							</td>
 						</tr>
@@ -131,7 +142,7 @@ $html.='
 					$html.='</td>
 		</tr>
 		<tr>
-			<td colspan=6 style="border-top:1px solid #000;">
+			<td colspan=6 style="border-top:1px solid #000;  text-align: justify;">
 			'. $this->Text->autoParagraph(h($purchaseOrder->descryption)) .'
 			</td>
 		</tr>
@@ -163,7 +174,7 @@ $paisa_text="";
 if(sizeof($total)==2){
 	$total[1]=str_pad($total[1], 2, '0', STR_PAD_RIGHT);
 	$paisa=(int)$total[1];
-	$paisa_text='  and '.  h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa';
+	$paisa_text=' and'. h(ucwords($this->NumberWords->convert_number_to_words($paisa))) .' Paisa';
 }else{ $paisa=""; }
 
 $html.='</table>';
@@ -180,7 +191,7 @@ $html.='</table>';
 					
 				
 				<tr>
-					<td colspan="2"><b>Amount in words: </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees  '. h($paisa_text) .'</td>
+					<td colspan="2"><b>Amount in words :  </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees  '. h($paisa_text) .'</td>
 				</tr>
 			</tbody>
 		</table>';
@@ -189,42 +200,42 @@ $html.='</table>';
 $html .= '	<table width="100%" class="table_rows table3">
   <tr>
     <td valign="top" rowspan="2" style="text-align:center;">Material To Be Transported:<br/>'. h(($purchaseOrder->material_to_be_transported)) .'</td>
-    <td valign="top" rowspan="2" style="text-align:center;">Sale Tax:<br/>'. h(($purchaseOrder->sale_tax_per)) .'%'. h(($purchaseOrder->sale_tax_description)) .'</td>
-    <td valign="top"> <p>Discount:'. h(($purchaseOrder->discount)) .''. h(($purchaseOrder->discount_type)) .'</p>
+    <td valign="top" rowspan="2" style="text-align:center;">Sale Tax:<br/>'. h(($purchaseOrder->sale_tax_description)) .'</td>
+    <td valign="top" style="text-align:center;"> <p>Discount : '. h(( $purchaseOrder->discount)) .''. h(($purchaseOrder->discount_type)).'</p>
     </td>
   </tr>
   <tr>
-  <td><p>P & F	:'. h(($purchaseOrder->pnf)) .''. h(($purchaseOrder->pnf_type)) .'</p></td>
+  <td style="text-align:center;"><p>P & F	: '. h(( $purchaseOrder->pnf)) .''. h(($purchaseOrder->pnf_type)) .'</p></td>
   </tr>
   <tr>
     <td valign="top" style="text-align:center;">LR To Be Prepared In Favour Of:<br/>'. h(($purchaseOrder->lr_to_be_prepared_in_favour_of)) .'</td>
     <td valign="top" style="text-align:center;">Payment Terms:<br/>'. h(($purchaseOrder->payment_terms)) .'</td>
-    <td valign="top">Excise Duty:'. h(($purchaseOrder->excise_duty)) .'</td>
+    <td valign="top" style="text-align:center;">Excise Duty : '. h(( $purchaseOrder->excise_duty)) .'</td>
    
   </tr>
   <tr>
     <td valign="top" style="text-align:center;">Road Permit Form:<br/>'. h(($purchaseOrder->road_permit_form47)) .'</td>
     <td valign="top" style="text-align:center;">Transporter Name:<br/>'. h(($purchaseOrder->transporter->transporter_name)) .'</td>
-    <td valign="top" >Delivery:-<br/>'. h(($purchaseOrder->delivery)) .'</td>
+    <td valign="top" style="text-align:center;" >Delivery:-<br/>'. h(($purchaseOrder->delivery)) .'</td>
 </tr>';
 
 $html.='<tr>
-			<td colspan="3">
-				<table width="100%" class="table2">
+			<td colspan="3"  >
+				<table width="100%" class="table2" >
 					<tr>
-						<td>
-					<table>
-							<tr>
-								<td>Excise Invoice Required in Favour of Consignee:<br/>
-								'. h($purchaseOrder->customer->customer_name) .'<br/>
-								'. h($purchaseOrder->customer->customer_address[0]->address) .'<br/>
-								ECC : '. h($purchaseOrder->customer->ecc_no) .'<br/>
-								TIN : '. h($purchaseOrder->customer->tin_no) .'<br/></td>
-							</tr>
-					</table>
+						<td style="border-right: 1px solid black;">
+							<table style="padding-top:-45px;">
+								<tr>
+									<td style="font-size:13px;">Excise Invoice Required in Favour of Consignee:<br/>
+									'. h($purchaseOrder->customer->customer_name) .'<br/>
+									'. h($purchaseOrder->customer->customer_address[0]->address) .'<br/>
+									ECC : '. h($purchaseOrder->customer->ecc_no) .'<br/>
+									TIN : '. h($purchaseOrder->customer->tin_no) .'<br/></td>
+								</tr>
+							</table>
 						</td>
-						<td colspan="2" align="left" width="50%"><br/>Please confirm that you have registered this order and request you to return back the duplicate copy duly signed in token of having accepted the order.<br/><br/>
-							<div align="center">
+						<td colspan="2"  align="left" width="62.50%" style="font-size:13px; padding-top:-15px;"><br/>Please confirm that you have registered this order and request you to return back the duplicate copy duly signed in token of having accepted the order.<br/><br/>
+							<div  align="center">
 								<span>For <b>'. h($purchaseOrder->company->name) .'</b></span><br/>
 									<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$purchaseOrder->creator->signature.' height="50px" style="height:50px;"/>
 									<br/>
@@ -233,8 +244,8 @@ $html.='<tr>
 									
 							</div>
 						</td>
-			</tr>
-		</table>
+				</tr>
+			</table>
 		</td>
 		</tr>
 			

@@ -1,3 +1,4 @@
+<?php //echo @$customer; exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -36,7 +37,21 @@
 						?>
 					</div>
 					<div class="col-md-3">
-						<?php echo $this->Form->input('customer_id', ['empty' => "--Select--",'options' => $customers,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+					<?php
+					$options=array();
+							foreach($customers as $custmer){
+								if(empty($custmer->alias)){
+									$merge=$custmer->customer_name;
+								}else{
+									$merge=$custmer->customer_name.'	('.$custmer->alias.')';
+								}
+								
+								$options[]=['text' =>$merge, 'value' => $custmer->id, 'employee_id' => $custmer->employee_id,'file' => ($custmer->filenames)];
+
+							}
+
+
+					echo $this->Form->input('customer_id', ['required','empty' => "--Select--",'options' => $options,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 					</div>
 					<div class="col-md-3">
 						<?php echo $this->Form->button(__('ADD'),['class'=>'btn btn-primary']); ?>
@@ -80,7 +95,7 @@
 														<input type="text" name="file_number" class="form-control input-sm" placeholder="File Number" value="<?php echo @$file_number; ?>">
 													</div>
 												</div>
-												<div class="col-md-4">
+												<div class="col-md-4"> <?php echo @$customer; ?>
 													<input type="text" name="customer" class="form-control input-sm" placeholder="Customer" value="<?php echo @$customer; ?>">
 												</div>
 												<div class="col-md-4">

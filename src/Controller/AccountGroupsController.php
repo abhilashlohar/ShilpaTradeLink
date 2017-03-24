@@ -28,7 +28,7 @@ class AccountGroupsController extends AppController
 			//pr($name); exit;
 			$AccountGroupsNameexists = $this->AccountGroups->exists(['name' => $name]);
 						
-			if(!$AccountGroupsNameexists){
+			
 					if ($this->AccountGroups->save($accountGroup)) {
 					$this->Flash->success(__('The account group has been saved.'));
 
@@ -37,10 +37,7 @@ class AccountGroupsController extends AppController
 					$this->Flash->error(__('The account group could not be saved. Please, try again.'));
 					}
 			
-					}
-					else{
-						$this->Flash->error(__('The Account Group Name Must be Uniqe'));
-					}
+					
 		}
         $accountCategories = $this->AccountGroups->AccountCategories->find('list', ['limit' => 200]);
         $this->set(compact('accountGroup', 'accountCategories'));
@@ -170,7 +167,7 @@ class AccountGroupsController extends AppController
 	public function AccountGroupDropdown($accountCategoryId = null)
     {
         $this->viewBuilder()->layout('');
-		$accountGroups = $this->AccountGroups->find('list')->where(['account_category_id'=>$accountCategoryId]);
+		$accountGroups = $this->AccountGroups->find('list')->where(['account_category_id'=>$accountCategoryId])->order(['AccountGroups.name' => 'ASC']);
 		$this->set(compact('accountGroups'));
     }
 }

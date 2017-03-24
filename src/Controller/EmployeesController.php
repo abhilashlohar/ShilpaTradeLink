@@ -73,7 +73,6 @@ class EmployeesController extends AppController
         $employee = $this->Employees->newEntity();
         if ($this->request->is('post')) {
             $employee = $this->Employees->patchEntity($employee, $this->request->data);
-			
 			$employee->dob=date("Y-m-d",strtotime($employee->dob));
 			$employee->date_of_anniversary=date("Y-m-d",strtotime($employee->date_of_anniversary));
 			$employee->join_date=date("Y-m-d",strtotime($employee->join_date));
@@ -86,13 +85,25 @@ class EmployeesController extends AppController
 			if (in_array($ext, $arr_ext)) {
 				move_uploaded_file($file['tmp_name'], WWW_ROOT . '/signatures/' . $setNewFileName . '.' . $ext);
 			}
-			//pr($employee); exit;
+			
+			
             if ($this->Employees->save($employee)) {
-				$ledgerAccount = $this->Employees->LedgerAccounts->newEntity();
-				$ledgerAccount->account_second_subgroup_id = $employee->account_second_subgroup_id;
-				$ledgerAccount->name = $employee->name;
-				$ledgerAccount->source_model = 'Employees';
-				$ledgerAccount->source_id = $employee->id;
+				
+				$i=0;
+				foreach($employee->companies as $data)
+				{
+					$i++;
+					$ledgerAccount = $this->Employees->LedgerAccounts->newEntity();
+					$ledgerAccount->account_second_subgroup_id = $employee->account_second_subgroup_id;
+					$ledgerAccount->name = $employee->name;
+					$ledgerAccount->source_model = 'Employees';
+					$ledgerAccount->source_id = $employee->id;
+					$ledgerAccount->company_id = $data->id;
+				} 
+			echo $i;
+			exit;
+				
+				
 				if ($this->Employees->LedgerAccounts->save($ledgerAccount))
 				{
 					$id=$employee->id;
@@ -107,9 +118,9 @@ class EmployeesController extends AppController
                 $this->Flash->error(__('The employee could not be saved. Please, try again.'));
 				}
         }
-        $departments = $this->Employees->Departments->find('list');
-		$designations = $this->Employees->Designations->find('list');
-		$AccountCategories = $this->Employees->AccountCategories->find('list');
+        $departments = $this->Employees->Departments->find('list')->order(['Departments.name' => 'ASC']);
+		$designations = $this->Employees->Designations->find('list')->order(['Designations.name' => 'ASC']);
+		$AccountCategories = $this->Employees->AccountCategories->find('list')->order(['AccountCategories.name' => 'ASC']);
 		$Companies = $this->Employees->Companies->find('list');
         $this->set(compact('employee', 'departments','designations','AccountCategories','Companies'));
         $this->set('_serialize', ['employee']);
@@ -163,9 +174,9 @@ class EmployeesController extends AppController
                 $this->Flash->error(__('The employee could not be saved. Please, try again.'));
             }
         }
-        $departments = $this->Employees->Departments->find('list', ['limit' => 200]);
-		$designations = $this->Employees->Designations->find('list', ['limit' => 200]);
-		$AccountCategories = $this->Employees->AccountCategories->find('list');
+        $departments = $this->Employees->Departments->find('list')->order(['Departments.name' => 'ASC']);
+		$designations = $this->Employees->Designations->find('list')->order(['Designations.name' => 'ASC']);
+		$AccountCategories = $this->Employees->AccountCategories->find('list')->order(['AccountCategories.name' => 'ASC']);
 		$AccountGroups = $this->Employees->AccountGroups->find('list');
 		$AccountFirstSubgroups = $this->Employees->AccountFirstSubgroups->find('list');
 		$AccountSecondSubgroups = $this->Employees->AccountSecondSubgroups->find('list');

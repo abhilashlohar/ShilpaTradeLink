@@ -106,7 +106,7 @@
 					
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Date Of Joining</label>
+							<label class="control-label">Date Of Joining<span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('join_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Joining']); ?>
 					</div>
 					</div>
@@ -372,7 +372,13 @@ $(document).ready(function() {
 				  minlength: 10,
 				  maxlength: 10,
 			},
+			join_date:{
+				required: true,
+			},
 			email:{
+				required: true,
+			},
+			signature:{
 				required: true,
 			},
 			designation_id:{

@@ -13,7 +13,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Company Group <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('company_group_id', ['options' => $companyGroups,'label' => false,'class' => 'form-control input-sm ','placeholder'=>'company_group_id']); ?>
+							<?php echo $this->Form->input('company_group_id', ['options' => $companyGroups,'label' => false,'class' => 'form-control input-sm select2me ','placeholder'=>'company_group_id']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -181,7 +181,7 @@ $(document).ready(function() {
 			},
 			name  : {
 				  required: true,
-				  alphabetsAndSpacesOnly: true,
+				 // alphabetsAndSpacesOnly: true,
 			},
 			alias  : {
 				  required: true,

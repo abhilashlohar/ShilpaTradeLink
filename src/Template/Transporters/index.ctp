@@ -78,6 +78,7 @@
 				</div>
 				</form>
 			<div class="table-scrollable">
+			<?php $page_no=$this->Paginator->current('Transporters'); $page_no=($page_no-1)*20; ?>
 			<table class="table table-hover">
 				 <thead>
 					<tr>
@@ -90,7 +91,7 @@
 				<tbody>
 					<?php $i=0; foreach ($transporters as $transporter): $i++; ?>
 					<tr>
-						<td><?= $i ?></td>
+						<td><?= h(++$page_no) ?></td>
 						<td><?= h($transporter->transporter_name) ?></td>
 						<td><?= h($transporter->mobile) ?></td>
 						<td class="actions">

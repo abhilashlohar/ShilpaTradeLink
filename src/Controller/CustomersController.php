@@ -68,6 +68,8 @@ class CustomersController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
         $customer = $this->Customers->newEntity();
         if ($this->request->is('post')) {
             $customer = $this->Customers->patchEntity($customer, $this->request->data);
@@ -81,6 +83,7 @@ class CustomersController extends AppController
 				$ledgerAccount->bill_to_bill_account = $billTobill;
 				$ledgerAccount->source_model = 'Customers';
 				$ledgerAccount->source_id = $customer->id;
+				$ledgerAccount->company_id = $st_company_id;
 				if ($this->Customers->LedgerAccounts->save($ledgerAccount)) {
 					$id=$customer->id;
 					$customer = $this->Customers->get($id);
@@ -94,14 +97,14 @@ class CustomersController extends AppController
             }
 			
         }
-        $districts = $this->Customers->Districts->find('list');
+        $districts = $this->Customers->Districts->find('list')->order(['Districts.District' => 'ASC']);
         $companyGroups = $this->Customers->CompanyGroups->find('list', ['limit' => 200]);
-		$CustomerGroups = $this->Customers->CustomerGroups->find('list');
-        $customerSegs = $this->Customers->CustomerSegs->find('list');
-		$employees = $this->Customers->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
+		$CustomerGroups = $this->Customers->CustomerGroups->find('list')->order(['CustomerGroups.name' => 'ASC']);
+        $customerSegs = $this->Customers->CustomerSegs->find('list')->order(['CustomerSegs.name' => 'ASC']);
+		$employees = $this->Customers->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1])->order(['Employees.name' => 'ASC']);
 		
 		$transporters = $this->Customers->Transporters->find('list')->order(['Transporters.transporter_name' => 'ASC']);
-		$AccountCategories = $this->Customers->AccountCategories->find('list');
+		$AccountCategories = $this->Customers->AccountCategories->find('list')->order(['AccountCategories.name' => 'ASC']);
         $this->set(compact('customer', 'districts', 'companyGroups', 'customerSegs','employees','transporters','CustomerGroups','AccountCategories'));
 		$this->set('_serialize', ['customer']);
     }
@@ -139,12 +142,13 @@ class CustomersController extends AppController
                 $this->Flash->error(__('The customer could not be saved. Please, try again.'));
             }
         }
-        $districts = $this->Customers->Districts->find('list');
+        $districts = $this->Customers->Districts->find('list')->order(['Districts.District' => 'ASC']);
         $companyGroups = $this->Customers->CompanyGroups->find('list', ['limit' => 200]);
-		$CustomerGroups = $this->Customers->CustomerGroups->find('list');
-        $customerSegs = $this->Customers->CustomerSegs->find('list');
-		$employees = $this->Customers->Employees->find('list', ['limit' => 200]);
-		$transporters = $this->Customers->Transporters->find('list');
+		$CustomerGroups = $this->Customers->CustomerGroups->find('list')->order(['CustomerGroups.name' => 'ASC']);
+        $customerSegs = $this->Customers->CustomerSegs->find('list')->order(['CustomerSegs.name' => 'ASC']);
+		$employees = $this->Customers->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1])->order(['Employees.name' => 'ASC']);
+		
+		$transporters = $this->Customers->Transporters->find('list')->order(['Transporters.transporter_name' => 'ASC']);
 		$AccountCategories = $this->Customers->AccountCategories->find('list');
 		$AccountGroups = $this->Customers->AccountGroups->find('list');
 		$AccountFirstSubgroups = $this->Customers->AccountFirstSubgroups->find('list');

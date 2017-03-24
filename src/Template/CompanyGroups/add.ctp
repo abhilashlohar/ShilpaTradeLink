@@ -95,7 +95,7 @@ $(document).ready(function() {
 			name:{
 				required: true,
 				maxlength:30,
-				alphabetsAndSpacesOnly: true,
+				//alphabetsAndSpacesOnly: true,
 			},
 		},
 

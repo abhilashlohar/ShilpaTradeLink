@@ -157,10 +157,15 @@
 					}
 					
 					foreach($invoice->invoice_rows as $current_invoice_row){
+						
 						@$existing_rows[$current_invoice_row->item_id]=$existing_rows[$current_invoice_row->item_id]-$current_invoice_row->quantity;
 						$current_rows[]=$current_invoice_row->item_id;
 						$current_row_items[$current_invoice_row->item_id]=$current_invoice_row->quantity;
+
+						//$current_descryption[$current_invoice_row->item_id]=$current_invoice_row->description;
+
 						$descriptions[$current_invoice_row->item_id]=$current_invoice_row->description;
+
 					}
 					$q=0; 
 					foreach ($invoice->sales_order->sales_order_rows as $sales_order_row){ ?>

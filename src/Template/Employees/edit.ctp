@@ -69,7 +69,7 @@
 							<label class="control-label">Blood Group </label>
 							<?php 
 							$arrblood=array(""=>"Select Blood Group", 'A+'=>"A+",'A-'=>"A-",'B+'=>"B+",'B-'=>"B-",'AB+'=>"AB+",'AB-'=>"AB-",'O+'=>"O+",'O-'=>"O-");
-							echo $this->Form->input('blood_group', ['options'=>$arrblood,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Blood Group']);?>
+							echo $this->Form->input('blood_group', ['options'=>$arrblood,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Blood Group']);?>
 						</div>
 					</div>
 				
@@ -93,14 +93,14 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Department <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('dipartment_id', ['options' => $departments,'label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('dipartment_id', ['options' => $departments,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
 					
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Designation <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('designation_id', ['options'=>$designations,'label' => false,'class' => 'form-control input-sm','placeholder'=>'Designation']); ?>
+							<?php echo $this->Form->input('designation_id', ['options'=>$designations,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Designation']); ?>
 						</div>
 					</div>
 					

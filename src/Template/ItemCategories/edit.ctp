@@ -50,7 +50,7 @@ $(document).ready(function() {
 		rules: {
 			name:{
 				required: true,
-				alphabetsAndSpacesOnly: true,
+				//alphabetsAndSpacesOnly: true,
 				maxlength:40,
 			},
 			

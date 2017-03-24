@@ -391,12 +391,13 @@ class QuotationsController extends AppController
 		$Filenames = $this->Quotations->Filenames->find()->where(['customer_id' => $quotation->customer_id]);
 
 		$copy=$this->request->query('copy');
-        $customers = $this->Quotations->Customers->find('all')->contain(['Filenames']);
 		$companies = $this->Quotations->Companies->find('all');
-		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
-		$ItemGroups = $this->Quotations->ItemGroups->find('list');
-		$items = $this->Quotations->Items->find('list');
-		$items = $this->Quotations->Items->find('list')->where(['freeze'=>0])->matching(
+		
+        $customers = $this->Quotations->Customers->find('all')->contain(['Filenames'])->order(['Customers.customer_name' => 'ASC']);
+		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1])->order(['Employees.name' => 'ASC']);
+		$ItemGroups = $this->Quotations->ItemGroups->find('list')->order(['ItemGroups.name' => 'ASC']);
+		
+		$items = $this->Quotations->Items->find('list')->order(['Items.name' => 'ASC'])->where(['freeze'=>0])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
 						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
 					}
@@ -445,11 +446,15 @@ class QuotationsController extends AppController
             }
         }
 		$Filenames = $this->Quotations->Filenames->find()->where(['customer_id' => $quotation->customer_id]);
-        $customers = $this->Quotations->Customers->find('all')->contain(['Filenames']);
+        
 		$companies = $this->Quotations->Companies->find('all',['limit' => 200]);
-		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
-		$ItemGroups = $this->Quotations->ItemGroups->find('list');
-		$items = $this->Quotations->Items->find('list')->where(['freeze'=>0])->matching(
+		
+		$customers = $this->Quotations->Customers->find('all')->contain(['Filenames'])->order(['Customers.customer_name' => 'ASC']);
+		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1])->order(['Employees.name' => 'ASC']);
+		$ItemGroups = $this->Quotations->ItemGroups->find('list')->order(['ItemGroups.name' => 'ASC']);
+		
+		
+		$items = $this->Quotations->Items->find('list')->order(['Items.name' => 'ASC'])->where(['freeze'=>0])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
 						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
 					}

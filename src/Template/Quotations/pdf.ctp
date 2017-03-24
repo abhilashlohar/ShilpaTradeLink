@@ -126,7 +126,7 @@ $html = '
 $html .= '
 <table width="100%">
 		<tr>
-			<td width="50%">
+			<td width="67%">
 				<table width="100%">
 					
 					<tr>
@@ -138,12 +138,13 @@ $html .= '
 					</tr>
 					<tr>
 						<td><br/>
-							<table style="margin: 0px 0 0 -2px;">
+							<table>
 								
 								<tr>
-									<td>Kind Attn.</td>
-									<td>: '. h(($quotation->customer_for_attention)) .'</td>
+									<td>Kind Attn.<br/></td>
+									<td>: '. h(($quotation->customer_for_attention)) .'<br/></td>
 								</tr>
+								
 								<tr>
 									<td>Reference</td>
 									<td>: '. h($quotation->enquiry_no) .'</td>
@@ -157,7 +158,7 @@ $html .= '
 					</tr>
 				</table>
 			</td>
-			<td width="10%"></td>
+			
 			<td valign="top">
 				<table>
 					<tr>

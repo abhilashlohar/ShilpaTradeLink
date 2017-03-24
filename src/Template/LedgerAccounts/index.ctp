@@ -88,7 +88,16 @@
 						<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'Vendors','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?> <?php } ?>
 						
 						<?php if($ledgerAccount->source_model == 'Ledger Account'){ ?>
-						<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'LedgerAccounts','action' => 'Edit', $ledgerAccount->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?> <?php } ?></td>
+						<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'LedgerAccounts','action' => 'Edit', $ledgerAccount->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?>
+						<?php } ?>
+						<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+								['action' => 'delete', $ledgerAccount->id], 
+								[
+									'escape' => false,
+									'class' => 'btn btn-xs btn-danger',
+									'confirm' => __('Are you sure ?', $ledgerAccount->id)
+								]
+							) ?></td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>

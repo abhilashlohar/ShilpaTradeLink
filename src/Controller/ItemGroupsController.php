@@ -156,7 +156,7 @@ class ItemGroupsController extends AppController
 	public function ItemGroupDropdown($itemCategoryId = null)
     {
         $this->viewBuilder()->layout('');
-		$itemGroups = $this->ItemGroups->find('list')->where(['item_category_id'=>$itemCategoryId]);
+		$itemGroups = $this->ItemGroups->find('list')->where(['item_category_id'=>$itemCategoryId])->order(['ItemGroups.name' => 'ASC']);
 		$this->set(compact('itemGroups'));
     }
 }

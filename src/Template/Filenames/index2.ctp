@@ -36,7 +36,20 @@
 						?>
 					</div>
 					<div class="col-md-3">
-						<?php echo $this->Form->input('customer_id', ['empty' => "--Select--",'options' => $customers,'label' => false,'class' => 'form-control input-sm select2me']); ?>
+						<?php 
+						$options=array();
+							foreach($customers as $customer){
+								if(empty($customer->alias)){
+									$merge=$customer->customer_name;
+								}else{
+									$merge=$customer->customer_name.'	('.$customer->alias.')';
+								}
+								
+								$options[]=['text' =>$merge, 'value' => $customer->id, 'employee_id' => $customer->employee_id,'file' => ($customer->filenames)];
+
+							}
+
+						echo $this->Form->input('customer_id', ['required','empty' => "--Select--",'options' => $options,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 					</div>
 					<div class="col-md-3">
 						<?php echo $this->Form->button(__('ADD'),['class'=>'btn btn-primary']); ?>

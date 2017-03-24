@@ -56,14 +56,7 @@ class AccountCategoriesTable extends Table
             ->allowEmpty('id', 'create');
 
 
-		$validator->add(
-				'name', 
-				['unique' => [
-					'rule' => 'validateUnique', 
-					'provider' => 'table', 
-					'message' => 'Not unique']
-				]
-			);
+		
 
         return $validator;
     }

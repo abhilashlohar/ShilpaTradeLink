@@ -329,7 +329,7 @@ class SalesOrdersController extends AppController
                 $this->Flash->error(__('The sales order could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->SalesOrders->Customers->find('all')->contain(['CustomerAddress'=>function($q){
+        $customers = $this->SalesOrders->Customers->find('all')->order(['Customers.customer_name' => 'ASC'])->contain(['CustomerAddress'=>function($q){
 			return $q
 			->where(['CustomerAddress.default_address'=>1]);
 		}]);
@@ -351,10 +351,10 @@ class SalesOrdersController extends AppController
 		$items = $this->SalesOrders->Items->find('list')->where(['freeze'=>0])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
 						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
-					}
-				);
-		$transporters = $this->SalesOrders->Carrier->find('list');
-		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1]);
+					} 
+				)->order(['Items.name' => 'ASC']);
+		$transporters = $this->SalesOrders->Carrier->find('list')->order(['Carrier.transporter_name' => 'ASC']);
+		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1])->order(['Employees.name' => 'ASC']);
 		$termsConditions = $this->SalesOrders->TermsConditions->find('all',['limit' => 200]);
 		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
         $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','Filenames','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','copy','process_status','Company','chkdate'));
@@ -434,7 +434,7 @@ class SalesOrdersController extends AppController
                 $this->Flash->error(__('The sales order could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->SalesOrders->Customers->find('all')->contain(['CustomerAddress'=>function($q){
+        $customers = $this->SalesOrders->Customers->find('all')->order(['Customers.customer_name' => 'ASC'])->contain(['CustomerAddress'=>function($q){
 			return $q
 			->where(['CustomerAddress.default_address'=>1]);
 		}]);
@@ -444,9 +444,9 @@ class SalesOrdersController extends AppController
 					'ItemCompanies', function ($q) use($st_company_id) {
 						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
 					}
-				);
-		$transporters = $this->SalesOrders->Carrier->find('list', ['limit' => 200]);
-		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200]);
+				)->order(['Items.name' => 'ASC']);
+		$transporters = $this->SalesOrders->Carrier->find('list', ['limit' => 200])->order(['Carrier.transporter_name' => 'ASC']);
+		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200])->order(['Employees.name' => 'ASC']);
 		$termsConditions = $this->SalesOrders->TermsConditions->find('all',['limit' => 200]);
 		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
 		$Filenames = $this->SalesOrders->Filenames->find()->where(['customer_id' => $salesOrder->customer_id]);

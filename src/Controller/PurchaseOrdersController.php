@@ -111,26 +111,14 @@ class PurchaseOrdersController extends AppController
 
 
 		if(!empty($material)){ 
-			//$Employees=$this->PurchaseOrders->Employees->get($s_employee_id);
-			//$employee_name=$Employees->name; 
-			//$company=$this->PurchaseOrders->Companies->get($st_company_id);
-			//$company_name=$company->name;
 			$material_items=array(); 
 			$materials=json_decode($material);
-			pr($materials); exit;
 			$material_items_for_purchases=[];
-				//foreach($materials as $key=>$value){
-				//$item=$this->PurchaseOrders->Items->get($key);
-				//$item_name=$item->name;
-				//$material_items_for_purchases[]=array('item_name'=>'Kgn212','item_id'=>'41','quantity'=>'99','material_indent_id'=>'2','processed_quantity'=>'20');
-			//$material_items_for_purchases[]=array('item_name'=>'3hp','item_id'=>'58','quantity'=>'99','material_indent_id'=>'3','processed_quantity'=>'5');
-			//}
-			//pr($material_items_for_purchase); exit;
+				
 			$this->set(compact('material_items_for_purchases'));
 		}
 		
 		
-		//pr($Company); exit;
         $purchaseOrder = $this->PurchaseOrders->newEntity();
         if ($this->request->is('post')) {
 			$last_po_no=$this->PurchaseOrders->find()->select(['po2'])->where(['company_id' => $st_company_id])->order(['po2' => 'DESC'])->first();
@@ -145,7 +133,6 @@ class PurchaseOrdersController extends AppController
 			$purchaseOrder->created_by=$s_employee_id; 
 			$purchaseOrder->company_id=$st_company_id;
 			$purchaseOrder->sale_tax_description=$purchaseOrder->sale_tax_description; 
-			//pr($purchaseOrder->material_to_be_transported);exit;
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
 			
             if ($this->PurchaseOrders->save($purchaseOrder)) {
@@ -163,22 +150,21 @@ class PurchaseOrdersController extends AppController
                 $this->Flash->success(__('The purchase order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else { pr($purchaseOrder); exit;
+            } else { 
                 $this->Flash->error(__('The purchase order could not be saved. Please, try again.'));
             }
         }
-       // $companies = $this->PurchaseOrders->Companies->find();
 		$filenames = $this->PurchaseOrders->Filenames->find('list', ['valueField' => function ($row) {
 				return $row['file1'] . '-' . $row['file2'];
 			},
 			'keyField' => function ($row) {
 				return $row['file1'] . '-' . $row['file2'];
 			}])->where(['file1' => 'BE']);
-        $vendor = $this->PurchaseOrders->Vendors->find();
+        $vendor = $this->PurchaseOrders->Vendors->find()->order(['Vendors.company_name' => 'ASC']);
 		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
-		$customers = $this->PurchaseOrders->Customers->find('all');
-		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']]);
-		$transporters = $this->PurchaseOrders->Transporters->find('list');
+		$customers = $this->PurchaseOrders->Customers->find('all')->order(['Customers.customer_name' => 'ASC']);
+		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC']);
+		$transporters = $this->PurchaseOrders->Transporters->find('list')->order(['Transporters.transporter_name' => 'ASC']);
         $this->set(compact('purchaseOrder', 'Company', 'vendor','filenames','items','SaleTaxes','transporters','customers','chkdate'));
         $this->set('_serialize', ['purchaseOrder']);
     }
@@ -239,11 +225,11 @@ class PurchaseOrdersController extends AppController
 			'keyField' => function ($row) {
 				return $row['file1'] . '-' . $row['file2'];
 			}])->where(['file1' => 'BE']);
-		$vendor = $this->PurchaseOrders->Vendors->find();
+		$vendor = $this->PurchaseOrders->Vendors->find()->order(['Vendors.company_name' => 'ASC']);
 		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
-		$customers = $this->PurchaseOrders->Customers->find('all');
+		$customers = $this->PurchaseOrders->Customers->find('all')->order(['Customers.customer_name' => 'ASC']);
 		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']]);
-		$transporters = $this->PurchaseOrders->Transporters->find('list');
+		$transporters = $this->PurchaseOrders->Transporters->find('list')->order(['Transporters.transporter_name' => 'ASC']);
        
         $this->set(compact('purchaseOrder', 'Company', 'vendor','filenames','customers','SaleTaxes','transporters','items','financial_year_data'));
         $this->set('_serialize', ['purchaseOrder']);
@@ -299,5 +285,15 @@ class PurchaseOrdersController extends AppController
 		$this->set(compact('purchaseOrder','id'));
         $this->set('id', $id);
     }
+	
+	public function customerFromFilename($filename=null){
+		$this->viewBuilder()->layout('');
+		$filename=explode('-',$filename);
+		$Filename=$this->PurchaseOrders->Filenames->find()->where(['file1'=>$filename[0],'file2'=>$filename[1]])->first();
+		
+		$Customer=$this->PurchaseOrders->Customers->get($Filename->customer_id);
+		
+		$this->set(compact('Customer'));
+	}
 
 }
