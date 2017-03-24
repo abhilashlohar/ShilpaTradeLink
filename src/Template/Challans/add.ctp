@@ -116,7 +116,7 @@
 						<div class="form-group">
 							<label class="control-label">Lr No. <span class="required" aria-required="true">*</span></label>
 							
-							<?php echo $this->Form->input('lr_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'LR No']); ?>
+							<?php echo $this->Form->input('lr_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'LR No','type'=>'text']); ?>
 							
 						</div>
 					</div>
@@ -125,23 +125,22 @@
 		
 				
 				<div class="row">
-				<div class="col-md-4" id="customer_address_div">
+					<div class="col-md-4" id="customer_address_div">
 						<div class="form-group">
 							<label class="control-label">Address <span class="required" aria-required="true">*</span></label>
 							
 							<?php echo $this->Form->textarea('customer_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address']); ?>
 							<a href="#" role="button" class="pull-right select_address" >
 							Select Address </a>
-						
+						</div>
 					</div>
-				</div>
-				<div class="col-md-4" id="vendor_address_div" style="display:none;">
+					<div class="col-md-4" id="vendor_address_div" style="display:none;">
 						<div class="form-group">
 							<label class="control-label">Address <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->textarea('vendor_address', ['label' => false,'class' => 'form-control','placeholder' => 'Address']); ?>
 						</div>
-				</div>	
-				<div class="col-md-3">
+					</div>	
+					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Courier <span class="required" aria-required="true">*</span></label>
 							<div class="row">
@@ -149,16 +148,24 @@
 							echo $this->Form->input('transporter_id',['empty'=>'--Select--','options'=>$transporters,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 							</div>
 						</div>
-				</div>
-				<div class="col-md-3">
+					</div>
+					<div class="col-md-2">
 						<div class="form-group">
 							<div class="radio-list" >
 							<label class="control-label">Pass Credit Note<span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->radio('pass_credit_note',[['value' => 'Yes', 'text' => 'Yes'],['value' => 'No', 'text' => 'No']]); ?>
 							</div>
 						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+							<div class="radio-list" >
+							<label class="control-label">Pass Debit Note<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->radio('pass_debit_note',[['value' => 'Yes', 'text' => 'Yes'],['value' => 'No', 'text' => 'No']]); ?>
+							</div>
+						</div>
+					</div>
 				</div>
-		</div>
 		
 			<br/>
 			
@@ -234,7 +241,7 @@
 			<td rowspan="2" width="10">0</td>
 			<td>
 				<div class="row">
-					<div class="col-md-11 padding-right-decrease">
+					<div class="col-md-11 padding-right-decrease" id="item_div">
 						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen item_box','placeholder' => 'Item']); ?>
 					</div>
 					<div class="col-md-1 padding-left-decrease">
@@ -624,8 +631,29 @@ rename_rows();
 		$('#invoice_div').show('fast');
 		$('#invoice_booking_div').hide('fast');
 	});
-     		
 	
+	$('select[name="invoice_id"]').on("change",function() {
+		var in_id=$(this).val();
+		itemsAsInvoice(in_id,'Invoices');
+	});
+	
+	$('select[name="invoice_booking_id"]').on("change",function() {
+		var in_id=$(this).val();
+		itemsAsInvoice(in_id,'Invoice_Booking');
+	});
+     		
+	function itemsAsInvoice(in_id,source_model){
+		var url = "<?php echo $this->Url->build(['controller'=>'Challans','action'=>'itemsAsInvoice']);?>";
+		url=url+'/'+in_id+'/'+source_model,
+        $.ajax({
+			url: url,
+			type: 'GET',
+		}).done(function(response) {
+			$('#sample_tb #item_div').html(response);
+			$("#main_tb tbody tr").remove();
+			add_row();
+		});
+	}
 });
 
 </script>
@@ -644,26 +672,4 @@ rename_rows();
 	</div>
 </div>
 
-<div id="myModal2" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-body" id="result_ajax">
-			<h4>Commercial Terms & Conditions</h4>
-				<div style=" overflow: auto; height: 450px;">
-				<table class="table table-hover tabl_tc">
-				<?php foreach ($termsConditions as $termsCondition): ?>
-					 <tr>
-						<td width="10"><label><?php echo $this->Form->input('dummy', ['type' => 'checkbox','label' => false,'class' => '']); ?></label></td>
-						<td><p><?= h($termsCondition->text_line) ?></p></td>
-					</tr>
-				<?php endforeach; ?>
-				</table>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button class="btn default closebtn2">Close</button>
-				<button class="btn btn-primary insert_tc">Insert</button>
-			</div>
-		</div>
-	</div>
-</div>
+

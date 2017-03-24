@@ -113,7 +113,7 @@
 						<div class="form-group">
 							<label class="control-label">Lr No. <span class="required" aria-required="true">*</span></label>
 							
-							<?php echo $this->Form->input('lr_no', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'LR No']); ?>
+							<?php echo $this->Form->input('lr_no', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'LR No','type'=>'text']); ?>
 							
 						</div>
 					</div>
@@ -155,6 +155,14 @@
 							</div>
 						</div>
 				</div>
+				<div class="col-md-2">
+						<div class="form-group">
+							<div class="radio-list" >
+							<label class="control-label">Pass Debit Note<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->radio('pass_debit_note',[['value' => 'Yes', 'text' => 'Yes'],['value' => 'No', 'text' => 'No']]); ?>
+							</div>
+						</div>
+					</div>	
 		</div>
 		
 			<br/>
@@ -244,7 +252,7 @@
 			<td rowspan="2" width="10">0</td>
 			<td>
 				<div class="row">
-					<div class="col-md-11 padding-right-decrease">
+					<div class="col-md-11 padding-right-decrease" id="item_div">
 						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen item_box','placeholder' => 'Item']); ?>
 					</div>
 					<div class="col-md-1 padding-left-decrease">
@@ -605,13 +613,15 @@ $(document).ready(function() {
 		copy_term_condition_to_textarea();
 	})
 	
-		$('#id_radio2').click(function () {
-		
+	$('#id_radio2').click(function () {
+		$('#vendor_div').show('fast');
 		$('#customer_div').hide('fast');
-		$('#customer_address_div').hide('fast');
-        $('#vendor_div').show('fast');
+		$('select[name=customer_id]').val('').select2();
 		$('#vendor_address_div').show('fast');
+		$('#customer_address_div').hide('fast');
+		$('textarea[name=customer_address]').val('');
 		$('#invoice_div').hide('fast');
+		$('select[name=invoice_id]').val('').select2();
 		$('#invoice_booking_div').show('fast');
 	});
 				 
@@ -620,27 +630,57 @@ $(document).ready(function() {
 		$('#customer_address_div').show('fast');
 		$('#invoice_div').show('fast');
 		$('#vendor_div').hide('fast');
+		$('select[name=vendor_id]').val('').select2();
 		$('#vendor_address_div').hide('fast');
-		$('#invoice_booking_div').hide('fast');
-		
+		$('textarea[name=vendor_address]').val('');
+		$('select[name=invoice_booking_id]').val('').select2();
 	});
 	
 	if ($('#id_radio2').is(':checked')) {
 		$('#vendor_div').show('fast');
 		$('#customer_div').hide('fast');
+		$('select[name=customer_id]').val('').select2();
 		$('#vendor_address_div').show('fast');
 		$('#customer_address_div').hide('fast');
+		$('textarea[name=customer_address]').val('');
 		$('#invoice_div').hide('fast');
+		$('select[name=invoice_id]').val('').select2();
 		$('#invoice_booking_div').show('fast');
          }
 	else{
-		$('#vendor_div').hide('fast');
 		$('#customer_div').show('fast');    
-		$('#vendor_address_div').hide('fast');
 		$('#customer_address_div').show('fast');
 		$('#invoice_div').show('fast');
-		$('#invoice_booking_div').hide('fast');
+		$('#vendor_div').hide('fast');
+		$('select[name=vendor_id]').val('').select2();
+		$('#vendor_address_div').hide('fast');
+		$('textarea[name=vendor_address]').val('');
+		$('select[name=invoice_booking_id]').val('').select2();
         }
+		
+		
+	$('select[name="invoice_id"]').on("change",function() {
+		var in_id=$(this).val();
+		itemsAsInvoice(in_id,'Invoices');
+	});
+	
+	$('select[name="invoice_booking_id"]').on("change",function() {
+		var in_id=$(this).val();
+		itemsAsInvoice(in_id,'Invoice_Booking');
+	});
+     		
+	function itemsAsInvoice(in_id,source_model){
+		var url = "<?php echo $this->Url->build(['controller'=>'Challans','action'=>'itemsAsInvoice']);?>";
+		url=url+'/'+in_id+'/'+source_model,
+        $.ajax({
+			url: url,
+			type: 'GET',
+		}).done(function(response) {
+			$('#sample_tb #item_div').html(response);
+			$("#main_tb tbody tr").remove();
+			add_row();
+		});
+	}
 });
 
 </script>

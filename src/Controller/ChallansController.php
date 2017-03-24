@@ -225,7 +225,7 @@ class ChallansController extends AppController
 		
 		
         $challan = $this->Challans->get($id, [
-            'contain' => ['Companies','Invoices','Transporters','ChallanRows','Creator','Vendors']
+            'contain' => ['Companies','Invoices' => ['InvoiceRows' => ['Items']],'InvoiceBookings' => ['InvoiceBookingRows' => ['Items']],'Transporters','ChallanRows','Creator','Vendors']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $challan = $this->Challans->patchEntity($challan, $this->request->data);
@@ -276,7 +276,18 @@ class ChallansController extends AppController
         $customers = $this->Challans->Customers->find('all');
 		$vendors = $this->Challans->Vendors->find('all');
         $companies = $this->Challans->Companies->find('all');
-		$items = $this->Challans->Items->find('list');
+		
+		$item_ids=[]; 
+		if(!empty($challan->invoice_id)){
+			foreach($challan->invoice->invoice_rows as $invoice_row){
+				$item_ids[]=$invoice_row->item->id;
+			}
+		}elseif(!empty($challan->invoice_booking_id)){
+			foreach($challan->invoice_booking->invoice_booking_rows as $invoice_booking_row){
+				$item_ids[]=$invoice_booking_row->item->id;
+			}
+		}
+		$items = $this->Challans->Items->find('list')->where(['Items.id IN'=>$item_ids]);
         $invoices = $this->Challans->Invoices->find()->where(['company_id'=>$st_company_id]);
 		$invoice_bookings = $this->Challans->InvoiceBookings->find('all');
         $transporters = $this->Challans->Transporters->find('list');
@@ -334,5 +345,17 @@ class ChallansController extends AppController
 		$challans = $this->paginate($this->Challans->find()->where(['pass_credit_note'=>'Yes'])->order(['Challans.id' => 'DESC']));
 		$this->set('challans', $challans);
 	
+	}
+	
+	public function itemsAsInvoice($in_id=null,$source_model=null)
+	{
+		$this->viewBuilder()->layout('');
+		if($source_model=="Invoices"){
+			$Invoices=$this->Challans->Invoices->get($in_id, ['contain' => ['InvoiceRows' => ['Items']]]);
+		}elseif($source_model=="Invoice_Booking"){
+			$Invoices=$this->Challans->InvoiceBookings->get($in_id, ['contain' => ['InvoiceBookingRows' => ['Items']]]);
+		}
+		$this->set(compact('Invoices', 'source_model'));
+		
 	}
 }

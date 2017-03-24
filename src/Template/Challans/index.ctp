@@ -65,7 +65,6 @@
 								<th>Ref.No</th>
 								<th>Challan For</th>
 								<th>Customer/Vendor Name</th>
-								<th>Company name</th>
 								<th>Transporter Name</th>
 								<th>LR No</th>
 								<th>Reference Detail</th>
@@ -85,7 +84,6 @@
 				<td><?= h(($challan->ch1.'/CH-'.str_pad($challan->ch2, 3, '0', STR_PAD_LEFT).'/'.$challan->ch3.'/'.$challan->ch4)) ?></td>
                 <td><?= h($challan->challan_for) ?></td>
 				<td><?php if($challan->customer_id){ echo $challan->customer->customer_name;  }elseif($challan->vendor_id){ echo $challan->vendor->company_name; } ?></td>
-                <td><?= h($challan->company->name) ?></td>
 				<td><?= h($challan->transporter->transporter_name) ?></td>
                 <td><?= $this->Number->format($challan->lr_no) ?></td>
                 <td><?= h($challan->reference_detail) ?></td>
