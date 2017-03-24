@@ -61,6 +61,8 @@ class CreditNotesTable extends Table
 			'foreignKey' => 'created_by',
 			'propertyName' => 'creator',
 		]);
+		$this->belongsTo('ReferenceDetails');
+		$this->belongsTo('ReferenceBalances');
     }
 
     /**

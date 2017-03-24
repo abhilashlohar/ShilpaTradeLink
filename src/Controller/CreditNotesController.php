@@ -69,6 +69,8 @@ class CreditNotesController extends AppController
 		$financial_year = $this->CreditNotes->FinancialYears->find()->where(['id'=>$st_year_id])->first();
     
 		 if ($this->request->is('post')) {
+			 $total_row=sizeof($this->request->data['reference_no']);
+			
 			$last_ref_no=$this->CreditNotes->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_ref_no){
 				$creditNote->voucher_no=$last_ref_no->voucher_no+1;
@@ -106,6 +108,47 @@ class CreditNotesController extends AppController
 				$ledger->voucher_source = 'Credit Note';
 				$ledger->transaction_date = $creditNote->transaction_date;
 				$this->CreditNotes->Ledgers->save($ledger);
+				
+				for($row=0; $row<$total_row; $row++)
+				{
+					////////////////  ReferenceDetails ////////////////////////////////
+					$query1 = $this->CreditNotes->ReferenceDetails->query();
+					
+					$query1->insert(['reference_no', 'ledger_account_id', 'credit_note_id', 'debit', 'reference_type'])
+					->values([
+						'ledger_account_id' => $this->request->data['purchase_acc_id'],
+						'credit_note_id' => $creditNote->id,
+						'reference_no' => $this->request->data['reference_no'][$row],
+						'debit' => $this->request->data['debit'][$row],
+						'reference_type' => $this->request->data['reference_type'][$row]
+					])
+					->execute();
+					
+					////////////////  ReferenceBalances ////////////////////////////////
+					if($this->request->data['reference_type'][$row]=='Against Reference')
+					{
+						
+						$query2 = $this->CreditNotes->ReferenceBalances->query();
+						
+						$query2->update()
+							->set(['debit' => $this->request->data['debit'][$row]])
+							->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['purchase_acc_id']])
+							->execute();
+					}
+					else
+					{
+						$query2 = $this->CreditNotes->ReferenceBalances->query();
+						$query2->insert(['reference_no', 'ledger_account_id', 'debit'])
+						->values([
+							'reference_no' => $this->request->data['reference_no'][$row],
+							'ledger_account_id' => $this->request->data['purchase_acc_id'],
+							'debit' => $this->request->data['debit'][$row],
+						])
+						->execute();
+					}
+					
+				}
+			
 				
 				$this->Flash->success(__('The Credit Notes:'.str_pad($creditNote->voucher_no, 4, '0', STR_PAD_LEFT)).' has been genereted.');
 				return $this->redirect(['action' => 'view/'.$creditNote->id]);
@@ -248,4 +291,14 @@ class CreditNotesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function fetchReferenceNo($ledger_account_id=null)
+    {
+		$this->viewBuilder()->layout('ajax_layout');
+		
+		//pr($ledger_account_id);
+		$ReferenceDetails=$this->CreditNotes->ReferenceBalances->find()->where(['ledger_account_id' => $ledger_account_id])->toArray();
+		
+		$this->set(compact(['ReferenceDetails']));
+	}
 }

@@ -381,7 +381,7 @@ $(document).ready(function() {
                     url: '<?php echo $this->Url->build(['controller'=>'Ledgers','action'=>'check_reference_no']); ?>',
                     type: "get",
                     data:
-                        {
+                        { 
                             ledger_account_id: function(){return $('select[name=received_from_id] option:selected').val();}
                         },
 					},

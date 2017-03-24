@@ -115,17 +115,13 @@ class ReceiptVouchersController extends AppController
         if ($this->request->is('post')) {
 			
 			$total_row=sizeof($this->request->data['reference_no']);
-			
-			
-			
 			$last_ref_no=$this->ReceiptVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_ref_no){
 				$receiptVoucher->voucher_no=$last_ref_no->voucher_no+1;
 			}else{
 				$receiptVoucher->voucher_no=1;
 			}
-				
-            $receiptVoucher = $this->ReceiptVouchers->patchEntity($receiptVoucher, $this->request->data);
+			$receiptVoucher = $this->ReceiptVouchers->patchEntity($receiptVoucher, $this->request->data);
 			$receiptVoucher->created_by=$s_employee_id;
 			$receiptVoucher->transaction_date=date("Y-m-d",strtotime($receiptVoucher->transaction_date));
 			$receiptVoucher->created_on=date("Y-m-d");

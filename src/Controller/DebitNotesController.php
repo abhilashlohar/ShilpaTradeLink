@@ -246,4 +246,12 @@ class DebitNotesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	public function fetchReferenceNo($ledger_account_id=null)
+    {
+		$this->viewBuilder()->layout('ajax_layout');
+	
+		$ReferenceBalances=$this->DebitNotes->ReferenceBalances->find()->where(['ledger_account_id' => $ledger_account_id])->toArray();
+		
+		$this->set(compact(['ReferenceBalances']));
+	}
 }

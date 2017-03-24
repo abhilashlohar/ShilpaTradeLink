@@ -55,7 +55,7 @@ class PaymentVouchersController extends AppController
 	public function fetchReferenceNo($ledger_account_id=null)
     {
 		$this->viewBuilder()->layout('ajax_layout');
-	
+		
 		$ReferenceBalances=$this->PaymentVouchers->ReferenceBalances->find()->where(['ledger_account_id' => $ledger_account_id])->toArray();
 		
 		$this->set(compact(['ReferenceBalances']));
