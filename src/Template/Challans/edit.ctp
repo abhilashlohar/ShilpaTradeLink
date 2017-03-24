@@ -232,6 +232,7 @@
 		<?= $this->Form->end() ?>
 	</div>
 </div>
+
 <style>
 .table thead tr th {
     color: #FFF;
@@ -285,20 +286,7 @@
 </table>
 
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
-<style>
-#sortable li{
-	cursor: -webkit-grab;
-}
-</style>
-<?php echo $this->Html->css('/drag_drop/jquery-ui.css'); ?>
-<?php echo $this->Html->script('/drag_drop/jquery-1.12.4.js'); ?>
-<?php echo $this->Html->script('/drag_drop/jquery-ui.js'); ?>
-<script>
-$( function() {
-$( "#sortable" ).sortable();
-$( "#sortable" ).disableSelection();
-} );
-</script>
+
 <script>
 $(document).ready(function() {
 	//--------- FORM VALIDATION
@@ -636,27 +624,27 @@ $(document).ready(function() {
 		$('select[name=invoice_booking_id]').val('').select2();
 	});
 	
-	if ($('#id_radio2').is(':checked')) {
+	if ($('#id_radio2').is(':checked')){
 		$('#vendor_div').show('fast');
 		$('#customer_div').hide('fast');
-		$('select[name=customer_id]').val('').select2();
+		//$('select[name=customer_id]').val('').select2();
 		$('#vendor_address_div').show('fast');
 		$('#customer_address_div').hide('fast');
 		$('textarea[name=customer_address]').val('');
 		$('#invoice_div').hide('fast');
-		$('select[name=invoice_id]').val('').select2();
+		//$('select[name=invoice_id]').val('').select2();
 		$('#invoice_booking_div').show('fast');
-         }
+    }
 	else{
 		$('#customer_div').show('fast');    
 		$('#customer_address_div').show('fast');
 		$('#invoice_div').show('fast');
 		$('#vendor_div').hide('fast');
-		$('select[name=vendor_id]').val('').select2();
+		//$('select[name=vendor_id]').val('').select2();
 		$('#vendor_address_div').hide('fast');
 		$('textarea[name=vendor_address]').val('');
-		$('select[name=invoice_booking_id]').val('').select2();
-        }
+		//$('select[name=invoice_booking_id]').val('').select2();
+    }
 		
 		
 	$('select[name="invoice_id"]').on("change",function() {
@@ -684,41 +672,3 @@ $(document).ready(function() {
 });
 
 </script>
-
-	 
-<div id="myModal1" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-body" id="result_ajax">
-				
-			</div>
-			<div class="modal-footer">
-				<button class="btn default closebtn">Close</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div id="myModal2" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false" style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-body" id="result_ajax">
-			<h4>Commercial Terms & Conditions</h4>
-				<div style=" overflow: auto; height: 450px;">
-				<table class="table table-hover tabl_tc">
-				<?php foreach ($termsConditions as $termsCondition): ?>
-					 <tr>
-						<td width="10"><label><?php echo $this->Form->input('dummy', ['type' => 'checkbox','label' => false,'class' => '']); ?></label></td>
-						<td><p><?= h($termsCondition->text_line) ?></p></td>
-					</tr>
-				<?php endforeach; ?>
-				</table>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button class="btn default closebtn2">Close</button>
-				<button class="btn btn-primary insert_tc">Insert</button>
-			</div>
-		</div>
-	</div>
-</div>
