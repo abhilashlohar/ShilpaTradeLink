@@ -39,14 +39,7 @@ class CustomersController extends AppController
         $customers = $this->paginate($this->Customers->find()->where($where)->order(['Customers.customer_name' => 'ASC']));
 
 		
-		$Customers=$this->Customers->find();
-		foreach($Customers as $Customer){
-			$query = $this->Customers->LedgerAccounts->query();
-			$query->update()
-				->set(['alias' => $Customer->alias])
-				->where(['source_model' => 'Customers','source_id'=>$Customer->id])
-				->execute();
-		}
+		
 		
         $this->set(compact('customers'));
         $this->set('_serialize', ['customers']);
