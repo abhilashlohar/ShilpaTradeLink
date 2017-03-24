@@ -16,9 +16,6 @@
 			}
 			 ?>
 		</div>
-		<div class="actions">
-			<?php echo $this->Html->link('<i class="icon-home"></i> Pull Purchase-Order','/PurchaseOrders/index?pull-request=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
-		</div>
 	</div>
 	<?php if(!empty($purchase_order)) { ?>
 	<div class="portlet-body form">

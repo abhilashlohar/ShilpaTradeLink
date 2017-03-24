@@ -208,7 +208,18 @@ class ReceiptVouchersController extends AppController
 			$where[]=$data->ledger_account_id;
 		}
 		if(sizeof($where)>0){
-			$receivedFroms = $this->ReceiptVouchers->ReceivedFroms->find('list')->where(['ReceivedFroms.id IN' => $where]);
+			$receivedFroms = $this->ReceiptVouchers->ReceivedFroms->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['ReceivedFroms.id IN' => $where]);
 		}else{
 			$ErrorreceivedFroms='true';
 		}
@@ -221,7 +232,18 @@ class ReceiptVouchersController extends AppController
 			$where[]=$data->ledger_account_id;
 		}
 		if(sizeof($where)>0){
-			$bankCashes = $this->ReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
+			$bankCashes = $this->ReceiptVouchers->BankCashes->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['BankCashes.id IN' => $where]);
 		}else{
 			$ErrorbankCashes='true';
 		}
@@ -403,7 +425,18 @@ class ReceiptVouchersController extends AppController
 		foreach($vouchersReferences->voucher_ledger_accounts as $data){
 			$where[]=$data->ledger_account_id;
 		}
-		$receivedFroms = $this->ReceiptVouchers->ReceivedFroms->find('list')->where(['ReceivedFroms.id IN' => $where]);
+		$receivedFroms = $this->ReceiptVouchers->ReceivedFroms->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['ReceivedFroms.id IN' => $where]);
 				
 		$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get(4, [
             'contain' => ['VoucherLedgerAccounts']
@@ -412,7 +445,18 @@ class ReceiptVouchersController extends AppController
 		foreach($vouchersReferences->voucher_ledger_accounts as $data){
 			$where[]=$data->ledger_account_id;
 		}
-		$bankCashes = $this->ReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
+		$bankCashes = $this->ReceiptVouchers->BankCashes->find('list'.
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['BankCashes.id IN' => $where]);
 		
         $companies = $this->ReceiptVouchers->Companies->find('all');		
         $this->set(compact('ReferenceDetails','ReferenceBalances','receiptVoucher', 'receivedFroms', 'bankCashes','companies','financial_year','financial_year_data','receipt_voucher_id'));

@@ -77,19 +77,22 @@
 						<td><?= h($group) ?></td>
 						<td><?= h($firstsubgroup) ?></td>
 						<td><?= h($secondsubgroup) ?></td>
-						<td><?= h($ledgerAccount->name) ?></td>
-						<td><?php if($ledgerAccount->source_model == 'Customers'){ ?>
-						<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'customers','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?> <?php } ?>
-						<?php if($ledgerAccount->source_model == 'SaleTax'){ ?>
-						<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'SaleTaxes','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?> <?php } ?>
-						<?php if($ledgerAccount->source_model == 'Employees'){ ?>
-						<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'Employees','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?> <?php } ?>
-						<?php if($ledgerAccount->source_model == 'Vendors'){ ?>
-						<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'Vendors','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?> <?php } ?>
-						
-						<?php if($ledgerAccount->source_model == 'Ledger Account'){ ?>
-						<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'LedgerAccounts','action' => 'Edit', $ledgerAccount->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?>
-						<?php } ?>
+						<td>
+							<?= h($ledgerAccount->name) ?> 
+							<?php if(!empty($ledgerAccount->alias)){ ?>  (<?= h($ledgerAccount->alias) ?>)<?php } ?>
+						</td>
+						<td>
+						<?php if($ledgerAccount->source_model == 'Customers'){
+							echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'customers','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); }
+						if($ledgerAccount->source_model == 'SaleTax'){
+							echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'SaleTaxes','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); }
+						if($ledgerAccount->source_model == 'Employees'){
+							echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'Employees','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); }
+						if($ledgerAccount->source_model == 'Vendors'){
+							echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'Vendors','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); }
+						if($ledgerAccount->source_model == 'Ledger Account'){
+						echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'LedgerAccounts','action' => 'Edit', $ledgerAccount->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));
+						} ?>
 						<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
 								['action' => 'delete', $ledgerAccount->id], 
 								[
