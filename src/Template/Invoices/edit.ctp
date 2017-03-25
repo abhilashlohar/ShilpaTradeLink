@@ -305,14 +305,10 @@
 				</tr>
 				<tr>
 					<td  align="left">
-					<b>Fright Amount </b>
 					<?php echo $this->Form->input('fright_text', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional text for Fright Amount','style'=>['text-align:left']]); ?>
 					</td>
 					<td>
-					<label class="col-md-4 control-label">Fright Account<span class="required" aria-required="true">*</span></label>
-						<div class="col-md-8">
-							<?php echo $this->Form->input('fright_ledger_account', ['empty' => "--Select--",'label' => false,'options' =>$ledger_account_details_for_fright,'class' => 'form-control input-sm select2me','required']); ?>
-						</div>
+						<?php echo $this->Form->input('fright_ledger_account', ['empty' => "--Fright Account--",'label' => false,'options' =>$ledger_account_details_for_fright,'class' => 'form-control input-sm select2me','required']); ?>
 					<?php echo $this->Form->input('fright_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','step'=>0.01]); ?></td>
 				</tr>
 				<tr>
