@@ -307,6 +307,10 @@ class InvoicesController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
+		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
 		$sales_order_id=@(int)$this->request->query('sales-order');
 		$sales_order=array(); $process_status='New';
 		if(!empty($sales_order_id)){
@@ -385,9 +389,6 @@ class InvoicesController extends AppController
 			}
 			//pr($invoice->fright_ledger_account); exit;
             if ($this->Invoices->save($invoice)) {
-		
-				
-				
 				$ledger_grand=$invoice->grand_total;
 				$ledger = $this->Invoices->Ledgers->newEntity();
 				$ledger->ledger_account_id = $sales_order->customer->ledger_account_id;
@@ -603,13 +604,14 @@ class InvoicesController extends AppController
 		$account_first_subgroup_id_for_fright=$AccountReference_for_fright->account_first_subgroup_id;
 		//$ac_first_grp_id=$AccountReference->account_first_subgroup_id;
 		
+		
 		$ledger_account_details = $this->Invoices->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups' => function($q) use($account_first_subgroup_id){
 			return $q->where(['AccountFirstSubgroups.id'=>$account_first_subgroup_id]);
-		}]])->order(['LedgerAccounts.name' => 'ASC'])->toArray();
+		}]])->order(['LedgerAccounts.name' => 'ASC'])->where(['LedgerAccounts.company_id'=>$st_company_id]);
 		
 		$ledger_account_details_for_fright = $this->Invoices->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups' => function($q) use($account_first_subgroup_id_for_fright){
 			return $q->where(['AccountFirstSubgroups.id'=>$account_first_subgroup_id_for_fright]);
-		}]])->order(['LedgerAccounts.name' => 'ASC'])->toArray();
+		}]])->where(['LedgerAccounts.company_id'=>$st_company_id])->order(['LedgerAccounts.name' => 'ASC']);
 		//pr($ledger_account_details_for_fright); exit;
 		$item_serial_no=$this->Invoices->ItemSerialNumbers->find('list', ['limit' => 200]);
 		$employees = $this->Invoices->Employees->find('list', ['limit' => 200]);
@@ -633,6 +635,8 @@ class InvoicesController extends AppController
      */
     public function edit($id = null)
     {
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
 		
 		$this->viewBuilder()->layout('index_layout');
         $invoice = $this->Invoices->get($id, [
@@ -992,11 +996,11 @@ class InvoicesController extends AppController
 		$account_first_subgroup_id_for_fright=$AccountReference_for_fright->account_first_subgroup_id;
 		$ledger_account_details = $this->Invoices->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups' => function($q) use($account_first_subgroup_id){
 			return $q->where(['AccountFirstSubgroups.id'=>$account_first_subgroup_id]);
-		}]])->order(['LedgerAccounts.name' => 'ASC'])->toArray();
+		}]])->order(['LedgerAccounts.name' => 'ASC'])->where(['LedgerAccounts.company_id'=>$st_company_id]);
 		
 		$ledger_account_details_for_fright = $this->Invoices->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups' => function($q) use($account_first_subgroup_id_for_fright){
 			return $q->where(['AccountFirstSubgroups.id'=>$account_first_subgroup_id_for_fright]);
-		}]])->order(['LedgerAccounts.name' => 'ASC'])->toArray();
+		}]])->order(['LedgerAccounts.name' => 'ASC'])->where(['LedgerAccounts.company_id'=>$st_company_id]);
 		
 		$items = $this->Invoices->Items->find('list',['limit' => 200]);
 		$transporters = $this->Invoices->Transporters->find('list', ['limit' => 200]);

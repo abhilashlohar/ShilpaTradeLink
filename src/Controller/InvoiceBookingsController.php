@@ -175,13 +175,14 @@ class InvoiceBookingsController extends AppController
 				
 				//ledger posting
 				$ledger = $this->InvoiceBookings->Ledgers->newEntity();
-				$ledger->ledger_account_id = $accountReferences->ledger_account_id;
+				$ledger->ledger_account_id = $invoiceBooking->purchase_ledger_account;
 				$ledger->debit = $invoiceBooking->total;
 				$ledger->credit = 0;
 				$ledger->voucher_id = $invoiceBooking->id;
 				$ledger->company_id = $invoiceBooking->company_id;
 				$ledger->voucher_source = 'Invoice Booking';
 				$ledger->transaction_date = $invoiceBooking->supplier_date;
+				//pr($ledger); exit;
 				$this->InvoiceBookings->Ledgers->save($ledger);
 				
 				//Ledger posting for bankcash
@@ -243,9 +244,16 @@ class InvoiceBookingsController extends AppController
             }
         }
 		
+		
+		$AccountReference= $this->InvoiceBookings->AccountReferences->get(2);
+		$ledger_account_details = $this->InvoiceBookings->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups' => function($q) use($AccountReference){
+			return $q->where(['AccountFirstSubgroups.id'=>$AccountReference->account_first_subgroup_id]);
+		}]])->order(['LedgerAccounts.name' => 'ASC'])->where(['LedgerAccounts.company_id'=>$st_company_id]);
+		//pr($ledger_account_details->toArray()); exit;
+		
 		$companies = $this->InvoiceBookings->Companies->find('all');
         $grns = $this->InvoiceBookings->Grns->find('list', ['limit' => 200]);
-        $this->set(compact('invoiceBooking', 'grns','companies'));
+        $this->set(compact('invoiceBooking', 'grns','companies','ledger_account_details'));
         $this->set('_serialize', ['invoiceBooking']);
     }
 

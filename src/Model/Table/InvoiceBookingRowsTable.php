@@ -45,6 +45,7 @@ class InvoiceBookingRowsTable extends Table
             'joinType' => 'INNER'
         ]);
 		$this->belongsTo('InvoiceBookings');
+		
     }
 
     /**

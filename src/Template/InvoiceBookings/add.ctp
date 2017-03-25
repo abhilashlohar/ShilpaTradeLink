@@ -81,7 +81,6 @@
 							
 						</div>
 					</div>
-					
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label>
@@ -90,7 +89,14 @@
 							<? ?>
 						</div>
 					</div>
-						
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Purchase Account <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('purchase_ledger_account', ['options' => $ledger_account_details,'label' => false,'class' => 'form-control input-sm']); ?>
+							<br/>
+							<? ?>
+						</div>
+					</div>
 				</div>
 				
 				<table class="table tableitm" id="main_tb">
