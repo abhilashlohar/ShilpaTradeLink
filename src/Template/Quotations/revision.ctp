@@ -12,6 +12,9 @@
 			<td><?php echo date("d-m-Y",strtotime($quotation->finalisation_date)); ?></td>
 			<td class="actions">
 				<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $quotation->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs default tooltips','data-original-title'=>'View as PDF')); ?>
+			<?php if($pull_request=="true"){
+					echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Sales Order','/Sales-Orders/Add?quotation='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+			} ?>
 			</td>
 			</tr>
 		<?php endforeach; ?>

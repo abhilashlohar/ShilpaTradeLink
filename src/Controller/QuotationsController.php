@@ -499,13 +499,16 @@ class QuotationsController extends AppController
 		return $this->redirect(['action' => 'index']);
     }
 	
-	public function revision($id = null)
+	public function revision($id = null,$pull_request1 = null,$pull_request = null)
     {
 		$quotation = $this->Quotations->get($id);
+		//$pull_request= $this->request->data['pull_request'];
+		//$pull_request=$this->request->query('pull-request');
+		//pr($pull_request); exit;
 		$quot_id = $quotation->quotation_id;
 		$revision = $quotation->revision;
 		$quotations =$this->Quotations->find()->contain(['Customers','Employees','ItemGroups'])->where(['Quotations.quotation_id' =>$quot_id,'Quotations.revision !=' => $revision ]);
-		$this->set(compact('quotations','quot_id','edit_hide'));
+		$this->set(compact('quotations','quot_id','edit_hide','pull_request'));
     }
 	
 	public function reopen($id = null)

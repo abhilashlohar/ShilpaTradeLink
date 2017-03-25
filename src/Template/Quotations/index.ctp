@@ -250,26 +250,37 @@ $(document).ready(function() {
 	$('.revision_show').die().live("click",function() {
 		//$("#revision_hide").show();
 		//$("#revision_show").hide();
-		$(this).hide();
-		$(this).closest('td').find(".revision_hide").show();
-		var entity=$(this).closest('tr');
-		var quote_id=$(this).val();
+		<?php if($pull_request=="true"){ ?>
+		var pull_request='true';
+		<?php } else {?>
+		var pull_request='false';
+		<?php } ?>
+		
+		var current_obj=$(this);
+		current_obj.hide();
+		
+		var entity=current_obj.closest('tr');
+		var quote_id=current_obj.val();
 		var url="<?php echo $this->Url->build(['controller'=>'Quotations','action'=>'Revision']);
 		?>";
-		url=url+'/'+quote_id+'/'+quote_id,
-		
+		url=url+'/'+quote_id+'/'+quote_id+'/'+pull_request,
+		//alert(url);
 		$.ajax({
 			url: url,
 		}).done(function(response) {
 			entity.after(response);
 			//$("#view_revision").html(response);
+			current_obj.closest('td').find(".revision_hide").show();
 		});		
+		
     });
 	
 	$('.revision_hide').die().live("click",function() {
-		$(this).closest('tr').next().remove();
-		$(this).hide();
-		$(this).closest('td').find(".revision_show").show();
+		var current_obj=$(this);
+		current_obj.hide();
+		current_obj.closest('tr').next().remove();
+		
+		current_obj.closest('td').find(".revision_show").show();
 	});
 });	
 </script>
