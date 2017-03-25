@@ -96,8 +96,8 @@ class InvoiceBookingsController extends AppController
 			}else{
 				$tot_pnf=$grn->purchase_order->pnf;
 			}
-			
-			$tot_sale_tax=($grn->purchase_order->total*$grn->purchase_order->sale_tax_per)/100;
+			$excise_duty=$grn->purchase_order->excise_duty;
+			$tot_sale_tax=(($grn->purchase_order->total-$discount)*$grn->purchase_order->sale_tax_per)/100;
 		}
 		$last_ib_no=$this->InvoiceBookings->find()->select(['ib2'])->where(['company_id' => $st_company_id])->order(['ib2' => 'DESC'])->first();
 		if($last_ib_no){
@@ -105,8 +105,18 @@ class InvoiceBookingsController extends AppController
 		}else{
 			@$last_ib_no->ib2=1;
 			}
+		$q=0; $item_total_rate=0;
+		foreach ($grn->grn_rows as $grn_rows){
+			$dis=($discount*$grn->purchase_order->purchase_order_rows[$q]->amount)/$grn->purchase_order->total;
+			$item_discount=$dis/$grn->purchase_order->purchase_order_rows[$q]->quantity;
+			
+			$item_total_rate+=$grn->purchase_order->purchase_order_rows[$q]->amount-$dis;
+			$q++;
+			//pr($item_total_rate);
+		} 
+		//pr($item_total_rate);  exit;
 		
-		$this->set(compact('grn','last_ib_no','discount','tot_pnf','tot_sale_tax','chkdate'));
+		$this->set(compact('grn','last_ib_no','discount','tot_pnf','tot_sale_tax','chkdate','item_total_rate','excise_duty'));
 		$invoiceBooking = $this->InvoiceBookings->newEntity();
 		if ($this->request->is('post')) { 
 		$total_row=sizeof($this->request->data['reference_no']);
