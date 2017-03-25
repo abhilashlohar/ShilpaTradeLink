@@ -117,7 +117,18 @@ class ContraVouchersController extends AppController
 			$where[]=$data->ledger_account_id;
 		}
 		if(sizeof($where)>0){
-			$cashBankFroms = $this->ContraVouchers->CashBankFroms->find('list')->where(['cashBankFroms.id IN' => $where]);
+			$cashBankFroms = $this->ContraVouchers->CashBankFroms->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['cashBankFroms.id IN' => $where]);
 		}
 		else{
 			$ErrorcashBankFroms='true';
@@ -132,7 +143,18 @@ class ContraVouchersController extends AppController
 		
 		}
 		if(sizeof($where)>0){
-			$cashBankTos = $this->ContraVouchers->CashBankTos->find('list')->where(['cashBankTos.id IN' => $where]);
+			$cashBankTos = $this->ContraVouchers->CashBankTos->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['cashBankTos.id IN' => $where]);
 		}
 		else{
 			$ErrorcashBankTos='true';
@@ -213,7 +235,18 @@ class ContraVouchersController extends AppController
 			$where[]=$data->ledger_account_id;
 		}
 
-		$cashBankFroms = $this->ContraVouchers->CashBankFroms->find('list')->where(['cashBankFroms.id IN' => $where]);
+		$cashBankFroms = $this->ContraVouchers->CashBankFroms->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['cashBankFroms.id IN' => $where]);
 		
 			
 		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get(8, [
@@ -225,7 +258,18 @@ class ContraVouchersController extends AppController
 		
 		}
 
-		$cashBankTos = $this->ContraVouchers->CashBankTos->find('list')->where(['cashBankTos.id IN' => $where]);
+		$cashBankTos = $this->ContraVouchers->CashBankTos->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['cashBankTos.id IN' => $where]);
 		
 		$companies = $this->ContraVouchers->Companies->find('all');
         

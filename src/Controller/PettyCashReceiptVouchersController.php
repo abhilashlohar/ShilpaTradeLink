@@ -114,7 +114,18 @@ class PettyCashReceiptVouchersController extends AppController
 			$where[]=$data->ledger_account_id;
 		}
 		if(sizeof($where)>0){
-			$receivedFroms = $this->PettyCashReceiptVouchers->ReceivedFroms->find('list')->where(['ReceivedFroms.id IN' => $where]);
+			$receivedFroms = $this->PettyCashReceiptVouchers->ReceivedFroms->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['ReceivedFroms.id IN' => $where]);
 		}
 		else{
 			$ErrorreceivedFroms='true';
@@ -128,7 +139,18 @@ class PettyCashReceiptVouchersController extends AppController
 			
 		}
 		if(sizeof($where)>0){
-			$bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
+			$bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['BankCashes.id IN' => $where]);
 		}
 		else{
 			$ErrorbankCashes='true';
@@ -204,7 +226,18 @@ class PettyCashReceiptVouchersController extends AppController
 			$where[]=$data->ledger_account_id;
 		}
 
-		$receivedFroms = $this->PettyCashReceiptVouchers->ReceivedFroms->find('list')->where(['ReceivedFroms.id IN' => $where]);
+		$receivedFroms = $this->PettyCashReceiptVouchers->ReceivedFroms->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['ReceivedFroms.id IN' => $where]);
 			
 		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(6, [
             'contain' => ['VoucherLedgerAccounts']
@@ -214,7 +247,18 @@ class PettyCashReceiptVouchersController extends AppController
 			  $where[]=$data->ledger_account_id;
 			
 		}
-		$bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list')->where(['BankCashes.id IN' => $where]);
+		$bankCashes = $this->PettyCashReceiptVouchers->BankCashes->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['BankCashes.id IN' => $where]);
 		$companies = $this->PettyCashReceiptVouchers->Companies->find('all');
         $this->set(compact('pettyCashReceiptVoucher', 'receivedFroms', 'bankCashes','companies','financial_year'));
         $this->set('_serialize', ['pettyCashReceiptVoucher']);

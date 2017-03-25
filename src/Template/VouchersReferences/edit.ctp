@@ -84,7 +84,13 @@
 											<table width="100%">
 												<tr>
 													<td ><input type="checkbox" name="ledger_accounts[_ids][]"  value="<?php echo $ledger_account->id;?>" <?php if (in_array($ledger_account->id, $ledger_arr)) {echo 'checked'; } else { } ?> class="ledger" group_id="<?php echo $accountGroup->id;?>" first_group_id="<?php echo $account_first_subgroup->id;?>" second_subgrop_id="<?php echo $account_second_subgroup->id;?>" ledger_account_id="<?php echo $ledger_account->id;?>"/></td>
-													<td width="100%"><?php echo $ledger_account->name; ?></td>
+													<td width="100%">
+													<?php if(!empty($ledger_account->alias)){ ?>
+														<?php echo $ledger_account->name; ?> (<?= h($ledger_account->alias) ?>)
+													<?php }else{ ?>
+														<?= h($ledger_account->name) ?>
+													<?php } ?>
+													</td>
 												</tr>
 											</table>
 										</h4>

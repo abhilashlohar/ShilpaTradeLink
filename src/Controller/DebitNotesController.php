@@ -115,7 +115,18 @@ class DebitNotesController extends AppController
 			$where[]=$data->ledger_account_id;
 		}
 		if(sizeof($where)>0){
-			$salesAccs = $this->DebitNotes->SalesAccs->find('list')->where(['SalesAccs.id IN' => $where]);
+			$salesAccs = $this->DebitNotes->SalesAccs->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['SalesAccs.id IN' => $where]);
 		}
 		else{
 			$ErrorsalesAccs='true';
@@ -131,7 +142,18 @@ class DebitNotesController extends AppController
 		
 		}
 		if(sizeof($where)>0){
-			$parties = $this->DebitNotes->Parties->find('list')->where(['Parties.id IN' => $where]);
+			$parties = $this->DebitNotes->Parties->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['Parties.id IN' => $where]);
 		
 		}
 		else{
@@ -209,7 +231,18 @@ class DebitNotesController extends AppController
 			$where[]=$data->ledger_account_id;
 		}
 
-		$salesAccs = $this->DebitNotes->SalesAccs->find('list')->where(['SalesAccs.id IN' => $where]);
+		$salesAccs = $this->DebitNotes->SalesAccs->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['SalesAccs.id IN' => $where]);
 			
 		$vouchersReferences = $this->DebitNotes->VouchersReferences->get(11, [
             'contain' => ['VoucherLedgerAccounts']
@@ -220,7 +253,18 @@ class DebitNotesController extends AppController
 		
 		}
 
-		$parties = $this->DebitNotes->Parties->find('list')->where(['Parties.id IN' => $where]);
+		$parties = $this->DebitNotes->Parties->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['Parties.id IN' => $where]);
 		
 		$companies = $this->DebitNotes->Companies->find('all');
         $this->set(compact('debitNote', 'salesAccs', 'parties', 'companies','financial_year'));

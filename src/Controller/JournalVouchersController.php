@@ -122,7 +122,18 @@ class JournalVouchersController extends AppController
 			$where[]=$data->ledger_account_id;
 		}
 		if(sizeof($where)>0){
-			$ledgers = $this->JournalVouchers->LedgerAccounts->find('list')->where(['LedgerAccounts.id IN' => $where]);
+			$ledgers = $this->JournalVouchers->LedgerAccounts->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['LedgerAccounts.id IN' => $where]);
 		}
 		else{
 			$Errorledgers='true';
@@ -207,7 +218,18 @@ class JournalVouchersController extends AppController
 			$where[]=$data->ledger_account_id;
 		}
 
-		$ledgers = $this->JournalVouchers->LedgerAccounts->find('list')->where(['LedgerAccounts.id IN' => $where]);
+		$ledgers = $this->JournalVouchers->LedgerAccounts->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['LedgerAccounts.id IN' => $where]);
         $companies = $this->JournalVouchers->Companies->find('all');
         $this->set(compact('journalVoucher', 'companies','ledgers','financial_year','financial_year_data'));
         $this->set('_serialize', ['journalVoucher']);

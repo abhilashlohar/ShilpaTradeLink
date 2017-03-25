@@ -24,7 +24,7 @@
 						?>
 					</div>
 					<div class="col-md-5">
-					<label class="control-label">Name <span class="required" aria-required="true">*</span></label>
+					<label class="control-label">First Sub-Group <span class="required" aria-required="true">*</span></label>
 						<?php 
 						echo $this->Form->input('name', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Name']); 
 						?>
@@ -52,8 +52,8 @@
 								<th>S.No</th>
 								<th>Account Category</th>
 								<th>Account Group</th>
-								<th>Name</th>
-								<th class="actions"><?= __('Actions') ?></th>
+								<th>First Sub-Group</th>
+								<th width="80"><?= __('Actions') ?></th>
 							</tr>
 					
 					</thead>
@@ -98,11 +98,15 @@ var $rows = $('#main_tble tbody tr');
 	$('#search').on('change',function() {
 		
 		var val = $.trim($(this).find('option:selected').text()).replace(/ +/g, ' ').toLowerCase();
-
-		$rows.show().filter(function() {
-			var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-			return !~text.indexOf(val);
-		}).hide();
+		var v = $(this).find('option:selected').val();
+		if(v){
+			$rows.show().filter(function() {
+				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+				return !~text.indexOf(val);
+			}).hide();
+		}else{
+			$rows.show();
+		}
 	});	
 });
 </script>

@@ -10,7 +10,7 @@
 			<div class="portlet-body">
 				<form method="get">
 					<div class="input-group input-medium">
-						<input type="text" name="date" class="form-control date-picker" placeholder="Date" data-date-format='dd-mm-yyyy' data-date-end-date='0d'>
+						<input type="text" name="date" class="form-control date-picker" placeholder="Date" data-date-format='dd-mm-yyyy' data-date-end-date='0d' value="<?php  echo $date; ?>">
 						<span class="input-group-btn">
 						<button class="btn blue" type="submit">Go</button>
 						</span>
@@ -26,7 +26,10 @@
 							foreach($Ledgers_Expense as $Ledger){ 
 							$Total_Liablities+=$Ledger->total_debit-$Ledger->total_credit; ?>
 								<tr>
-									<td><?= h($Ledger->ledger_account->name) ?></td>
+									<td>
+									<?php if(!empty(h($Ledger->ledger_account->alias))){ ?><?= h($Ledger->ledger_account->name) ?> (<?= h($Ledger->ledger_account->alias) ?>)<?php }
+									else{ ?><?= h($Ledger->ledger_account->name) ?><?php } ?>
+									</td>
 									<?php if($Ledger->total_debit>$Ledger->total_credit){?>
 										<td style=" text-align: right; "><?= h($Ledger->total_debit-$Ledger->total_credit); echo "Dr" ;
 										$Total_exp_Dr+=$Ledger->total_debit-$Ledger->total_credit; 
@@ -63,7 +66,10 @@
 							foreach($Ledgers_Income as $Ledger){ 
 							$Total_Assets+=$Ledger->total_debit-$Ledger->total_credit; ?>
 								<tr>
-									<td><?= h($Ledger->ledger_account->name) ?></td>
+									<td>
+									<?php if(!empty(h($Ledger->ledger_account->alias))){ ?><?= h($Ledger->ledger_account->name) ?> (<?= h($Ledger->ledger_account->alias) ?>)<?php }
+									else{ ?><?= h($Ledger->ledger_account->name) ?><?php } ?>
+									</td>
 									<?php if($Ledger->total_debit>$Ledger->total_credit){?>
 										<td style=" text-align: right; "><?= h($Ledger->total_debit-$Ledger->total_credit); echo "Dr" ;
 										$Total_Dr+=$Ledger->total_debit-$Ledger->total_credit; 

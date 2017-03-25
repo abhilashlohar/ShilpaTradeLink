@@ -165,7 +165,18 @@ class CreditNotesController extends AppController
 			  $where[]=$data->ledger_account_id;
 		}
 		if(sizeof($where)>0){
-			$purchaseAccs = $this->CreditNotes->PurchaseAccs->find('list')->where(['PurchaseAccs.id IN' => $where]);
+			$purchaseAccs = $this->CreditNotes->PurchaseAccs->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['PurchaseAccs.id IN' => $where]);
 		}else{
 			$ErrorpurchaseAccs='true';
 		}
@@ -178,7 +189,18 @@ class CreditNotesController extends AppController
 			  $where[]=$data->ledger_account_id;
 		}
 		if(sizeof($where)>0){
-			$parties = $this->CreditNotes->Parties->find('list')->where(['Parties.id IN' => $where]);
+			$parties = $this->CreditNotes->Parties->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['Parties.id IN' => $where]);
 		}
 		else{
 			$Errorparties='true';
@@ -254,7 +276,18 @@ class CreditNotesController extends AppController
 			  $where[]=$data->ledger_account_id;
 		}
 
-		$purchaseAccs = $this->CreditNotes->PurchaseAccs->find('list')->where(['PurchaseAccs.id IN' => $where]);
+		$purchaseAccs = $this->CreditNotes->PurchaseAccs->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['PurchaseAccs.id IN' => $where]);
 			
 		$vouchersReferences = $this->CreditNotes->VouchersReferences->get(13, [
             'contain' => ['VoucherLedgerAccounts']
@@ -264,7 +297,18 @@ class CreditNotesController extends AppController
 			  $where[]=$data->ledger_account_id;
 		}
 
-		$parties = $this->CreditNotes->Parties->find('list')->where(['Parties.id IN' => $where]);
+		$parties = $this->CreditNotes->Parties->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['Parties.id IN' => $where]);
 		
 		$companies = $this->CreditNotes->Companies->find('all');
         $this->set(compact('creditNote', 'purchaseAccs', 'parties', 'companies','financial_year'));

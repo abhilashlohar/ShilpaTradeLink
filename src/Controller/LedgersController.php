@@ -214,6 +214,9 @@ class LedgersController extends AppController
 	public function AccountStatement (){
 		$this->viewBuilder()->layout('index_layout');
 		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
 		$ledger_account_id=$this->request->query('ledger_account_id');
 		if($ledger_account_id){
 		$transaction_from_date= date('Y-m-d', strtotime($this->request->query['From']));
@@ -238,7 +241,18 @@ class LedgersController extends AppController
 		$total_balance=$query->select(['total_debit' => $query->func()->sum('debit'),'total_credit' => $query->func()->sum('credit')])->where(['Ledgers.ledger_account_id' => $ledger_account_id,'Ledgers.transaction_date <'=>$transaction_from_date])->toArray();
 		
 		}
-		$ledger=$this->Ledgers->LedgerAccounts->find('list');
+		$ledger=$this->Ledgers->LedgerAccounts->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['company_id'=>$st_company_id]);
 		$this->set(compact('ledger','Ledgers_rows','total_balance','ledger_account_id','transaction_from_date','transaction_to_date','Ledger_Account_data'));
 	}
 }

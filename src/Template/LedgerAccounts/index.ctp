@@ -52,7 +52,7 @@
 		<div class="col-md-12">
 		<div class="table-scrollable">
 		 <?php $page_no=$this->Paginator->current('LedgerAccounts'); $page_no=($page_no-1)*20; ?>
-			<table class="table table-hover" id="main_tble">
+			<table class="table table-bordered table-striped table-hover" id="main_tble">
 				 <thead>
 					<tr>
 						<th>Sr. No.</th>
@@ -61,7 +61,7 @@
 						<th>Account First Subgroup </th>
 						<th>Account Second Subgroup </th>	
 						<th>Ledger Account </th>	
-						<th>Actions</th>
+						<th width="80">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -119,13 +119,16 @@
 $(document).ready(function() {
 var $rows = $('#main_tble tbody tr');
 	$('#search').on('change',function() {
-		
 		var val = $.trim($(this).find('option:selected').text()).replace(/ +/g, ' ').toLowerCase();
-
-		$rows.show().filter(function() {
-			var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-			return !~text.indexOf(val);
-		}).hide();
-	});	
+		var v = $(this).find('option:selected').val();
+		if(v){
+			$rows.show().filter(function() {
+				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+				return !~text.indexOf(val);
+			}).hide();
+		}else{
+			$rows.show();
+		}
+	});
 });
 </script>
