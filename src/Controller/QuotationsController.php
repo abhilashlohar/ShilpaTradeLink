@@ -84,8 +84,8 @@ class QuotationsController extends AppController
 			$where['status']='Closed';
 		}
 		
-        $quotations = $this->paginate($this->Quotations->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
-		
+        $quotations = $this->paginate($this->Quotations->find()->where($where)->where(['company_id'=>$st_company_id,'status'=>'Pending'])->order(['Quotations.id' => 'DESC']));
+		//pr($quotations); exit;
 		$subquery=$this->Quotations->find();
 		$subquery->select(['max_id' => $subquery->func()->max('id')])->group('quotation_id');
 		$max_ids=[];
@@ -353,10 +353,7 @@ class QuotationsController extends AppController
 			
 			if($last_qt_no){
 				if(!empty($revision)){
-					
 					$last_qt_revision_no=$this->Quotations->find()->select(['qt2'])->where(['company_id' => $st_company_id,'id' => $revision])->order(['qt2' => 'DESC'])->first();
-					
-					
 					$quotation->qt2=$last_qt_revision_no->qt2;
 				}else{
 					$quotation->qt2=$last_qt_no->qt2+1;
@@ -502,12 +499,9 @@ class QuotationsController extends AppController
 	public function revision($id = null,$pull_request1 = null,$pull_request = null)
     {
 		$quotation = $this->Quotations->get($id);
-		//$pull_request= $this->request->data['pull_request'];
-		//$pull_request=$this->request->query('pull-request');
-		//pr($pull_request); exit;
 		$quot_id = $quotation->quotation_id;
 		$revision = $quotation->revision;
-		$quotations =$this->Quotations->find()->contain(['Customers','Employees','ItemGroups'])->where(['Quotations.quotation_id' =>$quot_id,'Quotations.revision !=' => $revision ]);
+		$quotations =$this->Quotations->find()->contain(['Customers','Employees','ItemGroups'])->where(['status'=>'Pending','Quotations.quotation_id' =>$quot_id,'Quotations.revision !=' => $revision ]);
 		$this->set(compact('quotations','quot_id','edit_hide','pull_request'));
     }
 	

@@ -255,21 +255,17 @@ $(document).ready(function() {
 		<?php } else {?>
 		var pull_request='false';
 		<?php } ?>
-		
 		var current_obj=$(this);
 		current_obj.hide();
-		
 		var entity=current_obj.closest('tr');
 		var quote_id=current_obj.val();
 		var url="<?php echo $this->Url->build(['controller'=>'Quotations','action'=>'Revision']);
 		?>";
 		url=url+'/'+quote_id+'/'+quote_id+'/'+pull_request,
-		//alert(url);
 		$.ajax({
 			url: url,
 		}).done(function(response) {
 			entity.after(response);
-			//$("#view_revision").html(response);
 			current_obj.closest('td').find(".revision_hide").show();
 		});		
 		
@@ -279,7 +275,6 @@ $(document).ready(function() {
 		var current_obj=$(this);
 		current_obj.hide();
 		current_obj.closest('tr').next().remove();
-		
 		current_obj.closest('td').find(".revision_show").show();
 	});
 });	

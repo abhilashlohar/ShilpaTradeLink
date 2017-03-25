@@ -241,8 +241,7 @@ class SalesOrdersController extends AppController
        $fromdate = strtotime($fromdate1);
        $todate = strtotime($todate1); 
        $tody = strtotime($tody1);
-
-      if($fromdate >= $tody || $todate <= $tody)
+	if($fromdate >= $tody || $todate <= $tody)
        {
        	   $chkdate = 'Not Found';
        }
@@ -250,9 +249,6 @@ class SalesOrdersController extends AppController
        {
        	  $chkdate = 'Found';
        }
-
-
-
 		$quotation_id=@(int)$this->request->query('quotation');
 		$quotation=array(); 
 		$process_status='New';
@@ -310,18 +306,27 @@ class SalesOrdersController extends AppController
 			
 			//pr($salesOrder); exit;
             if ($this->SalesOrders->save($salesOrder)) {
-				
-
 				if(!empty($quotation_id)){
 					$quotation->status='Converted Into Sales Order';
 					$query = $this->SalesOrders->Quotations->query();
 					$query->update()
 						->set(['status' => 'Converted Into Sales Order'])
-						->where(['id' => $quotation_id])
+						->where(['quotation_id' => $quotation_id])
 						->execute();
-						
 				}
 				
+				if(!empty($quotation_id)){
+					$data = $this->SalesOrders->Quotations->get($quotation_id);
+					if($data->revision>0){
+						$quot_id=$data->quotation_id;
+						$quotation->status='Converted Into Sales Order';
+						$query = $this->SalesOrders->Quotations->query();
+						$query->update()
+							->set(['status' => 'Converted Into Sales Order'])
+							->where(['quotation_id' => $quot_id])
+							->execute();
+					}
+				}
                 $this->Flash->success(__('The sales order has been saved.'));
 				return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
 
@@ -438,6 +443,7 @@ class SalesOrdersController extends AppController
 			return $q
 			->where(['CustomerAddress.default_address'=>1]);
 		}]);
+		//pr($customers); exit;
         $companies = $this->SalesOrders->Companies->find('all', ['limit' => 200]);
 		$quotationlists = $this->SalesOrders->Quotations->find()->where(['status'=>'Pending'])->order(['Quotations.id' => 'DESC']);
 		$items = $this->SalesOrders->Items->find('list')->where(['freeze'=>0])->matching(
