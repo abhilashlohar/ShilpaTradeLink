@@ -276,10 +276,7 @@ class InvoiceBookingsController extends AppController
 	     $invoiceBooking_details = $this->InvoiceBookings->get($id);
 		 $vendor_id=$invoiceBooking_details->vendor_id;
 	     $Vendor_detail= $this->InvoiceBookings->Vendors->get($vendor_id);
-		
-		//pr($Vendor_detail->ledger_account_id); exit;
 		$ReferenceDetails = $this->InvoiceBookings->ReferenceDetails->find()->where(['ledger_account_id'=>$Vendor_detail->ledger_account_id,'invoice_booking_id'=>$id])->toArray();
-		//
 		if(!empty($ReferenceDetails))
 		{
 			foreach($ReferenceDetails as $ReferenceDetail)

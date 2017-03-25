@@ -132,18 +132,23 @@
 							$item_sale=$total_sale/$grn->purchase_order->purchase_order_rows[$q]->quantity;
 							$total_pnf=($tot_pnf*$item_rate)/$item_total_rate;
 							$item_pnf=$total_pnf/$grn->purchase_order->purchase_order_rows[$q]->quantity;
+						
 							$excise_duty_discount=($excise_duty*$item_rate)/$item_total_rate;
 							$total_exicese_duty=$excise_duty_discount/$grn->purchase_order->purchase_order_rows[$q]->quantity;
+							
 							?>
 							<td><?php echo $grn_rows->item->name; ?>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value' => @$grn_rows->item->id,'popup_id'=>$q]); ?>
 							</td>
 							<td><?php echo $grn->purchase_order->purchase_order_rows[$q]->rate;  ?></td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.discount',['value'=>$dis,'type'=>'hidden']); ?>
-							<?php echo $dis;  ?></td>
-							<td><?php echo $total_pnf;  ?></td>
-							<td><?php echo $this->Number->format($excise_duty_discount,[ 'places' => 2]);  ?></td>
-							<td><?php echo $total_sale;  ?></td>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.discount',['value'=>$dis,'type'=>'hidden']);
+								echo $dis;  ?></td>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.pnf',['value'=>$total_pnf,'type'=>'hidden']); 
+									echo $total_pnf;  ?></td>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.excise_duty',['value'=>$excise_duty_discount,'type'=>'hidden']);
+								echo $this->Number->format($excise_duty_discount,[ 'places' => 2]);  ?></td>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.sale_tax',['value'=>$total_sale,'type'=>'hidden']);
+								echo $total_sale;  ?></td>
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.quantity',['label' => false,'class' => 'form-control input-sm', 'value'=>$grn_rows->quantity,'readonly','type'=>'text']); ?></td>
 							
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.rate',['label' => false,'class' => 'form-control input-sm','value'=>$grn->purchase_order->purchase_order_rows[$q]->rate-$item_discount+$item_pnf+$item_sale+$total_exicese_duty,'type'=>'text']); ?></td>
