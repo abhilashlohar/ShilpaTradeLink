@@ -175,6 +175,7 @@ class PaymentVouchersController extends AppController
 					if($this->request->data['reference_type'][$row]=='Against Reference')
 					{
 						$query2 = $this->PaymentVouchers->ReferenceBalances->query();
+						$data=$this->PaymentVouchers->ReferenceBalances->find()->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['paid_to_id']])->toArray();
 						$query2->update()
 							->set(['credit' => $this->request->data['credit'][$row]])
 							->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['paid_to_id']])
@@ -286,6 +287,7 @@ class PaymentVouchersController extends AppController
 
 
 		$check_date= $paymentVoucher->transaction_date;
+		
 		$payment_voucher_id=$id;
 		$ReferenceDetails = $this->PaymentVouchers->ReferenceDetails->find()->where(['ledger_account_id'=>$paymentVoucher->paid_to_id,'payment_voucher_id'=>$id])->toArray();
 		if(!empty($ReferenceDetails))
@@ -396,8 +398,11 @@ class PaymentVouchersController extends AppController
 							if($this->request->data['reference_type'][$row]=='Against Reference')
 							{
 								$query2 = $this->PaymentVouchers->ReferenceBalances->query();
+								
+								$data=$this->PaymentVouchers->ReferenceBalances->find()->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['paid_to_id']])->toArray();
+								
 								$query2->update()
-									->set(['credit' => $this->request->data['credit'][$row]])
+									->set(['credit' => $this->request->data['credit'][$row]+$data[0]->credit])
 									->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['paid_to_id']])
 									->execute();
 							}

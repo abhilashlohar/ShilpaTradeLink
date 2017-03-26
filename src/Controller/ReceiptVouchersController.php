@@ -99,7 +99,7 @@ class ReceiptVouchersController extends AppController
 			->execute();
 			
 		}
-		exit;
+
 	
 	}
     public function add()
@@ -170,8 +170,10 @@ class ReceiptVouchersController extends AppController
 					if($this->request->data['reference_type'][$row]=='Against Reference')
 					{
 						$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
+						$data=$this->ReceiptVouchers->ReferenceBalances->find()->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['received_from_id']])->toArray();
+						
 						$query2->update()
-							->set(['debit' => $this->request->data['debit'][$row]])
+							->set(['debit' => $this->request->data['debit'][$row]+$data[0]->debit])
 							->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['received_from_id']])
 							->execute();
 					}
@@ -268,9 +270,8 @@ class ReceiptVouchersController extends AppController
         $st_year_id = $session->read('st_year_id');
 		$receipt_voucher_id=$id;
 		$financial_year = $this->ReceiptVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
-        $receiptVoucher = $this->ReceiptVouchers->get($id);
-		
-		
+        
+		$receiptVoucher = $this->ReceiptVouchers->get($id);
 		$ReferenceDetails = $this->ReceiptVouchers->ReferenceDetails->find()->where(['ledger_account_id'=>$receiptVoucher->received_from_id,'receipt_voucher_id'=>$id])->toArray();
 		if(!empty($ReferenceDetails))
 		{
