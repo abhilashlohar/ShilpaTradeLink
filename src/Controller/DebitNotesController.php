@@ -26,7 +26,7 @@ class DebitNotesController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
-        $debitNotes = $this->paginate($this->DebitNotes->find()->where(['company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
+        $debitNotes = $this->paginate($this->DebitNotes->find()->where(['DebitNotes.company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
 
         $this->set(compact('debitNotes'));
         $this->set('_serialize', ['debitNotes']);

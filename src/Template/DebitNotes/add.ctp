@@ -177,17 +177,19 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
-	
 	$( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 			var credit=parseFloat($(this).val());
 			var amount=$(this).closest('tr').find('select[name="against_references_no"] option:selected').attr('amount');
 			amount=parseFloat(amount);
-
 			if(amount<credit)
 			{
 				$(this).val(amount);
+				
 			}	
-	});
+			
+	}); 
+	
+	
 	
 	$('select[name="against_references_no"]').live("change",function() {
 		var against_references_no=$(this).val();
@@ -307,7 +309,7 @@ $(document).ready(function() {
 		});
 	});
 	
-	
+
 	
 	
 	
