@@ -5,6 +5,7 @@
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Material Indents</span> 
+			
 	    </div>
 				 
 <?php $page_no=$this->Paginator->current('MaterialIndentS'); $page_no=($page_no-1)*20; ?>
@@ -18,7 +19,9 @@
 				</tr>
 		</tbody>
         <tbody>
-            <?php  foreach($materialIndents as $materialIndent): ?>
+            <?php  foreach($materialIndents as $materialIndent): 
+			//pr($materialIndent->material_indent_rows);
+			?>
             <tr>
 			   <td><?= h(++$page_no) ?></td>
 			   <td>
@@ -28,6 +31,7 @@
 				<td class="actions">
 				<!--<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $materialIndent->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips')); ?>-->
 				 <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $materialIndent->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));?>
+				 
                 </td>
 			</tr>
             <?php endforeach; ?>

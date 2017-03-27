@@ -154,6 +154,21 @@
 							</label>
 							</div>
 					</div>
+					<div class="col-md-3">
+						<div class="titletext">User-Rights/Logins</div>
+							<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(19,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.19.page_id', ['label' => 'Login','class' => 'form-control input-sm','type'=>'checkbox','value'=>19,$checked_status]); ?>
+							</label>
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(20,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.20.page_id', ['label' => 'User-Right','class' => 'form-control input-sm','type'=>'checkbox','value'=>20,$checked_status]); ?>
+							</label>
+							</div>
+					</div>
 			</div>
 		</div>
 		<br/>

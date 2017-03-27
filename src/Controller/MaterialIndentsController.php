@@ -19,13 +19,21 @@ class MaterialIndentsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
 		
         $this->paginate = [
             'contain' => []
         ];
-		$materialIndents = $this->paginate($this->MaterialIndents->find()->order(['MaterialIndents.id' => 'DESC']));
-       
-
+		
+		
+		//$materialIndents = $this->paginate($this->MaterialIndents->find()->order(['MaterialIndents.id' => 'DESC']));
+      
+	  
+	 
+	 $materialIndents=$this->paginate($this->MaterialIndents->find()->where(['company_id'=>$st_company_id])->order(['MaterialIndents.id' => 'DESC']));
+	  
+		//pr($materialIndents); exit;
         $this->set(compact('materialIndents'));
         $this->set('_serialize', ['materialIndents']);
     }
@@ -53,6 +61,29 @@ class MaterialIndentsController extends AppController
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
+	 
+	public function AddNew($material=null)
+    {
+		$this->viewBuilder()->layout('index_layout');
+		$pull_request=$this->request->query('pull-request');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$mireport=$this->MaterialIndents->newEntity();
+		 
+		$materialIndents=$this->paginate($this->MaterialIndents->find()
+		->contain(['MaterialIndentRows' => function ($q) {
+				return $q->where(['MaterialIndentRows.required_quantity > MaterialIndentRows.processed_quantity'])->contain(['Items']);
+				}])
+		->where(['company_id'=>$st_company_id])->order(['MaterialIndents.id' => 'DESC']));
+	  
+		if ($this->request->is(['post'])) {
+			$prepo=$this->request->data['prepo'];
+			
+			$this->redirect(['controller'=>'PurchaseOrders','action' => 'add/'.json_encode($prepo).'']);
+		}
+        $this->set(compact('materialIndents','pull_request','mireport'));
+        $this->set('_serialize', ['materialIndents']);
+	}
     public function add($material=null)
     {
 		$this->viewBuilder()->layout('index_layout');
@@ -77,6 +108,7 @@ class MaterialIndentsController extends AppController
 				$item_name=$item->name;
 				$material_items[]=array('item_name'=>$item_name,'item_id'=>$key,'quantity'=>$value,'company_id'=>$st_company_id,'employee_name'=>$employee_name,'company_name'=>$company_name);
 			}
+			//pr($material_items); exit;
 			$this->set(compact('material_items'));
 		}
 
@@ -98,9 +130,18 @@ class MaterialIndentsController extends AppController
 			$materialIndent->created_on=date("Y-m-d");
 			$materialIndent->company_id=$st_company_id;
 			
+			//pr($materialIndent); exit;
+			
             if ($this->MaterialIndents->save($materialIndent)) {
 				//pr($materialIndent); exit;
-				
+				/* foreach($materialIndent)
+					{
+						$query2 = $this->DebitNotes->ReferenceBalances->query();
+						$query2->update()
+							->set(['credit' => $this->request->data['credit'][$row]+$data[0]->credit])
+							->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['sales_acc_id']])
+							->execute();
+					} */
 				
                 $this->Flash->success(__('The material indent has been saved.'));
 

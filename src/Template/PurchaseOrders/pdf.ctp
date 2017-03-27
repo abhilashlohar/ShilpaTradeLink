@@ -191,7 +191,7 @@ $html.='</table>';
 					
 				
 				<tr>
-					<td colspan="2"><b>Amount in words :  </b>'. h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees  '. h($paisa_text) .'</td>
+					<td colspan="2"><b>Amount in words : -  </b> '.  h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees  '. h($paisa_text) .'</td>
 				</tr>
 			</tbody>
 		</table>';
@@ -224,7 +224,7 @@ $html.='<tr>
 				<table width="100%" class="table2" >
 					<tr>
 						<td style="border-right: 1px solid black;">
-							<table style="padding-top:-45px;">
+							<table style="padding-top:-30px;">
 								<tr>
 									<td style="font-size:13px;">Excise Invoice Required in Favour of Consignee:<br/>
 									'. h($purchaseOrder->customer->customer_name) .'<br/>
@@ -234,7 +234,7 @@ $html.='<tr>
 								</tr>
 							</table>
 						</td>
-						<td colspan="2"  align="left" width="62.50%" style="font-size:13px; padding-top:-15px;"><br/>Please confirm that you have registered this order and request you to return back the duplicate copy duly signed in token of having accepted the order.<br/><br/>
+						<td colspan="2"  align="left" width="63.00%" style="font-size:13px; padding-top:-15px;"><br/>Please confirm that you have registered this order and request you to return back the duplicate copy duly signed in token of having accepted the order.<br/><br/>
 							<div  align="center">
 								<span>For <b>'. h($purchaseOrder->company->name) .'</b></span><br/>
 									<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$purchaseOrder->creator->signature.' height="50px" style="height:50px;"/>

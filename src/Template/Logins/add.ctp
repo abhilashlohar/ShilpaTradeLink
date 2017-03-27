@@ -61,7 +61,9 @@
 						<td><?= h($i) ?></td>
 						<td><?= h($Login->employee->name) ?></td>
 						<td><?= h($Login->username) ?></td>
-						<td><?= $this->Html->link(__('UserRights'), ['controller'=>'UserRights','action' => 'add', $Login->id]) ?></td>
+						<?php if(in_array(20,$allowed_pages)){?>
+						<td><?= $this->Html->link(__('UserRights'), ['controller'=>'UserRights','action' => 'add', $Login->id]) ?></td> 
+						<?php } ?>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>

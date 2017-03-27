@@ -80,8 +80,24 @@ class PurchaseOrdersController extends AppController
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
-    public function add($material=null)
+	
+    public function add($pre_po=null)
     {
+		$pre_po=json_decode($pre_po);
+		$material_items_for_purchases=[];
+		
+		if(!empty($pre_po)){
+			foreach($pre_po as $material_indent_id=>$data){ 
+				foreach($data as $material_indent_row_id=>$data2){ 
+					$material_items_for_purchases[]=$this->PurchaseOrders->MaterialIndents->MaterialIndentRows->get($material_indent_row_id,[
+							'contain' => ['Items']]
+					
+					);
+				}
+			}
+			
+			$this->set(compact('material_items_for_purchases'));
+		}
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
@@ -107,15 +123,28 @@ class PurchaseOrdersController extends AppController
        {
        	  $chkdate = 'Found';
        }
+	   
+	   $Material_indent_id=@(int)$this->request->query('Material_indent');
+	 
+		$materialIndents=array(); 
+		$process_status='New';
+		if(!empty($Material_indent_id)){
+			$materialIndents = $this->PurchaseOrders->MaterialIndents->get($Material_indent_id, [
+					'contain' => ['MaterialIndentRows' => function ($q) {
+						return $q->where(['MaterialIndentRows.required_quantity > MaterialIndentRows.processed_quantity'])->contain(['Items']);
+					}]
+				]);
+			$process_status='Pulled From Material Indent';
+			
+		}
+		//pr($materialIndent); exit;
 
 
-
+		
 		if(!empty($material)){ 
 			$material_items=array(); 
 			$materials=json_decode($material);
-
 			$material_items_for_purchases=[];
-				
 			$this->set(compact('material_items_for_purchases'));
 		}
 		
@@ -135,7 +164,7 @@ class PurchaseOrdersController extends AppController
 			$purchaseOrder->company_id=$st_company_id;
 			$purchaseOrder->sale_tax_description=$purchaseOrder->sale_tax_description; 
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
-			
+			//pr($purchaseOrder); exit;
             if ($this->PurchaseOrders->save($purchaseOrder)) {
 		
 				$i=0; 
@@ -148,10 +177,24 @@ class PurchaseOrdersController extends AppController
 						}
 						$i++;
 					}
+					/* $merge_data=[]; $total_qty=0;
+					foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
+						foreach($purchaseOrder->purchase_order_rows as $purchase_order_row1){
+							if($purchase_order_row->item_id == $purchase_order_row1->item_id ){
+								$total_qty+=$purchase_order_row1->quantity;
+								$purchase_order_row1->quantity=$total_qty;
+								$merge_data = $purchase_order_row1;
+							}
+						}
+						$merge_data = $purchase_order_row;
+							
+					}  */					
+					//pr($merge_data);  exit;	
+					
                 $this->Flash->success(__('The purchase order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else { 
+            } else { //pr($purchaseOrder);  exit;	
                 $this->Flash->error(__('The purchase order could not be saved. Please, try again.'));
             }
         }
@@ -166,7 +209,7 @@ class PurchaseOrdersController extends AppController
 		$customers = $this->PurchaseOrders->Customers->find('all')->order(['Customers.customer_name' => 'ASC']);
 		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC']);
 		$transporters = $this->PurchaseOrders->Transporters->find('list')->order(['Transporters.transporter_name' => 'ASC']);
-        $this->set(compact('purchaseOrder', 'Company', 'vendor','filenames','items','SaleTaxes','transporters','customers','chkdate'));
+        $this->set(compact('purchaseOrder', 'materialIndents','Company', 'vendor','filenames','items','SaleTaxes','transporters','customers','chkdate'));
         $this->set('_serialize', ['purchaseOrder']);
     }
 

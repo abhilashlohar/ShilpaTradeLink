@@ -1,3 +1,4 @@
+<?php //pr($material_items_for_purchases); exit; ?>
 <style>
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
 	vertical-align: top !important;
@@ -9,7 +10,11 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Add Purchase Order</span>
 		</div>
+		<div class="actions">
+			<?php echo $this->Html->link('<i class="icon-home"></i> Pull Material Indent','/MaterialIndents/AddNew?pull-request=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
+		</div>
 	</div>
+		
 	<div class="portlet-body form">
 		<!-- BEGIN FORM-->
 		<?= $this->Form->create($purchaseOrder,['id'=>'form_sample_3']) ?>
@@ -88,16 +93,15 @@ With reference to your price list we are pleased to place an order for the follo
 						</thead>
 						
 						<tbody><?php if(!empty($material_items_for_purchases)){  ?>
-							<?php $q=1; foreach ($material_items_for_purchases as $material_items_for_purchase): ?>
-								
-								<tr class="tr1" row_no='<?php echo @$material_items_for_purchase->item_id; ?>'>
+							<?php $q=1; foreach ($material_items_for_purchases as $material_indent_row): 
+							?>
+								<tr class="tr1" row_no='<?php echo @$material_indent_row->item_id; ?>'>
 									<td rowspan="2"><?= h($q) ?></td>
+									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.material_indent_id', ['label' => false,'type'=>'hidden','value'=>$material_indent_row->material_indent_id]);  ?>
+									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'type'=>'hidden','value'=>$material_indent_row->item->id]);  ?>
+									<?php echo $material_indent_row->item->name; ?></td>
 									<td>
-									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'type'=>'hidden','value'=>$material_items_for_purchase['item_id']]); ?>
-									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.material_indent_id', ['label' => false,'type'=>'hidden','value'=>$material_items_for_purchase['material_indent_id']]);  ?>
-									<?php echo $material_items_for_purchase['item_name']; ?></td>
-									<td>
-									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['label' => false,'type'=>'text','value'=>$material_items_for_purchase['quantity']-$material_items_for_purchase['processed_quantity'],'max'=>@$material_items_for_purchase['quantity']-$material_items_for_purchase['processed_quantity']]); ?></td>
+									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['label' => false,'type'=>'text','value'=>$material_indent_row->required_quantity-$material_indent_row->processed_quantity,'max' =>$material_indent_row->required_quantity-$material_indent_row->processed_quantity]); ?></td>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.rate', ['label' => false,'type'=>'text']); ?></td>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.amount', ['label' => false,'type'=>'text']); ?></td>
 									<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
@@ -210,6 +214,13 @@ With reference to your price list we are pleased to place an order for the follo
 				
 				<div class="row">
 					<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label">Excise Duty </label>
+								<?php 
+								echo $this->Form->input('excise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Excise Duty']); ?>
+							</div>
+					</div>
+					<div class="col-md-3">
 						<div class="form-group">
 							<div class="radio-list" >
 							<label class="control-label">Excise for customer</label>
@@ -217,15 +228,10 @@ With reference to your price list we are pleased to place an order for the follo
 							</div>
 						</div>
 					</div>
+					
 					<div id="ex_div" style="display:none;">
 						<div class="col-md-3" id="qwert"></div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<label class="control-label">Excise Duty </label>
-								<?php 
-								echo $this->Form->input('excise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Excise Duty']); ?>
-							</div>
-						</div>
+						
 					</div>
 				</div>
 				

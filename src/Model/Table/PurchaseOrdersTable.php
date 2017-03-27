@@ -51,6 +51,7 @@ class PurchaseOrdersTable extends Table
 		
 		$this->belongsTo('Filenames');
 		$this->belongsTo('MaterialIndentRows');
+		$this->belongsTo('MaterialIndents');
 		
         $this->belongsTo('Vendors', [
             'foreignKey' => 'vendor_id',

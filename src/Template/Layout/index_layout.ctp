@@ -177,7 +177,10 @@ select
 										<div class="row">
 											<div class="col-md-4">
 												<ul class="mega-menu-submenu">
-													<li><?php echo $this->Html->link(' Logins','/Logins/Add',array('escape'=>false)); ?></li>
+													<li><?php if(in_array(19,$allowed_pages)){
+													echo $this->Html->link(' Logins','/Logins/Add',array('escape'=>false));
+													} ?></li>
+													
 													<li class="divider"></li>
 													<li><?php echo $this->Html->link('Customer Groups','/Customer-Groups',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('Customers Segments','/customer-segs',array('escape'=>false)); ?></li>
