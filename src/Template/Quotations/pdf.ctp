@@ -159,7 +159,7 @@ $html .= '
 				</table>
 			</td>
 			
-			<td valign="top">
+			<td valign="top" width="50%">
 				<table>
 					<tr>
 						<td>Date</td>
@@ -230,13 +230,13 @@ if(!empty($quotation->additional_note)){
 	</div><br/>';
 }
 $html.='
-<br/><div class="avoid_break">
-	<div class="avoid_break">
+<br/><div class="">
+	
 		<b><u>Commercial Terms & Conditions:</u></b><br/>
 		'. $quotation->terms_conditions .'
-	</div><br/>
-	<div><b>I hope above is to your requirement and in case of any clarification kindly revert back.</b></div><br/>
-	<div class="avoid_break"><b>Thanks and Regards,</b></div><br/>';
+	<br/>
+	<b>I hope above is to your requirement and in case of any clarification kindly revert back.</b><br/>
+	<b>Thanks and Regards,</b><br/>';
 	
 $html.='
 		<div align="left" class="">
