@@ -126,7 +126,7 @@ $html = '
 $html .= '
 <table width="100%">
 		<tr>
-			<td width="67%">
+			<td width="50%">
 				<table width="100%">
 					
 					<tr>
@@ -136,29 +136,8 @@ $html .= '
 							
 						</td>
 					</tr>
-					<tr>
-						<td><br/>
-							<table>
-								
-								<tr>
-									<td>Kind Attn.<br/></td>
-									<td>: '. h(($quotation->customer_for_attention)) .'<br/></td>
-								</tr>
-								
-								<tr>
-									<td>Reference</td>
-									<td>: '. h($quotation->enquiry_no) .'</td>
-								</tr>
-								<tr>
-									<td>Subject</td>
-									<td>: '. h(($quotation->subject)) .'</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
 				</table>
 			</td>
-			
 			<td valign="top" width="50%">
 				<table>
 					<tr>
@@ -173,6 +152,38 @@ $html .= '
 			</td>
 		</tr>
 	</table>
+	
+	<table width="100%">
+		<tr>
+			<td >
+				<table width="100%">
+					<tr>
+						<td><br/>
+							<table>
+								<tr>
+									<td valign="top" width="10%">Kind Attn.<br/></td>
+									<td valign="top" width="2%">:</td>
+									<td>'. h(($quotation->customer_for_attention)) .'<br/></td>
+								</tr>
+								
+								<tr>
+									<td valign="top" width="10%">Reference</td>
+									<td valign="top"width="2%">:</td>
+									<td>'. h($quotation->enquiry_no) .'</td>
+								</tr>
+								<tr>
+									<td valign="top" width="10%">Subject</td>
+									<td valign="top" width="2%">:</td>
+									<td>'. h(($quotation->subject)) .'</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	
 	<br/>
 	<table>
 		<tr>

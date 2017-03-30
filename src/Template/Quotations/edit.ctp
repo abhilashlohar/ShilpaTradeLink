@@ -659,7 +659,8 @@ $(document).ready(function() {
 		$("#sortable li").each(function(){
 			var tc=$(this).text();
 			++inc;
-			$('#terms_conditions').append('<p>'+tc+'</p>');
+			//$('#terms_conditions').append('<p>'+tc+'</p>');
+			$('#terms_conditions').append(tc+'<br/>');
 		});
 		var terms_conditions=$("#terms_conditions").html();
 		$('#terms_conditions_box').closest('#t_c_box').find('div[class="note-editable"]').html(terms_conditions);
