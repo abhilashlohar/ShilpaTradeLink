@@ -149,6 +149,7 @@ class PurchaseOrdersController extends AppController
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
 			
 			foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
+
 				if($purchase_order_row->pull_status=="PULLED_FROM_MI"){
 					$query = $this->PurchaseOrders->MaterialIndentRows->find()
 					->where(['MaterialIndentRows.status'=>'Open','MaterialIndentRows.item_id'=>$purchase_order_row->item_id]);
@@ -186,6 +187,7 @@ class PurchaseOrdersController extends AppController
 			
 			exit;
 			if ($this->PurchaseOrders->save($purchaseOrder)) {
+
                 $this->Flash->success(__('The purchase order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
