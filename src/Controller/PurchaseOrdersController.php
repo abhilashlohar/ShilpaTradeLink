@@ -142,39 +142,15 @@ class PurchaseOrdersController extends AppController
 			$purchaseOrder->company_id=$st_company_id;
 			$purchaseOrder->sale_tax_description=$purchaseOrder->sale_tax_description; 
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
-		if ($this->PurchaseOrders->save($purchaseOrder)) {
+			
 			foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
-				$po_quantity=$purchase_order_row->quantity; 
-				if($purchase_order_row->pull_material=='pull_from_material'){
-						$po_qty=$purchase_order_row->quantity;
-						$material_indents=$this->PurchaseOrders->MaterialIndents->find()->order(['created_on'=>'ASC'])->contain(['MaterialIndentRows'=>function($q) use($purchase_order_row){
-							return $q->where(['MaterialIndentRows.item_id'=>$purchase_order_row->item_id,'MaterialIndentRows.status'=>'Open']);
-						}]);
-						$remaining_qty=$po_qty;
-						
-					foreach($material_indents as $material_indent){
-						foreach($material_indent->material_indent_rows as $material_indent_row){
-								$mi_required_qty=$material_indent_row->required_quantity-$material_indent_row->processed_quantity;
-								$processed_quantity_for_mi=$remaining_qty;
-								$remaining_qty=$mi_required_qty-$remaining_qty;
-								
-								if($remaining_qty > 0){
-									$material_indent_row->processed_quantity=$material_indent_row->processed_quantity+$processed_quantity_for_mi;
-									$material_indent_row->status='Open';
-									$this->PurchaseOrders->MaterialIndentRows->save($material_indent_row);
-									goto out;
-								}else{
-									$material_indent_row->processed_quantity=$material_indent_row->processed_quantity+$mi_required_qty;
-									$material_indent_row->status='Close';
-									$this->PurchaseOrders->MaterialIndentRows->save($material_indent_row);
-								}
-								$remaining_qty=abs($remaining_qty);
-						}
-						
-					}
-					out:
-				}
-			} 
+				pr($purchase_order_row); 
+				
+			} exit;
+			
+		if ($this->PurchaseOrders->save($purchaseOrder)) {
+			
+			
 
 
 						
