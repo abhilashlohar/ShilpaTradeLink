@@ -210,8 +210,10 @@ class ReceiptVouchersController extends AppController
 				['keyField' => function ($row) {
 					return $row['id'];
 				},
+				
 				'valueField' => function ($row) {
 					if(!empty($row['alias'])){
+						 exit;
 						return  $row['name'] . ' (' . $row['alias'] . ')';
 					}else{
 						return $row['name'];
@@ -221,7 +223,7 @@ class ReceiptVouchersController extends AppController
 		}else{
 			$ErrorreceivedFroms='true';
 		}
-				
+		//pr($receivedFroms);	
 		$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get(4, [
             'contain' => ['VoucherLedgerAccounts']
         ]);

@@ -43,7 +43,11 @@ class QuotationsController extends AppController
 			$where['company_id']=$company_id;
 		}
 		if(!empty($qt2)){
+<<<<<<< HEAD
 			$where['qt2 LIKE']=$qt2;
+=======
+			$where['qt2']=$qt2;
+>>>>>>> origin/master
 		}
 		if(!empty($file)){
 			$where['Quotations.qt3 LIKE']='%'.$file.'%';
@@ -349,19 +353,19 @@ class QuotationsController extends AppController
 			//pr($this->request->data); exit;
 			$quotation = $this->Quotations->newEntity();
             $quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
-			$last_qt_no=$this->Quotations->find()->select(['qt2'])->where(['company_id' => $st_company_id])->order(['qt2' => 'DESC'])->first();
+			echo $last_qt_no=$this->Quotations->find()->select(['qt2','id'])->where(['company_id' => $st_company_id])->order(['qt2' => 'DESC'])->first(); exit;
 			
 			if($last_qt_no){
 				if(!empty($revision)){
 					$last_qt_revision_no=$this->Quotations->find()->select(['qt2'])->where(['company_id' => $st_company_id,'id' => $revision])->order(['qt2' => 'DESC'])->first();
-					$quotation->qt2=$last_qt_revision_no->qt2;
+					echo $quotation->qt2=$last_qt_revision_no->qt2;
 				}else{
-					$quotation->qt2=$last_qt_no->qt2+1;
+					echo $quotation->qt2=$last_qt_no->qt2+1;
 				}
 			}else{
-				$quotation->qt2=1;
+				echo $quotation->qt2=1;
 			}	
-			
+			exit;
 			if(!empty($revision)){
 			$quotation->revision=$add_revision;
 			$quotation->quotation_id=$quotation_id;
