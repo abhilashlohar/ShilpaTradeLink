@@ -173,19 +173,22 @@ class PurchaseOrdersController extends AppController
 						$mi_remaining_qty=$mi_row['required_quantity']-$mi_row['processed_quantity'];
 						$reminder=$mi_remaining_qty-$purchase_order_qty;
 						if($reminder>=0){
-							update in databae $purchase_order_qty
-							open
+							
+							$mi_row = $this->PurchaseOrders->MaterialIndentRows->get($mi_row['id']);
+							$mi_row->processed_quantity=$mi_row->processed_quantity+$purchase_order_qty;
+							$mi_row->status='Open';
+							$this->PurchaseOrders->MaterialIndentRows->save($mi_row);
 							break;
 						}else{
-							update in databae abs($mi_remaining_qty)
-							close
+							$mi_row = $this->PurchaseOrders->MaterialIndentRows->get($mi_row['id']);
+							$mi_row->processed_quantity=$mi_row->processed_quantity+abs($mi_remaining_qty);
+							$mi_row->status='Close';
+							$this->PurchaseOrders->MaterialIndentRows->save($mi_row);
 						}
-						$purchase_order_qty=abs(reminder)
+						$purchase_order_qty=abs($reminder);
 					}
 				}
 			}
-			
-			exit;
 			if ($this->PurchaseOrders->save($purchaseOrder)) {
 
                 $this->Flash->success(__('The purchase order has been saved.'));
