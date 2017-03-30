@@ -78,22 +78,10 @@ class PurchaseOrdersController extends AppController
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
 	
-    public function add($pre_po=null)
+    public function add($to_be_send=null)
     {
-		$pre_po=json_decode($pre_po);
-		$material_items_for_purchases=[];
+		$to_be_send=json_decode($to_be_send);
 		
-		if(!empty($pre_po)){
-			foreach($pre_po as $material_indent_id=>$data){ 
-				foreach($data as $material_indent_row_id=>$data2){ 
-					$material_items_for_purchases[]=$this->PurchaseOrders->MaterialIndents->MaterialIndentRows->get($material_indent_row_id,[
-							'contain' => ['Items']]
-					
-					);
-				}
-			}
-			$this->set(compact('material_items_for_purchases'));
-		}
 		$this->viewBuilder()->layout('index_layout');
 		$s_employee_id=$this->viewVars['s_employee_id'];
 		$session = $this->request->session();
@@ -209,7 +197,7 @@ class PurchaseOrdersController extends AppController
 		$customers = $this->PurchaseOrders->Customers->find('all')->order(['Customers.customer_name' => 'ASC']);
 		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC']);
 		$transporters = $this->PurchaseOrders->Transporters->find('list')->order(['Transporters.transporter_name' => 'ASC']);
-        $this->set(compact('purchaseOrder', 'materialIndents','Company', 'vendor','filenames','items','SaleTaxes','transporters','customers','chkdate'));
+        $this->set(compact('purchaseOrder', 'materialIndents','Company', 'vendor','filenames','items','SaleTaxes','transporters','customers','chkdate','to_be_send'));
         $this->set('_serialize', ['purchaseOrder']);
     }
 

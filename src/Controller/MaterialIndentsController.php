@@ -70,18 +70,20 @@ class MaterialIndentsController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		$mireport=$this->MaterialIndents->newEntity();
 		 
-		$materialIndents=$this->paginate($this->MaterialIndents->find()
-		->contain(['MaterialIndentRows' => function ($q) {
-				return $q->where(['MaterialIndentRows.required_quantity > MaterialIndentRows.processed_quantity'])->contain(['Items']);
-				}])
-		->where(['company_id'=>$st_company_id])->order(['MaterialIndents.id' => 'DESC']));
+		$query = $this->MaterialIndents->MaterialIndentRows->find()
+			->select(['r_quantity'=>'SUM(MaterialIndentRows.required_quantity)','p_quantity'=>'SUM(MaterialIndentRows.processed_quantity)','MaterialIndentRows.item_id','Items.name'])
+			->where(['MaterialIndentRows.status'=>'open'])
+			->group(['MaterialIndentRows.item_id']);
+		
+		$MaterialIndentRows=$query->contain(['Items']);
+		//pr($MaterialIndentRows->toArray()); exit;
+		
 	  
 		if ($this->request->is(['post'])) {
-			$prepo=$this->request->data['prepo'];
-			
-			$this->redirect(['controller'=>'PurchaseOrders','action' => 'add/'.json_encode($prepo).'']);
+			$to_be_send=$this->request->data['to_be_send'];
+			$this->redirect(['controller'=>'PurchaseOrders','action' => 'add/'.json_encode($to_be_send).'']);
 		}
-        $this->set(compact('materialIndents','pull_request','mireport'));
+        $this->set(compact('MaterialIndentRows','pull_request','mireport'));
         $this->set('_serialize', ['materialIndents']);
 	}
     public function add($material=null)

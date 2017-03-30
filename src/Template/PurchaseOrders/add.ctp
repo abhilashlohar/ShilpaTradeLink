@@ -91,52 +91,31 @@ With reference to your price list we are pleased to place an order for the follo
 								<th width="70"></th>
 							</tr>
 						</thead>
-						
-						<tbody><?php if(!empty($material_items_for_purchases)){  ?>
-							
-							<?php //pr($material_items_for_purchases); exit; 
-								  $result = array();
-										foreach ($material_items_for_purchases as $item)
-										{
-											
-											$name = $item['item_id'];
-												
-											if (isset($result[$name]))
-											{
-												$result[$name]['required_quantity'] += $item['required_quantity'];
-											}
-											else 
-											{
-												$result[$name] = $item;
-											}
-										}  
-										$data = array_values($result);
-										 
-								?>
-							
-							<?php $q=1; foreach ($data as $material_indent_row): 
-							?>
-								<tr class="tr1" row_no='<?php echo @$material_indent_row->item_id; ?>'>
-									<td rowspan="2">
-									
-									<?= h($q) ?></td>
-									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.material_indent_id', ['label' => false,'type'=>'hidden','value'=>$material_indent_row->material_indent_id]);  ?>
-									<?php 
-									echo $this->Form->input('purchase_order_rows.'.$q.'.pull_material', ['label' => false,'type'=>'hidden','value'=>'pull_from_material']); 
-									echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'type'=>'hidden','value'=>$material_indent_row->item->id]);  ?>
-									<?php echo $material_indent_row->item->name; ?></td>
+						<tbody>
+						<?php if(sizeof($to_be_send)>0){
+							$q=0; foreach ($to_be_send as $item_id=>$qty): ?>
+								<tr class="tr1" row_no='<?php echo @$item_id; ?>'>
+									<td rowspan="2"><?php echo ++$q; $q--; ?></td>
 									<td>
-									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['label' => false,'type'=>'text','value'=>$material_indent_row->required_quantity-$material_indent_row->processed_quantity]); ?></td>
-									<td><?php 
-									
-									echo $this->Form->input('purchase_order_rows.'.$q.'.rate', ['label' => false,'type'=>'text']); 
-									 
-									?></td>
-									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.amount', ['label' => false,'type'=>'text']); ?></td>
+										<?php echo $this->Form->input('purchase_order_rows.'.$q.'.pull_status', ['label' => false,'type'=>'hidden','value'=>'PULLED_FROM_MI']);  ?>
+										<?php 
+										echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'type'=>'hidden','value'=>$item_id]);  ?>
+										<?php echo $item_id; ?><br/>
+										<span class="label label-sm label-warning ">Pulled from MI</span>
+									</td>
+									<td>
+										<?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['label' => false,'type'=>'text','value'=>$qty,'class'=>'form-control input-sm']); ?>
+									</td>
+									<td>
+										<?php echo $this->Form->input('purchase_order_rows.'.$q.'.rate', ['label' => false,'type'=>'text','class'=>'form-control input-sm']); ?>
+									</td>
+									<td>
+										<?php echo $this->Form->input('purchase_order_rows.'.$q.'.amount', ['label' => false,'type'=>'text','class'=>'form-control input-sm']); ?>
+									</td>
 									<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 									
 								</tr>
-								<tr class="tr2" row_no='<?php echo @$material_items_for_purchase->item_id; ?>'>
+								<tr class="tr2" row_no='<?php echo @$item_id; ?>'>
 									<td colspan="4"><?php echo $this->Form->textarea('purchase_order_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1',]); ?></td>
 									<td></td>
 								</tr>

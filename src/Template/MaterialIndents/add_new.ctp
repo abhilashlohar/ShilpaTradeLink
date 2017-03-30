@@ -1,5 +1,3 @@
-<?php //pr($materialIndents); exit; ?>
-
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -16,42 +14,19 @@
 			<?php $page_no=$this->Paginator->current('MaterialIndentS'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered " width="100%" id="main_tb" border="1">
 					<thead>
-						<th  class="text-center"><label class="control-label">S.No</label></th>
-						<th width="30%" class="text-center"><label class="control-label">MaterialIndentS</label></th>
-						<th align="center" class="text-center"><label class="control-label">MaterialIndentRows</label></th>
+						<th>S.No</th>
+						<th>Item</th>
+						<th>Total Quantity</th>
+						<th>Action</th>
 					</thead>
 					<tbody >
-					<?php foreach($materialIndents as $materialIndent){ ?>
+					<?php foreach($MaterialIndentRows as $MaterialIndentRow){ ?>
 						<tr class="main_tr">
 							<td><?= h(++$page_no) ?></td>
-							<td valign="top" class="text-center">
-							<?= h($materialIndent->mi_number) ?>
-							</td>
+							<td><?= h($MaterialIndentRow->item->name) ?></td>
+							<td><?= h($MaterialIndentRow->r_quantity-$MaterialIndentRow->p_quantity) ?></td>
 							<td>
-								<table class="table" id="main_tb">
-									<thead>
-										<th width="70%">Item</th>
-										<th>Quantity</th>
-									</thead>
-									<tbody id="maintbody">
-									<?php  foreach($materialIndent->material_indent_rows as $materialIndentrows){  ?>
-										<tr class="tr1">
-											<td>
-											<?php echo $this->Form->input('materialIndent_id', ['label' => false,'type'=>'hidden','value'=>$materialIndent->id]);  ?>
-											<?php echo $this->Form->input('material_Indent_item_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false ,'value'=>$materialIndentrows->item_id]); ?>
-											<?= h($materialIndentrows->item->name) ?>
-											</td>
-											<td>
-											<?php echo $this->Form->input('materialIndent_id', ['label' => false,'type'=>'hidden','value'=>$materialIndentrows->required_quantity-$materialIndentrows->processed_quantity]);  ?>
-											<?= h($materialIndentrows->required_quantity-$materialIndentrows->processed_quantity) ?></td>
-											<td><label><?php echo $this->Form->input('check[]', ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$materialIndentrows->id,'hiddenField'=>false]);  ?>
-											</label>
-											</td>
-											
-										</tr>
-										<?php } ?>
-									</tbody>
-								</table>
+								<?php echo $this->Form->input('to_be_send['.$MaterialIndentRow->item_id.']', ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => (@$MaterialIndentRow->r_quantity-$MaterialIndentRow->p_quantity),'hiddenField'=>false]);  ?>
 							</td>
 						</tr>
 					<?php } ?>

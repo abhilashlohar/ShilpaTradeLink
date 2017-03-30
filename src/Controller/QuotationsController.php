@@ -43,11 +43,7 @@ class QuotationsController extends AppController
 			$where['company_id']=$company_id;
 		}
 		if(!empty($qt2)){
-<<<<<<< HEAD
-			$where['qt2 LIKE']=$qt2;
-=======
 			$where['qt2']=$qt2;
->>>>>>> origin/master
 		}
 		if(!empty($file)){
 			$where['Quotations.qt3 LIKE']='%'.$file.'%';
