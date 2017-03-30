@@ -64,6 +64,7 @@ class MaterialIndentsController extends AppController
 	 
 	public function AddNew($material=null)
     {
+		
 		$this->viewBuilder()->layout('index_layout');
 		$pull_request=$this->request->query('pull-request');
 		$session = $this->request->session();
@@ -74,7 +75,9 @@ class MaterialIndentsController extends AppController
 			->select(['r_quantity'=>'SUM(MaterialIndentRows.required_quantity)','p_quantity'=>'SUM(MaterialIndentRows.processed_quantity)','MaterialIndentRows.item_id','Items.name'])
 			->where(['MaterialIndentRows.status'=>'open'])
 			->group(['MaterialIndentRows.item_id']);
-		
+		$query->matching('MaterialIndents', function ($q) use($st_company_id){
+			return $q->where(['MaterialIndents.company_id' => $st_company_id]);
+		});
 		$MaterialIndentRows=$query->contain(['Items']);
 		//pr($MaterialIndentRows->toArray()); exit;
 		

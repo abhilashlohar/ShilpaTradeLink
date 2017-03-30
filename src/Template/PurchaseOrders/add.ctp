@@ -92,19 +92,19 @@ With reference to your price list we are pleased to place an order for the follo
 							</tr>
 						</thead>
 						<tbody>
-						<?php if(sizeof($to_be_send)>0){
-							$q=0; foreach ($to_be_send as $item_id=>$qty): ?>
+						<?php if(sizeof($to_be_send2)>0){
+							$q=0; foreach ($to_be_send2 as $item_id=>$data): ?>
 								<tr class="tr1" row_no='<?php echo @$item_id; ?>'>
 									<td rowspan="2"><?php echo ++$q; $q--; ?></td>
 									<td>
 										<?php echo $this->Form->input('purchase_order_rows.'.$q.'.pull_status', ['label' => false,'type'=>'hidden','value'=>'PULLED_FROM_MI']);  ?>
 										<?php 
 										echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'type'=>'hidden','value'=>$item_id]);  ?>
-										<?php echo $item_id; ?><br/>
+										<?php echo $data['item_name']; ?><br/>
 										<span class="label label-sm label-warning ">Pulled from MI</span>
 									</td>
 									<td>
-										<?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['label' => false,'type'=>'text','value'=>$qty,'class'=>'form-control input-sm']); ?>
+										<?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['label' => false,'type'=>'text','value'=>$data['qty'],'class'=>'form-control input-sm']); ?>
 									</td>
 									<td>
 										<?php echo $this->Form->input('purchase_order_rows.'.$q.'.rate', ['label' => false,'type'=>'text','class'=>'form-control input-sm']); ?>
@@ -429,8 +429,7 @@ $(document).ready(function() {
 	function rename_rows(){
 			var i=0;
 			$("#main_tb tbody tr.tr1").each(function(){
-				i++;
-				$(this).find("td:nth-child(1)").html(i);
+				$(this).find("td:nth-child(1)").html(++i); i--;
 				var mi=$(this).find("td:nth-child(2) input[type='hidden']:nth-child(2)").val();
 				//alert(mi);
 				if(mi=0){
@@ -443,11 +442,12 @@ $(document).ready(function() {
 				$(this).find("td:nth-child(3) input").attr({name:"purchase_order_rows["+i+"][quantity]", id:"purchase_order_rows-"+i+"-quantity"}).rules("add", "required");
 				$(this).find("td:nth-child(4) input").attr({name:"purchase_order_rows["+i+"][rate]", id:"purchase_order_rows-"+i+"-rate"}).rules("add", "required");
 				$(this).find("td:nth-child(5) input").attr("name","purchase_order_rows["+i+"][amount]");
+				i++;
 			});
 			var i=0;
 			$("#main_tb tbody tr.tr2").each(function(){ 
-				i++;
 				$(this).find("td:nth-child(1) textarea").attr({name:"purchase_order_rows["+i+"][description]", id:"purchase_order_rows-"+i+"-description"}).rules("add", "required");
+				i++;
 			});
 		}
 		$('#main_tb input').die().live("keyup","blur",function() { 
