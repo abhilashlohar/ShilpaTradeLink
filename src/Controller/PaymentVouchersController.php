@@ -125,7 +125,6 @@ class PaymentVouchersController extends AppController
 			}else{
 				$paymentVoucher->voucher_no=1;
 			}
-						
 			$paymentVoucher = $this->PaymentVouchers->patchEntity($paymentVoucher, $this->request->data);
 			
 			$paymentVoucher->created_by=$s_employee_id;
