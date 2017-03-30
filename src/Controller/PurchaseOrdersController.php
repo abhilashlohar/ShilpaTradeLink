@@ -28,9 +28,6 @@ class PurchaseOrdersController extends AppController
 		
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		
-        //$purchaseOrders = $this->paginate($this->PurchaseOrders);
-		
 		if($status==null or $status=='Pending'){
 			$having=['total_rows >' => 0];
 		}elseif($status=='Converted-Into-GRN'){
@@ -95,7 +92,6 @@ class PurchaseOrdersController extends AppController
 					);
 				}
 			}
-			
 			$this->set(compact('material_items_for_purchases'));
 		}
 		$this->viewBuilder()->layout('index_layout');
@@ -103,8 +99,7 @@ class PurchaseOrdersController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$Company = $this->PurchaseOrders->Companies->get($st_company_id);
-		
-		 $st_year_id = $session->read('st_year_id');
+		$st_year_id = $session->read('st_year_id');
 
        $SessionCheckDate = $this->FinancialYears->get($st_year_id);
        $fromdate1 = date("Y-m-d",strtotime($SessionCheckDate->date_from));   
@@ -137,10 +132,6 @@ class PurchaseOrdersController extends AppController
 			$process_status='Pulled From Material Indent';
 			
 		}
-		//pr($materialIndent); exit;
-
-
-		
 		if(!empty($material)){ 
 			$material_items=array(); 
 			$materials=json_decode($material);
@@ -158,43 +149,52 @@ class PurchaseOrdersController extends AppController
 				$purchaseOrder->po2=1;
 			}
             $purchaseOrder = $this->PurchaseOrders->patchEntity($purchaseOrder, $this->request->data);
-			
 			$purchaseOrder->delivery_date=date("Y-m-d",strtotime($purchaseOrder->delivery_date));
 			$purchaseOrder->created_by=$s_employee_id; 
 			$purchaseOrder->company_id=$st_company_id;
 			$purchaseOrder->sale_tax_description=$purchaseOrder->sale_tax_description; 
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
-			//pr($purchaseOrder); exit;
-            if ($this->PurchaseOrders->save($purchaseOrder)) {
-		
-				$i=0; 
-					foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
-						if($purchase_order_row->material_indent_id){
-							$qty=$purchase_order_row->quantity;
-							$material_indent_row=$this->PurchaseOrders->MaterialIndentRows->find()->where(['material_indent_id'=>$purchase_order_row->material_indent_id,'item_id'=>$purchase_order_row->item_id])->first();
-							$material_indent_row->processed_quantity=$material_indent_row->processed_quantity+$qty;
-							$this->PurchaseOrders->MaterialIndentRows->save($material_indent_row);
+		if ($this->PurchaseOrders->save($purchaseOrder)) {
+			foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
+				$po_quantity=$purchase_order_row->quantity; 
+				if($purchase_order_row->pull_material=='pull_from_material'){
+						$po_qty=$purchase_order_row->quantity;
+						$material_indents=$this->PurchaseOrders->MaterialIndents->find()->order(['created_on'=>'ASC'])->contain(['MaterialIndentRows'=>function($q) use($purchase_order_row){
+							return $q->where(['MaterialIndentRows.item_id'=>$purchase_order_row->item_id,'MaterialIndentRows.status'=>'Open']);
+						}]);
+						$remaining_qty=$po_qty;
+						
+					foreach($material_indents as $material_indent){
+						foreach($material_indent->material_indent_rows as $material_indent_row){
+								$mi_required_qty=$material_indent_row->required_quantity-$material_indent_row->processed_quantity;
+								$processed_quantity_for_mi=$remaining_qty;
+								$remaining_qty=$mi_required_qty-$remaining_qty;
+								
+								if($remaining_qty > 0){
+									$material_indent_row->processed_quantity=$material_indent_row->processed_quantity+$processed_quantity_for_mi;
+									$material_indent_row->status='Open';
+									$this->PurchaseOrders->MaterialIndentRows->save($material_indent_row);
+									goto out;
+								}else{
+									$material_indent_row->processed_quantity=$material_indent_row->processed_quantity+$mi_required_qty;
+									$material_indent_row->status='Close';
+									$this->PurchaseOrders->MaterialIndentRows->save($material_indent_row);
+								}
+								$remaining_qty=abs($remaining_qty);
 						}
-						$i++;
+						
 					}
-					/* $merge_data=[]; $total_qty=0;
-					foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
-						foreach($purchaseOrder->purchase_order_rows as $purchase_order_row1){
-							if($purchase_order_row->item_id == $purchase_order_row1->item_id ){
-								$total_qty+=$purchase_order_row1->quantity;
-								$purchase_order_row1->quantity=$total_qty;
-								$merge_data = $purchase_order_row1;
-							}
-						}
-						$merge_data = $purchase_order_row;
-							
-					}  */					
-					//pr($merge_data);  exit;	
+					out:
+				}
+			} 
+
+
+						
 					
                 $this->Flash->success(__('The purchase order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else { //pr($purchaseOrder);  exit;	
+            } else { 
                 $this->Flash->error(__('The purchase order could not be saved. Please, try again.'));
             }
         }
@@ -229,10 +229,15 @@ class PurchaseOrdersController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		
         $purchaseOrder = $this->PurchaseOrders->get($id, [
-            'contain' => ['PurchaseOrderRows']
+            'contain' => ['PurchaseOrderRows'=>['Items']]
         ]);
-
-          $Em = new FinancialYearsController;
+		
+		
+		/*foreach($purchaseOrder->purchase_order_rows as $purchase_order_row_first){
+			pr($purchase_order_row);
+		} exit; */
+		
+        $Em = new FinancialYearsController;
         $financial_year_data = $Em->checkFinancialYear($purchaseOrder->date_created);
 
 
@@ -242,18 +247,16 @@ class PurchaseOrdersController extends AppController
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
 			$purchaseOrder->delivery_date=date("Y-m-d",strtotime($purchaseOrder->delivery_date));
 			$purchaseOrder->company_id=$st_company_id;
+			foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
+				
+				pr($purchase_order_row);
+			} exit;
+			
+			
+			
             if ($this->PurchaseOrders->save($purchaseOrder)) {
 				
-				$i=0; 
-					foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
-						if($purchase_order_row->material_indent_id){
-							$material_indent_row=$this->PurchaseOrders->MaterialIndentRows->find()->where(['material_indent_id'=>$purchase_order_row->material_indent_id,'item_id'=>$purchase_order_row->item_id])->first();
-							
-							$material_indent_row->processed_quantity=$material_indent_row->processed_quantity-@$purchaseOrder->getOriginal('purchase_order_rows')[$i]->quantity+$purchase_order_row->quantity;
-							$this->PurchaseOrders->MaterialIndentRows->save($material_indent_row);
-						}
-						$i++;
-					}
+				
                 $this->Flash->success(__('The purchase order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

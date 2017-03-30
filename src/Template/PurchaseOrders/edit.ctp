@@ -88,14 +88,22 @@
 						</thead>
 						<tbody>
 							<?php $q=1; foreach ($purchaseOrder->purchase_order_rows as $purchase_order_rows): ?>
-							
-								<tr class="tr1" row_no='<?php echo @$purchase_order_rows->id; ?>'>
+							<tr class="tr1" row_no='<?php echo @$purchase_order_rows->id; ?>'>
 									<td rowspan="2"><?= h($q) ?></td>
+									<?php if($purchase_order_rows->pull_material =='Direct'){ ?>
 									<td>
 									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.processed_quantity', ['type' => 'hidden','value'=>@$purchase_order_rows->processed_quantity]);?>	
 									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item','value'=>$purchase_order_rows->item_id]); ?>
 									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.material_indent_id', ['label' => false,'type'=>'hidden','value'=>$purchase_order_rows['material_indent_id']]);  ?>
 									</td>
+									<?php } else { ?>
+									<td>
+									<?php 
+									echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm','type'=>'hidden','placeholder' => 'Item','value'=>$purchase_order_rows->item_id]);
+									echo $this->Form->input('purchase_order_rows.'.$q.'.material_indent_id', ['label' => false,'type'=>'hidden','value'=>$purchase_order_rows['material_indent_id']]);
+									echo $purchase_order_rows->item->name; ?>
+									</td>
+									<?php }  ?>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$purchase_order_rows->quantity]); ?></td>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.rate', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01",'value'=>$purchase_order_rows->rate]); ?></td>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value'=>$purchase_order_rows->amount]); ?></td>
@@ -126,8 +134,7 @@
 							
 							<tr>
 								<td colspan="4" align="right"><b>P&F</b></td>
-								<td><?php echo $this->Form->input('pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'P&f']); ?>
-								<?php echo $this->Form->radio('pnf_type',[['value' => '%', 'text' => 'Percent(%)'],['value' => '', 'text' => 'Amount']]); ?>
+								<td><?php echo $this->Form->input('pnf', ['label' => false,'class' => 'form-control input-sm ','placeholder' => 'P&f']); ?>
 								</td>
 							</tr>
 							
@@ -211,6 +218,13 @@
 			
 				<div class="row">
 					<div class="col-md-3">
+							<div class="form-group">
+								<label class="control-label">Excise Duty </label>
+								<?php 
+								echo $this->Form->input('excise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Excise Duty']); ?>
+							</div>
+					</div>
+					<div class="col-md-3">
 						<div class="form-group">
 							<div class="radio-list" >
 							<label class="control-label">Excise for customer</label>
@@ -220,13 +234,7 @@
 					</div>
 					<div id="ex_div" style="display:none;">
 						<div class="col-md-3" id="qwert"></div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<label class="control-label">Excise Duty </label>
-								<?php 
-								echo $this->Form->input('excise_duty',['label' => false,'class' => 'form-control input-sm','placeholder'=>'Excise Duty']); ?>
-							</div>
-						</div>
+						
 					</div>
 				</div>
 			<div class="form-actions">

@@ -43,7 +43,7 @@ class QuotationsController extends AppController
 			$where['company_id']=$company_id;
 		}
 		if(!empty($qt2)){
-			$where['qt2 LIKE']='%'.$qt2.'%';
+			$where['qt2 LIKE']=$qt2;
 		}
 		if(!empty($file)){
 			$where['Quotations.qt3 LIKE']='%'.$file.'%';

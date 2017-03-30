@@ -16,7 +16,7 @@
 					<div class="col-md-4">
 						<div class="input-icon right">
 							<i class="fa"></i>
-							 <?php echo $this->Form->input('text_line', ['label' => false,'class' => 'form-control input-sm firstupercase']); ?>
+							 <?php echo $this->Form->input('text_line', ['label' => false,'class' => 'form-control input-sm']); ?>
 						</div>
 					</div>
 				</div>

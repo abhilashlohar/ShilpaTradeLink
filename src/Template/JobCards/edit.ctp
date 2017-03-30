@@ -16,7 +16,7 @@
 			<div class="form-body">
 
 				<div class="row">
-					<div class="col-md-5">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="col-md-4 control-label">Job Card No. </label>
 							<div class="col-md-8">
@@ -36,18 +36,18 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-3">
+				<div class="col-md-4">
 					<div class="form-group">
-						<label class="col-md-5 control-label">Customer</label>
-						<div class="col-md-7">
+						<label class="col-md-4 control-label">Customer</label>
+						<div class="col-md-8">
 							<?php echo $this->Form->input('customer_id', ['type'=>'hidden','value' => @$salesOrder->customer_id]); ?>
-							<?php echo $jobCard->customer->customer_name; ?>
+							<?php echo $jobCard->customer->customer_name.'('; echo$jobCard->customer->alias.')'; ?>
 						</div>
 					</div>
 				</div>
 			</div><br/>
 			<div class="row">
-				<div class="col-md-5">
+				<div class="col-md-4">
 					<div class="form-group">
 						<label class="col-md-6 control-label">Customer PO No</label>
 						<div class="col-md-6">

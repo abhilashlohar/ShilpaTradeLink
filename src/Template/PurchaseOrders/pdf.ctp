@@ -95,57 +95,63 @@ $html = '
 
 $html.='
 
-<table width="100%" class="table_rows itemrow">
+<table width="100%" class="table_rows table3">
 		<tr>
-			<td colspan=6 align="" >';
-				$html.='
-					<table  valign="center" width="100%" style="margin-top: 0px;" class="table2">
+			<td colspan=2 width="300" align="" >
+					<table >
 						<tr>
-							<td width="50%">
-								<span><b>'. h($purchaseOrder->vendor->company_name) .'</b></span><br/>
-								<div style="height:5px;"></div>
-								'. $this->Text->autoParagraph(h($purchaseOrder->vendor->address)) .'
-								
-							</td>
-							<td width="50%" valign="top" align="right" >
-								<table width="100%" style="border-left: 1px solid black;">
+							<td style="border-left:none; border-right:none; border-top:none; border-bottom:none;" width="45%" style="font-size:13px";> 
+								<table class="table2" >
 									<tr>
-										<td width="55" valign="top" style="vertical-align: top;">PO No.</td>
-										<td width="25" valign="top">:</td>
-										<td  valign="top">'. h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->po2, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)) .'</td>
-									</tr>
-									<tr>
-										<td valign="top" style="vertical-align: top;">Date</td>
-										<td valign="top">:</td>
-										<td valign="top">'. h(date("d-m-Y",strtotime($purchaseOrder->date_created))) .'</td>
-									</tr>
-									<tr>
-										<td valign="top" style="vertical-align: top;">TIN</td>
-										<td valign="top">:</td>
-										<td valign="top">'. h($purchaseOrder->company->tin_no) .'</td>
-									</tr>
-									<tr>
-										<td valign="top" style="vertical-align: top;">PAN</td>
-										<td valign="top">:</td>
-										<td valign="top">'. h($purchaseOrder->company->pan_no) .'</td>
-									</tr>
-									<tr>
-										<td valign="top" style="vertical-align: top;">CIN</td>
-										<td valign="top">:</td>
-										<td valign="top">'. h($purchaseOrder->company->cin_no) .'</td>
+										<td>
+											<span><b>'. h($purchaseOrder->vendor->company_name) .'</b></span><br/>
+											<div style="height:5px;"></div>
+											'. $this->Text->autoParagraph(h($purchaseOrder->vendor->address)) .'
+											
+										</td>
 									</tr>
 								</table>
 							</td>
 						</tr>
-					</table>';	
-					
-					$html.='</td>
+					</table>
+			<td colspan=4 align="" >
+					<table class="table2">
+						<tr>
+							<td width="55" valign="top" style="vertical-align: top;">PO No.</td>
+							<td width="25" valign="top">:</td>
+							<td  valign="top">'. h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->po2, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)) .'</td>
+						</tr>
+						<tr>
+							<td valign="top" style="vertical-align: top;">Date</td>
+							<td valign="top">:</td>
+							<td valign="top">'. h(date("d-m-Y",strtotime($purchaseOrder->date_created))) .'</td>
+						</tr>
+						<tr>
+							<td valign="top" style="vertical-align: top;">TIN</td>
+							<td valign="top">:</td>
+							<td valign="top">'. h($purchaseOrder->company->tin_no) .'</td>
+						</tr>
+						<tr>
+							<td valign="top" style="vertical-align: top;">PAN</td>
+							<td valign="top">:</td>
+							<td valign="top">'. h($purchaseOrder->company->pan_no) .'</td>
+						</tr>
+						<tr>
+							<td valign="top" style="vertical-align: top;">CIN</td>
+							<td valign="top">:</td>
+							<td valign="top">'. h($purchaseOrder->company->cin_no) .'</td>
+						</tr>
+					</table>
+			</td>
 		</tr>
+		
 		<tr>
 			<td colspan=6 style="border-top:1px solid #000;  text-align: justify;">
 			'. $this->Text->autoParagraph(h($purchaseOrder->descryption)) .'
 			</td>
 		</tr>
+	</table>
+	<table width="100%" class="table_rows table3">
 		<tr>
 			<th>S No</th>
 			<th>Item</th>
@@ -154,6 +160,7 @@ $html.='
 			<th>Rate</th>
 			<th>Amount</th>
 		</tr>
+
 ';
 $sr=0; foreach ($purchaseOrder->purchase_order_rows as $purchase_order_rows): $sr++; 
 $html.='
@@ -191,51 +198,52 @@ $html.='</table>';
 					
 				
 				<tr>
-					<td colspan="2"><b>Amount in words : -  </b> '.  h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees  '. h($paisa_text) .'</td>
+					<td colspan="2"><b>Amount in words :   </b> '.  h(ucwords($this->NumberWords->convert_number_to_words($rupees))) .'  Rupees  '. h($paisa_text) .'</td>
 				</tr>
 			</tbody>
 		</table>';
 
-		
 $html .= '	<table width="100%" class="table_rows table3">
   <tr>
-    <td valign="top" rowspan="2" style="text-align:center;">Material To Be Transported:<br/>'. h(($purchaseOrder->material_to_be_transported)) .'</td>
-    <td valign="top" rowspan="2" style="text-align:center;">Sale Tax:<br/>'. h(($purchaseOrder->sale_tax_description)) .'</td>
-    <td valign="top" style="text-align:center;"> <p>Discount : '. h(( $purchaseOrder->discount)) .''. h(($purchaseOrder->discount_type)).'</p>
+    <td valign="top"  width="39%" rowspan="2" style="text-align:center;"><b>Material to be transported to :</b><br/>'. h(($purchaseOrder->material_to_be_transported)) .'</td>
+    <td valign="top" rowspan="2" style="text-align:center;"><b>Sale Tax :</b><br/>'. h(($purchaseOrder->sale_tax_description)) .'</td>
+    <td valign="top" style="text-align:center;"> <p><b>Discount : </b><span style="padding-left:7px;">'. h($purchaseOrder->discount) .''. h(($purchaseOrder->discount_type)).'</span></p>
+   
     </td>
   </tr>
   <tr>
-  <td style="text-align:center;"><p>P & F	: '. h(( $purchaseOrder->pnf)) .''. h(($purchaseOrder->pnf_type)) .'</p></td>
+  <td style="text-align:center;"><p><b>P & F : </b><span style="padding-left:7px;">'. h($purchaseOrder->pnf) .'</span></p></td>
   </tr>
   <tr>
-    <td valign="top" style="text-align:center;">LR To Be Prepared In Favour Of:<br/>'. h(($purchaseOrder->lr_to_be_prepared_in_favour_of)) .'</td>
-    <td valign="top" style="text-align:center;">Payment Terms:<br/>'. h(($purchaseOrder->payment_terms)) .'</td>
-    <td valign="top" style="text-align:center;">Excise Duty : '. h(( $purchaseOrder->excise_duty)) .'</td>
+    <td valign="top" style="text-align:center; padding-top:7px; padding-bottom:7px;"><b>LR to be prepared in favour of :<br/></b><span style="padding:17px;">'. h(($purchaseOrder->lr_to_be_prepared_in_favour_of)) .'</span></td>
+    <td valign="top" style="text-align:center;"><b>Payment Terms :</b><br/>'. h(($purchaseOrder->payment_terms)) .'</td>
+    <td valign="top" style="text-align:center;"><b>Excise Duty : </b><span style="padding-left:7px;">'. h(( $purchaseOrder->excise_duty)) .'</span></td>
    
   </tr>
   <tr>
-    <td valign="top" style="text-align:center;">Road Permit Form:<br/>'. h(($purchaseOrder->road_permit_form47)) .'</td>
-    <td valign="top" style="text-align:center;">Transporter Name:<br/>'. h(($purchaseOrder->transporter->transporter_name)) .'</td>
-    <td valign="top" style="text-align:center;" >Delivery:-<br/>'. h(($purchaseOrder->delivery)) .'</td>
-</tr>';
-
-$html.='<tr>
-			<td colspan="3"  >
-				<table width="100%" class="table2" >
-					<tr>
-						<td style="border-right: 1px solid black;">
-							<table style="padding-top:-30px;">
-								<tr>
-									<td style="font-size:13px;">Excise Invoice Required in Favour of Consignee:<br/>
-									'. h($purchaseOrder->customer->customer_name) .'<br/>
-									'. h($purchaseOrder->customer->customer_address[0]->address) .'<br/>
-									ECC : '. h($purchaseOrder->customer->ecc_no) .'<br/>
-									TIN : '. h($purchaseOrder->customer->tin_no) .'<br/></td>
-								</tr>
-							</table>
-						</td>
-						<td colspan="2"  align="left" width="63.00%" style="font-size:13px; padding-top:-15px;"><br/>Please confirm that you have registered this order and request you to return back the duplicate copy duly signed in token of having accepted the order.<br/><br/>
-							<div  align="center">
+    <td  style="text-align:center;"><b>Road Permit Form : </b><br/>'. h(($purchaseOrder->road_permit_form47)) .'</td>
+    <td valign="top" style="text-align:center;"><b>Transporter Name :</b><br/>'. h(($purchaseOrder->transporter->transporter_name)) .'</td>
+    <td valign="top" style="text-align:center;" ><b>Delivery : </b><br/>'. h(($purchaseOrder->delivery)) .'</td>
+</tr>
+<tr>';
+	if($purchaseOrder->is_exceise_for_customer=='Yes'){
+	$html.='<td valign="top" style="font-size:13px;" >
+		<b style="text-decoration: underline;">Excise Invoice Required in Favour of Consignee:</b>
+				'. h($purchaseOrder->customer->customer_name) .'<br/>
+				'. h($purchaseOrder->customer->customer_address[0]->address) .'<br/>
+				ECC : '. h($purchaseOrder->customer->ecc_no) .'<br/>
+				TIN : '. h($purchaseOrder->customer->tin_no) .'<br/>
+		</td>';
+}else{ $html.='<td valign="top" style="font-size:13px;" >
+		
+		</td>'; }
+$html.='<td valign="top" colspan="2" style="font-size:13px;">
+		Please confirm that you have registered this order and request you to return back the duplicate copy duly signed in token of having accepted the order.<br/><br/>
+		<table width="100%" class="table2">
+			<tr>
+			<td width="10%"></td>
+			<td>
+				<div  align="center">
 								<span>For <b>'. h($purchaseOrder->company->name) .'</b></span><br/>
 									<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$purchaseOrder->creator->signature.' height="50px" style="height:50px;"/>
 									<br/>
@@ -243,14 +251,15 @@ $html.='<tr>
 									<span>'. h($purchaseOrder->creator->name) .'</span><br/>
 									
 							</div>
-						</td>
-				</tr>
-			</table>
+			</td>
+			</tr>
+		</table>
+							
 		</td>
-		</tr>
-			
-		</tbody>
-	</table>';
+	</tr>
+</table>
+';
+
 
 
 

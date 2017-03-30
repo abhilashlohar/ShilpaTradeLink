@@ -42,8 +42,8 @@
 											<?= h($materialIndentrows->item->name) ?>
 											</td>
 											<td>
-											<?php echo $this->Form->input('materialIndent_id', ['label' => false,'type'=>'hidden','value'=>$materialIndentrows->required_quantity]);  ?>
-											<?= h($materialIndentrows->required_quantity) ?></td>
+											<?php echo $this->Form->input('materialIndent_id', ['label' => false,'type'=>'hidden','value'=>$materialIndentrows->required_quantity-$materialIndentrows->processed_quantity]);  ?>
+											<?= h($materialIndentrows->required_quantity-$materialIndentrows->processed_quantity) ?></td>
 											<td><label><?php echo $this->Form->input('check[]', ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$materialIndentrows->id,'hiddenField'=>false]);  ?>
 											</label>
 											</td>

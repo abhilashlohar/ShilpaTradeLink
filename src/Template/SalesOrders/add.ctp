@@ -127,7 +127,7 @@ if(!empty($copy))
 					<div class="form-group">
 						<label class="col-md-3 control-label">PO Date <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
-							<?php echo $this->Form->input('po_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'PO Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d']); ?>
+							<?php echo $this->Form->input('po_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'PO Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-365d','data-date-end-date' => '0d']); ?>
 						</div>
 					</div>
 				</div>

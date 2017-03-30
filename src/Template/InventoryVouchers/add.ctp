@@ -29,7 +29,7 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Customer</label>
 						<div class="col-md-9">
-						<?php echo @$Invoice->customer->customer_name; ?>
+						<?php echo $Invoice->customer->customer_name.'('; echo $Invoice->customer->alias.')'; ?>
 						</div>
 					</div>
 				</div>

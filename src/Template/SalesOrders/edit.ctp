@@ -337,6 +337,12 @@
 						<div id="form49_error"></div>
 					</div>
 				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="control-label">Additional Note  <span class="required" aria-required="true">*</span></label>
+						<?php echo $this->Form->input('additional_note', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Additional Note']); ?>
+					</div>
+				</div>
 				
 			</div>
 			<!--<label>Commercial Terms & Conditions:</label> <a href="#" role="button" class="select_term_condition">Select </a>

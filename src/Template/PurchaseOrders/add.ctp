@@ -1,4 +1,4 @@
-<?php //pr($material_items_for_purchases); exit; ?>
+
 <style>
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
 	vertical-align: top !important;
@@ -93,16 +93,45 @@ With reference to your price list we are pleased to place an order for the follo
 						</thead>
 						
 						<tbody><?php if(!empty($material_items_for_purchases)){  ?>
-							<?php $q=1; foreach ($material_items_for_purchases as $material_indent_row): 
+							
+							<?php //pr($material_items_for_purchases); exit; 
+								  $result = array();
+										foreach ($material_items_for_purchases as $item)
+										{
+											
+											$name = $item['item_id'];
+												
+											if (isset($result[$name]))
+											{
+												$result[$name]['required_quantity'] += $item['required_quantity'];
+											}
+											else 
+											{
+												$result[$name] = $item;
+											}
+										}  
+										$data = array_values($result);
+										 
+								?>
+							
+							<?php $q=1; foreach ($data as $material_indent_row): 
 							?>
 								<tr class="tr1" row_no='<?php echo @$material_indent_row->item_id; ?>'>
-									<td rowspan="2"><?= h($q) ?></td>
+									<td rowspan="2">
+									
+									<?= h($q) ?></td>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.material_indent_id', ['label' => false,'type'=>'hidden','value'=>$material_indent_row->material_indent_id]);  ?>
-									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'type'=>'hidden','value'=>$material_indent_row->item->id]);  ?>
+									<?php 
+									echo $this->Form->input('purchase_order_rows.'.$q.'.pull_material', ['label' => false,'type'=>'hidden','value'=>'pull_from_material']); 
+									echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'type'=>'hidden','value'=>$material_indent_row->item->id]);  ?>
 									<?php echo $material_indent_row->item->name; ?></td>
 									<td>
-									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['label' => false,'type'=>'text','value'=>$material_indent_row->required_quantity-$material_indent_row->processed_quantity,'max' =>$material_indent_row->required_quantity-$material_indent_row->processed_quantity]); ?></td>
-									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.rate', ['label' => false,'type'=>'text']); ?></td>
+									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['label' => false,'type'=>'text','value'=>$material_indent_row->required_quantity-$material_indent_row->processed_quantity]); ?></td>
+									<td><?php 
+									
+									echo $this->Form->input('purchase_order_rows.'.$q.'.rate', ['label' => false,'type'=>'text']); 
+									 
+									?></td>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.amount', ['label' => false,'type'=>'text']); ?></td>
 									<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 									
@@ -132,7 +161,6 @@ With reference to your price list we are pleased to place an order for the follo
 							<tr>
 								<td colspan="4" align="right"><b>P&F</b></td>
 								<td><?php echo $this->Form->input('pnf', ['label' => false,'class' => 'form-control input-sm ','placeholder' => 'P&f']); ?>
-								<?php echo $this->Form->radio('pnf_type',[['value' => '%', 'text' => 'Percent(%)'],['value' => '', 'text' => 'Amount','checked']]); ?>
 								</td>
 							</tr>
 							
