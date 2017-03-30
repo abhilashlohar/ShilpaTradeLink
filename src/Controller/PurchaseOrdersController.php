@@ -232,10 +232,9 @@ class PurchaseOrdersController extends AppController
             'contain' => ['PurchaseOrderRows'=>['Items']]
         ]);
 		
+		$purchaseOrder_old=$purchaseOrder;
 		
-		/*foreach($purchaseOrder->purchase_order_rows as $purchase_order_row_first){
-			pr($purchase_order_row);
-		} exit; */
+		
 		
         $Em = new FinancialYearsController;
         $financial_year_data = $Em->checkFinancialYear($purchaseOrder->date_created);
@@ -247,10 +246,73 @@ class PurchaseOrdersController extends AppController
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
 			$purchaseOrder->delivery_date=date("Y-m-d",strtotime($purchaseOrder->delivery_date));
 			$purchaseOrder->company_id=$st_company_id;
+			
+			
+			foreach($purchaseOrder_old->purchase_order_rows as $purchase_order_row){
+				if($purchase_order_row->pull_status=="PULLED_FROM_MI"){
+					$query = $this->PurchaseOrders->MaterialIndentRows->find()
+					->where(['MaterialIndentRows.item_id'=>$purchase_order_row->item_id]);
+					$MaterialIndentRows=$query->matching('MaterialIndents', function ($q) use($st_company_id){
+						return $q->where(['MaterialIndents.company_id' => $st_company_id]);
+					});
+					
+					$material_rows[$purchase_order_row->item_id]=[];
+					foreach($MaterialIndentRows as $MaterialIndentRow){
+						$material_rows[$purchase_order_row->item_id][strtotime($MaterialIndentRow->_matchingData['MaterialIndents']->created_on)]=['id'=>$MaterialIndentRow->id,'item_id'=>$MaterialIndentRow->item_id,'required_quantity'=>$MaterialIndentRow->required_quantity,'processed_quantity'=>$MaterialIndentRow->processed_quantity];
+					}
+				}
+			}
+			
+			
+			foreach($purchaseOrder_old->purchase_order_rows as $purchase_order_row){
+				if($purchase_order_row->pull_status=="PULLED_FROM_MI"){
+					$mi_rows=$material_rows[$purchase_order_row->item_id];
+					krsort($mi_rows);
+					$purchase_order_qty=$purchase_order_row->quantity;
+					foreach($mi_rows as $mi_row){
+						$mi_remaining_qty=$mi_row['required_quantity']-$mi_row['processed_quantity'];
+						
+						if($mi_row['required_quantity']==$mi_remaining_qty){
+							
+						}else{
+							$reminder=$purchase_order_qty-$mi_row['processed_quantity'];
+							if($reminder>=0){
+								update where item_id=item_id & comany_id=comany_id set processed_quantity=0 & status=open
+								$purchase_order_qty=$reminder;
+							}else{
+								update where item_id=item_id & comany_id=comany_id set processed_quantity=abs($reminder) & status=open
+								break;
+							}
+						}
+					}
+				}
+			}
+			
 			foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
-				
-				pr($purchase_order_row);
-			} exit;
+				if($purchase_order_row->pull_status=="PULLED_FROM_MI"){
+					$mi_rows=$material_rows[$purchase_order_row->item_id];
+					ksort($mi_rows);
+					$purchase_order_qty=$purchase_order_row->quantity;
+					foreach($mi_rows as $mi_row){
+						$mi_remaining_qty=$mi_row['required_quantity']-$mi_row['processed_quantity'];
+						$reminder=$mi_remaining_qty-$purchase_order_qty;
+						if($reminder>=0){
+							
+							$mi_row = $this->PurchaseOrders->MaterialIndentRows->get($mi_row['id']);
+							$mi_row->processed_quantity=$mi_row->processed_quantity+$purchase_order_qty;
+							$mi_row->status='Open';
+							$this->PurchaseOrders->MaterialIndentRows->save($mi_row);
+							break;
+						}else{
+							$mi_row = $this->PurchaseOrders->MaterialIndentRows->get($mi_row['id']);
+							$mi_row->processed_quantity=$mi_row->processed_quantity+abs($mi_remaining_qty);
+							$mi_row->status='Close';
+							$this->PurchaseOrders->MaterialIndentRows->save($mi_row);
+						}
+						$purchase_order_qty=abs($reminder);
+					}
+				}
+			}
 			
 			
 			
