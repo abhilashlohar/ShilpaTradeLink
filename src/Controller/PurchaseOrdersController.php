@@ -277,10 +277,16 @@ class PurchaseOrdersController extends AppController
 						}else{
 							$reminder=$purchase_order_qty-$mi_row['processed_quantity'];
 							if($reminder>=0){
-								update where item_id=item_id & comany_id=comany_id set processed_quantity=0 & status=open
+								$mi_row = $this->PurchaseOrders->MaterialIndentRows->get($mi_row['id']);
+								$mi_row->processed_quantity=0;
+								$mi_row->status='Open';
+								$this->PurchaseOrders->MaterialIndentRows->save($mi_row);
 								$purchase_order_qty=$reminder;
 							}else{
-								update where item_id=item_id & comany_id=comany_id set processed_quantity=abs($reminder) & status=open
+								$mi_row = $this->PurchaseOrders->MaterialIndentRows->get($mi_row['id']);
+								$mi_row->processed_quantity=abs($reminder);
+								$mi_row->status='Open';
+								$this->PurchaseOrders->MaterialIndentRows->save($mi_row);
 								break;
 							}
 						}
@@ -297,7 +303,6 @@ class PurchaseOrdersController extends AppController
 						$mi_remaining_qty=$mi_row['required_quantity']-$mi_row['processed_quantity'];
 						$reminder=$mi_remaining_qty-$purchase_order_qty;
 						if($reminder>=0){
-							
 							$mi_row = $this->PurchaseOrders->MaterialIndentRows->get($mi_row['id']);
 							$mi_row->processed_quantity=$mi_row->processed_quantity+$purchase_order_qty;
 							$mi_row->status='Open';
