@@ -31,20 +31,20 @@
 			 <table class="table table-hover">
 				 <thead>
 					<tr>
-						<th>Sr. No.</th>
+						<th width="3%">Sr. No.</th>
 						<th>Customer Name</th>
-						<th>District</th>
-						<th>Customer Seg</th>
-						<th>Tin No</th>
-						<th>Gst No</th>
-						<th>Actions</th>
+						<th width="10%">District</th>
+						<th width="10%">Customer Seg</th>
+						<th width="10%">Tin No</th>
+						<th width="10%">Gst No</th>
+						<th width="10%">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php $i=0; foreach ($customers as $customer): $i++; ?>
 					<tr>
 						<td><?= h(++$page_no) ?></td>
-						<td><?= h($customer->customer_name) ?></td>
+						<td><?php echo $customer->customer_name.'('; echo $customer->alias.')'; ?></td>
 						<td><?= h($customer->district->district) ?></td>
 						<td><?= h($customer->customer_seg->name) ?></td>
 						<td><?= h($customer->tin_no) ?></td>
