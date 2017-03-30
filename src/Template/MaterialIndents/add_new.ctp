@@ -32,8 +32,10 @@
 					<?php } ?>
 					</tbody>
 				</table>
-				<div class="form-actions">
-					<button type="submit" class="btn btn-primary">Submit</button>
+				<div align="right" class="form-actions">
+					<button type="submit" class="btn btn-primary">Pull & Create Purchase Order</button>
+					<?php echo $this->Html->link("Skip And Next", array('controller' => 'PurchaseOrders','action'=> 'Add'), array( 'class' => 'btn green')); ?>
+					
 				</div>
 			</div>
 		</div>

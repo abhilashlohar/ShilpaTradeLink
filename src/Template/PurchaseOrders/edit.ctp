@@ -101,7 +101,8 @@
 									<?php 
 									echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm','type'=>'hidden','placeholder' => 'Item','value'=>$purchase_order_rows->item_id]);
 									echo $this->Form->input('purchase_order_rows.'.$q.'.material_indent_id', ['label' => false,'type'=>'hidden','value'=>$purchase_order_rows['material_indent_id']]);
-									echo $purchase_order_rows->item->name; ?>
+									echo $purchase_order_rows->item->name; ?><br/>
+									<span class="label label-sm label-warning ">Pulled from MI</span>
 									</td>
 									<?php }  ?>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$purchase_order_rows->quantity]); ?></td>
@@ -372,6 +373,7 @@ $(document).ready(function() {
 	rename_rows();
 	calculate_total();
 	
+	 
     $('.addrow').die().live("click",function() { 
 		add_row();
     });
@@ -409,18 +411,26 @@ $(document).ready(function() {
 	function rename_rows(){
 	var i=0;
 		$("#main_tb tbody tr.tr1").each(function(){
-			i++;
-			$(this).find("td:nth-child(1)").html(i);
-			$(this).find("td:nth-child(2) select").select2().attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"}).rules("add", "required");
+			
+			$(this).find("td:nth-child(1)").html(++i); i--;
+			var len=$(this).find("td:nth-child(2) select").length;
+			if(len>0){
+				$(this).find("td:nth-child(2) select").select2().attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"}).rules("add", "required");
+			}else{
+				$(this).find("td:nth-child(2) input").attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"}).rules("add", "required");
+			}
+			
 			$(this).find("td:nth-child(3) input").attr({name:"purchase_order_rows["+i+"][quantity]", id:"purchase_order_rows-"+i+"-quantity"}).rules("add", "required");
 			$(this).find("td:nth-child(4) input").attr({name:"purchase_order_rows["+i+"][rate]", id:"purchase_order_rows-"+i+"-rate"}).rules("add", "required");
 			$(this).find("td:nth-child(5) input").attr("name","purchase_order_rows["+i+"][amount]");
+			i++;
 		});
 		var i=0;
 		
 		$("#main_tb tbody tr.tr2").each(function(){
-			i++;
+			
 			$(this).find("td:nth-child(1) textarea").attr({name:"purchase_order_rows["+i+"][description]", id:"purchase_order_rows-"+i+"-description"}).rules("add", "required");
+			i++;
 		});
 		
 			
