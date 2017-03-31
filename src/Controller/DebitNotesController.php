@@ -106,7 +106,8 @@ class DebitNotesController extends AppController
                 $this->Flash->error(__('The debit note could not be saved. Please, try again.'));
             }
         }
-		$vouchersReferences = $this->DebitNotes->VouchersReferences->get(10, [
+		$vr=$this->DebitNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Debit Notes Voucher','sub_entity'=>'Sales Account'])->first();
+		$vouchersReferences = $this->DebitNotes->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		
@@ -132,8 +133,8 @@ class DebitNotesController extends AppController
 			$ErrorsalesAccs='true';
 		}
 		
-			
-		$vouchersReferences = $this->DebitNotes->VouchersReferences->get(11, [
+		$vr=$this->DebitNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Debit Notes Voucher','sub_entity'=>'Party'])->first();	
+		$vouchersReferences = $this->DebitNotes->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
@@ -222,7 +223,8 @@ class DebitNotesController extends AppController
             }
         }
         
-		$vouchersReferences = $this->DebitNotes->VouchersReferences->get(10, [
+		$vr=$this->DebitNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Debit Notes Voucher','sub_entity'=>'Sales Account'])->first();	
+		$vouchersReferences = $this->DebitNotes->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		
@@ -243,8 +245,9 @@ class DebitNotesController extends AppController
 					}
 					
 				}])->where(['SalesAccs.id IN' => $where]);
-			
-		$vouchersReferences = $this->DebitNotes->VouchersReferences->get(11, [
+		
+		$vr=$this->DebitNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Debit Notes Voucher','sub_entity'=>'Party'])->first();			
+		$vouchersReferences = $this->DebitNotes->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
