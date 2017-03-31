@@ -28,6 +28,7 @@ class PurchaseOrdersController extends AppController
 		
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		
 		if($status==null or $status=='Pending'){
 			$having=['total_rows >' => 0];
 		}elseif($status=='Converted-Into-GRN'){

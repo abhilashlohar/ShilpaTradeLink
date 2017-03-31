@@ -37,7 +37,7 @@
 							
 							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.item_id', ['label' => false,'type'=>'hidden','value'=>$material_item->item_id]); ?>
 							<?php echo $material_item->item->name; ?></td>
-							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.required_quantity', ['label' => false,'type'=>'text','value'=>$material_item->required_quantity]); ?></td>
+							<td><?php echo $this->Form->input('material_indent_rows.'.$q.'.required_quantity', ['label' => false,'type'=>'text','value'=>$material_item->required_quantity-$material_item->processed_quantity]); ?></td>
 					</tr>
 					<?php endforeach;  ?>
 					

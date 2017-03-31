@@ -1,5 +1,3 @@
-<?php //pr($materialIndents); exit; ?>
-
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -7,6 +5,27 @@
 			<span class="caption-subject font-blue-steel uppercase">Material Indents</span> 
 			
 	    </div>
+		<div class="actions">
+			
+			<div class="btn-group">
+			<?php
+			if($status==null or $status=='Open'){ $class1='btn btn-primary'; }else{ $class1='btn btn-default'; }
+			if($status=='Close'){ $class2='btn btn-primary'; }else{ $class2='btn btn-default'; }
+			?>
+			<?= $this->Html->link(
+					'Open',
+					'/MaterialIndents/index/Open',
+					['class' => $class1]
+				); ?>
+			<?= $this->Html->link(
+					'Close',
+					'/MaterialIndents/index/Close',
+					['class' => $class2 ]
+				); ?>
+				
+			
+			</div>
+		</div>
 				 
 <?php $page_no=$this->Paginator->current('MaterialIndentS'); $page_no=($page_no-1)*20; ?>
 	<table class="table table-bordered table-striped table-hover">

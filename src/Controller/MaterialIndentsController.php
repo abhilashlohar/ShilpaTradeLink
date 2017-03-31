@@ -16,25 +16,39 @@ class MaterialIndentsController extends AppController
      *
      * @return \Cake\Network\Response|null
      */
-    public function index()
+    public function index($status=null)
     {
+		$url=$this->request->here();
+		$url=parse_url($url,PHP_URL_QUERY);
+		//pr($url); exit;
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		
-        $this->paginate = [
-            'contain' => []
-        ];
-		
-		
-		//$materialIndents = $this->paginate($this->MaterialIndents->find()->order(['MaterialIndents.id' => 'DESC']));
-      
-	  
+	
+	 if($status==null or $status=='Open' ){
+			$having=['total_open_rows >' => 0];
+		}elseif($status=='Close'){
+			$having=['total_open_rows =' => 0];
+		}
+	
+	
+	$materialIndents=$this->paginate(
+			$this->MaterialIndents->find()->select(['total_open_rows' => 
+				$this->MaterialIndents->find()->func()->count('MaterialIndentRows.id')])
+					->leftJoinWith('MaterialIndentRows', function ($q) {
+						return $q->where(['MaterialIndentRows.required_quantity >MaterialIndentRows.processed_quantity']);
+					})	
+					->group(['MaterialIndents.id'])
+					->autoFields(true)
+					->having($having)
+					->where(['company_id'=>$st_company_id])
+					->order(['MaterialIndents.id' => 'DESC'])
+			);
 	 
-	 $materialIndents=$this->paginate($this->MaterialIndents->find()->where(['company_id'=>$st_company_id])->order(['MaterialIndents.id' => 'DESC']));
+		//pr($MaterialIndents); exit;
 	  
-		//pr($materialIndents); exit;
-        $this->set(compact('materialIndents'));
+	
+        $this->set(compact('materialIndents','url','status'));
         $this->set('_serialize', ['materialIndents']);
     }
 	
