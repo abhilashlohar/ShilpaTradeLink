@@ -271,6 +271,7 @@ class PurchaseOrdersController extends AppController
 					}
 				}
 			}
+			
 			foreach($purchaseOrder_old->purchase_order_rows as $purchase_order_row){
 				if($purchase_order_row->pull_status=="PULLED_FROM_MI"){
 					$mi_rows=$material_rows[$purchase_order_row->item_id];

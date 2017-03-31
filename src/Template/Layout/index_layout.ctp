@@ -408,7 +408,7 @@ select
 					</a>
 					<ul class="sub-menu">
 						<?php if(in_array(13,$allowed_pages)){
-						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/Purchase-Orders/Add',array('escape'=>false)).'</li>';
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/MaterialIndents/AddNew?pull-request=true',array('escape'=>false)).'</li>';
 						} ?>
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Purchase-Orders',array('escape'=>false)); ?></li>
 					</ul>
