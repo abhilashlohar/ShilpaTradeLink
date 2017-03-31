@@ -25,7 +25,6 @@ class PaymentVouchersController extends AppController
         ];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		
         $paymentVouchers = $this->paginate($this->PaymentVouchers->find()->where(['PaymentVouchers.company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
 		$this->set(compact('paymentVouchers'));
         $this->set('_serialize', ['paymentVouchers']);
@@ -46,7 +45,6 @@ class PaymentVouchersController extends AppController
             'contain' => ['PaidTos','BankCashes','Companies','Creator','PaymentBreakups'=>['InvoiceBookings']]
         ]);
 		$ReferenceDetails=$this->PaymentVouchers->ReferenceDetails->find()->where(['ReferenceDetails.payment_voucher_id' => $id])->toArray();
-
         $this->set('paymentVoucher', $paymentVoucher);
 		 $this->set(compact('ReferenceDetails'));
         $this->set('_serialize', ['paymentVoucher']);
@@ -55,9 +53,7 @@ class PaymentVouchersController extends AppController
 	public function fetchReferenceNo($ledger_account_id=null)
     {
 		$this->viewBuilder()->layout('ajax_layout');
-		
 		$ReferenceBalances=$this->PaymentVouchers->ReferenceBalances->find()->where(['ledger_account_id' => $ledger_account_id])->toArray();
-		
 		$this->set(compact(['ReferenceBalances']));
 	}
 	public function deleteReceiptRow($reference_type=null,$old_amount=null,$ledger_account_id=null,$payment_voucher_id=null,$reference_no=null)
