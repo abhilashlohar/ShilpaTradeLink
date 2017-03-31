@@ -197,7 +197,8 @@ class PaymentVouchersController extends AppController
                 $this->Flash->error(__('The payment voucher could not be saved. Please, try again.'));
             }
         }
-		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get(1, [
+		$vr=$this->PaymentVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Payment Voucher','sub_entity'=>'Paid To'])->first();
+		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 	
@@ -222,8 +223,8 @@ class PaymentVouchersController extends AppController
 		else{
 			$ErrorpaidTos='true';
 		}
-		
-		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get(2, [
+		$vr=$this->PaymentVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Payment Voucher','sub_entity'=>'Cash/Bank'])->first();
+		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
@@ -419,7 +420,8 @@ class PaymentVouchersController extends AppController
                 $this->Flash->error(__('The payment voucher could not be saved. Please, try again.'));
             }
         }
-		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get(1, [
+		$vr=$this->PaymentVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Payment Voucher','sub_entity'=>'Paid To'])->first();
+		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 	
@@ -441,7 +443,8 @@ class PaymentVouchersController extends AppController
 					
 				}])->where(['PaidTos.id IN' => $where]);
 				
-		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get(2, [
+		$vr=$this->PaymentVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Payment Voucher','sub_entity'=>'Cash/Bank'])->first();
+		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];

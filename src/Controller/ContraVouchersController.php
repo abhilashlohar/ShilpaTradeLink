@@ -108,7 +108,8 @@ class ContraVouchersController extends AppController
             }
         }
 		
-		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get(7, [
+		$vr=$this->ContraVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Contra Voucher','sub_entity'=>'Received From'])->first();
+		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		
@@ -133,8 +134,8 @@ class ContraVouchersController extends AppController
 		else{
 			$ErrorcashBankFroms='true';
 		}
-		
-		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get(8, [
+		$vr=$this->ContraVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Contra Voucher','sub_entity'=>'Cash/Bank'])->first();
+		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
@@ -226,7 +227,8 @@ class ContraVouchersController extends AppController
             }
         }
 		
-		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get(7, [
+		$vr=$this->ContraVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Contra Voucher','sub_entity'=>'Received From'])->first();
+		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		
@@ -248,8 +250,8 @@ class ContraVouchersController extends AppController
 					
 				}])->where(['cashBankFroms.id IN' => $where]);
 		
-			
-		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get(8, [
+		$vr=$this->ContraVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Contra Voucher','sub_entity'=>'Cash/Bank'])->first();	
+		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];

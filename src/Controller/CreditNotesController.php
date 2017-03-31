@@ -156,7 +156,8 @@ class CreditNotesController extends AppController
                 $this->Flash->error(__('The credit note could not be saved. Please, try again.'));
             }
         }
-		$vouchersReferences = $this->CreditNotes->VouchersReferences->get(12, [
+		$vr=$this->CreditNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Credit Notes','sub_entity'=>'Purchase Account'])->first();
+		$vouchersReferences = $this->CreditNotes->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		
@@ -180,8 +181,8 @@ class CreditNotesController extends AppController
 		}else{
 			$ErrorpurchaseAccs='true';
 		}
-			
-		$vouchersReferences = $this->CreditNotes->VouchersReferences->get(13, [
+		$vr=$this->CreditNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Credit Notes','sub_entity'=>'Party'])->first();
+		$vouchersReferences = $this->CreditNotes->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
@@ -267,7 +268,8 @@ class CreditNotesController extends AppController
                 $this->Flash->error(__('The credit note could not be saved. Please, try again.'));
             }
         } 
-		$vouchersReferences = $this->CreditNotes->VouchersReferences->get(12, [
+		$vr=$this->CreditNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Credit Notes','sub_entity'=>'Purchase Account'])->first();
+		$vouchersReferences = $this->CreditNotes->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		
@@ -288,8 +290,8 @@ class CreditNotesController extends AppController
 					}
 					
 				}])->where(['PurchaseAccs.id IN' => $where]);
-			
-		$vouchersReferences = $this->CreditNotes->VouchersReferences->get(13, [
+		$vr=$this->CreditNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Credit Notes','sub_entity'=>'Party'])->first();
+		$vouchersReferences = $this->CreditNotes->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];

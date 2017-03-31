@@ -105,7 +105,8 @@ class PettyCashReceiptVouchersController extends AppController
                 $this->Flash->error(__('The petty cash receipt voucher could not be saved. Please, try again.'));
             }
         }
-		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(5, [
+		$vr=$this->PettyCashReceiptVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Petty Cash Receipt','sub_entity'=>'Received From'])->first();
+		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		
@@ -130,7 +131,8 @@ class PettyCashReceiptVouchersController extends AppController
 		else{
 			$ErrorreceivedFroms='true';
 		}
-		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(6, [
+		$vr=$this->PettyCashReceiptVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Petty Cash Receipt','sub_entity'=>'Cash/Bank'])->first();
+		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
@@ -217,7 +219,8 @@ class PettyCashReceiptVouchersController extends AppController
             }
         }
 		
-		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(5, [
+		$vr=$this->PettyCashReceiptVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Petty Cash Receipt','sub_entity'=>'Received From'])->first();
+		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		
@@ -238,8 +241,8 @@ class PettyCashReceiptVouchersController extends AppController
 					}
 					
 				}])->where(['ReceivedFroms.id IN' => $where]);
-			
-		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get(6, [
+		$vr=$this->PettyCashReceiptVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Petty Cash Receipt','sub_entity'=>'Cash/Bank'])->first();
+		$vouchersReferences = $this->PettyCashReceiptVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
