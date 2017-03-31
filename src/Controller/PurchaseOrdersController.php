@@ -103,7 +103,7 @@ class PurchaseOrdersController extends AppController
        $todate = strtotime($todate1); 
        $tody = strtotime($tody1);
 
-      if($fromdate >= $tody || $todate <= $tody)
+      if($fromdate > $tody || $todate < $tody)
        {
        	   $chkdate = 'Not Found';
        }
@@ -182,6 +182,12 @@ class PurchaseOrdersController extends AppController
 							$mi_row->status='Open';
 							$this->PurchaseOrders->MaterialIndentRows->save($mi_row);
 							break;
+						}else if($reminder==0){
+							$mi_row = $this->PurchaseOrders->MaterialIndentRows->get($mi_row['id']);
+							$mi_row->processed_quantity=$mi_row->processed_quantity+$purchase_order_qty;
+							$mi_row->status='Close';
+							$this->PurchaseOrders->MaterialIndentRows->save($mi_row);
+							goto send;
 						}else{
 							$mi_row = $this->PurchaseOrders->MaterialIndentRows->get($mi_row['id']);
 							$mi_row->processed_quantity=$mi_row->processed_quantity+abs($mi_remaining_qty);
@@ -190,6 +196,7 @@ class PurchaseOrdersController extends AppController
 						}
 						$purchase_order_qty=abs($reminder);
 					}
+					send:
 				}
 			}
 
