@@ -18,9 +18,10 @@ class VouchersReferencesController extends AppController
      */
     public function index()
     {
-		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
 		$this->viewBuilder()->layout('index_layout');
-        $vouchersReferences = $this->paginate($this->VouchersReferences->find());
+        $vouchersReferences = $this->paginate($this->VouchersReferences->find()->where(['company_id'=>$st_company_id]));
 		
         $this->set(compact('vouchersReferences'));
         $this->set('_serialize', ['vouchersReferences']);
@@ -80,6 +81,8 @@ class VouchersReferencesController extends AppController
      */
     public function edit($id = null)
     {
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
 		$this->viewBuilder()->layout('index_layout');
 	
         $vouchersReference = $this->VouchersReferences->get($id, [
@@ -93,7 +96,7 @@ class VouchersReferencesController extends AppController
 		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $vouchersReference = $this->VouchersReferences->patchEntity($vouchersReference, $this->request->data);
-			//pr($vouchersReference); exit;
+			
             if ($this->VouchersReferences->save($vouchersReference)) {
                 $this->Flash->success(__('The vouchers reference has been saved.'));
 
@@ -102,8 +105,10 @@ class VouchersReferencesController extends AppController
                 $this->Flash->error(__('The vouchers reference could not be saved. Please, try again.'));
             }
         }
-		$AccountGroups = $this->VouchersReferences->AccountGroups->find('all')->contain(['AccountFirstSubgroups'=>['AccountSecondSubgroups'=>['LedgerAccounts']]]);
-        $this->set(compact('vouchersReference','AccountGroups','ledger_arr'));
+		$AccountGroups = $this->VouchersReferences->AccountGroups->find('all')->contain(['AccountFirstSubgroups'=>['AccountSecondSubgroups'=>['LedgerAccounts' => function ($q) use($st_company_id){
+			return $q->where(['company_id'=>$st_company_id]);
+		}]]]);
+        $this->set(compact('vouchersReference','AccountGroups','ledger_arr','st_company_id'));
         $this->set('_serialize', ['vouchersReference']);
     }
 

@@ -196,7 +196,9 @@ class ReceiptVouchersController extends AppController
             }
 			
         }
-		$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get(3, [
+		
+		$vr=$this->ReceiptVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Receipt Voucher','sub_entity'=>'Received From'])->first();
+		$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
 		$where=[];
