@@ -149,7 +149,7 @@
 								{
 									if($itemGroup['value']==$ReferenceDetail->reference_no)
 									{
-										 $itemGroups[$key]['amount']-=$ReferenceDetail->debit;
+										 $itemGroups[$key]['amount']=2000;
 									}
 									$key++;
 								}

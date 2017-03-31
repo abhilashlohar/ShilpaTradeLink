@@ -103,17 +103,11 @@
 				<thead>
 					<tr>
 						<th width="50">Sr.No. </th>
-						<th width="170">Items</th>
-						<th width="100">Unit Rate From PO</th>
-						<th width="70">Discount</th>
-						<th  width="100">Excise Duty</th>
-						<th  width="70" >CST</th>
-						<th  width="70" >total rate</th>
-						<th  width="100">P & F</th>
-						<th>Quantity</th>
-						<th>Rate</th>
-						<th>Amount</th>
-						
+						<th>Items</th>
+						<th width="130">Quantity</th>
+						<th width="130">Rate</th>
+						<th width="130">Amount</th>
+						<th width="70"></th>
 					</tr>
 				</thead>
 
@@ -124,43 +118,28 @@
 					$q=0; foreach ($grn->grn_rows as $grn_rows): ?>
 						<tr class="tr1" row_no='<?php echo @$grn_rows->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
+							<td><?php echo $grn_rows->item->name; ?>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value' => @$grn_rows->item->id,'popup_id'=>$q]); ?>
+							</td>
+						
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.quantity',['label' => false,'class' => 'form-control input-sm', 'value'=>$grn_rows->quantity,'readonly','type'=>'text']); ?></td>
 							<?php
 							$dis=($discount*$grn->purchase_order->purchase_order_rows[$q]->amount)/$grn->purchase_order->total;
 							$item_discount=$dis/$grn->purchase_order->purchase_order_rows[$q]->quantity;
 							
-							$item_rate=$grn->purchase_order->purchase_order_rows[$q]->amount-$dis;
-							$total_sale=($tot_sale_tax*$item_rate)/$item_total_rate;
+							$total_pnf=($tot_pnf*$grn->purchase_order->purchase_order_rows[$q]->amount)/$grn->purchase_order->total;
+							$item_pnf=$total_pnf/$grn->purchase_order->purchase_order_rows[$q]->quantity;
+							
+							$total_sale=($tot_sale_tax*$grn->purchase_order->purchase_order_rows[$q]->amount)/$grn->purchase_order->total;
 							$item_sale=$total_sale/$grn->purchase_order->purchase_order_rows[$q]->quantity;
-							
-						
-							$excise_duty_discount=($excise_duty*$item_rate)/$item_total_rate;
-							$total_exicese_duty=$excise_duty_discount/$grn->purchase_order->purchase_order_rows[$q]->quantity;
-							
 							?>
-							<td><?php echo $grn_rows->item->name; ?>
-							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value' => @$grn_rows->item->id,'popup_id'=>$q]); ?>
-							</td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.rate',['value'=>$grn->purchase_order->purchase_order_rows[$q]->rate,'type'=>'hidden']);
-							echo $grn->purchase_order->purchase_order_rows[$q]->rate;  ?></td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.discount',['value'=>$dis,'type'=>'hidden']);
-							echo $this->Number->format($dis,[ 'places' => 2]);?></td>
-								
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.excise_duty',['value'=>$excise_duty_discount,'type'=>'hidden']);
-								echo $this->Number->format($excise_duty_discount,[ 'places' => 2]);  ?></td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.sale_tax',['value'=>$total_sale,'type'=>'hidden']);
-								echo $this->Number->format($total_sale,[ 'places' => 2]);?></td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.total_rate',['value'=>$grn->purchase_order->purchase_order_rows[$q]->rate-$item_discount+$item_sale+$total_exicese_duty,'type'=>'hidden']);
-							echo $this->Number->format($grn->purchase_order->purchase_order_rows[$q]->rate-$item_discount+$item_sale+$total_exicese_duty,[ 'places' => 2]);?></td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.pnf',['label' => false,'class' => 'form-control input-sm required','id'=>'update_pnf','type'=>'text','placeholder' => 'pnf','value'=>0]); ?></td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.quantity',['label' => false,'class' => 'form-control input-sm', 'value'=>$grn_rows->quantity,'readonly','type'=>'text']); ?></td>
-							
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.rate',['label' => false,'class' => 'form-control input-sm','type'=>'text']); ?></td>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.rate',['label' => false,'class' => 'form-control input-sm','value'=>$grn->purchase_order->purchase_order_rows[$q]->rate-$item_discount+$item_pnf+$item_sale,'type'=>'text']); ?></td>
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.amount',['label' => false,'class' => 'form-control input-sm','value'=>$grn->purchase_order->purchase_order_rows[$q]->rate*$grn_rows->quantity,'type'=>'text']); ?></td>
 
 							
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$grn_rows->id; ?>'>
-							<td colspan="9">
+							<td colspan="4">
 							<?php echo $this->Text->autoParagraph(h($grn->purchase_order->purchase_order_rows[$q]->description)); ?>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.description',['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value'=>$grn->purchase_order->purchase_order_rows[$q]->description]); ?>
 							</td>
@@ -178,7 +157,7 @@
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="9" align="right"><b>Total</b></td>
+						<td colspan="4" align="right"><b>Total</b></td>
 						<td><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total']); ?></td>
 						</td>
 					</tr>
@@ -289,16 +268,16 @@ $(document).ready(function() {
 	
 	
    calculate_total();
-	$('#main_tb input').die().live("keyup",function() { 
+	$('#main_tb input').die().live("keyup","blur",function() { 
 		calculate_total();
     });
 	function calculate_total(){
 		var total=0;
 		$("#main_tb tbody tr.tr1").each(function(){
-			var unit=$(this).find("td:nth-child(9) input").val();
-			var Rate=$(this).find("td:nth-child(10) input").val();
+			var unit=$(this).find("td:nth-child(3) input").val();
+			var Rate=$(this).find("td:nth-child(4) input").val();
 			var Amount=unit*Rate;
-			$(this).find("td:nth-child(11) input").val(Amount.toFixed(2));
+			$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
 			total=total+Amount;
 		});
 		$('input[name="total"]').val(total.toFixed(2));
@@ -423,24 +402,6 @@ $(document).ready(function() {
 		});
 	});
 	
-	$('#main_tb input').die().live("keyup",function() { 
-	calculate_total_after_pnf();
-	});
-	function calculate_total_after_pnf(){
-		var total=0;  var Amount=0; var pnf_cal=0;  var qty=0;
-		$("#main_tb tbody tr.tr1").each(function(){
-			var total_rate=parseFloat($(this).find("td:nth-child(7) input").val());
-			var pnf_cal=parseInt($(this).find("td:nth-child(8) input").val());
-			var qty=parseInt($(this).find("td:nth-child(9) input").val());
-			if(isNaN(pnf_cal)) { var pnf_cal = 0; }
-			var Amount=total_rate+pnf_cal;
-			$(this).find("td:nth-child(10) input").val(Amount.toFixed(2));
-			total=Amount*qty;
-			$(this).find("td:nth-child(11) input").val(total.toFixed(2));
-		});
-		calculate_total();
-	}
-	
 	////////////////  Validation  ////////////////////////
 	
 	jQuery.validator.addMethod("noSpace", function(value, element) { 
@@ -484,9 +445,6 @@ $(document).ready(function() {
 		rules: {
 			advance: {
 				min:0,
-			},
-			pnf: {
-				required: true,
 			},
 			cheque_no :{
 				required: true,

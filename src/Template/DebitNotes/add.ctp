@@ -177,19 +177,17 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
+	
 	$( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 			var credit=parseFloat($(this).val());
 			var amount=$(this).closest('tr').find('select[name="against_references_no"] option:selected').attr('amount');
 			amount=parseFloat(amount);
+
 			if(amount<credit)
 			{
 				$(this).val(amount);
-				
 			}	
-			
-	}); 
-	
-	
+	});
 	
 	$('select[name="against_references_no"]').live("change",function() {
 		var against_references_no=$(this).val();
@@ -198,7 +196,6 @@ $(document).ready(function() {
 		$(this).closest('tr').find('input[name="reference_no[]"]').val(against_references_no);
 		$(this).closest('tr').find('input[name="credit[]"]').val(amount);
 	});
-	
 	$('select[name="sales_acc_id"]').live("change",function() {
 		var received_from_id=$(this).val();
 		
@@ -211,8 +208,9 @@ $(document).ready(function() {
 			dataType: 'text'
 		}).done(function(response) {
 			$("#main_table tbody").find('tr.against_references_no').remove();
+			alert(response);
 			if(!response)
-			{  alert(response);
+			{ 
 				$('#agst_ref').remove();
 				
 			}
@@ -309,7 +307,7 @@ $(document).ready(function() {
 		});
 	});
 	
-
+	
 	
 	
 	
@@ -325,26 +323,7 @@ $(document).ready(function() {
 			cheque_no :{
 				required: true,
 			},
-			'reference_no[]':{
-					required: true,
-					noSpace: true,
-					notEqualToGroup: ['.distinctreference'],
-					remote : {
-                    url: '<?php echo $this->Url->build(['controller'=>'Ledgers','action'=>'check_reference_no']); ?>',
-                    type: "get",
-                    data:
-                        {
-                            ledger_account_id: function(){return $('select[name=sales_acc_id] option:selected').val();}
-                        },
-					},
-				}
 		},
-		messages: {
-			'reference_no[]': {
-				remote: "Reference no. is alredy taken."
-			},
-		},
-	
 
 		errorPlacement: function (error, element) { // render error placement for each input type
 			if (element.parent(".input-group").size() > 0) {
@@ -384,32 +363,8 @@ $(document).ready(function() {
 			label
 				.closest('.form-group').removeClass('has-error'); // set success class to the control group
 		},
-		
-		submitHandler: function (form) {
-			var amount=parseFloat($('input[name="amount"]').val());
-		
-				var credit=0;
-				$("[name^=credit]").each(function () {
-					credit=credit+parseFloat($(this).val());
-				});
-				
-				if(amount==credit)
-				{
-					success3.show();
-					error3.hide();
-					form[0].submit();
-				}
-				else
-				{
-					$("#add_submit").removeAttr("disabled");
-					alert("Amount mismatch.");
-				}
-				
-			
-			// // submit the form
-		}
 
-		/* submitHandler: function (form) {
+		submitHandler: function (form) {
 			q="ok";
 			$("#main_tb tbody tr").each(function(){
 				var t=$(this).find("td:nth-child(2) input").val();
@@ -427,7 +382,7 @@ $(document).ready(function() {
 				error3.hide();
 				form[0].submit(); // submit the form
 			}
-		} */
+		}
 
 	});
 		$('.quantity').die().live("keyup",function() {

@@ -340,7 +340,7 @@ class InvoicesController extends AppController
        $todate = strtotime($todate1); 
        $tody = strtotime($tody1);
 
-      if($fromdate >= $tody || $todate <= $tody)
+      if($fromdate > $tody || $todate < $tody)
        {
        	   $chkdate = 'Not Found';
        }

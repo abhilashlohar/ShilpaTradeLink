@@ -43,7 +43,7 @@ class QuotationsController extends AppController
 			$where['company_id']=$company_id;
 		}
 		if(!empty($qt2)){
-			$where['qt2']=$qt2;
+			$where['qt2 LIKE']=$qt2;
 		}
 		if(!empty($file)){
 			$where['Quotations.qt3 LIKE']='%'.$file.'%';
@@ -84,8 +84,8 @@ class QuotationsController extends AppController
 			$where['status']='Closed';
 		}
 		
-        $quotations = $this->paginate($this->Quotations->find()->where($where)->where(['company_id'=>$st_company_id,'status'=>'Pending'])->order(['Quotations.id' => 'DESC']));
-		//pr($quotations); exit;
+        $quotations = $this->paginate($this->Quotations->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Quotations.id' => 'DESC']));
+		
 		$subquery=$this->Quotations->find();
 		$subquery->select(['max_id' => $subquery->func()->max('id')])->group('quotation_id');
 		$max_ids=[];
@@ -336,7 +336,7 @@ class QuotationsController extends AppController
        $todate = strtotime($todate1); 
        $tody = strtotime($tody1);
 
-      if($fromdate >= $tody || $todate <= $tody)
+      if($fromdate > $tody || $todate < $tody)
        {
        	   $chkdate = 'Not Found';
        }
@@ -349,19 +349,22 @@ class QuotationsController extends AppController
 			//pr($this->request->data); exit;
 			$quotation = $this->Quotations->newEntity();
             $quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
-			echo $last_qt_no=$this->Quotations->find()->select(['qt2','id'])->where(['company_id' => $st_company_id])->order(['qt2' => 'DESC'])->first(); exit;
+			$last_qt_no=$this->Quotations->find()->select(['qt2'])->where(['company_id' => $st_company_id])->order(['qt2' => 'DESC'])->first();
 			
 			if($last_qt_no){
 				if(!empty($revision)){
+					
 					$last_qt_revision_no=$this->Quotations->find()->select(['qt2'])->where(['company_id' => $st_company_id,'id' => $revision])->order(['qt2' => 'DESC'])->first();
-					echo $quotation->qt2=$last_qt_revision_no->qt2;
+					
+					
+					$quotation->qt2=$last_qt_revision_no->qt2;
 				}else{
-					echo $quotation->qt2=$last_qt_no->qt2+1;
+					$quotation->qt2=$last_qt_no->qt2+1;
 				}
 			}else{
-				echo $quotation->qt2=1;
+				$quotation->qt2=1;
 			}	
-			exit;
+			
 			if(!empty($revision)){
 			$quotation->revision=$add_revision;
 			$quotation->quotation_id=$quotation_id;
@@ -496,13 +499,13 @@ class QuotationsController extends AppController
 		return $this->redirect(['action' => 'index']);
     }
 	
-	public function revision($id = null,$pull_request1 = null,$pull_request = null)
+	public function revision($id = null)
     {
 		$quotation = $this->Quotations->get($id);
 		$quot_id = $quotation->quotation_id;
 		$revision = $quotation->revision;
-		$quotations =$this->Quotations->find()->contain(['Customers','Employees','ItemGroups'])->where(['status'=>'Pending','Quotations.quotation_id' =>$quot_id,'Quotations.revision !=' => $revision ]);
-		$this->set(compact('quotations','quot_id','edit_hide','pull_request'));
+		$quotations =$this->Quotations->find()->contain(['Customers','Employees','ItemGroups'])->where(['Quotations.quotation_id' =>$quot_id,'Quotations.revision !=' => $revision ]);
+		$this->set(compact('quotations','quot_id','edit_hide'));
     }
 	
 	public function reopen($id = null)

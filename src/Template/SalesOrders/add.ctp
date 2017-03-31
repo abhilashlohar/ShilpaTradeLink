@@ -589,7 +589,7 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 	
-	calculate_total();
+	
 	$("#pnfper").on('click',function(){
 		
 		if($(this).is(':checked')){

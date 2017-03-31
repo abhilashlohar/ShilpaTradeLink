@@ -26,7 +26,7 @@ class DebitNotesController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
-        $debitNotes = $this->paginate($this->DebitNotes->find()->where(['DebitNotes.company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
+        $debitNotes = $this->paginate($this->DebitNotes->find()->where(['company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
 
         $this->set(compact('debitNotes'));
         $this->set('_serialize', ['debitNotes']);
@@ -67,7 +67,6 @@ class DebitNotesController extends AppController
 		$financial_year = $this->DebitNotes->FinancialYears->find()->where(['id'=>$st_year_id])->first();
     
         if ($this->request->is('post')) {
-			$total_row=sizeof($this->request->data['reference_no']);
 			$last_ref_no=$this->DebitNotes->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_ref_no){
 				$debitNote->voucher_no=$last_ref_no->voucher_no+1;
@@ -101,48 +100,6 @@ class DebitNotesController extends AppController
 				$ledger->voucher_source = 'Debit Note';
 				$ledger->transaction_date = $debitNote->transaction_date;
 				$this->DebitNotes->Ledgers->save($ledger);
-				
-				for($row=0; $row<$total_row; $row++)
-				{
-					////////////////  ReferenceDetails ////////////////////////////////
-					$query1 = $this->DebitNotes->ReferenceDetails->query();
-					$query1->insert(['reference_no', 'ledger_account_id', 'debit_note_id', 'credit', 'reference_type'])
-					->values([
-						'ledger_account_id' => $this->request->data['sales_acc_id'],
-						'debit_note_id' => $debitNote->id,
-						'reference_no' => $this->request->data['reference_no'][$row],
-						'credit' => $this->request->data['credit'][$row],
-						'reference_type' => $this->request->data['reference_type'][$row]
-					])
-					->execute();
-					
-					////////////////  ReferenceBalances ////////////////////////////////
-					if($this->request->data['reference_type'][$row]=='Against Reference')
-					{
-						$query2 = $this->DebitNotes->ReferenceBalances->query();
-						$data=$this->DebitNotes->ReferenceBalances->find()->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['sales_acc_id']])->toArray();
-						
-						$query2->update()
-							->set(['credit' => $this->request->data['credit'][$row]+$data[0]->credit])
-							->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['sales_acc_id']])
-							->execute();
-					}
-					else
-					{
-						$query2 = $this->DebitNotes->ReferenceBalances->query();
-						
-						$query2->insert(['reference_no', 'ledger_account_id', 'credit'])
-						->values([
-							'reference_no' => $this->request->data['reference_no'][$row],
-							'ledger_account_id' => $this->request->data['sales_acc_id'],
-							'credit' => $this->request->data['credit'][$row],
-						])
-						->execute();
-					}
-					
-				}
-				
-				
 				$this->Flash->success(__('The Debit Notes:'.str_pad($debitNote->voucher_no, 4, '0', STR_PAD_LEFT)).' has been genereted.');
 				return $this->redirect(['action' => 'view/'.$debitNote->id]);
             } else {
@@ -228,24 +185,7 @@ class DebitNotesController extends AppController
         $debitNote = $this->DebitNotes->get($id, [
             'contain' => []
         ]);
-		
-		$debit_note_id=$id;
-		$ReferenceDetails = $this->DebitNotes->ReferenceDetails->find()->where(['ledger_account_id'=>$debitNote->sales_acc_id,'debit_note_id'=>$id])->toArray();
-		//pr($ReferenceDetails); exit;
-		if(!empty($ReferenceDetails))
-		{
-			foreach($ReferenceDetails as $ReferenceDetail)
-			{
-				$ReferenceBalances[] = $this->DebitNotes->ReferenceBalances->find()->where(['ledger_account_id'=>$ReferenceDetail->ledger_account_id,'reference_no'=>$ReferenceDetail->reference_no])->toArray();
-			}
-		}
-		else{
-			$ReferenceBalances='';
-		}
-		
-		
         if ($this->request->is(['patch', 'post', 'put'])) {
-			$total_row=sizeof($this->request->data['reference_no']);
             $debitNote = $this->DebitNotes->patchEntity($debitNote, $this->request->data);
 			$debitNote->edited_by=$s_employee_id;
 			$debitNote->transaction_date=date("Y-m-d",strtotime($debitNote->transaction_date));
@@ -275,95 +215,6 @@ class DebitNotesController extends AppController
 				$ledger->voucher_source = 'Debit Note';
 				$ledger->transaction_date = $debitNote->transaction_date;
 				$this->DebitNotes->Ledgers->save($ledger);
-				
-					for($row=0; $row<$total_row; $row++)
-					{
-						
-						if(!empty($this->request->data['old_amount'][$row]))
-						{				////////////////  ReferenceDetails ////////////////////////////////
-					//pr($this->request->data['old_amount'][$row]);  exit;
-					
-							$query1 = $this->DebitNotes->ReferenceDetails->query();
-							$query1->update()
-							->set(['credit' => $this->request->data['credit'][$row]])
-							->where([
-								'ledger_account_id' => $this->request->data['sales_acc_id'],
-								'debit_note_id' => $debitNote->id,
-								'reference_no' => $this->request->data['reference_no'][$row],
-								'reference_type' => $this->request->data['reference_type'][$row]
-							])
-							->execute();
-							
-							////////////////  ReferenceBalances ////////////////////////////////
-							if($this->request->data['reference_type'][$row]=='Against Reference')
-							{
-								
-								$res=$this->DebitNotes->ReferenceBalances->find()->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['sales_acc_id']])->first();
-								
-								 $q=$res->credit-$this->request->data['old_amount'][$row]+ $this->request->data['credit'][$row];
-								
-								
-								$query2 = $this->DebitNotes->ReferenceBalances->query();
-								$query2->update()
-									->set(['credit' => $q])
-									->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['sales_acc_id']])
-									->execute();
-							}
-							else
-							{ 
-								$query2 = $this->DebitNotes->ReferenceBalances->query();
-								$query2->update()
-								->set(['credit' => $this->request->data['credit'][$row]])
-								->where([
-									'reference_no' => $this->request->data['reference_no'][$row],
-									'ledger_account_id' => $this->request->data['sales_acc_id']
-								])
-								->execute();
-								
-							}
-
-						} 
-						
-						else
-						{ 
-							////////////////  ReferenceDetails ////////////////////////////////
-							$query1 = $this->DebitNotes->ReferenceDetails->query();
-							$query1->insert(['reference_no', 'ledger_account_id', 'debit_note_id', 'credit', 'reference_type'])
-							->values([
-								'ledger_account_id' => $this->request->data['sales_acc_id'],
-								'debit_note_id' => $debitNote->id,
-								'reference_no' => $this->request->data['reference_no'][$row],
-								'credit' => $this->request->data['credit'][$row],
-								'reference_type' => $this->request->data['reference_type'][$row]
-							])
-							->execute();
-							
-							////////////////  ReferenceBalances ////////////////////////////////
-							if($this->request->data['reference_type'][$row]=='Against Reference')
-							{
-								$query2 = $this->DebitNotes->ReferenceBalances->query();
-								$data=$this->DebitNotes->ReferenceBalances->find()->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['sales_acc_id']])->toArray();
-								
-								$query2->update()
-									->set(['credit' => $this->request->data['credit'][$row]+$data[0]->credit])
-									->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['sales_acc_id']])
-									->execute();
-							}
-							else
-							{
-								$query2 = $this->DebitNotes->ReferenceBalances->query();
-								$query2->insert(['reference_no', 'ledger_account_id', 'credit'])
-								->values([
-									'reference_no' => $this->request->data['reference_no'][$row],
-									'ledger_account_id' => $this->request->data['sales_acc_id'],
-									'credit' => $this->request->data['credit'][$row],
-								])
-								->execute();
-							}
-						}
-						
-					}
-				
                 $this->Flash->success(__('The debit note has been saved.'));
 				return $this->redirect(['action' => 'view/'.$debitNote->id]);
             } else {
@@ -416,7 +267,7 @@ class DebitNotesController extends AppController
 				}])->where(['Parties.id IN' => $where]);
 		
 		$companies = $this->DebitNotes->Companies->find('all');
-        $this->set(compact('debitNote','ReferenceDetails','ReferenceBalances','debit_note_id', 'salesAccs', 'parties', 'companies','financial_year'));
+        $this->set(compact('debitNote', 'salesAccs', 'parties', 'companies','financial_year'));
         $this->set('_serialize', ['debitNote']);
     }
 
@@ -442,48 +293,9 @@ class DebitNotesController extends AppController
 	public function fetchReferenceNo($ledger_account_id=null)
     {
 		$this->viewBuilder()->layout('ajax_layout');
+	
 		$ReferenceBalances=$this->DebitNotes->ReferenceBalances->find()->where(['ledger_account_id' => $ledger_account_id])->toArray();
+		
 		$this->set(compact(['ReferenceBalances']));
-	}
-	
-	public function deleteReceiptRow($reference_type=null,$old_amount=null,$ledger_account_id=null,$debit_note_id=null,$reference_no=null)
-    {
-		
-		$query1 = $this->DebitNotes->ReferenceDetails->query();
-		$query1->delete()
-		->where([
-			'ledger_account_id' => $ledger_account_id,
-			'debit_note_id' => $debit_note_id,
-			'reference_no' => $reference_no,
-			'reference_type' => $reference_type
-		])
-		->execute();
-		
-		
-		if($reference_type=='Against Reference')
-		{
-			$res=$this->DebitNotes->ReferenceBalances->find()->where(['reference_no' => $reference_no,'ledger_account_id' => $ledger_account_id])->first();
-			
-			$q=$res->credit-$old_amount;
-			
-			$query2 = $this->DebitNotes->ReferenceBalances->query();
-			$query2->update()
-				->set(['credit' => $q])
-				->where(['reference_no' => $reference_no,'ledger_account_id' => $ledger_account_id])
-				->execute();
-		}
-		else
-		{ 
-			$query2 = $this->DebitNotes->ReferenceBalances->query();
-			$query2->delete()
-			->where([
-				'reference_no' => $reference_no,
-				'ledger_account_id' => $ledger_account_id
-			])
-			->execute();
-			
-		}
-		exit;
-	
 	}
 }

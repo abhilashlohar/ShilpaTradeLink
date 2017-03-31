@@ -175,7 +175,7 @@ class PurchaseOrdersController extends AppController
 					foreach($mi_rows as $mi_row){
 						$mi_remaining_qty=$mi_row['required_quantity']-$mi_row['processed_quantity'];
 						$reminder=$mi_remaining_qty-$purchase_order_qty;
-						if($reminder>=0){
+						if($reminder>0){
 							
 							$mi_row = $this->PurchaseOrders->MaterialIndentRows->get($mi_row['id']);
 							$mi_row->processed_quantity=$mi_row->processed_quantity+$purchase_order_qty;
@@ -199,7 +199,6 @@ class PurchaseOrdersController extends AppController
 					send:
 				}
 			}
-
                 $this->Flash->success(__('The purchase order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

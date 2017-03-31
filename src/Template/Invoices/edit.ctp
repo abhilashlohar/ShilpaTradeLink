@@ -43,8 +43,7 @@
 						<label class="col-md-3 control-label">Customer</label>
 						<div class="col-md-9">
 							<?php echo $this->Form->input('customer_id', ['type'=>'hidden','value' => @$invoice->customer->id]); ?>
-							<?php echo $invoice->customer->customer_name.'('; echo $invoice->customer->alias.')'; ?>	
-							
+							<?php echo $invoice->customer->customer_name.'('; echo $invoice->customer->alias.')'; ?>
 						</div>
 					</div>
 				</div>

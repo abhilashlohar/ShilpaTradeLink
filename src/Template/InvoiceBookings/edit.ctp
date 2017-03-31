@@ -95,15 +95,11 @@
 				<thead>
 					<tr>
 						<th width="50">Sr.No. </th>
-						<th width="170">Items</th>
-						<th width="100">Unit Rate From PO</th>
-						<th width="70">Discount</th>
-						<th  width="70">P & F</th>
-						<th  width="100">Excise Duty</th>
-						<th  width="70" >CST</th>
-						<th>Quantity</th>
-						<th>Rate</th>
-						<th>Amount</th>
+						<th>Items</th>
+						<th width="130">Quantity</th>
+						<th width="130">Rate</th>
+						<th width="130">Amount</th>
+						<th width="70"></th>
 					</tr>
 				</thead>
 <tbody>
@@ -114,16 +110,7 @@
 							<td><?php echo $invoice_booking_row->item->name; ?>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value' => @$invoice_booking_row->item->id,'popup_id'=>$q]); ?>
 							</td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.unit_rate_from_po',['value'=>$invoice_booking_row->unit_rate_from_po,'type'=>'hidden']);
-								echo $invoice_booking_row->unit_rate_from_po;  ?></td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.discount',['value'=>$invoice_booking_row->discount,'type'=>'hidden']);
-								echo $invoice_booking_row->discount;  ?></td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.pnf',['value'=> $invoice_booking_row->pnf,'type'=>'hidden']); 
-									echo  $invoice_booking_row->pnf;   ?></td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.excise_duty',['value'=>$invoice_booking_row->excise_duty,'type'=>'hidden']);
-								echo $this->Number->format($invoice_booking_row->excise_duty,[ 'places' => 2]);  ?></td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.sale_tax',['value'=>$invoice_booking_row->sale_tax,'type'=>'hidden']);
-								echo  $invoice_booking_row->sale_tax;   ?></td>
+						
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.quantity',['label' => false,'class' => 'form-control input-sm','type'=>'text','value'=>$invoice_booking_row->quantity,'readonly']); ?></td>
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.rate',['label' => false,'class' => 'form-control input-sm','value'=>$invoice_booking_row->rate,'type'=>'text']); ?></td>
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.amount',['label' => false,'class' => 'form-control input-sm','type'=>'text']); ?></td>
@@ -131,7 +118,7 @@
 							
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$invoice_booking_row->id; ?>'>
-							<td colspan="9">
+							<td colspan="4">
 							<?php echo $this->Text->autoParagraph(h($invoice_booking_row->description)); ?>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.description',['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value'=>$invoice_booking_row->description]); ?>
 							</td>
@@ -144,7 +131,7 @@
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="9" align="right"><b>Total</b></td>
+						<td colspan="4" align="right"><b>Total</b></td>
 						<td><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total']); ?></td>
 						<td></td>
 					</tr>
@@ -311,10 +298,10 @@ $(document).ready(function() {
 	function calculate_total(){
 		var total=0;
 		$("#main_tb tbody tr.tr1").each(function(){
-			var unit=$(this).find("td:nth-child(8) input").val();
-			var Rate=$(this).find("td:nth-child(9) input").val();
+			var unit=$(this).find("td:nth-child(3) input").val();
+			var Rate=$(this).find("td:nth-child(4) input").val();
 			var Amount=unit*Rate;
-			$(this).find("td:nth-child(10) input").val(Amount.toFixed(2));
+			$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
 			total=total+Amount;
 		});
 		$('input[name="total"]').val(total.toFixed(2));
@@ -510,7 +497,7 @@ $(document).ready(function() {
 }, jQuery.format("Please enter a Unique Value."));
 
 	//--------- FORM VALIDATION
-	var form3 = $('#form_sample_3'); 
+	var form3 = $('#form_sample_3'); alert();
 	var error3 = $('.alert-danger', form3);
 	var success3 = $('.alert-success', form3);
 	form3.validate({

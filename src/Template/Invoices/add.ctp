@@ -69,8 +69,8 @@ $('.closetin').on("click",function() {
 						<label class="col-md-3 control-label">Customer</label>
 						<div class="col-md-9">
 						<?php echo $this->Form->input('customer_id', ['type'=>'hidden','value' => @$sales_order->customer_id]); ?>
-						
 						<?php echo $sales_order->customer->customer_name.'('; echo $sales_order->customer->alias.')'; ?>	
+							
 						</div>
 					</div>
 				</div>
