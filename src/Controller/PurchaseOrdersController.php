@@ -148,7 +148,10 @@ class PurchaseOrdersController extends AppController
 			$purchaseOrder->sale_tax_description=$purchaseOrder->sale_tax_description; 
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
 			
-			foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
+
+			if ($this->PurchaseOrders->save($purchaseOrder)) {
+				
+							foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
 
 				if($purchase_order_row->pull_status=="PULLED_FROM_MI"){
 					$query = $this->PurchaseOrders->MaterialIndentRows->find()
@@ -189,7 +192,6 @@ class PurchaseOrdersController extends AppController
 					}
 				}
 			}
-			if ($this->PurchaseOrders->save($purchaseOrder)) {
 
                 $this->Flash->success(__('The purchase order has been saved.'));
 
@@ -232,7 +234,10 @@ class PurchaseOrdersController extends AppController
             'contain' => ['PurchaseOrderRows'=>['Items']]
         ]);
 		
-		$purchaseOrder_old=$purchaseOrder;
+		//pr($purchaseOrder); exit;
+		$purchaseOrder_old=$this->PurchaseOrders->get($id, [
+            'contain' => ['PurchaseOrderRows'=>['Items']]
+        ]);
 		
 		
 		
@@ -241,7 +246,6 @@ class PurchaseOrdersController extends AppController
 
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-			
             $purchaseOrder = $this->PurchaseOrders->patchEntity($purchaseOrder, $this->request->data);
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
 			$purchaseOrder->delivery_date=date("Y-m-d",strtotime($purchaseOrder->delivery_date));
@@ -255,60 +259,89 @@ class PurchaseOrdersController extends AppController
 					$MaterialIndentRows=$query->matching('MaterialIndents', function ($q) use($st_company_id){
 						return $q->where(['MaterialIndents.company_id' => $st_company_id]);
 					});
-					
 					$material_rows[$purchase_order_row->item_id]=[];
 					foreach($MaterialIndentRows as $MaterialIndentRow){
 						$material_rows[$purchase_order_row->item_id][strtotime($MaterialIndentRow->_matchingData['MaterialIndents']->created_on)]=['id'=>$MaterialIndentRow->id,'item_id'=>$MaterialIndentRow->item_id,'required_quantity'=>$MaterialIndentRow->required_quantity,'processed_quantity'=>$MaterialIndentRow->processed_quantity];
 					}
 				}
 			}
-			
-			
 			foreach($purchaseOrder_old->purchase_order_rows as $purchase_order_row){
 				if($purchase_order_row->pull_status=="PULLED_FROM_MI"){
 					$mi_rows=$material_rows[$purchase_order_row->item_id];
 					krsort($mi_rows);
+					
 					$purchase_order_qty=$purchase_order_row->quantity;
+					
 					foreach($mi_rows as $mi_row){
 						$mi_remaining_qty=$mi_row['required_quantity']-$mi_row['processed_quantity'];
-						
 						if($mi_row['required_quantity']==$mi_remaining_qty){
 							
 						}else{
 							$reminder=$purchase_order_qty-$mi_row['processed_quantity'];
+							
 							if($reminder>=0){
 								$mi_row = $this->PurchaseOrders->MaterialIndentRows->get($mi_row['id']);
 								$mi_row->processed_quantity=0;
 								$mi_row->status='Open';
 								$this->PurchaseOrders->MaterialIndentRows->save($mi_row);
 								$purchase_order_qty=$reminder;
+								
 							}else{
 								$mi_row = $this->PurchaseOrders->MaterialIndentRows->get($mi_row['id']);
 								$mi_row->processed_quantity=abs($reminder);
+								//pr($mi_row); exit;
 								$mi_row->status='Open';
 								$this->PurchaseOrders->MaterialIndentRows->save($mi_row);
-								break;
+								goto go;
 							}
 						}
 					}
+					go:
 				}
 			}
 			
 			foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
+
 				if($purchase_order_row->pull_status=="PULLED_FROM_MI"){
-					$mi_rows=$material_rows[$purchase_order_row->item_id];
+					$query = $this->PurchaseOrders->MaterialIndentRows->find()
+					->where(['MaterialIndentRows.status'=>'Open','MaterialIndentRows.item_id'=>$purchase_order_row->item_id]);
+					$MaterialIndentRows=$query->matching('MaterialIndents', function ($q) use($st_company_id){
+						return $q->where(['MaterialIndents.company_id' => $st_company_id]);
+					});
+					$material_rows1[$purchase_order_row->item_id]=[];
+					foreach($MaterialIndentRows as $MaterialIndentRow){
+
+						$material_rows1[$purchase_order_row->item_id][strtotime($MaterialIndentRow->_matchingData['MaterialIndents']->created_on)]=['id'=>$MaterialIndentRow->id,'item_id'=>$MaterialIndentRow->item_id,'required_quantity'=>$MaterialIndentRow->required_quantity,'processed_quantity'=>$MaterialIndentRow->processed_quantity];
+					}
+				}
+			}
+
+			foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
+				
+				if($purchase_order_row->pull_status=="PULLED_FROM_MI"){
+					
+					$mi_rows=$material_rows1[$purchase_order_row->item_id];
+										
 					ksort($mi_rows);
+
 					$purchase_order_qty=$purchase_order_row->quantity;
 					foreach($mi_rows as $mi_row){
 						$mi_remaining_qty=$mi_row['required_quantity']-$mi_row['processed_quantity'];
 						$reminder=$mi_remaining_qty-$purchase_order_qty;
-						if($reminder>=0){
+						if($reminder>0){
 							$mi_row = $this->PurchaseOrders->MaterialIndentRows->get($mi_row['id']);
 							$mi_row->processed_quantity=$mi_row->processed_quantity+$purchase_order_qty;
 							$mi_row->status='Open';
 							$this->PurchaseOrders->MaterialIndentRows->save($mi_row);
-							break;
-						}else{
+							goto send;
+						}else if($reminder==0){
+							$mi_row = $this->PurchaseOrders->MaterialIndentRows->get($mi_row['id']);
+							$mi_row->processed_quantity=$mi_row->processed_quantity+$purchase_order_qty;
+							$mi_row->status='Close';
+							$this->PurchaseOrders->MaterialIndentRows->save($mi_row);
+							goto send;
+						}
+						else{
 							$mi_row = $this->PurchaseOrders->MaterialIndentRows->get($mi_row['id']);
 							$mi_row->processed_quantity=$mi_row->processed_quantity+abs($mi_remaining_qty);
 							$mi_row->status='Close';
@@ -316,14 +349,12 @@ class PurchaseOrdersController extends AppController
 						}
 						$purchase_order_qty=abs($reminder);
 					}
+					send:
 				}
 			}
+
+			if ($this->PurchaseOrders->save($purchaseOrder)) {
 			
-			
-			
-            if ($this->PurchaseOrders->save($purchaseOrder)) {
-				
-				
                 $this->Flash->success(__('The purchase order has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

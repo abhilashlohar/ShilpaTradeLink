@@ -90,7 +90,7 @@
 							<?php $q=1; foreach ($purchaseOrder->purchase_order_rows as $purchase_order_rows): ?>
 							<tr class="tr1" row_no='<?php echo @$purchase_order_rows->id; ?>'>
 									<td rowspan="2"><?= h($q) ?></td>
-									<?php if($purchase_order_rows->pull_material =='Direct'){ ?>
+									<?php if($purchase_order_rows->pull_status =='Direct'){ ?>
 									<td>
 									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.processed_quantity', ['type' => 'hidden','value'=>@$purchase_order_rows->processed_quantity]);?>	
 									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item','value'=>$purchase_order_rows->item_id]); ?>
@@ -100,7 +100,7 @@
 									<td>
 									<?php 
 									echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm','type'=>'hidden','placeholder' => 'Item','value'=>$purchase_order_rows->item_id]);
-									echo $this->Form->input('purchase_order_rows.'.$q.'.material_indent_id', ['label' => false,'type'=>'hidden','value'=>$purchase_order_rows['material_indent_id']]);
+									echo $this->Form->input('purchase_order_rows.'.$q.'.pull_status', ['label' => false,'type'=>'hidden','value'=>'PULLED_FROM_MI']); 
 									echo $purchase_order_rows->item->name; ?><br/>
 									<span class="label label-sm label-warning ">Pulled from MI</span>
 									</td>
@@ -418,6 +418,7 @@ $(document).ready(function() {
 				$(this).find("td:nth-child(2) select").select2().attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"}).rules("add", "required");
 			}else{
 				$(this).find("td:nth-child(2) input").attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"}).rules("add", "required");
+				$(this).find("td:nth-child(2) input:eq(1)").attr({name:"purchase_order_rows["+i+"][pull_status]", id:"purchase_order_rows-"+i+"-pull_status"}).rules("add", "required");
 			}
 			
 			$(this).find("td:nth-child(3) input").attr({name:"purchase_order_rows["+i+"][quantity]", id:"purchase_order_rows-"+i+"-quantity"}).rules("add", "required");
