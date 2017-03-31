@@ -113,7 +113,8 @@ class JournalVouchersController extends AppController
                 $this->Flash->error(__('The journal voucher could not be saved. Please, try again.'));
             }
 		}
-		$vouchersReferences = $this->JournalVouchers->VouchersReferences->get(9, [
+		$vr=$this->JournalVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Journal Voucher','sub_entity'=>'Ledger'])->first();
+		$vouchersReferences = $this->JournalVouchers->VouchersReferences->get($vr->id, [
           'contain' => ['VoucherLedgerAccounts']
         ]);
 		//pr($vouchersReferences); exit;
@@ -209,7 +210,8 @@ class JournalVouchersController extends AppController
             }
         }
 		
-		$vouchersReferences = $this->JournalVouchers->VouchersReferences->get(9, [
+		$vr=$this->JournalVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Journal Voucher','sub_entity'=>'Ledger'])->first();
+		$vouchersReferences = $this->JournalVouchers->VouchersReferences->get($vr->id, [
           'contain' => ['VoucherLedgerAccounts']
         ]);
 		//pr($vouchersReferences); exit;
