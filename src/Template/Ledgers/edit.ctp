@@ -1,4 +1,4 @@
-
+<?php if($allow=='YES'){ ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
@@ -45,7 +45,9 @@
 	
 </div>
 </div>
-
+<?php }else{ ?>
+<span> The ref. no. has been used anywhere, so you can not edit this.</span>
+<?php } ?>
 	
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>

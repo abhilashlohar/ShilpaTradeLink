@@ -107,6 +107,16 @@ class LedgersController extends AppController
             'contain' => ['LedgerAccounts']
         ]);
 		
+		$ReferenceBalance=$this->Ledgers->ReferenceBalances->find()->where(['ledger_account_id'=>$ledger->ledger_account_id,'reference_no'=>$ledger->ref_no])->first();
+		
+		$ref_bal_diff=abs($ReferenceBalance->credit-$ReferenceBalance->debit);
+		$ledger_diff=abs($ledger->credit-$ledger->debit);
+		
+		$allow='YES';
+		if($ref_bal_diff!=$ledger_diff){
+			$allow='NO';
+		}
+		
 		if ($this->request->is(['patch', 'post', 'put'])) {
             $ledger = $this->Ledgers->patchEntity($ledger, $this->request->data);
 				$old_ref_no=$ledger->getOriginal('ref_no');
@@ -127,13 +137,13 @@ class LedgersController extends AppController
 				
                 $this->Flash->success(__('The ledger has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'opening-balance-view']);
             } else {
                 $this->Flash->error(__('The ledger could not be saved. Please, try again.'));
             }
         }
         $ledgerAccounts = $this->Ledgers->LedgerAccounts->find('list', ['limit' => 200]);
-        $this->set(compact('ledger', 'ledgerAccounts'));
+        $this->set(compact('ledger', 'ledgerAccounts','allow'));
         $this->set('_serialize', ['ledger']);
     }
 
