@@ -248,7 +248,7 @@ $(document).ready(function() {
 			var item_id=$(this).find('td:nth-child(2) input[type="hidden"]:nth-child(1)').val();
 			var l=$('.tr2[row_no="'+row_no+'"]').find('input').length;
 			
-				if(val && serial_number_enable){ 
+				if(val && serial_number_enable=='1'){
 			
 					if(qty < l){
 				
