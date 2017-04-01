@@ -66,7 +66,7 @@
 							<td><?= h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->po2, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)) ?></td>
 							
 							<td><?= h($purchaseOrder->company->name) ?></td>
-							<td><?= $this->Number->format($purchaseOrder->total) ?></td>
+							<td align="right"><?= $this->Number->format($purchaseOrder->total) ?></td>
 						
 							<td class="actions">
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $purchaseOrder->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
