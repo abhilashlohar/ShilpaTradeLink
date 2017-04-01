@@ -75,14 +75,7 @@ class LedgerAccountsTable extends Table
             ->requirePresence('name', 'create')
             ->notEmpty('name');
 
-		$validator->add(
-				'name', 
-				['unique' => [
-					'rule' => 'validateUnique', 
-					'provider' => 'table', 
-					'message' => 'Not unique']
-				]
-			);
+		
 
 
         return $validator;

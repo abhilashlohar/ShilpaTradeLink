@@ -17,49 +17,7 @@
 		<div class="col-md-12">
 		<?= $this->Form->create($ledgerAccount) ?>
 			<div class="form-body">
-			<div class="row">
-				<div class="form-group">
-					<label class="control-label col-md-3">Account Category
-					</label>
-					<div class="col-md-4">
-						<div class="input-icon right">
-							<i class="fa"></i>
-							<?php echo $this->Form->input('account_category_id', ['options'=>$AccountCategories,'label' => false,'class' => 'form-control input-sm select2me']); ?>
-						</div>
-					</div>
-				</div>
-				</div>
-				</br>
-				<div class="row">
-					<div class="form-group">
-					<label class="control-label col-md-3">Account Group 
-					</label>
-					<div class="col-md-4">
-						<div class="input-icon right">
-							<i class="fa"></i>
-							<div id="account_group_div">
-							<?php echo $this->Form->input('account_group_id', ['options' => $AccountGroups,'label' => false,'class' => 'form-control input-sm select2me']); ?>
-							</div>
-						</div>
-					</div>
-					</div>
-				</div>
-				</br>
-
-				<div class="row">
-				<div class="form-group">
-					<label class="control-label col-md-3">Account First Sub Group
-					</label>
-					<div class="col-md-4">
-						<div class="input-icon right">
-							<i class="fa"></i>
-							<div id="account_first_subgroup_div">
-							<?php echo $this->Form->input('account_first_subgroup_id', ['options' => $AccountFirstSubgroups,'label' => false,'class' => 'form-control input-sm select2me']); ?>
-							</div>
-						</div>
-					</div>
-				</div>
-				</div>
+			
 				</br>
 
 				<div class="row">

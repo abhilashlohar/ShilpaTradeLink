@@ -103,7 +103,7 @@ class LedgerAccountsController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
         $ledgerAccount = $this->LedgerAccounts->get($id, [
-            'contain' => ['AccountSecondSubgroups'=>['AccountFirstSubgroups']]
+            'contain' => ['AccountSecondSubgroups']
         ]);
 		//pr($ledgerAccount); exit;
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -118,12 +118,10 @@ class LedgerAccountsController extends AppController
                 $this->Flash->error(__('The ledger account could not be saved. Please, try again.'));
             }
         }
-		$AccountCategories = $this->Employees->AccountCategories->find('list');
-		$AccountGroups = $this->Employees->AccountGroups->find('list');
-		$AccountFirstSubgroups = $this->Employees->AccountFirstSubgroups->find('list');
-		$AccountSecondSubgroups = $this->LedgerAccounts->AccountSecondSubgroups->find('list', ['limit' => 200]);
-        //$sources = $this->LedgerAccounts->Sources->find('list', ['limit' => 200]);
-        $this->set(compact('ledgerAccount', 'AccountSecondSubgroups','AccountCategories','AccountGroups','AccountFirstSubgroups'));
+		
+		$AccountSecondSubgroups = $this->LedgerAccounts->AccountSecondSubgroups->find('list');
+        
+        $this->set(compact('ledgerAccount', 'AccountSecondSubgroups'));
         $this->set('_serialize', ['ledgerAccount']);
     }
 
