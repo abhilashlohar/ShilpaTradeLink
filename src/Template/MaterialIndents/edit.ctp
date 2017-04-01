@@ -1,4 +1,12 @@
-<?php //pr($jobCards); exit; ?>
+<style>
+.disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+	vertical-align: top !important;
+}
+</style>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
@@ -24,13 +32,17 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php 
+				<?php $item_ar=[];
+					
 					$q=0;
 					//pr($materialIndent); exit;
-					foreach ($materialIndent->material_indent_rows as $material_item):?>
-					<tr class="tr1" >
+					foreach ($materialIndent->material_indent_rows as $material_item):
+					if($material_item->required_quantity==$material_item->processed_quantity){
+					$disable_class="disabledbutton";
+					}else{ $disable_class=""; } ?>
+					<tr class="tr1 <?php echo $disable_class; ?> "  >
 							<td>
-								<?php echo ++$q;?>
+								<?php echo ++$q; $q--;?>
 							</td>
 							<td>
 								<?php echo $this->Form->input('material_indent_rows.'.$q.'.item_id', ['label' => false,'type'=>'hidden','value'=>$material_item->item_id]); ?>
@@ -40,7 +52,7 @@
 								<?php echo $this->Form->input('material_indent_rows.'.$q.'.required_quantity', ['label' => false,'type'=>'text','value'=>$material_item->required_quantity-$material_item->processed_quantity]); ?>
 							</td>
 					</tr>
-					<?php endforeach;  ?>
+					<?php $q++; endforeach;  ?>
 				</tbody>
 			</table>
 		</div>

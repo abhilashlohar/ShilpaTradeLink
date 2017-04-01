@@ -197,13 +197,11 @@ class MaterialIndentsController extends AppController
         ]); 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $materialIndent = $this->MaterialIndents->patchEntity($materialIndent, $this->request->data);
-			
-            if ($this->MaterialIndents->save($materialIndent)) {
-				foreach($materialIndent->material_indent_rows as $material_indent_row){
-				//pr($material_indent_row->processed_quantity);
-				$material_indent_row->processed_quantity=$material_indent_row->processed_quantity;
-				
+			foreach($materialIndent->material_indent_rows as $material_indent_row){
+				$material_indent_row->required_quantity+=$material_indent_row->processed_quantity;
 			}
+			if ($this->MaterialIndents->save($materialIndent)) {
+				
                 $this->Flash->success(__('The material indent has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
