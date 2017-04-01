@@ -7,7 +7,7 @@
 		</div>
 		
 		<div class="actions">
-			<?php echo $this->Html->link('Opening Balance','/opening-balance/',array('escape'=>false,'class'=>'btn btn-default')); ?>
+			<?php echo $this->Html->link('Opening Balance','/ledgers/opening-balance/',array('escape'=>false,'class'=>'btn btn-default')); ?>
 			<?php echo $this->Html->link('Opening Balance View','/ledgers/opening-balance-view/',array('escape'=>false,'class'=>'btn btn-primary')); ?>
 			
 		</div>
