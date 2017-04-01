@@ -36,7 +36,7 @@ class LedgerAccountsController extends AppController
             }
 		}	
 		
-        $accountSecondSubgroups = $this->LedgerAccounts->AccountSecondSubgroups->find('list', ['limit' => 200]);
+        $accountSecondSubgroups = $this->LedgerAccounts->AccountSecondSubgroups->find('list');
         $this->set(compact('ledgerAccount', 'accountSecondSubgroups'));
         $this->set('_serialize', ['ledgerAccount']);
 		

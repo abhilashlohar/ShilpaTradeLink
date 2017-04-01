@@ -40,7 +40,7 @@ class LedgersController extends AppController
         ];
         $ledgers = $this->paginate($this->Ledgers->find()->where($where)->order(['Ledgers.transaction_date' => 'DESC']));
 		
-        $ledgerAccounts = $this->Ledgers->LedgerAccounts->find('list', ['limit' => 200]);
+        $ledgerAccounts = $this->Ledgers->LedgerAccounts->find('list');
         $this->set(compact('ledgers','ledgerAccounts'));
         $this->set('_serialize', ['ledgers']);
     }
