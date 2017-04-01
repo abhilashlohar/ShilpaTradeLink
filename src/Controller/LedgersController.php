@@ -138,12 +138,13 @@ class LedgersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $ledger = $this->Ledgers->newEntity();
 		
+		$session = $this->request->session();
+		$company_id = $session->read('st_company_id');
 			
         if ($this->request->is('post')) {
 			
 			$total_row=sizeof($this->request->data['reference_no']);
-			$session = $this->request->session();
-			$company_id = $session->read('st_company_id');
+			
 		    for($row=0; $row<$total_row; $row++)
 		    {
 			   ////////////////  Ledger ////////////////////////////////
@@ -186,7 +187,18 @@ class LedgersController extends AppController
         }
 		
 		
-        $ledgerAccounts = $this->Ledgers->LedgerAccounts->find('list', ['limit' => 200]);
+        $ledgerAccounts = $this->Ledgers->LedgerAccounts->find('list',
+			['keyField' => function ($row) {
+				return $row['id'];
+			},
+			'valueField' => function ($row) {
+				if(!empty($row['alias'])){
+					return  $row['name'] . ' (' . $row['alias'] . ')';
+				}else{
+					return $row['name'];
+				}
+				
+			}])->where(['company_id'=>$company_id]);
         $this->set(compact('ledger', 'ledgerAccounts'));
         $this->set('_serialize', ['ledger']);
     }

@@ -13,8 +13,8 @@
 		<div class="row">
 				<div class="col-md-4">
 					<div class="form-group">
-						<label class="col-md-6 control-label">Ledger</label>
-					<?= $this->Form->input('ledger_account_id', ['options' => $ledgerAccounts,'label' => false]) ?>
+						<label class="col-md-6 control-label">Ledger Accounts</label>
+					<?= $this->Form->input('ledger_account_id', ['empty'=>'--select--','options' => $ledgerAccounts,'label' => false,'class'=>'form-control input-sm select2me']) ?>
 						</div>
 				</div>
 				<div class="col-md-2">
