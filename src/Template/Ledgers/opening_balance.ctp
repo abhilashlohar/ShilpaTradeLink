@@ -5,6 +5,14 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Opening Balance</span>
 		</div>
+		
+		<div class="actions">
+			<?php echo $this->Html->link('Opening Balance','/opening-balance/',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+			<?php echo $this->Html->link('Opening Balance View','/ledgers/opening-balance-view/',array('escape'=>false,'class'=>'btn btn-default')); ?>
+			
+		</div>
+		
+		
 	</div>
 	<div class="portlet-body form">
 

@@ -16,13 +16,16 @@ class LedgersController extends AppController
      *
      * @return \Cake\Network\Response|null
      */
-    public function index()
+    public function index($status=null)
     {
 		$this->viewBuilder()->layout('index_layout');
 		$where=[];
 		$ledger=$this->request->query('ledger');
 		$From=$this->request->query('From');
 		$To=$this->request->query('To');
+		
+		
+		
 		$this->set(compact('ledger','From','To'));
 		if(!empty($ledger)){
 			$where['ledger_account_id']=$ledger;
@@ -95,12 +98,28 @@ class LedgersController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+        $ledger = $this->Ledgers->newEntity();
+		
+		$session = $this->request->session();
+		$company_id = $session->read('st_company_id');
         $ledger = $this->Ledgers->get($id, [
-            'contain' => []
+            'contain' => ['LedgerAccounts']
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+		if ($this->request->is(['patch', 'post', 'put'])) {
             $ledger = $this->Ledgers->patchEntity($ledger, $this->request->data);
+			
+			
             if ($this->Ledgers->save($ledger)) {
+				
+				pr($ledger); exit;
+				$query2 = $this->Ledgers->ReferenceBalances->query();
+				$query2->update()
+				->set(['credit' => $q])
+				->where(['reference_no' => $reference_no,'ledger_account_id' => $ledger_account_id])
+				->execute();
+				
+				
                 $this->Flash->success(__('The ledger has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -149,14 +168,15 @@ class LedgersController extends AppController
 		    {
 			   ////////////////  Ledger ////////////////////////////////
 				$query = $this->Ledgers->query();
-				$query->insert(['transaction_date', 'ledger_account_id', 'voucher_source', 'credit', 'debit','company_id'])
+				$query->insert(['transaction_date', 'ledger_account_id', 'voucher_source', 'credit', 'debit','company_id','ref_no'])
 				->values([
 					'transaction_date' => date('Y-m-d', strtotime($this->request->data['transaction_date'])),
 					'ledger_account_id' => $this->request->data['ledger_account_id'],
 					'voucher_source' => $this->request->data['voucher_source'],
 					'credit' => $this->request->data['credit'][$row],
 					'debit' => $this->request->data['debit'][$row],
-					'company_id' => $company_id
+					'company_id' => $company_id,
+					'ref_no' => $this->request->data['reference_no'][$row]
 				])
 				->execute();
 			
@@ -269,4 +289,12 @@ class LedgersController extends AppController
 				}])->where(['company_id'=>$st_company_id]);
 		$this->set(compact('ledger','Ledgers_rows','total_balance','ledger_account_id','transaction_from_date','transaction_to_date','Ledger_Account_data'));
 	}
+	public function openingBalanceView (){
+		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$OpeningBalanceViews = $this->paginate($this->Ledgers->find()->contain(['LedgerAccounts'])->where(['Ledgers.company_id'=>$st_company_id,'Ledgers.voucher_source'=>'Opening Balance'])->order(['Ledgers.transaction_date' => 'DESC']));
+		$this->set(compact('OpeningBalanceViews'));
+	}
+	
 }

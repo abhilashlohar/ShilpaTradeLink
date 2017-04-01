@@ -39,7 +39,7 @@ class AccountGroupsController extends AppController
 			
 					
 		}
-        $accountCategories = $this->AccountGroups->AccountCategories->find('list', ['limit' => 200]);
+        $accountCategories = $this->AccountGroups->AccountCategories->find('list');
         $this->set(compact('accountGroup', 'accountCategories'));
         $this->set('_serialize', ['accountGroup']);
     
@@ -47,19 +47,9 @@ class AccountGroupsController extends AppController
             'contain' => ['AccountCategories']
         ];
 		
-		$where=[];
-		$name=$this->request->query('name');
-		$Account_category=$this->request->query('Account_category');
-		//echo $name; exit;
-		$this->set(compact('name','Account_category'));
+		$accountGroups = $this->AccountGroups->find()->contain(['AccountCategories']);
 		
-		if(!empty($name)){
-			$where['AccountGroups.name LIKE']='%'.$name.'%';
-		}
-		if(!empty($Account_category)){
-			$where['AccountCategories.name LIKE']='%'.$Account_category.'%';
-		}
-        $accountGroups = $this->paginate($this->AccountGroups->find()->where($where));
+        //$accountGroups = $this->paginate($this->AccountGroups->find()->where($where));
 
         $this->set(compact('accountGroups'));
         $this->set('_serialize', ['accountGroups']);

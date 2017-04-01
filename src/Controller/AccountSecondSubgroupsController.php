@@ -30,7 +30,7 @@ class AccountSecondSubgroupsController extends AppController
                 $this->Flash->error(__('The account second subgroup could not be saved. Please, try again.'));
             }
         }
-        $accountFirstSubgroups = $this->AccountSecondSubgroups->AccountFirstSubgroups->find('list', ['limit' => 200]);
+        $accountFirstSubgroups = $this->AccountSecondSubgroups->AccountFirstSubgroups->find('list');
         $this->set(compact('accountSecondSubgroup', 'accountFirstSubgroups'));
         $this->set('_serialize', ['accountSecondSubgroup']);
     

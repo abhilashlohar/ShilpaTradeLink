@@ -30,7 +30,7 @@ class AccountFirstSubgroupsController extends AppController
                 $this->Flash->error(__('The account first subgroup could not be saved. Please, try again.'));
             }
         }
-        $accountGroups = $this->AccountFirstSubgroups->AccountGroups->find('list', ['limit' => 200]);
+        $accountGroups = $this->AccountFirstSubgroups->AccountGroups->find('list');
         $this->set(compact('accountFirstSubgroup', 'accountGroups'));
         $this->set('_serialize', ['accountFirstSubgroup']);
 
@@ -38,21 +38,9 @@ class AccountFirstSubgroupsController extends AppController
             'contain' => ['AccountGroups'=>['AccountCategories']]
         ];
 		
-		$where=[];
-		$name=$this->request->query('name');
-		$Account_group=$this->request->query('Account_group');
-		//echo $Account_group; exit;
-		$this->set(compact('name','Account_group'));
+		$accountFirstSubgroups = $this->AccountFirstSubgroups->find()->contain(['AccountGroups'=>['AccountCategories']]);
 		
-		if(!empty($name)){
-			$where['AccountFirstSubgroups.name LIKE']='%'.$name.'%';
-		}
-		if(!empty($Account_group)){
-			$where['AccountGroups.name LIKE']='%'.$Account_group.'%';
-		}
-		
-		
-        $accountFirstSubgroups = $this->paginate($this->AccountFirstSubgroups->find()->where($where));
+        //$accountFirstSubgroups = $this->paginate($this->AccountFirstSubgroups->find()->where($where));
 
         $this->set(compact('accountFirstSubgroups'));
         $this->set('_serialize', ['accountFirstSubgroups']);
