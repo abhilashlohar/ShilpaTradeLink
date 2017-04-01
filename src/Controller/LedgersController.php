@@ -106,19 +106,24 @@ class LedgersController extends AppController
         $ledger = $this->Ledgers->get($id, [
             'contain' => ['LedgerAccounts']
         ]);
+		
 		if ($this->request->is(['patch', 'post', 'put'])) {
             $ledger = $this->Ledgers->patchEntity($ledger, $this->request->data);
-			
-			
-            if ($this->Ledgers->save($ledger)) {
+				$old_ref_no=$ledger->getOriginal('ref_no');
+			if ($this->Ledgers->save($ledger)) {
 				
-				pr($ledger); exit;
+				//pr($old_ref_no); exit;
 				$query2 = $this->Ledgers->ReferenceBalances->query();
 				$query2->update()
-				->set(['credit' => $q])
-				->where(['reference_no' => $reference_no,'ledger_account_id' => $ledger_account_id])
+				->set(['credit' => $ledger->credit,'debit' => $ledger->debit,'reference_no' => $ledger->ref_no])
+				->where(['reference_no' => $old_ref_no,'ledger_account_id' => $ledger->ledger_account_id,])
 				->execute();
 				
+				$query3 = $this->Ledgers->ReferenceDetails->query();
+				$query3->update()
+				->set(['credit' => $ledger->credit,'debit' => $ledger->debit,'reference_no' => $ledger->ref_no])
+				->where(['reference_no' => $old_ref_no,'ledger_account_id' => $ledger->ledger_account_id,])
+				->execute();
 				
                 $this->Flash->success(__('The ledger has been saved.'));
 
@@ -293,7 +298,11 @@ class LedgersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		$OpeningBalanceViews = $this->paginate($this->Ledgers->find()->contain(['LedgerAccounts'])->where(['Ledgers.company_id'=>$st_company_id,'Ledgers.voucher_source'=>'Opening Balance'])->order(['Ledgers.transaction_date' => 'DESC']));
+		
+		$OpeningBalanceViews = $this->paginate($this->Ledgers->find()->contain(['LedgerAccounts'])->where(['Ledgers.company_id'=>$st_company_id,'Ledgers.voucher_source'=>'Opening Balance']));
+		
+		
+		
 		$this->set(compact('OpeningBalanceViews'));
 	}
 	

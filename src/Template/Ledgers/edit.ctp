@@ -14,19 +14,17 @@
 				<div class="col-md-4">
 					<div class="form-group">
 						<label class="col-md-6 control-label">Ledger Accounts</label>
-					<?= $this->Form->input('ledger_account_id', ['empty'=>'--select--','options' => $ledgerAccounts,'label' => false,'class'=>'form-control input-sm select2me']) ?>
+						<?= h($ledger->ledger_account->name) ?>
 						</div>
 				</div>
 				<div class="col-md-2">
 						<div class="form-group">
-							<label class="control-label">Date</label>
-							<?= $this->Form->input('transaction_date',['type'=>'text','label' => false,'class'=>'date-picker','data-date-format'=>'d-m-yyyy','value'=>date("d-m-Y",strtotime($ledger->transaction_date))]) ?>
+							<label class="col-md-6 control-label">Date</label>
+							<?= h(date("d-m-Y",strtotime($ledger->transaction_date))) ?>
 						</div>
 					</div>
-				
-				
 			<?= $this->Form->hidden('voucher_source',['value'=>'Opening Balance']) ?>
-			</div>
+		</div>
 	<table class="table table-bordered" id="main_table">
 		<tr>
 			<td>Ref. No.</td>
@@ -35,7 +33,7 @@
 		</tr>
 		
 		<tr>
-			<td><?= $this->Form->input('ref_no',['type'=>'text','class'=>'distinctreference','label'=>false,'value'=>$ledger->ledger]) ?></td>
+			<td><?= $this->Form->input('ref_no',['type'=>'text','label'=>false,'value'=>$ledger->ref_no]) ?></td>
 			<td><?= $this->Form->input('credit',['type'=>'text','class'=>'','label'=>false, 'value'=>$ledger->credit]) ?></td>
 			<td><?= $this->Form->input('debit',['type'=>'text','class'=>'','label'=>false, 'value'=>$ledger->debit]) ?></td>
 		</tr>
