@@ -294,7 +294,7 @@ $(document).ready(function() {
 		var ob_rate=parseFloat($('input[name="ob_rate"]').val());
 		if(isNaN(ob_rate)) { var ob_rate = 0; }
 		var total=ob_quantity*ob_rate;
-		$('input[name="ob_value"]').val(total.toFixed(2));
+		$('input[name="ob_value"]').val(total.toFixed(8));
 
 	$('input[name="ob_quantity"],input[name="ob_rate"]').die().live("keyup",function() { 
 		var ob_quantity=parseFloat($('input[name="ob_quantity"]').val());
@@ -302,7 +302,7 @@ $(document).ready(function() {
 		var ob_rate=parseFloat($('input[name="ob_rate"]').val());
 		if(isNaN(ob_rate)) { var ob_rate = 0; }
 		var total=ob_quantity*ob_rate;
-		$('input[name="ob_value"]').val(total.toFixed(2));
+		$('input[name="ob_value"]').val(total.toFixed(8));
     });
 	$('input[name="ob_value"]').die().live("blur",function() { 
 		var ob_quantity=parseFloat($('input[name="ob_quantity"]').val());
@@ -312,7 +312,7 @@ $(document).ready(function() {
 		
 		var total=ob_value/ob_quantity;
 	
-		$('input[name="ob_rate"]').val(total.toFixed(2));
+		$('input[name="ob_rate"]').val(total.toFixed(8));
     });
 	$('.allLetter').keyup(function(){
 	var inputtxt=  $(this).val();
@@ -386,9 +386,6 @@ function update_sr_textbox(){
 		var serial_number=$('input[name=serial_number_enable]:checked').val(); 
 		var quantity=$('input[name="ob_quantity_load"]').val();
 		var l=$('#itm_srl_num').find('input').length;
-		//var total_out_qty=$('input[name="total_out_qty"]').val();
-		//alert(quantity);
-		//alert(l);
 		if(serial_number==1){ 
 			
 					if(quantity < l){
