@@ -198,7 +198,9 @@ class LedgersController extends AppController
 					return $row['name'];
 				}
 				
-			}])->where(['company_id'=>$company_id]);
+			}])->where(['company_id'=>$company_id])->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups'=>['AccountGroups'=>['AccountCategories'=>function($q){
+				return $q->where(['AccountCategories.id IN'=>[1,2]]);
+			}]]]]);
         $this->set(compact('ledger', 'ledgerAccounts'));
         $this->set('_serialize', ['ledger']);
     }
