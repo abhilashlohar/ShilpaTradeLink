@@ -89,10 +89,9 @@ class EmployeesController extends AppController
 			
             if ($this->Employees->save($employee)) {
 				
-				$i=0;
+			
 				foreach($employee->companies as $data)
 				{
-					$i++;
 					$ledgerAccount = $this->Employees->LedgerAccounts->newEntity();
 					$ledgerAccount->account_second_subgroup_id = $employee->account_second_subgroup_id;
 					$ledgerAccount->name = $employee->name;
@@ -100,8 +99,7 @@ class EmployeesController extends AppController
 					$ledgerAccount->source_id = $employee->id;
 					$ledgerAccount->company_id = $data->id;
 				} 
-			echo $i;
-			exit;
+			
 				
 				
 				if ($this->Employees->LedgerAccounts->save($ledgerAccount))
