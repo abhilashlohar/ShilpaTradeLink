@@ -97,7 +97,7 @@
 							echo $this->Form->input('qt3', ['options'=>$options,'label' => false,'class' => 'form-control input-sm','value'=>$quotation->qt3,'required']); ?>
 						</div>
 						<div class="col-md-3">
-							<?php echo $this->Form->input('qt4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
+							<?php echo $this->Form->input('qt4', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
 						</div>
 					</div>
 				

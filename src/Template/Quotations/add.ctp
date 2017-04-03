@@ -118,7 +118,7 @@ if(!empty($revision))
 							echo $this->Form->input('qt3', ['options'=>$options,'label' => false,'class' => 'form-control input-sm','required']); ?>
 						</div>
 						<div class="col-md-3 ">
-							<?php echo $this->Form->input('qt4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
+							<?php echo $this->Form->input('qt4', ['label' => false,'value'=>substr($s_year_from, -2).'-'.substr($s_year_to, -2),'class' => 'form-control input-sm','readonly']); ?>
 						</div>
 					</div>
 				

@@ -80,8 +80,8 @@ $('.closetin').on("click",function() {
 						<div class="col-md-9 padding-right-decrease">
 							<?php echo $this->Form->input('in1', ['type'=>'hidden','value' => @$sales_order->so1]); ?>
 							<?php echo $this->Form->input('in3', ['type'=>'hidden','value' => @$sales_order->so3]); ?>
-							<?php echo $this->Form->input('in4', ['type'=>'hidden','value' => '16-17']); ?>
-							<?php echo @$sales_order->so1; ?><?php echo @$sales_order->so3; ?><?php echo "16-17"; ?>
+							<?php echo $this->Form->input('in4', ['type'=>'hidden','value' => substr($s_year_from, -2).'-'.substr($s_year_to, -2)]); ?>
+							<?php echo @$sales_order->so1; ?>/<?php echo @$sales_order->so3; ?>/<?php echo substr($s_year_from, -2).'-'.substr($s_year_to, -2); ?>
 						</div>
 						
 					</div>

@@ -57,7 +57,7 @@
 							<?php echo @$invoice->in3; ?>
 						</div>
 						<div class="col-md-3">
-							<?php echo $this->Form->input('in4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
+							<?php echo $this->Form->input('in4', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
 						</div>
 					</div>
 				</div>

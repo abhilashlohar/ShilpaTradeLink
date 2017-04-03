@@ -100,6 +100,8 @@ class AppController extends Controller
 			$this->viewBuilder()->layout('index_layout');
 			$this -> render('/Error/not_allow'); 
 		}
+		
+		
     }
 
     /**
