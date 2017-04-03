@@ -231,6 +231,7 @@ class PaymentVouchersController extends AppController
 		foreach($vouchersReferences->voucher_ledger_accounts as $data){
 			$where[]=$data->ledger_account_id;
 		}
+		pr($this->PaymentVouchers->BankCashes->find('list')); exit;
 		if(sizeof($where)>0){
 			$bankCashes = $this->PaymentVouchers->BankCashes->find('list',
 				['keyField' => function ($row) {
