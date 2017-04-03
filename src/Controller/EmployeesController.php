@@ -86,10 +86,9 @@ class EmployeesController extends AppController
 				move_uploaded_file($file['tmp_name'], WWW_ROOT . '/signatures/' . $setNewFileName . '.' . $ext);
 			}
 			
-			
             if ($this->Employees->save($employee)) {
 				
-			
+				
 				foreach($employee->companies as $data)
 				{
 					$ledgerAccount = $this->Employees->LedgerAccounts->newEntity();

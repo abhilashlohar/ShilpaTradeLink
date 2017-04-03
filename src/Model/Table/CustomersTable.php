@@ -118,6 +118,13 @@ class CustomersTable extends Table
         ]);
 		$this->belongsTo('ReceiptVouchers');
 		$this->belongsTo('ReferenceDetails');
+		//$this->belongsTo('Companies');
+		
+		$this->belongsToMany('Companies', [
+            'foreignKey' => 'customer_id',
+            'targetForeignKey' => 'company_id',
+            'joinTable' => 'customer_companies'
+        ]);
 		
     }
 

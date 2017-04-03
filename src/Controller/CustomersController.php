@@ -76,10 +76,15 @@ class CustomersController extends AppController
         $customer = $this->Customers->newEntity();
         if ($this->request->is('post')) {
             $customer = $this->Customers->patchEntity($customer, $this->request->data);
-			//pr($customer); exit;
+			
 			$billTobill=$customer->bill_to_bill_account;
+			
+			
             if ($this->Customers->save($customer)) {
 				
+				
+				foreach($customer->companies as $data)
+				{
 				$ledgerAccount = $this->Customers->LedgerAccounts->newEntity();
 				$ledgerAccount->account_second_subgroup_id = $customer->account_second_subgroup_id;
 				$ledgerAccount->name = $customer->customer_name;
@@ -87,15 +92,11 @@ class CustomersController extends AppController
 				$ledgerAccount->bill_to_bill_account = $billTobill;
 				$ledgerAccount->source_model = 'Customers';
 				$ledgerAccount->source_id = $customer->id;
-				$ledgerAccount->company_id = $st_company_id;
-				if ($this->Customers->LedgerAccounts->save($ledgerAccount)) {
-					$id=$customer->id;
-					$customer = $this->Customers->get($id);
-					$customer->ledger_account_id=$ledgerAccount->id;
-					$this->Customers->save($customer);
-					$this->Flash->success(__('The customer has been saved.'));
-					return $this->redirect(['action' => 'index']);
+				$ledgerAccount->company_id = $data->id;
+				$this->Customers->LedgerAccounts->save($ledgerAccount);
 				}
+				
+				
             } else {
                 $this->Flash->error(__('The customer could not be saved. Please, try again.'));
             }
@@ -109,7 +110,8 @@ class CustomersController extends AppController
 		
 		$transporters = $this->Customers->Transporters->find('list')->order(['Transporters.transporter_name' => 'ASC']);
 		$AccountCategories = $this->Customers->AccountCategories->find('list')->order(['AccountCategories.name' => 'ASC']);
-        $this->set(compact('customer', 'districts', 'companyGroups', 'customerSegs','employees','transporters','CustomerGroups','AccountCategories'));
+		 $Companies = $this->Customers->Companies->find('list');
+        $this->set(compact('customer', 'districts', 'companyGroups', 'customerSegs','employees','transporters','CustomerGroups','AccountCategories','Companies'));
 		$this->set('_serialize', ['customer']);
     }
 
