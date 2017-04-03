@@ -62,6 +62,12 @@ class SaleTaxesTable extends Table
             'foreignKey' => 'account_second_subgroup_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->belongsToMany('Companies', [
+            'foreignKey' => 'sale_taxe_id',
+            'targetForeignKey' => 'company_id',
+            'joinTable' => 'sale_tax_companies'
+        ]);
     }
 
     /**

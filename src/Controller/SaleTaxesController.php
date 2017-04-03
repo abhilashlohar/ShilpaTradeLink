@@ -46,12 +46,13 @@ class SaleTaxesController extends AppController
             }
         }
 		$AccountCategories = $this->SaleTaxes->AccountCategories->find('list');
+		$Companies = $this->SaleTaxes->Companies->find('list');
         $this->set(compact('saleTax','AccountCategories'));
         $this->set('_serialize', ['saleTax']);
 		
         $saleTaxes = $this->paginate($this->SaleTaxes);
 
-        $this->set(compact('saleTaxes'));
+        $this->set(compact('saleTaxes','Companies'));
         $this->set('_serialize', ['saleTaxes']);
     }
 

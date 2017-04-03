@@ -79,7 +79,7 @@
 						</div>
 					</div>
 				</div>
-					<div class="form-group">
+				<div class="form-group">
 					<label class="control-label col-md-3">Account Second Sub Group <span class="required" aria-required="true">
 					* </span>
 					</label>
@@ -92,6 +92,21 @@
 						</div>
 					</div>
 				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-md-3">Create In Companies </span>
+					</label>
+					<div class="col-md-9">
+						<div class="input-icon right">
+							<i class="fa"></i>
+							<div id="account_second_subgroup_div">
+							<?php echo $this->Form->input('companies._ids', ['label' => false,'options' => $Companies,'multiple' => 'checkbox']); ?>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				
 					
 				<div class="row">
 					<div class="col-md-offset-4 col-md-8">
