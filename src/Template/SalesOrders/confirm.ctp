@@ -15,7 +15,7 @@ $edit_url=$this->Url->build(['controller'=>'SalesOrders','action'=>'Edit']);
 			
 			<a href="#" class="list-group-item" onclick="window.close()"><i class="fa fa-times"></i> Close </a>
 		</div>
-		<div style="padding:5px;">
+		<div style="padding:5px;height: 400px;overflow: auto;">
 		<h4>Adjust height of rows</h4>
 		<?= $this->Form->create($salesorder) ?>
 			<?php $sr=0; foreach ($salesorder->sales_order_rows as $SalesOrderRows): $sr++;
