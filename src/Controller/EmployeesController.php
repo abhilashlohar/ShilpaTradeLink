@@ -100,8 +100,6 @@ class EmployeesController extends AppController
 					$ledgerAccount->company_id = $data->id;
 				} 
 			
-				
-				
 				if ($this->Employees->LedgerAccounts->save($ledgerAccount))
 				{
 					$id=$employee->id;
