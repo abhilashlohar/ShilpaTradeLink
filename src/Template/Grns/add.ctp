@@ -44,7 +44,7 @@
 									<?php echo $this->Form->input('grn3', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'File', 'value'=>@$purchase_order->po3,'readonly']); ?>
 								</div>
 								<div class="col-md-4">
-									<?php echo $this->Form->input('grn4', ['label' => false,'value'=>'16-17','class' => 'form-control input-sm','readonly']); ?>
+									<?php echo $this->Form->input('grn4', ['label' => false,'value'=>substr($s_year_from, -2).'-'.substr($s_year_to, -2),'class' => 'form-control input-sm','readonly']); ?>
 								</div>
 							</div>
 						</div>
