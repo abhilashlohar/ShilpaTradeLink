@@ -310,9 +310,6 @@ class LedgersController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		
 		$OpeningBalanceViews = $this->paginate($this->Ledgers->find()->contain(['LedgerAccounts'])->where(['Ledgers.company_id'=>$st_company_id,'Ledgers.voucher_source'=>'Opening Balance']));
-		
-		
-		
 		$this->set(compact('OpeningBalanceViews'));
 	}
 	
