@@ -68,6 +68,11 @@ class VendorsTable extends Table
             'foreignKey' => 'account_second_subgroup_id',
             'joinType' => 'INNER'
         ]);
+		$this->belongsToMany('Companies', [
+            'foreignKey' => 'vendor_id',
+            'targetForeignKey' => 'company_id',
+            'joinTable' => 'vendor_companies'
+        ]);
     }
 
     /**

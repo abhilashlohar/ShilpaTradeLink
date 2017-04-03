@@ -57,21 +57,21 @@ class VendorsController extends AppController
 			
             if ($this->Vendors->save($vendor))
 			{
-				$ledgerAccount = $this->Vendors->LedgerAccounts->newEntity();
-				$ledgerAccount->account_second_subgroup_id = $vendor->account_second_subgroup_id;
-				$ledgerAccount->name = $vendor->company_name;
-				$ledgerAccount->source_model = 'Vendors';
-				$ledgerAccount->source_id = $vendor->id;
 				
-				if ($this->Vendors->LedgerAccounts->save($ledgerAccount)) 
+				foreach($vendor->companies as $data)
 				{
-					$id=$vendor->id;
-					$vendor = $this->Vendors->get($id);
-					$vendor->ledger_account_id=$ledgerAccount->id;
-					$this->Vendors->save($vendor);
-					$this->Flash->success(__('The vendor has been saved.'));
+					$ledgerAccount = $this->Vendors->LedgerAccounts->newEntity();
+					$ledgerAccount->account_second_subgroup_id = $vendor->account_second_subgroup_id;
+					$ledgerAccount->name = $vendor->company_name;
+					$ledgerAccount->source_model = 'Vendors';
+					$ledgerAccount->source_id = $vendor->id;
+					$ledgerAccount->company_id = $data->id;
+					$this->Vendors->LedgerAccounts->save($ledgerAccount);
+				} 
+				$this->Flash->success(__('The Vendor has been saved.'));
 					return $this->redirect(['action' => 'index']);
-				}
+				
+				
             } else 
 				{
 					$this->Flash->error(__('The vendor could not be saved. Please, try again.'));
@@ -79,8 +79,9 @@ class VendorsController extends AppController
         }
 		$ItemGroups = $this->Vendors->ItemGroups->find('list');
 		$AccountCategories = $this->Vendors->AccountCategories->find('list');
+		$Companies = $this->Vendors->Companies->find('list');
         
-        $this->set(compact('vendor','ItemGroups','AccountCategories'));
+        $this->set(compact('vendor','ItemGroups','AccountCategories','Companies'));
         $this->set('_serialize', ['vendor']);
     }
 

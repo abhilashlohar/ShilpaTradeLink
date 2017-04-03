@@ -97,17 +97,13 @@ class EmployeesController extends AppController
 					$ledgerAccount->source_model = 'Employees';
 					$ledgerAccount->source_id = $employee->id;
 					$ledgerAccount->company_id = $data->id;
+					$this->Employees->LedgerAccounts->save($ledgerAccount)
 				} 
 			
-				if ($this->Employees->LedgerAccounts->save($ledgerAccount))
-				{
-					$id=$employee->id;
-					$employee = $this->Employees->get($id);
-					$employee->ledger_account_id=$ledgerAccount->id;
-					$this->Employees->save($employee);
+				
 					$this->Flash->success(__('The employee has been saved.'));
 					return $this->redirect(['action' => 'index']);
-				} 
+				
 			} else 
 				{
                 $this->Flash->error(__('The employee could not be saved. Please, try again.'));

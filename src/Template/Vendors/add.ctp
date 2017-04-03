@@ -162,6 +162,13 @@
 						
 					</tbody>
 				</table>
+				
+				<div class="row">
+					<div class="col-md-4">
+						<label class="control-label">Work In Companies</label>
+						<?php echo $this->Form->input('companies._ids', ['label' => false,'options' => $Companies,'multiple' => 'checkbox']); ?>
+					</div>
+				</div>
               
 			</div>
 		
