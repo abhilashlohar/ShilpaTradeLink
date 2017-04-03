@@ -1,4 +1,4 @@
-
+<?php //pr($company_dis);exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
@@ -96,21 +96,18 @@
 							<?php echo $this->Form->input('dipartment_id', ['options' => $departments,'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
-					
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Designation <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('designation_id', ['options'=>$designations,'label' => false,'class' => 'form-control input-sm select2me','placeholder'=>'Designation']); ?>
 						</div>
 					</div>
-					
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Date Of Joining</label>
 							<?php echo $this->Form->input('join_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y",strtotime($employee->join_date)),'placeholder' => 'Date of Joining']); ?>
 					</div>
 					</div>
-					
 				</div>
 				<div class="row">
 				<div class="col-md-4">
@@ -177,7 +174,7 @@
 				</div>
 					
 				<div class="row">
-						<div class="col-md-4">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Permanent Address </label>
 							<?php echo $this->Form->input('permanent_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Permanent Address']); ?>
@@ -189,7 +186,7 @@
 							<?php echo $this->Form->input('residence_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Residence Address']); ?>
 						</div>
 					</div>
-						<div class="col-md-4">
+					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Signature <span class="required" aria-required="true">*</span></label>
 							<div><?php echo $this->Html->image('/signatures/'.$employee->signature, ['height' => '50px']); ?></div>
@@ -333,11 +330,12 @@
 					</tbody>
 				</table>
 				
-				<div class="row">
+				<?php //pr($Companies) ?>
+				<div class="row" id="used_comp">
 					<div class="col-md-4">
-						<label class="control-label">Used By Companies <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('companies._ids', ['label' => false,'options' => $Companies,'multiple' => 'checkbox']); ?>
-					</div>
+		<label class="control-label">Used By Companies <span class="required" aria-required="true">*</span></label>
+			<?php echo $this->Form->input('companies._ids', ['label' => false,'options' => $Companies,'multiple' => 'checkbox']); ?>
+</div>
 				</div>
 				
 				</div>
@@ -473,6 +471,10 @@ $(document).ready(function() {
 		}
 
 	});
+	
+	
+	
+	
 	//--	 END OF VALIDATION
 	$('.allLetter').keyup(function(){
 		var inputtxt=  $(this).val();
@@ -487,6 +489,26 @@ $(document).ready(function() {
 			return false;  
 		}
 	});
+	
+	/* var emp_id="<?php echo $employee->id; ?>";
+	
+	var url="<?php echo $this->Url->build(['controller'=>'Employees','action'=>'UsedCompany']); ?>";
+	url=url+'/'+emp_id,
+	$.ajax({
+		url: url,
+		type: 'GET',
+	}).done(function(response) {
+		alert(response);
+		$('#used_comp').html(response);
+		//$('select[name="account_group_id"]').select2();
+	}); */
+	
+	<?php foreach($company_dis as $company_dis){ ?>
+		
+		company_dis=<?php echo $company_dis; ?>;
+		$('#companies-ids-'+company_dis).prop('disabled',true);
+	
+<?php }?>
 	
 	$('select[name="account_category_id"]').on("change",function() {
 	$('#account_group_div').html('Loading...');

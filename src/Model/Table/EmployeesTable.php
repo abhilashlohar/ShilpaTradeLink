@@ -76,6 +76,7 @@ class EmployeesTable extends Table
 		
 		
 		$this->belongsTo('Quotations');
+		$this->belongsTo('Ledgers');
 		$this->belongsTo('SalesOrders');
 		$this->belongsTo('Invoices');
 		
