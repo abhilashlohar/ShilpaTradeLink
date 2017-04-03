@@ -94,7 +94,7 @@
 				</div>
 				
 				<div class="form-group">
-					<label class="control-label col-md-3">Create In Companies </span>
+					<label class="control-label col-md-3">Use In Companies </span>
 					</label>
 					<div class="col-md-9">
 						<div class="input-icon right">

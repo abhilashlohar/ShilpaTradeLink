@@ -25,23 +25,22 @@ class SaleTaxesController extends AppController
             $saleTax = $this->SaleTaxes->patchEntity($saleTax, $this->request->data);
 			
             if ($this->SaleTaxes->save($saleTax)) {
-				$ledgerAccount = $this->SaleTaxes->LedgerAccounts->newEntity();
-				$ledgerAccount->account_second_subgroup_id = $saleTax->account_second_subgroup_id;
-				$ledgerAccount->name = 'SaleTax - '.$saleTax->tax_figure;
-				$ledgerAccount->source_model = 'SaleTax';
-				$ledgerAccount->source_id = $saleTax->id;
-				if ($this->SaleTaxes->LedgerAccounts->save($ledgerAccount))					
-				{
-					$id=$saleTax->id;
-					$saleTax = $this->SaleTaxes->get($id);
-					$saleTax->ledger_account_id=$ledgerAccount->id;
-					//pr($saleTax); exit;
-					$this->SaleTaxes->save($saleTax);
-					$this->Flash->success(__('The sale tax has been saved.'));
-					return $this->redirect(['action' => 'index']);
-				} 
-			}
-                 else {
+				
+				foreach($saleTax->companies as $company){
+					$LedgerAccount = $this->SaleTaxes->LedgerAccounts->newEntity();
+					$LedgerAccount->account_second_subgroup_id=$saleTax->account_second_subgroup_id;
+					$LedgerAccount->name=$saleTax->tax_figure;
+					$LedgerAccount->alias='';
+					$LedgerAccount->source_model='SaleTaxes';
+					$LedgerAccount->source_id=$saleTax->id;
+					$LedgerAccount->bill_to_bill_account='';
+					$LedgerAccount->company_id=$company->id;
+					$this->SaleTaxes->LedgerAccounts->save($LedgerAccount);
+				}
+			
+				$this->Flash->success(__('The sale tax has been saved.'));
+				return $this->redirect(['action' => 'index']);
+			}else {
                 $this->Flash->error(__('The sale tax could not be saved. Please, try again.'));
             }
         }
@@ -83,8 +82,10 @@ class SaleTaxesController extends AppController
         $saleTax = $this->SaleTaxes->newEntity();
         if ($this->request->is('post')) {
             $saleTax = $this->SaleTaxes->patchEntity($saleTax, $this->request->data);
-            if ($this->SaleTaxes->save($saleTax)) 
+            
+			if ($this->SaleTaxes->save($saleTax)) 
 			{
+				
 				$ledgerAccount = $this->SaleTaxes->LedgerAccounts->newEntity();
 				$ledgerAccount->account_second_subgroup_id = $saleTax->account_second_subgroup_id;
 				$ledgerAccount->name = 'SaleTax->'.$saleTax->tax_figure;
@@ -118,10 +119,11 @@ class SaleTaxesController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		
         $saleTax = $this->SaleTaxes->get($id, [
-            'contain' => []
+            'contain' => ['Companies']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $saleTax = $this->SaleTaxes->patchEntity($saleTax, $this->request->data);
+			
             if ($this->SaleTaxes->save($saleTax)) {
 					$query = $this->SaleTaxes->LedgerAccounts->query();
 					$query->update()
@@ -135,12 +137,16 @@ class SaleTaxesController extends AppController
                 $this->Flash->error(__('The sale tax could not be saved. Please, try again.'));
             }
         }
-		$AccountCategories = $this->Employees->AccountCategories->find('list');
-		$AccountGroups = $this->Employees->AccountGroups->find('list');
-		$AccountFirstSubgroups = $this->Employees->AccountFirstSubgroups->find('list');
-		$AccountSecondSubgroups = $this->Employees->AccountSecondSubgroups->find('list');
 		
-        $this->set(compact('saleTax','AccountCategories','AccountGroups','AccountFirstSubgroups','AccountSecondSubgroups'));
+		
+		$AccountCategories = $this->SaleTaxes->AccountCategories->find('list');
+		$AccountGroups = $this->SaleTaxes->AccountGroups->find('list');
+		$AccountFirstSubgroups = $this->SaleTaxes->AccountFirstSubgroups->find('list');
+		$AccountSecondSubgroups = $this->SaleTaxes->AccountSecondSubgroups->find('list');
+		
+		
+		
+        $this->set(compact('saleTax','AccountCategories','AccountGroups','AccountFirstSubgroups','AccountSecondSubgroups','Companies'));
         $this->set('_serialize', ['saleTax']);
     }
 

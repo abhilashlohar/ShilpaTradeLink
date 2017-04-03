@@ -100,6 +100,8 @@
 					</label>
 							<?php echo $this->Form->input('freeze'); ?>
 				</div>
+				
+				
 					
 				<div class="row">
 					<div class="col-md-offset-4 col-md-8">
