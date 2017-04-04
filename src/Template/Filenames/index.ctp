@@ -115,7 +115,7 @@
 				 <thead>
 					<tr>
 						<th>Sr. No.</th>
-						<th>File</th>
+						<th width="30%">File</th>
 						<th>Customer</th>	
 						<th>Action</th>
 					</tr>
@@ -125,7 +125,8 @@
 					<tr>
 						<td><?= h(++$page_no) ?></td>
 						<td><?= h($filename->file1) ?>-<?= h($filename->file2) ?></td>
-						<td><?= h($filename->customer->customer_name) ?></td>
+						<td>
+						<?php echo $filename->customer->customer_name.'('; echo $filename->customer->alias.')'; ?></td>
 						<td class="actions">
 							<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $filename->id], ['confirm' => __('Are you sure you want to delete # {0}?', $filename->id)]) ?>
 						</td>

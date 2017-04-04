@@ -97,7 +97,7 @@ class EmployeesController extends AppController
 					$ledgerAccount->source_model = 'Employees';
 					$ledgerAccount->source_id = $employee->id;
 					$ledgerAccount->company_id = $data->id;
-					$this->Employees->LedgerAccounts->save($ledgerAccount)
+					$this->Employees->LedgerAccounts->save($ledgerAccount);
 				} 
 			
 				
