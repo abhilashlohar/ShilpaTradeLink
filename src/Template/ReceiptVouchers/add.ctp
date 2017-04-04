@@ -13,13 +13,13 @@
 <?php if(@$ErrorreceivedFroms){
 	?> 
 	<div class="actions">
-			<?php echo $this->Html->link('Create Ledger Account For Receipt Voucher -> Received From','/VouchersReferences/edit/3',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+			<?php echo $this->Html->link('Create Ledger Account For Receipt Voucher -> Received From','/VouchersReferences/edit/'.$ReceiptVouchersReceivedFrom,array('escape'=>false,'class'=>'btn btn-primary')); ?>
 	</div>
 <?php } 
  else if(@$ErrorbankCashes){
 	?> 
 	<div class="actions">
-			<?php echo $this->Html->link('Create Ledger Account For Receipt Voucher -> Cash/Bank','/VouchersReferences/edit/4',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+			<?php echo $this->Html->link('Create Ledger Account For Receipt Voucher -> Cash/Bank','/VouchersReferences/edit/'.$ReceiptVouchersCashBank,array('escape'=>false,'class'=>'btn btn-primary')); ?>
 	</div>
 <?php }  else { ?>
 

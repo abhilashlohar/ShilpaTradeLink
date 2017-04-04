@@ -157,6 +157,7 @@ class CreditNotesController extends AppController
             }
         }
 		$vr=$this->CreditNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Credit Notes','sub_entity'=>'Purchase Account'])->first();
+		$CreditNotesPurchaseAccount=$vr->id;
 		$vouchersReferences = $this->CreditNotes->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
@@ -182,6 +183,7 @@ class CreditNotesController extends AppController
 			$ErrorpurchaseAccs='true';
 		}
 		$vr=$this->CreditNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Credit Notes','sub_entity'=>'Party'])->first();
+		$CreditNotesParty=$vr->id;
 		$vouchersReferences = $this->CreditNotes->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
@@ -207,7 +209,7 @@ class CreditNotesController extends AppController
 			$Errorparties='true';
 		}
 		$companies = $this->CreditNotes->Companies->find('all');
-        $this->set(compact('creditNote', 'purchaseAccs', 'parties', 'companies','ErrorpurchaseAccs','Errorparties','financial_year'));
+        $this->set(compact('creditNote', 'purchaseAccs', 'parties', 'companies','ErrorpurchaseAccs','Errorparties','financial_year','CreditNotesPurchaseAccount','CreditNotesParty'));
         $this->set('_serialize', ['debitNote']);
  }
 

@@ -106,7 +106,8 @@ class DebitNotesController extends AppController
                 $this->Flash->error(__('The debit note could not be saved. Please, try again.'));
             }
         }
-		$vr=$this->DebitNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Debit Notes Voucher','sub_entity'=>'Sales Account'])->first();
+		$vr=$this->DebitNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Debit Notes','sub_entity'=>'Sales Account'])->first();
+		$DebitNotesSalesAccount=$vr->id;
 		$vouchersReferences = $this->DebitNotes->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
@@ -133,7 +134,8 @@ class DebitNotesController extends AppController
 			$ErrorsalesAccs='true';
 		}
 		
-		$vr=$this->DebitNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Debit Notes Voucher','sub_entity'=>'Party'])->first();	
+		$vr=$this->DebitNotes->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Debit Notes','sub_entity'=>'Party'])->first();	
+		$DebitNotesParty=$vr->id;
 		$vouchersReferences = $this->DebitNotes->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
@@ -163,7 +165,7 @@ class DebitNotesController extends AppController
 		
 		
 		$companies = $this->DebitNotes->Companies->find('all');
-        $this->set(compact('debitNote', 'salesAccs', 'parties', 'companies','ErrorsalesAccs','Errorparties','financial_year'));
+        $this->set(compact('debitNote', 'salesAccs', 'parties', 'companies','ErrorsalesAccs','Errorparties','financial_year','DebitNotesParty','DebitNotesSalesAccount'));
         $this->set('_serialize', ['debitNote']);
     }
 

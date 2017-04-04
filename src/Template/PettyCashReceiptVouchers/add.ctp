@@ -1,13 +1,13 @@
 <?php if(@$ErrorreceivedFroms){
 		?> 
 		<div class="actions">
-				<?php echo $this->Html->link('Create Ledger Account For Petty Cash Receipt -> Received From','/VouchersReferences/edit/5',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+				<?php echo $this->Html->link('Create Ledger Account For Petty Cash Receipt -> Received From','/VouchersReferences/edit/'.$PettyCashReceiptVouchersReceived,array('escape'=>false,'class'=>'btn btn-primary')); ?>
 		</div>
 		<?php } 
 		 else if(@$ErrorbankCashes){
 		?> 
 		<div class="actions">
-				<?php echo $this->Html->link('Create Ledger Account For Petty Cash Receipt -> Cash/Bank','/VouchersReferences/edit/6',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+				<?php echo $this->Html->link('Create Ledger Account For Petty Cash Receipt -> Cash/Bank','/VouchersReferences/edit/'.$PettyCashReceiptVouchersCashBank,array('escape'=>false,'class'=>'btn btn-primary')); ?>
 		</div>
 <?php }  else { ?>
 

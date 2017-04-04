@@ -109,6 +109,7 @@ class ContraVouchersController extends AppController
         }
 		
 		$vr=$this->ContraVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Contra Voucher','sub_entity'=>'Received From'])->first();
+		$ContraVouchersReceived=$vr->id;
 		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
@@ -135,6 +136,7 @@ class ContraVouchersController extends AppController
 			$ErrorcashBankFroms='true';
 		}
 		$vr=$this->ContraVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Contra Voucher','sub_entity'=>'Cash/Bank'])->first();
+		$ContraVouchersCashBank=$vr->id;
 		$vouchersReferences = $this->ContraVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
@@ -164,7 +166,7 @@ class ContraVouchersController extends AppController
 		
 		$companies = $this->ContraVouchers->Companies->find('all');
         
-        $this->set(compact('contraVoucher', 'cashBankFroms', 'cashBankTos','companies','ErrorcashBankTos','ErrorcashBankFroms','financial_year'));
+        $this->set(compact('contraVoucher', 'cashBankFroms', 'cashBankTos','companies','ErrorcashBankTos','ErrorcashBankFroms','financial_year','ContraVouchersCashBank','ContraVouchersReceived'));
         $this->set('_serialize', ['contraVoucher']);
     }
 

@@ -114,6 +114,7 @@ class JournalVouchersController extends AppController
             }
 		}
 		$vr=$this->JournalVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Journal Voucher','sub_entity'=>'Ledger'])->first();
+		$JournalVoucherLedger=$vr->id;
 		$vouchersReferences = $this->JournalVouchers->VouchersReferences->get($vr->id, [
           'contain' => ['VoucherLedgerAccounts']
         ]);
@@ -144,7 +145,7 @@ class JournalVouchersController extends AppController
 			
 		$companies = $this->JournalVouchers->Companies->find('all');
         
-        $this->set(compact('journalVoucher', 'ledgers','companies','Errorledgers','financial_year'));
+        $this->set(compact('journalVoucher', 'ledgers','companies','Errorledgers','financial_year','JournalVoucherLedger'));
         $this->set('_serialize', ['journalVoucher']);
     }
 

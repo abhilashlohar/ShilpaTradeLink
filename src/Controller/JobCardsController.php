@@ -19,7 +19,8 @@ class JobCardsController extends AppController
     public function index($status=null)
     {
 		$this->viewBuilder()->layout('index_layout');
-		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
 		if($status==null or $status=='Pending'){
 			$where['status']='Pending';
 		}elseif($status=='Closed'){
@@ -31,9 +32,9 @@ class JobCardsController extends AppController
             'contain' => ['SalesOrders']
         ];
 		if($inventory_voucher_status=='true'){
-			$jobCards = $this->paginate($this->JobCards->find()->where(['status' => 'Pending']));
+			$jobCards = $this->paginate($this->JobCards->find()->where(['status' => 'Pending','JobCards.company_id'=>$st_company_id]));
 		}else{
-			$jobCards = $this->paginate($this->JobCards->find()->where($where)->order(['JobCards.id' => 'DESC']));
+			$jobCards = $this->paginate($this->JobCards->find()->where($where)->where(['JobCards.company_id'=>$st_company_id])->order(['JobCards.id' => 'DESC']));
 		}
         $this->set(compact('jobCards','status'));
         $this->set('_serialize', ['jobCards']);

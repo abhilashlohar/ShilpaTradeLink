@@ -1,13 +1,13 @@
 <?php if(@$ErrorpurchaseAccs){
 		?> 
 		<div class="actions">
-				<?php echo $this->Html->link('Create Ledger Account For Credit Notes -> Purchase Account','/VouchersReferences/edit/12',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+				<?php echo $this->Html->link('Create Ledger Account For Credit Notes -> Purchase Account','/VouchersReferences/edit/'.$CreditNotesPurchaseAccount,array('escape'=>false,'class'=>'btn btn-primary')); ?>
 		</div>
 		<?php } 
 		 else if(@$Errorparties){
 		?> 
 		<div class="actions">
-				<?php echo $this->Html->link('Create Ledger Account For Credit Notes -> Party','/VouchersReferences/edit/13',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+				<?php echo $this->Html->link('Create Ledger Account For Credit Notes -> Party','/VouchersReferences/edit/'.$CreditNotesParty,array('escape'=>false,'class'=>'btn btn-primary')); ?>
 		</div>
 		<?php }  else { ?>
 <div class="portlet light bordered">

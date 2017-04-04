@@ -198,6 +198,7 @@ class ReceiptVouchersController extends AppController
         }
 		
 		$vr=$this->ReceiptVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Receipt Voucher','sub_entity'=>'Received From'])->first();
+		$ReceiptVouchersReceivedFrom=$vr->id;
 		$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
@@ -223,6 +224,7 @@ class ReceiptVouchersController extends AppController
 		}
 		
 		$vr=$this->ReceiptVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Receipt Voucher','sub_entity'=>'Cash/Bank'])->first();
+		$ReceiptVouchersCashBank=$vr->id;
 		$vouchersReferences = $this->ReceiptVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
@@ -251,7 +253,7 @@ class ReceiptVouchersController extends AppController
         $companies = $this->ReceiptVouchers->Companies->find('all');
 		
 		$Invoices = $this->ReceiptVouchers->Invoices->find()->where(['company_id'=>$st_company_id,'due_payment >'=>0]);		
-        $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies','ErrorreceivedFroms','ErrorbankCashes','customers','financial_year'));
+        $this->set(compact('receiptVoucher', 'receivedFroms', 'bankCashes','companies','ErrorreceivedFroms','ErrorbankCashes','customers','financial_year','ReceiptVouchersCashBank','ReceiptVouchersReceivedFrom'));
         $this->set('_serialize', ['receiptVoucher']);
     }
 

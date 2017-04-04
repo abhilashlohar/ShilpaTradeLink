@@ -1,13 +1,13 @@
 <?php if(@$ErrorcashBankFroms){
 	?> 
 	<div class="actions">
-			<?php echo $this->Html->link('Create Ledger Account For Contra Voucher -> Bank/Cashes Froms','/VouchersReferences/edit/7',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+			<?php echo $this->Html->link('Create Ledger Account For Contra Voucher -> Bank/Cashes Froms','/VouchersReferences/edit/'.$ContraVouchersReceived,array('escape'=>false,'class'=>'btn btn-primary')); ?>
 	</div>
 <?php } 
   else if(@$ErrorcashBankTos){
 	?> 
 	<div class="actions">
-			<?php echo $this->Html->link('Create Ledger Account For Contra Voucher -> Bank/Cashes Tos','/VouchersReferences/edit/8',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+			<?php echo $this->Html->link('Create Ledger Account For Contra Voucher -> Bank/Cashes Tos','/VouchersReferences/edit/'.$ContraVouchersCashBank,array('escape'=>false,'class'=>'btn btn-primary')); ?>
 	</div>
 <?php }  else { ?>
 
