@@ -198,6 +198,7 @@ class PaymentVouchersController extends AppController
             }
         }
 		$vr=$this->PaymentVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Payment Voucher','sub_entity'=>'Paid To'])->first();
+		$paymentVoucherpaidTo=$vr->id;
 		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
@@ -224,6 +225,7 @@ class PaymentVouchersController extends AppController
 			$ErrorpaidTos='true';
 		}
 		$vr=$this->PaymentVouchers->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Payment Voucher','sub_entity'=>'Cash/Bank'])->first();
+		$paymentVoucherBankCash=$vr->id;
 		$vouchersReferences = $this->PaymentVouchers->VouchersReferences->get($vr->id, [
             'contain' => ['VoucherLedgerAccounts']
         ]);
@@ -253,7 +255,7 @@ class PaymentVouchersController extends AppController
 		
         $companies = $this->PaymentVouchers->Companies->find('all');
 		
-        $this->set(compact('paymentVoucher', 'paidTos', 'bankCashes','companies','ErrorpaidTos','ErrorbankCashes','financial_year'));
+        $this->set(compact('paymentVoucher', 'paidTos', 'bankCashes','companies','ErrorpaidTos','ErrorbankCashes','financial_year','paymentVoucherpaidTo','paymentVoucherBankCash'));
         $this->set('_serialize', ['paymentVoucher']);
     }
 

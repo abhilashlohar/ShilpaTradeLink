@@ -1,13 +1,13 @@
 <?php if(@$ErrorpaidTos){
 		?> 
 		<div class="actions">
-				<?php echo $this->Html->link('Create Ledger Account For PaymentVoucher -> Paid To','/VouchersReferences/edit/1',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+				<?php echo $this->Html->link('Create Ledger Account For PaymentVoucher -> Paid To','/VouchersReferences/edit/'.$paymentVoucherpaidTo,array('escape'=>false,'class'=>'btn btn-primary')); ?>
 		</div>
 		<?php } 
 		 else if(@$ErrorbankCashes){
 		?> 
 		<div class="actions">
-				<?php echo $this->Html->link('Create Ledger Account For PaymentVoucher -> Cash/Bank','/VouchersReferences/edit/2',array('escape'=>false,'class'=>'btn btn-primary')); ?>
+				<?php echo $this->Html->link('Create Ledger Account For PaymentVoucher -> Cash/Bank','/VouchersReferences/edit/'.$paymentVoucherBankCash,array('escape'=>false,'class'=>'btn btn-primary')); ?>
 		</div>
 <?php }  else { ?>
 
