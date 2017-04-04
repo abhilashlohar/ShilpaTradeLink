@@ -167,8 +167,10 @@
 						$descriptions[$current_invoice_row->item_id]=$current_invoice_row->description;
 
 					}
+					
+					
 					$q=0; 
-					foreach ($invoice->sales_order->sales_order_rows as $sales_order_row){ ?>
+					foreach ($invoice->sales_order->sales_order_rows as $sales_order_row){  ?>
 						<?php if(@$existing_rows[$sales_order_row->item_id]!=$sales_order_row->quantity) { ?> 
 						<tr class="tr1" row_no="<?= h($q) ?>">
 							<td rowspan="2"><?php echo ++$q; $q--; ?></td>
@@ -205,6 +207,8 @@
 								<?php echo $this->Form->input('q', ['label' => false,'type' => 'hidden','value' => @$sales_order_row->sale_tax->tax_figure]); ?>
 								<?php echo $this->Form->input('st_description', ['type' => 'hidden','label' => false,'value' => @$sales_order_row->sale_tax->invoice_description]); ?>
 								<?php echo $this->Form->input('st_id', ['type' => 'hidden','label' => false,'value' => @$sales_order_row->sale_tax->id]); ?>
+								<?php echo $this->Form->input('st_ledger_account_id', ['type' => 'hidden','label' => false,'value' => @$sale_tax_ledger_accounts[$sales_order_rows->sale_tax->id]]); ?>
+								
 							</td>
 						</tr>
 						<tr class="tr2" row_no="<?= h($q) ?>">
@@ -289,15 +293,17 @@
 				<tr>
 					<td  align="right">
 						<input type="hidden" name="sale_tax_id" class="form-control input-sm"  placeholder="Sale Tax" value="<?php echo $invoice->sale_tax_id;?>"/>
+						<input type="hidden" name="st_ledger_account_id" />
 						<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" value="<?php echo $invoice->sale_tax->invoice_description;?>"/>
 						<div class="input-group col-md-2">
 							<div class="input-group">
 						<?php						
 							$options=[];
 							foreach($SaleTaxes as $SaleTaxe){
-								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->invoice_description,'sale_tax_id' => $SaleTaxe->id];
+								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->invoice_description];
 							}
-							echo $this->Form->input('sale_tax_per', ['options'=>$options,'label' => false,'class' => 'form-control input-sm','value'=>$invoice->sale_tax_per]);  ?>
+							echo $this->Form->input('sale_tax_per', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); 
+						 ?>
 							</div>
 						</div>
 					</td>
@@ -1004,6 +1010,8 @@ $(document).ready(function() {
 				$('input[name="sale_tax_description"]').val(sale_tax_description);
 				var sale_tax_id=$(this).find("td:nth-child(7) input[type=hidden]").eq(3).val();
 				$('input[name="sale_tax_id"]').val(sale_tax_id);
+				var st_ledger_account_id=$(this).find("td:nth-child(7) input[type=hidden]").eq(4).val();
+				$('input[name="st_ledger_account_id"]').val(st_ledger_account_id);
 				
 			}
 		});
