@@ -292,18 +292,12 @@
 				</tr>
 				<tr>
 					<td  align="right">
-						<input type="hidden" name="sale_tax_id" class="form-control input-sm"  placeholder="Sale Tax" value="<?php echo $invoice->sale_tax_id;?>"/>
+						<input type="hidden" name="sale_tax_id"  />
 						<input type="hidden" name="st_ledger_account_id" />
-						<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" value="<?php echo $invoice->sale_tax->invoice_description;?>"/>
+						<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" />
 						<div class="input-group col-md-2">
 							<div class="input-group">
-						<?php						
-							$options=[];
-							foreach($SaleTaxes as $SaleTaxe){
-								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->invoice_description];
-							}
-							echo $this->Form->input('sale_tax_per', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); 
-						 ?>
+								<input type="text" name="sale_tax_per" class="form-control input-sm" readonly><span class="input-group-addon">%</span>
 							</div>
 						</div>
 					</td>
@@ -993,28 +987,29 @@ $(document).ready(function() {
 		});
 	}
 	
-	function calculate_total(){
+	function calculate_total(){ alert();	
 			var total=0;
 			$("#main_tb tbody tr.tr1").each(function(){
-			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
-			if(val){
-				var qty=parseInt($(this).find("td:nth-child(3) input").val());
-				var Rate=parseFloat($(this).find("td:nth-child(4) input").val());
-				var Amount=qty*Rate;
-				$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
-				total=total+Amount;
-				var sale_tax=parseFloat($(this).find("td:nth-child(7) input[type=hidden]").eq(1).val());
-				if(isNaN(sale_tax)) { var sale_tax = 0; }
-				$('input[name="sale_tax_per"]').val(sale_tax);
-				var sale_tax_description=$(this).find("td:nth-child(7) input[type=hidden]").eq(2).val();
-				$('input[name="sale_tax_description"]').val(sale_tax_description);
-				var sale_tax_id=$(this).find("td:nth-child(7) input[type=hidden]").eq(3).val();
-				$('input[name="sale_tax_id"]').val(sale_tax_id);
-				var st_ledger_account_id=$(this).find("td:nth-child(7) input[type=hidden]").eq(4).val();
-				$('input[name="st_ledger_account_id"]').val(st_ledger_account_id);
-				
-			}
-		});
+				var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
+				if(val){
+					var qty=parseInt($(this).find("td:nth-child(3) input").val());
+					var Rate=parseFloat($(this).find("td:nth-child(4) input").val());
+					var Amount=qty*Rate;
+					$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
+					total=total+Amount;
+					var sale_tax=parseFloat($(this).find("td:nth-child(7) input[type=hidden]").eq(1).val());
+					if(isNaN(sale_tax)) { var sale_tax = 0; }
+					$('input[name="sale_tax_per"]').val(sale_tax);
+					var sale_tax_description=$(this).find("td:nth-child(7) input[type=hidden]").eq(2).val();
+					$('input[name="sale_tax_description"]').val(sale_tax_description);
+					var sale_tax_id=$(this).find("td:nth-child(7) input[type=hidden]").eq(3).val();
+					alert(sale_tax_id);
+					$('input[name="sale_tax_id"]').val(sale_tax_id);
+					var st_ledger_account_id=$(this).find("td:nth-child(7) input[type=hidden]").eq(4).val();
+					$('input[name="st_ledger_account_id"]').val(st_ledger_account_id);
+					
+				}
+			});
 			if($("#discount_per").is(':checked')){
 				var discount_per=parseFloat($('input[name="discount_per"]').val());
 				var discount_amount=(total*discount_per)/100;
