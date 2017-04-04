@@ -514,7 +514,7 @@ class InvoicesController extends AppController
 						$itemLedger->source_model = 'Invoices';
 						$itemLedger->source_id = $invoice->id;
 						$itemLedger->in_out = 'Out';
-						$itemLedger->rate = $rate-$item_discount+$item_excise+$item_saletax+$item_fright+$item_pf;
+						$itemLedger->rate = $rate-$item_discount+$item_excise+$item_pf;
 						$itemLedger->company_id = $invoice->company_id;
 						$itemLedger->processed_on = date("Y-m-d");
 						
@@ -866,7 +866,7 @@ class InvoicesController extends AppController
 						$itemLedger->source_model = 'Invoices';
 						$itemLedger->source_id = $invoice->id;
 						$itemLedger->in_out = 'Out';
-						$itemLedger->rate = $rate-$item_discount+$item_excise+$item_saletax+$item_fright+$item_pf;
+						$itemLedger->rate = $rate-$item_discount+$item_excise+$item_pf;
 						$itemLedger->company_id = $invoice->company_id;
 						$itemLedger->processed_on = date("Y-m-d");
 						

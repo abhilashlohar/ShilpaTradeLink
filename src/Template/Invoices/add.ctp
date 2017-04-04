@@ -297,7 +297,7 @@ $('.closetin').on("click",function() {
 						<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" />
 						<div class="input-group col-md-2">
 							<div class="input-group">
-						<?php						
+						<?php					
 							$options=[];
 							foreach($SaleTaxes as $SaleTaxe){
 								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->invoice_description];
