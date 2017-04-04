@@ -658,7 +658,6 @@ class InvoicesController extends AppController
 		
 		$sale_tax_ledger_accounts=[];
 			foreach($invoice->sales_order->sales_order_rows as $sales_order_row){
-				
 				$st_LedgerAccount=$this->Invoices->LedgerAccounts->find()->where(['source_id'=>$sales_order_row->sale_tax->id,'source_model'=>'SaleTaxes','company_id'=>$st_company_id])->first();
 				$sale_tax_ledger_accounts[$sales_order_row->sale_tax->id]=$st_LedgerAccount->id;
 				//pr($sale_tax_ledger_accounts); exit;
@@ -722,9 +721,9 @@ class InvoicesController extends AppController
 					$invoice_row->item_serial_number=$item_serial_no;
 				}
 			}
-			//pr($invoice->invoiceBreakup); exit;
+			
 			if ($this->Invoices->save($invoice)) {
-				//pr($invoice); exit;
+				
 				if($invoice->invoice_breakups){
 					foreach($invoice->invoice_breakups as $invoice_breakup){
 						$rec_id=$invoice_breakup->receipt_voucher_id;
@@ -741,14 +740,14 @@ class InvoicesController extends AppController
 				$this->Invoices->Ledgers->deleteAll(['voucher_id' => $invoice->id, 'voucher_source' => 'Invoice']);
 				
 				if($invoice->inventory_voucher_status == 'Converted'){
-				///pr($invoice->id); exit;
+				
 				$InventoryVoucher = $this->Invoices->InventoryVouchers->find()->where(['invoice_id' => $invoice->id])->first();
 				
 				$this->Invoices->InventoryVouchers->ItemLedgers->deleteAll(['ItemLedgers.source_id' => $InventoryVoucher->id,'source_model'=>'Inventory Voucher']);
 				$this->Invoices->InventoryVouchers->InventoryVoucherRows->deleteAll(['InventoryVoucherRows.inventory_voucher_id' => $InventoryVoucher->id]);
 				$this->Invoices->InventoryVouchers->delete($InventoryVoucher);
 				}
-				//pr(hello); exit;
+				
 				$query = $this->Invoices->query();
 					$query->update()
 						->set(['inventory_voucher_status' => 'Pending'])
@@ -789,11 +788,11 @@ class InvoicesController extends AppController
 				
 				//Ledger posting for Sale Tax
 				
-				$SaleTaxe=$this->Invoices->SaleTaxes->get($invoice->sale_tax_id);
+				
 				
 				$ledger_saletax=$invoice->sale_tax_amount;
 				$ledger = $this->Invoices->Ledgers->newEntity();
-				$ledger->ledger_account_id = $SaleTaxe->ledger_account_id;
+				$ledger->ledger_account_id = $invoice->st_ledger_account_id;
 				$ledger->debit = 0;
 				$ledger->credit = $invoice->sale_tax_amount;
 				$ledger->voucher_id = $invoice->id;
