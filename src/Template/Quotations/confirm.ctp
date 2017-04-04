@@ -34,7 +34,7 @@ $edit_url=$this->Url->build(['controller'=>'Quotations','action'=>'Add']);
 			<a href="#" class="list-group-item" onclick="window.close()"><i class="fa fa-times"></i> Close </a>
 		</div>
 		<?php if($quotation->revision==$revision){ ?>
-		<div style="padding:5px;">
+		<div style="padding:5px;height: 400px;overflow: auto;">
 		<h4>Adjust height of rows</h4>
 		<?= $this->Form->create($quotation) ?>
 			<?php $sr=0; foreach ($quotation->quotation_rows as $quotationRows): $sr++;

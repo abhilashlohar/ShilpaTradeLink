@@ -14,7 +14,7 @@ $Edit_url=$this->Url->build(['controller'=>'Invoices','action'=>'Edit']);
 			<?php } ?>
 			<a href="#" class="list-group-item" onclick="window.close()"><i class="fa fa-times"></i> Close </a>
 		</div>
-		<div style="padding:5px;">
+		<div style="padding:5px;height: 400px;overflow: auto;">
 		<h4>Adjust height of rows</h4>
 		<?= $this->Form->create($invoice) ?>
 			<?php $sr=0; foreach ($invoice->invoice_rows as $invoiceRows): $sr++;
