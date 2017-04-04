@@ -200,6 +200,7 @@ $('.closetin').on("click",function() {
 								<?php echo $this->Form->input('q', ['label' => false,'type' => 'hidden','value' => @$sales_order_rows->sale_tax->tax_figure]); ?>
 								<?php echo $this->Form->input('st_description', ['type' => 'hidden','label' => false,'value' => @$sales_order_rows->sale_tax->invoice_description]); ?>
 								<?php echo $this->Form->input('st_id', ['type' => 'hidden','label' => false,'value' => @$sales_order_rows->sale_tax->id]); ?>
+								<?php echo $this->Form->input('st_ledger_account_id', ['type' => 'hidden','label' => false,'value' => @$sale_tax_ledger_accounts[$sales_order_rows->sale_tax->id]]); ?>
 							</td>
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
@@ -280,7 +281,8 @@ $('.closetin').on("click",function() {
 					<td  align="right">
 						<?php if($process_status!="New"){ ?>
 							
-							<input type="hidden" name="sale_tax_id" class="form-control input-sm"  placeholder="Sale Tax" />
+							<input type="hidden" name="sale_tax_id"  />
+							<input type="hidden" name="st_ledger_account_id" />
 							<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" />
 							<div class="input-group col-md-2">
 							<div class="input-group">
@@ -290,7 +292,8 @@ $('.closetin').on("click",function() {
 						
 						<?php }else{ ?>
 						
-						<input type="hidden" name="sale_tax_id" class="form-control input-sm"  placeholder="Sale Tax" />
+						<input type="hidden" name="sale_tax_id" />
+						<input type="hidden" name="st_ledger_account_id" />
 						<input type="text" name="sale_tax_description" class="form-control input-sm" readonly placeholder="Sale Tax Description" style="text-align:right;" />
 						<div class="input-group col-md-2">
 							<div class="input-group">
@@ -1013,6 +1016,8 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 				$('input[name="sale_tax_description"]').val(sale_tax_description);
 				var sale_tax_id=$(this).find("td:nth-child(7) input[type=hidden]").eq(3).val();
 				$('input[name="sale_tax_id"]').val(sale_tax_id);
+				var st_ledger_account_id=$(this).find("td:nth-child(7) input[type=hidden]").eq(4).val();
+				$('input[name="st_ledger_account_id"]').val(st_ledger_account_id);
 				
 			}
 		});

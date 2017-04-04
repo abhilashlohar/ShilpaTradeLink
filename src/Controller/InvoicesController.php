@@ -326,6 +326,12 @@ class InvoicesController extends AppController
 			]);
 			
 			$process_status='Pulled From Sales-Order';
+			
+			$sale_tax_ledger_accounts=[];
+			foreach($sales_order->sales_order_rows as $sales_order_row){
+				$st_LedgerAccount=$this->Invoices->LedgerAccounts->find()->where(['source_id'=>$sales_order_row->sale_tax->id,'source_model'=>'SaleTaxes','company_id'=>$st_company_id])->first();
+				$sale_tax_ledger_accounts[$sales_order_row->sale_tax->id]=$st_LedgerAccount->id;
+			}
 		}
 
 		$session = $this->request->session();
@@ -387,7 +393,7 @@ class InvoicesController extends AppController
 			}else{
 				$invoice->due_payment=$invoice->grand_total-$invoice->total_amount_agst;
 			}
-			//pr($invoice->fright_ledger_account); exit;
+			
             if ($this->Invoices->save($invoice)) {
 				$ledger_grand=$invoice->grand_total;
 				$ledger = $this->Invoices->Ledgers->newEntity();
@@ -421,11 +427,11 @@ class InvoicesController extends AppController
 				
 				//Ledger posting for Sale Tax
 				
-				$SaleTaxe=$this->Invoices->SaleTaxes->get($invoice->sale_tax_id);
+				
 				
 				$ledger_saletax=$invoice->sale_tax_amount;
 				$ledger = $this->Invoices->Ledgers->newEntity();
-				$ledger->ledger_account_id = $SaleTaxe->ledger_account_id;
+				$ledger->ledger_account_id = $invoice->st_ledger_account_id;
 				$ledger->debit = 0;
 				$ledger->credit = $invoice->sale_tax_amount;
 				$ledger->voucher_id = $invoice->id;
@@ -615,7 +621,7 @@ class InvoicesController extends AppController
 		//pr($ledger_account_details_for_fright); exit;
 		$item_serial_no=$this->Invoices->ItemSerialNumbers->find('list', ['limit' => 200]);
 		$employees = $this->Invoices->Employees->find('list', ['limit' => 200]);
-        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoicespay','creditlimit','old_due_payment','item_serial_no','ledger_account_details','ledger_account_details_for_fright'));
+        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoicespay','creditlimit','old_due_payment','item_serial_no','ledger_account_details','ledger_account_details_for_fright','sale_tax_ledger_accounts'));
         $this->set('_serialize', ['invoice']);
     }
 	
