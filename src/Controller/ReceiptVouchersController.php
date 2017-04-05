@@ -448,7 +448,8 @@ class ReceiptVouchersController extends AppController
 		foreach($vouchersReferences->voucher_ledger_accounts as $data){
 			$where[]=$data->ledger_account_id;
 		}
-		$bankCashes = $this->ReceiptVouchers->BankCashes->find('list'.
+		//pr(['BankCashes.id IN' => $where]);
+		$bankCashes = $this->ReceiptVouchers->BankCashes->find('list',
 				['keyField' => function ($row) {
 					return $row['id'];
 				},
