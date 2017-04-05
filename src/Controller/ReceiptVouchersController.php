@@ -130,23 +130,23 @@ class ReceiptVouchersController extends AppController
 			
 			
             if ($this->ReceiptVouchers->save($receiptVoucher)) {
-				//Ledger posting for Received From Entity
+				//Ledger posting for bankcash
 				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
 				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $receiptVoucher->bank_cash_id;
-				$ledger->debit =0;
-				$ledger->credit = $receiptVoucher->amount;
+				$ledger->debit = $receiptVoucher->amount;
+				$ledger->credit = 0;
 				$ledger->voucher_id = $receiptVoucher->id;
 				$ledger->voucher_source = 'Receipt Voucher';
 				$ledger->transaction_date = $receiptVoucher->transaction_date;
 				$this->ReceiptVouchers->Ledgers->save($ledger);
 				
-				//Ledger posting for bankcash
+				//Ledger posting for Received From Entity
 				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
 				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $receiptVoucher->received_from_id;
-				$ledger->debit = $receiptVoucher->amount;
-				$ledger->credit = 0;
+				$ledger->debit = 0;
+				$ledger->credit = $receiptVoucher->amount;
 				$ledger->voucher_id = $receiptVoucher->id;
 				$ledger->voucher_source = 'Receipt Voucher';
 				$ledger->transaction_date = $receiptVoucher->transaction_date;
@@ -307,23 +307,24 @@ class ReceiptVouchersController extends AppController
 				
 				//delete old data
 				$this->ReceiptVouchers->Ledgers->deleteAll(['voucher_id' => $receiptVoucher->id, 'voucher_source' => 'Receipt Voucher']);
-				//Ledger posting for Received From Entity
+				
+				//Ledger posting for bankcash
 				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
 				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $receiptVoucher->bank_cash_id;
-				$ledger->debit =0;
-				$ledger->credit =$receiptVoucher->amount;
+				$ledger->debit =$receiptVoucher->amount;
+				$ledger->credit =0;
 				$ledger->voucher_id = $receiptVoucher->id;
 				$ledger->voucher_source = 'Receipt Voucher';
 				$ledger->transaction_date = $receiptVoucher->transaction_date;
 				$this->ReceiptVouchers->Ledgers->save($ledger);
 				
-				//Ledger posting for bankcash
+				//Ledger posting for Received From Entity
 				$ledger = $this->ReceiptVouchers->Ledgers->newEntity();
 				$ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $receiptVoucher->received_from_id;
-				$ledger->debit = $receiptVoucher->amount;
-				$ledger->credit = 0;
+				$ledger->debit = 0;
+				$ledger->credit = $receiptVoucher->amount;
 				$ledger->voucher_id = $receiptVoucher->id;
 				$ledger->voucher_source = 'Receipt Voucher';
 				$ledger->transaction_date = $receiptVoucher->transaction_date;
