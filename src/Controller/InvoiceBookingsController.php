@@ -92,6 +92,12 @@ class InvoiceBookingsController extends AppController
 			}
 			$excise_duty=$grn->purchase_order->excise_duty;
 			$tot_sale_tax=(($grn->purchase_order->total-$discount)*$grn->purchase_order->sale_tax_per)/100;
+			
+			$vendor_id=$grn->vendor->id; 
+			$v_LedgerAccount=$this->InvoiceBookings->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Vendors','source_id'=>$vendor_id])->first();
+			$vendor_ledger_acc_id=$v_LedgerAccount->id;
+			
+			
 		}
 		$last_ib_no=$this->InvoiceBookings->find()->select(['ib2'])->where(['company_id' => $st_company_id])->order(['ib2' => 'DESC'])->first();
 		if($last_ib_no){
@@ -120,6 +126,9 @@ class InvoiceBookingsController extends AppController
 			$invoiceBooking->created_by=$this->viewVars['s_employee_id'];
 			$invoiceBooking->due_payment=$invoiceBooking->total;
 			//pr($invoiceBooking); exit;
+			
+			
+			
             if ($this->InvoiceBookings->save($invoiceBooking)) {
 			
 				$i=0; 
@@ -176,9 +185,10 @@ class InvoiceBookingsController extends AppController
 				$this->InvoiceBookings->Ledgers->save($ledger);
 				
 				//Ledger posting for bankcash
+				$c_LedgerAccount=$this->InvoiceBookings->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Vendors','source_id'=>$grn->vendor_id])->first();
 				
 				$ledger = $this->InvoiceBookings->Ledgers->newEntity();
-				$ledger->ledger_account_id = $grn->vendor->ledger_account_id;
+				$ledger->ledger_account_id = $c_LedgerAccount->id;
 				$ledger->debit = 0;
 				$ledger->credit =$invoiceBooking->total;
 				$ledger->voucher_id = $invoiceBooking->id;
@@ -192,12 +202,12 @@ class InvoiceBookingsController extends AppController
 				{
 					////////////////  ReferenceDetails ////////////////////////////////
 					$query1 = $this->InvoiceBookings->ReferenceDetails->query();
-					$query1->insert(['reference_no', 'ledger_account_id', 'invoice_booking_id', 'debit', 'reference_type'])
+					$query1->insert(['reference_no', 'ledger_account_id', 'invoice_booking_id', 'credit', 'reference_type'])
 					->values([
 						'ledger_account_id' => $this->request->data['vendor_ledger_id'],
 						'invoice_booking_id' => $invoiceBooking->id,
 						'reference_no' => $this->request->data['reference_no'][$row],
-						'debit' => $this->request->data['debit'][$row],
+						'credit' => $this->request->data['debit'][$row],
 						'reference_type' => $this->request->data['reference_type'][$row]
 					])
 					->execute();
@@ -207,18 +217,18 @@ class InvoiceBookingsController extends AppController
 					{
 						$query2 = $this->InvoiceBookings->ReferenceBalances->query();
 						$query2->update()
-							->set(['debit' => $this->request->data['debit'][$row]])
+							->set(['credit' => $this->request->data['debit'][$row]])
 							->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['vendor_ledger_id']])
 							->execute();
 					}
 					else
 					{
 						$query2 = $this->InvoiceBookings->ReferenceBalances->query();
-						$query2->insert(['reference_no', 'ledger_account_id', 'debit'])
+						$query2->insert(['reference_no', 'ledger_account_id', 'credit'])
 						->values([
 							'reference_no' => $this->request->data['reference_no'][$row],
 							'ledger_account_id' => $this->request->data['vendor_ledger_id'],
-							'debit' => $this->request->data['debit'][$row],
+							'credit' => $this->request->data['debit'][$row],
 						])
 						->execute();
 					}
@@ -243,7 +253,7 @@ class InvoiceBookingsController extends AppController
 		
 		$companies = $this->InvoiceBookings->Companies->find('all');
         $grns = $this->InvoiceBookings->Grns->find('list', ['limit' => 200]);
-        $this->set(compact('invoiceBooking', 'grns','companies','ledger_account_details'));
+        $this->set(compact('invoiceBooking', 'grns','companies','ledger_account_details','vendor_ledger_acc_id'));
         $this->set('_serialize', ['invoiceBooking']);
     }
 
@@ -263,10 +273,12 @@ class InvoiceBookingsController extends AppController
         $invoiceBooking = $this->InvoiceBookings->get($id, [
             'contain' => ['InvoiceBookingRows' => ['Items'],'Grns'=>['Companies','Vendors','GrnRows'=>['Items'],'PurchaseOrders'=>['PurchaseOrderRows']]]
         ]);
-	     $invoiceBooking_details = $this->InvoiceBookings->get($id);
-		 $vendor_id=$invoiceBooking_details->vendor_id;
-	     $Vendor_detail= $this->InvoiceBookings->Vendors->get($vendor_id);
-		$ReferenceDetails = $this->InvoiceBookings->ReferenceDetails->find()->where(['ledger_account_id'=>$Vendor_detail->ledger_account_id,'invoice_booking_id'=>$id])->toArray();
+		
+		$vendor_id=$invoiceBooking->grn->vendor->id; 
+		$v_LedgerAccount=$this->InvoiceBookings->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Vendors','source_id'=>$vendor_id])->first();
+		$vendor_ledger_acc_id=$v_LedgerAccount->id;
+		 
+		$ReferenceDetails = $this->InvoiceBookings->ReferenceDetails->find()->where(['ledger_account_id'=>$vendor_ledger_acc_id,'invoice_booking_id'=>$id])->toArray();
 		if(!empty($ReferenceDetails))
 		{
 			foreach($ReferenceDetails as $ReferenceDetail)
@@ -343,10 +355,11 @@ class InvoiceBookingsController extends AppController
 				
 				
 				//Ledger posting for bankcash
+				$v_LedgerAccount=$this->InvoiceBookings->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Vendors','source_id'=>$vendor_id])->first();
 				
 				$ledger = $this->InvoiceBookings->Ledgers->newEntity();
 				//pr($grn->vendor->ledger_account_id); exit;
-				$ledger->ledger_account_id = $grn->vendor->ledger_account_id;
+				$ledger->ledger_account_id = $v_LedgerAccount->id;
 				//pr($ledger->ledger_account_id); exit;
 				$ledger->debit = 0;
 				$ledger->credit =$invoiceBooking->total;
@@ -448,7 +461,7 @@ class InvoiceBookingsController extends AppController
         }
         $grns = $this->InvoiceBookings->Grns->find('list', ['limit' => 200]);
 		
-        $this->set(compact('invoiceBooking','ReferenceDetails', 'grns','financial_year_data','ReferenceBalances','invoice_booking_id'));
+        $this->set(compact('invoiceBooking','ReferenceDetails', 'grns','financial_year_data','ReferenceBalances','invoice_booking_id','vendor_ledger_acc_id'));
         $this->set('_serialize', ['invoiceBooking']);
     }
 

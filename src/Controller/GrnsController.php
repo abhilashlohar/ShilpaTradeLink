@@ -230,8 +230,9 @@ class GrnsController extends AppController
 			}else{
 				$grn->grn2=1;
 			}
-			if($this->request->data['serial_numbers']){
-			$serial_numbers=$this->request->data['serial_numbers']; 
+			
+			$serial_numbers=@$this->request->data['serial_numbers']; 
+			if(sizeof($serial_numbers)>0){
 			$item_serial_numbers=[];
 			foreach($serial_numbers as $item_id=>$data){
 				foreach($data as $sr)
@@ -366,15 +367,16 @@ class GrnsController extends AppController
 	    $financial_year_data = $Em->checkFinancialYear($grn->date_created);
 
 			if ($this->request->is(['patch', 'post', 'put'])) {
-				$serial_numbers=$this->request->data['serial_numbers']; 
+			$serial_numbers=@$this->request->data['serial_numbers']; 
 			$item_serial_numbers=[];
+			if(sizeof($serial_numbers)>0){
 			foreach($serial_numbers as $item_id=>$data){
 				foreach($data as $sr)
 				$item_serial_numbers[]=['item_id'=>$item_id,'serial_no'=>$sr,'status'=>'In'];
 			}
 			//pr($item_serial_numbers); exit;
 			$this->request->data['item_serial_numbers']=$item_serial_numbers;
-			//
+			}
             $grn = $this->Grns->patchEntity($grn, $this->request->data);
 				if ($this->Grns->save($grn)) {
 					foreach($grn->grn_rows as $grn_row){

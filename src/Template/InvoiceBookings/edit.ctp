@@ -31,7 +31,7 @@
 						<div class="form-group">
 							<label class="control-label">Supplier </label>
 							<br/>
-							<?php echo $this->Form->input('vendor_ledger_id', ['label' => false,'class' => 'form-control input-sm','type' =>'hidden','value'=>@$invoiceBooking->grn->vendor->ledger_account_id]); ?>
+							<?php echo $this->Form->input('vendor_ledger_id', ['label' => false,'class' => 'form-control input-sm','type' =>'hidden','value'=>@$vendor_ledger_acc_id]); ?>
 							<?php echo @$invoiceBooking->grn->vendor->company_name; ?>
 						</div>
 					</div>

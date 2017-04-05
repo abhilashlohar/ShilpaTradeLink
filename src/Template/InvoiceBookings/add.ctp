@@ -29,7 +29,7 @@
 						<div class="form-group">
 							<label class="control-label">Supplier</label>
 							<br/>
-							<?php echo $this->Form->input('vendor_ledger_id', ['label' => false,'class' => 'form-control input-sm','type' =>'hidden','value'=>@$grn->vendor->ledger_account_id]); ?>
+							<?php echo $this->Form->input('vendor_ledger_id', ['label' => false,'class' => 'form-control input-sm','type' =>'hidden','value'=>@$vendor_ledger_acc_id]); ?>
 							<?php echo @$grn->vendor->company_name; ?>
 						</div>
 					</div>
@@ -125,7 +125,11 @@
 						<tr class="tr1" row_no='<?php echo @$grn_rows->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 							<?php
+							pr($discount);
+							pr($grn->purchase_order->purchase_order_rows[$q]->amount);
+							pr($grn->purchase_order->total);
 							$dis=($discount*$grn->purchase_order->purchase_order_rows[$q]->amount)/$grn->purchase_order->total;
+							pr($dis);
 							$item_discount=$dis/$grn->purchase_order->purchase_order_rows[$q]->quantity;
 							
 							$item_rate=$grn->purchase_order->purchase_order_rows[$q]->amount-$dis;
