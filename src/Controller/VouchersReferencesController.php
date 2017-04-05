@@ -86,13 +86,13 @@ class VouchersReferencesController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 	
         $vouchersReference = $this->VouchersReferences->get($id, [
-            'contain' => ['LedgerAccounts']
+            'contain' => ['VoucherLedgerAccounts']
         ]);
-		//pr($vouchersReference);
+		//pr($vouchersReference); exit;
 		$ledger_arr=[];
-		foreach($vouchersReference->ledger_accounts as $ledger_accounts)
+		foreach($vouchersReference->voucher_ledger_accounts as $row)
 		{
-		@$ledger_arr[]=$ledger_accounts->id;
+		@$ledger_arr[]=$row->ledger_account_id;
 		}
 		//pr($ledger_arr);exit;
         if ($this->request->is(['patch', 'post', 'put'])) {

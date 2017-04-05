@@ -268,7 +268,7 @@ class ItemsController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
-		$ItemLedgers=$this->Items->ItemLedgers->find()->where(['source_model'=>'Items'])->contain(['Items']);
+		$ItemLedgers=$this->Items->ItemLedgers->find()->where(['source_model'=>'Items'])->contain(['Items'])->order(['ItemLedgers.processed_on']);
 		$this->set(compact('ItemLedgers'));
 	}
 }
