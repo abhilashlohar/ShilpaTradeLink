@@ -432,8 +432,10 @@ class InventoryVouchersController extends AppController
 		$display_items=[];
 		$sales_order_id=$invoice_data->sales_order_id;
 		foreach($invoice_data->invoice_rows as $invoice_row){ 
+		
 			$SalesOrderRow=$this->InventoryVouchers->SalesOrderRows->find()->where(['sales_order_id'=>$sales_order_id,'item_id'=>$invoice_row->item_id])->first();
 			if($invoice_row->item->source=='Purchessed/Manufactured'){ 
+			
 				if($SalesOrderRow->source_type=="Manufactured"){
 					$display_items[$invoice_row->item->id]=$invoice_row->item->name; 
 				}
@@ -441,7 +443,7 @@ class InventoryVouchersController extends AppController
 				$display_items[$invoice_row->item->id]=$invoice_row->item->name; 
 			}
 		}
-		
+	
 		
 		foreach($display_items as $item_id=>$item_name){
 			$query = $this->InventoryVouchers->InvoiceRows->query();
