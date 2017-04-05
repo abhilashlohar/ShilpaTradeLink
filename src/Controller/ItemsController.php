@@ -286,13 +286,10 @@ class ItemsController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
-		/*$ItemLedgers=$this->Items->ItemLedgers->find()->where(['source_model'=>'Items','quantity >'=>0,'company_id >'=>$st_company_id])->order(['ItemLedgers.processed_on'])->contain(['Items'=>['ItemCompanies'=>function($q) use($st_company_id){
-			return $q->where(['ItemCompanies.company_id'=>$st_company_id]);
-		}]]);*/
-		$ItemLedgers=$this->Items->ItemLedgers->find()->where(['source_model'=>'Items','quantity >'=>0,'company_id >'=>$st_company_id])->order(['ItemLedgers.processed_on'])->contain(['Items'=>['ItemCompanies'=>function($q) use($st_company_id){
+		$ItemLedgers=$this->Items->ItemLedgers->find()->where(['source_model'=>'Items','quantity >'=>0,'company_id'=>$st_company_id])->order(['ItemLedgers.processed_on'])->contain(['Items'=>['ItemCompanies'=>function($q) use($st_company_id){
 			return $q->where(['ItemCompanies.company_id'=>$st_company_id]);
 		}]]);
-		pr($ItemLedgers); exit;
+		
 		$this->set(compact('ItemLedgers'));
 	}
 }

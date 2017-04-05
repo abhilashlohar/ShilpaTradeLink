@@ -28,7 +28,6 @@
 					<th>Rate</th>
 					<th>Amout</th>
 					<th>Serial Number Enable</th>
-					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
