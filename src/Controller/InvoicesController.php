@@ -397,9 +397,13 @@ class InvoicesController extends AppController
 			}
 			
             if ($this->Invoices->save($invoice)) {
+				
+				//GET CUSTOMER LEDGER-ACCOUNT-ID
+				$c_LedgerAccount=$this->Invoices->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Customers','source_id'=>$sales_order->customer->id])->first();
+				
 				$ledger_grand=$invoice->grand_total;
 				$ledger = $this->Invoices->Ledgers->newEntity();
-				$ledger->ledger_account_id = $sales_order->customer->ledger_account_id;
+				$ledger->ledger_account_id = $$c_LedgerAccount->id;
 				$ledger->debit = $invoice->grand_total;
 				$ledger->credit = 0;
 				$ledger->voucher_id = $invoice->id;
