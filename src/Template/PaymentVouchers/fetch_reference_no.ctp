@@ -5,7 +5,8 @@
 		
 foreach($ReferenceBalances as $ReferenceBalance)
 {
-	$amount=$ReferenceBalance->debit-$ReferenceBalance->credit;
+	$amount=$ReferenceBalance->credit-$ReferenceBalance->debit;
+	
 	
 	if($amount>0)
 	{

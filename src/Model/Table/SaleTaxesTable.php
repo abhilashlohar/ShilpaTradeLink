@@ -68,6 +68,9 @@ class SaleTaxesTable extends Table
             'targetForeignKey' => 'company_id',
             'joinTable' => 'sale_tax_companies'
         ]);
+		$this->hasMany('SaleTaxCompanies', [
+            'foreignKey' => 'sale_taxe_id'
+        ]);
 		
 		$this->belongsTo('Ledgers');
     }

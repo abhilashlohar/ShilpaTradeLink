@@ -356,7 +356,16 @@ class SalesOrdersController extends AppController
 		$transporters = $this->SalesOrders->Carrier->find('list')->order(['Carrier.transporter_name' => 'ASC']);
 		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1])->order(['Employees.name' => 'ASC']);
 		$termsConditions = $this->SalesOrders->TermsConditions->find('all',['limit' => 200]);
-		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
+		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all')->where(['freeze'=>0])->matching(
+					'SaleTaxCompanies', function ($q) use($st_company_id) {
+						return $q->where(['SaleTaxCompanies.company_id' => $st_company_id]);
+					} 
+				);
+		
+		//$SaleTaxes = $this->SalesOrders->SaleTaxes->find()->contain(['SaleTaxCompanies'=>function ($q) {
+				//return $q->where(['company_id'=>$st_company_id]);
+				//}])->where(['freeze'=>0]);
+			//pr($SaleTaxes); exit;
         $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','Filenames','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','copy','process_status','Company','chkdate'));
         $this->set('_serialize', ['salesOrder']);
     }
