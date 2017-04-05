@@ -132,7 +132,6 @@ class PaymentVouchersController extends AppController
 				
 				//Ledger posting for paidto
 				$ledger = $this->PaymentVouchers->Ledgers->newEntity();
-				
 			    $ledger->company_id=$st_company_id;
 				$ledger->ledger_account_id = $paymentVoucher->paid_to_id;
 				$ledger->debit = $paymentVoucher->amount;
@@ -157,12 +156,12 @@ class PaymentVouchersController extends AppController
 				{
 					////////////////  ReferenceDetails ////////////////////////////////
 					$query1 = $this->PaymentVouchers->ReferenceDetails->query();
-					$query1->insert(['reference_no', 'ledger_account_id', 'payment_voucher_id', 'credit', 'reference_type'])
+					$query1->insert(['reference_no', 'ledger_account_id', 'payment_voucher_id', 'debit', 'reference_type'])
 					->values([
 						'ledger_account_id' => $this->request->data['paid_to_id'],
 						'payment_voucher_id' => $paymentVoucher->id,
 						'reference_no' => $this->request->data['reference_no'][$row],
-						'credit' => $this->request->data['credit'][$row],
+						'debit' => $this->request->data['credit'][$row],
 						'reference_type' => $this->request->data['reference_type'][$row]
 					])
 					->execute();
@@ -171,19 +170,22 @@ class PaymentVouchersController extends AppController
 					if($this->request->data['reference_type'][$row]=='Against Reference')
 					{
 						$query2 = $this->PaymentVouchers->ReferenceBalances->query();
+						$old_data=$this->PaymentVouchers->ReferenceBalances->find()->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['paid_to_id']])->first();
+						$old_amt=$old_data->debit;
+						
 						$query2->update()
-							->set(['credit' => $this->request->data['credit'][$row]])
+							->set(['debit' => $old_amt+$this->request->data['credit'][$row]])
 							->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['paid_to_id']])
 							->execute();
 					}
 					else
 					{
 						$query2 = $this->PaymentVouchers->ReferenceBalances->query();
-						$query2->insert(['reference_no', 'ledger_account_id', 'credit'])
+						$query2->insert(['reference_no', 'ledger_account_id', 'debit'])
 						->values([
 							'reference_no' => $this->request->data['reference_no'][$row],
 							'ledger_account_id' => $this->request->data['paid_to_id'],
-							'credit' => $this->request->data['credit'][$row],
+							'debit' => $this->request->data['credit'][$row],
 						])
 						->execute();
 					}
@@ -360,7 +362,7 @@ class PaymentVouchersController extends AppController
 								
 								$query2 = $this->PaymentVouchers->ReferenceBalances->query();
 								$query2->update()
-									->set(['credit' => $q])
+									->set(['debit' => $q])
 									->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['paid_to_id']])
 									->execute();
 							}
@@ -368,7 +370,7 @@ class PaymentVouchersController extends AppController
 							{ 
 								$query2 = $this->PaymentVouchers->ReferenceBalances->query();
 								$query2->update()
-								->set(['credit' => $this->request->data['credit'][$row]])
+								->set(['debit' => $this->request->data['credit'][$row]])
 								->where([
 									'reference_no' => $this->request->data['reference_no'][$row],
 									'ledger_account_id' => $this->request->data['paid_to_id']
@@ -387,7 +389,7 @@ class PaymentVouchersController extends AppController
 								'ledger_account_id' => $this->request->data['paid_to_id'],
 								'payment_voucher_id' => $paymentVoucher->id,
 								'reference_no' => $this->request->data['reference_no'][$row],
-								'credit' => $this->request->data['credit'][$row],
+								'debit' => $this->request->data['credit'][$row],
 								'reference_type' => $this->request->data['reference_type'][$row]
 							])
 							->execute();
@@ -397,7 +399,7 @@ class PaymentVouchersController extends AppController
 							{
 								$query2 = $this->PaymentVouchers->ReferenceBalances->query();
 								$query2->update()
-									->set(['credit' => $this->request->data['credit'][$row]])
+									->set(['debit' => $this->request->data['credit'][$row]])
 									->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['paid_to_id']])
 									->execute();
 							}
@@ -408,7 +410,7 @@ class PaymentVouchersController extends AppController
 								->values([
 									'reference_no' => $this->request->data['reference_no'][$row],
 									'ledger_account_id' => $this->request->data['paid_to_id'],
-									'credit' => $this->request->data['credit'][$row],
+									'debit' => $this->request->data['credit'][$row],
 								])
 								->execute();
 							}

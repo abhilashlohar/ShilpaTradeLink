@@ -181,8 +181,8 @@
 							{
 								foreach($key as $ReferenceBalance)
 								{ 
-									$ReferenceBalance_amount=$ReferenceBalance->credit-$ReferenceBalance->debit;
-							
+									$ReferenceBalance_amount=$ReferenceBalance->debit-$ReferenceBalance->credit;
+									
 									if($ReferenceBalance_amount>0)
 									{ 
 										$itemGroups[]=['text'=>$ReferenceBalance->reference_no, 'value' =>$ReferenceBalance->reference_no,  'amount' => $ReferenceBalance_amount];
@@ -195,11 +195,12 @@
 							$ref_no++;
 							if($ReferenceDetail->reference_type=='New Reference')
 							{
+								
 							?>
 							<tr>
 							<td>New Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'New Reference']) ?></td>
 							<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control distinctreference','label'=>false,'id'=>'reference_no_'+$ref_no,'value'=>$ReferenceDetail->reference_no,'readonly']) ?></td>
-							<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false,'value'=>$ReferenceDetail->debit]) ?>
+							<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false,'value'=>$ReferenceDetail->credit]) ?>
 							<?= $this->Form->hidden('old_amount[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>$ReferenceDetail->debit]) ?></td>
 							<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
 							</tr>
@@ -207,12 +208,14 @@
 							} 
 							else if($ReferenceDetail->reference_type=='Against Reference')
 							{ 
+						
 								$key=0;
 								foreach($itemGroups as $itemGroup)
 								{
 									if($itemGroup['value']==$ReferenceDetail->reference_no)
 									{
-										 $itemGroups[$key]['amount']+=$ReferenceDetail->debit;
+										//pr($ReferenceDetail->debit);
+										 $itemGroups[$key]['amount']=$ReferenceDetail->debit;
 									}
 									$key++;
 								}
@@ -339,6 +342,7 @@ $(document).ready(function() {
 		$(this).closest('tr').find('input[name="debit[]"]').val(amount);
 	});
 	var received_from_id=$(this).find('input[name="vendor_ledger_id"]').val();
+	//alert(received_from_id);
 	<?php
 	if(empty($ReferenceBalances) || empty($itemGroups))
 	{
@@ -348,13 +352,15 @@ $(document).ready(function() {
 			
 			var url="<?php echo $this->Url->build(['controller'=>'ReceiptVouchers','action'=>'fetchReferenceNo']); ?>";
 			url=url+'/'+received_from_id,
-			
+			alert(url);
 			$.ajax({
 				url: url,
 				type: 'GET',
 				dataType: 'text'
 			}).done(function(response) { 
+				
 				$("#main_table tbody").find('tr.against_references_no').remove();
+				
 				$('#against_references_no').html(response);
 			});
 			

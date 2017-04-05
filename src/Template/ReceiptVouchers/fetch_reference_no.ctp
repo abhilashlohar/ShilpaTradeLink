@@ -5,6 +5,7 @@
 		
 foreach($ReferenceDetails as $ReferenceDetail)
 {
+	//$amount=$ReferenceDetail->credit-$ReferenceDetail->debit;
 	$amount=$ReferenceDetail->debit-$ReferenceDetail->credit;
 	
 	if($amount>0)

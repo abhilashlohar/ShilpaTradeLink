@@ -62,6 +62,7 @@ class ReceiptVouchersController extends AppController
 		$this->viewBuilder()->layout('ajax_layout');
 	
 		$ReferenceDetails=$this->ReceiptVouchers->ReferenceBalances->find()->where(['ledger_account_id' => $ledger_account_id])->toArray();
+		//pr($ReferenceDetail); exit;
 		$this->set(compact(['ReferenceDetails']));
 	}
 	public function deleteReceiptRow($reference_type=null,$old_amount=null,$ledger_account_id=null,$receipt_voucher_id=null,$reference_no=null)
@@ -156,12 +157,12 @@ class ReceiptVouchersController extends AppController
 				{
 					////////////////  ReferenceDetails ////////////////////////////////
 					$query1 = $this->ReceiptVouchers->ReferenceDetails->query();
-					$query1->insert(['reference_no', 'ledger_account_id', 'receipt_voucher_id', 'debit', 'reference_type'])
+					$query1->insert(['reference_no', 'ledger_account_id', 'receipt_voucher_id', 'credit', 'reference_type'])
 					->values([
 						'ledger_account_id' => $this->request->data['received_from_id'],
 						'receipt_voucher_id' => $receiptVoucher->id,
 						'reference_no' => $this->request->data['reference_no'][$row],
-						'debit' => $this->request->data['debit'][$row],
+						'credit' => $this->request->data['debit'][$row],
 						'reference_type' => $this->request->data['reference_type'][$row]
 					])
 					->execute();
@@ -171,7 +172,7 @@ class ReceiptVouchersController extends AppController
 					{
 						$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
 						$query2->update()
-							->set(['debit' => $this->request->data['debit'][$row]])
+							->set(['credit' => $this->request->data['debit'][$row]])
 							->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['received_from_id']])
 							->execute();
 					}
@@ -182,7 +183,7 @@ class ReceiptVouchersController extends AppController
 						->values([
 							'reference_no' => $this->request->data['reference_no'][$row],
 							'ledger_account_id' => $this->request->data['received_from_id'],
-							'debit' => $this->request->data['debit'][$row],
+							'credit' => $this->request->data['debit'][$row],
 						])
 						->execute();
 					}
@@ -338,7 +339,7 @@ class ReceiptVouchersController extends AppController
 				
 						$query1 = $this->ReceiptVouchers->ReferenceDetails->query();
 						$query1->update()
-						->set(['debit' => $this->request->data['debit'][$row]])
+						->set(['credit' => $this->request->data['debit'][$row]])
 						->where([
 							'ledger_account_id' => $this->request->data['received_from_id'],
 							'receipt_voucher_id' => $receiptVoucher->id,
@@ -365,7 +366,7 @@ class ReceiptVouchersController extends AppController
 						{ 
 							$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
 							$query2->update()
-							->set(['debit' => $this->request->data['debit'][$row]])
+							->set(['credit' => $this->request->data['debit'][$row]])
 							->where([
 								'reference_no' => $this->request->data['reference_no'][$row],
 								'ledger_account_id' => $this->request->data['received_from_id']
@@ -379,12 +380,12 @@ class ReceiptVouchersController extends AppController
 					{
 						////////////////  ReferenceDetails ////////////////////////////////
 						$query1 = $this->ReceiptVouchers->ReferenceDetails->query();
-						$query1->insert(['reference_no', 'ledger_account_id', 'receipt_voucher_id', 'debit', 'reference_type'])
+						$query1->insert(['reference_no', 'ledger_account_id', 'receipt_voucher_id', 'credit', 'reference_type'])
 						->values([
 							'ledger_account_id' => $this->request->data['received_from_id'],
 							'receipt_voucher_id' => $receiptVoucher->id,
 							'reference_no' => $this->request->data['reference_no'][$row],
-							'debit' => $this->request->data['debit'][$row],
+							'credit' => $this->request->data['debit'][$row],
 							'reference_type' => $this->request->data['reference_type'][$row]
 						])
 						->execute();
@@ -394,18 +395,18 @@ class ReceiptVouchersController extends AppController
 						{
 							$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
 							$query2->update()
-								->set(['debit' => $this->request->data['debit'][$row]])
+								->set(['credit' => $this->request->data['debit'][$row]])
 								->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['received_from_id']])
 								->execute();
 						}
 						else
 						{
 							$query2 = $this->ReceiptVouchers->ReferenceBalances->query();
-							$query2->insert(['reference_no', 'ledger_account_id', 'debit'])
+							$query2->insert(['reference_no', 'ledger_account_id', 'credit'])
 							->values([
 								'reference_no' => $this->request->data['reference_no'][$row],
 								'ledger_account_id' => $this->request->data['received_from_id'],
-								'debit' => $this->request->data['debit'][$row],
+								'credit' => $this->request->data['debit'][$row],
 							])
 							->execute();
 						}
