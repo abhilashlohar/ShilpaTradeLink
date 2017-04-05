@@ -88,7 +88,9 @@ class JobCardsController extends AppController
 		$jobCard = $this->JobCards->newEntity();
         if ($this->request->is('post')) {
 			$jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
+			
 			$jobCard->required_date=date("Y-m-d",strtotime($jobCard->required_date)); 
+			pr($jobCard->required_date); exit;
 			$jobCard->created_by=$s_employee_id; 
 			$jobCard->sales_order_id=$sales_order_id;
 			$jobCard->company_id=$st_company_id;
@@ -197,6 +199,8 @@ class JobCardsController extends AppController
 	public function PendingSalesorderForJobcard()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
 		
 		$this->paginate = [
             'contain' => ['Customers','JobCards','SalesOrderRows'=>['Items'=>function ($q){
@@ -216,6 +220,7 @@ class JobCardsController extends AppController
 					->autoFields(true)
 					->having(['total_rows >' => 0])
 					->where(['job_card_status'=>'Pending'])
+					->where(['SalesOrders.company_id'=>$st_company_id])
 					->order(['SalesOrders.id' => 'DESC'])
 			);
 			

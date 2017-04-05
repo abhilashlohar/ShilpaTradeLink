@@ -88,16 +88,18 @@ class VouchersReferencesController extends AppController
         $vouchersReference = $this->VouchersReferences->get($id, [
             'contain' => ['LedgerAccounts']
         ]);
+		//pr($vouchersReference);
 		$ledger_arr=[];
 		foreach($vouchersReference->ledger_accounts as $ledger_accounts)
 		{
 		@$ledger_arr[]=$ledger_accounts->id;
 		}
-		
+		//pr($ledger_arr);exit;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $vouchersReference = $this->VouchersReferences->patchEntity($vouchersReference, $this->request->data);
 			
             if ($this->VouchersReferences->save($vouchersReference)) {
+				//pr($vouchersReference);exit;
                 $this->Flash->success(__('The vouchers reference has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

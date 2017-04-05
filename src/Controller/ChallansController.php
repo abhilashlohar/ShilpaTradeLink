@@ -342,7 +342,9 @@ class ChallansController extends AppController
 	public function PendingChallanForCreditNote()
     {
 		$this->viewBuilder()->layout('index_layout');
-		$challans = $this->paginate($this->Challans->find()->where(['pass_credit_note'=>'Yes'])->order(['Challans.id' => 'DESC']));
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$challans = $this->paginate($this->Challans->find()->where(['pass_credit_note'=>'Yes','Challans.company_id'=>$st_company_id])->order(['Challans.id' => 'DESC']));
 		$this->set('challans', $challans);
 	
 	}

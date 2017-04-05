@@ -25,7 +25,7 @@ class ReceiptVouchersController extends AppController
 		
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-        $receiptVouchers = $this->paginate($this->ReceiptVouchers->find()->where(['company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
+        $receiptVouchers = $this->paginate($this->ReceiptVouchers->find()->where(['ReceiptVouchers.company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
 
         $this->set(compact('receiptVouchers'));
         $this->set('_serialize', ['receiptVouchers']);

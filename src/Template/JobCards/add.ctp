@@ -135,7 +135,6 @@ $(document).ready(function() {
 		focusInvalid: true, // do not focus the last invalid input
 		
 		rules: {
-			rules: {
 				packing:{
 					required: true,
 				},
@@ -148,7 +147,7 @@ $(document).ready(function() {
 				remark : {
 					  required: true,
 				},
-			},
+			
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
