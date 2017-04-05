@@ -123,7 +123,10 @@ class AccountSecondSubgroupsController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-		$AccountSecondSubgroupsexists = $this->AccountSecondSubgroups->LedgerAccounts->exists(['account_second_subgroup_id' => $id]);
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$AccountSecondSubgroupsexists = $this->AccountSecondSubgroups->LedgerAccounts->exists(['account_second_subgroup_id' => $id,'company_id'=>$st_company_id]);
 		
 		if(!$AccountSecondSubgroupsexists){
         $accountSecondSubgroup = $this->AccountSecondSubgroups->get($id);
