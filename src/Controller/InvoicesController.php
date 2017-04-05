@@ -406,7 +406,7 @@ class InvoicesController extends AppController
 				
 				$ledger_grand=$invoice->grand_total;
 				$ledger = $this->Invoices->Ledgers->newEntity();
-				$ledger->ledger_account_id = $$c_LedgerAccount->id;
+				$ledger->ledger_account_id = $c_LedgerAccount->id;
 				$ledger->debit = $invoice->grand_total;
 				$ledger->credit = 0;
 				$ledger->voucher_id = $invoice->id;
@@ -540,7 +540,7 @@ class InvoicesController extends AppController
 						$query1 = $this->Invoices->ReferenceDetails->query();
 						$query1->insert(['reference_no', 'ledger_account_id', 'invoice_id', 'credit', 'reference_type'])
 						->values([
-							'ledger_account_id' => $sales_order->customer->ledger_account_id,
+							'ledger_account_id' => $c_LedgerAccount->id,
 							'invoice_id' => $invoice->id,
 							'reference_no' => $this->request->data['reference_no'][$row],
 							'credit' => $this->request->data['credit'][$row],
@@ -563,7 +563,7 @@ class InvoicesController extends AppController
 							$query2->insert(['reference_no', 'ledger_account_id', 'credit'])
 							->values([
 								'reference_no' => $this->request->data['reference_no'][$row],
-								'ledger_account_id' => $sales_order->customer->ledger_account_id,
+								'ledger_account_id' => $c_LedgerAccount->id,
 								'credit' => $this->request->data['credit'][$row],
 							])
 							->execute();
@@ -760,11 +760,11 @@ class InvoicesController extends AppController
 						->set(['inventory_voucher_status' => 'Pending'])
 						->where(['id' => $id])
 						->execute();
-				$customer_ledger=$this->Invoices->Customers->get($invoice->customer_id);
-
+				//$customer_ledger=$this->Invoices->Customers->get($invoice->customer_id);
+				$c_LedgerAccount=$this->Invoices->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Customers','source_id'=>$invoice->customer_id])->first();
 				$ledger_grand=$invoice->grand_total;
 				$ledger = $this->Invoices->Ledgers->newEntity();
-				$ledger->ledger_account_id = $customer_ledger->ledger_account_id;
+				$ledger->ledger_account_id = $c_LedgerAccount->id;
 				$ledger->debit = $invoice->grand_total;
 				$ledger->credit = 0;
 				$ledger->voucher_id = $invoice->id;
@@ -900,7 +900,7 @@ class InvoicesController extends AppController
 							$query1->update()
 							->set(['credit' => $this->request->data['credit'][$row]])
 							->where([
-								'ledger_account_id' => $customer_ledger->ledger_account_id,
+								'ledger_account_id' => $c_LedgerAccount->id,
 								'invoice_id' => $invoice->id,
 								'reference_no' => $this->request->data['reference_no'][$row],
 								'reference_type' => $this->request->data['reference_type'][$row]
@@ -928,7 +928,7 @@ class InvoicesController extends AppController
 								->set(['credit' => $this->request->data['credit'][$row]])
 								->where([
 									'reference_no' => $this->request->data['reference_no'][$row],
-									'ledger_account_id' => $customer_ledger->ledger_account_id
+									'ledger_account_id' => $c_LedgerAccount->id
 								])
 								->execute();
 								
@@ -941,7 +941,7 @@ class InvoicesController extends AppController
 							$query1 = $this->Invoices->ReferenceDetails->query();
 							$query1->insert(['reference_no', 'ledger_account_id', 'invoice_id', 'credit', 'reference_type'])
 							->values([
-								'ledger_account_id' => $customer_ledger->ledger_account_id,
+								'ledger_account_id' => $c_LedgerAccount->id,
 								'invoice_id' => $invoice->id,
 								'reference_no' => $this->request->data['reference_no'][$row],
 								'credit' => $this->request->data['credit'][$row],
@@ -964,7 +964,7 @@ class InvoicesController extends AppController
 								$query2->insert(['reference_no', 'ledger_account_id', 'credit'])
 								->values([
 									'reference_no' => $this->request->data['reference_no'][$row],
-									'ledger_account_id' => $customer_ledger->ledger_account_id,
+									'ledger_account_id' => $c_LedgerAccount->id,
 									'credit' => $this->request->data['credit'][$row],
 								])
 								->execute();
