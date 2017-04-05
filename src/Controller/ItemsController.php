@@ -229,4 +229,46 @@ class ItemsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function openingBalance(){
+		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$ItemLedger = $this->Items->ItemLedgers->newEntity();
+		
+		$Items=$this->Items->find('list')->matching('ItemCompanies', function ($q) use($st_company_id) {
+			return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+		});
+		
+		if ($this->request->is('post')) {
+			
+			$ItemLedger->item_id = $this->request->data['Item_id'];
+			$ItemLedger->quantity = $this->request->data['quantity'];
+			$ItemLedger->rate = $this->request->data['rate'];
+			$ItemLedger->source_model = 'Items';
+			$ItemLedger->source_id = $this->request->data['Item_id'];
+			$ItemLedger->company_id = $st_company_id;
+			$ItemLedger->rate_updated = 'Yes';
+			$ItemLedger->in_out = 'In';
+			$ItemLedger->left_item_id = 0;
+			$ItemLedger->processed_on = date('Y-m-d',strtotime($this->request->data['date']));
+			$this->Items->ItemLedgers->save($ItemLedger);
+			
+			$this->Flash->success(__('Item Opening Balance has been saved.'));
+			return $this->redirect(['action' => 'Opening-Balance']);
+		}
+		
+		$this->set(compact('Items','ItemLedger'));
+		$this->set('_serialize', ['ItemLedger']);
+	}
+	
+	public function openingBalanceView(){
+		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$ItemLedgers=$this->Items->ItemLedgers->find()->where(['source_model'=>'Items'])->contain(['Items']);
+		$this->set(compact('ItemLedgers'));
+	}
 }
