@@ -185,7 +185,7 @@ $(document).ready(function() {
 		$("#main_table tbody#maintbody tr.main").each(function(){
 			$(this).attr('row_no',i);
 
-			$(this).find('td:nth-child(1) select').attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).rules("add", "required");
+			$(this).find('td:nth-child(1) select').attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2().rules("add", "required");
 			$(this).find('td:nth-child(2) input').attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"}).rules("add", "required");
 			if($(this).find('td:nth-child(3) select').length>0){
 				$(this).find('td:nth-child(3) select').attr({name:"inventory_voucher_rows["+i+"][serial_number_data][]", id:"inventory_voucher_rows-"+i+"-serial_number_data"}).rules("add", "required");

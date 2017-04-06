@@ -224,45 +224,20 @@ class QuotationsController extends AppController
 			return $this->redirect(['action' => 'confirm/'.$id]);
         }
 		
-		$email = $this->Quotations->EmailRecords->newEntity();
 		
 		$this->set(compact('quotation','id','email','revision'));
         
     }
 	
-	public function email($id = null)
-    {
-		if ($this->request->is(['post'])) {
-			
-			$send_to=implode(',',$this->request->data('send_to'));
-			$email = $this->Quotations->EmailRecords->newEntity();
-			$email = $this->Quotations->EmailRecords->patchEntity($email, $this->request->data);
-			$email->send_to=$send_to;
-			
-			 if ($this->Quotations->EmailRecords->save($email)) {
-				$email_id=$email->id;
-				$quotation_id=$email->quotation_id;
-				
-				return $this->redirect(['action' => 'pdf?emailid='.$email_id.'&quotaionid='.$quotation_id.'&sendemail=true']);
-            } else {
-                $this->Flash->error(__('The Email not sent. Please, try again.'));
-            }
-        }
-        $this->set(compact('email','id','quotation_id','send_email'));
-        $this->set('_serialize', ['email']);
-			
-	}
+	
 	
 	public function pdf($id = null)
     {
 		$this->viewBuilder()->layout('');
-		$email_id=$this->request->query('emailid');
 		$send_email=$this->request->query('sendemail');
 		$quotation_id=$this->request->query('quotaionid');
 		
-		if(!empty($email_id)){
-			$emailRecord = $this->Quotations->EmailRecords->get($email_id);
-		}
+		
 		if(!empty($send_email))
 		{
 		$send_email='true';	
@@ -397,7 +372,7 @@ class QuotationsController extends AppController
 		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1])->order(['Employees.name' => 'ASC']);
 		$ItemGroups = $this->Quotations->ItemGroups->find('list')->order(['ItemGroups.name' => 'ASC']);
 		
-		$items = $this->Quotations->Items->find('list')->order(['Items.name' => 'ASC'])->where(['freeze'=>0])->matching(
+		$items = $this->Quotations->Items->find('list')->order(['Items.name' => 'ASC'])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
 						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
 					}
@@ -454,7 +429,7 @@ class QuotationsController extends AppController
 		$ItemGroups = $this->Quotations->ItemGroups->find('list')->order(['ItemGroups.name' => 'ASC']);
 		
 		
-		$items = $this->Quotations->Items->find('list')->order(['Items.name' => 'ASC'])->where(['freeze'=>0])->matching(
+		$items = $this->Quotations->Items->find('list')->order(['Items.name' => 'ASC'])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
 						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
 					}

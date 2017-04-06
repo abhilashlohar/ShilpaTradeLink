@@ -74,7 +74,6 @@ class QuotationsTable extends Table
             'joinType' => 'INNER'
         ]);
 		$this->belongsTo('QuotationCloseReasons');
-		$this->belongsTo('EmailRecords');
 		$this->hasMany('QuotationRows', [
             'foreignKey' => 'quotation_id',
 			'saveStrategy' => 'replace'
@@ -88,7 +87,6 @@ class QuotationsTable extends Table
 			'conditions' => ['Quotations.quotation_id=Rquotations.quotation_id']
 		]);
 		$this->belongsTo('CustomerContacts');
-		$this->belongsTo('EmailRecords');
 		
     }
 	

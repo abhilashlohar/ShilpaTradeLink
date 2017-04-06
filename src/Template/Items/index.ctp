@@ -37,8 +37,6 @@
 						<th>Group</th>
 						<th>Sub-Group</th>
 						<th>Unit</th>
-						<th>Freeze</th>
-						<th>Serial Number Enable</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -51,8 +49,6 @@
 						<td><?= $item->item_group->name ?></td>
 						<td><?= $item->item_sub_group->name ?></td>
 						<td><?= $item->unit->name ?></td>
-						<td><?= $item->freeze ? 'yes' : 'no' ?></td>
-						<td><?= $item->serial_number_enable ? 'yes' : 'no'?></td>
 						<td class="actions">
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $item->id],array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
 							<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',

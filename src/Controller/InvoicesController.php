@@ -1070,8 +1070,14 @@ class InvoicesController extends AppController
 		$this->viewBuilder()->layout('');
 		if(!empty($item_id) and !empty($customer_id)){
 			
-			$item=$this->Invoices->Items->get($item_id);
+			$session = $this->request->session();
+			$st_company_id = $session->read('st_company_id');
 			
+			$item = $this->Invoices->Items->get($item_id, [
+				'contain' => ['ItemCompanies'=>function($q) use($st_company_id){
+					return $q->where(['company_id'=>$st_company_id]);
+				}]
+			]);
 			
 			$customerIds=[]; $customer_text='';
 			$customer=$this->Invoices->Customers->get($customer_id);
@@ -1095,7 +1101,7 @@ class InvoicesController extends AppController
 			$Number = new NumberHelper(new \Cake\View\View());
 			$Html = new HtmlHelper(new \Cake\View\View());
 			
-			$html='<span style="font-size: 14px;">Minimum Selling Rate for Item <b>"'.$item->name.'"</b> : '. $Number->format($item->dynamic_cost*$item->minimum_selling_price_factor,[ 'places' => 2]).'</span><br/><br/>
+			$html='<span style="font-size: 14px;">Minimum Selling Rate for Item <b>"'.$item->name.'"</b> : '. $Number->format($item->item_companies[0]->dynamic_cost*$item->item_companies[0]->minimum_selling_price_factor,[ 'places' => 2]).'</span><br/><br/>
 			<div style="font-size: 14px;">'.$customer_text.'</div>
 			<table class="table">
 				<thead>
@@ -1117,7 +1123,7 @@ class InvoicesController extends AppController
 				endforeach;
 				$html.='</tbody>
 			</table>';
-			die(json_encode(array("html"=>$html,"minimum_selling_price"=>$item->dynamic_cost*$item->minimum_selling_price_factor)));
+			die(json_encode(array("html"=>$html,"minimum_selling_price"=>$item->item_companies[0]->dynamic_cost*$item->item_companies[0]->minimum_selling_price_factor)));
 		}
 	}
 	

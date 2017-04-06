@@ -263,7 +263,7 @@ class InventoryVouchersController extends AppController
 		
 		$InventoryVoucher = $this->InventoryVouchers->newEntity();
 		if ($this->request->is(['post','put','patch'])) {
-			$q_serial_no=$this->request->data['serial_numbers'];
+			$q_serial_no=@$this->request->data['serial_numbers'];
 			
 			$InventoryVoucher=$this->InventoryVouchers->find()->where(['invoice_id'=>$invoice_id]);
 			
@@ -402,17 +402,18 @@ class InventoryVouchersController extends AppController
 				->set(['inventory_voucher_status' => 'Done'])
 				->where(['invoice_id'=>$invoice_id,'item_id'=>$q_item_id])
 				->execute();
-			
-			foreach($q_serial_no as $sr){
-				$query= $this->InventoryVouchers->ItemSerialNumbers->query();
-					$query->insert(['item_id', 'in_inventory_voucher_id', 'status', 'serial_no'])
-				->values([
-					'item_id' => $q_item_id,
-					'in_inventory_voucher_id' => $inventory_voucher_id,
-					'status' => 'In',
-					'serial_no'=>$sr,
-				])
-				->execute();
+			if(sizeof($q_serial_no)>0){
+				foreach($q_serial_no as $sr){
+					$query= $this->InventoryVouchers->ItemSerialNumbers->query();
+						$query->insert(['item_id', 'in_inventory_voucher_id', 'status', 'serial_no'])
+					->values([
+						'item_id' => $q_item_id,
+						'in_inventory_voucher_id' => $inventory_voucher_id,
+						'status' => 'In',
+						'serial_no'=>$sr,
+					])
+					->execute();
+				}
 			}
 		}
 		
@@ -526,11 +527,16 @@ class InventoryVouchersController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		$flag=0;
-		$Item=$this->InventoryVouchers->Items->get($select_item_id);
-		if($Item->serial_number_enable=="1"){
-			$SerialNumbers=$this->InventoryVouchers->ItemSerialNumbers->find()->where(['item_id'=>$select_item_id,'status'=>'In'])->orWhere(['item_id'=>$select_item_id,'iv_invoice_id'=>$invoice_id,'q_item_id'=>$q_item_id,'status'=>'Out']);
+		//$Item=$this->InventoryVouchers->Items->get($select_item_id);
+		$Item = $this->InventoryVouchers->Items->get($select_item_id, [
+            'contain' => ['ItemCompanies'=>function($q) use($st_company_id){
+				return $q->where(['company_id'=>$st_company_id]);
+			}]
+        ]);
+		if($Item->item_companies[0]->serial_number_enable=="1"){
+			$SerialNumbers=$this->InventoryVouchers->ItemSerialNumbers->find()->where(['item_id'=>$select_item_id,'status'=>'In','company_id'=>$st_company_id])->orWhere(['item_id'=>$select_item_id,'iv_invoice_id'=>$invoice_id,'q_item_id'=>$q_item_id,'status'=>'Out','company_id'=>$st_company_id]);
 			
-			$selectedSerialNumbers=$this->InventoryVouchers->ItemSerialNumbers->find()->where(['item_id'=>$select_item_id,'iv_invoice_id'=>$invoice_id,'q_item_id'=>$q_item_id,'status'=>'Out']);
+			$selectedSerialNumbers=$this->InventoryVouchers->ItemSerialNumbers->find()->where(['item_id'=>$select_item_id,'iv_invoice_id'=>$invoice_id,'q_item_id'=>$q_item_id,'status'=>'Out','company_id'=>$st_company_id]);
 			$falg=1;
 		}
 		$this->set(compact('SerialNumbers','falg','select_item_id','invoice_id','q_item_id','selectedSerialNumbers'));

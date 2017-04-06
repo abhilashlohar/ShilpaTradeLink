@@ -19,10 +19,13 @@ class ItemLedgersController extends AppController
     public function index($item_id=null)
     {
 		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+        $st_company_id = $session->read('st_company_id');
+		
         $this->paginate = [
             'contain' => ['Items']
         ];
-        $itemLedgers2 = $this->paginate($this->ItemLedgers->find()->where(['ItemLedgers.item_id'=>$item_id])->order(['processed_on'=>'DESC']));
+        $itemLedgers2 = $this->paginate($this->ItemLedgers->find()->where(['ItemLedgers.item_id'=>$item_id,'ItemLedgers.company_id'=>$st_company_id])->order(['processed_on'=>'DESC']));
 		$itemLedgers=[];
 		foreach($itemLedgers2 as $itemLedger){
 			if($itemLedger->source_model =='Items'){
@@ -196,6 +199,7 @@ class ItemLedgersController extends AppController
 			'total_in' => $query->func()->sum($totalInCase),
 			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
 		])
+		->where(['company_id'=>$st_company_id])
 		->group('item_id')
 		->autoFields(true)
 		->contain(['Items']);

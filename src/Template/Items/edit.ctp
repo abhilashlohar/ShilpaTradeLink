@@ -65,16 +65,6 @@ $min_qty=0; foreach($item->item_serial_numbers as $item_serial_number){
 				</div>
 				
 				<div class="row">
-					<div class="col-md-3" id="itm_srl_num">
-					<?php $i=0; foreach($item->item_serial_numbers as $item_serial_number)   {
-						if($item_serial_number->status=='In')
-						{
-							echo $this->Form->input('serial_numbers['.$i.'][]', ['label' => false,'type'=>'text','class'=>'sr_no','ids'=>'sr_no['.$i.']','value' => $item_serial_number->serial_no ]); 
-							$i++;
-						}
-					}
-					?>
-					</div>
 					<div class="col-md-3">
 						<?php foreach($item->item_serial_numbers as $item_serial_number){
 							if($item_serial_number->status=='Out' && $min_qty>'0'){
@@ -100,12 +90,6 @@ $min_qty=0; foreach($item->item_serial_numbers as $item_serial_number){
 						<div class="form-group">
 							<label class="control-label">Maximum Quantity <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('maximum_quantity', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Maximum Quantity']); ?>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<br/>
-							<?php echo $this->Form->input('freeze'); ?>
 						</div>
 					</div>
 					
