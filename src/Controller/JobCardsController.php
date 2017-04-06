@@ -90,7 +90,7 @@ class JobCardsController extends AppController
 			$jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
 			
 			$jobCard->required_date=date("Y-m-d",strtotime($jobCard->required_date)); 
-			pr($jobCard->required_date); exit;
+			//pr($jobCard->required_date); exit;
 			$jobCard->created_by=$s_employee_id; 
 			$jobCard->sales_order_id=$sales_order_id;
 			$jobCard->company_id=$st_company_id;
@@ -116,7 +116,11 @@ class JobCardsController extends AppController
                 $this->Flash->error(__('The job card could not be saved. Please, try again.'));
             }
         }
-		$items = $this->JobCards->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC']);
+		$items = $this->JobCards->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC'])->matching(
+					'ItemCompanies', function ($q) use($st_company_id) {
+						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+					}
+				);
         $companies = $this->JobCards->Companies->find('list', ['limit' => 200]);
         $this->set(compact('jobCard', 'salesOrder', 'companies','items','customers','last_jc_no'));
         $this->set('_serialize', ['jobCard']);
@@ -172,7 +176,11 @@ class JobCardsController extends AppController
             }
         }
 		
-		$items = $this->JobCards->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC']);
+		$items = $this->JobCards->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC'])->matching(
+					'ItemCompanies', function ($q) use($st_company_id) {
+						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+					}
+				);
         $this->set(compact('jobCard', 'salesOrders', 'companies','items','financial_year_data'));
         $this->set('_serialize', ['jobCard']);
     }

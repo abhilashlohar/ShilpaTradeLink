@@ -368,7 +368,11 @@ class QuotationsController extends AppController
 		$copy=$this->request->query('copy');
 		$companies = $this->Quotations->Companies->find('all');
 		
-        $customers = $this->Quotations->Customers->find('all')->contain(['Filenames'])->order(['Customers.customer_name' => 'ASC']);
+        $customers = $this->Quotations->Customers->find('all')->contain(['Filenames'])->order(['Customers.customer_name' => 'ASC'])->matching(
+					'CustomerCompanies', function ($q) use($st_company_id) {
+						return $q->where(['CustomerCompanies.company_id' => $st_company_id]);
+					}
+				);
 		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1])->order(['Employees.name' => 'ASC']);
 		$ItemGroups = $this->Quotations->ItemGroups->find('list')->order(['ItemGroups.name' => 'ASC']);
 		
@@ -424,7 +428,11 @@ class QuotationsController extends AppController
         
 		$companies = $this->Quotations->Companies->find('all',['limit' => 200]);
 		
-		$customers = $this->Quotations->Customers->find('all')->contain(['Filenames'])->order(['Customers.customer_name' => 'ASC']);
+		$customers = $this->Quotations->Customers->find('all')->contain(['Filenames'])->order(['Customers.customer_name' => 'ASC'])->matching(
+					'CustomerCompanies', function ($q) use($st_company_id) {
+						return $q->where(['CustomerCompanies.company_id' => $st_company_id]);
+					}
+				);
 		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1])->order(['Employees.name' => 'ASC']);
 		$ItemGroups = $this->Quotations->ItemGroups->find('list')->order(['ItemGroups.name' => 'ASC']);
 		

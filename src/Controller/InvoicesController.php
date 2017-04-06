@@ -631,7 +631,7 @@ class InvoicesController extends AppController
 		$ledger_account_details_for_fright = $this->Invoices->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups' => function($q) use($account_first_subgroup_id_for_fright){
 			return $q->where(['AccountFirstSubgroups.id'=>$account_first_subgroup_id_for_fright]);
 		}]])->where(['LedgerAccounts.company_id'=>$st_company_id])->order(['LedgerAccounts.name' => 'ASC']);
-		//pr($ledger_account_details_for_fright); exit;
+		
 		$item_serial_no=$this->Invoices->ItemSerialNumbers->find('list', ['limit' => 200]);
 		$employees = $this->Invoices->Employees->find('list', ['limit' => 200]);
         $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoicespay','creditlimit','old_due_payment','item_serial_no','ledger_account_details','ledger_account_details_for_fright','sale_tax_ledger_accounts'));
@@ -1036,11 +1036,11 @@ class InvoicesController extends AppController
 			return $q->where(['AccountFirstSubgroups.id'=>$account_first_subgroup_id_for_fright]);
 		}]])->order(['LedgerAccounts.name' => 'ASC'])->where(['LedgerAccounts.company_id'=>$st_company_id]);
 		
-		$items = $this->Invoices->Items->find('list',['limit' => 200]);
-		$transporters = $this->Invoices->Transporters->find('list', ['limit' => 200]);
-		$termsConditions = $this->Invoices->TermsConditions->find('all',['limit' => 200]);
+		$items = $this->Invoices->Items->find('list');
+		$transporters = $this->Invoices->Transporters->find('list');
+		$termsConditions = $this->Invoices->TermsConditions->find('all');
 		$SaleTaxes = $this->Invoices->SaleTaxes->find('all')->where(['freeze'=>0]);
-		$employees = $this->Invoices->Employees->find('list', ['limit' => 200]);
+		$employees = $this->Invoices->Employees->find('list');
 		//pr($sale_tax_ledger_accounts); exit;
         $this->set(compact('invoice_id','ReferenceDetails','ReferenceBalances','invoice', 'customers', 'companies', 'salesOrders','old_due_payment','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoices','serial_no','ItemSerialNumber','SelectItemSerialNumber','ItemSerialNumber2','financial_year_data','ledger_account_details','ledger_account_details_for_fright','sale_tax_ledger_accounts'));
         $this->set('_serialize', ['invoice']);
