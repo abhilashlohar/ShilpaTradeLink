@@ -65,7 +65,7 @@ width:100% !important;
 		<tr>
 			<td width="30%"><?=h($ReferenceDetail->reference_type) ?></td>
 			<td><?=h($ReferenceDetail->reference_no) ?></td>
-			<td>Rs.<?=h($ReferenceDetail->credit) ?></td>
+			<td>Rs.<?=h($ReferenceDetail->debit) ?></td>
 		</tr>
 		<?php  } ?>
 	</table>
