@@ -24,7 +24,8 @@ class LedgersController extends AppController
 		$From=$this->request->query('From');
 		$To=$this->request->query('To');
 		
-		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
 		
 		$this->set(compact('ledger','From','To'));
 		if(!empty($ledger)){
@@ -38,6 +39,7 @@ class LedgersController extends AppController
 			$To=date("Y-m-d",strtotime($this->request->query('To')));
 			$where['transaction_date <=']=$To;
 		}
+		$where['Ledgers.company_id']=$st_company_id;
         $this->paginate = [
             'contain' => ['LedgerAccounts']
         ];

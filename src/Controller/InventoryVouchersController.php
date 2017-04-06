@@ -319,12 +319,14 @@ class InventoryVouchersController extends AppController
 				])
 				->execute();
 			
-				foreach($inventory_voucher_row['serial_number_data'] as $serial_id){
-					$query = $this->InventoryVouchers->ItemSerialNumbers->query();
-					$query->update()
-						->set(['status' => 'Out','iv_invoice_id'=>$invoice_id,'q_item_id'=>$q_item_id])
-						->where(['id' => $serial_id])
-						->execute();
+				if(sizeof(@$inventory_voucher_row['serial_number_data'])>0){
+					foreach($inventory_voucher_row['serial_number_data'] as $serial_id){
+						$query = $this->InventoryVouchers->ItemSerialNumbers->query();
+						$query->update()
+							->set(['status' => 'Out','iv_invoice_id'=>$invoice_id,'q_item_id'=>$q_item_id])
+							->where(['id' => $serial_id])
+							->execute();
+					}
 				}
 				
 
@@ -391,10 +393,10 @@ class InventoryVouchersController extends AppController
 				}
 				
 				$per_unit_cost=$rate_total/$qty_total;
-				$query1 = $this->InventoryVouchers->Items->query();
+				$query1 = $this->InventoryVouchers->Items->ItemCompanies->query();
 				$query1->update()
 					->set(['dynamic_cost' => $per_unit_cost])
-					->where(['id' => $q_item_id])
+					->where(['item_id' => $q_item_id,'company_id' => $st_company_id])
 					->execute();
 			
 			$query5 = $this->InventoryVouchers->InvoiceRows->query();
@@ -496,7 +498,11 @@ class InventoryVouchersController extends AppController
 			
 		}
 		
-		$Items=$this->InventoryVouchers->Items->find();
+		$Items=$this->InventoryVouchers->Items->find()->matching(
+					'ItemCompanies', function ($q) use($st_company_id) {
+						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+					}
+				);
 		$this->set(compact('display_items','invoice_id','q_item_id','InventoryVoucherRows','Items','InventoryVoucher','selected_seials','q_qty','q_sno','is_in_made','q_ItemSerialNumbers'));
     }
 
