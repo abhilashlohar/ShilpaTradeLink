@@ -176,7 +176,7 @@
 						
 						if(!empty($ReferenceBalances))
 						{
-							
+							pr($ReferenceBalances);
 							foreach($ReferenceBalances as $ReferenceBalancee=>$key)
 							{
 								foreach($key as $ReferenceBalance)

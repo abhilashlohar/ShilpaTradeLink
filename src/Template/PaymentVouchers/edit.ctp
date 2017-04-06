@@ -117,10 +117,12 @@
 						{
 							foreach($ReferenceBalances as $ReferenceBalancee=>$key)
 							{
+								// pr($ReferenceBalancee);
 								foreach($key as $ReferenceBalance)
 								{
+									
 									$ReferenceBalance_amount=$ReferenceBalance->debit-$ReferenceBalance->credit;
-		
+									
 									if($ReferenceBalance_amount>0)
 									{
 										$itemGroups[]=['text'=>$ReferenceBalance->reference_no, 'value' =>$ReferenceBalance->reference_no,  'amount' => $ReferenceBalance_amount];
@@ -131,7 +133,8 @@
 						
 						
 						foreach($ReferenceDetails as $ReferenceDetail)
-						{				
+						{
+
 							$ref_no++;
 							if($ReferenceDetail->reference_type=='New Reference')
 							{
@@ -139,19 +142,22 @@
 							<tr>
 							<td>New Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'New Reference']) ?></td>
 							<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control distinctreference','label'=>false,'id'=>'reference_no_'+$ref_no,'value'=>$ReferenceDetail->reference_no,'readonly']) ?></td>
-							<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false,'value'=>$ReferenceDetail->credit]) ?>
-							<?= $this->Form->hidden('old_amount[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>$ReferenceDetail->credit]) ?></td>
+							<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false,'value'=>$ReferenceDetail->debit]) ?>
+							<?= $this->Form->hidden('old_amount[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>$ReferenceDetail->debit]) ?></td>
 							<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
 							</tr>
 							<?php
 							} 
 							else if($ReferenceDetail->reference_type=='Against Reference')
 							{ 
+							
 								$key=0;
 								foreach($itemGroups as $itemGroup)
 								{
+									
 									if($itemGroup['value']==$ReferenceDetail->reference_no)
 									{
+										
 										 $itemGroups[$key]['amount']+=$ReferenceDetail->credit;
 									}
 									$key++;
@@ -160,10 +166,10 @@
 							<tr class="against_references_no">
 							<td>Agst Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Against Reference']) ?><?= $this->Form->hidden('reference_no[]',['type'=>'text','class'=>'form-control ','label'=>false,'id'=>'reference_no_'+$ref_no,'value'=>$ReferenceDetail->reference_no]) ?></td>
 							<td id="against_references_no">
-							<?php echo $this->Form->input('against_references_no', ['empty'=>'--Select-','label' => false,'options' =>$itemGroups,'class' => 'form-control input-sm','value'=>$ReferenceDetail->reference_no,'readonly']); ?>
+							<?php echo $this->Form->input('against_references_no', ['empty'=>'--Select-','label' => false,'class' => 'form-control input-sm','value'=>$ReferenceDetail->reference_no,'readonly']); ?>
 							</td>
-							<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>$ReferenceDetail->credit]) ?>
-							<?= $this->Form->hidden('old_amount[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>$ReferenceDetail->credit]) ?></td></td>
+							<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>$ReferenceDetail->debit]) ?>
+							<?= $this->Form->hidden('old_amount[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>$ReferenceDetail->debit]) ?></td></td>
 							<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
 							</tr>
 							<?php
@@ -188,7 +194,7 @@
 			</div>
 		
 			<div class="form-actions">
-				<?= $this->Form->button(__('UPDATE PAYMENT VOUCHER'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit','onclick' => 'this.disabled=true;return true;']) ?>
+				<?= $this->Form->button(__('UPDATE PAYMENT VOUCHER'),['class'=>'btn btn-primary','id'=>'add_submit','type'=>'Submit']) ?>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>

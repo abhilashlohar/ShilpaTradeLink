@@ -172,7 +172,7 @@ class InvoiceBookingsController extends AppController
 				}
 				$accountReferences = $this->InvoiceBookings->AccountReferences->get(2);
 				
-				//ledger posting
+				//ledger posting for PURCHASE ACCOUNT
 				$ledger = $this->InvoiceBookings->Ledgers->newEntity();
 				$ledger->ledger_account_id = $invoiceBooking->purchase_ledger_account;
 				$ledger->debit = $invoiceBooking->total;
@@ -184,7 +184,7 @@ class InvoiceBookingsController extends AppController
 				//pr($ledger); exit;
 				$this->InvoiceBookings->Ledgers->save($ledger);
 				
-				//Ledger posting for bankcash
+				//Ledger posting for SUPPLIER
 				$c_LedgerAccount=$this->InvoiceBookings->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Vendors','source_id'=>$grn->vendor_id])->first();
 				
 				$ledger = $this->InvoiceBookings->Ledgers->newEntity();
