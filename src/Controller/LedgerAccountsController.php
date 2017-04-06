@@ -177,6 +177,7 @@ class LedgerAccountsController extends AppController
 			->contain(['LedgerAccounts'])
 			->group(['ledger_account_id'])
 			->autoFields(true)->toArray();
+			//pr($Ledgers_Assets); exit;
 			
 			$query2=$this->LedgerAccounts->Ledgers->find();
 			$Ledgers_Liablities=$query2->select(['total_debit' => $query2->func()->sum('debit'),'total_credit' => $query2->func()->sum('credit')])
