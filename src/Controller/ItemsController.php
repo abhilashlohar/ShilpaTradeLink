@@ -292,4 +292,42 @@ class ItemsController extends AppController
 		
 		$this->set(compact('ItemLedgers'));
 	}
+	
+	public function cost($id = null)
+    {
+		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		$ItemLedger = $this->Items->ItemLedgers->newEntity();
+		
+		$Items=$this->Items->find('list')->matching('ItemCompanies', function ($q) use($st_company_id) {
+			return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+		});
+		
+		if ($this->request->is('post')) {
+			$query = $this->Items->ItemCompanies->query();
+			$query->update()
+				->set(['dynamic_cost' => $this->request->data['dynamic_cost'],'minimum_selling_price_factor' => $this->request->data['minimum_selling_price_factor']])
+				->where(['item_id' => $this->request->data['Item_id'],'company_id'=>$st_company_id])
+				->execute();
+			$this->Flash->success(__('Dynamic cost & Minimum selling price factor has been saved.'));
+			return $this->redirect(['action' => 'cost']);
+		}
+		
+		$this->set(compact('Items','ItemLedger'));
+		$this->set('_serialize', ['ItemLedger']);
+	}
+	
+	public function costView(){
+		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
+		
+		$Items=$this->Items->find()->matching('ItemCompanies', function ($q) use($st_company_id) {
+			return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.minimum_selling_price_factor >'=>0]);
+		});
+		$this->set(compact('Items'));
+	}
 }

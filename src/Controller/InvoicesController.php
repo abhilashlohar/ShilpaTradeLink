@@ -318,15 +318,19 @@ class InvoicesController extends AppController
 		$sales_order=array(); $process_status='New';
 		if(!empty($sales_order_id)){
 			$sales_order = $this->Invoices->SalesOrders->get($sales_order_id, [
-				'contain' => ['SalesOrderRows.Items' => function ($q) {
+				'contain' => ['SalesOrderRows.Items' => function ($q) use($st_company_id) {
 						   return $q
 								->where(['SalesOrderRows.quantity > SalesOrderRows.processed_quantity'])
-								->contain(['ItemSerialNumbers'=>function ($q) {
-									return $q
-								->where(['ItemSerialNumbers.status' => 'In' ]); }]);
+								->contain(['ItemSerialNumbers'=>function($q) use($st_company_id){
+									return $q->where(['ItemSerialNumbers.status' => 'In','ItemSerialNumbers.company_id' => $st_company_id]); 
+								},
+								'ItemCompanies'=>function($q) use($st_company_id){
+									return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+								}]);
 						},'SalesOrderRows.SaleTaxes','Companies','Customers','Employees'
 					]
 			]);
+			//pr($sales_order); exit;
 			
 			$process_status='Pulled From Sales-Order';
 			
@@ -654,9 +658,17 @@ class InvoicesController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		
 		$this->viewBuilder()->layout('index_layout');
-        $invoice = $this->Invoices->get($id, [
+        /*$invoice = $this->Invoices->get($id, [
             'contain' => ['ItemSerialNumbers','InvoiceRows','SalesOrders' => ['Invoices'=>['InvoiceRows'],'SalesOrderRows' => ['Items'=>['ItemSerialNumbers'],'SaleTaxes']],'Companies','Customers','Employees','SaleTaxes']
+        ]);*/
+		$invoice = $this->Invoices->get($id, [
+            'contain' => ['ItemSerialNumbers','InvoiceRows','SalesOrders' => ['Invoices'=>['InvoiceRows'],'SalesOrderRows' => ['Items'=>['ItemSerialNumbers','ItemCompanies'=>function($q) use($st_company_id){
+									return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+								}],'SaleTaxes']],'Companies','Customers','Employees','SaleTaxes']
         ]);
+		
+			
+			
 		foreach($invoice->sales_order->sales_order_rows as $sales_order_row){
 			foreach($sales_order_row->item->item_serial_numbers as $item_serial_number){
 				$ItemSerialNumber2[$item_serial_number->item_id]=$this->Invoices->ItemSerialNumbers->find()->where(['item_id'=>$item_serial_number->item_id,'status'=>'In'])->toArray();
@@ -674,7 +686,7 @@ class InvoicesController extends AppController
 			
 			if($invoice_row->item_serial_number){
 			@$ItemSerialNumber_In[$invoice_row->item_id]= explode(",",$invoice_row->item_serial_number);
-			$ItemSerialNumber[$invoice_row->item_id]=$this->Invoices->ItemSerialNumbers->find()->where(['item_id'=>$invoice_row->item_id,'status'=>'In'])->orWhere(['ItemSerialNumbers.invoice_id'=>$invoice->id,'item_id'=>$invoice_row->item_id,'status'=>'Out'])->toArray();
+			$ItemSerialNumber[$invoice_row->item_id]=$this->Invoices->ItemSerialNumbers->find()->where(['item_id'=>$invoice_row->item_id,'status'=>'In','company_id'=>$st_company_id])->orWhere(['ItemSerialNumbers.invoice_id'=>$invoice->id,'item_id'=>$invoice_row->item_id,'status'=>'Out','company_id'=>$st_company_id])->toArray();
 			}
 			//$ItemSerialNumber2[$invoice_row->item_id]=$this->Invoices->ItemSerialNumbers->find()->where(['item_id'=>$invoice_row->item_id,'status'=>'In']);
 				

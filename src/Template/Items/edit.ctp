@@ -63,40 +63,7 @@ $min_qty=0; foreach($item->item_serial_numbers as $item_serial_number){
 						</div>
 					</div>
 				</div>
-				<h4>Opening Balance</h4>
-				<div class="row">
-					<div class="col-md-3">
-						<label class="control-label">serial_number_enable</label>
-						<div class="checkbox-list">
-							<?php if($min_qty>0){
-								echo $this->Form->radio('serial_number_enable',[['value' => '1', 'text' => 'Yes']]); }else{ 
-								echo $this->Form->radio('serial_number_enable',[['value' => '1', 'text' => 'Yes'],['value' => '0', 'text' => 'No']]);	}	?>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Quantity </label>
-							
-							<?php echo $this->Form->input('ob_quantity_load', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity']); ?>
-							<?php if($item->serial_number_enable==1){ ?>
-							<?php echo $this->Form->input('ob_quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm','min'=>$min_qty,'placeholder'=>'Quantity','value'=>$total_qty]); }else{?>
-							<?php echo $this->Form->input('ob_quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Quantity']); }?>
-							
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Rate </label>
-							<?php echo $this->Form->input('ob_rate', ['label' => false,'type'=>'text','class' => 'form-control input-sm allLetter','placeholder'=>'Rate']); ?>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Value </label>
-							<?php echo $this->Form->input('ob_value', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Value']); ?>
-						</div>
-					</div>
-				</div>
+				
 				<div class="row">
 					<div class="col-md-3" id="itm_srl_num">
 					<?php $i=0; foreach($item->item_serial_numbers as $item_serial_number)   {
@@ -125,21 +92,6 @@ $min_qty=0; foreach($item->item_serial_numbers as $item_serial_number){
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group">
-							<label class="control-label">Dynamic Cost <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('dynamic_cost', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Dynamic Cost']); ?>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Minimum Selling Price Factor <span class="required" aria-required="true">*</span></label>
-							<?php echo $this->Form->input('minimum_selling_price_factor', ['label' => false,'type'=>'text','class' => 'form-control input-sm allLetter','placeholder'=>'Selling Price']); ?>
-						</div>
-					</div>
-				</div>
-				<hr>
-				<div class="row">
-					<div class="col-md-3">
-						<div class="form-group">
 							<label class="control-label">Minimum Quantity <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('minimum_quantity', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Minimum Quantity']); ?>
 						</div>
@@ -160,10 +112,6 @@ $min_qty=0; foreach($item->item_serial_numbers as $item_serial_number){
 				</div>
 				
 				<div class="row">
-					<div class="col-md-4">
-						<label class="control-label">Used By Companies <span class="required" aria-required="true">*</span></label>
-						<?php echo $this->Form->input('companies._ids', ['label' => false,'options' => $Companies,'multiple' => 'checkbox']); ?>
-					</div>
 					<div class="col-md-4">
 						<label class="control-label">Source <span class="required" aria-required="true">*</span></label>
 						<div class="checkbox-list">

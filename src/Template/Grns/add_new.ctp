@@ -95,7 +95,7 @@
 								<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 								<td>
 									<?php echo $this->Form->input('q', ['type' => 'hidden','value'=>@$purchase_order_rows->item_id]);
-									 echo $this->Form->input('q', ['type' => 'hidden','value'=>@$purchase_order_rows->item->serial_number_enable]);
+									 echo $this->Form->input('q', ['type' => 'hidden','value'=>@$purchase_order_rows->item->item_companies[0]->serial_number_enable]);
 									 echo $purchase_order_rows->item->name;
 									?>								
 								</td>

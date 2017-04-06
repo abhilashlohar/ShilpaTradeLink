@@ -16,7 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
-
+use Cake\Datasource\ConnectionManager;
 /**
  * Application Controller
  *
@@ -47,8 +47,13 @@ class AppController extends Controller
 		
 		date_default_timezone_set('Asia/Kolkata');
 		
-		
 		$session = $this->request->session();
+		/*$db = @$session->read('db');
+		$db='default';
+		$conn = ConnectionManager::get($db);
+		$conn->begin();*/
+		
+		
 		$controller = $this->request->params['controller'];
 		$action = $this->request->params['action']; 
 		if (in_array($controller, ['Logins']) and in_array($action, ['index'])) {

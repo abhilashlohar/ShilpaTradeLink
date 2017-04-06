@@ -213,10 +213,11 @@ $('.closetin').on("click",function() {
 				
 						<?php 
 
-						$options1=[];
+						$options1=[]; 
 							foreach($sales_order_rows->item->item_serial_numbers as $item_serial_number){
 								$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
-							} if($sales_order_rows->item->serial_number_enable==1) { ?>
+							} 
+							if($sales_order_rows->item->item_companies[0]->serial_number_enable==1) { ?>
 							<tr class="tr3" row_no='<?php echo @$sales_order_rows->id; ?>'>
 							<td></td>
 							<td colspan="5">

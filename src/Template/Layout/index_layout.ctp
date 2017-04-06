@@ -232,6 +232,7 @@ select
 													<li><?php echo $this->Html->link(' Ledger Accounts','/ledgerAccounts',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('Account References','/AccountReferences',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('Opening Balance','/ledgers/opening-balance/',array('escape'=>false)); ?></li>
+													<li><?php echo $this->Html->link('Item Opening Balance','/Items/opening-balance/',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link( 'Quotation Close Reason','/QuotationCloseReasons',array('escape'=>false)); ?></li>	
 													<li><?php echo $this->Html->link('Leave Types','/LeaveTypes',array('escape'=>false)); ?></li>
 													<li></li>

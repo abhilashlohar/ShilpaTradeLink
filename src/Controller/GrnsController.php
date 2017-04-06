@@ -78,10 +78,12 @@ class GrnsController extends AppController
 				'contain' => [
 						'PurchaseOrderRows.Items' => function ($q) {
 						   return $q
-								->where(['PurchaseOrderRows.quantity > PurchaseOrderRows.processed_quantity']);
+								->where(['PurchaseOrderRows.quantity > PurchaseOrderRows.processed_quantity'])
+								->contain(['ItemCompanies']);
 						},'Companies','Vendors'
 					]
 			]);
+			pr($purchase_order); exit;
 		}
 		$this->set(compact('purchase_order'));
 		$session = $this->request->session();
@@ -179,26 +181,33 @@ class GrnsController extends AppController
     }
 
 	
-	  public function AddNew()
+	public function AddNew()
     {
 		$this->viewBuilder()->layout('index_layout');
 		$purchase_order_id=@(int)$this->request->query('purchase-order');
+		
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
 		
 		$purchase_order=array();
 		
 		if(!empty($purchase_order_id)){
 			$purchase_order = $this->Grns->PurchaseOrders->get($purchase_order_id, [
 				'contain' => [
-						'PurchaseOrderRows.Items' => function ($q) {
+						'PurchaseOrderRows.Items' => function ($q) use($st_company_id){
 						   return $q
-								->where(['PurchaseOrderRows.quantity > PurchaseOrderRows.processed_quantity']);
+								->where(['PurchaseOrderRows.quantity > PurchaseOrderRows.processed_quantity'])
+								->contain(['ItemCompanies'=>function($q) use($st_company_id){
+									return $q->where(['company_id'=>$st_company_id]);
+								}]);
 						},'Companies','Vendors'
 					]
 			]);
+			//pr($purchase_order); exit;
 		}
+		
 		$this->set(compact('purchase_order'));
-		$session = $this->request->session();
-		$st_company_id = $session->read('st_company_id');
+		
 
 		 $st_year_id = $session->read('st_year_id');
 
@@ -236,7 +245,7 @@ class GrnsController extends AppController
 			$item_serial_numbers=[];
 			foreach($serial_numbers as $item_id=>$data){
 				foreach($data as $sr)
-				$item_serial_numbers[]=['item_id'=>$item_id,'serial_no'=>$sr,'status'=>'In'];
+				$item_serial_numbers[]=['item_id'=>$item_id,'serial_no'=>$sr,'company_id'=>$st_company_id,'status'=>'In'];
 			}
 			
 			$this->request->data['item_serial_numbers']=$item_serial_numbers;
@@ -353,15 +362,22 @@ class GrnsController extends AppController
 	////
 	
 	
-	  public function EditNew($id = null)
+	public function EditNew($id = null)
     {
 	
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
 		$this->viewBuilder()->layout('index_layout');
 			$grn = $this->Grns->get($id, [
 				'contain' => [
-						'Companies','ItemSerialNumbers','Vendors','PurchaseOrders'=>['PurchaseOrderRows','Grns'=>['GrnRows']],'GrnRows'=>['Items']
+						'Companies','ItemSerialNumbers','Vendors','PurchaseOrders'=>['PurchaseOrderRows','Grns'=>['GrnRows']],'GrnRows'=>['Items' => ['ItemCompanies' =>function($q) use($st_company_id){
+									return $q->where(['company_id'=>$st_company_id]);
+								}]]
 					]
 			]);
+			
+			
 		
 		$Em = new FinancialYearsController;
 	    $financial_year_data = $Em->checkFinancialYear($grn->date_created);
@@ -372,7 +388,7 @@ class GrnsController extends AppController
 			if(sizeof($serial_numbers)>0){
 			foreach($serial_numbers as $item_id=>$data){
 				foreach($data as $sr)
-				$item_serial_numbers[]=['item_id'=>$item_id,'serial_no'=>$sr,'status'=>'In'];
+				$item_serial_numbers[]=['item_id'=>$item_id,'serial_no'=>$sr,'company_id'=>$st_company_id,'status'=>'In'];
 			}
 			//pr($item_serial_numbers); exit;
 			$this->request->data['item_serial_numbers']=$item_serial_numbers;
