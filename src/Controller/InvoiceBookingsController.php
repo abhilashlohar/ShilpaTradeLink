@@ -155,10 +155,10 @@ class InvoiceBookingsController extends AppController
 				}
 				
 				$per_unit_cost=$rate_total/$qty_total;
-				$query1 = $this->InvoiceBookings->Items->query();
+				$query1 = $this->InvoiceBookings->Items->ItemCompanies->query();
 				$query1->update()
 					->set(['dynamic_cost' => $per_unit_cost])
-					->where(['id' => $item_id])
+					->where(['company_id' => $st_company_id,'item_id'=>$item_id])
 					->execute();
 				$i++;
 				}

@@ -98,7 +98,7 @@
 						<th width="170">Items</th>
 						<th width="100">Unit Rate From PO</th>
 						<th width="70">Discount</th>
-						<th  width="70">P & F</th>
+						<th  width="100">P & F</th>
 						<th  width="100">Excise Duty</th>
 						<th  width="70" >CST</th>
 						<th>Quantity</th>
@@ -106,16 +106,19 @@
 						<th>Amount</th>
 					</tr>
 				</thead>
-<tbody>
+				<tbody>
 					<?php
 					$q=0; foreach ($invoiceBooking->invoice_booking_rows as $invoice_booking_row): ?>
 						<tr class="tr1" row_no='<?php echo @$invoice_booking_row->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
+							
 							<td><?php echo $invoice_booking_row->item->name; ?>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value' => @$invoice_booking_row->item->id,'popup_id'=>$q]); ?>
 							</td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.unit_rate_from_po',['value'=>$invoice_booking_row->unit_rate_from_po,'type'=>'hidden']);
+							
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.unit_rate_from_po',['value'=>$invoice_booking_row->unit_rate_from_po,'type'=>'text','label'=>false]);
 								echo $invoice_booking_row->unit_rate_from_po;  ?></td>
+								
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.discount',['value'=>$invoice_booking_row->discount,'type'=>'hidden']);
 								echo $invoice_booking_row->discount;  ?></td>
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.pnf',['value'=> $invoice_booking_row->pnf,'type'=>'hidden']); 
@@ -127,17 +130,13 @@
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.quantity',['label' => false,'class' => 'form-control input-sm','type'=>'text','value'=>$invoice_booking_row->quantity,'readonly']); ?></td>
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.rate',['label' => false,'class' => 'form-control input-sm','value'=>$invoice_booking_row->rate,'type'=>'text']); ?></td>
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.amount',['label' => false,'class' => 'form-control input-sm','type'=>'text']); ?></td>
-
-							
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$invoice_booking_row->id; ?>'>
 							<td colspan="9">
 							<?php echo $this->Text->autoParagraph(h($invoice_booking_row->description)); ?>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.description',['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value'=>$invoice_booking_row->description]); ?>
 							</td>
-							
 						</tr>
-					
 
 					<?php $q++;  endforeach; ?>
 				
