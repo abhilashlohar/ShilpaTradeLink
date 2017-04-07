@@ -1,4 +1,3 @@
-
 <style>
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
 	vertical-align: top !important;
@@ -92,7 +91,7 @@ With reference to your price list we are pleased to place an order for the follo
 							</tr>
 						</thead>
 						<tbody>
-						<?php if(sizeof($to_be_send2)>0){
+						<?php if(sizeof(@$to_be_send2)>0){
 							$q=0; foreach ($to_be_send2 as $item_id=>$data): ?>
 								<tr class="tr1" row_no='<?php echo @$item_id; ?>'>
 									<td rowspan="2"><?php echo ++$q; $q--; ?></td>

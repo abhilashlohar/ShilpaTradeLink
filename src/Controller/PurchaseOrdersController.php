@@ -81,11 +81,13 @@ class PurchaseOrdersController extends AppController
 	
     public function add($to_be_send=null)
     {
-		$to_be_send=json_decode($to_be_send);
-		$to_be_send2=[];
-		foreach($to_be_send as $item_id=>$qty){
-			$Item=$this->PurchaseOrders->Items->get($item_id);
-			$to_be_send2[$item_id]=['qty'=>$qty,'item_name'=>$Item->name];
+		if($to_be_send){
+			$to_be_send=json_decode($to_be_send);
+			$to_be_send2=[];
+			foreach($to_be_send as $item_id=>$qty){
+				$Item=$this->PurchaseOrders->Items->get($item_id);
+				$to_be_send2[$item_id]=['qty'=>$qty,'item_name'=>$Item->name];
+			}
 		}
 		
 		$this->viewBuilder()->layout('index_layout');
