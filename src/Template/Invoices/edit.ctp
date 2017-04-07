@@ -865,7 +865,7 @@ $(document).ready(function() {
 				$('input[name="credit[]"]').each(function () {
 					credit=credit+parseFloat($(this).val());
 				});
-				
+				credit=credit.toFixed(2);
 				if(amount==credit)
 				{
 					success3.show();
