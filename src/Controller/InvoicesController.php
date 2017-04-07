@@ -261,8 +261,15 @@ class InvoicesController extends AppController
 		
 		$this->set(compact(['ReferenceBalances']));
 	}
+	
 	public function deleteReceiptRow($reference_type=null,$old_amount=null,$ledger_account_id=null,$invoice_id=null,$reference_no=null)
     {
+		$reference_type=$this->request->query('reference_type');
+		$old_amount=$this->request->query('old_amount');
+		$ledger_account_id=(int)$this->request->query('ledger_account_id');
+		$invoice_id=$this->request->query('invoice_id');
+		$reference_no=$this->request->query('reference_no');
+		
 		
 		$query1 = $this->Invoices->ReferenceDetails->query();
 		$query1->delete()
@@ -273,7 +280,6 @@ class InvoicesController extends AppController
 			'reference_type' => $reference_type
 		])
 		->execute();
-		
 		
 		if($reference_type=='Against Reference')
 		{
@@ -298,6 +304,7 @@ class InvoicesController extends AppController
 			->execute();
 			
 		}
+		echo 'Deleted';
 		exit;
 	
 	}
@@ -330,6 +337,8 @@ class InvoicesController extends AppController
 						},'SalesOrderRows.SaleTaxes','Companies','Customers','Employees'
 					]
 			]);
+			
+			$c_LedgerAccount=$this->Invoices->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Customers','source_id'=>$sales_order->customer->id])->first();
 			//pr($sales_order); exit;
 			
 			$process_status='Pulled From Sales-Order';
@@ -634,7 +643,7 @@ class InvoicesController extends AppController
 		
 		$item_serial_no=$this->Invoices->ItemSerialNumbers->find('list', ['limit' => 200]);
 		$employees = $this->Invoices->Employees->find('list', ['limit' => 200]);
-        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoicespay','creditlimit','old_due_payment','item_serial_no','ledger_account_details','ledger_account_details_for_fright','sale_tax_ledger_accounts'));
+        $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoicespay','creditlimit','old_due_payment','item_serial_no','ledger_account_details','ledger_account_details_for_fright','sale_tax_ledger_accounts','c_LedgerAccount'));
         $this->set('_serialize', ['invoice']);
     }
 	
@@ -658,16 +667,15 @@ class InvoicesController extends AppController
 		$st_company_id = $session->read('st_company_id');
 		
 		$this->viewBuilder()->layout('index_layout');
-        /*$invoice = $this->Invoices->get($id, [
-            'contain' => ['ItemSerialNumbers','InvoiceRows','SalesOrders' => ['Invoices'=>['InvoiceRows'],'SalesOrderRows' => ['Items'=>['ItemSerialNumbers'],'SaleTaxes']],'Companies','Customers','Employees','SaleTaxes']
-        ]);*/
 		$invoice = $this->Invoices->get($id, [
             'contain' => ['ItemSerialNumbers','InvoiceRows','SalesOrders' => ['Invoices'=>['InvoiceRows'],'SalesOrderRows' => ['Items'=>['ItemSerialNumbers','ItemCompanies'=>function($q) use($st_company_id){
 									return $q->where(['ItemCompanies.company_id' => $st_company_id]);
 								}],'SaleTaxes']],'Companies','Customers','Employees','SaleTaxes']
         ]);
 		
-			
+		
+		
+		$c_LedgerAccount=$this->Invoices->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Customers','source_id'=>$invoice->customer->id])->first();
 			
 		foreach($invoice->sales_order->sales_order_rows as $sales_order_row){
 			foreach($sales_order_row->item->item_serial_numbers as $item_serial_number){
@@ -679,7 +687,6 @@ class InvoicesController extends AppController
 			foreach($invoice->sales_order->sales_order_rows as $sales_order_row){
 				$st_LedgerAccount=$this->Invoices->LedgerAccounts->find()->where(['source_id'=>$sales_order_row->sale_tax->id,'source_model'=>'SaleTaxes','company_id'=>$st_company_id])->first();
 				$sale_tax_ledger_accounts[$sales_order_row->sale_tax->id]=$st_LedgerAccount->id;
-				//pr($sale_tax_ledger_accounts); exit;
 			}	
 		
 		foreach($invoice->invoice_rows as $invoice_row){
@@ -688,15 +695,14 @@ class InvoicesController extends AppController
 			@$ItemSerialNumber_In[$invoice_row->item_id]= explode(",",$invoice_row->item_serial_number);
 			$ItemSerialNumber[$invoice_row->item_id]=$this->Invoices->ItemSerialNumbers->find()->where(['item_id'=>$invoice_row->item_id,'status'=>'In','company_id'=>$st_company_id])->orWhere(['ItemSerialNumbers.invoice_id'=>$invoice->id,'item_id'=>$invoice_row->item_id,'status'=>'Out','company_id'=>$st_company_id])->toArray();
 			}
-			//$ItemSerialNumber2[$invoice_row->item_id]=$this->Invoices->ItemSerialNumbers->find()->where(['item_id'=>$invoice_row->item_id,'status'=>'In']);
 				
-			}
+		}
 		
 		 $Em = new FinancialYearsController;
 	     $financial_year_data = $Em->checkFinancialYear($invoice->date_created);
 		$invoice_id=$id;
 		
-		$ReferenceDetails = $this->Invoices->ReferenceDetails->find()->where(['ledger_account_id'=>$invoice->customer->ledger_account_id,'invoice_id'=>$invoice_id])->toArray();
+		$ReferenceDetails = $this->Invoices->ReferenceDetails->find()->where(['ledger_account_id'=>$c_LedgerAccount->id,'invoice_id'=>$invoice_id])->toArray();
 		if(!empty($ReferenceDetails))
 		{
 			foreach($ReferenceDetails as $ReferenceDetail)
@@ -1005,7 +1011,6 @@ class InvoicesController extends AppController
 				->autoFields(true)
 				->having(['total_rows >' => 0]);
 				
-		//pr($invoice->grand_total); exit;		
 		$customer_ledger = $this->Invoices->LedgerAccounts->find()->where(['LedgerAccounts.source_id'=>$invoice->customer_id,'LedgerAccounts.source_model'=>'Customers'])->toArray();
 		
 		$customer_reference_details = $this->Invoices->ReferenceDetails->find()->where(['ReferenceDetails.ledger_account_id'=>$customer_ledger[0]->id])->toArray();
@@ -1023,7 +1028,6 @@ class InvoicesController extends AppController
 		$temp_due_payment=$total_credit-$total_debit;
 		$old_due_payment=$temp_due_payment-$invoice->grand_total;
 		
-		//$old_due_payment=$due_paisa-$invoice->due_payment;
 		$AccountReference_for_sale= $this->Invoices->AccountReferences->get(1);
 		$account_first_subgroup_id=$AccountReference_for_sale->account_first_subgroup_id;
 		$AccountReference_for_fright= $this->Invoices->AccountReferences->get(3);
@@ -1041,8 +1045,7 @@ class InvoicesController extends AppController
 		$termsConditions = $this->Invoices->TermsConditions->find('all');
 		$SaleTaxes = $this->Invoices->SaleTaxes->find('all')->where(['freeze'=>0]);
 		$employees = $this->Invoices->Employees->find('list');
-		//pr($sale_tax_ledger_accounts); exit;
-        $this->set(compact('invoice_id','ReferenceDetails','ReferenceBalances','invoice', 'customers', 'companies', 'salesOrders','old_due_payment','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoices','serial_no','ItemSerialNumber','SelectItemSerialNumber','ItemSerialNumber2','financial_year_data','ledger_account_details','ledger_account_details_for_fright','sale_tax_ledger_accounts'));
+        $this->set(compact('invoice_id','ReferenceDetails','ReferenceBalances','invoice', 'customers', 'companies', 'salesOrders','old_due_payment','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoices','serial_no','ItemSerialNumber','SelectItemSerialNumber','ItemSerialNumber2','financial_year_data','ledger_account_details','ledger_account_details_for_fright','sale_tax_ledger_accounts','c_LedgerAccount'));
         $this->set('_serialize', ['invoice']);
     }
 

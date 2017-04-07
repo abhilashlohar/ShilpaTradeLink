@@ -168,18 +168,6 @@ class ItemsController extends AppController
 						$this->Items->ItemLedgers->save($itemLedger);
 					}
 					
-				if($item->serial_number_enable=="1" && $item->ob_quantity>0){ 
-					foreach($item->serial_numbers as $serial_number) {
-						
-						$ItemSerialNumber = $this->Items->ItemSerialNumbers->newEntity();
-						$ItemSerialNumber->item_id = $item->id;
-						$ItemSerialNumber->serial_no = $serial_number[0];
-						$ItemSerialNumber->status = 'In';
-						$ItemSerialNumber->master_item_id = $item->id;
-						$this->Items->ItemSerialNumbers->save($ItemSerialNumber);
-						
-					}
-				}
 				
                 $this->Flash->success(__('The item has been saved.'));
 

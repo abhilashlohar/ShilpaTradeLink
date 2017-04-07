@@ -525,7 +525,7 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 	});
 	
 	/////////////////////////////////////////////////
-	var received_from_id='<?php echo $sales_order->customer->ledger_account_id; ?>';
+	var received_from_id='<?php echo $c_LedgerAccount->id; ?>';
 		
 		var url="<?php echo $this->Url->build(['controller'=>'PaymentVouchers','action'=>'fetchReferenceNo']); ?>";
 		url=url+'/'+received_from_id,
@@ -710,7 +710,7 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
                     type: "get",
                     data:
                         {
-                            ledger_account_id: '<?php echo $sales_order->customer->ledger_account_id; ?>'
+                            ledger_account_id: '<?php echo $c_LedgerAccount->id; ?>'
                         },
 					},
 				},
@@ -776,12 +776,11 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 
 		submitHandler: function (form) {
 			var amount=parseFloat($('input[name="grand_total"]').val());
-		
 				var credit=0;
 				$('input[name="credit[]"]').each(function () {
 					credit=credit+parseFloat($(this).val());
 				});
-				
+				credit=credit.toFixed(2);
 				if(amount==credit)
 				{
 					success3.show();

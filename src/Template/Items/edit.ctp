@@ -64,20 +64,7 @@ $min_qty=0; foreach($item->item_serial_numbers as $item_serial_number){
 					</div>
 				</div>
 				
-				<div class="row">
-					<div class="col-md-3">
-						<?php foreach($item->item_serial_numbers as $item_serial_number){
-							if($item_serial_number->status=='Out' && $min_qty>'0'){
-							echo $this->Form->input('total_out_qty', ['label' => false,'type'=>'hidden','readonly','class'=>'sr_no','value' => $min_qty ]); 
-							echo $item_serial_number->serial_no; ?><br/><?php
-							}
-						}
-						if($min_qty==0){
-							echo $this->Form->input('total_out_qty', ['label' => false,'type'=>'hidden','readonly','class'=>'sr_no','value' =>0]); 
-							}
-						?>
-					</div>
-				</div>
+				
 				<hr>
 				<div class="row">
 					<div class="col-md-3">

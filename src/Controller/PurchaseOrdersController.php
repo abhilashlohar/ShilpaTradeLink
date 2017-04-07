@@ -216,7 +216,11 @@ class PurchaseOrdersController extends AppController
         $vendor = $this->PurchaseOrders->Vendors->find()->order(['Vendors.company_name' => 'ASC']);
 		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
 		$customers = $this->PurchaseOrders->Customers->find('all')->order(['Customers.customer_name' => 'ASC']);
-		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC']);
+		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC'])->matching(
+					'ItemCompanies', function ($q) use($st_company_id) {
+						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+					}
+				);
 		$transporters = $this->PurchaseOrders->Transporters->find('list')->order(['Transporters.transporter_name' => 'ASC']);
         $this->set(compact('purchaseOrder', 'materialIndents','Company', 'vendor','filenames','items','SaleTaxes','transporters','customers','chkdate','to_be_send2'));
         $this->set('_serialize', ['purchaseOrder']);
@@ -381,7 +385,11 @@ class PurchaseOrdersController extends AppController
 		$vendor = $this->PurchaseOrders->Vendors->find()->order(['Vendors.company_name' => 'ASC']);
 		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
 		$customers = $this->PurchaseOrders->Customers->find('all')->order(['Customers.customer_name' => 'ASC']);
-		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']]);
+		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->matching(
+					'ItemCompanies', function ($q) use($st_company_id) {
+						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+					}
+				);
 		$transporters = $this->PurchaseOrders->Transporters->find('list')->order(['Transporters.transporter_name' => 'ASC']);
        
         $this->set(compact('purchaseOrder', 'Company', 'vendor','filenames','customers','SaleTaxes','transporters','items','financial_year_data'));
