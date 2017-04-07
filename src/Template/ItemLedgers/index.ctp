@@ -13,17 +13,22 @@
 						<tr>
 							<th>Sr. No.</th>
 							<th><?= $this->Paginator->sort('processed_on') ?></th>
-							<th>Party</th>
 							<th>Customer/Supplier/Vendor Name</th>
+							<th>Party</th>
 							<th>Voucher No.</th>
 							<th>Voucher Source</th>
 							<th>In</th>
 							<th>Out</th>
+							<th>Rate</th>
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($itemLedgers as $itemLedger): 
-						
+
+						<?php
+
+
+						 foreach ($itemLedgers as $itemLedger): 
+						$rate = $itemLedger->rate;
 						$in_out_type=$itemLedger->in_out;
 						$party=$itemLedger->party_type;
 						
@@ -83,6 +88,7 @@
 							<td><?= h($itemLedger->source_model) ?></td>
 							<td><?php if($in_out_type=='In'){ echo $this->Number->format($itemLedger->quantity); } else { echo '-'; } ?></td>
 							<td><?php echo $status; ?></td>
+							<td><?php echo $rate; ?></td>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>
