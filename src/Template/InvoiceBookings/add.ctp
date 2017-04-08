@@ -146,7 +146,7 @@
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value' => @$grn_rows->item->id,'popup_id'=>$q]); ?>
 							</td>
 							
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.rate',['value'=>$grn->purchase_order->purchase_order_rows[$q]->rate,'type'=>'text','label'=>false,'class'=>'row_textbox']); ?></td>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.unit_rate_from_po',['value'=>$grn->purchase_order->purchase_order_rows[$q]->rate,'type'=>'text','label'=>false,'class'=>'row_textbox']); ?></td>
 							
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.discount',['value'=>$dis,'type'=>'text','label'=>false,'class'=>'row_textbox']); ?></td>
 							
@@ -574,7 +574,7 @@ $(document).ready(function() {
 				$("[name^=debit]").each(function () {
 					debit=debit+parseFloat($(this).val());
 				});
-				
+				debit=debit.toFixed(2);
 				if(amount==debit)
 				{
 					success3.show();
