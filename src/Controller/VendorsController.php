@@ -100,6 +100,7 @@ class VendorsController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $vendor = $this->Vendors->patchEntity($vendor, $this->request->data);
+			//pr($vendor); exit;	
             if ($this->Vendors->save($vendor)) {
 				$query = $this->Vendors->LedgerAccounts->query();
 					$query->update()

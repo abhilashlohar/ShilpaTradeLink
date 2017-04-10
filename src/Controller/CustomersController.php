@@ -37,10 +37,6 @@ class CustomersController extends AppController
             'contain' => ['Districts', 'CustomerSegs']
         ];
         $customers = $this->paginate($this->Customers->find()->where($where)->order(['Customers.customer_name' => 'ASC']));
-
-		
-		
-		
         $this->set(compact('customers'));
         $this->set('_serialize', ['customers']);
     }
@@ -79,9 +75,7 @@ class CustomersController extends AppController
 			
 			$billTobill=$customer->bill_to_bill_account;
 			
-			
             if ($this->Customers->save($customer)) {
-				
 				
 				foreach($customer->companies as $data)
 				{
@@ -270,6 +264,95 @@ class CustomersController extends AppController
 		//pr($ReceiptVoucher); exit;
 		if(!$ReceiptVoucher){ echo 'Select paid to.'; exit; }
 		$this->set(compact('Customer','ReceiptVoucher'));
-	}	
+	}
+
+	public function EditCompany($customer_id=null)
+    {
+		$this->viewBuilder()->layout('index_layout');	
+		$Companies = $this->Customers->Companies->find();
+		
+		$Company_array=[];
+		$Company_array1=[];
+		foreach($Companies as $Company){
+			$customer_Company_exist= $this->Customers->Companies->CustomerCompanies->exists(['customer_id' => $customer_id,'company_id'=>$Company->id]);
+			if($customer_Company_exist){
+				$Company_array[$Company->id]='Yes';
+				$Company_array1[$Company->id]=$Company->name;
+			}else{
+				$Company_array[$Company->id]='No';
+				$Company_array1[$Company->id]=$Company->name;
+
+			}
+		}
+		
+		//$customer_Company = $this->Customers->Companies->CustomerCompanies->find()->where(['CustomerCompanies.customer_id'=>$customer_id]);
+			//pr($Company_array1); exit;
+		$this->set(compact('Companies','customer_Company','Company_array','customer_id','Company_array1'));
+
+	}
+	
+	public function CheckCompany($company_id=null,$customer_id=null)
+    {
+		$this->viewBuilder()->layout('index_layout');	
+		 $this->request->allowMethod(['post', 'delete']);
+		
+		$customer_ledger= $this->Customers->LedgerAccounts->find()->where(['source_model' => 'Customers','source_id'=>$customer_id,'company_id'=>$company_id])->first();
+		$ledgerexist = $this->Customers->Ledgers->exists(['ledger_account_id' => $customer_ledger->id]);
+				
+		if(!$ledgerexist){
+			$customer_Company_dlt= $this->Customers->Companies->CustomerCompanies->find()->where(['CustomerCompanies.customer_id'=>$customer_id,'company_id'=>$company_id])->first();
+			$customer_ledger_dlt= $this->Customers->LedgerAccounts->find()->where(['source_model' => 'Customers','source_id'=>$customer_id,'company_id'=>$company_id])->first();
+			
+			$VoucherLedgerAccountsexist = $this->Customers->VoucherLedgerAccounts->exists(['ledger_account_id' => $customer_ledger->id]);
+			
+			/* $Voucherref = $this->Customers->VouchersReferences->find()->contain(['VoucherLedgerAccounts'])->where(['VouchersReferences.company_id'=>$company_id]);
+			$size=sizeof($Voucherref);
+			pr($size); exit; */
+			
+			if($VoucherLedgerAccountsexist){
+				$Voucherref = $this->Customers->VouchersReferences->find()->contain(['VoucherLedgerAccounts'])->where(['VouchersReferences.company_id'=>$company_id]);
+				
+				foreach($Voucherref as $Voucherref){
+					foreach($Voucherref->voucher_ledger_accounts as $voucher_ledger_account){
+							if($voucher_ledger_account->ledger_account_id==$customer_ledger->id){
+								$this->Customers->VoucherLedgerAccounts->delete($voucher_ledger_account);
+							}
+					}
+					
+				}
+				
+			}
+			$this->Customers->LedgerAccounts->delete($customer_ledger_dlt);
+			$this->Customers->Companies->CustomerCompanies->delete($customer_Company_dlt);
+			return $this->redirect(['action' => 'EditCompany/'.$customer_id]);
+				
+		}else{
+			$this->Flash->error(__('Company Can not Deleted'));
+			return $this->redirect(['action' => 'EditCompany/'.$customer_id]);
+		}
+	}
+	
+	public function AddCompany($company_id=null,$customer_id=null)
+    {
+		$this->viewBuilder()->layout('index_layout');	
+		//pr($company_id); 
+		//pr($customer_id); exit;
+		$CustomerCompany = $this->Customers->Companies->CustomerCompanies->newEntity();
+		$CustomerCompany->company_id=$company_id;
+		$CustomerCompany->customer_id=$customer_id;
+		$this->Customers->CustomerCompanies->save($CustomerCompany);
+		$customer_details= $this->Customers->get($customer_id);
+		$ledgerAccount = $this->Customers->LedgerAccounts->newEntity();
+		$ledgerAccount->account_second_subgroup_id = $customer_details->account_second_subgroup_id;
+		$ledgerAccount->name = $customer_details->customer_name;
+		$ledgerAccount->alias = $customer_details->alias;
+		$ledgerAccount->bill_to_bill_account = $customer_details->bill_to_bill_account;
+		$ledgerAccount->source_model = 'Customers';
+		$ledgerAccount->source_id = $customer_details->id;
+		$ledgerAccount->company_id = $company_id;
+		$this->Customers->LedgerAccounts->save($ledgerAccount);
+		
+		return $this->redirect(['action' => 'EditCompany/'.$customer_id]);
+	}
 	
 }

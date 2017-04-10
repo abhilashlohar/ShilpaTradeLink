@@ -37,7 +37,7 @@
 						<th width="10%">Customer Seg</th>
 						<th width="10%">Tin No</th>
 						<th width="10%">Gst No</th>
-						<th width="10%">Actions</th>
+						<th width="13%">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -61,6 +61,7 @@
 									'confirm' => __('Are you sure ?', $customer->id)
 								]
 							) ?>
+							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'EditCompany', $customer->id],array('escape'=>false,'class'=>'btn btn-xs green tooltips','data-original-title'=>'EditCompany')); ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>

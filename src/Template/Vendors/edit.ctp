@@ -139,17 +139,21 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php $i=0; foreach($vendor->vendor_contact_persons as $vendor_contact_person){ $i++;
-						if($vendor_contact_person->default_person =='1'){ $checked2="Checked"; } else{ $checked2=" "; } ?>
+						<?php $i=0; $j=0;  foreach($vendor->vendor_contact_persons as $vendor_contact_person){ $j++;
+						if($vendor_contact_person->default_person =='1'){
+							 $checked2=1;
+						} else{ 
+							 $checked2=0; } 
+							?>
 						<tr>
-							<td><?= h($i) ?></td>
+							<td><?= h($j) ?></td>
 							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Name','value'=>$vendor_contact_person->name,'required']); ?></td>
 							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email','value'=>$vendor_contact_person->email,'required']); ?></td>
 							<td><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.mobile', ['label' => false,'class' => 'form-control input-sm allLetter','value'=>$vendor_contact_person->mobile,'placeholder'=>'Mobile','maxlength'=>10,'minlength'=>10,'required']); ?></td>
-							<td width="90"><?php echo $checked2; ?><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.default_person', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn','checked'=>$checked2]); ?></td>
+							<td width="90"><?php echo $this->Form->input('vendor_contact_persons.'.$i.'.default_person', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn','checked'=>$checked2]); ?></td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
-						<?php } ?>
+						<?php $i++; } ?>
 					</tbody>
 				</table>
 
@@ -346,7 +350,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 		$('select[name="account_second_subgroup_id"]').select2();
 	});
 });	
-	rename_rows();
+	//rename_rows();
 	//add_row(); 
 	$('.default_btn:first').attr('checked','checked'); $.uniform.update();
     $('.addrow').die().live("click",function() { 
@@ -412,7 +416,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			<td><?php echo $this->Form->input('name', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Name']); ?></td>
 			<td><?php echo $this->Form->input('email', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Email']); ?></td>
 			<td><?php echo $this->Form->input('mobile', ['label' => false,'class' => 'form-control input-sm allLetter','placeholder'=>'Mobile','maxlength'=>10]); ?></td>
-			<td width="90"><?php echo $this->Form->input('q', ['type'=>'checkbox','label' => false,'class' => 'form-control default_btn','value'=>1]); ?></td>
+			<td width="90"><?php echo $this->Form->input('q', ['type'=>'checkbox','label' => false,'class' => 'form-control default_btn']); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 	</tbody>
