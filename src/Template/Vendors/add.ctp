@@ -205,9 +205,6 @@ $(document).ready(function() {
 			tin_no  : {
 				  required: true,
 			},
-			ecc_no   : {
-				  required: true,
-			},
 			pan_no   :{
 				required: true,
 			},

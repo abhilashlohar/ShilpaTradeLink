@@ -268,14 +268,6 @@ class SaleTaxesController extends AppController
 	public function AddCompany($company_id=null,$saletax_id=null)
     {
 		$this->viewBuilder()->layout('index_layout');	
-		
-		$SaleTaxCompany = $this->SaleTaxes->SaleTaxCompanies->newEntity();
-		$SaleTaxCompany->company_id=$company_id;
-		$SaleTaxCompany->saletax_id=$saletax_id;
-		//pr($SaleTaxCompany); exit;
-		
-		$this->SaleTaxes->SaleTaxCompanies->save($SaleTaxCompany);
-
 		$sale_tax_details= $this->SaleTaxes->get($saletax_id);
 		$ledgerAccount = $this->SaleTaxes->LedgerAccounts->newEntity();
 		$ledgerAccount->account_second_subgroup_id = $sale_tax_details->account_second_subgroup_id;
@@ -283,9 +275,13 @@ class SaleTaxesController extends AppController
 		$ledgerAccount->source_model = 'SaleTaxes';
 		$ledgerAccount->source_id = $sale_tax_details->id;
 		$ledgerAccount->company_id = $company_id;
-//pr($ledgerAccount); exit;
-
 		$this->SaleTaxes->LedgerAccounts->save($ledgerAccount);
+
+		$SaleTaxCompany = $this->SaleTaxes->SaleTaxCompanies->newEntity();
+		$SaleTaxCompany->company_id=$company_id;
+		$SaleTaxCompany->sale_taxe_id=$saletax_id;
+		//pr($SaleTaxCompany); exit;
+		$this->SaleTaxes->SaleTaxCompanies->save($SaleTaxCompany);
 		
 		return $this->redirect(['action' => 'EditCompany/'.$saletax_id]);
 	}

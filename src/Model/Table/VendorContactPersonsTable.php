@@ -66,7 +66,7 @@ class VendorContactPersonsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email']));
+        //$rules->add($rules->isUnique(['email']));
         $rules->add($rules->existsIn(['vendor_id'], 'Vendors'));
 
         return $rules;
