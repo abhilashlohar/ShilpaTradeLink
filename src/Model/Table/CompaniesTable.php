@@ -63,6 +63,7 @@ class CompaniesTable extends Table
 			'saveStrategy' => 'replace'
         ]);
 		$this->belongsTo('CustomerCompanies');
+		$this->belongsTo('EmployeeCompanies');
     }
 
     /**

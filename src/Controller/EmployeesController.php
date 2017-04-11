@@ -207,4 +207,89 @@ class EmployeesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function EditCompany($employee_id=null)
+    {
+		$this->viewBuilder()->layout('index_layout');	
+		$Companies = $this->Employees->Companies->find();
+		//pr($Companies->toArray()); exit;
+		$Company_array=[];
+		$Company_array1=[];
+		foreach($Companies as $Company){
+			$employee_Company_exist= $this->Employees->Companies->EmployeeCompanies->exists(['employee_id' => $employee_id,'company_id'=>$Company->id]);
+			
+			if($employee_Company_exist){
+				$Company_array[$Company->id]='Yes';
+				$Company_array1[$Company->id]=$Company->name;
+			}else{
+				$Company_array[$Company->id]='No';
+				$Company_array1[$Company->id]=$Company->name;
+
+			}
+		}
+		$this->set(compact('Companies','customer_Company','Company_array','employee_id','Company_array1'));
+
+	}
+	
+	
+	public function CheckCompany($company_id=null,$employee_id=null)
+    {
+		$this->viewBuilder()->layout('index_layout');	
+		 $this->request->allowMethod(['post', 'delete']);
+		
+		$employees_ledger= $this->Employees->LedgerAccounts->find()->where(['source_model' => 'Employees','source_id'=>$employee_id,'company_id'=>$company_id])->first();
+		$ledgerexist = $this->Employees->Ledgers->exists(['ledger_account_id' => $employees_ledger->id]);
+		if(!$ledgerexist){
+			$customer_Company_dlt= $this->Employees->Companies->EmployeeCompanies->find()->where(['EmployeeCompanies.employee_id'=>$employee_id,'company_id'=>$company_id])->first();
+			$customer_ledger_dlt= $this->Employees->LedgerAccounts->find()->where(['source_model' => 'Employees','source_id'=>$employee_id,'company_id'=>$company_id])->first();
+			$VoucherLedgerAccountsexist = $this->Employees->VoucherLedgerAccounts->exists(['ledger_account_id' => $employees_ledger->id]);
+			if($VoucherLedgerAccountsexist){
+				$Voucherref = $this->Employees->VouchersReferences->find()->contain(['VoucherLedgerAccounts'])->where(['VouchersReferences.company_id'=>$company_id]);
+				foreach($Voucherref as $Voucherref){
+					foreach($Voucherref->voucher_ledger_accounts as $voucher_ledger_account){
+							if($voucher_ledger_account->ledger_account_id==$employees_ledger->id){
+								$this->Employees->VoucherLedgerAccounts->delete($voucher_ledger_account);
+							}
+					}
+					
+				}
+				
+			}
+
+			$this->Employees->Companies->EmployeeCompanies->delete($customer_Company_dlt);
+			$this->Employees->LedgerAccounts->delete($customer_ledger_dlt);
+			return $this->redirect(['action' => 'EditCompany/'.$employee_id]);
+				
+		}else{
+			$this->Flash->error(__('Company Can not Deleted'));
+			return $this->redirect(['action' => 'EditCompany/'.$employee_id]);
+		}
+	}
+	
+	public function AddCompany($company_id=null,$employee_id=null)
+    {
+		$this->viewBuilder()->layout('index_layout');	
+		//pr($company_id); 
+		
+		$EmployeeCompany = $this->Employees->Companies->EmployeeCompanies->newEntity();
+		$EmployeeCompany->company_id=$company_id;
+		$EmployeeCompany->employee_id=$employee_id;
+
+		$this->Employees->EmployeeCompanies->save($EmployeeCompany);
+		
+		$employee_details= $this->Employees->get($employee_id);
+		//pr($employee_details); exit;
+		$ledgerAccount = $this->Employees->LedgerAccounts->newEntity();
+		$ledgerAccount->account_second_subgroup_id = $employee_details->account_second_subgroup_id;
+		$ledgerAccount->name = $employee_details->name;
+		//$ledgerAccount->alias = $employee_details->alias;
+		//$ledgerAccount->bill_to_bill_account = $employee_details->bill_to_bill_account;
+		$ledgerAccount->source_model = 'Employees';
+		$ledgerAccount->source_id = $employee_details->id;
+		$ledgerAccount->company_id = $company_id;
+		//pr($ledgerAccount); exit;
+		$this->Employees->LedgerAccounts->save($ledgerAccount);
+		
+		return $this->redirect(['action' => 'EditCompany/'.$employee_id]);
+	}
 }
