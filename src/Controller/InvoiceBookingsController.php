@@ -298,7 +298,6 @@ class InvoiceBookingsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $invoiceBooking = $this->InvoiceBookings->patchEntity($invoiceBooking, $this->request->data);
 			$invoiceBooking->supplier_date=date("Y-m-d",strtotime($invoiceBooking->supplier_date)); 
-
             if ($this->InvoiceBookings->save($invoiceBooking)) {
 				$total_row=sizeof($this->request->data['reference_no']);
 				
@@ -321,7 +320,7 @@ class InvoiceBookingsController extends AppController
 					->set(['rate' => $rate, 'rate_updated' => 'Yes'])
 					->where(['item_id' => $item_id, 'source_id' => $grn_id, 'source_model'=> 'Grns'])
 					->execute();
-				$results=$this->InvoiceBookings->ItemLedgers->find()->where(['ItemLedgers.item_id' => $item_id,'ItemLedgers.in_out' => 'In','rate_updated' => 'Yes','company_id' => $st_company_id])->toArray(); 
+				$results=$this->InvoiceBookings->ItemLedgers->find()->where(['ItemLedgers.item_id' => $item_id,'ItemLedgers.in_out' => 'In','rate_updated' => 'Yes','company_id' => $st_company_id]); 
 				$j=0; $qty_total=0; $rate_total=0; $per_unit_cost=0;
 				foreach($results as $result){
 					$qty=$result->quantity;
@@ -333,10 +332,10 @@ class InvoiceBookingsController extends AppController
 				}
 				
 				$per_unit_cost=$rate_total/$qty_total;
-				$query1 = $this->InvoiceBookings->Items->query();
+				$query1 = $this->InvoiceBookings->Items->ItemCompanies->query();
 				$query1->update()
 					->set(['dynamic_cost' => $per_unit_cost])
-					->where(['id' => $item_id])
+					->where(['item_id' => $item_id,'company_id'=>$st_company_id])
 					->execute();
 				$i++;
 				}
@@ -370,14 +369,13 @@ class InvoiceBookingsController extends AppController
 				$this->InvoiceBookings->Ledgers->save($ledger);
 				
 				for($row=0; $row<$total_row; $row++)
-				{
+				{ 
 					if(!empty($this->request->data['old_amount'][$row]))
 					{				////////////////  ReferenceDetails ////////////////////////////////
 				
-				
 						$query1 = $this->InvoiceBookings->ReferenceDetails->query();
 						$query1->update()
-						->set(['debit' => $this->request->data['debit'][$row]])
+						->set(['credit' => $this->request->data['credit'][$row]])
 						->where([
 							'ledger_account_id' => $this->request->data['vendor_ledger_id'],
 							'invoice_booking_id' => $invoiceBooking->id,
@@ -392,11 +390,11 @@ class InvoiceBookingsController extends AppController
 							
 							$res=$this->InvoiceBookings->ReferenceBalances->find()->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['vendor_ledger_id']])->first();
 							
-							 $q=$res->debit-$this->request->data['old_amount'][$row]+ $this->request->data['debit'][$row];
+							 $q=$res->debit-$this->request->data['old_amount'][$row]+ $this->request->data['credit'][$row];
 							
 							$query2 = $this->InvoiceBookings->ReferenceBalances->query();
 							$query2->update()
-								->set(['debit' => $q])
+								->set(['credit' => $q])
 								->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['vendor_ledger_id']])
 								->execute();
 						}
@@ -404,7 +402,7 @@ class InvoiceBookingsController extends AppController
 						{ 
 							$query2 = $this->InvoiceBookings->ReferenceBalances->query();
 							$query2->update()
-							->set(['debit' => $this->request->data['debit'][$row]])
+							->set(['credit' => $this->request->data['credit'][$row]])
 							->where([
 								'reference_no' => $this->request->data['reference_no'][$row],
 								'ledger_account_id' => $this->request->data['vendor_ledger_id']
@@ -418,12 +416,12 @@ class InvoiceBookingsController extends AppController
 					{
 						////////////////  ReferenceDetails ////////////////////////////////
 						$query1 = $this->InvoiceBookings->ReferenceDetails->query();
-						$query1->insert(['reference_no', 'ledger_account_id', 'invoice_booking_id', 'debit', 'reference_type'])
+						$query1->insert(['reference_no', 'ledger_account_id', 'invoice_booking_id', 'credit', 'reference_type'])
 						->values([
 							'ledger_account_id' => $this->request->data['vendor_ledger_id'],
 							'invoice_booking_id' => $invoiceBooking->id,
 							'reference_no' => $this->request->data['reference_no'][$row],
-							'debit' => $this->request->data['debit'][$row],
+							'credit' => $this->request->data['credit'][$row],
 							'reference_type' => $this->request->data['reference_type'][$row]
 						])
 						->execute();
@@ -433,18 +431,18 @@ class InvoiceBookingsController extends AppController
 						{
 							$query2 = $this->InvoiceBookings->ReferenceBalances->query();
 							$query2->update()
-								->set(['debit' => $this->request->data['debit'][$row]])
+								->set(['credit' => $this->request->data['credit'][$row]])
 								->where(['reference_no' => $this->request->data['reference_no'][$row],'ledger_account_id' => $this->request->data['vendor_ledger_id']])
 								->execute();
 						}
 						else
 						{
 							$query2 = $this->InvoiceBookings->ReferenceBalances->query();
-							$query2->insert(['reference_no', 'ledger_account_id', 'debit'])
+							$query2->insert(['reference_no', 'ledger_account_id', 'credit'])
 							->values([
 								'reference_no' => $this->request->data['reference_no'][$row],
 								'ledger_account_id' => $this->request->data['vendor_ledger_id'],
-								'debit' => $this->request->data['debit'][$row],
+								'credit' => $this->request->data['credit'][$row],
 							])
 							->execute();
 						}
@@ -503,8 +501,15 @@ class InvoiceBookingsController extends AppController
 		$ReferenceDetails=$this->InvoiceBookings->ReferenceBalances->find()->where(['ledger_account_id' => $ledger_account_id])->toArray();
 		$this->set(compact(['ReferenceDetails']));
 	}
+	
 	public function deleteReceiptRow($reference_type=null,$old_amount=null,$ledger_account_id=null,$invoice_booking_id=null,$reference_no=null)
     {
+		
+		$reference_type=$this->request->query('reference_type');
+		$old_amount=$this->request->query('old_amount');
+		$ledger_account_id=(int)$this->request->query('ledger_account_id');
+		$invoice_booking_id=$this->request->query('invoice_booking_id');
+		$reference_no=$this->request->query('reference_no');
 		
 		$query1 = $this->InvoiceBookings->ReferenceDetails->query();
 		$query1->delete()
@@ -520,11 +525,11 @@ class InvoiceBookingsController extends AppController
 		{
 			$res=$this->InvoiceBookings->ReferenceBalances->find()->where(['reference_no' => $reference_no,'ledger_account_id' => $ledger_account_id])->first();
 			
-			$q=$res->debit-$old_amount;
+			$q=$res->credit-$old_amount;
 			
 			$query2 = $this->InvoiceBookings->ReferenceBalances->query();
 			$query2->update()
-				->set(['debit' => $q])
+				->set(['credit' => $q])
 				->where(['reference_no' => $reference_no,'ledger_account_id' => $ledger_account_id])
 				->execute();
 		}

@@ -16,20 +16,23 @@ class LoginsController extends AppController
 	   $number=2;
 	   $login = $this->Logins->newEntity();
 	   if ($this->request->is('post')) 
-		{
+		{ 
 			$username=$this->request->data["username"];
 			$password=$this->request->data["password"];
 			$query = $this->Logins->findAllByUsernameAndPassword($username, $password);
 			$number = $query->count(); 
+			
 			foreach ($query as $row) {
 				$login_id=$row["id"];
 				$employee_id=$row["employee_id"];
 			}
+			
 			if($number==1 && !empty($login_id)){
 				$this->request->session()->write('st_login_id',$login_id);
 				$Employee=$this->Logins->Employees->get($employee_id, [
 					'contain' => ['Companies']
 				]);
+				
 				$count=0;
 				foreach($Employee->companies as $company){
 					$count++;
