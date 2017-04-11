@@ -224,15 +224,18 @@ class PurchaseOrdersController extends AppController
 					}
 				);
 			
-		$st_LedgerAccounts=$this->PurchaseOrders->LedgerAccounts->find()->where(['source_model'=>'SaleTaxes','company_id'=>$st_company_id]);	
+		$st_LedgerAccounts=$this->PurchaseOrders->SaleTaxes->SaleTaxCompanies->find('all')->where(['freeze'=>0,'company_id'=>$st_company_id]);
+//pr($st_LedgerAccounts->toArray()); exit;
 		$sale_tax_ledger_accounts=[];
 		$sale_tax_ledger_accounts1=[];
 			foreach($st_LedgerAccounts as $st_LedgerAccount){
-				$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find()->where(['id'=>$st_LedgerAccount->source_id])->first();
-				$sale_tax_ledger_accounts[$st_LedgerAccount->source_id]=$SaleTaxes->invoice_description;
-				$sale_tax_ledger_accounts1[$st_LedgerAccount->source_id]=$SaleTaxes->tax_figure;
+				$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find()->where(['id'=>$st_LedgerAccount->sale_taxe_id])->first();
+				$sale_tax_ledger_accounts[$st_LedgerAccount->sale_taxe_id]=$SaleTaxes->invoice_description;
+				$sale_tax_ledger_accounts1[$st_LedgerAccount->sale_taxe_id]=$SaleTaxes->tax_figure;
 				
 			}
+//pr($sale_tax_ledger_accounts); exit;
+
 		$transporters = $this->PurchaseOrders->Transporters->find('list')->order(['Transporters.transporter_name' => 'ASC']);
         $this->set(compact('purchaseOrder', 'materialIndents','Company', 'vendor','filenames','items','SaleTaxes','transporters','customers','chkdate','to_be_send2','sale_tax_ledger_accounts','sale_tax_ledger_accounts1'));
         $this->set('_serialize', ['purchaseOrder']);
