@@ -62,8 +62,13 @@ class CompaniesTable extends Table
             'foreignKey' => 'company_id',
 			'saveStrategy' => 'replace'
         ]);
-		$this->belongsTo('CustomerCompanies');
-		$this->belongsTo('EmployeeCompanies');
+		
+		$this->hasMany('EmployeeCompanies', [
+            'foreignKey' => 'employee_id'
+        ]);
+		$this->hasMany('CustomerCompanies', [
+            'foreignKey' => 'customer_id'
+        ]);
     }
 
     /**
