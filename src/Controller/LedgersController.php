@@ -315,8 +315,6 @@ class LedgersController extends AppController
 		$this->set(compact('OpeningBalanceViews'));
 	}
 	
-	function checkBillToBillAccountingStatus{
-		
-	}
+	
 	
 }

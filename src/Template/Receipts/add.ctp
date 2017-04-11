@@ -117,29 +117,40 @@ $(document).ready(function() {
 		$(this).closest("tr").remove();
 	});
 	
-	var url="<?php echo $this->Url->build(['controller'=>'Receipts','action'=>'checkBillToBillAccountingStatus']); ?>";
+	$('.received_from').live("change",function() {
+		var received_from_id=$(this).find('option:selected').val();
+		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'checkBillToBillAccountingStatus']); ?>";
 		url=url+'/'+received_from_id,
 		$.ajax({
 			url: url,
 			type: 'GET',
 			dataType: 'text'
 		}).done(function(response) {
-			$("#main_table tbody").find('tr.against_references_no').remove();
-			if(!response)
-			{
-				$('#agst_ref').remove();
-				
-			}
-			$('#against_references_no').html(response);
+			alert(response);
 		});
+	});
+	
 });
 </script>
 
 <table id="sample_table" style="display:none;">
 	<tbody>
 		<tr class="main_tr">
-			<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','label' => false,'class' => 'form-control input-sm']); ?></td>
+			<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from']); ?></td>
 			<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount']); ?></td>
+			<td>ref</td>
+			<td><?php echo $this->Form->input('narration', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Narration']); ?></td>
+			<td><a class="btn btn-xs btn-default deleterow" href="#" role="button"><i class="fa fa-times"></i></a></td>
+		</tr>
+	</tbody>
+</table>
+
+<?php $ref_types=['New Ref'=>'New Ref','Agst Ref'=>'Agst Ref','Advance'=>'Advance']; ?>
+<table id="sample_ref" style="display:;">
+	<tbody>
+		<tr class="main_tr">
+			<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm received_from']); ?></td>
+			<td class="ref_no"></td>
 			<td>ref</td>
 			<td><?php echo $this->Form->input('narration', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Narration']); ?></td>
 			<td><a class="btn btn-xs btn-default deleterow" href="#" role="button"><i class="fa fa-times"></i></a></td>

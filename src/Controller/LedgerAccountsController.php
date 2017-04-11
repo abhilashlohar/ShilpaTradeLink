@@ -221,4 +221,10 @@ class LedgerAccountsController extends AppController
 		$this->set(compact('date'));
 	}
 	
+	function checkBillToBillAccountingStatus($received_from_id){
+		$Ledger=$this->LedgerAccounts->get($received_from_id);
+		echo $Ledger->bill_to_bill_account;
+		exit;
+	}
+	
 }
