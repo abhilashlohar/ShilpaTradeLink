@@ -216,7 +216,7 @@ class EmployeesController extends AppController
 		$Company_array=[];
 		$Company_array1=[];
 		foreach($Companies as $Company){
-			$employee_Company_exist= $this->Employees->Companies->EmployeeCompanies->exists(['employee_id' => $employee_id,'company_id'=>$Company->id]);
+			$employee_Company_exist= $this->Employees->EmployeeCompanies->exists(['employee_id' => $employee_id,'company_id'=>$Company->id]);
 			
 			if($employee_Company_exist){
 				$Company_array[$Company->id]='Yes';
@@ -236,11 +236,13 @@ class EmployeesController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');	
 		 $this->request->allowMethod(['post', 'delete']);
-		
 		$employees_ledger= $this->Employees->LedgerAccounts->find()->where(['source_model' => 'Employees','source_id'=>$employee_id,'company_id'=>$company_id])->first();
+//						pr($employees_ledger->id); exit;
+
 		$ledgerexist = $this->Employees->Ledgers->exists(['ledger_account_id' => $employees_ledger->id]);
+
 		if(!$ledgerexist){
-			$customer_Company_dlt= $this->Employees->Companies->EmployeeCompanies->find()->where(['EmployeeCompanies.employee_id'=>$employee_id,'company_id'=>$company_id])->first();
+			$customer_Company_dlt= $this->Employees->EmployeeCompanies->find()->where(['EmployeeCompanies.employee_id'=>$employee_id,'company_id'=>$company_id])->first();
 			$customer_ledger_dlt= $this->Employees->LedgerAccounts->find()->where(['source_model' => 'Employees','source_id'=>$employee_id,'company_id'=>$company_id])->first();
 			$VoucherLedgerAccountsexist = $this->Employees->VoucherLedgerAccounts->exists(['ledger_account_id' => $employees_ledger->id]);
 			if($VoucherLedgerAccountsexist){
@@ -256,7 +258,7 @@ class EmployeesController extends AppController
 				
 			}
 
-			$this->Employees->Companies->EmployeeCompanies->delete($customer_Company_dlt);
+			$this->Employees->EmployeeCompanies->delete($customer_Company_dlt);
 			$this->Employees->LedgerAccounts->delete($customer_ledger_dlt);
 			return $this->redirect(['action' => 'EditCompany/'.$employee_id]);
 				
@@ -271,7 +273,7 @@ class EmployeesController extends AppController
 		$this->viewBuilder()->layout('index_layout');	
 		//pr($company_id); 
 		
-		$EmployeeCompany = $this->Employees->Companies->EmployeeCompanies->newEntity();
+		$EmployeeCompany = $this->Employees->EmployeeCompanies->newEntity();
 		$EmployeeCompany->company_id=$company_id;
 		$EmployeeCompany->employee_id=$employee_id;
 

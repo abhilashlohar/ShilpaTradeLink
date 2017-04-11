@@ -274,7 +274,7 @@ class CustomersController extends AppController
 		$Company_array=[];
 		$Company_array1=[];
 		foreach($Companies as $Company){
-			$customer_Company_exist= $this->Customers->Companies->CustomerCompanies->exists(['customer_id' => $customer_id,'company_id'=>$Company->id]);
+			$customer_Company_exist= $this->Customers->CustomerCompanies->exists(['customer_id' => $customer_id,'company_id'=>$Company->id]);
 			if($customer_Company_exist){
 				$Company_array[$Company->id]='Yes';
 				$Company_array1[$Company->id]=$Company->name;
