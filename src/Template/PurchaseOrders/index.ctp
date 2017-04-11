@@ -50,9 +50,8 @@
 							<tr>
 								<th>S.No</th>
 								<th>Purchase No.</th>
-								<th>Company</th>
 								<th>Party Name</th>
-								<th>Total</th>
+								<th style="text-align:right">Total</th>
 								
 								<th class="actions"><?= __('Actions') ?></th>
 							</tr>
@@ -67,7 +66,6 @@
 							
 							<td><?= h(($purchaseOrder->po1.'/PO-'.str_pad($purchaseOrder->po2, 3, '0', STR_PAD_LEFT).'/'.$purchaseOrder->po3.'/'.$purchaseOrder->po4)) ?></td>
 							
-							<td><?= h($purchaseOrder->company->name) ?></td>
 							<td><?= h($purchaseOrder->vendor->company_name) ?></td>
 							<td align="right"><?= $this->Number->format($purchaseOrder->total) ?></td>
 						
