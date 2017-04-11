@@ -115,7 +115,7 @@ class ItemsController extends AppController
                 $this->Flash->success(__('The item has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else { 
+            } else { pr($item);exit;
                 $this->Flash->error(__('The item could not be saved. Please, try again.'));
             }
         }

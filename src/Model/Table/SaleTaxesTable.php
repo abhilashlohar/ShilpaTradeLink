@@ -73,6 +73,9 @@ class SaleTaxesTable extends Table
         ]);
 		
 		$this->belongsTo('Ledgers');
+		$this->belongsTo('VoucherLedgerAccounts');
+		$this->belongsTo('VouchersReferences');
+
     }
 
     /**

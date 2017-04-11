@@ -140,6 +140,7 @@
 						<td class="actions">
 							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $saleTax->id]) ?>
 							<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $saleTax->id], ['confirm' => __('Are you sure you want to delete # {0}?', $saleTax->id)]) ?>
+							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'EditCompany', $saleTax->id],array('escape'=>false,'class'=>'btn btn-xs green tooltips','data-original-title'=>'EditCompany')); ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>

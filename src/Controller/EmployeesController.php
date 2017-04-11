@@ -237,7 +237,6 @@ class EmployeesController extends AppController
 		$this->viewBuilder()->layout('index_layout');	
 		 $this->request->allowMethod(['post', 'delete']);
 		$employees_ledger= $this->Employees->LedgerAccounts->find()->where(['source_model' => 'Employees','source_id'=>$employee_id,'company_id'=>$company_id])->first();
-//						pr($employees_ledger->id); exit;
 
 		$ledgerexist = $this->Employees->Ledgers->exists(['ledger_account_id' => $employees_ledger->id]);
 
