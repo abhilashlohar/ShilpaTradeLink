@@ -280,6 +280,7 @@ class SaleTaxesController extends AppController
 		$SaleTaxCompany = $this->SaleTaxes->SaleTaxCompanies->newEntity();
 		$SaleTaxCompany->company_id=$company_id;
 		$SaleTaxCompany->sale_taxe_id=$saletax_id;
+		$SaleTaxCompany->sale_taxe_id=$saletax_id;
 		//pr($SaleTaxCompany); exit;
 		$this->SaleTaxes->SaleTaxCompanies->save($SaleTaxCompany);
 		
