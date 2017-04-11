@@ -300,7 +300,7 @@ class CustomersController extends AppController
 		$ledgerexist = $this->Customers->Ledgers->exists(['ledger_account_id' => $customer_ledger->id]);
 				
 		if(!$ledgerexist){
-			$customer_Company_dlt= $this->Customers->Companies->CustomerCompanies->find()->where(['CustomerCompanies.customer_id'=>$customer_id,'company_id'=>$company_id])->first();
+			$customer_Company_dlt= $this->Customers->CustomerCompanies->find()->where(['CustomerCompanies.customer_id'=>$customer_id,'company_id'=>$company_id])->first();
 			$customer_ledger_dlt= $this->Customers->LedgerAccounts->find()->where(['source_model' => 'Customers','source_id'=>$customer_id,'company_id'=>$company_id])->first();
 			
 			$VoucherLedgerAccountsexist = $this->Customers->VoucherLedgerAccounts->exists(['ledger_account_id' => $customer_ledger->id]);
@@ -323,7 +323,7 @@ class CustomersController extends AppController
 				
 			}
 			$this->Customers->LedgerAccounts->delete($customer_ledger_dlt);
-			$this->Customers->Companies->CustomerCompanies->delete($customer_Company_dlt);
+			$this->Customers->CustomerCompanies->delete($customer_Company_dlt);
 			return $this->redirect(['action' => 'EditCompany/'.$customer_id]);
 				
 		}else{
@@ -337,7 +337,7 @@ class CustomersController extends AppController
 		$this->viewBuilder()->layout('index_layout');	
 		//pr($company_id); 
 		//pr($customer_id); exit;
-		$CustomerCompany = $this->Customers->Companies->CustomerCompanies->newEntity();
+		$CustomerCompany = $this->Customers->CustomerCompanies->newEntity();
 		$CustomerCompany->company_id=$company_id;
 		$CustomerCompany->customer_id=$customer_id;
 		$this->Customers->CustomerCompanies->save($CustomerCompany);
