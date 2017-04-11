@@ -130,6 +130,7 @@
 							
 							$dis=($discount*$grn->purchase_order->purchase_order_rows[$q]->amount)/$grn->purchase_order->total;
 							;
+							pr($grn->purchase_order->purchase_order_rows[$q]->amount); 
 							$item_discount=$dis/$grn->purchase_order->purchase_order_rows[$q]->quantity;
 							
 							$item_rate=$grn->purchase_order->purchase_order_rows[$q]->amount-$dis;

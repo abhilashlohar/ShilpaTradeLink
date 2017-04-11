@@ -96,14 +96,19 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php $q=1; foreach ($purchaseOrder->purchase_order_rows as $purchase_order_rows): ?>
+							<?php $q=0; foreach ($purchaseOrder->purchase_order_rows as $purchase_order_rows): ?>
 							<tr class="tr1" row_no='<?php echo @$purchase_order_rows->id; ?>'>
 									<td rowspan="2"><?= h($q) ?></td>
 									<?php if($purchase_order_rows->pull_status =='Direct'){ ?>
 									<td>
-									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.processed_quantity', ['type' => 'hidden','value'=>@$purchase_order_rows->processed_quantity]);?>	
-									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item','value'=>$purchase_order_rows->item_id]); ?>
-									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.material_indent_id', ['label' => false,'type'=>'hidden','value'=>$purchase_order_rows['material_indent_id']]);  ?>
+									
+									<?php 
+									echo $this->Form->input('purchase_order_rows.'.$q.'.processed_quantity', ['label' => false,'type' => 'hidden','value'=>@$purchase_order_rows->processed_quantity]);
+									echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item','value'=>$purchase_order_rows->item_id]); 
+									
+									?>
+									
+									
 									</td>
 									<?php } else { ?>
 									<td>
@@ -114,7 +119,9 @@
 									<span class="label label-sm label-warning ">Pulled from MI</span>
 									</td>
 									<?php }  ?>
-									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$purchase_order_rows->quantity]); ?></td>
+									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$purchase_order_rows->quantity]); 
+										
+									?></td>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.rate', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01",'value'=>$purchase_order_rows->rate]); ?></td>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value'=>$purchase_order_rows->amount]); ?></td>
 									
@@ -166,15 +173,14 @@
 							<label class="control-label">Sale Tax <span class="required" aria-required="true">*</span></label>
 							<?php 
 							$options=[];
-							
-							foreach($SaleTaxes as $SaleTaxe){ 
-							
-								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->invoice_description];
+							foreach($sale_tax_ledger_accounts as $key=>$SaleTaxe){
+								$tax_figure=$sale_tax_ledger_accounts1[$key];
+								$options[]=['text' => (string)$tax_figure.'%', 'value' => $tax_figure, 'description' => $SaleTaxe];
 							}
 							echo $this->Form->input('sale_tax_per', ['options'=>$options,'label' => false,'class' => 'form-control input-sm select2me','id'=>'saletax']);
 							?>
 							
-							<?php echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm ', 'placeholder'=>'Sale Tax Description', 'value'=>$purchaseOrder->sale_tax_description]);
+							<?php echo $this->Form->input('sale_tax_description', ['type'=>'text','label' => false,'class' => 'form-control input-sm ', 'placeholder'=>'Sale Tax Description', 'value'=>$purchaseOrder->sale_tax_description]);
 							?>
 							</div>
 							

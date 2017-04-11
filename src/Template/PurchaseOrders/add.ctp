@@ -160,13 +160,14 @@ With reference to your price list we are pleased to place an order for the follo
 							<label class="control-label">Sale Tax <span class="required" aria-required="true">*</span></label>
 							<?php 
 							$options=[];
-							foreach($SaleTaxes as $SaleTaxe){
-								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->invoice_description];
+							foreach($sale_tax_ledger_accounts as $key=>$SaleTaxe){
+								$tax_figure=$sale_tax_ledger_accounts1[$key];
+								$options[]=['text' => (string)$tax_figure.'%', 'value' => $tax_figure, 'description' => $SaleTaxe];
 							}
 							echo $this->Form->input('sale_tax_per', ['empty'=>'--Select--','options'=>$options,'label' => false,'class' => 'form-control input-sm select2me','id'=>'saletax']);
 							?>
 							
-							<?php echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm ', 'placeholder'=>'Sale Tax Description']);
+							<?php echo $this->Form->input('sale_tax_description', ['type'=>'text','label' => false,'class' => 'form-control input-sm ', 'placeholder'=>'Sale Tax Description']);
 							?>
 							</div>
 							

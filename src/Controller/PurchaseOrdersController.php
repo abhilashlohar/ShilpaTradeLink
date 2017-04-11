@@ -223,8 +223,18 @@ class PurchaseOrdersController extends AppController
 						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
 					}
 				);
+			
+		$st_LedgerAccounts=$this->PurchaseOrders->LedgerAccounts->find()->where(['source_model'=>'SaleTaxes','company_id'=>$st_company_id]);	
+		$sale_tax_ledger_accounts=[];
+		$sale_tax_ledger_accounts1=[];
+			foreach($st_LedgerAccounts as $st_LedgerAccount){
+				$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find()->where(['id'=>$st_LedgerAccount->source_id])->first();
+				$sale_tax_ledger_accounts[$st_LedgerAccount->source_id]=$SaleTaxes->invoice_description;
+				$sale_tax_ledger_accounts1[$st_LedgerAccount->source_id]=$SaleTaxes->tax_figure;
+				
+			}
 		$transporters = $this->PurchaseOrders->Transporters->find('list')->order(['Transporters.transporter_name' => 'ASC']);
-        $this->set(compact('purchaseOrder', 'materialIndents','Company', 'vendor','filenames','items','SaleTaxes','transporters','customers','chkdate','to_be_send2'));
+        $this->set(compact('purchaseOrder', 'materialIndents','Company', 'vendor','filenames','items','SaleTaxes','transporters','customers','chkdate','to_be_send2','sale_tax_ledger_accounts','sale_tax_ledger_accounts1'));
         $this->set('_serialize', ['purchaseOrder']);
     }
 
@@ -260,6 +270,7 @@ class PurchaseOrdersController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $purchaseOrder = $this->PurchaseOrders->patchEntity($purchaseOrder, $this->request->data);
+			//pr($purchaseOrder); exit;
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
 			$purchaseOrder->delivery_date=date("Y-m-d",strtotime($purchaseOrder->delivery_date));
 			$purchaseOrder->company_id=$st_company_id;
@@ -386,6 +397,19 @@ class PurchaseOrdersController extends AppController
 			}])->where(['file1' => 'BE']);
 		$vendor = $this->PurchaseOrders->Vendors->find()->order(['Vendors.company_name' => 'ASC']);
 		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
+		
+		$st_LedgerAccounts=$this->PurchaseOrders->LedgerAccounts->find()->where(['source_model'=>'SaleTaxes','company_id'=>$st_company_id]);	
+		$sale_tax_ledger_accounts=[];
+		$sale_tax_ledger_accounts1=[];
+			foreach($st_LedgerAccounts as $st_LedgerAccount){
+				$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find()->where(['id'=>$st_LedgerAccount->source_id])->first();
+				$sale_tax_ledger_accounts[$st_LedgerAccount->source_id]=$SaleTaxes->invoice_description;
+				$sale_tax_ledger_accounts1[$st_LedgerAccount->source_id]=$SaleTaxes->tax_figure;
+				
+			}
+			//pr($sale_tax_ledger_accounts1); exit;
+		
+		
 		$customers = $this->PurchaseOrders->Customers->find('all')->order(['Customers.customer_name' => 'ASC']);
 		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
@@ -394,7 +418,7 @@ class PurchaseOrdersController extends AppController
 				);
 		$transporters = $this->PurchaseOrders->Transporters->find('list')->order(['Transporters.transporter_name' => 'ASC']);
        
-        $this->set(compact('purchaseOrder', 'Company', 'vendor','filenames','customers','SaleTaxes','transporters','items','financial_year_data'));
+        $this->set(compact('purchaseOrder', 'Company', 'vendor','filenames','customers','SaleTaxes','transporters','items','financial_year_data','sale_tax_ledger_accounts','sale_tax_ledger_accounts1'));
         $this->set('_serialize', ['purchaseOrder']);
     }
 
