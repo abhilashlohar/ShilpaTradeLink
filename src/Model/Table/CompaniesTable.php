@@ -64,11 +64,18 @@ class CompaniesTable extends Table
         ]);
 
 		
-		$this->hasMany('EmployeeCompanies', [
-            'foreignKey' => 'employee_id'
+		
+		
+		$this->belongsToMany('Employees', [
+            'foreignKey' => 'company_id',
+            'targetForeignKey' => 'employee_id',
+            'joinTable' => 'employee_companies'
         ]);
-		$this->hasMany('CustomerCompanies', [
-            'foreignKey' => 'customer_id'
+		
+		$this->belongsToMany('Customers', [
+            'foreignKey' => 'company_id',
+            'targetForeignKey' => 'custome_id',
+            'joinTable' => 'customer_companies'
         ]);
     }
 
