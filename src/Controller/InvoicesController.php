@@ -242,10 +242,22 @@ class InvoicesController extends AppController
 			]);
 		
 		if ($this->request->is(['patch', 'post', 'put'])) {
-            foreach($this->request->data['invoice_rows'] as $invoice_row_id=>$value){
-				$invoiceRow=$this->Invoices->InvoiceRows->get($invoice_row_id);
-				$invoiceRow->height=$value["height"];
-				$this->Invoices->InvoiceRows->save($invoiceRow);
+			
+			if(!empty($this->request->data['pdf_font_size'])){
+				$pdf_font_size=$this->request->data['pdf_font_size'];
+				$query = $this->Invoices->query();
+					$query->update()
+						->set(['pdf_font_size' => $pdf_font_size])
+						->where(['id' => $id])
+						->execute();
+			}
+			
+			if(!empty($this->request->data['invoice_rows'])){
+				foreach($this->request->data['invoice_rows'] as $invoice_row_id=>$value){
+					$invoiceRow=$this->Invoices->InvoiceRows->get($invoice_row_id);
+					$invoiceRow->height=$value["height"];
+					$this->Invoices->InvoiceRows->save($invoiceRow);
+				}
 			}
 			return $this->redirect(['action' => 'confirm/'.$id]);
         }

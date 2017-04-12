@@ -59,6 +59,7 @@
 									'confirm' => __('Are you sure ?', $item->id)
 								]
 							) ?>
+							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'EditCompany', $item->id],array('escape'=>false,'class'=>'btn btn-xs green tooltips','data-original-title'=>'EditCompany')); ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>

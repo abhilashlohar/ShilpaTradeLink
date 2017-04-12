@@ -354,13 +354,13 @@ class SalesOrdersController extends AppController
 		$quotationlists = $this->SalesOrders->Quotations->find()->where(['status'=>'Pending'])->order(['Quotations.id' => 'DESC']);
 		$items = $this->SalesOrders->Items->find('list')->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
-						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
 					} 
 				)->order(['Items.name' => 'ASC']);
 		$transporters = $this->SalesOrders->Carrier->find('list')->order(['Carrier.transporter_name' => 'ASC']);
 		$employees = $this->SalesOrders->Employees->find('list')->where(['dipartment_id' => 1])->order(['Employees.name' => 'ASC']);
 		$termsConditions = $this->SalesOrders->TermsConditions->find('all');
-		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all')->where(['freeze'=>0])->matching(
+		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all')->where(['SaleTaxes.freeze'=>0])->matching(
 					'SaleTaxCompanies', function ($q) use($st_company_id) {
 						return $q->where(['SaleTaxCompanies.company_id' => $st_company_id]);
 					} 
@@ -456,13 +456,13 @@ class SalesOrdersController extends AppController
 		$quotationlists = $this->SalesOrders->Quotations->find()->where(['status'=>'Pending'])->order(['Quotations.id' => 'DESC']);
 		$items = $this->SalesOrders->Items->find('list')->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
-						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
 					}
 				)->order(['Items.name' => 'ASC']);
 		$transporters = $this->SalesOrders->Carrier->find('list', ['limit' => 200])->order(['Carrier.transporter_name' => 'ASC']);
 		$employees = $this->SalesOrders->Employees->find('list', ['limit' => 200])->order(['Employees.name' => 'ASC']);
 		$termsConditions = $this->SalesOrders->TermsConditions->find('all',['limit' => 200]);
-		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
+		$SaleTaxes = $this->SalesOrders->SaleTaxes->find('all')->where(['SaleTaxes.freeze'=>0]);
 		$Filenames = $this->SalesOrders->Filenames->find()->where(['customer_id' => $salesOrder->customer_id]);
 		
         $this->set(compact('salesOrder', 'customers', 'companies','quotationlists','items','transporters','termsConditions','serviceTaxs','exciseDuty','employees','SaleTaxes','Filenames','financial_year_data'));

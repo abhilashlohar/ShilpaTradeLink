@@ -216,10 +216,22 @@ class QuotationsController extends AppController
 		->select(['revision' => $query->func()->max('Quotations.revision')])->first();
 		$revision=$max->revision;
 		if ($this->request->is(['patch', 'post', 'put'])) {
-            foreach($this->request->data['quotation_rows'] as $quotation_row_id=>$value){
-				$quotationRow=$this->Quotations->QuotationRows->get($quotation_row_id);
-				$quotationRow->height=$value["height"];
-				$this->Quotations->QuotationRows->save($quotationRow);
+			
+			if(!empty($this->request->data['pdf_font_size'])){
+				$pdf_font_size=$this->request->data['pdf_font_size'];
+				$query = $this->Quotations->query();
+					$query->update()
+						->set(['pdf_font_size' => $pdf_font_size])
+						->where(['id' => $id])
+						->execute();
+			}
+			
+			if(!empty($this->request->data['quotation_rows'])){
+				foreach($this->request->data['quotation_rows'] as $quotation_row_id=>$value){
+					$quotationRow=$this->Quotations->QuotationRows->get($quotation_row_id);
+					$quotationRow->height=$value["height"];
+					$this->Quotations->QuotationRows->save($quotationRow);
+			}
 			}
 			return $this->redirect(['action' => 'confirm/'.$id]);
         }
@@ -378,7 +390,7 @@ class QuotationsController extends AppController
 		
 		$items = $this->Quotations->Items->find('list')->order(['Items.name' => 'ASC'])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
-						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
 					}
 				);
 		$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);
@@ -439,7 +451,7 @@ class QuotationsController extends AppController
 		
 		$items = $this->Quotations->Items->find('list')->order(['Items.name' => 'ASC'])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
-						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
 					}
 				);
 		$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);

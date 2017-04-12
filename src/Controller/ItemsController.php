@@ -318,4 +318,86 @@ class ItemsController extends AppController
 		});
 		$this->set(compact('Items'));
 	}
+
+	public function EditCompany($item_id=null)
+    {
+		$this->viewBuilder()->layout('index_layout');	
+		$Companies = $this->Items->Companies->find();
+		$Company_array=[];
+		$Company_array1=[];
+		$Company_array2=[];
+		$Company_array3=[];
+		foreach($Companies as $Company){
+			$Company_exist= $this->Items->ItemCompanies->exists(['item_id' => $item_id,'company_id'=>$Company->id]);
+			if($Company_exist){
+				$item_data= $this->Items->ItemCompanies->find()->where(['item_id' => $item_id,'company_id'=>$Company->id])->first();
+				$Company_array[$Company->id]='Yes';
+				$Company_array1[$Company->id]=$Company->name;
+				$Company_array2[$Company->id]=$item_data->freeze;
+				$Company_array3[$Company->id]=$item_data->serial_number_enable;
+
+			}else{
+
+				$Company_array[$Company->id]='No';
+				$Company_array1[$Company->id]=$Company->name;
+				$Company_array2[$Company->id]=1;
+				$Company_array3[$Company->id]=0;
+			}
+
+		} 
+		$item_data= $this->Items->get($item_id);
+		$this->set(compact('item_data','Companies','customer_Company','Company_array','item_id','Company_array1','Company_array2','Company_array3'));
+
+	}
+	public function ItemFreeze($company_id=null,$item_id=null,$freeze=null)
+	{
+		$query2 = $this->Items->ItemCompanies->query();
+		$query2->update()
+			->set(['freeze' => $freeze])
+			->where(['item_id' => $item_id,'company_id'=>$company_id])
+			->execute();
+
+		return $this->redirect(['action' => 'EditCompany/'.$item_id]);
+	}
+
+public function SerialNumberEnabled($company_id=null,$item_id=null,$item_serial_no=null)
+	{
+		$query2 = $this->Items->ItemCompanies->query();
+		$query2->update()
+			->set(['serial_number_enable' => $item_serial_no])
+			->where(['item_id' => $item_id,'company_id'=>$company_id])
+			->execute();
+
+		return $this->redirect(['action' => 'EditCompany/'.$item_id]);
+	}
+
+public function AddCompany($company_id=null,$item_id=null)
+    {
+		$this->viewBuilder()->layout('index_layout');	
+		
+
+		$ItemCompany = $this->Items->ItemCompanies->newEntity();
+		$ItemCompany->company_id=$company_id;
+		$ItemCompany->item_id=$item_id;
+		$ItemCompany->freeze=0;
+		$ItemCompany->serial_number_enable=1;
+		
+		//pr($ItemCompany); exit;
+		$this->Items->ItemCompanies->save($ItemCompany);
+		
+		return $this->redirect(['action' => 'EditCompany/'.$item_id]);
+	}
+public function CheckCompany($company_id=null,$item_id=null)
+    {
+		$this->viewBuilder()->layout('index_layout');	
+		$this->request->allowMethod(['post', 'delete']);
+
+		$item_Company_dlt= $this->Items->ItemCompanies->find()->where(['ItemCompanies.item_id'=>$item_id,'company_id'=>$company_id])->first();
+
+		$this->Items->ItemCompanies->delete($item_Company_dlt);
+
+		$this->Flash->success(__('Company Deleted Successfully'));
+		return $this->redirect(['action' => 'EditCompany/'.$item_id]);
+	}
+	
 }
