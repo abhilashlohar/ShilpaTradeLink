@@ -40,6 +40,7 @@ class ReceiptsTable extends Table
 
 		$this->belongsTo('VouchersReferences');
         $this->belongsTo('FinancialYears');
+        $this->belongsTo('ReferenceBalances');
 		$this->belongsTo('BankCashes', [
 			'className' => 'LedgerAccounts',
             'foreignKey' => 'bank_cash_id',

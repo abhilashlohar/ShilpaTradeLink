@@ -61,9 +61,9 @@ class ReceiptsController extends AppController
 		
         $receipt = $this->Receipts->newEntity();
         if ($this->request->is('post')) {
+			pr($this->request->data); exit;
             $receipt = $this->Receipts->patchEntity($receipt, $this->request->data);
 			$receipt->company_id=$st_company_id;
-			//$receipt->transaction_date=date("Y-m-d",strtotime($receipt->transaction_date));
 			//Voucher Number Increment
 			$last_voucher_no=$this->Receipts->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_voucher_no){
@@ -180,4 +180,10 @@ class ReceiptsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function fetchRefNumbers($received_from_id=null){
+		$this->viewBuilder()->layout('');
+		$ReferenceBalances=$this->Receipts->ReferenceBalances->find('list');
+		$this->set(compact('ReferenceBalances'));
+	}
 }

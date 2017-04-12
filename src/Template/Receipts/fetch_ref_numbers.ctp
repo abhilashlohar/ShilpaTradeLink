@@ -1,0 +1,1 @@
+<?php echo $this->Form->input('ref_no', ['empty'=>'--Select-','options'=>$ReferenceBalances,'label' => false,'class' => 'form-control input-sm']); ?>

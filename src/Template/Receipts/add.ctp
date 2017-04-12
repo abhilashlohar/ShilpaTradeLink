@@ -103,7 +103,7 @@ $(document).ready(function() {
 	function rename_rows(){
 		var i=0;
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
-			$(this).find("td:nth-child(1) select").select2().attr({name:"receipt_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"});
+			$(this).find("td:eq(0) select.received_from").select2().attr({name:"receipt_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"});
 			$(this).find("td:nth-child(2) input").attr({name:"receipt_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
 			$(this).find("td:nth-child(4) textarea").attr({name:"receipt_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"});
 			i++;
@@ -119,25 +119,40 @@ $(document).ready(function() {
 	
 	$('.addrefrow').live("click",function() {
 		var sel=$(this).closest('tr.main_tr');
-		add_ref_row(sel);
+		var received_from_id=$(this).closest('tr.main_tr').find('td:nth-child(1) select').val();
+		add_ref_row(sel,received_from_id);
 	});
 	
-	function add_ref_row(sel){
+	function add_ref_row(sel,received_from_id){
 		var tr=$("#sample_ref table.ref_table tbody tr").clone();
 		sel.find("table.ref_table tbody").append(tr);
-		rename_ref_rows(sel);
+		rename_ref_rows(sel,received_from_id);
 	}
 	
-	function rename_ref_rows(sel){
-	
+	function rename_ref_rows(sel,received_from_id){
 		var i=0;
 		$(sel).find("table.ref_table tbody tr").each(function(){
-			alert(i);
+			$(this).find("td:nth-child(1) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_type]", id:"ref_rows-"+i+"-ref_type"});
+			var is_select=$(this).find("td:nth-child(2) select").length;
+			var is_input=$(this).find("td:nth-child(2) input").length;
+			if(is_select){
+				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"});
+			}else if(is_input){
+				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"});
+			}
+			
+			$(this).find("td:nth-child(3) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][amount]", id:"ref_rows-"+i+"-amount"});
+			i++;
 		});
 	}
 	
+	$('.deleterefrow').live("click",function() {
+		$(this).closest("tr").remove();
+	});
+	
 	$('.received_from').live("change",function() {
 		var sel=$(this);
+		var sel2=$(this).closest('tr.main_tr');
 		var received_from_id=$(this).find('option:selected').val();
 		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'checkBillToBillAccountingStatus']); ?>";
 		url=url+'/'+received_from_id,
@@ -149,10 +164,28 @@ $(document).ready(function() {
 			if(response.trim()=="Yes"){
 				var ref_table=$("#sample_ref div.ref").clone();
 				$(sel).closest("tr").find("td:nth-child(3)").html(ref_table);
+				rename_ref_rows(sel2,received_from_id);
 			}else{
 				$(sel).closest("tr").find("td:nth-child(3)").html("");
 			}
 		});
+	});
+	
+	$('.ref_type').live("change",function() {
+		var ref_type=$(this).find('option:selected').val();
+		var received_from_id=$(this).closest('tr.main_tr').find('td select:eq(0)').val();
+		if(ref_type=="Agst Ref"){
+			var url="<?php echo $this->Url->build(['controller'=>'Receipts','action'=>'fetchRefNumbers']); ?>";
+			url=url+'/'+received_from_id,
+			$.ajax({
+				url: url,
+				type: 'GET',
+			}).done(function(response) {
+				alert(response);
+			});
+		}else if(ref_type=="New Ref" || ref_type=="Advance"){
+			
+		}
 	});
 	
 });
@@ -184,7 +217,7 @@ $(document).ready(function() {
 		</thead>
 		<tbody>
 			<tr>
-				<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm received_from']); ?></td>
+				<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type']); ?></td>
 				<td class="ref_no"></td>
 				<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount']); ?></td>
 				<td><a class="btn btn-xs btn-default deleterefrow" href="#" role="button"><i class="fa fa-times"></i></a></td>
