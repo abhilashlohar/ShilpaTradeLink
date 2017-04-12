@@ -172,6 +172,7 @@ $(document).ready(function() {
 	});
 	
 	$('.ref_type').live("change",function() {
+		var this=$(this);
 		var ref_type=$(this).find('option:selected').val();
 		var received_from_id=$(this).closest('tr.main_tr').find('td select:eq(0)').val();
 		if(ref_type=="Agst Ref"){
@@ -182,6 +183,7 @@ $(document).ready(function() {
 				type: 'GET',
 			}).done(function(response) {
 				alert(response);
+				//this
 			});
 		}else if(ref_type=="New Ref" || ref_type=="Advance"){
 			
