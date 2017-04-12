@@ -195,7 +195,13 @@ class ChallansController extends AppController
         $customers = $this->Challans->Customers->find('all');
 		$vendors = $this->Challans->Vendors->find('all');
         $companies = $this->Challans->Companies->find('all');
-		$items = $this->Challans->Items->find('list');
+		//$items = $this->Challans->Items->find('list');
+			$items = $this->Challans->Items->find('list')->order(['Items.name' => 'ASC'])->matching(
+					'ItemCompanies', function ($q) use($st_company_id) {
+						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
+					}
+				);
+
         $invoices = $this->Challans->Invoices->find()->where(['company_id'=>$st_company_id]);
 		$invoice_bookings = $this->Challans->InvoiceBookings->find('all');
         $transporters = $this->Challans->Transporters->find('list');
@@ -287,7 +293,13 @@ class ChallansController extends AppController
 				$item_ids[]=$invoice_booking_row->item->id;
 			}
 		}
-		$items = $this->Challans->Items->find('list')->where(['Items.id IN'=>$item_ids]);
+		//$items = $this->Challans->Items->find('list')->where(['Items.id IN'=>$item_ids]);
+			$items = $this->Challans->Items->find('list')->where(['Items.id IN'=>$item_ids])->order(['Items.name' => 'ASC'])->matching(
+					'ItemCompanies', function ($q) use($st_company_id) {
+						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
+					}
+				);
+
         $invoices = $this->Challans->Invoices->find()->where(['company_id'=>$st_company_id]);
 		$invoice_bookings = $this->Challans->InvoiceBookings->find('all');
         $transporters = $this->Challans->Transporters->find('list');

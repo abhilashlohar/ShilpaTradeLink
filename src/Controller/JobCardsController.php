@@ -178,7 +178,7 @@ class JobCardsController extends AppController
 		
 		$items = $this->JobCards->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC'])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
-						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
 					}
 				);
         $this->set(compact('jobCard', 'salesOrders', 'companies','items','financial_year_data'));

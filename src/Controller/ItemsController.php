@@ -115,7 +115,7 @@ class ItemsController extends AppController
                 $this->Flash->success(__('The item has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else { pr($item);exit;
+            } else { 
                 $this->Flash->error(__('The item could not be saved. Please, try again.'));
             }
         }
@@ -225,7 +225,7 @@ class ItemsController extends AppController
 		$ItemLedger = $this->Items->ItemLedgers->newEntity();
 		
 		$Items=$this->Items->find('list')->matching('ItemCompanies', function ($q) use($st_company_id) {
-			return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+			return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
 		});
 		
 		if ($this->request->is('post')) {
@@ -390,13 +390,18 @@ public function CheckCompany($company_id=null,$item_id=null)
     {
 		$this->viewBuilder()->layout('index_layout');	
 		$this->request->allowMethod(['post', 'delete']);
-
-		$item_Company_dlt= $this->Items->ItemCompanies->find()->where(['ItemCompanies.item_id'=>$item_id,'company_id'=>$company_id])->first();
-
-		$this->Items->ItemCompanies->delete($item_Company_dlt);
-
-		$this->Flash->success(__('Company Deleted Successfully'));
-		return $this->redirect(['action' => 'EditCompany/'.$item_id]);
+		
+		$ledgerexist = $this->Items->ItemLedgers->exists(['item_id' => $item_id,'company_id' => $company_id]);
+		
+		if(!$ledgerexist){
+			$item_Company_dlt= $this->Items->ItemCompanies->find()->where(['ItemCompanies.item_id'=>$item_id,'company_id'=>$company_id])->first();
+			$this->Items->ItemCompanies->delete($item_Company_dlt);
+			$this->Flash->success(__('Company Deleted Successfully'));
+			return $this->redirect(['action' => 'EditCompany/'.$item_id]);
+		}else{
+			$this->Flash->error(__('Company Can not Deleted'));
+			return $this->redirect(['action' => 'EditCompany/'.$item_id]);
+		}
 	}
 	
 }

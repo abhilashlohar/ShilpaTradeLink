@@ -220,7 +220,7 @@ class PurchaseOrdersController extends AppController
 		$customers = $this->PurchaseOrders->Customers->find('all')->order(['Customers.customer_name' => 'ASC']);
 		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC'])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
-						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
 					}
 				);
 			
@@ -416,7 +416,7 @@ class PurchaseOrdersController extends AppController
 		$customers = $this->PurchaseOrders->Customers->find('all')->order(['Customers.customer_name' => 'ASC']);
 		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
-						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
 					}
 				);
 		$transporters = $this->PurchaseOrders->Transporters->find('list')->order(['Transporters.transporter_name' => 'ASC']);
