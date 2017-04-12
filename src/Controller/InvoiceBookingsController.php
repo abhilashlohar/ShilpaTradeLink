@@ -129,7 +129,7 @@ class InvoiceBookingsController extends AppController
 			
             if ($this->InvoiceBookings->save($invoiceBooking)) {
 			
-				$i=0; 
+				$i=0;
 				foreach($invoiceBooking->invoice_booking_rows as $invoice_booking_row)
 				{
 				$item_id=$invoice_booking_row->item_id;
@@ -238,7 +238,6 @@ class InvoiceBookingsController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             } else {
-				pr($invoiceBooking); exit;
                 $this->Flash->error(__('The invoice booking could not be saved. Please, try again.'));
             }
         }
@@ -501,7 +500,7 @@ class InvoiceBookingsController extends AppController
 		$this->set(compact(['ReferenceDetails']));
 	}
 	
-	public function deleteReceiptRow($reference_type=null,$old_amount=null,$ledger_account_id=null,$invoice_booking_id=null,$reference_no=null)
+	public function deleteReceiptRow()
     {
 		
 		$reference_type=$this->request->query('reference_type');
@@ -543,6 +542,7 @@ class InvoiceBookingsController extends AppController
 			->execute();
 			
 		}
+		exit;
 	}
 
 }
