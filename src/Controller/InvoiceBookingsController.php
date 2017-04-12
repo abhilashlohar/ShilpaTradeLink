@@ -240,6 +240,7 @@ class InvoiceBookingsController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             } else {
+				pr($invoiceBooking); exit;
                 $this->Flash->error(__('The invoice booking could not be saved. Please, try again.'));
             }
         }
