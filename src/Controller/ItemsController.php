@@ -149,7 +149,6 @@ class ItemsController extends AppController
 	
         if ($this->request->is(['patch', 'post', 'put'])) {
             $item = $this->Items->patchEntity($item, $this->request->data);
-			//pr($item->ob_quantity); exit;
 			$item->ob_quantity=$item->ob_quantity;
             if ($this->Items->save($item)) {
 				$item_id=$item->id;
