@@ -253,7 +253,7 @@ class InvoiceBookingsController extends AppController
 		
 		
 		$companies = $this->InvoiceBookings->Companies->find('all');
-        $grns = $this->InvoiceBookings->Grns->find('list', ['limit' => 200]);
+        $grns = $this->InvoiceBookings->Grns->find('list');
         $this->set(compact('invoiceBooking', 'grns','companies','ledger_account_details','vendor_ledger_acc_id'));
         $this->set('_serialize', ['invoiceBooking']);
     }
