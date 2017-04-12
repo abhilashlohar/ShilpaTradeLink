@@ -161,27 +161,27 @@
 							
 							<td align="center">
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.discount',['value'=>$dis,'type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox']); ?>
-							<input name="discount_per" type="checkbox" class="tooltips per_check" data-original-title="percentages" data-placement="bottom"/> <span class="check_text">In Amount</span>
+							<input name="invoice_booking_rows[<?php echo $q; ?>][discount_per]" type="checkbox" class="tooltips per_check" data-original-title="percentages" data-placement="bottom"/> <span class="check_text">In Amount</span>
 							</td>
 							
 							<td align="center">
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.pnf',['label' => false,'class' => 'form-control input-sm required row_textbox','id'=>'update_pnf','type'=>'text','placeholder' => 'pnf','value'=>0]); ?>
-							<input name="pnf_per" type="checkbox" class="tooltips per_check" data-original-title="percentages" data-placement="bottom"/> <span class="check_text">In Amount</span>
+							<input name="invoice_booking_rows[<?php echo $q; ?>][pnf_per]" type="checkbox" class="tooltips per_check" data-original-title="percentages" data-placement="bottom"/> <span class="check_text">In Amount</span>
 							</td>
 								
 							<td align="center">
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.excise_duty',['value'=>$excise_duty_discount,'type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox']); ?>
-							<input name="excise_duty_per" type="checkbox" class="tooltips per_check" data-original-title="percentages" data-placement="bottom"/> <span class="check_text">In Amount</span>
+							<input name="invoice_booking_rows[<?php echo $q; ?>][excise_duty_per]" type="checkbox" class="tooltips per_check" data-original-title="percentages" data-placement="bottom"/> <span class="check_text">In Amount</span>
 							</td>
 							
 							<td align="center">
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.sale_tax',['value'=>$total_sale,'type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox']); ?>
-							<input name="sale_tax_per" type="checkbox" class="tooltips per_check" data-original-title="percentages" data-placement="bottom"/> <span class="check_text">In Amount</span>
+							<input name="invoice_booking_rows[<?php echo $q; ?>][sale_tax_per]" type="checkbox" class="tooltips per_check" data-original-title="percentages" data-placement="bottom"/> <span class="check_text">In Amount</span>
 							</td>
 							
 							<td align="center">
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.misc',['type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox','value'=>0]); ?>
-							<input name="sale_tax_per" type="checkbox" class="tooltips add_check" data-original-title="subtract" data-placement="bottom"/> <span class="add_check_text">To be add</span>
+							<input name="invoice_booking_rows[<?php echo $q; ?>][misc_per]" type="checkbox" class="tooltips add_check" data-original-title="subtract" data-placement="bottom"/> <span class="add_check_text">To be add</span>
 							</td>
 							
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.total',['type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox','readonly']); ?></td>

@@ -127,8 +127,6 @@ class InvoiceBookingsController extends AppController
 			$invoiceBooking->due_payment=$invoiceBooking->total;
 			//pr($invoiceBooking); exit;
 			
-			
-			
             if ($this->InvoiceBookings->save($invoiceBooking)) {
 			
 				$i=0; 
