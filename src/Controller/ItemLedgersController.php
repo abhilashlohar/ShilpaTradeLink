@@ -247,16 +247,17 @@ class ItemLedgersController extends AppController
 			
 			$sales=[];
 			foreach($salesOrders as $data){
-				
-				$item_id=$data['sales_order_rows'][0]['item_id'];
-				$quantity=$data['sales_order_rows'][0]['quantity'];
-				$processed_quantity=$data['sales_order_rows'][0]['processed_quantity'];
+				foreach($data->sales_order_rows as $row){ 
+				//pr($row->quantity);exit;
+				$item_id=$row->item_id;
+				$quantity=$row->quantity;
+				$processed_quantity=$row->processed_quantity;
 				$Sales_Order_stock=$quantity-$processed_quantity;
-				//pr($Sales_Order_stock);
-				$sales[$item_id]=@$sales[$item_id]+$Sales_Order_stock;
-				
+				$sales[$row->item_id]=@$sales[$row->item_id]+$Sales_Order_stock;
+				}
+				//$sales[$item_id]=@$sales[$item_id]+$Sales_Order_stock;
 			}
-			
+			//pr($sales);exit;
 		$JobCards=$this->ItemLedgers->JobCards->find()->where(['status'=>'Pending'])->contain(['JobCardRows']);
 		
 		$job_card_items=[];
