@@ -127,11 +127,9 @@ class InvoiceBookingsController extends AppController
 			$invoiceBooking->due_payment=$invoiceBooking->total;
 			//pr($invoiceBooking); exit;
 			
-			
-			
             if ($this->InvoiceBookings->save($invoiceBooking)) {
 			
-				$i=0; 
+				$i=0;
 				foreach($invoiceBooking->invoice_booking_rows as $invoice_booking_row)
 				{
 				$item_id=$invoice_booking_row->item_id;
@@ -240,7 +238,6 @@ class InvoiceBookingsController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             } else {
-				pr($invoiceBooking); exit;
                 $this->Flash->error(__('The invoice booking could not be saved. Please, try again.'));
             }
         }
@@ -250,10 +247,10 @@ class InvoiceBookingsController extends AppController
 		$ledger_account_details = $this->InvoiceBookings->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups' => function($q) use($AccountReference){
 			return $q->where(['AccountFirstSubgroups.id'=>$AccountReference->account_first_subgroup_id]);
 		}]])->order(['LedgerAccounts.name' => 'ASC'])->where(['LedgerAccounts.company_id'=>$st_company_id]);
-		//pr($ledger_account_details->toArray()); exit;
+		
 		
 		$companies = $this->InvoiceBookings->Companies->find('all');
-        $grns = $this->InvoiceBookings->Grns->find('list', ['limit' => 200]);
+        $grns = $this->InvoiceBookings->Grns->find('list');
         $this->set(compact('invoiceBooking', 'grns','companies','ledger_account_details','vendor_ledger_acc_id'));
         $this->set('_serialize', ['invoiceBooking']);
     }
@@ -503,7 +500,7 @@ class InvoiceBookingsController extends AppController
 		$this->set(compact(['ReferenceDetails']));
 	}
 	
-	public function deleteReceiptRow($reference_type=null,$old_amount=null,$ledger_account_id=null,$invoice_booking_id=null,$reference_no=null)
+	public function deleteReceiptRow()
     {
 		
 		$reference_type=$this->request->query('reference_type');
@@ -545,6 +542,7 @@ class InvoiceBookingsController extends AppController
 			->execute();
 			
 		}
+		exit;
 	}
 
 }

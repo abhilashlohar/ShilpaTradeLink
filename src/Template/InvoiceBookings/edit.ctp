@@ -1,12 +1,22 @@
 <style>
 .row_textbox{
-	width: 80px;
+	width: 100px;
+}
+.check_text{
+	font-size:9px;
+}
+.add_check_text{
+	font-size:9px;
 }	
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
 	vertical-align: top !important;
 }
 </style>
 <?php 
+$this->Form->templates([
+				'inputContainer' => '{{content}}'
+			]);
+			
     if($financial_year_data['Response'] == "Close" ){
  			echo "Financial Year Closed"; 
 
@@ -98,20 +108,22 @@
 					</div>
 						
 				</div>
-				
+				<div style="overflow: auto;">
 				<table class="table tableitm" id="main_tb">
 				<thead>
 					<tr>
 						<th width="50">Sr.No. </th>
-						<th width="170">Items</th>
+						<th style="white-space: nowrap;">Items</th>
 						<th width="100">Unit Rate From PO</th>
-						<th width="70">Discount</th>
-						<th  width="100">P & F</th>
-						<th  width="100">Excise Duty</th>
-						<th  width="70" >CST</th>
-						<th>Quantity</th>
-						<th>Rate</th>
-						<th>Amount</th>
+						<th width="100">Quantity</th>
+						<th width="100">Amount</th>
+						<th width="100">Discount</th>
+						<th width="100">P & F</th>
+						<th width="100">Excise Duty</th>
+						<th width="100">CST</th>
+						<th width="100">Misc</th>
+						<th width="100">Total</th>
+						<th width="100">Rate to be post</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -120,30 +132,59 @@
 						<tr class="tr1" row_no='<?php echo @$invoice_booking_row->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 							
-							<td><?php echo $invoice_booking_row->item->name; ?>
+							<td style="white-space: nowrap;"><?php echo $invoice_booking_row->item->name; ?>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value' => @$invoice_booking_row->item->id,'popup_id'=>$q]); ?>
 							</td>
 							
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.unit_rate_from_po',['value'=>$invoice_booking_row->unit_rate_from_po,'type'=>'text','label'=>false,'class'=>'row_textbox']); ?></td>
-								
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.discount',['value'=>$invoice_booking_row->discount,'label'=>false,'type'=>'text','class'=>'row_textbox']); ?></td>
-								
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.pnf',['value'=> $invoice_booking_row->pnf,'label'=>false,'type'=>'text','class'=>'row_textbox']); ?></td>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.unit_rate_from_po',['value'=>$invoice_booking_row->unit_rate_from_po,'type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox']); ?></td>
 							
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.excise_duty',['value'=>$invoice_booking_row->excise_duty,'label'=>false,'type'=>'text','class'=>'row_textbox']); ?></td>
-							
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.sale_tax',['value'=>$invoice_booking_row->sale_tax,'label'=>false,'type'=>'text','class'=>'row_textbox']); ?></td>
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.quantity',['label' => false,'class' => 'form-control input-sm','type'=>'text','value'=>$invoice_booking_row->quantity,'readonly']); ?></td>
 							
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.rate',['label' => false,'class' => 'form-control input-sm','value'=>$invoice_booking_row->rate,'type'=>'text','readonly']); ?></td>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.amount',['label' => false,'class' => 'form-control input-sm row_textbox','type'=>'text','readonly']); ?></td>
+								
+							<td>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.discount',['value'=>$invoice_booking_row->discount,'label'=>false,'type'=>'text','class'=>'form-control input-sm row_textbox']); ?>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.discount_per',['label'=>false,'type'=>'checkbox','class'=>'per_check']); ?>
+							<span class="check_text">In Amount</span>
 							
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.amount',['label' => false,'class' => 'form-control input-sm','type'=>'text','readonly']); ?></td>
+							</td>
+								
+							<td>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.pnf',['value'=> $invoice_booking_row->pnf,'label'=>false,'type'=>'text','class'=>'form-control input-sm row_textbox']); ?>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.pnf_per',['label'=>false,'type'=>'checkbox','class'=>'per_check']); ?>
+							<span class="check_text">In Amount</span>
+							</td>
+							
+							<td>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.excise_duty',['value'=>$invoice_booking_row->excise_duty,'label'=>false,'type'=>'text','class'=>'form-control input-sm row_textbox']); ?>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.excise_duty_per',['label'=>false,'type'=>'checkbox','class'=>'per_check']); ?>
+							<span class="check_text">In Amount</span>
+							</td>
+							
+							<td>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.sale_tax',['value'=>$invoice_booking_row->sale_tax,'label'=>false,'type'=>'text','class'=>'form-control input-sm row_textbox']); ?>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.sale_tax_per',['label'=>false,'type'=>'checkbox','class'=>'per_check']); ?>
+							<span class="check_text">In Amount</span>
+							</td>
+							
+							<td>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.misc',['value'=>$invoice_booking_row->misc,'label'=>false,'type'=>'text','class'=>'form-control input-sm row_textbox']); ?>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.misc_per',['label'=>false,'type'=>'checkbox','class'=>'add_check']); ?>
+							<span class="add_check_text">To be add</span>
+							</td>
+							
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.total',['label' => false,'class' => 'form-control input-sm row_textbox','type'=>'text','readonly']); ?></td>
+							
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.rate',['label' => false,'class' => 'form-control input-sm row_textbox','value'=>$invoice_booking_row->rate,'type'=>'text','readonly']); ?></td>
+							
+							
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$invoice_booking_row->id; ?>'>
-							<td colspan="9">
+							<td colspan="11">
 							<?php echo $this->Text->autoParagraph(h($invoice_booking_row->description)); ?>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.description',['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value'=>$invoice_booking_row->description]); ?>
 							</td>
+							<td></td>
 						</tr>
 
 					<?php $q++;  endforeach; ?>
@@ -151,12 +192,13 @@
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="9" align="right"><b>Total</b></td>
+						<td colspan="10" align="right"><b>Total</b></td>
 						<td><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','readonly']); ?></td>
 						<td></td>
 					</tr>
 				</tfoot>
 			</table>
+			</div>
 			<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
@@ -313,32 +355,85 @@
 <script>
 $(document).ready(function() {
 	//--------- FORM VALIDATION
+   
+	$('.per_check').die().live("click",function() {
+		if($(this).is(':checked')==true){
+			$(this).closest('td').find('span.check_text').text('In percentages');
+		}else{
+			$(this).closest('td').find('span.check_text').text('In amount');
+		}
+		calculate_total();
+    });
+	
+	$('.add_check').die().live("click",function() {
+		if($(this).is(':checked')==true){
+			$(this).closest('td').find('span.add_check_text').text('To be subtract');
+		}else{
+			$(this).closest('td').find('span.add_check_text').text('To be add');
+		}
+		calculate_total();
+    });
+	
    calculate_total();
 	$('#main_tb input').die().live("keyup",function() { 
 		calculate_total();
     });
 	function calculate_total(){
-		var total=0;
+		var row_total=0;
 		$("#main_tb tbody tr.tr1").each(function(){
-			var unit_rate_po=parseFloat($(this).find("td:nth-child(3) input").val());
-			var discount=parseFloat($(this).find("td:nth-child(4) input").val());
-			var pnf=parseFloat($(this).find("td:nth-child(5) input").val());
-			var ex=parseFloat($(this).find("td:nth-child(6) input").val());
-			var saletax=parseFloat($(this).find("td:nth-child(7) input").val());
-			
-			var t_rate=unit_rate_po-discount+pnf+ex+saletax;
-			t_rate=t_rate.toFixed(2);
+			var urate=parseFloat($(this).find("td:nth-child(3) input").val());
+			var qty=parseFloat($(this).find("td:nth-child(4) input").val());
+			var amount=urate*qty;
+			$(this).find("td:nth-child(5) input").val(amount.toFixed(2));
 		
-			$(this).find("td:nth-child(9) input").val(t_rate);
-			var qty=$(this).find("td:nth-child(8) input").val();
+			var discount=parseFloat($(this).find("td:nth-child(6) input").val());
+			if($(this).find('td:nth-child(6) input[type="checkbox"]').is(':checked')==true){
+				var amount_after_discount=amount*(100-discount)/100;
+			}else{
+				var amount_after_discount=amount-discount;
+			}
 			
-			r_total=qty*t_rate;
-			$(this).find("td:nth-child(10) input").val(r_total.toFixed(2));
-			total=total+r_total;
+			var pnf=parseFloat($(this).find("td:nth-child(7) input").val());
+			if($(this).find('td:nth-child(7) input[type="checkbox"]').is(':checked')==true){
+				var amount_after_pnf=amount_after_discount*(100+pnf)/100;
+			}else{
 			
+				var amount_after_pnf=amount_after_discount+pnf;
+			}
+			
+			var ex=parseFloat($(this).find("td:nth-child(8) input").val());
+			if($(this).find('td:nth-child(8) input[type="checkbox"]').is(':checked')==true){
+				var amount_after_ex=amount_after_pnf*(100+ex)/100;
+			}else{
+				var amount_after_ex=amount_after_pnf+ex;
+			}
+			
+			var saletax=parseFloat($(this).find("td:nth-child(9) input").val());
+			if($(this).find('td:nth-child(9) input[type="checkbox"]').is(':checked')==true){
+				var amount_after_saletax=amount_after_ex*(100+saletax)/100;
+			}else{
+				var amount_after_saletax=amount_after_ex+saletax;
+			}
+			
+			var misc=parseFloat($(this).find("td:nth-child(10) input").val());
+			if($(this).find('td:nth-child(10) input[type="checkbox"]').is(':checked')==true){
+				var amount_after_misc=amount_after_saletax-misc;
+			}else{
+				var amount_after_misc=amount_after_saletax+misc;
+			}
+			
+			
+			$(this).find("td:nth-child(11) input").val(amount_after_misc.toFixed(2));
+			row_total=row_total+amount_after_misc;
+			
+			$(this).find("td:nth-child(12) input").val((amount_after_misc/qty).toFixed(5));
 		});
-		$('input[name="total"]').val(total.toFixed(2));
+		$('input[name="total"]').val(row_total.toFixed(2));
 	}
+   
+   
+   
+   
 			$( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 			var credit=parseFloat($(this).val());
 			var amount=$(this).closest('tr').find('select[name="against_references_no"] option:selected').attr('amount');
