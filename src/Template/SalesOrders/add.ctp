@@ -736,12 +736,13 @@ $(document).ready(function() {
 			}
 		});
 	}
-
+	put_code_description();
 	function put_code_description(){
 			var i=0;
 			$("#main_tb tbody#main_tbody tr.tr2").each(function(){
+				var row_no=$(this).attr('row_no');		
 				var code=$(this).find('div#summer'+i).code();
-				$(this).find('td:nth-child(1) textarea').val(code);
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').find('td:nth-child(1) textarea').val(code);
 			i++; });
 		}
 	

@@ -423,7 +423,7 @@ class InvoicesController extends AppController
 			}else{
 				$invoice->due_payment=$invoice->grand_total-$invoice->total_amount_agst;
 			}
-			
+			//pr($invoice); exit;
             if ($this->Invoices->save($invoice)) {
 				
 				//GET CUSTOMER LEDGER-ACCOUNT-ID

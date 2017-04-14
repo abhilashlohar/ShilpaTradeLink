@@ -108,9 +108,10 @@ class LedgersController extends AppController
         $ledger = $this->Ledgers->get($id, [
             'contain' => ['LedgerAccounts']
         ]);
+
 		
 		$ReferenceBalance=$this->Ledgers->ReferenceBalances->find()->where(['ledger_account_id'=>$ledger->ledger_account_id,'reference_no'=>$ledger->ref_no])->first();
-		
+		//pr($ReferenceBalance); exit;
 		$ref_bal_diff=abs($ReferenceBalance->credit-$ReferenceBalance->debit);
 		$ledger_diff=abs($ledger->credit-$ledger->debit);
 		

@@ -25,12 +25,15 @@
 					</thead>
 					<tbody>
 						<?php $i=0; foreach($material_report as $data){
-		$i++;
+							$i++;
 							$item_name=$data['item_name'];
 							$item_id=$data['item_id'];
 							$Current_Stock=$data['Current_Stock'];
 							$sales_order=$data['sales_order'];
 							$job_card_qty=$data['job_card_qty'];
+							//pr($Current_Stock);
+							//pr($sales_order);
+							//pr($job_card_qty); exit;
 
 						?>
 						<tr class="tr1" row_no='<?php echo @$i; ?>'>

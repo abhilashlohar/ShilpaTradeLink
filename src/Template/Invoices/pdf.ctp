@@ -133,6 +133,11 @@ $html.='
 										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top">:</td>
 										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top">'. h($invoice->transporter->transporter_name) .'</td>
 									</tr>
+									<tr>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top" style="vertical-align: top;"></td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top">:</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top">'. h($invoice->delivery_description) .'</td>
+									</tr>
 								</table>
 							</td>
 						</tr>

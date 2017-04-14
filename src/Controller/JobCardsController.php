@@ -100,10 +100,7 @@ class JobCardsController extends AppController
 			foreach($jobCard->job_card_rows as $job_card_row){
 					$job_card_row->sales_order_id=$sales_order_id;
 				}
-				
 			if ($this->JobCards->save($jobCard)) {
-				
-				//pr($jobCard); exit;
 					$query = $this->JobCards->SalesOrders->query();
 					$query->update()
 						->set(['job_card_status' => 'Converted'])
@@ -146,7 +143,7 @@ class JobCardsController extends AppController
 				},'JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
         ]);
 		
-
+	
 		$Em = new FinancialYearsController;
 	    $financial_year_data = $Em->checkFinancialYear($jobCard->created_on);
 				

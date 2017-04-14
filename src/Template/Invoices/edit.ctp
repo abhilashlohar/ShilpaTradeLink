@@ -1,3 +1,4 @@
+
 <?php if($financial_year_data['Response'] == "Close" ){
  			echo "Financial Year Closed"; 
 
@@ -81,14 +82,36 @@
 							<?php echo $this->Form->input('lr_no', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'LR No']); ?>
 						</div>
 					</div>
-					<br/>
+					<br/><br/>
 					<div class="form-group">
 						<label class="col-md-3 control-label">Salesman  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
 							<?php echo @$invoice->employee->name; ?>
 						</div>
+					</div><br/>
+					<div class="form-group">
+						<label class="col-md-3 control-label">Carrier <span class="required" aria-required="true">*</span></label>
+						<div class="col-md-9">
+							<?php echo $this->Form->input('transporter_id', ['empty' => "--Select--",'label' => false,'options' => $transporters,'class' => 'form-control input-sm select2me','value' => @$invoice->transporter_id]); ?>
+						</div>
 					</div>
 				</div>
+				</div><br/>
+				<div class="row">
+				<div class="col-md-6">
+				
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="col-md-3  control-label">Delivery Description <span class="required" aria-required="true">*</span></label>
+						<div class="col-md-9">
+						<?php echo $this->Form->input('delivery_description', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Delivery Description','value'=>$invoice->delivery_description]); ?>
+						</div>
+					</div>
+				</div>
+				
+			</div><br/>
+				
 			</div><br/>
 			<div class="row">
 				<div class="col-md-6">
@@ -213,7 +236,7 @@
 						</tr>
 						<tr class="tr2" row_no="<?= h($q) ?>">
 							<td colspan="7">
-							<div contenteditable="true" id="editor" ><?php echo @$descriptions[$sales_order_row->item_id]; ?></div>
+							<div contenteditable="true" class="note-editable" id="summer<?php echo $q; ?>" ><?php echo @$descriptions[$sales_order_row->item_id]; ?></div>
 							<?php echo $this->Form->input('q', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm ','placeholder'=>'Description','style'=>['display:none'],'value' => @$descriptions[$sales_order_row->item_id],'readonly','required']); ?>
 							
 							
@@ -837,6 +860,7 @@ $(document).ready(function() {
 		},
 
 		invalidHandler: function (event, validator) { //display error alert on form submit   
+			put_code_description();
 			success3.hide();
 			error3.show();
 			$("#add_submit").removeAttr("disabled");
@@ -859,6 +883,7 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			put_code_description();
 			var amount=parseFloat($('input[name="grand_total"]').val());
 		
 				var credit=0;
@@ -918,7 +943,7 @@ $(document).ready(function() {
 	
 	$('.rename_check').die().live("click",function() {
 		rename_rows(); calculate_total();
-		
+		 put_code_description();
     });
 	
 	$('.addrow').die().live("click",function() { 
@@ -933,18 +958,25 @@ $(document).ready(function() {
 	function rename_rows(){
 	
 		var list = new Array();
-		
+		var i=0; 
 		$("#main_tb tbody tr.tr1").each(function(){
 			var row_no=$(this).attr('row_no');
+			
 			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
 			if(val){
+				$(this).find("td:nth-child(1)").html(++i); i--;
 				$(this).find('td:nth-child(2) input').attr("name","invoice_rows["+val+"][item_id]").attr("id","invoice_rows-"+val+"-item_id").rules("add", "required");
 				$(this).find('td:nth-child(3) input').removeAttr("readonly").attr("name","invoice_rows["+val+"][quantity]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-quantity").rules("add", "required");
 				$(this).find('td:nth-child(4) input').attr("name","invoice_rows["+val+"][rate]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-rate").rules("add", "required");
 				$(this).find('td:nth-child(5) input').attr("name","invoice_rows["+val+"][amount]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-amount").rules("add", "required");
 				
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').removeAttr("readonly").attr("name","invoice_rows["+val+"][description]").attr("id","invoice_rows-"+val+"-description").rules("add", "required");
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) div#editor').attr("name","invoice_rows["+val+"][description]").attr("id","invoice_rows-"+val+"-description");
+				var htm=$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] >td').find('div.note-editable').html();
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').closest('td').html('');
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<div id=summer'+row_no+'>'+htm+'</div>');
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('div#summer'+row_no).summernote();
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<textarea name="invoice_rows['+val+'][description]"style="display:none;"></textarea>');
+				$(this).css('background-color','#fffcda');
+				
 				
 				$(this).css('background-color','#fffcda');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
@@ -968,17 +1000,19 @@ $(document).ready(function() {
 				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				
 			}else{
+				$(this).find("td:nth-child(1)").html(++i); i--;
 				$(this).find('td:nth-child(2) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(3) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(4) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(5) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).css('background-color','#FFF');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
-				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#FFF');
-				
+				var serial_l=$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').length;
+				if(serial_l>0){
 				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] select').attr({ name:"q", readonly:"readonly"}).select2().rules( "remove", "required" );
+				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#FFF');
+				}
 			}
 			var unique=list.filter(function(itm,i,a){
 				return i==a.indexOf(itm);
@@ -986,6 +1020,22 @@ $(document).ready(function() {
 
 			$("#checked_row_length").val(unique.length);
 			calculate_total();
+			i++;
+		});
+		
+	}
+	
+	
+		function put_code_description(){
+		var i=0;
+			$("#main_tb tbody tr.tr1").each(function(){  
+				var row_no=$(this).attr('row_no');			
+				var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
+				if(val){
+				var code=$('#main_tb tbody tr.tr2').find('div#summer'+row_no).code();
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').find('td:nth-child(1) textarea').val(code);
+				}
+			i++; 
 		});
 		
 	}

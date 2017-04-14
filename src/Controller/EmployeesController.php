@@ -77,6 +77,7 @@ class EmployeesController extends AppController
 			$employee->date_of_anniversary=date("Y-m-d",strtotime($employee->date_of_anniversary));
 			$employee->join_date=date("Y-m-d",strtotime($employee->join_date));
 			$employee->permanent_join_date=date("Y-m-d",strtotime($employee->permanent_join_date));
+			
 			$file = $this->request->data['signature'];
 			$ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
 			$arr_ext = array('jpg', 'jpeg', 'png'); //set allowed extensions
@@ -227,7 +228,8 @@ class EmployeesController extends AppController
 
 			}
 		}
-		$this->set(compact('Companies','customer_Company','Company_array','employee_id','Company_array1'));
+		$employe_data= $this->Employees->get($employee_id);
+		$this->set(compact('employe_data','Companies','customer_Company','Company_array','employee_id','Company_array1'));
 
 	}
 	

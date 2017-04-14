@@ -412,7 +412,7 @@ class SalesOrdersController extends AppController
 			$salesOrder->edited_on=date("Y-m-d");
 			$salesOrder->edited_on_time= date("Y-m-d h:i:sA");
 			
-
+			//pr($salesOrder); exit;
 
 
             if ($this->SalesOrders->save($salesOrder)) {
@@ -440,7 +440,7 @@ class SalesOrdersController extends AppController
 				
                 $this->Flash->success(__('The sales order has been saved.'));
 				return $this->redirect(['action' => 'confirm/'.$salesOrder->id]);
-            } else {
+            } else { pr($salesOrder); exit;
                 $this->Flash->error(__('The sales order could not be saved. Please, try again.'));
             }
         }

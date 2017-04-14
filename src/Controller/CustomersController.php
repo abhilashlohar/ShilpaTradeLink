@@ -284,10 +284,8 @@ class CustomersController extends AppController
 
 			}
 		}
-		
-		//$customer_Company = $this->Customers->Companies->CustomerCompanies->find()->where(['CustomerCompanies.customer_id'=>$customer_id]);
-			//pr($Company_array1); exit;
-		$this->set(compact('Companies','customer_Company','Company_array','customer_id','Company_array1'));
+		$customer_data= $this->Customers->get($customer_id);
+		$this->set(compact('Companies','customer_Company','Company_array','customer_id','Company_array1','customer_data'));
 
 	}
 	
@@ -297,6 +295,7 @@ class CustomersController extends AppController
 		 $this->request->allowMethod(['post', 'delete']);
 		
 		$customer_ledger= $this->Customers->LedgerAccounts->find()->where(['source_model' => 'Customers','source_id'=>$customer_id,'company_id'=>$company_id])->first();
+//pr($customer_ledger); exit;
 		$ledgerexist = $this->Customers->Ledgers->exists(['ledger_account_id' => $customer_ledger->id]);
 				
 		if(!$ledgerexist){

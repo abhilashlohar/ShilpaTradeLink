@@ -125,14 +125,29 @@ $('.closetin').on("click",function() {
 
 			<div class="row">
 				<div class="col-md-6">
+				
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="col-md-3  control-label">Delivery Description <span class="required" aria-required="true">*</span></label>
+						<div class="col-md-9">
+						<?php echo $this->Form->input('delivery_description', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Delivery Description','value'=>$sales_order->delivery_description]); ?>
+						</div>
+					</div>
+				</div>
+				
+			</div><br/>
+			
+			<div class="row">
+			<div class="col-md-6">
 				<div class="form-group">
 						<label class="col-md-3 control-label">Customer PO NO  </label>
 						<div class="col-md-9">
 								<?php echo $sales_order->customer_po_no; ?>
 						</div>
 					</div>
-				</div>
-				<div class="col-md-6">
+			</div>
+			<div class="col-md-6">
 					<div class="form-group">
 						<label class="col-md-3 control-label">PO DATE  <span class="required" aria-required="true">*</span></label>
 						<div class="col-md-9">
@@ -141,8 +156,7 @@ $('.closetin').on("click",function() {
 						</div>
 					</div>
 				</div>
-			</div><br/>
-			
+			</div>
 			<div class="row">
 			<?php if($sales_order->road_permit_required=='Yes') {?>
 				<div class="col-md-6">
@@ -185,7 +199,7 @@ $('.closetin').on("click",function() {
 					$q=0; foreach ($sales_order->sales_order_rows as $sales_order_rows): 
 						$ed_des[]=$sales_order_rows->excise_duty;
 					?>
-						<tr class="tr1" row_no='<?php echo @$sales_order_rows->id; ?>'>
+						<tr class="tr1  firsttr " row_no='<?php echo @$sales_order_rows->id; ?>'>
 						
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
 							<td>
@@ -203,9 +217,10 @@ $('.closetin').on("click",function() {
 								<?php echo $this->Form->input('st_ledger_account_id', ['type' => 'hidden','label' => false,'value' => @$sale_tax_ledger_accounts[$sales_order_rows->sale_tax->id]]); ?>
 							</td>
 						</tr>
-						<tr class="tr2" row_no='<?php echo @$sales_order_rows->id; ?>'>
+						<tr class="tr2  secondtr" row_no='<?php echo @$sales_order_rows->id; ?>'>
 							<td colspan="5">
-							<div contenteditable="true" id="editor" ><?php echo @$sales_order_rows->description; ?></div>
+
+							<div contenteditable="true" class="note-editable" id="summer<?php echo $q; ?>"><?php echo @$sales_order_rows->description; ?></div>
 							<?php echo $this->Form->input('q', ['label' => false,'type' => 'textarea','class' => 'form-control input-sm ','placeholder'=>'Description','style'=>['display:none'],'value' => @$sales_order_rows->description,'readonly','required']); ?>
 							</td>
 							<td></td>
@@ -753,6 +768,7 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 		},
 
 		invalidHandler: function (event, validator) { //display error alert on form submit   
+			put_code_description();
 			success3.hide();
 			error3.show();
 			$("#add_submit").removeAttr("disabled");
@@ -775,6 +791,7 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 		},
 
 		submitHandler: function (form) {
+			put_code_description()
 			var amount=parseFloat($('input[name="grand_total"]').val());
 				var credit=0;
 				$('input[name="credit[]"]').each(function () {
@@ -934,24 +951,31 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 	<?php if($process_status!="New"){ ?>
 	function rename_rows(){
 		var list = new Array();
-		$("#main_tb tbody tr.tr1").each(function(){
+		
+		$("#main_tb tbody tr.tr1").each(function(){  
 			var row_no=$(this).attr('row_no');
+			
 			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
-			
-			if(val){ 
-			
+			if(val){
+				
 				$(this).find('td:nth-child(2) input').attr("name","invoice_rows["+val+"][item_id]").attr("id","invoice_rows-"+val+"-item_id").rules("add", "required");
 				$(this).find('td:nth-child(3) input').removeAttr("readonly").attr("name","invoice_rows["+val+"][quantity]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-quantity").rules("add", "required");
 				$(this).find('td:nth-child(4) input').attr("name","invoice_rows["+val+"][rate]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-rate").rules("add", "required");
 				$(this).find('td:nth-child(5) input').attr("name","invoice_rows["+val+"][amount]").attr("id","q"+val).attr("id","invoice_rows-"+val+"-amount").rules("add", "required");
 				
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').removeAttr("readonly").attr("name","invoice_rows["+val+"][description]").attr("id","invoice_rows-"+val+"-description").rules("add", "required");
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) div#editor').attr("name","invoice_rows["+val+"][description]").attr("id","invoice_rows-"+val+"-description");
 				
+				var htm=$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] >td').find('div.note-editable').html();
+				
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').closest('td').html('');
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<div id=summer'+row_no+'>'+htm+'</div>');
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').find('div#summer'+row_no).summernote();
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<textarea name="invoice_rows['+val+'][description]"style="display:none;"></textarea>');
 				$(this).css('background-color','#fffcda');
+				
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				var qty=$(this).find('td:nth-child(3) input[type="text"]').val();
 				var serial_l=$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').length;
+				
 				if(serial_l>0){
 					$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').removeAttr("readonly").attr("name","invoice_rows["+val+"][item_serial_numbers][]").attr("id","invoice_rows-"+val+"-item_serial_no").attr('maxlength',qty).select2().rules('add', {
 						    required: true,
@@ -963,26 +987,25 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 							}
 					});
 				}
-				
-				
 				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				var s_tax=$(this).find('td:nth-child(6)').text();
 				
 				list.push(s_tax);
-			}else{
+			
+			}
+			else{
 				$(this).find('td:nth-child(2) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(3) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(4) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(5) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
-				
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1) textarea').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
-				
-				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] select').attr({ name:"q", readonly:"readonly"}).select2().rules( "remove", "required" );
-				
 				$(this).css('background-color','#FFF');
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
-
+				var serial_l=$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').length;
+				if(serial_l>0){
+				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] select').attr({ name:"q", readonly:"readonly"}).select2().rules( "remove", "required" );
 				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"]').css('background-color','#FFF');
+				}
+				
 			}
 			
 			var unique=list.filter(function(itm,i,a){
@@ -996,7 +1019,20 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 	
 	
 	
-	//
+	function put_code_description(){
+		var i=0;
+			$("#main_tb tbody tr.tr1").each(function(){ 
+				var row_no=$(this).attr('row_no');			
+				var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
+				
+				if(val){
+				var code=$('#main_tb tbody tr.tr2').find('div#summer'+val).code();
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').find('td:nth-child(1) textarea').val(code);
+				}
+			i++; 
+		});
+		
+	}
 	
 	
 	function calculate_total(){

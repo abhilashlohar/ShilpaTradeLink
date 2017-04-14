@@ -33,20 +33,20 @@
 						<td><?php echo $c_namrr; ?></td>
 						<td class="actions">
 						 	<?php if($Company_array =='Yes') { ?>
-							 <?= $this->Form->postLink('Remove ',
+							 <?= $this->Form->postLink('Added ',
 								['action' => 'CheckCompany', $key,$item_id],
 								[
 									'escape' => false,
-									'class'=>'btn red tooltips',
+									'class'=>' red tooltips','data-original-title'=>'Click To Removed'
 									
 								]
 							) ?>
 							<?php  } else { ?>
-							<?= $this->Form->postLink(' Add ',
+							<?= $this->Form->postLink(' Removed ',
 								['action' => 'AddCompany', $key,$item_id],
 								[
 									'escape' => false,
-									'class'=>'btn blue tooltips',
+									'class'=>' blue tooltips','data-original-title'=>'Click To Added'
 									
 								]
 							) ?>
@@ -54,21 +54,21 @@
 						</td>
 						
 						<td class="actions">
-						 	<?php if($bill_to_bill =='No' && $Company_array=='Yes') { ?>
-							 <?= $this->Form->postLink('Yes ',
+						 	<?php if($bill_to_bill ==0 && $Company_array=='Yes') { ?>
+							 <?= $this->Form->postLink('Unfreezed ',
 								['action' => 'ItemFreeze', $key,$item_id,$bill_to_bill="1"],
 								[
 									'escape' => false,
-									'class'=>'btn blue tooltips',
+									'class'=>' blue tooltips','data-original-title'=>'Click To Freeze'
 									
 								]
 							) ?>
 							<?php  } else if($Company_array=='Yes')  { ?>
-							<?= $this->Form->postLink(' No ',
+							<?= $this->Form->postLink('Freezed ',
 								['action' => 'ItemFreeze', $key,$item_id,$bill_to_bill="0"],
 								[
 									'escape' => false,
-									'class'=>'btn red tooltips',
+									'class'=>' red tooltips','data-original-title'=>'Click To Unfreeze'
 									
 								]
 							) ?>
@@ -76,20 +76,20 @@
 						</td>
 						<td class="actions">
 						 	<?php if($item_serial_no ==0 && $Company_array=='Yes') { ?>
-							 <?= $this->Form->postLink('Enabled ',
+							 <?= $this->Form->postLink('Disabled ',
 								['action' => 'SerialNumberEnabled', $key,$item_id,$item_serial_no="1"],
 								[
 									'escape' => false,
-									'class'=>'btn blue tooltips',
+									'class'=>' blue tooltips','data-original-title'=>'Click To Enable'
 									
 								]
 							) ?>
 							<?php  } else if($Company_array=='Yes')  { ?>
-							<?= $this->Form->postLink(' Disabled ',
+							<?= $this->Form->postLink(' Enabled ',
 								['action' => 'SerialNumberEnabled', $key,$item_id,$item_serial_no="0"],
 								[
 									'escape' => false,
-									'class'=>'btn red tooltips',
+									'class'=>' red tooltips','data-original-title'=>'Click To Disable'
 									
 								]
 							) ?>

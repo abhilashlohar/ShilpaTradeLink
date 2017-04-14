@@ -139,7 +139,9 @@
 					$q=0; foreach ($salesOrder->sales_order_rows as $sales_order_rows): 
 					if(@$item_ar[$sales_order_rows->item_id]==$sales_order_rows->quantity){
 						$disable_class="disabledbutton";
-					}else{ $disable_class=""; } ?>
+					}else{ $disable_class=""; } 
+					
+					?>
 					<tr class="tr1 <?php echo $disable_class; ?> main_tr" row_no='<?php echo @$sales_order_rows->id; ?>'>
 						<td rowspan="2"><?= h($q) ?></td>
 						<td>						
@@ -165,6 +167,9 @@
 							</div>
 							<?php echo $this->Form->input('sales_order_rows.'.$q.'.height', ['type' => 'hidden','value' => @$sales_order_rows->height]); ?>
 							<?php echo $this->Form->input('sales_order_rows.'.$q.'.processed_quantity', ['type' => 'hidden','value'=>$sales_order_rows->processed_quantity]); ?>
+							
+							<?php echo $this->Form->input('sales_order_rows.'.$q.'.source_type', ['type' => 'hidden','value'=>$sales_order_rows->source_type]); ?>
+							
 							<?php 
 							$job_card_row_ids=[];
 							$inventory_voucher_row_ids=[];
@@ -172,14 +177,12 @@
 								$job_card_row_ids[]=$job_card_row->id;
 							}
 							
-							
 							$job_card_row_ids=implode(',',$job_card_row_ids); 
 							?> 
-							
+							<?php //pr($job_card_row_ids); ?>
 							<?php echo $this->Form->input('sales_order_rows.'.$q.'.job_card_row_ids', ['type' => 'hidden','value'=>$job_card_row_ids]); ?>
 							
 							
-							<?php echo $this->Form->input('sales_order_rows.'.$q.'.source_type', ['type' => 'hidden','value'=>$sales_order_rows->source_type]); ?>
 							
 						</td>
 						
@@ -665,6 +668,8 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
 			$(this).find("td:nth-child(2) input[type=hidden]:eq(0)").attr({name:"sales_order_rows["+i+"][height]", id:"sales_order_rows-"+i+"-height"});
 			$(this).find("td:nth-child(2) input[type=hidden]:eq(1)").attr({name:"sales_order_rows["+i+"][processed_quantity]", id:"sales_order_rows-"+i+"-processed_quantity"});
+			$(this).find("td:nth-child(2) input[type=hidden]:eq(2)").attr({name:"sales_order_rows["+i+"][source_type]", id:"sales_order_rows-"+i+"-source_type"});
+			$(this).find("td:nth-child(2) input[type=hidden]:eq(3)").attr({name:"sales_order_rows["+i+"][job_card_row_ids]", id:"sales_order_rows-"+i+"-job_card_row_ids"});
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);

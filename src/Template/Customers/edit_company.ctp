@@ -2,7 +2,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">EDIT COMPANY</span>
+			<span class="caption-subject font-blue-steel uppercase">EDIT COMPANY FOR : "<?php echo $customer_data->customer_name ?>"</span>
 		</div>
 	</div>
 	<div class="portlet-body" >
@@ -27,20 +27,20 @@
 						<td><?php echo $c_namrr; ?></td>
 						<td class="actions">
 						 	<?php if($Company_array =='Yes') { ?>
-							 <?= $this->Form->postLink('Delete ',
+							 <?= $this->Form->postLink('Added ',
 								['action' => 'CheckCompany', $key,$customer_id],
 								[
 									'escape' => false,
-									'class'=>'btn red tooltips',
+									'class'=>' red tooltips','data-original-title'=>'Click To Removed'
 									
 								]
 							) ?>
 							<?php  } else { ?>
-							<?= $this->Form->postLink(' Add ',
+							<?= $this->Form->postLink(' Removed ',
 								['action' => 'AddCompany', $key,$customer_id],
 								[
 									'escape' => false,
-									'class'=>'btn blue tooltips',
+									'class'=>' blue tooltips','data-original-title'=>'Click To Added'
 									
 								]
 							) ?>

@@ -15,7 +15,7 @@
 						<th width="15%">Sr. No.</th>
 						<th width="20%">Company Name</th>
 						<th width="10%">Action</th>
-						<th width="10%">Bill To Bill Account</th>
+						<th width="15%">Bill To Bill Account</th>
 
 						
 					</tr>
@@ -30,20 +30,20 @@
 						<td><?php echo $c_namrr; ?></td>
 						<td class="actions">
 						 	<?php if($Company_array =='Yes') { ?>
-							 <?= $this->Form->postLink('Remove ',
+							 <?= $this->Form->postLink('Added ',
 								['action' => 'CheckCompany', $key,$vendor_id],
 								[
 									'escape' => false,
-									'class'=>'btn red tooltips',
+									'class'=>' red tooltips','data-original-title'=>'Click To Removed'
 									
 								]
 							) ?>
 							<?php  } else { ?>
-							<?= $this->Form->postLink(' Add ',
+							<?= $this->Form->postLink('Removed',
 								['action' => 'AddCompany', $key,$vendor_id],
 								[
 									'escape' => false,
-									'class'=>'btn blue tooltips',
+									'class'=>' red tooltips','data-original-title'=>'Click To Removed'
 									
 								]
 							) ?>
@@ -51,20 +51,20 @@
 						</td>
 						<td class="actions">
 						 	<?php if($bill_to_bill =='No' && $Company_array=='Yes') { ?>
-							 <?= $this->Form->postLink('Yes ',
+							 <?= $this->Form->postLink('No ',
 								['action' => 'BillToBill', $key,$vendor_id,$bill_to_bill="Yes"],
 								[
 									'escape' => false,
-									'class'=>'btn blue tooltips',
+									'class'=>' red tooltips','data-original-title'=>'Click To Yes'
 									
 								]
 							) ?>
 							<?php  } else if($Company_array=='Yes')  { ?>
-							<?= $this->Form->postLink(' No ',
+							<?= $this->Form->postLink(' Yes ',
 								['action' => 'BillToBill', $key,$vendor_id,$bill_to_bill="No"],
 								[
 									'escape' => false,
-									'class'=>'btn red tooltips',
+									'class'=>' red tooltips','data-original-title'=>'Click To No'
 									
 								]
 							) ?>

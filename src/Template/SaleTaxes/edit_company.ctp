@@ -30,20 +30,20 @@
 						<td><?php echo $c_namrr; ?></td>
 						<td class="actions">
 						 	<?php if($Company_array =='Yes') { ?>
-							 <?= $this->Form->postLink('Remove ',
+							 <?= $this->Form->postLink('Added ',
 								['action' => 'CheckCompany', $key,$saletax_id],
 								[
 									'escape' => false,
-									'class'=>'btn red tooltips',
+									'class'=>' blue tooltips','data-original-title'=>'Click To Removed'
 									
 								]
 							) ?>
 							<?php  } else { ?>
-							<?= $this->Form->postLink(' Add ',
+							<?= $this->Form->postLink(' Removed ',
 								['action' => 'AddCompany', $key,$saletax_id],
 								[
 									'escape' => false,
-									'class'=>'btn blue tooltips',
+									'class'=>' blue tooltips','data-original-title'=>'Click To Added'
 									
 								]
 							) ?>
@@ -51,20 +51,20 @@
 						</td>
 						<td class="actions">
 						 	<?php if($bill_to_bill =='No' && $Company_array=='Yes') { ?>
-							 <?= $this->Form->postLink('Yes ',
+							 <?= $this->Form->postLink('Unfreezed ',
 								['action' => 'SaleTaxFreeze', $key,$saletax_id,$bill_to_bill="1"],
 								[
 									'escape' => false,
-									'class'=>'btn blue tooltips',
+									'class'=>' blue tooltips','data-original-title'=>'Click To Freeze'
 									
 								]
 							) ?>
 							<?php  } else if($Company_array=='Yes')  { ?>
-							<?= $this->Form->postLink(' No ',
+							<?= $this->Form->postLink(' Freezed ',
 								['action' => 'SaleTaxFreeze', $key,$saletax_id,$bill_to_bill="0"],
 								[
 									'escape' => false,
-									'class'=>'btn red tooltips',
+									'class'=>' blue tooltips','data-original-title'=>'Click To Unfreeze'
 									
 								]
 							) ?>

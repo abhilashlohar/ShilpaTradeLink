@@ -154,7 +154,7 @@ class PurchaseOrdersController extends AppController
 
 			if ($this->PurchaseOrders->save($purchaseOrder)) {
 				
-							foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
+			foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
 
 				if($purchase_order_row->pull_status=="PULLED_FROM_MI"){
 					$query = $this->PurchaseOrders->MaterialIndentRows->find()
