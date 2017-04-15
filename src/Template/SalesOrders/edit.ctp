@@ -666,10 +666,16 @@ $(document).ready(function() {
 			$(this).find('span.help-block-error').remove();
 			$(this).find("td:nth-child(1)").html(++i); i--;
 			$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
+			
+			//var hl=$(this).find("td:nth-child(2) input[type=hidden]:eq(0)").length();
+			//alert(hl);
+			//var serial_l=$('td:nth-child(2) input[type=hidden] :eq(3)').length;
+			//alert(serial_l);
 			$(this).find("td:nth-child(2) input[type=hidden]:eq(0)").attr({name:"sales_order_rows["+i+"][height]", id:"sales_order_rows-"+i+"-height"});
 			$(this).find("td:nth-child(2) input[type=hidden]:eq(1)").attr({name:"sales_order_rows["+i+"][processed_quantity]", id:"sales_order_rows-"+i+"-processed_quantity"});
 			$(this).find("td:nth-child(2) input[type=hidden]:eq(2)").attr({name:"sales_order_rows["+i+"][source_type]", id:"sales_order_rows-"+i+"-source_type"});
 			$(this).find("td:nth-child(2) input[type=hidden]:eq(3)").attr({name:"sales_order_rows["+i+"][job_card_row_ids]", id:"sales_order_rows-"+i+"-job_card_row_ids"});
+			
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
@@ -695,15 +701,13 @@ $(document).ready(function() {
 		
 		var i=0;
 		$("#main_tb tbody tr.tr2").each(function(){
-		var htm=$(this).find('td:nth-child(1)').find('div.note-editable').html();
-			
+			var row_no=$(this).attr('row_no');
+			var htm=$(this).find('td:nth-child(1)').find('div.note-editable').html();
 			if(!htm){ htm=""; }
 			$(this).find('td:nth-child(1)').html('');
 			$(this).find('td:nth-child(1)').append('<div id=summer'+i+'>'+htm+'</div>');
 			$(this).find('td:nth-child(1)').find('div#summer'+i).summernote();
-			$(this).find('td.main:nth-child(1)').append('<textarea name="sales_order_rows['+i+'][description]"style="display:none;"></textarea>');
-
-
+			$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<textarea name="sales_order_rows['+i+'][description]" style="display:none;"></textarea>');
 		i++; });
 		calculate_total();
 	}

@@ -210,10 +210,10 @@
 								<span>Max: <?= h($sales_order_row->quantity-@$existing_rows[$sales_order_row->item_id]) ?></span>
 							</td>
 							<td>
-								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>0.01,'value'=>$sales_order_row->rate]); ?>
+								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','placeholder' => 'Rate','step'=>0.01,'value'=>$sales_order_row->rate]); ?>
 							</td>
 							<td>
-								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','step'=>0.01,'value'=>$sales_order_row->amount]); ?>
+								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','placeholder' => 'Amount','step'=>0.01,'value'=>$sales_order_row->amount]); ?>
 							</td>
 							<td>
 								<?php echo @$sales_order_row->sale_tax->tax_figure; ?>
@@ -1005,9 +1005,15 @@ $(document).ready(function() {
 				$(this).find('td:nth-child(3) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(4) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(5) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
-				
 				$(this).css('background-color','#FFF');
-				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
+				
+				var uncheck=$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]');
+				
+				$(uncheck).find('td:nth-child(1) textarea').attr({ name:"q", readonly:"readonly"});
+				//$('#main_tb tbody tr.tr2').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
+				$(uncheck).css('background-color','#FFF');
+				
+				//$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
 				var serial_l=$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] td:nth-child(2) select').length;
 				if(serial_l>0){
 				$('#main_tb tbody tr.tr3[row_no="'+row_no+'"] select').attr({ name:"q", readonly:"readonly"}).select2().rules( "remove", "required" );

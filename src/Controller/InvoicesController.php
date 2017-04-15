@@ -221,13 +221,15 @@ class InvoicesController extends AppController
 		$this->viewBuilder()->layout('');
 		
         $invoice = $this->Invoices->get($id, [
-            'contain' => ['SaleTaxes','Customers','Employees','Transporters','Creator'=>['Designations'],'Companies'=> [
-			'CompanyBanks'=> function ($q) {
-				return $q
-				->where(['CompanyBanks.default_bank' => 1]);
-				}], 'InvoiceRows' => ['Items'=>['Units']]]
+		'contain' => ['SaleTaxes',
+					'Customers',
+					'Employees','Transporters','Creator'=>['Designations'],
+					'Companies'=> ['CompanyBanks'=> function ($q) {
+						return $q
+						->where(['CompanyBanks.default_bank' => 1]);}], 
+					'InvoiceRows' => ['Items'=>['Units']]]
 			]);
-		
+		//pr($invoice); exit;
         $this->set('invoice', $invoice);
 		
         $this->set('_serialize', ['invoice']);
@@ -682,10 +684,12 @@ class InvoicesController extends AppController
 		$invoice = $this->Invoices->get($id, [
             'contain' => ['ItemSerialNumbers','InvoiceRows','SalesOrders' => ['Invoices'=>['InvoiceRows'],'SalesOrderRows' => ['Items'=>['ItemSerialNumbers','ItemCompanies'=>function($q) use($st_company_id){
 									return $q->where(['ItemCompanies.company_id' => $st_company_id]);
-								}],'SaleTaxes']],'Companies','Customers','Employees','SaleTaxes']
+								}],'SaleTaxes']],'Companies','Customers'=>['CustomerAddress'=> function ($q) {
+						return $q
+						->where(['CustomerAddress.default_address' => 1]);}],'Employees','SaleTaxes']
         ]);
 		
-		
+		//pr($invoice->sales_order->toArray()); exit;
 		
 		$c_LedgerAccount=$this->Invoices->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Customers','source_id'=>$invoice->customer->id])->first();
 			
@@ -1006,7 +1010,7 @@ class InvoicesController extends AppController
                 $this->Flash->success(__('The invoice has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else {
+            } else { pr($invoice); exit;
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }
         }

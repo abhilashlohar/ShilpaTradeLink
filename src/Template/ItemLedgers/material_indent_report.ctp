@@ -14,13 +14,13 @@
 				<table class="table tableitm" id="main_tb">
 					<thead>
 						<tr>
-							<th>Sr. No.</th>
+							<th width="10%">Sr. No.</th>
 							<th>Item Name</th>
-							<th>Current Stock</th>
-							<th>Sales Order </th>
-							<th>Job card  </th>
-							<th>Suggested Indent</th>
-							<th></th>
+							<th width="15%" >Current Stock</th>
+							<th width="10%">Sales Order </th>
+							<th width="10%">Job card  </th>
+							<th width="10%">Suggested Indent</th>
+							<th width="10%"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -37,7 +37,7 @@
 						<tr class="tr1" row_no='<?php echo @$i; ?>'>
 						<td><?php echo $i; ?> </td>
 						<td><?php echo $item_name; ?></td>
-						<td><?php echo $Current_Stock; ?></td>
+						<td ><?php echo $Current_Stock; ?></td>
 						<td><?php echo @$sales_order; ?></td>
 						<td><?php echo $job_card_qty; ?></td>
 						<td><?php echo $Current_Stock-@$sales_order-$job_card_qty; ?></td>

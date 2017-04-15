@@ -210,6 +210,8 @@ class ItemLedgersController extends AppController
 	
 	 public function materialindentreport(){
 		$this->viewBuilder()->layout('index_layout'); 
+		$session = $this->request->session();
+        $st_company_id = $session->read('st_company_id');
 		//$Items = $this->ItemLedgers->Items->find()->where(['source'=>'Purchessed/Manufactured'])->orWhere(['source'=>'Purchessed']); 
 		/* $material_items_for_purchase=[];
 		$material_items_for_purchase[]=array('item_name'=>'Kgn212','item_id'=>'144','quantity'=>'25','company_id'=>'25','employee_name'=>'Gopal','company_name'=>'STL','material_indent_id'=>'2');
@@ -238,6 +240,7 @@ class ItemLedgersController extends AppController
 			->leftJoinWith('SalesOrderRows', function ($q) {
 				return $q->where(['SalesOrderRows.processed_quantity < SalesOrderRows.quantity']);
 			})
+			->where(['company_id'=>$st_company_id])
 			->group(['SalesOrders.id'])
 			->autoFields(true)
 			->having(['total_rows >' => 0])
@@ -248,7 +251,7 @@ class ItemLedgersController extends AppController
 			$sales=[];
 			foreach($salesOrders as $data){
 				foreach($data->sales_order_rows as $row){ 
-				//pr($row->quantity);exit;
+				//pr($row->quantity);
 				$item_id=$row->item_id;
 				$quantity=$row->quantity;
 				$processed_quantity=$row->processed_quantity;
@@ -258,7 +261,7 @@ class ItemLedgersController extends AppController
 				//$sales[$item_id]=@$sales[$item_id]+$Sales_Order_stock;
 			}
 			//pr($sales);exit;
-		$JobCards=$this->ItemLedgers->JobCards->find()->where(['status'=>'Pending'])->contain(['JobCardRows']);
+		$JobCards=$this->ItemLedgers->JobCards->find()->where(['status'=>'Pending','company_id'=>$st_company_id])->contain(['JobCardRows']);
 		
 		$job_card_items=[];
 		foreach($JobCards as $JobCard){

@@ -219,7 +219,8 @@ class CustomersController extends AppController
 			echo ''; exit;
 		}
 		$defaultAddress = $this->Customers->CustomerAddress->find('all')->where(['customer_id' => $id,'default_address' => 1])->first();
-		echo $defaultAddress->address;
+		pr($defaultAddress); exit;
+		echo $defaultAddress->address; 
     }
 	
 	public function defaultContact($id = null)
