@@ -291,18 +291,21 @@ class ItemLedgersController extends AppController
 				])
 				->group('item_id')
 				->autoFields(true)
-				->contain(['Items' => function($q){
-					return $q->where(['Items.source'=>'Purchessed/Manufactured'])->orWhere(['Items.source'=>'Purchessed']);
+				->contain(['Items' => function($q) use($st_company_id){
+					return $q->where(['Items.source'=>'Purchessed/Manufactured'])->orWhere(['Items.source'=>'Purchessed'])->contain(['ItemCompanies'=>function($p) use($st_company_id){
+						return $p->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
+					}]);
 				}]);
-				
+				//pr($ItemLedgers->toArray()); exit;
 		foreach ($ItemLedgers as $itemLedger){
+			if($itemLedger->company_id==$st_company_id){
 			$item_name=$itemLedger->item->name;
 			$item_id=$itemLedger->item->id;
 			$Current_Stock=$itemLedger->total_in-$itemLedger->total_out;
 			
 			
 			$material_report[]=array('item_name'=>$item_name,'item_id'=>$item_id,'Current_Stock'=>$Current_Stock,'sales_order'=>@$sales[$item_id],'job_card_qty'=>@$job_card_items[$item_id]);
-			
+			}
 		} 
 			
 		$this->set(compact('material_report','mit'));
