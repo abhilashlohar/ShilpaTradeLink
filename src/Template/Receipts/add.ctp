@@ -9,6 +9,9 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 .portlet.light {
     padding: 4px 10px 4px 10px;
 }
+.help-block-error{
+	font-size: 10px;
+}
 </style>
 <div class="portlet light bordered">
 	<div class="portlet-title">
@@ -18,7 +21,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 		</div>
 	</div>
 	<div class="portlet-body form">
-    <?= $this->Form->create($receipt) ?>
+    <?= $this->Form->create($receipt,['id'=>'form_sample_3']) ?>
         <div class="row">
 			<div class="col-md-3">
 				<div class="form-group">
@@ -61,7 +64,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 		<table width="100%" id="main_table">
 			<thead>
 				<th width="25%"><label class="control-label">Received From</label></th>
-				<th width="15%"><label class="control-label">Amunt</label></th>
+				<th width="15%"><label class="control-label">Amount</label></th>
 				<th></th>
 				<th width="15%"><label class="control-label">Narration</label></th>
 				<th width="3%"></th>
@@ -83,6 +86,67 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 
 <script>
 $(document).ready(function() {
+	//--------- FORM VALIDATION
+	var form3 = $('#form_sample_3');
+	var error3 = $('.alert-danger', form3);
+	var success3 = $('.alert-success', form3);
+	form3.validate({
+		errorElement: 'span', //default input error message container
+		errorClass: 'help-block help-block-error', // default input error message class
+		focusInvalid: true, // do not focus the last invalid input
+		rules: {
+				bank_cash_id:{
+					required: true,
+				},
+			},
+
+		errorPlacement: function (error, element) { // render error placement for each input type
+			if (element.parent(".input-group").size() > 0) {
+				error.insertAfter(element.parent(".input-group"));
+			} else if (element.attr("data-error-container")) { 
+				error.appendTo(element.attr("data-error-container"));
+			} else if (element.parents('.radio-list').size() > 0) { 
+				error.appendTo(element.parents('.radio-list').attr("data-error-container"));
+			} else if (element.parents('.radio-inline').size() > 0) { 
+				error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
+			} else if (element.parents('.checkbox-list').size() > 0) {
+				error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
+			} else if (element.parents('.checkbox-inline').size() > 0) { 
+				error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
+			} else {
+				error.insertAfter(element); // for other inputs, just perform default behavior
+			}
+		},
+
+		invalidHandler: function (event, validator) { //display error alert on form submit   
+			success3.hide();
+			error3.show();
+		},
+
+		highlight: function (element) { // hightlight error inputs
+		   $(element)
+				.closest('.form-group').addClass('has-error'); // set error class to the control group
+		},
+
+		unhighlight: function (element) { // revert the change done by hightlight
+			$(element)
+				.closest('.form-group').removeClass('has-error'); // set error class to the control group
+		},
+
+		success: function (label) {
+			label
+				.closest('.form-group').removeClass('has-error'); // set success class to the control group
+		},
+
+		submitHandler: function (form) {
+			success3.show();
+			error3.hide();
+			form[0].submit(); // submit the form
+		}
+
+	});
+	//--	 END OF VALIDATION
+	
 	$('input[name="payment_mode"]').die().live("click",function() {
 		var payment_mode=$(this).val();
 		
@@ -103,9 +167,9 @@ $(document).ready(function() {
 	function rename_rows(){
 		var i=0;
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
-			$(this).find("td:eq(0) select.received_from").select2().attr({name:"receipt_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"});
-			$(this).find("td:nth-child(2) input").attr({name:"receipt_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
-			$(this).find("td:nth-child(4) textarea").attr({name:"receipt_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"});
+			$(this).find("td:eq(0) select.received_from").select2().attr({name:"receipt_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"}).rules("add", "required");
+			$(this).find("td:eq(1) input").attr({name:"receipt_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"}).rules("add", "required");
+			$(this).find("td:nth-child(4) textarea").attr({name:"receipt_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"}).rules("add", "required");
 			i++;
 		});
 	}
@@ -129,19 +193,20 @@ $(document).ready(function() {
 		rename_ref_rows(sel,received_from_id);
 	}
 	
-	function rename_ref_rows(sel,received_from_id){
+	function rename_ref_rows(sel,received_from_id){ 
 		var i=0;
 		$(sel).find("table.ref_table tbody tr").each(function(){
-			$(this).find("td:nth-child(1) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_type]", id:"ref_rows-"+i+"-ref_type"});
+			$(this).find("td:nth-child(1) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_type]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_type"}).rules("add", "required");
 			var is_select=$(this).find("td:nth-child(2) select").length;
 			var is_input=$(this).find("td:nth-child(2) input").length;
+			
 			if(is_select){
-				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"});
+				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no"}).rules("add", "required");
 			}else if(is_input){
-				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"});
+				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no"}).rules("add", "required");
 			}
 			
-			$(this).find("td:nth-child(3) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][amount]", id:"ref_rows-"+i+"-amount"});
+			$(this).find("td:nth-child(3) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_amount]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_amount"}).rules("add", "required");
 			i++;
 		});
 	}
@@ -164,30 +229,40 @@ $(document).ready(function() {
 			if(response.trim()=="Yes"){
 				var ref_table=$("#sample_ref div.ref").clone();
 				$(sel).closest("tr").find("td:nth-child(3)").html(ref_table);
-				rename_ref_rows(sel2,received_from_id);
 			}else{
 				$(sel).closest("tr").find("td:nth-child(3)").html("");
 			}
+			rename_ref_rows(sel2,received_from_id);
 		});
 	});
 	
 	$('.ref_type').live("change",function() {
-		var this=$(this);
+		var current_obj=$(this);
+		var sel3=$(this).closest('tr.main_tr');
 		var ref_type=$(this).find('option:selected').val();
 		var received_from_id=$(this).closest('tr.main_tr').find('td select:eq(0)').val();
-		if(ref_type=="Agst Ref"){
+		if(ref_type=="Against Reference"){
 			var url="<?php echo $this->Url->build(['controller'=>'Receipts','action'=>'fetchRefNumbers']); ?>";
 			url=url+'/'+received_from_id,
 			$.ajax({
 				url: url,
 				type: 'GET',
 			}).done(function(response) {
-				alert(response);
-				//this
+				current_obj.closest('tr').find('td:eq(1)').html(response);
+				rename_ref_rows(sel3,received_from_id);
 			});
-		}else if(ref_type=="New Ref" || ref_type=="Advance"){
-			
+		}else if(ref_type=="New Reference" || ref_type=="Advance Reference"){
+			current_obj.closest('tr').find('td:eq(1)').html('<input type="text" class="form-control input-sm" placeholder="Ref No." >');
+			rename_ref_rows(sel3,received_from_id);
+		}else{
+			current_obj.closest('tr').find('td:eq(1)').html('');
 		}
+		
+	});
+	
+	$('.ref_list').live("change",function() {
+		var due_amount=$(this).find('option:selected').attr('due_amount');
+		$(this).closest('tr').find('td:eq(2) input').val(due_amount);
 	});
 	
 });
@@ -205,7 +280,7 @@ $(document).ready(function() {
 	</tbody>
 </table>
 
-<?php $ref_types=['New Ref'=>'New Ref','Agst Ref'=>'Agst Ref','Advance'=>'Advance']; ?>
+<?php $ref_types=['New Reference'=>'New Ref','Against Reference'=>'Agst Ref','Advance Reference'=>'Advance']; ?>
 <div id="sample_ref" style="display:none;">
 	<div class="ref" style="padding:4px;">
 	<table width="100%" class="ref_table">

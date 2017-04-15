@@ -468,8 +468,8 @@ select
 							<span class="arrow "></span>
 							</a>
 							<ul class="sub-menu">
-								<li><?php echo $this->Html->link( 'Add', '/ReceiptVouchers/add' ); ?></li>
-								<li><?php echo $this->Html->link( 'View', '/ReceiptVouchers' ); ?></li>
+								<li><?php echo $this->Html->link( 'Add', '/Receipts/add' ); ?></li>
+								<li><?php echo $this->Html->link( 'View', '/Receipts' ); ?></li>
 							</ul>
 						</li>
 						<li>

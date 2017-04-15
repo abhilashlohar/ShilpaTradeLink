@@ -106,7 +106,15 @@ $this->Form->templates([
 							<? ?>
 						</div>
 					</div>
-						
+					<div class="col-md-4">
+						<div class="form-group">
+							<label class="control-label">Purchase Account <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('purchase_ledger_account', ['options' => $ledger_account_details,'label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('cst_vat', ['label' => false,'type' => 'hidden']); ?>
+							<br/>
+							<? ?>
+						</div>
+					</div>	
 				</div>
 				<div style="overflow: auto;">
 				<table class="table tableitm" id="main_tb">
@@ -355,6 +363,27 @@ $this->Form->templates([
 <script>
 $(document).ready(function() {
 	//--------- FORM VALIDATION
+	
+	var purchase_ledger_account=$('select[name="purchase_ledger_account"]').val();
+	if(purchase_ledger_account=="35"){
+		$('#main_tb thead th:eq(8)').text('CST');
+		$('input[name="cst_vat"]').val('CST');
+	}else{
+		$('#main_tb thead th:eq(8)').text('VAT');
+		$('input[name="cst_vat"]').val('VAT');
+	}
+
+	$('select[name="purchase_ledger_account"]').die().live("change",function() {
+		var purchase_ledger_account=$(this).val();
+		if(purchase_ledger_account=="35"){
+			$('#main_tb thead th:eq(8)').text('CST');
+			$('input[name="cst_vat"]').val('CST');
+		}else{
+			$('#main_tb thead th:eq(8)').text('VAT');
+			$('input[name="cst_vat"]').val('VAT');
+		}
+		calculate_total();
+    });
    
 	$('.per_check').die().live("click",function() {
 		if($(this).is(':checked')==true){
@@ -408,6 +437,7 @@ $(document).ready(function() {
 				var amount_after_ex=amount_after_pnf+ex;
 			}
 			
+			
 			var saletax=parseFloat($(this).find("td:nth-child(9) input").val());
 			if($(this).find('td:nth-child(9) input[type="checkbox"]').is(':checked')==true){
 				var amount_after_saletax=amount_after_ex*(100+saletax)/100;
@@ -422,11 +452,28 @@ $(document).ready(function() {
 				var amount_after_misc=amount_after_saletax+misc;
 			}
 			
+			if(cst_vat=="CST"){
+			
+			}else{
+				if($(this).find('td:nth-child(10) input[type="checkbox"]').is(':checked')==true){
+					var amount_after_misc_for_vat=amount_after_ex-misc;
+				}else{
+					var amount_after_misc_for_vat=amount_after_ex+misc;
+				}
+			}
+			
 			
 			$(this).find("td:nth-child(11) input").val(amount_after_misc.toFixed(2));
 			row_total=row_total+amount_after_misc;
 			
-			$(this).find("td:nth-child(12) input").val((amount_after_misc/qty).toFixed(5));
+			var cst_vat=$('input[name="cst_vat"]').val();
+			if(cst_vat=="CST"){
+				$(this).find("td:nth-child(12) input").val((amount_after_misc/qty).toFixed(5));
+			}else{
+				$(this).find("td:nth-child(12) input").val((amount_after_misc_for_vat/qty).toFixed(5));
+			}
+			
+			
 		});
 		$('input[name="total"]').val(row_total.toFixed(2));
 	}

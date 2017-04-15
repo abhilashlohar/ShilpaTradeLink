@@ -137,7 +137,7 @@ class InvoiceBookingsController extends AppController
 				$query = $this->InvoiceBookings->ItemLedgers->query();
 				$query->update()
 					->set(['rate' => $rate, 'rate_updated' => 'Yes'])
-					->where(['item_id' => $item_id, 'source_id' => $grn_id, 'source_model'=> 'Grns'])
+					->where(['item_id' => $item_id, 'source_id' => $grn_id, 'company_id' => $st_company_id, 'source_model'=> 'Grns'])
 					->execute();
 				
 				$results=$this->InvoiceBookings->ItemLedgers->find()->where(['ItemLedgers.item_id' => $item_id,'ItemLedgers.in_out' => 'In','rate_updated' => 'Yes','company_id' => $st_company_id])->toArray(); 
@@ -151,6 +151,7 @@ class InvoiceBookingsController extends AppController
 					$qty_total=$qty_total+$qty;
 				$j++;
 				}
+				
 				
 				$per_unit_cost=$rate_total/$qty_total;
 				$query1 = $this->InvoiceBookings->Items->ItemCompanies->query();
@@ -179,7 +180,6 @@ class InvoiceBookingsController extends AppController
 				$ledger->company_id = $invoiceBooking->company_id;
 				$ledger->voucher_source = 'Invoice Booking';
 				$ledger->transaction_date = $invoiceBooking->supplier_date;
-				//pr($ledger); exit;
 				$this->InvoiceBookings->Ledgers->save($ledger);
 				
 				//Ledger posting for SUPPLIER
@@ -316,7 +316,7 @@ class InvoiceBookingsController extends AppController
 				$query = $this->InvoiceBookings->ItemLedgers->query();
 				$query->update()
 					->set(['rate' => $rate, 'rate_updated' => 'Yes'])
-					->where(['item_id' => $item_id, 'source_id' => $grn_id, 'source_model'=> 'Grns'])
+					->where(['item_id' => $item_id, 'source_id' => $grn_id, 'company_id' => $st_company_id, 'source_model'=> 'Grns'])
 					->execute();
 				$results=$this->InvoiceBookings->ItemLedgers->find()->where(['ItemLedgers.item_id' => $item_id,'ItemLedgers.in_out' => 'In','rate_updated' => 'Yes','company_id' => $st_company_id]); 
 				$j=0; $qty_total=0; $rate_total=0; $per_unit_cost=0;
@@ -339,9 +339,9 @@ class InvoiceBookingsController extends AppController
 				}
 				$accountReferences = $this->InvoiceBookings->AccountReferences->get(2);
 				
-				//ledger posting
+				//ledger posting for PURCHASE ACCOUNT
 				$ledger = $this->InvoiceBookings->Ledgers->newEntity();
-				$ledger->ledger_account_id = $accountReferences->ledger_account_id;
+				$ledger->ledger_account_id = $invoiceBooking->purchase_ledger_account;
 				$ledger->debit = $invoiceBooking->total;
 				$ledger->credit = 0;
 				$ledger->voucher_id = $invoiceBooking->id;
@@ -351,13 +351,11 @@ class InvoiceBookingsController extends AppController
 				$this->InvoiceBookings->Ledgers->save($ledger);
 				
 				
-				//Ledger posting for bankcash
+				//Ledger posting for SUPPLIER
 				$v_LedgerAccount=$this->InvoiceBookings->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Vendors','source_id'=>$vendor_id])->first();
 				
 				$ledger = $this->InvoiceBookings->Ledgers->newEntity();
-				//pr($grn->vendor->ledger_account_id); exit;
 				$ledger->ledger_account_id = $v_LedgerAccount->id;
-				//pr($ledger->ledger_account_id); exit;
 				$ledger->debit = 0;
 				$ledger->credit =$invoiceBooking->total;
 				$ledger->voucher_id = $invoiceBooking->id;
@@ -455,9 +453,14 @@ class InvoiceBookingsController extends AppController
                 $this->Flash->error(__('The invoice booking could not be saved. Please, try again.'));
             }
         }
-        $grns = $this->InvoiceBookings->Grns->find('list', ['limit' => 200]);
+        $grns = $this->InvoiceBookings->Grns->find('list');
 		
-        $this->set(compact('invoiceBooking','ReferenceDetails', 'grns','financial_year_data','ReferenceBalances','invoice_booking_id','vendor_ledger_acc_id'));
+		$AccountReference= $this->InvoiceBookings->AccountReferences->get(2);
+		$ledger_account_details = $this->InvoiceBookings->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups' => function($q) use($AccountReference){
+			return $q->where(['AccountFirstSubgroups.id'=>$AccountReference->account_first_subgroup_id]);
+		}]])->order(['LedgerAccounts.name' => 'ASC'])->where(['LedgerAccounts.company_id'=>$st_company_id]);
+		
+        $this->set(compact('invoiceBooking','ReferenceDetails', 'grns','financial_year_data','ReferenceBalances','invoice_booking_id','vendor_ledger_acc_id', 'ledger_account_details'));
         $this->set('_serialize', ['invoiceBooking']);
     }
 

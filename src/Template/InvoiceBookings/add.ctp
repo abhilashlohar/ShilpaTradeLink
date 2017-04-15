@@ -18,9 +18,6 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Add Invoice Booking</span>
 		</div>
-		<div class="actions">
-			<?php echo $this->Html->link('<i class="icon-home"></i> Pull Grn','/Grns/index?pull-request=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
-		</div>
 	</div>
 	
 	<?php if(!empty($grn)) { ?>
@@ -104,6 +101,7 @@
 						<div class="form-group">
 							<label class="control-label">Purchase Account <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('purchase_ledger_account', ['options' => $ledger_account_details,'label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('cst_vat', ['label' => false,'type' => 'hidden']); ?>
 							<br/>
 							<? ?>
 						</div>
@@ -118,12 +116,13 @@
 						<th style="white-space: nowrap;">Items</th>
 						<th width="100">Unit Rate From PO</th>
 						<th width="100">Quantity</th>
+						<th width="100">Misc</th>
 						<th width="100">Amount</th>
 						<th width="100">Discount</th>
 						<th width="100">P & F</th>
 						<th width="100">Excise Duty</th>
 						<th width="100">CST</th>
-						<th width="100">Misc</th>
+						<th width="100">Others</th>
 						<th width="100">Total</th>
 						<th width="100">Rate to be post</th>
 					</tr>
@@ -156,6 +155,10 @@
 							
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.quantity',['label' => false,'class' => 'form-control input-sm ', 'value'=>$grn_rows->quantity,'readonly','type'=>'text','style'=>'width:50px;']); ?></td>
 							
+							<td align="center">
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.misc',['type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox','value'=>0]); ?>
+							<input name="invoice_booking_rows[<?php echo $q; ?>][misc_per]" type="checkbox" class="tooltips add_check" data-original-title="subtract" data-placement="bottom"/> <span class="add_check_text">To be add</span>
+							</td>
 							
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.amount',['label' => false,'class' => 'form-control input-sm row_textbox','value'=>$grn->purchase_order->purchase_order_rows[$q]->rate*$grn_rows->quantity,'type'=>'text','readonly']); ?></td>
 							
@@ -179,10 +182,7 @@
 							<input name="invoice_booking_rows[<?php echo $q; ?>][sale_tax_per]" type="checkbox" class="tooltips per_check" data-original-title="percentages" data-placement="bottom"/> <span class="check_text">In Amount</span>
 							</td>
 							
-							<td align="center">
-							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.misc',['type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox','value'=>0]); ?>
-							<input name="invoice_booking_rows[<?php echo $q; ?>][misc_per]" type="checkbox" class="tooltips add_check" data-original-title="subtract" data-placement="bottom"/> <span class="add_check_text">To be add</span>
-							</td>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.other_charges',['type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox']); ?></td>
 							
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.total',['type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox','readonly']); ?></td>
 							
@@ -207,8 +207,14 @@
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="10" align="right"><b>Total</b></td>
-						<td><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total']); ?></td>
+						<td colspan="5" align="right"><b>Total</b></td>
+						<td><?php echo $this->Form->input('total_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						<td><?php echo $this->Form->input('total_discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						<td><?php echo $this->Form->input('total_pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						<td><?php echo $this->Form->input('total_ex', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						<td><?php echo $this->Form->input('total_saletax', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						<td><?php echo $this->Form->input('total_other_charges', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						<td><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','readonly']); ?></td>
 						<td></td>
 					</tr>
 				</tfoot>
@@ -315,6 +321,28 @@
 
 <script>
 $(document).ready(function() {
+
+	var purchase_ledger_account=$('select[name="purchase_ledger_account"]').val();
+	if(purchase_ledger_account=="35"){
+		$('#main_tb thead th:eq(9)').text('CST');
+		$('input[name="cst_vat"]').val('CST');
+	}else{
+		$('#main_tb thead th:eq(9)').text('VAT');
+		$('input[name="cst_vat"]').val('VAT');
+	}
+
+	$('select[name="purchase_ledger_account"]').die().live("change",function() {
+		var purchase_ledger_account=$(this).val();
+		if(purchase_ledger_account=="35"){
+			$('#main_tb thead th:eq(9)').text('CST');
+			$('input[name="cst_vat"]').val('CST');
+		}else{
+			$('#main_tb thead th:eq(9)').text('VAT');
+			$('input[name="cst_vat"]').val('VAT');
+		}
+		calculate_total();
+    });
+
 	$('.per_check').die().live("click",function() {
 		if($(this).is(':checked')==true){
 			$(this).closest('td').find('span.check_text').text('In percentages');
@@ -338,56 +366,47 @@ $(document).ready(function() {
 		calculate_total();
     });
 	function calculate_total(){
-		var row_total=0;
+		var row_total=0; var total_amount=0; var total_discount=0; var total_pnf=0;
 		$("#main_tb tbody tr.tr1").each(function(){
 			var urate=parseFloat($(this).find("td:nth-child(3) input").val());
 			var qty=parseFloat($(this).find("td:nth-child(4) input").val());
 			var amount=urate*qty;
-			$(this).find("td:nth-child(5) input").val(amount.toFixed(2));
+			
+			
+			var misc=parseFloat($(this).find("td:nth-child(5) input").val());
+			if($(this).find('td:nth-child(5) input[type="checkbox"]').is(':checked')==true){
+				var amount_after_misc=amount-misc;
+			}else{
+				var amount_after_misc=amount+misc;
+			}
+			total_amount=total_amount+amount_after_misc;
+			
+			$(this).find("td:nth-child(6) input").val(amount_after_misc.toFixed(2));
 		
-			var discount=parseFloat($(this).find("td:nth-child(6) input").val());
-			if($(this).find('td:nth-child(6) input[type="checkbox"]').is(':checked')==true){
-				var amount_after_discount=amount*(100-discount)/100;
-			}else{
-				var amount_after_discount=amount-discount;
-			}
-			
-			var pnf=parseFloat($(this).find("td:nth-child(7) input").val());
+			var discount=parseFloat($(this).find("td:nth-child(7) input").val());
 			if($(this).find('td:nth-child(7) input[type="checkbox"]').is(':checked')==true){
-				var amount_after_pnf=amount_after_discount*(100+pnf)/100;
+				var amount_after_discount=amount_after_misc*(100-discount)/100;
+				total_discount=total_discount+(amount_after_misc*discount/100);
 			}else{
-			
-				var amount_after_pnf=amount_after_discount+pnf;
+				var amount_after_discount=amount_after_misc-discount;
+				total_discount=total_discount+discount;
 			}
 			
-			var ex=parseFloat($(this).find("td:nth-child(8) input").val());
+			
+			var pnf=parseFloat($(this).find("td:nth-child(8) input").val());
 			if($(this).find('td:nth-child(8) input[type="checkbox"]').is(':checked')==true){
-				var amount_after_ex=amount_after_pnf*(100+ex)/100;
+				var amount_after_pnf=amount_after_discount*(100+pnf)/100;
+				total_pnf=total_pnf+(amount_after_discount*pnf/100);
 			}else{
-				var amount_after_ex=amount_after_pnf+ex;
-			}
-			
-			var saletax=parseFloat($(this).find("td:nth-child(9) input").val());
-			if($(this).find('td:nth-child(9) input[type="checkbox"]').is(':checked')==true){
-				var amount_after_saletax=amount_after_ex*(100+saletax)/100;
-			}else{
-				var amount_after_saletax=amount_after_ex+saletax;
-			}
-			
-			var misc=parseFloat($(this).find("td:nth-child(10) input").val());
-			if($(this).find('td:nth-child(10) input[type="checkbox"]').is(':checked')==true){
-				var amount_after_misc=amount_after_saletax-misc;
-			}else{
-				var amount_after_misc=amount_after_saletax+misc;
+				var amount_after_pnf=amount_after_discount+pnf;
+				var total_pnf=total_pnf+pnf;
 			}
 			
 			
-			$(this).find("td:nth-child(11) input").val(amount_after_misc.toFixed(2));
-			row_total=row_total+amount_after_misc;
-			
-			$(this).find("td:nth-child(12) input").val((amount_after_misc/qty).toFixed(5));
 		});
-		$('input[name="total"]').val(row_total.toFixed(2));
+		$('input[name="total_amount"]').val(total_amount.toFixed(2));
+		$('input[name="total_discount"]').val(total_discount.toFixed(2));
+		$('input[name="total_pnf"]').val(total_pnf.toFixed(2));
 	}
 	
 	$( document ).on( 'keyup', 'input[name="debit[]"]', function() {

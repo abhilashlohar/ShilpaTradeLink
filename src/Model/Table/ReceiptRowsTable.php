@@ -66,9 +66,6 @@ class ReceiptRowsTable extends Table
             ->requirePresence('amount', 'create')
             ->notEmpty('amount');
 
-        $validator
-            ->requirePresence('narration', 'create')
-            ->notEmpty('narration');
 
         return $validator;
     }

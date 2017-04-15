@@ -41,6 +41,8 @@ class ReceiptsTable extends Table
 		$this->belongsTo('VouchersReferences');
         $this->belongsTo('FinancialYears');
         $this->belongsTo('ReferenceBalances');
+        $this->belongsTo('ReferenceDetails');
+        $this->belongsTo('Ledgers');
 		$this->belongsTo('BankCashes', [
 			'className' => 'LedgerAccounts',
             'foreignKey' => 'bank_cash_id',
@@ -58,7 +60,8 @@ class ReceiptsTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('ReceiptRows', [
-            'foreignKey' => 'receipt_id'
+            'foreignKey' => 'receipt_id',
+			'saveStrategy' => 'replace'
         ]);
     }
 

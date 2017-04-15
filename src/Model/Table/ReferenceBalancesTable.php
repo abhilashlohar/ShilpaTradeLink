@@ -33,7 +33,7 @@ class ReferenceBalancesTable extends Table
         parent::initialize($config);
 
         $this->table('reference_balances');
-        $this->displayField('id');
+        $this->displayField('reference_no');
         $this->primaryKey('id');
 
         $this->belongsTo('LedgerAccounts', [

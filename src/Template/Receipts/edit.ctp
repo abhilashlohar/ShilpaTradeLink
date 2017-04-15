@@ -1,36 +1,308 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $receipt->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $receipt->id)]
-            )
-        ?></li>
-        <li><?= $this->Html->link(__('List Receipts'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Companies'), ['controller' => 'Companies', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Company'), ['controller' => 'Companies', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Receipt Rows'), ['controller' => 'ReceiptRows', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Receipt Row'), ['controller' => 'ReceiptRows', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="receipts form large-9 medium-8 columns content">
+<style>
+table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table > thead > tr > td, table > tbody > tr > td, table > tfoot > tr > td{
+	vertical-align: top !important;
+	border-bottom:solid 1px #CCC;
+}
+.page-content-wrapper .page-content {
+    padding: 5px;
+}
+.portlet.light {
+    padding: 4px 10px 4px 10px;
+}
+</style>
+<?php $ref_types=['New Reference'=>'New Ref','Against Reference'=>'Agst Ref','Advance Reference'=>'Advance']; ?>
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption" >
+			<i class="icon-globe font-blue-steel"></i>
+			<span class="caption-subject font-blue-steel uppercase">Add Receipt</span>
+		</div>
+	</div>
+	<div class="portlet-body form">
     <?= $this->Form->create($receipt) ?>
-    <fieldset>
-        <legend><?= __('Edit Receipt') ?></legend>
-        <?php
-            echo $this->Form->input('voucher_no');
-            echo $this->Form->input('bank_cash_id');
-            echo $this->Form->input('created_by');
-            echo $this->Form->input('created_on');
-            echo $this->Form->input('payment_mode');
-            echo $this->Form->input('company_id', ['options' => $companies]);
-            echo $this->Form->input('transaction_date');
-            echo $this->Form->input('edited_by');
-            echo $this->Form->input('edited_on');
-            echo $this->Form->input('cheque_no');
-        ?>
-    </fieldset>
+        <div class="row">
+			<div class="col-md-3">
+				<div class="form-group">
+					<label class="control-label">Transaction Date<span class="required" aria-required="true">*</span></label>
+					<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y",strtotime($receipt->transaction_date)),'data-date-start-date' => date("d-m-Y",strtotime($financial_year->date_from)),'data-date-end-date' => date("d-m-Y",strtotime($financial_year->date_to))]); ?>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="form-group">
+					<label class="control-label">Bank/Cash Account<span class="required" aria-required="true">*</span></label>
+					<?php echo $this->Form->input('bank_cash_id', ['empty'=>'--Select-','label' => false,'class' => 'form-control input-sm select2me']); ?>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="form-group">
+					<label class="control-label">Mode of Payment<span class="required" aria-required="true">*</span></label>
+					<div class="radio-list">
+						<div class="radio-inline" >
+						<?php echo $this->Form->radio(
+							'payment_mode',
+							[
+								['value' => 'Cheque', 'text' => 'Cheque','checked'],
+								['value' => 'Cash', 'text' => 'Cash'],
+								['value' => 'NEFT/RTGS', 'text' => 'NEFT/RTGS']
+							]
+						); ?>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="form-group" id="chq_no">
+					<label class="control-label">Cheque No<span class="required" aria-required="true">*</span></label>
+					<?php echo $this->Form->input('cheque_no', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Cheque No']); ?>
+				</div>
+			</div>
+		</div>
+		
+		<div style="overflow: auto;">
+		<table width="100%" id="main_table">
+			<thead>
+				<th width="25%"><label class="control-label">Received From</label></th>
+				<th width="15%"><label class="control-label">Amount</label></th>
+				<th></th>
+				<th width="15%"><label class="control-label">Narration</label></th>
+				<th width="3%"></th>
+			</thead>
+			<tbody id="main_tbody">
+			<?php foreach($receipt->receipt_rows as $receipt_row){ ?> 
+				<tr class="main_tr">
+					<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from','value'=>$receipt_row->received_from_id]); ?></td>
+					<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value'=>$receipt_row->amount]); ?></td>
+					<td>
+					<?php if(sizeof($old_ref_rows[$receipt_row->received_from_id])>0){ ?>
+						<div class="ref" style="padding:4px;">
+						<table width="100%" class="ref_table">
+							<thead>
+								<tr>
+									<th width="25%">Ref Type</th>
+									<th width="40%">Ref No.</th>
+									<th width="30%">Amount</th>
+									<th width="5%"></th>
+								</tr>
+							</thead>
+							<tbody>
+							<?php foreach($old_ref_rows[$receipt_row->received_from_id] as $old_ref_row){ ?>
+								<tr>
+									<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type','value'=>$old_ref_row->reference_type]); ?></td>
+									<td class="ref_no">
+									<?php if($old_ref_row->reference_type=="Against Reference"){
+										echo $this->requestAction('Receipts/fetchRefNumbersEdit/'.$receipt_row->received_from_id.'/'.$old_ref_row->reference_no.'/'.$old_ref_row->credit);
+									}else{
+										echo '<input type="text" class="form-control input-sm" placeholder="Ref No." value="'.$old_ref_row->reference_no.'" >';
+									}?>
+									</td>
+									<td>
+									<?php echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'text','value'=>$old_ref_row->credit]); ?>
+									<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value'=>$old_ref_row->credit]); ?>
+									</td>
+									<td><a class="btn btn-xs btn-default deleterefrow" href="#" role="button"><i class="fa fa-times"></i></a></td>
+								</tr>
+							<?php } ?>
+							</tbody>
+						</table>
+						<a class="btn btn-xs btn-default addrefrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a>
+						</div>
+						<?php } ?>
+					</td>
+					<td><?php echo $this->Form->input('narration', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Narration','value'=>$receipt_row->narration]); ?></td>
+					<td><a class="btn btn-xs btn-default deleterow" href="#" role="button"><i class="fa fa-times"></i></a></td>
+				</tr>
+			<?php } ?>
+			</tbody>
+			<tfoot>
+			
+			</tfoot>
+		</table>
+		</div>
+		<a class="btn btn-xs btn-default addrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a>
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
+	</div>
+</div>
+<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+
+<script>
+$(document).ready(function() {
+
+	$("#main_table tbody#main_tbody tr.main_tr").each(function(){
+		var sel=$(this);
+		var received_from_id=$(this).find('td:nth-child(1) select').val();
+		rename_ref_rows(sel,received_from_id);
+	});
+		
+	$('input[name="payment_mode"]').die().live("click",function() {
+		var payment_mode=$(this).val();
+		
+		if(payment_mode=="Cheque"){
+			$("#chq_no").show();
+		}else{
+			$("#chq_no").hide();
+		}
+	});
+	
+	var payment_mode=$('input[name="payment_mode"]').val();
+		
+	if(payment_mode=="Cheque"){
+		$("#chq_no").show();
+	}else{
+		$("#chq_no").hide();
+	}
+	rename_rows();
+	function add_row(){
+		var tr=$("#sample_table tbody tr").clone();
+		$("#main_table tbody#main_tbody").append(tr);
+		rename_rows();
+	}
+	
+	function rename_rows(){
+		var i=0;
+		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
+			$(this).find("td:eq(0) select.received_from").select2().attr({name:"receipt_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"});
+			$(this).find("td:eq(1) input").attr({name:"receipt_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"});
+			$(this).find("td:nth-child(4) textarea").attr({name:"receipt_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"});
+			i++;
+		});
+	}
+	
+	$('.addrow').live("click",function() {
+		add_row();
+	});
+	$('.deleterow').live("click",function() {
+		$(this).closest("tr").remove();
+	});
+	
+	$('.addrefrow').live("click",function() {
+		var sel=$(this).closest('tr.main_tr');
+		var received_from_id=$(this).closest('tr.main_tr').find('td:nth-child(1) select').val();
+		add_ref_row(sel,received_from_id);
+	});
+	
+	function add_ref_row(sel,received_from_id){
+		var tr=$("#sample_ref table.ref_table tbody tr").clone();
+		sel.find("table.ref_table tbody").append(tr);
+		rename_ref_rows(sel,received_from_id);
+	}
+	
+	function rename_ref_rows(sel,received_from_id){ 
+		var i=0;
+		$(sel).find("table.ref_table tbody tr").each(function(){
+			$(this).find("td:nth-child(1) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_type]", id:"ref_rows-"+i+"-ref_type"});
+			var is_select=$(this).find("td:nth-child(2) select").length;
+			var is_input=$(this).find("td:nth-child(2) input").length;
+			
+			if(is_select){
+				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"});
+			}else if(is_input){
+				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"});
+			}
+			
+			var is_ref_old_amount=$(this).find("td:nth-child(3) input:eq(0)").length;
+			if(is_ref_old_amount){
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_old_amount]", id:"ref_rows-"+i+"-ref_old_amount"});
+			}
+			$(this).find("td:nth-child(3) input:eq(1)").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"});
+			i++;
+		});
+	}
+	
+	$('.deleterefrow').live("click",function() {
+		$(this).closest("tr").remove();
+	});
+	
+	$('.received_from').live("change",function() {
+		var sel=$(this);
+		var sel2=$(this).closest('tr.main_tr');
+		var received_from_id=$(this).find('option:selected').val();
+		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'checkBillToBillAccountingStatus']); ?>";
+		url=url+'/'+received_from_id,
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'text'
+		}).done(function(response) {
+			if(response.trim()=="Yes"){
+				var ref_table=$("#sample_ref div.ref").clone();
+				$(sel).closest("tr").find("td:nth-child(3)").html(ref_table);
+			}else{
+				$(sel).closest("tr").find("td:nth-child(3)").html("");
+			}
+			rename_ref_rows(sel2,received_from_id);
+		});
+	});
+	
+	$('.ref_type').live("change",function() {
+		var current_obj=$(this);
+		var sel3=$(this).closest('tr.main_tr');
+		var ref_type=$(this).find('option:selected').val();
+		var received_from_id=$(this).closest('tr.main_tr').find('td select:eq(0)').val();
+		if(ref_type=="Against Reference"){
+			var url="<?php echo $this->Url->build(['controller'=>'Receipts','action'=>'fetchRefNumbers']); ?>";
+			url=url+'/'+received_from_id,
+			$.ajax({
+				url: url,
+				type: 'GET',
+			}).done(function(response) {
+				current_obj.closest('tr').find('td:eq(1)').html(response);
+				rename_ref_rows(sel3,received_from_id);
+			});
+		}else if(ref_type=="New Reference" || ref_type=="Advance Reference"){
+			current_obj.closest('tr').find('td:eq(1)').html('<input type="text" class="form-control input-sm" placeholder="Ref No." >');
+			rename_ref_rows(sel3,received_from_id);
+		}else{
+			current_obj.closest('tr').find('td:eq(1)').html('');
+		}
+		
+	});
+	
+	$('.ref_list').live("change",function() {
+		var due_amount=$(this).find('option:selected').attr('due_amount');
+		$(this).closest('tr').find('td:eq(2) input').val(due_amount);
+	});
+	
+});
+</script>
+
+
+<table id="sample_table" style="display:none;">
+	<tbody>
+		<tr class="main_tr">
+			<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from']); ?></td>
+			<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount']); ?></td>
+			<td></td>
+			<td><?php echo $this->Form->input('narration', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Narration']); ?></td>
+			<td><a class="btn btn-xs btn-default deleterow" href="#" role="button"><i class="fa fa-times"></i></a></td>
+		</tr>
+	</tbody>
+</table>
+
+
+<div id="sample_ref" style="display:none;">
+	<div class="ref" style="padding:4px;">
+	<table width="100%" class="ref_table">
+		<thead>
+			<tr>
+				<th width="25%">Ref Type</th>
+				<th width="40%">Ref No.</th>
+				<th width="30%">Amount</th>
+				<th width="5%"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type']); ?></td>
+				<td class="ref_no"></td>
+				<td>
+				<?php echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'text']); ?>
+				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount']); ?>
+				</td>
+				<td><a class="btn btn-xs btn-default deleterefrow" href="#" role="button"><i class="fa fa-times"></i></a></td>
+			</tr>
+		</tbody>
+	</table>
+	<a class="btn btn-xs btn-default addrefrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a>
+	</div>
 </div>
