@@ -187,7 +187,7 @@ $(document).ready(function() {
 		rename_ref_rows(sel,received_from_id);
 	}
 	
-	function rename_ref_rows(sel,received_from_id){ 
+	function rename_ref_rows(sel,received_from_id){
 		var i=0;
 		$(sel).find("table.ref_table tbody tr").each(function(){
 			$(this).find("td:nth-child(1) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_type]", id:"ref_rows-"+i+"-ref_type"});

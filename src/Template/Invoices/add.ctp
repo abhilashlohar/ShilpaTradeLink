@@ -1199,7 +1199,7 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 	$('input').live("keyup",function() {
 		calculation_for_total();
 	});
-	function calculation_for_total(){  
+	function calculation_for_total(){
 		var total_left=0; var total_right=0; var sum=0;
 		$("#due_receipt tbody tr.tr1").each(function(){ 
 			var val=$(this).find('td:nth-child(1) input[type="checkbox"]:checked').val();

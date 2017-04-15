@@ -315,7 +315,7 @@ class ReceiptsController extends AppController
 								])
 								->execute();
 							}
-						} 
+						}
 					}
 				}
 				//Ledger posting for bankcash
