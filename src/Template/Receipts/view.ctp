@@ -1,91 +1,102 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Receipt'), ['action' => 'edit', $receipt->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Receipt'), ['action' => 'delete', $receipt->id], ['confirm' => __('Are you sure you want to delete # {0}?', $receipt->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Receipts'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Receipt'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Companies'), ['controller' => 'Companies', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Company'), ['controller' => 'Companies', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Receipt Rows'), ['controller' => 'ReceiptRows', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Receipt Row'), ['controller' => 'ReceiptRows', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="receipts view large-9 medium-8 columns content">
-    <h3><?= h($receipt->id) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th><?= __('Payment Mode') ?></th>
-            <td><?= h($receipt->payment_mode) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Company') ?></th>
-            <td><?= $receipt->has('company') ? $this->Html->link($receipt->company->name, ['controller' => 'Companies', 'action' => 'view', $receipt->company->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Cheque No') ?></th>
-            <td><?= h($receipt->cheque_no) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Id') ?></th>
-            <td><?= $this->Number->format($receipt->id) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Voucher No') ?></th>
-            <td><?= $this->Number->format($receipt->voucher_no) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Bank Cash Id') ?></th>
-            <td><?= $this->Number->format($receipt->bank_cash_id) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Created By') ?></th>
-            <td><?= $this->Number->format($receipt->created_by) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Edited By') ?></th>
-            <td><?= $this->Number->format($receipt->edited_by) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Created On') ?></th>
-            <td><?= h($receipt->created_on) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Transaction Date') ?></th>
-            <td><?= h($receipt->transaction_date) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Edited On') ?></th>
-            <td><?= h($receipt->edited_on) ?></td>
-        </tr>
-    </table>
-    <div class="related">
-        <h4><?= __('Related Receipt Rows') ?></h4>
-        <?php if (!empty($receipt->receipt_rows)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th><?= __('Id') ?></th>
-                <th><?= __('Receipt Id') ?></th>
-                <th><?= __('Received From Id') ?></th>
-                <th><?= __('Amount') ?></th>
-                <th><?= __('Narration') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($receipt->receipt_rows as $receiptRows): ?>
-            <tr>
-                <td><?= h($receiptRows->id) ?></td>
-                <td><?= h($receiptRows->receipt_id) ?></td>
-                <td><?= h($receiptRows->received_from_id) ?></td>
-                <td><?= h($receiptRows->amount) ?></td>
-                <td><?= h($receiptRows->narration) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'ReceiptRows', 'action' => 'view', $receiptRows->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'ReceiptRows', 'action' => 'edit', $receiptRows->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'ReceiptRows', 'action' => 'delete', $receiptRows->id], ['confirm' => __('Are you sure you want to delete # {0}?', $receiptRows->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
-    </div>
+<style>
+@media print{
+	.maindiv{
+		width:100% !important;
+	}	
+	.hidden-print{
+		display:none;
+	}
+}
+</style>
+<a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
+
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size: 14px;" class="maindiv">	
+	<table width="100%" class="divHeader">
+		<tr>
+			<td width="30%"><?php echo $this->Html->image('/logos/'.$receipt->company->logo, ['width' => '40%']); ?></td>
+			<td align="center" width="40%" style="font-size: 12px;"><div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">RECEIPT VOUCHER</div></td>
+			<td align="right" width="30%" style="font-size: 12px;">
+			<span style="font-size: 14px;"><?= h($receipt->company->name) ?></span>
+			<span><?= $this->Text->autoParagraph(h($receipt->company->address)) ?>
+			<?= h($receipt->company->mobile_no) ?></span>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3">
+				<div style="border:solid 2px #0685a8;margin-bottom:5px;margin-top: 5px;"></div>
+			</td>
+		</tr>
+	</table>
+	<table width="100%">
+		<tr>
+			<td width="50%" valign="top" align="left">
+				<table>
+					<tr>
+						<td>Voucher No</td>
+						<td width="20" align="center">:</td>
+						<td><?= h('#'.str_pad($receipt->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
+					</tr>
+				</table>
+			</td>
+			<td width="50%" valign="top" align="right">
+				<table>
+					<tr>
+						<td>Date.</td>
+						<td width="20" align="center">:</td>
+						<td><?= h(date("d-m-Y",strtotime($receipt->transaction_date))) ?></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<br/>
+	<table width="100%">
+		<tr>
+			<th><?= __('Received From Id') ?></th>
+			<th><?= __('Amount') ?></th>
+			<th><?= __('Narration') ?></th>
+		</tr>
+		<?php $total=0; foreach ($receipt->receipt_rows as $receiptRows): ?>
+		<tr>
+			<td><?= h($receiptRows->ReceivedFrom->name) ?></td>
+			<td><?= h($this->Number->format($receiptRows->amount,[ 'places' => 2])) ?></td>
+			<td><?= h($receiptRows->narration) ?></td>
+		</tr>
+		<?php $total=$total+$receiptRows->amount; endforeach; ?>
+	</table>
+	
+	
+	
+	<div style="border:solid 1px ;"></div>
+	<table width="100%" class="divFooter">
+		<tr>
+			<td align="left" valign="top">
+				<table>
+					<tr>
+						<td style="font-size: 16px;font-weight: bold;">
+						Rs: <?= h($this->Number->format($total,[ 'places' => 2])) ?></td>
+					</tr>
+					<tr><td>Rupees<?php echo ucwords($this->NumberWords->convert_number_to_words($total)) ?> Only </td>
+					</tr>
+					<tr>
+						<td>via <?= h($receipt->payment_mode) ?> </td>
+					</tr>
+				</table>
+			</td>
+		    <td align="left" valign="top">
+				<table style="margin-top:3px;">
+					<tr>
+					   <td width="15%" align="center"> 
+						<?php 
+						 echo $this->Html->Image('/signatures/'.$receipt->creator->signature,['height'=>'40px','style'=>'height:40px;']); 
+						 ?></br>
+						 </hr>
+						 <span><b>Prepared By</b></span><br/>
+						 <span><?= h($receipt->company->name) ?></span><br/>
+						</td>
+					</tr>
+				</table>
+			 </td>
+		</tr>
+	</table>
 </div>

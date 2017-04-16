@@ -42,8 +42,9 @@ class ReceiptsController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $receipt = $this->Receipts->get($id, [
-            'contain' => ['BankCashes', 'Companies', 'ReceiptRows']
+            'contain' => ['BankCashes', 'Companies', 'ReceiptRows' => ['ReceivedFroms'], 'Creator']
         ]);
 
         $this->set('receipt', $receipt);

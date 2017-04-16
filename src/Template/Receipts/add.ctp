@@ -73,12 +73,16 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 			
 			</tbody>
 			<tfoot>
-			
+				<td><a class="btn btn-xs btn-default addrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
+				<td id="receipt_amount" style="font-size: 14px;font-weight: bold;"></td>
+				<td></td>
+				<td><button type="submit" class="btn btn-primary" >CREATE RECEIPT</button></td>
+				<td></td>
 			</tfoot>
 		</table>
 		</div>
-		<a class="btn btn-xs btn-default addrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a>
-    <?= $this->Form->button(__('Submit')) ?>
+		
+    
     <?= $this->Form->end() ?>
 	</div>
 </div>
@@ -87,6 +91,10 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 <script>
 $(document).ready(function() {
 	//--------- FORM VALIDATION
+	jQuery.validator.addMethod("noSpace", function(value, element) { 
+	  return value.indexOf(" ") < 0 && value != ""; 
+	}, "No space allowed");
+
 	jQuery.validator.addMethod("notEqualToGroup", function (value, element, options) {
 		// get all the elements passed here with the same class
 		var elems = $(element).parents('form').find(options[0]);
@@ -109,7 +117,7 @@ $(document).ready(function() {
 		} else {
 			//elems.addClass('error');
 		}
-	}, jQuery.format("Please enter a Unique Value."))
+	}, jQuery.format("Reference number should unique for one party."))
 
 
 	var form3 = $('#form_sample_3');
@@ -194,9 +202,15 @@ $(document).ready(function() {
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
 			$(this).find("td:eq(0) select.received_from").select2().attr({name:"receipt_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"}).rules('add', {
 						required: true,
-						notEqualToGroup: ['.received_from']
+						notEqualToGroup: ['.received_from'],
+						messages: {
+							notEqualToGroup: "Do not select same party again."
+						}
 					});
-			$(this).find("td:eq(1) input").attr({name:"receipt_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"}).rules("add", "required");
+			$(this).find("td:eq(1) input").attr({name:"receipt_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"}).rules('add', {
+						required: true,
+						min: 0.01,
+					});
 			$(this).find("td:nth-child(4) textarea").attr({name:"receipt_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"}).rules("add", "required");
 			i++;
 		});
@@ -233,6 +247,7 @@ $(document).ready(function() {
 			}else if(is_input){
 				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no", class:"form-control input-sm ref_number-"+received_from_id}).rules('add', {
 														required: true,
+														noSpace: true,
 														notEqualToGroup: ['.ref_number-'+received_from_id]
 													});
 			}
@@ -241,9 +256,12 @@ $(document).ready(function() {
 			i++;
 		});
 		var amount_id=$(sel).find("td:nth-child(2) input").attr('id');
-		$(sel).find("table.ref_table tfoot tr td:eq(1) input").attr({name:"ref_rows_total["+received_from_id+"]", id:"ref_rows_total-"+received_from_id}).rules('add', {
+		var is_tot_input=$(sel).find("table.ref_table tfoot tr td:eq(1) input").length;
+		if(is_tot_input){
+			$(sel).find("table.ref_table tfoot tr td:eq(1) input").attr({name:"ref_rows_total["+received_from_id+"]", id:"ref_rows_total-"+received_from_id}).rules('add', {
 														equalTo: "#"+amount_id
 													});
+		}
 	}
 	
 	$('.deleterefrow').live("click",function() {
@@ -320,6 +338,28 @@ $(document).ready(function() {
 		});
 	}
 	
+	$('.mian_amount').live("blur",function() {
+		var v=parseFloat($(this).val());
+		if(!v){ v=0; }
+		$(this).val(v.toFixed(2));
+	});
+	
+	$('.mian_amount').live("keyup",function() {
+		do_mian_amount_total();
+	});
+	
+	function do_mian_amount_total(){
+		var mian_amount_total=0;
+		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
+			var v=parseFloat($(this).find("td:nth-child(2) input").val());
+			if(!v){ v=0; }
+			mian_amount_total=mian_amount_total+v;
+			$('#receipt_amount').text(mian_amount_total.toFixed(2));
+		});
+	}
+	
+	
+	
 });
 </script>
 
@@ -327,7 +367,7 @@ $(document).ready(function() {
 	<tbody>
 		<tr class="main_tr">
 			<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from']); ?></td>
-			<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount']); ?></td>
+			<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm mian_amount','placeholder'=>'Amount']); ?></td>
 			<td></td>
 			<td><?php echo $this->Form->input('narration', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Narration']); ?></td>
 			<td><a class="btn btn-xs btn-default deleterow" href="#" role="button"><i class="fa fa-times"></i></a></td>
@@ -357,12 +397,11 @@ $(document).ready(function() {
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="2"></td>
+				<td colspan="2"><a class="btn btn-xs btn-default addrefrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
 				<td><input type="text" class="form-control input-sm" placeholder="total" readonly></td>
 				<td></td>
 			</tr>
 		</tfoot>
 	</table>
-	<a class="btn btn-xs btn-default addrefrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a>
 	</div>
 </div>
