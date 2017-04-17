@@ -175,7 +175,7 @@ $html.='
 	<tr class="odd Borderbottom">
 		<td style="padding-top:10px;" valign="top" align="center" width="5%">'. h($sr) .'</td>
 		<td  style="padding-top:10px;" width="100%">'. h($purchase_order_rows->item->name) .
-		'<br/>'.$purchase_order_rows->description.'<div style="height:'.$purchase_order_rows->height.'"></div></td>
+		'<br/><br/>'.$purchase_order_rows->description.'<div style="height:'.$purchase_order_rows->height.'"></div></td>
 		<td style="padding-top:10px;" valign="top" align="center">'. h($purchase_order_rows->item->unit->name) .'</td>
 		<td style="padding-top:10px;" valign="top" align="center">'. h($purchase_order_rows->quantity) .'</td>
 		<td style="padding-top:10px;" align="right" valign="top">'. $this->Number->format($purchase_order_rows->rate,[ 'places' => 2]) .'</td>

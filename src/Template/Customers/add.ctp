@@ -120,7 +120,7 @@
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label class="control-label">Transporter</label>
+							<label class="control-label">Transporter<span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'empty' => "--Select--",'label' => false,'class' => 'form-control input-sm select2me']); ?>
 						</div>
 					</div>
@@ -311,6 +311,10 @@ $(document).ready(function() {
 				  required: true,
 			},
 			bill_to_bill_account:{
+				  required: true,
+
+			},
+			transporter_id:{
 				  required: true,
 
 			}
@@ -565,7 +569,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			<td><?php echo $this->Form->input('mobile', ['type' => 'text','label' => false,'class' => 'form-control input-sm allLetter','placeholder' => 'Mobile','maxlength'=>10,'minlength'=>10]); ?></td>
 			<td><?php echo $this->Form->input('email', ['type' => 'email','label' => false,'class' => 'form-control input-sm','placeholder' => 'Email']); ?></td>
 			<td><?php echo $this->Form->input('designation', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Designation']); ?></td>
-			<td width="90"><?php echo $this->Form->input('default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2','value'=>1]); ?></td>
+			<td width="90"><?php echo $this->Form->input('default_contact', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn2','checked'=>'Checked']); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 	</tbody>
@@ -578,7 +582,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			<td><?php echo $this->Form->input('address', ['label' => false,'type' => 'textarea','rows' => '2','style' => ['resize:none'],'class' => 'form-control input-sm','placeholder' => 'Address']); ?></td>
 			<td><?php echo $this->Form->input('district_id', ['options' => $districts,'empty' => "--Select--",'label' => false,'class' => 'form-control input-sm']); ?></td>
 			<td><?php echo $this->Form->input('transporter_id', ['options'=>$transporters,'empty' => "--Select--",'label' => false,'class' => 'form-control input-sm','placeholder' => 'Courier Charge']); ?></td>
-			<td width="90"><?php echo $this->Form->input('default_address', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn','value'=>1]); ?></td>
+			<td width="90"><?php echo $this->Form->input('default_address', ['type'=>'checkbox','label' => false,'class' => 'form-control input-sm default_btn','checked'=>'Checked']); ?></td>
 			<td><a class="btn btn-xs btn-default addrow2" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow2" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
 	</tbody>
