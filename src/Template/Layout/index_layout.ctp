@@ -457,8 +457,8 @@ select
 							<span class="arrow "></span>
 							</a>
 							<ul class="sub-menu">
-								<li><?php echo $this->Html->link( 'Add', '/PaymentVouchers/add' ); ?></li>
-								<li><?php echo $this->Html->link( 'View', '/PaymentVouchers' ); ?></li>
+								<li><?php echo $this->Html->link( 'Add', '/Payments/add' ); ?></li>
+								<li><?php echo $this->Html->link( 'View', '/Payments' ); ?></li>
 							</ul>
 						</li>
 						<li>

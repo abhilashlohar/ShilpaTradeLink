@@ -18,16 +18,16 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 	<div class="portlet-title">
 		<div class="caption" >
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Edit Receipt</span>
+			<span class="caption-subject font-blue-steel uppercase">Edit Payment</span>
 		</div>
 	</div>
 	<div class="portlet-body form">
-    <?= $this->Form->create($receipt,['id'=>'form_sample_3']) ?>
+    <?= $this->Form->create($payment,['id'=>'form_sample_3']) ?>
         <div class="row">
 			<div class="col-md-3">
 				<div class="form-group">
 					<label class="control-label">Transaction Date<span class="required" aria-required="true">*</span></label>
-					<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y",strtotime($receipt->transaction_date)),'data-date-start-date' => date("d-m-Y",strtotime($financial_year->date_from)),'data-date-end-date' => date("d-m-Y",strtotime($financial_year->date_to))]); ?>
+					<?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y",strtotime($payment->transaction_date)),'data-date-start-date' => date("d-m-Y",strtotime($financial_year->date_from)),'data-date-end-date' => date("d-m-Y",strtotime($financial_year->date_to))]); ?>
 				</div>
 			</div>
 			<div class="col-md-3">
@@ -71,12 +71,12 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 				<th width="3%"></th>
 			</thead>
 			<tbody id="main_tbody">
-			<?php foreach($receipt->receipt_rows as $receipt_row){ ?> 
+			<?php foreach($payment->payment_rows as $payment_row){ ?> 
 				<tr class="main_tr">
-					<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from','value'=>$receipt_row->received_from_id]); ?></td>
-					<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm mian_amount','placeholder'=>'Amount','value'=>$this->Number->format($receipt_row->amount,[ 'places' => 2])]); ?></td>
+					<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from','value'=>$payment_row->received_from_id]); ?></td>
+					<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm mian_amount','placeholder'=>'Amount','value'=>$this->Number->format($payment_row->amount,[ 'places' => 2])]); ?></td>
 					<td>
-					<?php if(sizeof($old_ref_rows[$receipt_row->received_from_id])>0){ ?>
+					<?php if(sizeof($old_ref_rows[$payment_row->received_from_id])>0){ ?>
 						<div class="ref" style="padding:4px;">
 						<table width="100%" class="ref_table">
 							<thead>
@@ -88,19 +88,19 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 								</tr>
 							</thead>
 							<tbody>
-							<?php foreach($old_ref_rows[$receipt_row->received_from_id] as $old_ref_row){ ?>
+							<?php foreach($old_ref_rows[$payment_row->received_from_id] as $old_ref_row){ ?>
 								<tr>
 									<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type','value'=>$old_ref_row->reference_type]); ?></td>
 									<td class="ref_no">
 									<?php if($old_ref_row->reference_type=="Against Reference"){
-										echo $this->requestAction('Receipts/fetchRefNumbersEdit/'.$receipt_row->received_from_id.'/'.$old_ref_row->reference_no.'/'.$old_ref_row->credit);
+										echo $this->requestAction('Payments/fetchRefNumbersEdit/'.$payment_row->received_from_id.'/'.$old_ref_row->reference_no.'/'.$old_ref_row->debit);
 									}else{
 										echo '<input type="text" class="form-control input-sm" placeholder="Ref No." value="'.$old_ref_row->reference_no.'" readonly="readonly" is_old="yes">';
 									}?>
 									</td>
 									<td>
-									<?php echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'hidden','value'=>$old_ref_row->credit]); ?>
-									<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount','value'=>$old_ref_row->credit]); ?>
+									<?php echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'hidden','value'=>$old_ref_row->debit]); ?>
+									<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount','value'=>$old_ref_row->debit]); ?>
 									</td>
 									<td></td>
 								</tr>
@@ -118,7 +118,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 						</div>
 						<?php } ?>
 					</td>
-					<td><?php echo $this->Form->input('narration', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Narration','value'=>$receipt_row->narration]); ?></td>
+					<td><?php echo $this->Form->input('narration', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Narration','value'=>$payment_row->narration]); ?></td>
 					<td><a class="btn btn-xs btn-default deleterow" href="#" role="button"><i class="fa fa-times"></i></a></td>
 				</tr>
 			<?php } ?>
@@ -265,18 +265,18 @@ $(document).ready(function() {
 	function rename_rows(){
 		var i=0;
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
-			$(this).find("td:eq(0) select.received_from").select2().attr({name:"receipt_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"}).rules('add', {
+			$(this).find("td:eq(0) select.received_from").select2().attr({name:"payment_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"}).rules('add', {
 						required: true,
 						notEqualToGroup: ['.received_from'],
 						messages: {
 							notEqualToGroup: "Do not select same party again."
 						}
 					});
-			$(this).find("td:eq(1) input").attr({name:"receipt_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"}).rules('add', {
+			$(this).find("td:eq(1) input").attr({name:"payment_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"}).rules('add', {
 						required: true,
 						min: 0.01,
 					});
-			$(this).find("td:nth-child(4) textarea").attr({name:"receipt_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"}).rules("add", "required");
+			$(this).find("td:nth-child(4) textarea").attr({name:"payment_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"}).rules("add", "required");
 			i++;
 		});
 	}
@@ -310,7 +310,7 @@ $(document).ready(function() {
 			if(is_select){
 				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no"}).rules("add", "required");
 			}else if(is_input){
-				var url='<?php echo $this->Url->build(['controller'=>'Receipts','action'=>'checkRefNumberUniqueEdit']); ?>';
+				var url='<?php echo $this->Url->build(['controller'=>'Payments','action'=>'checkRefNumberUniqueEdit']); ?>';
 				var is_old=$(this).find("td:nth-child(2) input").attr('is_old');
 				url=url+'/'+received_from_id+'/'+i+'/'+is_old;
 				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no", class:"form-control input-sm ref_number-"+received_from_id}).rules('add', {
@@ -375,7 +375,7 @@ $(document).ready(function() {
 		var ref_type=$(this).find('option:selected').val();
 		var received_from_id=$(this).closest('tr.main_tr').find('td select:eq(0)').val();
 		if(ref_type=="Against Reference"){
-			var url="<?php echo $this->Url->build(['controller'=>'Receipts','action'=>'fetchRefNumbers']); ?>";
+			var url="<?php echo $this->Url->build(['controller'=>'Payments','action'=>'fetchRefNumbers']); ?>";
 			url=url+'/'+received_from_id,
 			$.ajax({
 				url: url,
