@@ -1,3 +1,11 @@
+<?php if($ReceivedFroms_selected=="no"){
+	echo 'Select Ledger Accounts for Party.';
+	goto last;
+}
+if($BankCashes_selected=="no"){
+	echo 'Select Ledger Accounts for Cash/Bank.';
+	goto last;
+} ?>
 <style>
 table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table > thead > tr > td, table > tbody > tr > td, table > tfoot > tr > td{
 	vertical-align: top !important;
@@ -417,3 +425,5 @@ $(document).ready(function() {
 	</table>
 	</div>
 </div>
+
+<?php last: ?>
