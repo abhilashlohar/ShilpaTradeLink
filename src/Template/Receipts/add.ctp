@@ -246,11 +246,17 @@ $(document).ready(function() {
 				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no"}).rules("add", "required");
 			}else if(is_input){
 				var url='<?php echo $this->Url->build(['controller'=>'Receipts','action'=>'checkRefNumberUnique']); ?>';
-				url=url+'/'+received_from_id;
+				url=url+'/'+received_from_id+'/'+i;
 				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no", class:"form-control input-sm ref_number-"+received_from_id}).rules('add', {
 														required: true,
 														noSpace: true,
-														notEqualToGroup: ['.ref_number-'+received_from_id]
+														notEqualToGroup: ['.ref_number-'+received_from_id],
+														remote: {
+															url: url,
+														},
+														messages: {
+															remote: "Not an unique."
+														}
 													});
 			}
 			
@@ -273,6 +279,7 @@ $(document).ready(function() {
 	
 	$('.received_from').live("change",function() {
 		var sel=$(this);
+		$(sel).closest("tr").find("td:nth-child(3)").html("Loading...");
 		var sel2=$(this).closest('tr.main_tr');
 		var received_from_id=$(this).find('option:selected').val();
 		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'checkBillToBillAccountingStatus']); ?>";

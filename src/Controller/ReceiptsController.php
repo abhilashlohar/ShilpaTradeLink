@@ -436,8 +436,8 @@ class ReceiptsController extends AppController
 		$this->set(compact('ReferenceBalances', 'reference_no', 'credit'));
 	}
 	
-	function checkRefNumberUnique($received_from_id){
-		$reference_no=$this->request->data['reference_no'];
+	function checkRefNumberUnique($received_from_id,$i){
+		$reference_no=$this->request->query['ref_rows'][$received_from_id][$i]['ref_no'];
 		$ReferenceBalances=$this->Receipts->ReferenceBalances->find()->where(['ledger_account_id'=>$received_from_id,'reference_no'=>'L1']);
 		if($ReferenceBalances->count()==$reference_no){
 			echo 'true';
