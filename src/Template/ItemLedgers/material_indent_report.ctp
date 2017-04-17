@@ -72,7 +72,6 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 
 <script>
-
 $(document).ready(function() {
 	$('.rename_check').die().live("click",function() {
  		rename_rows();
@@ -85,12 +84,8 @@ $(document).ready(function() {
 				$(this).css('background-color','#fffcda');
  			}else{
  				$(this).css('background-color','#FFF');
-				
 			}
 		});
 	}	
-		
-		//rename_rows();
-    
 });		
 </script>

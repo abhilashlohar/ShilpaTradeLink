@@ -34,7 +34,7 @@
 								['action' => 'CheckCompany', $key,$vendor_id],
 								[
 									'escape' => false,
-									'class'=>' red tooltips','data-original-title'=>'Click To Removed'
+									'class'=>' red tooltips','data-original-title'=>'Click To Remove'
 									
 								]
 							) ?>
@@ -43,7 +43,7 @@
 								['action' => 'AddCompany', $key,$vendor_id],
 								[
 									'escape' => false,
-									'class'=>' red tooltips','data-original-title'=>'Click To Removed'
+									'class'=>' red tooltips','data-original-title'=>'Click To Add'
 									
 								]
 							) ?>

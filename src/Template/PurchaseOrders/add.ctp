@@ -90,7 +90,7 @@ With reference to your price list we are pleased to place an order for the follo
 								<th width="70"></th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="main_tbody">
 						<?php if(sizeof(@$to_be_send2)>0){
 							$q=0; foreach ($to_be_send2 as $item_id=>$data): ?>
 								<tr class="tr1" row_no='<?php echo @$item_id; ?>'>
@@ -118,6 +118,8 @@ With reference to your price list we are pleased to place an order for the follo
 									<td colspan="4"><?php echo $this->Form->textarea('purchase_order_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1',]); ?></td>
 									<td></td>
 								</tr>
+							
+						
 						<?php $q++; endforeach; ?>
 						<?php } ?>
 						</tbody>
@@ -336,6 +338,7 @@ $(document).ready(function() {
 		},
 
 		invalidHandler: function (event, validator) { //display error alert on form submit   
+			put_code_description();
 			success3.hide();
 			error3.show();
 			//Metronic.scrollTo(error3, -200);
@@ -357,6 +360,7 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			put_code_description();
 			success3.show();
 				error3.hide();
 				form[0].submit(); // submit the form
@@ -371,7 +375,7 @@ $(document).ready(function() {
 		add_row();
 		<?php } ?> 
 	
-	
+	//add_row();
 	
 		$("#discount_per").on('click',function(){
 		if($(this).is(':checked')){
@@ -396,14 +400,14 @@ $(document).ready(function() {
 		add_row();
     });
 	
-	function add_row(){  
+	function add_row(){ 
 		var tr1=$("#sample_tb tbody tr.tr1").clone();
-		$("#main_tb tbody").append(tr1);
+		$("#main_tb tbody#main_tbody").append(tr1);
 		var tr2=$("#sample_tb tbody tr.tr2").clone();
-		$("#main_tb tbody").append(tr2);
+		$("#main_tb tbody#main_tbody").append(tr2);
 		
 		var w=0; var r=0;
-		$("#main_tb tbody tr").each(function(){
+		$("#main_tb tbody#main_tbody tr.maintr").each(function(){
 			$(this).attr("row_no",w);
 			r++;
 			if(r==2){ w++; r=0; }
@@ -428,9 +432,9 @@ $(document).ready(function() {
 	
 	function rename_rows(){
 			var i=0;
-			$("#main_tb tbody tr.tr1").each(function(){
+			$("#main_tb tbody#main_tbody tr.tr1").each(function(){
 				$(this).find("td:nth-child(1)").html(++i); i--;
-				var mi=$(this).find("td:nth-child(2) input[type='hidden']:nth-child(2)").val();
+				var mi=$(this).find("td:nth-child(2) input[type='hidden']").val();
 				//alert(mi);
 				if(mi=0){
 					$(this).find("td:nth-child(2) input[type='hidden']:td:nth-child(1)").attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"});
@@ -445,10 +449,16 @@ $(document).ready(function() {
 				i++;
 			});
 			var i=0;
-			$("#main_tb tbody tr.tr2").each(function(){ 
-				$(this).find("td:nth-child(1) textarea").attr({name:"purchase_order_rows["+i+"][description]", id:"purchase_order_rows-"+i+"-description"}).rules("add", "required");
-				i++;
-			});
+			$("#main_tb tbody#main_tbody tr.tr2").each(function(){
+				var row_no=$(this).attr('row_no');
+				
+				var htm=$(this).find('td:nth-child(1)').find('div.note-editable').html();
+				if(!htm){ htm=""; }
+				$(this).find('td:nth-child(1)').html('');
+				$(this).find('td:nth-child(1)').append('<div id=summer'+i+'>'+htm+'</div>');
+				$(this).find('td:nth-child(1)').find('div#summer'+i).summernote();
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<textarea name="purchase_order_rows['+i+'][description]" style="display:none;"></textarea>');
+			i++; });
 		}
 		$('#main_tb input').die().live("keyup","blur",function() { 
 		calculate_total();
@@ -467,6 +477,17 @@ $(document).ready(function() {
 		
 	}
 	
+	put_code_description();
+	function put_code_description(){
+			var i=0;
+			$("#main_tb tbody tr.tr2").each(function(){
+				var row_no=$(this).attr('row_no');	
+				var code=$(this).find('div#summer'+i).code();
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').find('td:nth-child(1) textarea').val(code);
+			i++; });
+		}
+	
+	
 	$('select[name=sale_tax_per]').die().live("change",function() { 
 		var description=$('select[name=sale_tax_per] option:selected').attr('description');
 		$('input[name=sale_tax_description]').val(description);
@@ -477,7 +498,7 @@ $(document).ready(function() {
 </script>
 <table id="sample_tb" style="display:none;">
 	<tbody>
-		<tr class="tr1">
+		<tr class="tr1 preimp maintr">
 			<td rowspan="2" width="10">0</td>
 			<td width="300"><?php echo $this->Form->input('q', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm ']); ?></td>
 			<td ><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
@@ -485,7 +506,7 @@ $(document).ready(function() {
 			<td><?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
-		<tr class="tr2">
+		<tr class="tr2 preimp maintr">
 			<td colspan="4"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1']); ?></td>
 			<td></td>
 		</tr>

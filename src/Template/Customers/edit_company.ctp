@@ -31,7 +31,7 @@
 								['action' => 'CheckCompany', $key,$customer_id],
 								[
 									'escape' => false,
-									'class'=>' red tooltips','data-original-title'=>'Click To Removed'
+									'class'=>' red tooltips','data-original-title'=>'Click To Remove'
 									
 								]
 							) ?>
@@ -40,7 +40,7 @@
 								['action' => 'AddCompany', $key,$customer_id],
 								[
 									'escape' => false,
-									'class'=>' blue tooltips','data-original-title'=>'Click To Added'
+									'class'=>' blue tooltips','data-original-title'=>'Click To Add'
 									
 								]
 							) ?>

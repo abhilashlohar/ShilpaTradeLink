@@ -23,28 +23,28 @@
 			<td width="50%" valign="top" align="left">
 				<table>
 					<tr>
-						<td>GRN No</td>
-						<td width="20" align="center">:</td>
-						<td><?= h(($grn->grn1.'/GRN-'.str_pad($grn->grn2, 3, '0', STR_PAD_LEFT).'/'.$grn->grn3.'/'.$grn->grn4)) ?></td>
+						<td  width="38%" valign="top">GRN No</td>
+						<td width="2%" valign="top">:</td>
+						<td valign="top"><?= h(($grn->grn1.'/GRN-'.str_pad($grn->grn2, 3, '0', STR_PAD_LEFT).'/'.$grn->grn3.'/'.$grn->grn4)) ?></td>
 					</tr>
 					<tr>
-						<td>Purchase Order No</td>
-						<td width="20" align="center">:</td>
-						<td><?= h(($grn->purchase_order->po1.'/PO-'.str_pad($grn->purchase_order->po2, 3, '0', STR_PAD_LEFT).'/'.$grn->purchase_order->po3.'/'.$grn->purchase_order->po4)) ?></td>
+						<td  width="38%" valign="top">Purchase Order No</td>
+						<td width="2%" valign="top">:</td>
+						<td valign="top"><?= h(($grn->purchase_order->po1.'/PO-'.str_pad($grn->purchase_order->po2, 3, '0', STR_PAD_LEFT).'/'.$grn->purchase_order->po3.'/'.$grn->purchase_order->po4)) ?></td>
 					</tr>
 				</table>
 			</td>
 			<td width="50%" valign="top" align="right">
 				<table>
 					<tr>
-						<td>Date.</td>
-						<td width="20" align="center">:</td>
-						<td><?= h(date("d-m-Y",strtotime($grn->date_created))) ?></td>
+						<td  width="48%" valign="top">Date.</td>
+						<td  width="2%" valign="top">:</td>
+						<td valign="top"><?= h(date("d-m-Y",strtotime($grn->date_created))) ?></td>
 					</tr>
 					<tr>
-						<td>Road Permit No</td>
-						<td width="20" align="center">:</td>
-						<td><?= h(($grn->road_permit_no)) ?></td>
+						<td  width="38%" valign="top">Road Permit No</td>
+						<td  width="2%" valign="top">:</td>
+						<td valign="top"><?= h(($grn->road_permit_no)) ?></td>
 					</tr>
 				</table>
 			</td>
@@ -56,9 +56,9 @@
 <table width="100%" class="table tableitm"  border="0">	
 <thead>
 	<tr>
-		<th width="45%">S.No</th>
+		<th width="20%">S.No</th>
 		<th>Item Name</th>
-		<th width="8%">Quantity</th>
+		<th width="28%">Quantity</th>
 	</tr>
 </thead>
 <tbody>

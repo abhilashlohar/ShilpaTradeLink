@@ -34,7 +34,7 @@
 								['action' => 'CheckCompany', $key,$saletax_id],
 								[
 									'escape' => false,
-									'class'=>' blue tooltips','data-original-title'=>'Click To Removed'
+									'class'=>' blue tooltips','data-original-title'=>'Click To Remove'
 									
 								]
 							) ?>
@@ -43,7 +43,7 @@
 								['action' => 'AddCompany', $key,$saletax_id],
 								[
 									'escape' => false,
-									'class'=>' blue tooltips','data-original-title'=>'Click To Added'
+									'class'=>' blue tooltips','data-original-title'=>'Click To Add'
 									
 								]
 							) ?>

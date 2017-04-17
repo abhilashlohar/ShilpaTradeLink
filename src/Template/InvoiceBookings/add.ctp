@@ -191,7 +191,7 @@
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$grn_rows->id; ?>'>
 							<td colspan="11">
-							<?php echo $this->Text->autoParagraph(h($grn->purchase_order->purchase_order_rows[$q]->description)); ?>
+							<?php echo $this->Text->autoParagraph($grn->purchase_order->purchase_order_rows[$q]->description); ?>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.description',['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value'=>$grn->purchase_order->purchase_order_rows[$q]->description]); ?>
 							</td>
 							<td></td>

@@ -26,7 +26,6 @@
 				$c_namrr=$Company_array1[$key];
 				$bill_to_bill=@$Company_array2[$key];
 				$item_serial_no=@$Company_array3[$key];
-//pr($item_serial_no); 
 				?>
 					<tr>
 						<td><?= h($i) ?></td>
@@ -37,7 +36,7 @@
 								['action' => 'CheckCompany', $key,$item_id],
 								[
 									'escape' => false,
-									'class'=>' red tooltips','data-original-title'=>'Click To Removed'
+									'class'=>' red tooltips','data-original-title'=>'Click To Remove'
 									
 								]
 							) ?>
@@ -46,7 +45,7 @@
 								['action' => 'AddCompany', $key,$item_id],
 								[
 									'escape' => false,
-									'class'=>' blue tooltips','data-original-title'=>'Click To Added'
+									'class'=>' blue tooltips','data-original-title'=>'Click To Add'
 									
 								]
 							) ?>

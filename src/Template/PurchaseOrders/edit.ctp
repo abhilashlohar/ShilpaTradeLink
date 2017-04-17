@@ -95,7 +95,7 @@
 								<th width="70"></th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="main_tbody">
 							<?php $q=0; foreach ($purchaseOrder->purchase_order_rows as $purchase_order_rows): ?>
 							<tr class="tr1" row_no='<?php echo @$purchase_order_rows->id; ?>'>
 									<td rowspan="2"><?= h($q) ?></td>
@@ -127,10 +127,13 @@
 									
 									<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 								</tr>
-								<tr class="tr2" row_no='<?php echo @$purchase_order_rows->id; ?>'>
-									<td colspan="6"><?php echo $this->Form->textarea('purchase_order_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'5','value'=>$purchase_order_rows->description,'required']); ?></td>
+								<tr class="tr2 preimp" row_no='<?php echo @$purchase_order_rows->id; ?>'>
+									<td colspan="6">
+									<div class="note-editable" id="summer<?php echo $q; ?>" ><?php echo $purchase_order_rows->description; ?></div>
+									</td>
 									<td></td>
 								</tr>
+							
 						<?php $q++; endforeach; ?>
 							
 						</tbody>
@@ -332,6 +335,7 @@ $(document).ready(function() {
 		},
 
 		invalidHandler: function (event, validator) { //display error alert on form submit   
+			put_code_description();
 			success3.hide();
 			error3.show();
 			Metronic.scrollTo(error3, -200);
@@ -353,6 +357,7 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			put_code_description();
 			success3.show();
 				error3.hide();
 				form[0].submit(); // submit the form
@@ -395,9 +400,9 @@ $(document).ready(function() {
 	
 	function add_row(){
 		var tr1=$("#sample_tb tbody tr.tr1").clone();
-		$("#main_tb tbody").append(tr1);
+		$("#main_tb tbody#main_tbody").append(tr1);
 		var tr2=$("#sample_tb tbody tr.tr2").clone();
-		$("#main_tb tbody").append(tr2);
+		$("#main_tb tbody#main_tbody").append(tr2);
 		
 		var w=0; var r=0;
 		$("#main_tb tbody tr").each(function(){
@@ -411,9 +416,11 @@ $(document).ready(function() {
 	
 		$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
+		alert(l);
 		if (confirm("Are you sure to remove row ?") == true) {
 			if(l>2){
 				var row_no=$(this).closest("tr").attr("row_no");
+				
 				var del="tr[row_no="+row_no+"]";
 				$(del).remove();
 				rename_rows();
@@ -426,7 +433,6 @@ $(document).ready(function() {
 	function rename_rows(){
 	var i=0;
 		$("#main_tb tbody tr.tr1").each(function(){
-			
 			$(this).find("td:nth-child(1)").html(++i); i--;
 			var len=$(this).find("td:nth-child(2) select").length;
 			if(len>0){
@@ -440,17 +446,20 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(4) input").attr({name:"purchase_order_rows["+i+"][rate]", id:"purchase_order_rows-"+i+"-rate"}).rules("add", "required");
 			$(this).find("td:nth-child(5) input").attr("name","purchase_order_rows["+i+"][amount]");
 			i++;
+			
 		});
 		var i=0;
-		
 		$("#main_tb tbody tr.tr2").each(function(){
-			
-			$(this).find("td:nth-child(1) textarea").attr({name:"purchase_order_rows["+i+"][description]", id:"purchase_order_rows-"+i+"-description"}).rules("add", "required");
-			i++;
-		});
-		
-			
+			var row_no=$(this).attr('row_no');
+			var htm=$(this).find('td:nth-child(1)').find('div.note-editable').html();
+			if(!htm){ htm=""; }
+			$(this).find('td:nth-child(1)').html('');
+			$(this).find('td:nth-child(1)').append('<div id=summer'+i+'>'+htm+'</div>');
+			$(this).find('td:nth-child(1)').find('div#summer'+i).summernote();
+			$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<textarea name="purchase_order_rows['+i+'][description]" style="display:none;"></textarea>');
+		i++; });
 	}
+		
 		$('#main_tb input').die().live("keyup","blur",function() { 
 		calculate_total();
     });
@@ -466,6 +475,15 @@ $(document).ready(function() {
 		});
 		$('input[name="total"]').val(total.toFixed(2));
 		
+	}
+	
+	function put_code_description(){
+		var i=0;
+		$("#main_tb tbody tr.tr2").each(function(){
+			var row_no=$(this).attr('row_no');	
+			var code=$(this).find('div#summer'+i).code();
+			$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').find('td:nth-child(1) textarea').val(code);
+		i++; });
 	}
 	
 	$('select[name=sale_tax_per]').die().live("change",function() { 

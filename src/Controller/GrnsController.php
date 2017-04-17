@@ -83,7 +83,7 @@ class GrnsController extends AppController
 						},'Companies','Vendors'
 					]
 			]);
-			pr($purchase_order); exit;
+			//pr($purchase_order); exit;
 		}
 		$this->set(compact('purchase_order'));
 		$session = $this->request->session();

@@ -437,17 +437,17 @@ class InventoryVouchersController extends AppController
 		foreach($invoice_data->invoice_rows as $invoice_row){ 
 		
 			$SalesOrderRow=$this->InventoryVouchers->SalesOrderRows->find()->where(['sales_order_id'=>$sales_order_id,'item_id'=>$invoice_row->item_id])->first();
+			//pr($SalesOrderRow);
 			if($invoice_row->item->source=='Purchessed/Manufactured'){ 
 			
-				if($SalesOrderRow->source_type=="Manufactured"){
+				if($SalesOrderRow->source_type=="Manufactured" || $SalesOrderRow->source_type=="" ){
 					$display_items[$invoice_row->item->id]=$invoice_row->item->name; 
 				}
 			}elseif($invoice_row->item->source=='Assembled' or $invoice_row->item->source=='Manufactured'){
 				$display_items[$invoice_row->item->id]=$invoice_row->item->name; 
 			}
 		}
-	
-		
+
 		foreach($display_items as $item_id=>$item_name){
 			$query = $this->InventoryVouchers->InvoiceRows->query();
 			$query->update()

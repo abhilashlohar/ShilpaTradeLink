@@ -227,7 +227,7 @@ $('.closetin').on("click",function() {
 						</tr>
 				
 						<?php 
-
+						
 						$options1=[]; 
 							foreach($sales_order_rows->item->item_serial_numbers as $item_serial_number){
 								$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];

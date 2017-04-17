@@ -266,7 +266,7 @@
 
 <table id="sample_tb" style="display:none;">
 	<tbody >
-		<tr class="tr1 preimp">
+		<tr class="tr1 preimp maintr">
 			<td rowspan="2" width="10">0</td>
 			<td>
 				<div class="row">
@@ -295,7 +295,7 @@
 			<td width="130"><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
-		<tr class="tr2 preimp">
+		<tr class="tr2 preimp maintr">
 			<td colspan="4" class="main"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','style'=>['display:none'],'rows'=>'1']); ?>
 			<div contenteditable="true" id="editor"></div>
 			</td>
