@@ -52,7 +52,7 @@
 	<br/>
 	<table width="100%">
 		<tr>
-			<th><?= __('Received From Id') ?></th>
+			<th><?= __('Received From') ?></th>
 			<th><?= __('Amount') ?></th>
 			<th><?= __('Narration') ?></th>
 		</tr>
