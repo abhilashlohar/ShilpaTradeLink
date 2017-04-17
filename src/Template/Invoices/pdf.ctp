@@ -60,6 +60,7 @@ $html = '
 	.avoid_break{
 		page-break-inside: avoid;
 	}
+
 	</style>
 <body>
   <div id="header" ><br/>	
@@ -173,12 +174,7 @@ $html.='
 		<td style="font-size:'. h(($invoice->pdf_font_size)) .';" style="padding-top:8px;padding-bottom:5px;" align="right" valign="top">'. $this->Number->format($invoiceRows->rate,[ 'places' => 2]) .'</td>
 		<td style="font-size:'. h(($invoice->pdf_font_size)) .';" style="padding-top:8px;padding-bottom:5px;" align="right" valign="top">'. $this->Number->format($invoiceRows->amount,[ 'places' => 2]) .'</td>
 	</tr>';
-	if(!empty($salesOrderRows->description)){
-		$html.='
-		<tr class="even">
-			<td></td>
-			<td colspan="7" style="text-align: justify;"><b> </b>'.$salesOrderRows->description.'<div style="height:'.$salesOrderRows->height.'"></div></td>
-		</tr>';
+	
 endforeach; 
 	$html.='<tbody>';
 if($invoice->discount_type=='1'){ $discount_text='Discount @ '.$invoice->discount_per.'%'; }else{ $discount_text='Discount'; }
