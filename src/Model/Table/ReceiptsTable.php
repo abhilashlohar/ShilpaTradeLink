@@ -103,11 +103,6 @@ class ReceiptsTable extends Table
             ->notEmpty('payment_mode');
 
        
-
-        $validator
-            ->requirePresence('cheque_no', 'create')
-            ->notEmpty('cheque_no');
-
         return $validator;
     }
 

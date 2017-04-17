@@ -95,14 +95,14 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 									<?php if($old_ref_row->reference_type=="Against Reference"){
 										echo $this->requestAction('Receipts/fetchRefNumbersEdit/'.$receipt_row->received_from_id.'/'.$old_ref_row->reference_no.'/'.$old_ref_row->credit);
 									}else{
-										echo '<input type="text" class="form-control input-sm" placeholder="Ref No." value="'.$old_ref_row->reference_no.'" >';
+										echo '<input type="text" class="form-control input-sm" placeholder="Ref No." value="'.$old_ref_row->reference_no.'" readonly="readonly" >';
 									}?>
 									</td>
 									<td>
 									<?php echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'hidden','value'=>$old_ref_row->credit]); ?>
 									<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount','value'=>$old_ref_row->credit]); ?>
 									</td>
-									<td><a class="btn btn-xs btn-default deleterefrow" href="#" role="button"><i class="fa fa-times"></i></a></td>
+									<td></td>
 								</tr>
 							<?php } ?>
 							</tbody>

@@ -257,6 +257,7 @@ class ReceiptsController extends AppController
 			$receipt->transaction_date=date("Y-m-d",strtotime($receipt->transaction_date));
 				
 			//Save receipt
+			//pr($receipt); exit;
             if ($this->Receipts->save($receipt)) {
 				$this->Receipts->Ledgers->deleteAll(['voucher_id' => $receipt->id, 'voucher_source' => 'Receipt Voucher']);
 				$total_amount=0;
@@ -433,5 +434,16 @@ class ReceiptsController extends AppController
 		$this->viewBuilder()->layout('');
 		$ReferenceBalances=$this->Receipts->ReferenceBalances->find()->where(['ledger_account_id'=>$received_from_id]);
 		$this->set(compact('ReferenceBalances', 'reference_no', 'credit'));
+	}
+	
+	function checkRefNumberUnique($received_from_id){
+		$reference_no=$this->request->data['reference_no'];
+		$ReferenceBalances=$this->Receipts->ReferenceBalances->find()->where(['ledger_account_id'=>$received_from_id,'reference_no'=>'L1']);
+		if($ReferenceBalances->count()==$reference_no){
+			echo 'true';
+		}else{
+			echo 'false';
+		}
+		exit;
 	}
 }
