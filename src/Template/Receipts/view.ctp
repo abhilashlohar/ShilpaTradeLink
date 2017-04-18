@@ -53,14 +53,12 @@
 	<table width="100%">
 		<tr>
 			<th><?= __('Received From') ?></th>
-			<th><?= __('Amount') ?></th>
-			<th><?= __('Narration') ?></th>
+			<th style="text-align: right;">Amount</th>
 		</tr>
 		<?php $total=0; foreach ($receipt->receipt_rows as $receiptRows): ?>
 		<tr>
 			<td><?= h($receiptRows->ReceivedFrom->name) ?></td>
-			<td><?= h($this->Number->format($receiptRows->amount,[ 'places' => 2])) ?></td>
-			<td><?= h($receiptRows->narration) ?></td>
+			<td align="right"><?= h($this->Number->format($receiptRows->amount,[ 'places' => 2])) ?> <?= h($receiptRows->cr_dr) ?></td>
 		</tr>
 		<?php $total=$total+$receiptRows->amount; endforeach; ?>
 	</table>

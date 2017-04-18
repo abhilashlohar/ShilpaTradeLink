@@ -1,4 +1,4 @@
-<?php
+<?php 
 $options=[];
 foreach($ReferenceBalances as $ReferenceBalance){
 	if($cr_dr=="Cr"){

@@ -26,8 +26,35 @@ class ReceiptsController extends AppController
             'contain' => []
         ];
         $receipts = $this->paginate($this->Receipts->find()->where(['company_id'=>$st_company_id])->contain(['ReceiptRows'=>function($q){
-			return $q->select(['total_amount' => $q->func()->sum('ReceiptRows.amount')])->autoFields(true)->group(['ReceiptRows.receipt_id']);
+			$ReceiptRows = $this->Receipts->ReceiptRows->find();
+			$totalCrCase = $ReceiptRows->newExpr()
+				->addCase(
+					$ReceiptRows->newExpr()->add(['cr_dr' => 'Cr']),
+					$ReceiptRows->newExpr()->add(['amount']),
+					'integer'
+				);
+			$totalDrCase = $ReceiptRows->newExpr()
+				->addCase(
+					$ReceiptRows->newExpr()->add(['cr_dr' => 'Dr']),
+					$ReceiptRows->newExpr()->add(['amount']),
+					'integer'
+				);
+			return $ReceiptRows->select([
+					'total_cr' => $ReceiptRows->func()->sum($totalCrCase),
+					'total_dr' => $ReceiptRows->func()->sum($totalDrCase)
+				])
+				->group('receipt_id')
+				->autoFields(true);
+			
 		}]));
+		
+		//pr($receipts->toArray()); exit;
+		
+		
+		/*$receipts = $this->paginate($this->Receipts->find()->where(['company_id'=>$st_company_id])->contain(['ReceiptRows'=>function($q){
+			return $q->select(['total_cr' => $q->func()->sum('ReceiptRows.amount')])->autoFields(true)->group(['ReceiptRows.receipt_id']);
+		}]));*/
+		
 		//pr($receipts); exit;
         $this->set(compact('receipts'));
         $this->set('_serialize', ['receipts']);
