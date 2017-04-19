@@ -421,16 +421,16 @@ class PaymentsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 	
-	public function fetchRefNumbers($received_from_id=null){
+	public function fetchRefNumbers($received_from_id=null,$cr_dr=null){
 		$this->viewBuilder()->layout('');
 		$ReferenceBalances=$this->Payments->ReferenceBalances->find()->where(['ledger_account_id'=>$received_from_id]);
-		$this->set(compact('ReferenceBalances'));
+		$this->set(compact('ReferenceBalances','cr_dr'));
 	}
 	
-	public function fetchRefNumbersEdit($received_from_id=null,$reference_no=null,$debit=null){
+	public function fetchRefNumbersEdit($received_from_id=null,$reference_no=null,$debit=null,$credit=null,$cr_dr=null){
 		$this->viewBuilder()->layout('');
 		$ReferenceBalances=$this->Payments->ReferenceBalances->find()->where(['ledger_account_id'=>$received_from_id]);
-		$this->set(compact('ReferenceBalances', 'reference_no', 'debit'));
+		$this->set(compact('ReferenceBalances', 'reference_no', 'credit', 'debit', 'cr_dr'));
 	}
 	
 	function checkRefNumberUnique($received_from_id,$i){

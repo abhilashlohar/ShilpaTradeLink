@@ -289,9 +289,9 @@ $(document).ready(function() {
 	});
 	
 	function load_ref_section(sel){
-		$(sel).closest("tr").find("td:nth-child(3)").html("Loading...");
-		var sel2=$(this).closest('tr.main_tr');
-		var received_from_id=$(sel).closest("tr").find("td:nth-child(1) select").val();
+		$(sel).closest("tr.main_tr").find("td:nth-child(3)").html("Loading...");
+		var sel2=$(sel).closest('tr.main_tr');
+		var received_from_id=$(sel).closest("tr.main_tr").find("td:nth-child(1) select").find('option:selected').val();
 		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'checkBillToBillAccountingStatus']); ?>";
 		url=url+'/'+received_from_id,
 		$.ajax({

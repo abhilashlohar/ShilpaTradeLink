@@ -290,9 +290,19 @@ $(document).ready(function() {
 	
 	$('.received_from').live("change",function() {
 		var sel=$(this);
-		$(sel).closest("tr").find("td:nth-child(3)").html("Loading...");
-		var sel2=$(this).closest('tr.main_tr');
-		var received_from_id=$(this).find('option:selected').val();
+		load_ref_section(sel);
+	});
+	
+	$('.cr_dr').live("change",function() {
+		var sel=$(this);
+		load_ref_section(sel);
+		do_mian_amount_total();
+	});
+	
+	function load_ref_section(sel){
+		$(sel).closest("tr.main_tr").find("td:nth-child(3)").html("Loading...");
+		var sel2=$(sel).closest('tr.main_tr');
+		var received_from_id=$(sel).closest("tr.main_tr").find("td:nth-child(1) select").find('option:selected').val();
 		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'checkBillToBillAccountingStatus']); ?>";
 		url=url+'/'+received_from_id,
 		$.ajax({
@@ -308,17 +318,20 @@ $(document).ready(function() {
 			}
 			rename_ref_rows(sel2,received_from_id);
 		});
-	});
+	}
+	
+	
 	
 	$('.ref_type').live("change",function() {
 		var current_obj=$(this);
 		
 		var sel3=$(this).closest('tr.main_tr');
+		var cr_dr=$(this).closest('tr.main_tr').find('td:nth-child(2) select').val();
 		var ref_type=$(this).find('option:selected').val();
 		var received_from_id=$(this).closest('tr.main_tr').find('td select:eq(0)').val();
 		if(ref_type=="Against Reference"){
 			var url="<?php echo $this->Url->build(['controller'=>'Payments','action'=>'fetchRefNumbers']); ?>";
-			url=url+'/'+received_from_id,
+			url=url+'/'+received_from_id+'/'+cr_dr,
 			$.ajax({
 				url: url,
 				type: 'GET',
@@ -369,11 +382,18 @@ $(document).ready(function() {
 	});
 	
 	function do_mian_amount_total(){
-		var mian_amount_total=0;
+		var mian_amount_total_cr=0; var mian_amount_total_dr=0;
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
 			var v=parseFloat($(this).find("td:nth-child(2) input").val());
+			var cr_dr=($(this).find("td:nth-child(2) select").val());
 			if(!v){ v=0; }
-			mian_amount_total=mian_amount_total+v;
+			if(cr_dr=="Cr"){
+				mian_amount_total_cr=mian_amount_total_cr+v;
+			}else{
+				mian_amount_total_dr=mian_amount_total_dr+v;
+			}
+			
+			mian_amount_total=mian_amount_total_dr-mian_amount_total_cr;
 			$('#receipt_amount').text(mian_amount_total.toFixed(2));
 		});
 	}
@@ -387,7 +407,19 @@ $(document).ready(function() {
 	<tbody>
 		<tr class="main_tr">
 			<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from']); ?></td>
-			<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm mian_amount','placeholder'=>'Amount']); ?></td>
+			<td>
+			<div class="row">
+				<div class="col-md-7" style="padding-right: 0;">
+					<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm mian_amount','placeholder'=>'Amount']); ?>
+				</div>
+				<div class="col-md-5"style="padding-left: 0;">
+					<select name="cr_dr" class="form-control input-sm cr_dr" >
+						<option value="Dr">Dr</option>
+						<option value="Cr">Cr</option>
+					</select>
+				</div>
+			</div>
+			</td>
 			<td></td>
 			<td><?php echo $this->Form->input('narration', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Narration']); ?></td>
 			<td><a class="btn btn-xs btn-default deleterow" href="#" role="button"><i class="fa fa-times"></i></a></td>
