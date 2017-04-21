@@ -93,7 +93,6 @@ class InvoicesController extends AppController
 						if(sizeof($invoice_rows)>0){
 							foreach($invoice_rows as $invoice_row)
 							{
-								
 								$SalesOrderRow=$this->Invoices->SalesOrderRows->find()->where(['sales_order_id'=>$sales_order_id,'item_id'=>$invoice_row->item_id])->first();
 								if($invoice_row->item->source=='Purchessed/Manufactured'){ 
 								

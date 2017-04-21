@@ -244,9 +244,6 @@ class CustomersController extends AppController
 		
 		$LedgerAccounts = $this->paginate($this->Customers->LedgerAccounts->find()
 			->where(['LedgerAccounts.company_id'=>$st_company_id,'source_model'=>'Customers']));
-			
-
-		
         $ReferenceDetails = $this->Customers->ReferenceDetails->find()->toArray();
 		//pr($customers->toArray()); exit;
 
@@ -261,6 +258,7 @@ class CustomersController extends AppController
 		$Customer = $this->Customers->get($customer_id);
 		echo $Customer->credit_limit;
     }
+	
 	function AgstRefForPayment($customer_id=null){
 		$this->viewBuilder()->layout('');
 		$session = $this->request->session();
