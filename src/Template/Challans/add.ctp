@@ -242,7 +242,7 @@
 			<td>
 				<div class="row">
 					<div class="col-md-11 padding-right-decrease" id="item_div">
-						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen item_box','placeholder' => 'Item']); ?>
+						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen item_box item_id','placeholder' => 'Item']); ?>
 					</div>
 					<div class="col-md-1 padding-left-decrease">
 						
@@ -291,6 +291,30 @@ $( "#sortable" ).disableSelection();
 </script>
 <script>
 $(document).ready(function() {
+	
+	jQuery.validator.addMethod("notEqualToGroup", function (value, element, options) {
+		// get all the elements passed here with the same class
+		var elems = $(element).parents('form').find(options[0]);
+		// the value of the current element
+		var valueToCompare = value;
+		// count
+		var matchesFound = 0;
+		// loop each element and compare its value with the current value
+		// and increase the count every time we find one
+		jQuery.each(elems, function () {
+			thisVal = $(this).val();
+			if (thisVal == valueToCompare) {
+				matchesFound++;
+			}
+		});
+		// count should be either 0 or 1 max
+		if (this.optional(element) || matchesFound <= 1) {
+			//elems.removeClass('error');
+			return true;
+		} else {
+			//elems.addClass('error');
+		}
+	}, jQuery.format(""))
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -324,6 +348,9 @@ $(document).ready(function() {
 					required: true,	
 				},
 				pass_credit_note:{
+					required: true,	
+				},
+				pass_debit_note:{
 					required: true,	
 				},
 			},
@@ -445,12 +472,19 @@ $(document).ready(function() {
 		rename_rows();
 		}
 	
-rename_rows();	
+	rename_rows();	
 	function rename_rows(){
 	var i=0;
 			$("#main_tb tbody tr.tr1").each(function(){
 				$(this).find("td:nth-child(1)").html(++i); --i;
-				$(this).find("td:nth-child(2) select").select2().attr({name:"challan_rows["+i+"][item_id]", id:"challan_rows-"+i+"-item_id"}).rules("add", "required");
+				//$(this).find("td:nth-child(2) select").select2().attr({name:"challan_rows["+i+"][item_id]", id:"challan_rows-"+i+"-item_id"}).rules("add", "required");
+				$(this).find("td:nth-child(2) select").select2().attr({name:"challan_rows["+i+"][item_id]", id:"challan_rows-"+i+"-item_id",popup_id:i}).rules('add', {
+							required: true,
+							notEqualToGroup: ['.item_id'],
+							messages: {
+								notEqualToGroup: "Do not select same Item again."
+							}
+						});
 				$(this).find("td:nth-child(3) input").attr({name:"challan_rows["+i+"][quantity]", id:"challan_rows-"+i+"-quantity"}).rules('add', {
 						required: true,
 						digits: true,

@@ -10,4 +10,4 @@ elseif($source_model=="Invoice_Booking"){
 		$options[]=['text' =>$invoice_booking_row->item->name, 'value' => $invoice_booking_row->item->id];
 	}
 }
-echo $this->Form->input('item_id', ['empty'=>'Select','options' => $options,'label' => false,'class' => 'form-control input-sm  item_box','placeholder' => 'Item']);
+echo $this->Form->input('item_id', ['empty'=>'Select','options' => $options,'label' => false,'class' => 'form-control input-sm  item_box item_id','placeholder' => 'Item']);

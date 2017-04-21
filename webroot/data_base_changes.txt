@@ -3,3 +3,9 @@ Add Field In IN:-pdf_font_size(varchar:10, default:16px)
 Add Field In sale_tax_companies:-freeze
 Add Field In item_companies:-freeze
 Add Field In invoice:-delivery_description
+
+
+
+
+In Customer-Add changes courier_charge to transporter_id
+In Customer-Edit changes courier_charge to transporter_id

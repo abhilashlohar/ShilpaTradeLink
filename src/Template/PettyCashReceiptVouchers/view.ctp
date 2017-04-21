@@ -11,8 +11,8 @@ width:100% !important;
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size: 14px;" class="maindiv">	
 <table width="100%" class="divHeader">
 		<tr>
-			<td width="30%"><?php echo $this->Html->image('/logos/'.$pettyCashReceiptVoucher->company->logo, ['width' => '40%']); ?></td>
-			<td align="center" width="40%" style="font-size: 12px;"><div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">PETTY CASH VOUCHER</div></td>
+			<td width="22%"><?php echo $this->Html->image('/logos/'.$pettyCashReceiptVoucher->company->logo, ['width' => '40%']); ?></td>
+			<td align="center" width="35%" style="font-size: 11px;"><div align="center" style="font-size: 16px;font-weight: bold;color: #0685a8;">PETTY CASH VOUCHER</div></td>
 			<td align="right" width="30%" style="font-size: 12px;">
 			<span style="font-size: 14px;"><?= h($pettyCashReceiptVoucher->company->name) ?></span>
 			<span><?= $this->Text->autoParagraph(h($pettyCashReceiptVoucher->company->address)) ?>

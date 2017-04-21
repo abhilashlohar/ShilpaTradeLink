@@ -390,7 +390,7 @@ class GrnsController extends AppController
 				foreach($data as $sr)
 				$item_serial_numbers[]=['item_id'=>$item_id,'serial_no'=>$sr,'company_id'=>$st_company_id,'status'=>'In'];
 			}
-			//pr($item_serial_numbers); exit;
+			pr($item_serial_numbers); exit;
 			$this->request->data['item_serial_numbers']=$item_serial_numbers;
 			}
             $grn = $this->Grns->patchEntity($grn, $this->request->data);

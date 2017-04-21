@@ -197,6 +197,8 @@ class LedgerAccountsController extends AppController
 	
 	public function ProfitLossStatement (){
 		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
 		$date=$this->request->query('date');
 		if($date){
 			$query=$this->LedgerAccounts->Ledgers->find();
@@ -204,7 +206,7 @@ class LedgerAccountsController extends AppController
 			->matching('LedgerAccounts.AccountSecondSubgroups.AccountFirstSubgroups.AccountGroups.AccountCategories', function ($q) {
 				return $q->where(['AccountCategories.id' => 4]);
 			})
-			->where(['transaction_date <='=>date('Y-m-d',strtotime($date))])
+			->where(['transaction_date <='=>date('Y-m-d',strtotime($date)),'Ledgers.company_id'=>$st_company_id])
 			->contain(['LedgerAccounts'])
 			->group(['ledger_account_id'])
 			->autoFields(true)->toArray();
@@ -214,7 +216,7 @@ class LedgerAccountsController extends AppController
 			->matching('LedgerAccounts.AccountSecondSubgroups.AccountFirstSubgroups.AccountGroups.AccountCategories', function ($q) {
 				return $q->where(['AccountCategories.id' => 3]);
 			})
-			->where(['transaction_date <='=>date('Y-m-d',strtotime($date))])
+			->where(['transaction_date <='=>date('Y-m-d',strtotime($date)),'Ledgers.company_id'=>$st_company_id])
 			->contain(['LedgerAccounts'])
 			->group(['ledger_account_id'])
 			->autoFields(true)->toArray();

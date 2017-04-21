@@ -96,9 +96,10 @@ With reference to your price list we are pleased to place an order for the follo
 								<tr class="tr1" row_no='<?php echo @$item_id; ?>'>
 									<td rowspan="2"><?php echo ++$q; $q--; ?></td>
 									<td>
-										<?php echo $this->Form->input('purchase_order_rows.'.$q.'.pull_status', ['label' => false,'type'=>'hidden','value'=>'PULLED_FROM_MI']);  ?>
+										
 										<?php 
-										echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'type'=>'hidden','value'=>$item_id]);  ?>
+										echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'type'=>'hidden','value'=>$item_id,'class'=>'item_id']);  ?>
+										<?php echo $this->Form->input('purchase_order_rows.'.$q.'.pull_status', ['label' => false,'type'=>'hidden','value'=>'PULLED_FROM_MI']);  ?>
 										<?php echo $data['item_name']; ?><br/>
 										<span class="label label-sm label-warning ">Pulled from MI</span>
 									</td>
@@ -281,6 +282,29 @@ $( "#sortable" ).disableSelection();
 </script>
 <script>
 $(document).ready(function() { 
+	jQuery.validator.addMethod("notEqualToGroup", function (value, element, options) {
+		// get all the elements passed here with the same class
+		var elems = $(element).parents('form').find(options[0]);
+		// the value of the current element
+		var valueToCompare = value;
+		// count
+		var matchesFound = 0;
+		// loop each element and compare its value with the current value
+		// and increase the count every time we find one
+		jQuery.each(elems, function () {
+			thisVal = $(this).val();
+			if (thisVal == valueToCompare) {
+				matchesFound++;
+			}
+		});
+		// count should be either 0 or 1 max
+		if (this.optional(element) || matchesFound <= 1) {
+			//elems.removeClass('error');
+			return true;
+		} else {
+			//elems.addClass('error');
+		}
+	}, jQuery.format(""))
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -434,13 +458,21 @@ $(document).ready(function() {
 			var i=0;
 			$("#main_tb tbody#main_tbody tr.tr1").each(function(){
 				$(this).find("td:nth-child(1)").html(++i); i--;
-				var mi=$(this).find("td:nth-child(2) input[type='hidden']").val();
-				//alert(mi);
-				if(mi=0){
-					$(this).find("td:nth-child(2) input[type='hidden']:td:nth-child(1)").attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"});
-					$(this).find("td:nth-child(2) input[type='hidden']:td:nth-child(2)").attr({name:"purchase_order_rows["+i+"][material_indent_id]", id:"purchase_order_rows-"+i+"-material_indent_id"});
+				var len=$(this).find("td:nth-child(2) select").length;
+				if(len>0){
+					//$(this).find("td:nth-child(2) select").select2().attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"}).rules("add", "required");
+					$(this).find("td:nth-child(2) select").select2().attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id",popup_id:i}).rules('add', {
+							required: true,
+							notEqualToGroup: ['.item_id'],
+							messages: {
+								notEqualToGroup: "Do not select same Item again."
+							}
+						});
 				}else{
-					$(this).find("td:nth-child(2) select").select2().attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"});
+					$(this).find("td:nth-child(2) input").attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"}).rules("add", "required");
+					
+					$(this).find("td:nth-child(2) input:eq(1)").attr({name:"purchase_order_rows["+i+"][pull_status]", id:"purchase_order_rows-"+i+"-pull_status"}).rules("add", "required");
+					
 				}
 				
 				$(this).find("td:nth-child(3) input").attr({name:"purchase_order_rows["+i+"][quantity]", id:"purchase_order_rows-"+i+"-quantity"}).rules("add", "required");
@@ -500,7 +532,7 @@ $(document).ready(function() {
 	<tbody>
 		<tr class="tr1 preimp maintr">
 			<td rowspan="2" width="10">0</td>
-			<td width="300"><?php echo $this->Form->input('q', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm ']); ?></td>
+			<td width="300"><?php echo $this->Form->input('q', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_id']); ?></td>
 			<td ><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
 			<td ><?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate']); ?></td>
 			<td><?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>

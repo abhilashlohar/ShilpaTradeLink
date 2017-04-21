@@ -513,7 +513,7 @@ $('select[name="account_first_subgroup_id"]').die().live("change",function() {
 			$(this).find("td:nth-child(1)").html(i);
 			$(this).find("td:nth-child(2) textarea").attr({name:"customer_address["+i+"][address]", id:"customer_address-"+i+"-address"}).rules("add", "required");
 			$(this).find("td:nth-child(3) select").select2().attr({name:"customer_address["+i+"][district_id]", id:"customer_address-"+i+"-district_id"}).rules("add", "required");
-			$(this).find("td:nth-child(4) select").select2().attr({name:"customer_address["+i+"][courier_charge]", id:"customer_address-"+i+"-courier_charge"}).rules("add", "required");
+			$(this).find("td:nth-child(4) select").select2().attr({name:"customer_address["+i+"][transporter_id]", id:"customer_address-"+i+"-transporter_id"}).rules("add", "required");
 			$(this).find("td:nth-child(5) input").attr({name:"customer_address["+i+"][default_address]", id:"customer_address-"+i+"-default_address"});
 			var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
 			if (test) { test.uniform(); }

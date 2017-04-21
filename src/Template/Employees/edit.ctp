@@ -145,7 +145,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Date Of Anniversary</label>
-							<?php echo $this->Form->input('date_of_anniversary', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Anniversary']); ?>
+							<?php echo $this->Form->input('date_of_anniversary', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','placeholder' => 'Date of Anniversary','value'=>date("d-m-Y",strtotime($employee->date_of_anniversary))]); ?>
 					</div>
 					</div>
 						<div class="col-md-4">

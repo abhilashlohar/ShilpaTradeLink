@@ -1,3 +1,6 @@
+<?php $d=sizeof($InventoryVoucherRows);
+//echo $d; exit;
+?>
 <style>
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
 	vertical-align: top !important;
@@ -53,23 +56,26 @@
 						</tr>
 					</thead>
 					<tbody id="maintbody">
-					<?php foreach($InventoryVoucherRows as $InventoryVoucherRow){ ?>
-						<tr class="main" >
+					<?php $d=sizeof($InventoryVoucherRows);
+					
+					foreach($InventoryVoucherRows as $InventoryVoucherRow){ ?>
+					<tr class="main" >
 							<td>
 								<?php 
 								$item_option=[];
 								foreach($Items as $Item){
 									$item_option[]=['text' =>$Item->name, 'value' => $Item->id, 'serial_number_enable' => (int)$Item->serial_number_enable];
 								}
-								echo $this->Form->input('q', ['empty'=>'Select','options' => $item_option,'label' => false,'class' => 'form-control input-sm select_item','value'=>$InventoryVoucherRow->item_id]); ?>
+								echo $this->Form->input('q', ['empty'=>'Select','options' => $item_option,'label' => false,'class' => 'form-control input-sm select_item item_id','value'=>$InventoryVoucherRow->item_id]); ?>
 							</td>
 							<td>
-								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm qty_bx','placeholder' => 'Quantity','value'=>$InventoryVoucherRow->quantity]); ?>
+								<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm qty_bx ','placeholder' => 'Quantity','value'=>$InventoryVoucherRow->quantity]); ?>
 							</td>
 							<td></td>
 							<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 						</tr>
-					<?php } ?>
+					<?php }?>
+				
 					</tbody>
 				</table>
 				<button type="submit" class="btn btn-primary" >Save & Next</button>
@@ -81,6 +87,29 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
+	jQuery.validator.addMethod("notEqualToGroup", function (value, element, options) {
+		// get all the elements passed here with the same class
+		var elems = $(element).parents('form').find(options[0]);
+		// the value of the current element
+		var valueToCompare = value;
+		// count
+		var matchesFound = 0;
+		// loop each element and compare its value with the current value
+		// and increase the count every time we find one
+		jQuery.each(elems, function () {
+			thisVal = $(this).val();
+			if (thisVal == valueToCompare) {
+				matchesFound++;
+			}
+		});
+		// count should be either 0 or 1 max
+		if (this.optional(element) || matchesFound <= 1) {
+			//elems.removeClass('error');
+			return true;
+		} else {
+			//elems.addClass('error');
+		}
+	}, jQuery.format(""))
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -185,7 +214,14 @@ $(document).ready(function() {
 		$("#main_table tbody#maintbody tr.main").each(function(){
 			$(this).attr('row_no',i);
 
-			$(this).find('td:nth-child(1) select').attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2().rules("add", "required");
+			//$(this).find('td:nth-child(1) select').attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id"}).select2().rules("add", "required");
+			$(this).find("td:nth-child(1) select").select2().attr({name:"inventory_voucher_rows["+i+"][item_id]", id:"inventory_voucher_rows-"+i+"-item_id",popup_id:i}).rules('add', {
+							required: true,
+							notEqualToGroup: ['.item_id'],
+							messages: {
+								notEqualToGroup: "Do not select same Item again."
+							}
+						});
 			$(this).find('td:nth-child(2) input').attr({name:"inventory_voucher_rows["+i+"][quantity]", id:"inventory_voucher_rows-"+i+"-quantity"}).rules("add", "required");
 			if($(this).find('td:nth-child(3) select').length>0){
 				$(this).find('td:nth-child(3) select').attr({name:"inventory_voucher_rows["+i+"][serial_number_data][]", id:"inventory_voucher_rows-"+i+"-serial_number_data"}).rules("add", "required");
@@ -272,7 +308,7 @@ $(document).ready(function() {
 				foreach($Items as $Item){
 					$item_option[]=['text' =>$Item->name, 'value' => $Item->id, 'serial_number_enable' => (int)$Item->serial_number_enable];
 				}
-				echo $this->Form->input('q', ['empty'=>'Select','options' => $item_option,'label' => false,'class' => 'form-control input-sm select_item']); ?>
+				echo $this->Form->input('q', ['empty'=>'Select','options' => $item_option,'label' => false,'class' => 'form-control input-sm select_item item_id']); ?>
 			</td>
 			<td>
 				<?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm qty_bx','placeholder' => 'Quntity']); ?>

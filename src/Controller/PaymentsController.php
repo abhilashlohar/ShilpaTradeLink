@@ -396,7 +396,7 @@ class PaymentsController extends AppController
 		}else{
 			$ReceivedFroms_selected='no';
 		}
-		
+		pr($ReceivedFroms_selected); exit;
         $this->set(compact('payment', 'bankCashes', 'receivedFroms', 'financial_year', 'BankCashes_selected', 'ReceivedFroms_selected', 'old_ref_rows'));
         $this->set('_serialize', ['payment']);
     }

@@ -74,7 +74,7 @@ class CustomersController extends AppController
             $customer = $this->Customers->patchEntity($customer, $this->request->data);
 			
 			$billTobill=$customer->bill_to_bill_account;
-			
+			//pr($customer); exit;
             if ($this->Customers->save($customer)) {
 				
 				foreach($customer->companies as $data)
@@ -238,12 +238,19 @@ class CustomersController extends AppController
 	public function OverDueReport()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		//$customers = $this->paginate($this->Customers->find());
 		
-        $customers = $this->paginate($this->Customers->find());
-        $ReferenceDetails = $this->Customers->ReferenceDetails->find()->toArray();
-		//pr($customers); exit;
+		$LedgerAccounts = $this->paginate($this->Customers->LedgerAccounts->find()
+			->where(['LedgerAccounts.company_id'=>$st_company_id,'source_model'=>'Customers']));
+			
 
-        $this->set(compact('customers','ReferenceDetails'));
+		
+        $ReferenceDetails = $this->Customers->ReferenceDetails->find()->toArray();
+		//pr($customers->toArray()); exit;
+
+        $this->set(compact('LedgerAccounts','ReferenceDetails'));
         $this->set('_serialize', ['customers']);
     }
 	

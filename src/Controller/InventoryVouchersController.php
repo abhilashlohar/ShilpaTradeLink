@@ -308,6 +308,7 @@ class InventoryVouchersController extends AppController
 			$inventory_voucher_rows=$this->request->data['inventory_voucher_rows'];
 			$total_rate=0;
 			foreach($inventory_voucher_rows as $inventory_voucher_row){
+				
 				$query3 = $this->InventoryVouchers->InventoryVoucherRows->query();
 				$query3->insert(['inventory_voucher_id', 'item_id', 'quantity', 'left_item_id', 'invoice_id'])
 				->values([
@@ -336,15 +337,19 @@ class InventoryVouchersController extends AppController
 				foreach($itemLedgers as $itemLedger){
 				$count++;
 				$rate=$rate+$itemLedger->rate;
+				
 				}
+				
 				if($count>0){
 				$toupdate_rate=$rate/$count;
 				}else{
 				$toupdate_rate=$rate;	
 				}
+				
 				$out_rate=$toupdate_rate*$inventory_voucher_row['quantity'];
 				$total_rate=$total_rate+$out_rate;
-				
+				//pr($inventory_voucher_row['quantity']);
+				 //exit;
 				$query= $this->InventoryVouchers->ItemLedgers->query();
 					$query->insert(['item_id', 'quantity', 'source_model', 'source_id','in_out','rate','company_id','left_item_id','processed_on'])
 				->values([
@@ -437,9 +442,7 @@ class InventoryVouchersController extends AppController
 		foreach($invoice_data->invoice_rows as $invoice_row){ 
 		
 			$SalesOrderRow=$this->InventoryVouchers->SalesOrderRows->find()->where(['sales_order_id'=>$sales_order_id,'item_id'=>$invoice_row->item_id])->first();
-			//pr($SalesOrderRow);
 			if($invoice_row->item->source=='Purchessed/Manufactured'){ 
-			
 				if($SalesOrderRow->source_type=="Manufactured" || $SalesOrderRow->source_type=="" ){
 					$display_items[$invoice_row->item->id]=$invoice_row->item->name; 
 				}
@@ -447,7 +450,20 @@ class InventoryVouchersController extends AppController
 				$display_items[$invoice_row->item->id]=$invoice_row->item->name; 
 			}
 		}
-
+		
+		// For Find Job Card Item//
+	//	pr($q_item_id); exit;
+			/* $Invoices=$this->InventoryVouchers->Invoices->get($invoice_id);
+			if($q_item_id!=0){
+			$SalesOrderRow=$this->InventoryVouchers->SalesOrderRows->find()->where(['SalesOrderRows.sales_order_id'=>$Invoices->sales_order_id,'SalesOrderRows.item_id'=>$q_item_id])->first();
+			}else{
+				$SalesOrderRow=$this->InventoryVouchers->SalesOrderRows->find()->where(['SalesOrderRows.sales_order_id'=>$Invoices->sales_order_id])->first();
+			}
+			$JobCardRowsData=$this->InventoryVouchers->SalesOrderRows->JobCardRows->find()->contain(['Items'])->where(['sales_order_row_id'=>$SalesOrderRow->id])->toArray(); */
+		
+	
+		//
+		
 		foreach($display_items as $item_id=>$item_name){
 			$query = $this->InventoryVouchers->InvoiceRows->query();
 			$query->update()
@@ -489,21 +505,36 @@ class InventoryVouchersController extends AppController
 		}
 		
 		if(!empty($q_item_id) && !empty($invoice_id)){
-			$InventoryVoucherRows=$this->InventoryVouchers->InventoryVoucherRows->find()->where(['invoice_id'=>$invoice_id,'left_item_id'=>$q_item_id]);
 			
+			$InventoryVoucherexist=$this->InventoryVouchers->InventoryVoucherRows->exists(['invoice_id'=>$invoice_id,'left_item_id'=>$q_item_id]);
+			//pr($InventoryVoucherexist); exit;
+			if($InventoryVoucherexist){
+			$InventoryVoucherRows=$this->InventoryVouchers->InventoryVoucherRows->find()->where(['invoice_id'=>$invoice_id,'left_item_id'=>$q_item_id]);
+			$Invoice_qty=$this->InventoryVouchers->Invoices->InvoiceRows->find()->where(['InvoiceRows.invoice_id'=>$invoice_id,'InvoiceRows.item_id'=>$q_item_id])->first();
+			$q_qty=$Invoice_qty->quantity;
+			$q_item_sr=$this->InventoryVouchers->Items->get($q_item_id);
+			$q_sno=$q_item_sr->serial_number_enable;
+			}else{
+			$Invoices=$this->InventoryVouchers->Invoices->get($invoice_id);	
+			$SalesOrderRow=$this->InventoryVouchers->SalesOrderRows->find()->where(['SalesOrderRows.sales_order_id'=>$Invoices->sales_order_id,'SalesOrderRows.item_id'=>$q_item_id])->first();
+			//pr($SalesOrderRow); exit;
+			$InventoryVoucherRows=$this->InventoryVouchers->SalesOrderRows->JobCardRows->find()->contain(['Items'])->where(['sales_order_row_id'=>$SalesOrderRow->id])->toArray();
 			$Invoice_qty=$this->InventoryVouchers->Invoices->InvoiceRows->find()->where(['InvoiceRows.invoice_id'=>$invoice_id,'InvoiceRows.item_id'=>$q_item_id])->first();
 			$q_qty=$Invoice_qty->quantity;
 			$q_item_sr=$this->InventoryVouchers->Items->get($q_item_id);
 			$q_sno=$q_item_sr->serial_number_enable;
 			
+			}
+			
 		}
+		//pr($InventoryVoucherRows); exit;
 		
 		$Items=$this->InventoryVouchers->Items->find()->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
 						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
 					}
 				);
-		$this->set(compact('display_items','invoice_id','q_item_id','InventoryVoucherRows','Items','InventoryVoucher','selected_seials','q_qty','q_sno','is_in_made','q_ItemSerialNumbers'));
+		$this->set(compact('display_items','invoice_id','q_item_id','InventoryVoucherRows','Items','InventoryVoucher','selected_seials','q_qty','q_sno','is_in_made','q_ItemSerialNumbers','JobCardRowsData'));
     }
 
     /**
