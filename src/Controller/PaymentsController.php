@@ -25,8 +25,29 @@ class PaymentsController extends AppController
         $this->paginate = [
             'contain' => []
         ];
+		
+		
 		$payments = $this->paginate($this->Payments->find()->where(['company_id'=>$st_company_id])->contain(['PaymentRows'=>function($q){
-			return $q->select(['total_amount' => $q->func()->sum('PaymentRows.amount')])->autoFields(true)->group(['PaymentRows.payment_id']);
+			$PaymentRows = $this->Payments->PaymentRows->find();
+			$totalCrCase = $PaymentRows->newExpr()
+				->addCase(
+					$PaymentRows->newExpr()->add(['cr_dr' => 'Cr']),
+					$PaymentRows->newExpr()->add(['amount']),
+					'integer'
+				);
+			$totalDrCase = $PaymentRows->newExpr()
+				->addCase(
+					$PaymentRows->newExpr()->add(['cr_dr' => 'Dr']),
+					$PaymentRows->newExpr()->add(['amount']),
+					'integer'
+				);
+			return $PaymentRows->select([
+					'total_cr' => $PaymentRows->func()->sum($totalCrCase),
+					'total_dr' => $PaymentRows->func()->sum($totalDrCase)
+				])
+				->group('payment_id')
+				->autoFields(true);
+			
 		}]));
 
         $this->set(compact('payments'));
@@ -82,22 +103,31 @@ class PaymentsController extends AppController
 			$payment->created_on=date("Y-m-d");
 			$payment->created_by=$s_employee_id;
 			$payment->transaction_date=date("Y-m-d",strtotime($payment->transaction_date));
+			//pr($payment); exit;
             if ($this->Payments->save($payment)) {
-				$total_amount=0;
+				$total_cr=0; $total_dr=0;
 				foreach($payment->payment_rows as $payment_row){
 					
 					//Ledger posting for Received From Entity
 					$ledger = $this->Payments->Ledgers->newEntity();
 					$ledger->company_id=$st_company_id;
 					$ledger->ledger_account_id = $payment_row->received_from_id;
-					$ledger->debit = $payment_row->amount;
-					$ledger->credit = 0;
+					if($payment_row->cr_dr=="Dr"){
+						$ledger->debit = $payment_row->amount;
+						$ledger->credit = 0;
+						$total_dr=$total_dr+$payment_row->amount;
+					}else{
+						$ledger->debit = 0;
+						$ledger->credit = $payment_row->amount;
+						$total_cr=$total_cr+$payment_row->amount;
+					}
+					
 					$ledger->voucher_id = $payment->id;
 					$ledger->voucher_source = 'Payment Voucher';
 					$ledger->transaction_date = $payment->transaction_date;
 					$this->Payments->Ledgers->save($ledger);
 					
-					$total_amount=$total_amount+$payment_row->amount;
+					$total_amount=$total_dr-$total_cr;
 					
 					//Reference Number coding
 					if(sizeof(@$payment->ref_rows[$payment_row->received_from_id])>0){
@@ -106,32 +136,63 @@ class PaymentsController extends AppController
 							$ref_row=(object)$ref_row;
 							if($ref_row->ref_type=='New Reference' or $ref_row->ref_type=='Advance Reference'){
 								$query = $this->Payments->ReferenceBalances->query();
-								$query->insert(['ledger_account_id', 'reference_no', 'credit', 'debit'])
-								->values([
-									'ledger_account_id' => $payment_row->received_from_id,
-									'reference_no' => $ref_row->ref_no,
-									'credit' => 0,
-									'debit' => $ref_row->ref_amount
-								])
-								->execute();
+								if($payment_row->cr_dr=="Dr"){
+									$query->insert(['ledger_account_id', 'reference_no', 'credit', 'debit'])
+									->values([
+										'ledger_account_id' => $payment_row->received_from_id,
+										'reference_no' => $ref_row->ref_no,
+										'credit' => 0,
+										'debit' => $ref_row->ref_amount
+									])
+									->execute();
+								}else{
+									$query->insert(['ledger_account_id', 'reference_no', 'credit', 'debit'])
+									->values([
+										'ledger_account_id' => $payment_row->received_from_id,
+										'reference_no' => $ref_row->ref_no,
+										'credit' => $ref_row->ref_amount,
+										'debit' => 0
+									])
+									->execute();
+								}
+								
 							}else{
 								$ReferenceBalance=$this->Payments->ReferenceBalances->find()->where(['ledger_account_id'=>$payment_row->received_from_id,'reference_no'=>$ref_row->ref_no])->first();
 								$ReferenceBalance=$this->Payments->ReferenceBalances->get($ReferenceBalance->id);
-								$ReferenceBalance->credit=$ReferenceBalance->credit+$ref_row->ref_amount;
+								if($payment_row->cr_dr=="Dr"){
+									$ReferenceBalance->debit=$ReferenceBalance->debit+$ref_row->ref_amount;
+								}else{
+									$ReferenceBalance->credit=$ReferenceBalance->credit+$ref_row->ref_amount;
+								}
+								
 								$this->Payments->ReferenceBalances->save($ReferenceBalance);
 							}
 							
 							$query = $this->Payments->ReferenceDetails->query();
-							$query->insert(['ledger_account_id', 'payment_id', 'reference_no', 'credit', 'debit', 'reference_type'])
-							->values([
-								'ledger_account_id' => $payment_row->received_from_id,
-								'payment_id' => $payment->id,
-								'reference_no' => $ref_row->ref_no,
-								'credit' => 0,
-								'debit' => $ref_row->ref_amount,
-								'reference_type' => $ref_row->ref_type
-							])
-							->execute();
+							if($payment_row->cr_dr=="Dr"){
+								$query->insert(['ledger_account_id', 'payment_id', 'reference_no', 'credit', 'debit', 'reference_type'])
+								->values([
+									'ledger_account_id' => $payment_row->received_from_id,
+									'payment_id' => $payment->id,
+									'reference_no' => $ref_row->ref_no,
+									'credit' => 0,
+									'debit' => $ref_row->ref_amount,
+									'reference_type' => $ref_row->ref_type
+								])
+								->execute();
+							}else{
+								$query->insert(['ledger_account_id', 'payment_id', 'reference_no', 'credit', 'debit', 'reference_type'])
+								->values([
+									'ledger_account_id' => $payment_row->received_from_id,
+									'payment_id' => $payment->id,
+									'reference_no' => $ref_row->ref_no,
+									'credit' => $ref_row->ref_amount,
+									'debit' => 0,
+									'reference_type' => $ref_row->ref_type
+								])
+								->execute();
+							}
+							
 						}
 					}
 				}
@@ -255,24 +316,31 @@ class PaymentsController extends AppController
 			$payment->transaction_date=date("Y-m-d",strtotime($payment->transaction_date));
 				
 			//Save receipt
-			
+			//pr($payment); exit;
             if ($this->Payments->save($payment)) {
 				$this->Payments->Ledgers->deleteAll(['voucher_id' => $payment->id, 'voucher_source' => 'Payment Voucher']);
-				$total_amount=0;
+				$total_cr=0; $total_dr=0;
 				foreach($payment->payment_rows as $payment_row){
 					
 					//Ledger posting for Received From Entity
 					$ledger = $this->Payments->Ledgers->newEntity();
 					$ledger->company_id=$st_company_id;
 					$ledger->ledger_account_id = $payment_row->received_from_id;
-					$ledger->debit = $payment_row->amount;
-					$ledger->credit = 0;
+					if($payment_row->cr_dr=="Dr"){
+						$ledger->debit = $payment_row->amount;
+						$ledger->credit = 0;
+						$total_dr=$total_dr+$payment_row->amount;
+					}else{
+						$ledger->debit = 0;
+						$ledger->credit = $payment_row->amount;
+						$total_cr=$total_cr+$payment_row->amount;
+					}
 					$ledger->voucher_id = $payment->id;
 					$ledger->voucher_source = 'Payment Voucher';
 					$ledger->transaction_date = $payment->transaction_date;
 					$this->Payments->Ledgers->save($ledger);
 					
-					$total_amount=$total_amount+$payment_row->amount;
+					$total_amount=$total_dr-$total_cr;
 					
 					//Reference Number coding
 					if(sizeof(@$payment->ref_rows[$payment_row->received_from_id])>0){
@@ -284,42 +352,83 @@ class PaymentsController extends AppController
 							if($ReferenceDetail){
 								$ReferenceBalance=$this->Payments->ReferenceBalances->find()->where(['ledger_account_id'=>$payment_row->received_from_id,'reference_no'=>$ref_row->ref_no])->first();
 								$ReferenceBalance=$this->Payments->ReferenceBalances->get($ReferenceBalance->id);
-								$ReferenceBalance->credit=$ReferenceBalance->credit-$ref_row->ref_old_amount+$ref_row->ref_amount;
+								if($payment_row->cr_dr=="Dr"){
+									$ReferenceBalance->debit=$ReferenceBalance->debit-$ref_row->ref_old_amount+$ref_row->ref_amount;
+								}else{
+									$ReferenceBalance->credit=$ReferenceBalance->credit-$ref_row->ref_old_amount+$ref_row->ref_amount;
+								}
+								
 								$this->Payments->ReferenceBalances->save($ReferenceBalance);
 								
 								$ReferenceDetail=$this->Payments->ReferenceDetails->find()->where(['ledger_account_id'=>$payment_row->received_from_id,'reference_no'=>$ref_row->ref_no,'payment_id'=>$payment->id])->first();
 								$ReferenceDetail=$this->Payments->ReferenceDetails->get($ReferenceDetail->id);
-								$ReferenceDetail->credit=$ReferenceDetail->credit-$ref_row->ref_old_amount+$ref_row->ref_amount;
+								if($payment_row->cr_dr=="Dr"){
+									$ReferenceDetail->debit=$ReferenceDetail->debit-$ref_row->ref_old_amount+$ref_row->ref_amount;
+								}else{
+									$ReferenceDetail->credit=$ReferenceDetail->credit-$ref_row->ref_old_amount+$ref_row->ref_amount;
+								}
+								
 								$this->Payments->ReferenceDetails->save($ReferenceDetail);
 							}else{
 								if($ref_row->ref_type=='New Reference' or $ref_row->ref_type=='Advance Reference'){
 									$query = $this->Payments->ReferenceBalances->query();
-									$query->insert(['ledger_account_id', 'reference_no', 'credit', 'debit'])
-									->values([
-										'ledger_account_id' => $payment_row->received_from_id,
-										'reference_no' => $ref_row->ref_no,
-										'credit' => 0,
-										'debit' => $ref_row->ref_amount
-									])
-									->execute();
+									if($payment_row->cr_dr=="Dr"){
+										$query->insert(['ledger_account_id', 'reference_no', 'credit', 'debit'])
+										->values([
+											'ledger_account_id' => $payment_row->received_from_id,
+											'reference_no' => $ref_row->ref_no,
+											'credit' => 0,
+											'debit' => $ref_row->ref_amount
+										])
+										->execute();
+									}else{
+										$query->insert(['ledger_account_id', 'reference_no', 'credit', 'debit'])
+										->values([
+											'ledger_account_id' => $payment_row->received_from_id,
+											'reference_no' => $ref_row->ref_no,
+											'credit' => $ref_row->ref_amount,
+											'debit' => 0
+										])
+										->execute();
+									}
+									
 								}else{
 									$ReferenceBalance=$this->Payments->ReferenceBalances->find()->where(['ledger_account_id'=>$payment_row->received_from_id,'reference_no'=>$ref_row->ref_no])->first();
 									$ReferenceBalance=$this->Payments->ReferenceBalances->get($ReferenceBalance->id);
-									$ReferenceBalance->credit=$ReferenceBalance->credit+$ref_row->ref_amount;
+									if($payment_row->cr_dr=="Dr"){
+										$ReferenceBalance->debit=$ReferenceBalance->debit+$ref_row->ref_amount;
+									}else{
+										$ReferenceBalance->credit=$ReferenceBalance->credit+$ref_row->ref_amount;
+									}
+									
 									$this->Payments->ReferenceBalances->save($ReferenceBalance);
 								}
 								
 								$query = $this->Payments->ReferenceDetails->query();
-								$query->insert(['ledger_account_id', 'payment_id', 'reference_no', 'credit', 'debit', 'reference_type'])
-								->values([
-									'ledger_account_id' => $payment_row->received_from_id,
-									'payment_id' => $payment->id,
-									'reference_no' => $ref_row->ref_no,
-									'credit' => 0,
-									'debit' => $ref_row->ref_amount,
-									'reference_type' => $ref_row->ref_type
-								])
-								->execute();
+								if($payment_row->cr_dr=="Dr"){
+									$query->insert(['ledger_account_id', 'payment_id', 'reference_no', 'credit', 'debit', 'reference_type'])
+									->values([
+										'ledger_account_id' => $payment_row->received_from_id,
+										'payment_id' => $payment->id,
+										'reference_no' => $ref_row->ref_no,
+										'credit' => 0,
+										'debit' => $ref_row->ref_amount,
+										'reference_type' => $ref_row->ref_type
+									])
+									->execute();
+								}else{
+									$query->insert(['ledger_account_id', 'payment_id', 'reference_no', 'credit', 'debit', 'reference_type'])
+									->values([
+										'ledger_account_id' => $payment_row->received_from_id,
+										'payment_id' => $payment->id,
+										'reference_no' => $ref_row->ref_no,
+										'credit' => $ref_row->ref_amount,
+										'debit' => 0,
+										'reference_type' => $ref_row->ref_type
+									])
+									->execute();
+								}
+								
 							}
 						}
 					}

@@ -105,7 +105,7 @@ class QuotationsController extends AppController
 		
 		$companies = $this->Quotations->Companies->find('list');
 		
-		$closeReasons = $this->Quotations->QuotationCloseReasons->find('all',['limit' => 200]);
+		$closeReasons = $this->Quotations->QuotationCloseReasons->find('all');
         $this->set(compact('quotations','status','copy_request','companies','closeReasons'));
         $this->set('_serialize', ['quotations']);
 		$this->set(compact('url'));

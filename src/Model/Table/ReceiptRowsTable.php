@@ -47,6 +47,7 @@ class ReceiptRowsTable extends Table
             'foreignKey' => 'received_from_id',
             'propertyName' => 'ReceivedFrom',
         ]);
+		
     }
 
     /**

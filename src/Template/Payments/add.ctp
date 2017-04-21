@@ -219,6 +219,7 @@ $(document).ready(function() {
 						required: true,
 						min: 0.01,
 					});
+			$(this).find("td:eq(1) select").attr({name:"payment_rows["+i+"][cr_dr]", id:"quotation_rows-"+i+"-cr_dr"});
 			$(this).find("td:nth-child(4) textarea").attr({name:"payment_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"}).rules("add", "required");
 			i++;
 		});
@@ -261,9 +262,6 @@ $(document).ready(function() {
 														notEqualToGroup: ['.ref_number-'+received_from_id],
 														remote: {
 															url: url,
-															complete: function(data){
-																console.log(data);
-															}
 														},
 														messages: {
 															remote: "Not an unique."

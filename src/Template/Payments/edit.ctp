@@ -14,6 +14,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 }
 </style>
 <?php $ref_types=['New Reference'=>'New Ref','Against Reference'=>'Agst Ref','Advance Reference'=>'Advance']; ?>
+<?php $cr_dr_options=['Dr'=>'Dr','Cr'=>'Cr']; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption" >
@@ -74,7 +75,16 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 			<?php foreach($payment->payment_rows as $payment_row){ ?> 
 				<tr class="main_tr">
 					<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from','value'=>$payment_row->received_from_id]); ?></td>
-					<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm mian_amount','placeholder'=>'Amount','value'=>$this->Number->format($payment_row->amount,[ 'places' => 2])]); ?></td>
+					<td>
+					<div class="row">
+						<div class="col-md-7" style="padding-right: 0;">
+							<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm mian_amount','placeholder'=>'Amount','value'=>$payment_row->amount]); ?>
+						</div>
+						<div class="col-md-5"style="padding-left: 0;">
+							<?php echo $this->Form->input('cr_dr', ['label' => false,'options'=>$cr_dr_options,'class' => 'form-control input-sm cr_dr','value'=>$payment_row->cr_dr]); ?>
+						</div>
+					</div>
+					</td>
 					<td>
 					<?php if(sizeof($old_ref_rows[$payment_row->received_from_id])>0){ ?>
 						<div class="ref" style="padding:4px;">
@@ -93,14 +103,21 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 									<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type','value'=>$old_ref_row->reference_type]); ?></td>
 									<td class="ref_no">
 									<?php if($old_ref_row->reference_type=="Against Reference"){
-										echo $this->requestAction('Payments/fetchRefNumbersEdit/'.$payment_row->received_from_id.'/'.$old_ref_row->reference_no.'/'.$old_ref_row->debit);
+										echo $this->requestAction('Payments/fetchRefNumbersEdit/'.$payment_row->received_from_id.'/'.$old_ref_row->reference_no.'/'.$old_ref_row->debit.'/'.$old_ref_row->credit.'/'.$payment_row->cr_dr);
 									}else{
 										echo '<input type="text" class="form-control input-sm" placeholder="Ref No." value="'.$old_ref_row->reference_no.'" readonly="readonly" is_old="yes">';
 									}?>
 									</td>
 									<td>
-									<?php echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'hidden','value'=>$old_ref_row->debit]); ?>
-									<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount','value'=>$old_ref_row->debit]); ?>
+									<?php 
+									if($payment_row->cr_dr=="Dr"){
+										echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'hidden','value'=>$old_ref_row->debit]);
+										echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount','value'=>$old_ref_row->debit]);
+									}else{
+										echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'hidden','value'=>$old_ref_row->credit]);
+										echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount','value'=>$old_ref_row->credit]);
+									}
+									 ?>
 									</td>
 									<td></td>
 								</tr>
@@ -276,6 +293,7 @@ $(document).ready(function() {
 						required: true,
 						min: 0.01,
 					});
+			$(this).find("td:eq(1) select").attr({name:"payment_rows["+i+"][cr_dr]", id:"quotation_rows-"+i+"-cr_dr"});
 			$(this).find("td:nth-child(4) textarea").attr({name:"payment_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"}).rules("add", "required");
 			i++;
 		});
@@ -350,8 +368,19 @@ $(document).ready(function() {
 	
 	$('.received_from').live("change",function() {
 		var sel=$(this);
-		var sel2=$(this).closest('tr.main_tr');
-		var received_from_id=$(this).find('option:selected').val();
+		load_ref_section(sel);
+	});
+	
+	$('.cr_dr').live("change",function() {
+		var sel=$(this);
+		load_ref_section(sel);
+		do_mian_amount_total();
+	});
+	
+	function load_ref_section(sel){
+		$(sel).closest("tr.main_tr").find("td:nth-child(3)").html("Loading...");
+		var sel2=$(sel).closest('tr.main_tr');
+		var received_from_id=$(sel).closest("tr.main_tr").find("td:nth-child(1) select").find('option:selected').val();
 		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'checkBillToBillAccountingStatus']); ?>";
 		url=url+'/'+received_from_id,
 		$.ajax({
@@ -367,7 +396,7 @@ $(document).ready(function() {
 			}
 			rename_ref_rows(sel2,received_from_id);
 		});
-	});
+	}
 	
 	$('.ref_type').live("change",function() {
 		var current_obj=$(this);
@@ -429,11 +458,18 @@ $(document).ready(function() {
 	
 	do_mian_amount_total();
 	function do_mian_amount_total(){
-		var mian_amount_total=0;
+		var mian_amount_total_cr=0; var mian_amount_total_dr=0;
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
 			var v=parseFloat($(this).find("td:nth-child(2) input").val());
+			var cr_dr=($(this).find("td:nth-child(2) select").val());
 			if(!v){ v=0; }
-			mian_amount_total=mian_amount_total+v;
+			if(cr_dr=="Cr"){
+				mian_amount_total_cr=mian_amount_total_cr+v;
+			}else{
+				mian_amount_total_dr=mian_amount_total_dr+v;
+			}
+			
+			mian_amount_total=mian_amount_total_dr-mian_amount_total_cr;
 			$('#receipt_amount').text(mian_amount_total.toFixed(2));
 		});
 	}
@@ -446,7 +482,19 @@ $(document).ready(function() {
 	<tbody>
 		<tr class="main_tr">
 			<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from']); ?></td>
-			<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm mian_amount','placeholder'=>'Amount']); ?></td>
+			<td>
+			<div class="row">
+				<div class="col-md-7" style="padding-right: 0;">
+					<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm mian_amount','placeholder'=>'Amount']); ?>
+				</div>
+				<div class="col-md-5"style="padding-left: 0;">
+					<select name="cr_dr" class="form-control input-sm cr_dr" >
+						<option value="Dr">Dr</option>
+						<option value="Cr">Cr</option>
+					</select>
+				</div>
+			</div>
+			</td>
 			<td></td>
 			<td><?php echo $this->Form->input('narration', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Narration']); ?></td>
 			<td><a class="btn btn-xs btn-default deleterow" href="#" role="button"><i class="fa fa-times"></i></a></td>

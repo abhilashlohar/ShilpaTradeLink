@@ -48,14 +48,7 @@ class ReceiptsController extends AppController
 			
 		}]));
 		
-		//pr($receipts->toArray()); exit;
 		
-		
-		/*$receipts = $this->paginate($this->Receipts->find()->where(['company_id'=>$st_company_id])->contain(['ReceiptRows'=>function($q){
-			return $q->select(['total_cr' => $q->func()->sum('ReceiptRows.amount')])->autoFields(true)->group(['ReceiptRows.receipt_id']);
-		}]));*/
-		
-		//pr($receipts); exit;
         $this->set(compact('receipts'));
         $this->set('_serialize', ['receipts']);
     }

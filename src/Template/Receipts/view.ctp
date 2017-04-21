@@ -55,12 +55,18 @@
 			<th><?= __('Received From') ?></th>
 			<th style="text-align: right;">Amount</th>
 		</tr>
-		<?php $total=0; foreach ($receipt->receipt_rows as $receiptRows): ?>
+		<?php $total_cr=0; $total_dr=0; foreach ($receipt->receipt_rows as $receiptRows): ?>
 		<tr>
 			<td><?= h($receiptRows->ReceivedFrom->name) ?></td>
 			<td align="right"><?= h($this->Number->format($receiptRows->amount,[ 'places' => 2])) ?> <?= h($receiptRows->cr_dr) ?></td>
 		</tr>
-		<?php $total=$total+$receiptRows->amount; endforeach; ?>
+		<?php if($receiptRows->cr_dr=="Cr"){
+			$total_cr=$total_cr+$receiptRows->amount;
+		}else{
+			$total_dr=$total_dr+$receiptRows->amount;
+		}
+		$total=$total_cr-$total_dr;
+		endforeach; ?>
 	</table>
 	
 	

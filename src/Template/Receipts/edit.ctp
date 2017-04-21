@@ -123,6 +123,12 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 							</tbody>
 							<tfoot>
 								<tr>
+									<td align="center" style="vertical-align: middle !important;">On Account</td>
+									<td></td>
+									<td><?php echo $this->Form->input('on_account', ['label' => false,'class' => 'form-control input-sm on_account','placeholder'=>'Amount','readonly']); ?></td>
+									<td></td>
+								</tr>
+								<tr>
 									<td colspan="2"><a class="btn btn-xs btn-default addrefrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
 									<td><input type="text" class="form-control input-sm" placeholder="total" readonly></td>
 									<td></td>
@@ -348,9 +354,9 @@ $(document).ready(function() {
 			i++;
 		});
 		var amount_id=$(sel).find("td:nth-child(2) input").attr('id');
-		var is_tot_input=$(sel).find("table.ref_table tfoot tr td:eq(1) input").length;
+		var is_tot_input=$(sel).find("table.ref_table tfoot tr:eq(1) td:eq(1) input").length;
 		if(is_tot_input){
-			$(sel).find("table.ref_table tfoot tr td:eq(1) input").attr({name:"ref_rows_total["+received_from_id+"]", id:"ref_rows_total-"+received_from_id}).rules('add', {
+			$(sel).find("table.ref_table tfoot tr:eq(1) td:eq(1) input").attr({name:"ref_rows_total["+received_from_id+"]", id:"ref_rows_total-"+received_from_id}).rules('add', {
 														equalTo: "#"+amount_id
 													});
 		}
@@ -374,9 +380,9 @@ $(document).ready(function() {
 	});
 	
 	function load_ref_section(sel){
-		$(sel).closest("tr").find("td:nth-child(3)").html("Loading...");
-		var sel2=$(this).closest('tr.main_tr');
-		var received_from_id=$(sel).closest("tr").find("td:nth-child(1) select").val();
+		$(sel).closest("tr.main_tr").find("td:nth-child(3)").html("Loading...");
+		var sel2=$(sel).closest('tr.main_tr');
+		var received_from_id=$(sel).closest("tr.main_tr").find("td:nth-child(1) select").find('option:selected').val();
 		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'checkBillToBillAccountingStatus']); ?>";
 		url=url+'/'+received_from_id,
 		$.ajax({
@@ -433,6 +439,7 @@ $(document).ready(function() {
 	do_ref_total();
 	function do_ref_total(){
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
+			var main_amount=$(this).find('td:nth-child(2) input').val();
 			var total_ref=0;
 			$(this).find("table.ref_table tbody tr").each(function(){
 			
@@ -440,7 +447,14 @@ $(document).ready(function() {
 				if(!am){ am=0; }
 				total_ref=total_ref+am;
 			});
-			$(this).find("table.ref_table tfoot tr:nth-child(1) td:nth-child(2) input").val(total_ref.toFixed(2));
+			var on_acc=main_amount-total_ref;
+			if(on_acc>=0){
+				$(this).find("table.ref_table tfoot tr:nth-child(1) td:nth-child(3) input").val(on_acc.toFixed(2));
+				total_ref=total_ref+on_acc;
+			}else{
+				$(this).find("table.ref_table tfoot tr:nth-child(1) td:nth-child(3) input").val(0);
+			}
+			$(this).find("table.ref_table tfoot tr:nth-child(2) td:nth-child(2) input").val(total_ref.toFixed(2));
 		});
 	}
 	
@@ -452,6 +466,7 @@ $(document).ready(function() {
 	
 	$('.mian_amount').live("keyup",function() {
 		do_mian_amount_total();
+		do_ref_total();
 	});
 	
 	do_mian_amount_total();
@@ -523,6 +538,12 @@ $(document).ready(function() {
 			</tr>
 		</tbody>
 		<tfoot>
+			<tr>
+				<td align="center" style="vertical-align: middle !important;">On Account</td>
+				<td></td>
+				<td><?php echo $this->Form->input('on_account', ['label' => false,'class' => 'form-control input-sm on_account','placeholder'=>'Amount','readonly']); ?></td>
+				<td></td>
+			</tr>
 			<tr>
 				<td colspan="2"><a class="btn btn-xs btn-default addrefrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
 				<td><input type="text" class="form-control input-sm" placeholder="total" readonly></td>

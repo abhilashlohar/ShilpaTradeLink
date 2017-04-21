@@ -56,13 +56,18 @@
 			<th><?= __('Amount') ?></th>
 			<th><?= __('Narration') ?></th>
 		</tr>
-		<?php $total=0; foreach ($payment->payment_rows as $paymentRows): ?>
+		<?php $total_cr=0; $total_dr=0; foreach ($payment->payment_rows as $paymentRows): ?>
 		<tr>
 			<td><?= h($paymentRows->ReceivedFrom->name) ?></td>
-			<td><?= h($this->Number->format($paymentRows->amount,[ 'places' => 2])) ?></td>
+			<td><?= h($this->Number->format($paymentRows->amount,[ 'places' => 2])) ?> <?= h($paymentRows->cr_dr) ?></td>
 			<td><?= h($paymentRows->narration) ?></td>
 		</tr>
-		<?php $total=$total+$paymentRows->amount; endforeach; ?>
+		<?php if($paymentRows->cr_dr=="Cr"){
+			$total_cr=$total_cr+$paymentRows->amount;
+		}else{
+			$total_dr=$total_dr+$paymentRows->amount;
+		}
+		$total=$total_dr-$total_cr; endforeach; ?>
 	</table>
 	
 	
