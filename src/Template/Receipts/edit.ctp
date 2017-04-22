@@ -72,7 +72,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 			</thead>
 			<tbody id="main_tbody">
 			<?php foreach($receipt->receipt_rows as $receipt_row){ ?> 
-				<tr class="main_tr">
+				<tr class="main_tr" old_received_from_id="<?php echo $receipt_row->received_from_id; ?>">
 					<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from','value'=>$receipt_row->received_from_id]); ?></td>
 					<td>
 					<div class="row">
@@ -85,7 +85,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 					</div>
 					</td>
 					<td>
-					<?php if(sizeof($old_ref_rows[$receipt_row->received_from_id])>0){ ?>
+					
 						<div class="ref" style="padding:4px;">
 						<table width="100%" class="ref_table">
 							<thead>
@@ -117,7 +117,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 										}							
 									?>
 									</td>
-									<td></td>
+									<td><a class="btn btn-xs btn-default deleterefrow" href="#" role="button" old_ref="<?php echo $old_ref_row->reference_no; ?>" old_ref_type="<?php echo $old_ref_row->reference_type; ?>"><i class="fa fa-times"></i></a></td>
 								</tr>
 							<?php } ?>
 							</tbody>
@@ -137,7 +137,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 						</table>
 						
 						</div>
-						<?php } ?>
+						
 					</td>
 					<td><a class="btn btn-xs btn-default deleterow" href="#" role="button"><i class="fa fa-times"></i></a></td>
 				</tr>
@@ -268,6 +268,8 @@ $(document).ready(function() {
 		$("#chq_no").hide();
 	}
 	//rename_rows();
+	
+	
 	function function2(){
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
 			var sel=$(this);
@@ -305,7 +307,10 @@ $(document).ready(function() {
 		add_row();
 	});
 	$('.deleterow').live("click",function() {
+		var sel=$(this);
+		delete_all_ref_no(sel);
 		$(this).closest("tr").remove();
+		do_mian_amount_total();
 	});
 	
 	$('.addrefrow').live("click",function() {
@@ -364,6 +369,8 @@ $(document).ready(function() {
 	}
 	
 	$('.deleterefrow').live("click",function() {
+		var sel=$(this);
+		delete_one_ref_no(sel);
 		$(this).closest("tr").remove();
 		do_ref_total();
 	});
@@ -426,10 +433,19 @@ $(document).ready(function() {
 		
 	});
 	
+	
+	$('.ref_type').live("change",function() {
+		var sel=$(this);
+		delete_one_ref_no(sel);
+	});
+	
+	
 	$('.ref_list').live("change",function() {
+		var sel=$(this);
 		var due_amount=$(this).find('option:selected').attr('due_amount');
 		$(this).closest('tr').find('td:eq(2) input').val(due_amount);
 		do_ref_total();
+		delete_one_ref_no(sel);
 	});
 	
 	$('.ref_amount_textbox').live("keyup",function() {
@@ -486,6 +502,62 @@ $(document).ready(function() {
 			$('#receipt_amount').text(mian_amount_total.toFixed(2));
 		});
 	}
+	
+	
+	$('.received_from').live("change",function() {
+		var sel=$(this);
+		delete_all_ref_no(sel);
+	});
+	
+	$('.cr_dr').live("change",function() {
+		var sel=$(this);
+		delete_all_ref_no(sel);
+	});
+	
+	function delete_all_ref_no(sel){
+		var old_received_from_id=sel.closest('tr').attr('old_received_from_id');
+		var url="<?php echo $this->Url->build(['controller'=>'Receipts','action'=>'deleteAllRefNumbers']); ?>";
+		url=url+'/'+old_received_from_id+'/'+<?php echo $receipt->id; ?>,
+		$.ajax({
+			url: url,
+			type: 'GET',
+		}).done(function(response) {
+			//alert(response);
+		});
+	}
+	
+	function delete_one_ref_no(sel){
+		var old_received_from_id=sel.closest('tr.main_tr').attr('old_received_from_id');
+		var old_ref=sel.closest('tr').find('a.deleterefrow').attr('old_ref');
+		var old_ref_type=sel.closest('tr').find('a.deleterefrow').attr('old_ref_type');
+		var url="<?php echo $this->Url->build(['controller'=>'Receipts','action'=>'deleteOneRefNumbers']); ?>";
+		url=url+'?old_received_from_id='+old_received_from_id+'&receipt_id=<?php echo $receipt->id; ?>&old_ref='+old_ref+'&old_ref_type='+old_ref_type,
+		$.ajax({
+			url: url,
+			type: 'GET',
+		}).done(function(response) {
+			//alert(response);
+		});
+	}
+	
+	$("#main_table tbody#main_tbody tr.main_tr").each(function(){
+		var sel2=$(this);
+		var received_from_id=$(this).find("td:nth-child(1) select").find('option:selected').val();
+		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'checkBillToBillAccountingStatus']); ?>";
+		url=url+'/'+received_from_id,
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'text'
+		}).done(function(response) {
+			if(response.trim()=="Yes"){
+				
+			}else{
+				$(sel2).find("td:nth-child(3)").html("");
+			}
+			rename_ref_rows(sel2,received_from_id);
+		});
+	});
 	
 });
 </script>

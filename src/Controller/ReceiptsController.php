@@ -562,4 +562,59 @@ class ReceiptsController extends AppController
 		}
 		exit;
 	}
+	
+	function deleteAllRefNumbers($old_received_from_id,$receipt_id){
+		$ReferenceDetails=$this->Receipts->ReferenceDetails->find()->where(['ledger_account_id'=>$old_received_from_id,'receipt_id'=>$receipt_id]);
+		foreach($ReferenceDetails as $ReferenceDetail){
+			if($ReferenceDetail->reference_type=="New Reference" || $ReferenceDetail->reference_type=="Advance Reference"){
+				$this->Receipts->ReferenceBalances->deleteAll(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no]);
+				
+				$RDetail=$this->Receipts->ReferenceDetails->get($ReferenceDetail->id);
+				$this->Receipts->ReferenceDetails->delete($RDetail);
+			}elseif($ReferenceDetail->reference_type=="Against Reference"){
+				if(!empty($ReferenceDetail->credit)){
+					$ReferenceBalance=$this->Receipts->ReferenceBalances->find()->where(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no])->first();
+					$ReferenceBalance=$this->Receipts->ReferenceBalances->get($ReferenceBalance->id);
+					$ReferenceBalance->credit=$ReferenceBalance->credit-$ReferenceDetail->credit;
+					$this->Receipts->ReferenceBalances->save($ReferenceBalance);
+				}elseif(!empty($ReferenceDetail->debit)){
+					$ReferenceBalance=$this->Receipts->ReferenceBalances->find()->where(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no])->first();
+					$ReferenceBalance=$this->Receipts->ReferenceBalances->get($ReferenceBalance->id);
+					$ReferenceBalance->debit=$ReferenceBalance->debit-$ReferenceDetail->debit;
+					$this->Receipts->ReferenceBalances->save($ReferenceBalance);
+				}
+				$RDetail=$this->Receipts->ReferenceDetails->get($ReferenceDetail->id);
+				$this->Receipts->ReferenceDetails->delete($RDetail);
+			}
+		}		exit;
+	}
+	
+	function deleteOneRefNumbers(){
+		$old_received_from_id=$this->request->query['old_received_from_id'];
+		$receipt_id=$this->request->query['receipt_id'];
+		$old_ref=$this->request->query['old_ref'];
+		$old_ref_type=$this->request->query['old_ref_type'];
+		
+		if($old_ref_type=="New Reference" || $old_ref_type=="Advance Reference"){
+			$this->Receipts->ReferenceBalances->deleteAll(['ledger_account_id'=>$old_received_from_id,'reference_no'=>$old_ref]);
+			$this->Receipts->ReferenceDetails->deleteAll(['ledger_account_id'=>$old_received_from_id,'reference_no'=>$old_ref]);
+		}elseif($old_ref_type=="Against Reference"){
+			$ReferenceDetail=$this->Receipts->ReferenceDetails->find()->where(['ledger_account_id'=>$old_received_from_id,'receipt_id'=>$receipt_id,'reference_no'=>$old_ref])->first();
+			if(!empty($ReferenceDetail->credit)){
+				$ReferenceBalance=$this->Receipts->ReferenceBalances->find()->where(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no])->first();
+				$ReferenceBalance=$this->Receipts->ReferenceBalances->get($ReferenceBalance->id);
+				$ReferenceBalance->credit=$ReferenceBalance->credit-$ReferenceDetail->credit;
+				$this->Receipts->ReferenceBalances->save($ReferenceBalance);
+			}elseif(!empty($ReferenceDetail->debit)){
+				$ReferenceBalance=$this->Receipts->ReferenceBalances->find()->where(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no])->first();
+				$ReferenceBalance=$this->Receipts->ReferenceBalances->get($ReferenceBalance->id);
+				$ReferenceBalance->debit=$ReferenceBalance->debit-$ReferenceDetail->debit;
+				$this->Receipts->ReferenceBalances->save($ReferenceBalance);
+			}
+			$RDetail=$this->Receipts->ReferenceDetails->get($ReferenceDetail->id);
+			$this->Receipts->ReferenceDetails->delete($RDetail);
+		}
+		
+		exit;
+	}
 }
