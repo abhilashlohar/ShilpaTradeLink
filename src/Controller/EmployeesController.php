@@ -25,6 +25,7 @@ class EmployeesController extends AppController
         $this->paginate = [
             'contain' => ['Departments','Designations']
         ];
+		
 		$where=[];
 		$employee_name=$this->request->query('employee_name');
 		$department_name=$this->request->query('department_name');
@@ -37,7 +38,7 @@ class EmployeesController extends AppController
 			$where['Departments.name LIKE']='%'.$department_name.'%';
 		}
 		$employees = $this->paginate($this->Employees->find()->where($where)->order(['Employees.name' => 'ASC']));
-
+		
 
         $this->set(compact('employees','status'));
         $this->set('_serialize', ['employees']);

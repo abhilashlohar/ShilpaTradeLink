@@ -208,7 +208,7 @@ class ChallansController extends AppController
 			);
 
         $invoices = $this->Challans->Invoices->find()->where(['company_id'=>$st_company_id]);
-		$invoice_bookings = $this->Challans->InvoiceBookings->find('all');
+		$invoice_bookings = $this->Challans->InvoiceBookings->find()->where(['company_id'=>$st_company_id]);
         $transporters = $this->Challans->Transporters->find('list');
 		$filenames = $this->Challans->Filenames->find('list', ['valueField' => function ($row) {
 				return $row['file1'] . '-' . $row['file2'];
