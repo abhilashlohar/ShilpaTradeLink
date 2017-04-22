@@ -4,6 +4,7 @@ Add Field In sale_tax_companies:-freeze
 Add Field In item_companies:-freeze
 Add Field In invoice:-delivery_description
 
+In Table leave_types id Autoincrement.
 
 
 
