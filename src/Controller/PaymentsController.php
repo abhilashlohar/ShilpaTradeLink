@@ -505,7 +505,7 @@ class PaymentsController extends AppController
 		}else{
 			$ReceivedFroms_selected='no';
 		}
-		pr($ReceivedFroms_selected); exit;
+		
         $this->set(compact('payment', 'bankCashes', 'receivedFroms', 'financial_year', 'BankCashes_selected', 'ReceivedFroms_selected', 'old_ref_rows'));
         $this->set('_serialize', ['payment']);
     }
@@ -563,6 +563,61 @@ class PaymentsController extends AppController
 		}else{
 			echo 'false';
 		}
+		exit;
+	}
+	
+	function deleteAllRefNumbers($old_received_from_id,$receipt_id){
+		$ReferenceDetails=$this->Payments->ReferenceDetails->find()->where(['ledger_account_id'=>$old_received_from_id,'receipt_id'=>$receipt_id]);
+		foreach($ReferenceDetails as $ReferenceDetail){
+			if($ReferenceDetail->reference_type=="New Reference" || $ReferenceDetail->reference_type=="Advance Reference"){
+				$this->Payments->ReferenceBalances->deleteAll(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no]);
+				
+				$RDetail=$this->Payments->ReferenceDetails->get($ReferenceDetail->id);
+				$this->Payments->ReferenceDetails->delete($RDetail);
+			}elseif($ReferenceDetail->reference_type=="Against Reference"){
+				if(!empty($ReferenceDetail->credit)){
+					$ReferenceBalance=$this->Payments->ReferenceBalances->find()->where(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no])->first();
+					$ReferenceBalance=$this->Payments->ReferenceBalances->get($ReferenceBalance->id);
+					$ReferenceBalance->credit=$ReferenceBalance->credit-$ReferenceDetail->credit;
+					$this->Payments->ReferenceBalances->save($ReferenceBalance);
+				}elseif(!empty($ReferenceDetail->debit)){
+					$ReferenceBalance=$this->Payments->ReferenceBalances->find()->where(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no])->first();
+					$ReferenceBalance=$this->Payments->ReferenceBalances->get($ReferenceBalance->id);
+					$ReferenceBalance->debit=$ReferenceBalance->debit-$ReferenceDetail->debit;
+					$this->Payments->ReferenceBalances->save($ReferenceBalance);
+				}
+				$RDetail=$this->Payments->ReferenceDetails->get($ReferenceDetail->id);
+				$this->Payments->ReferenceDetails->delete($RDetail);
+			}
+		}		exit;
+	}
+	
+	function deleteOneRefNumbers(){
+		$old_received_from_id=$this->request->query['old_received_from_id'];
+		$receipt_id=$this->request->query['receipt_id'];
+		$old_ref=$this->request->query['old_ref'];
+		$old_ref_type=$this->request->query['old_ref_type'];
+		
+		if($old_ref_type=="New Reference" || $old_ref_type=="Advance Reference"){
+			$this->Payments->ReferenceBalances->deleteAll(['ledger_account_id'=>$old_received_from_id,'reference_no'=>$old_ref]);
+			$this->Payments->ReferenceDetails->deleteAll(['ledger_account_id'=>$old_received_from_id,'reference_no'=>$old_ref]);
+		}elseif($old_ref_type=="Against Reference"){
+			$ReferenceDetail=$this->Payments->ReferenceDetails->find()->where(['ledger_account_id'=>$old_received_from_id,'receipt_id'=>$receipt_id,'reference_no'=>$old_ref])->first();
+			if(!empty($ReferenceDetail->credit)){
+				$ReferenceBalance=$this->Payments->ReferenceBalances->find()->where(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no])->first();
+				$ReferenceBalance=$this->Payments->ReferenceBalances->get($ReferenceBalance->id);
+				$ReferenceBalance->credit=$ReferenceBalance->credit-$ReferenceDetail->credit;
+				$this->Payments->ReferenceBalances->save($ReferenceBalance);
+			}elseif(!empty($ReferenceDetail->debit)){
+				$ReferenceBalance=$this->Payments->ReferenceBalances->find()->where(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no])->first();
+				$ReferenceBalance=$this->Payments->ReferenceBalances->get($ReferenceBalance->id);
+				$ReferenceBalance->debit=$ReferenceBalance->debit-$ReferenceDetail->debit;
+				$this->Payments->ReferenceBalances->save($ReferenceBalance);
+			}
+			$RDetail=$this->Payments->ReferenceDetails->get($ReferenceDetail->id);
+			$this->Payments->ReferenceDetails->delete($RDetail);
+		}
+		
 		exit;
 	}
 }

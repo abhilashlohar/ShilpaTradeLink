@@ -73,7 +73,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 			</thead>
 			<tbody id="main_tbody">
 			<?php foreach($payment->payment_rows as $payment_row){ ?> 
-				<tr class="main_tr">
+				<tr class="main_tr" old_received_from_id="<?php echo $payment_row->received_from_id; ?>">
 					<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from','value'=>$payment_row->received_from_id]); ?></td>
 					<td>
 					<div class="row">
@@ -86,7 +86,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 					</div>
 					</td>
 					<td>
-					<?php if(sizeof($old_ref_rows[$payment_row->received_from_id])>0){ ?>
+					
 						<div class="ref" style="padding:4px;">
 						<table width="100%" class="ref_table">
 							<thead>
@@ -119,11 +119,17 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 									}
 									 ?>
 									</td>
-									<td></td>
+									<td><a class="btn btn-xs btn-default deleterefrow" href="#" role="button" old_ref="<?php echo $old_ref_row->reference_no; ?>" old_ref_type="<?php echo $old_ref_row->reference_type; ?>"><i class="fa fa-times"></i></a></td>
 								</tr>
 							<?php } ?>
 							</tbody>
 							<tfoot>
+								<tr>
+									<td align="center" style="vertical-align: middle !important;">On Account</td>
+									<td></td>
+									<td><?php echo $this->Form->input('on_account', ['label' => false,'class' => 'form-control input-sm on_account','placeholder'=>'Amount','readonly']); ?></td>
+									<td></td>
+								</tr>
 								<tr>
 									<td colspan="2"><a class="btn btn-xs btn-default addrefrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
 									<td><input type="text" class="form-control input-sm" placeholder="total" readonly></td>
@@ -133,7 +139,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 						</table>
 						
 						</div>
-						<?php } ?>
+						
 					</td>
 					<td><?php echo $this->Form->input('narration', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Narration','value'=>$payment_row->narration]); ?></td>
 					<td><a class="btn btn-xs btn-default deleterow" href="#" role="button"><i class="fa fa-times"></i></a></td>
@@ -265,6 +271,7 @@ $(document).ready(function() {
 		$("#chq_no").hide();
 	}
 	//rename_rows();
+	
 	function function2(){
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
 			var sel=$(this);
@@ -279,7 +286,7 @@ $(document).ready(function() {
 		rename_rows();
 	}
 	
-	function rename_rows(){
+	function rename_rows(){ 
 		var i=0;
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
 			$(this).find("td:eq(0) select.received_from").select2().attr({name:"payment_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"}).rules('add', {
@@ -303,7 +310,10 @@ $(document).ready(function() {
 		add_row();
 	});
 	$('.deleterow').live("click",function() {
+		var sel=$(this);
+		delete_all_ref_no(sel);
 		$(this).closest("tr").remove();
+		do_mian_amount_total();
 	});
 	
 	$('.addrefrow').live("click",function() {
@@ -352,9 +362,9 @@ $(document).ready(function() {
 			i++;
 		});
 		var amount_id=$(sel).find("td:nth-child(2) input").attr('id');
-		var is_tot_input=$(sel).find("table.ref_table tfoot tr td:eq(1) input").length;
+		var is_tot_input=$(sel).find("table.ref_table tfoot tr:eq(1) td:eq(1) input").length;
 		if(is_tot_input){
-			$(sel).find("table.ref_table tfoot tr td:eq(1) input").attr({name:"ref_rows_total["+received_from_id+"]", id:"ref_rows_total-"+received_from_id}).rules('add', {
+			$(sel).find("table.ref_table tfoot tr:eq(1) td:eq(1) input").attr({name:"ref_rows_total["+received_from_id+"]", id:"ref_rows_total-"+received_from_id}).rules('add', {
 														equalTo: "#"+amount_id
 													});
 		}
@@ -362,6 +372,8 @@ $(document).ready(function() {
 	}
 	
 	$('.deleterefrow').live("click",function() {
+		var sel=$(this);
+		delete_one_ref_no(sel);
 		$(this).closest("tr").remove();
 		do_ref_total();
 	});
@@ -401,11 +413,12 @@ $(document).ready(function() {
 	$('.ref_type').live("change",function() {
 		var current_obj=$(this);
 		var sel3=$(this).closest('tr.main_tr');
+		var cr_dr=$(this).closest('tr.main_tr').find('td:nth-child(2) select').val();
 		var ref_type=$(this).find('option:selected').val();
 		var received_from_id=$(this).closest('tr.main_tr').find('td select:eq(0)').val();
 		if(ref_type=="Against Reference"){
 			var url="<?php echo $this->Url->build(['controller'=>'Payments','action'=>'fetchRefNumbers']); ?>";
-			url=url+'/'+received_from_id,
+			url=url+'/'+received_from_id+'/'+cr_dr,
 			$.ajax({
 				url: url,
 				type: 'GET',
@@ -422,10 +435,17 @@ $(document).ready(function() {
 		
 	});
 	
+	$('.ref_type').live("change",function() {
+		var sel=$(this);
+		delete_one_ref_no(sel);
+	});
+	
 	$('.ref_list').live("change",function() {
+		var sel=$(this);
 		var due_amount=$(this).find('option:selected').attr('due_amount');
 		$(this).closest('tr').find('td:eq(2) input').val(due_amount);
 		do_ref_total();
+		delete_one_ref_no(sel);
 	});
 	
 	$('.ref_amount_textbox').live("keyup",function() {
@@ -435,6 +455,7 @@ $(document).ready(function() {
 	do_ref_total();
 	function do_ref_total(){
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
+			var main_amount=$(this).find('td:nth-child(2) input').val();
 			var total_ref=0;
 			$(this).find("table.ref_table tbody tr").each(function(){
 			
@@ -442,7 +463,14 @@ $(document).ready(function() {
 				if(!am){ am=0; }
 				total_ref=total_ref+am;
 			});
-			$(this).find("table.ref_table tfoot tr:nth-child(1) td:nth-child(2) input").val(total_ref.toFixed(2));
+			var on_acc=main_amount-total_ref;
+			if(on_acc>=0){
+				$(this).find("table.ref_table tfoot tr:nth-child(1) td:nth-child(3) input").val(on_acc.toFixed(2));
+				total_ref=total_ref+on_acc;
+			}else{
+				$(this).find("table.ref_table tfoot tr:nth-child(1) td:nth-child(3) input").val(0);
+			}
+			$(this).find("table.ref_table tfoot tr:nth-child(2) td:nth-child(2) input").val(total_ref.toFixed(2));
 		});
 	}
 	
@@ -454,6 +482,7 @@ $(document).ready(function() {
 	
 	$('.mian_amount').live("keyup",function() {
 		do_mian_amount_total();
+		do_ref_total();
 	});
 	
 	do_mian_amount_total();
@@ -473,6 +502,61 @@ $(document).ready(function() {
 			$('#receipt_amount').text(mian_amount_total.toFixed(2));
 		});
 	}
+	
+	$('.received_from').live("change",function() {
+		var sel=$(this);
+		delete_all_ref_no(sel);
+	});
+	
+	$('.cr_dr').live("change",function() {
+		var sel=$(this);
+		delete_all_ref_no(sel);
+	});
+	
+	function delete_all_ref_no(sel){
+		var old_received_from_id=sel.closest('tr').attr('old_received_from_id');
+		var url="<?php echo $this->Url->build(['controller'=>'Payments','action'=>'deleteAllRefNumbers']); ?>";
+		url=url+'/'+old_received_from_id+'/'+<?php echo $payment->id; ?>,
+		$.ajax({
+			url: url,
+			type: 'GET',
+		}).done(function(response) {
+			//alert(response);
+		});
+	}
+	
+	function delete_one_ref_no(sel){
+		var old_received_from_id=sel.closest('tr.main_tr').attr('old_received_from_id');
+		var old_ref=sel.closest('tr').find('a.deleterefrow').attr('old_ref');
+		var old_ref_type=sel.closest('tr').find('a.deleterefrow').attr('old_ref_type');
+		var url="<?php echo $this->Url->build(['controller'=>'Payments','action'=>'deleteOneRefNumbers']); ?>";
+		url=url+'?old_received_from_id='+old_received_from_id+'&receipt_id=<?php echo $payment->id; ?>&old_ref='+old_ref+'&old_ref_type='+old_ref_type,
+		$.ajax({
+			url: url,
+			type: 'GET',
+		}).done(function(response) {
+			//alert(response);
+		});
+	}
+	
+	$("#main_table tbody#main_tbody tr.main_tr").each(function(){
+		var sel2=$(this);
+		var received_from_id=$(this).find("td:nth-child(1) select").find('option:selected').val();
+		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'checkBillToBillAccountingStatus']); ?>";
+		url=url+'/'+received_from_id,
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'text'
+		}).done(function(response) {
+			if(response.trim()=="Yes"){
+				
+			}else{
+				$(sel2).find("td:nth-child(3)").html("");
+			}
+			rename_ref_rows(sel2,received_from_id);
+		});
+	});
 	
 });
 </script>
@@ -526,6 +610,12 @@ $(document).ready(function() {
 			</tr>
 		</tbody>
 		<tfoot>
+			<tr>
+				<td align="center" style="vertical-align: middle !important;">On Account</td>
+				<td></td>
+				<td><?php echo $this->Form->input('on_account', ['label' => false,'class' => 'form-control input-sm on_account','placeholder'=>'Amount','readonly']); ?></td>
+				<td></td>
+			</tr>
 			<tr>
 				<td colspan="2"><a class="btn btn-xs btn-default addrefrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
 				<td><input type="text" class="form-control input-sm" placeholder="total" readonly></td>

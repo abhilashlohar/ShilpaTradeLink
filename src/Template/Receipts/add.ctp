@@ -374,7 +374,7 @@ $(document).ready(function() {
 	
 	$('.mian_amount').live("keyup",function() {
 		do_mian_amount_total();
-		do_ref_total()
+		do_ref_total();
 	});
 	
 	function do_mian_amount_total(){
