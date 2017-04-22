@@ -11,16 +11,16 @@
 				<div class="col-md-12">
 				
 				<?php $page_no=$this->Paginator->current('ItemLedgers'); $page_no=($page_no-1)*20; ?>
-				<table class="table tableitm" id="main_tb">
+				<table class="table table-bordered " id="main_tb">
 					<thead>
 						<tr>
-							<th width="10%">Sr. No.</th>
+							<th width="3%">Sr. No.</th>
 							<th>Item Name</th>
-							<th width="15%" >Current Stock</th>
+							<th width="13%"  >Current Stock</th>
 							<th width="10%">Sales Order </th>
 							<th width="10%">Job card  </th>
-							<th width="10%">Suggested Indent</th>
-							<th width="10%"></th>
+							<th width="15%">Suggested Indent</th>
+							<th width="10%">Action</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -37,10 +37,10 @@
 						<tr class="tr1" row_no='<?php echo @$i; ?>'>
 						<td><?php echo $i; ?> </td>
 						<td><?php echo $item_name; ?></td>
-						<td ><?php echo $Current_Stock; ?></td>
-						<td><?php echo @$sales_order; ?></td>
-						<td><?php echo $job_card_qty; ?></td>
-						<td><?php echo $Current_Stock-@$sales_order-$job_card_qty; ?></td>
+						<td style="text-align:center; valign:top" valign="top"><?php echo $Current_Stock; ?></td>
+						<td style="text-align:center"><?php echo @$sales_order; ?></td>
+						<td style="text-align:center"><?php echo $job_card_qty; ?></td>
+						<td style="text-align:center"><?php echo $Current_Stock-@$sales_order-$job_card_qty; ?></td>
 
 						<td><label><?php echo $this->Form->input('check[]', ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$item_id,'hiddenField'=>false]);  ?>
 

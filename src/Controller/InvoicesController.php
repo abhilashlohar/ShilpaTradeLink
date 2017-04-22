@@ -644,7 +644,7 @@ class InvoicesController extends AppController
 		$AccountReference_for_fright= $this->Invoices->AccountReferences->get(3);
 		$account_first_subgroup_id_for_fright=$AccountReference_for_fright->account_first_subgroup_id;
 		//$ac_first_grp_id=$AccountReference->account_first_subgroup_id;
-		
+		//pr($AccountReference_for_sale); exit;
 		
 		$ledger_account_details = $this->Invoices->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups' => function($q) use($account_first_subgroup_id){
 			return $q->where(['AccountFirstSubgroups.id'=>$account_first_subgroup_id]);
@@ -1029,6 +1029,7 @@ class InvoicesController extends AppController
 		$customer_ledger = $this->Invoices->LedgerAccounts->find()->where(['LedgerAccounts.source_id'=>$invoice->customer_id,'LedgerAccounts.source_model'=>'Customers'])->toArray();
 		
 		$customer_reference_details = $this->Invoices->ReferenceDetails->find()->where(['ReferenceDetails.ledger_account_id'=>$customer_ledger[0]->id])->toArray();
+		//pr()
 		$total_credit=0;
 		$total_debit=0;
 		$old_due_payment=0;
@@ -1040,11 +1041,14 @@ class InvoicesController extends AppController
 				$total_debit=$total_debit+$customer_reference_detail->debit;
 			}
 		}
+		
 		$temp_due_payment=$total_credit-$total_debit;
 		$old_due_payment=$temp_due_payment-$invoice->grand_total;
 		
+
 		$AccountReference_for_sale= $this->Invoices->AccountReferences->get(1);
 		$account_first_subgroup_id=$AccountReference_for_sale->account_first_subgroup_id;
+		
 		$AccountReference_for_fright= $this->Invoices->AccountReferences->get(3);
 		$account_first_subgroup_id_for_fright=$AccountReference_for_fright->account_first_subgroup_id;
 		$ledger_account_details = $this->Invoices->LedgerAccounts->find('list')->contain(['AccountSecondSubgroups'=>['AccountFirstSubgroups' => function($q) use($account_first_subgroup_id){
