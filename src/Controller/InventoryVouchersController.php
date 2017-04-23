@@ -24,7 +24,7 @@ class InventoryVouchersController extends AppController
         $this->paginate = [
             'contain' => ['InventoryVoucherRows']
         ];
-        $inventoryVouchers = $this->paginate($this->InventoryVouchers->find()->where(['company_id'=>$st_company_id])->order(['InventoryVouchers.id' => 'DESC']));
+        $inventoryVouchers = $this->paginate($this->InventoryVouchers->find()->contain(['Invoices'])->where(['InventoryVouchers.company_id'=>$st_company_id])->order(['InventoryVouchers.id' => 'DESC']));
 
         $this->set(compact('inventoryVouchers'));
         $this->set('_serialize', ['inventoryVouchers']);

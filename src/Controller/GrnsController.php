@@ -26,7 +26,33 @@ class GrnsController extends AppController
             'contain' => ['PurchaseOrders', 'Companies','Vendors']
         ];
 		$pull_request=$this->request->query('pull-request');
-
+		
+		$where1=[];
+		$grn_no=$this->request->query('grn_no');
+		$file=$this->request->query('file');
+		$vendor=$this->request->query('vendor');
+		$From=$this->request->query('From');
+		$To=$this->request->query('To');
+		$this->set(compact('grn_no','vendor','From','file','To'));
+		if(!empty($grn_no)){
+			//pr($grn_no); exit;
+			$where1['grn2 LIKE']=$grn_no;
+		}
+		if(!empty($file)){
+			$where1['grn3 LIKE']='%'.$file.'%';
+		}
+		
+		if(!empty($vendor)){
+			$where1['Vendors.company_name LIKE']='%'.$vendor.'%';
+		}
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where1['Grns.date_created >=']=$From;
+		}
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where1['Grns.date_created <=']=$To;
+		}
       
 		$where=[];
 		if($status==null or $status=='Pending'){
@@ -34,7 +60,7 @@ class GrnsController extends AppController
 		}elseif($status=='Invoice-Booked'){
 			$where['status']='Invoice-Booked';
 		}
-		$grns = $this->paginate($this->Grns->find()->where($where)->where(['Grns.company_id'=>$st_company_id])->order(['Grns.id' => 'DESC']));
+		$grns = $this->paginate($this->Grns->find()->where($where)->where($where1)->where(['Grns.company_id'=>$st_company_id])->order(['Grns.id' => 'DESC']));
         $this->set(compact('grns','pull_request','status'));
         $this->set('_serialize', ['grns']);
     }
@@ -376,9 +402,6 @@ class GrnsController extends AppController
 								}]]
 					]
 			]);
-			
-			
-		
 		$Em = new FinancialYearsController;
 	    $financial_year_data = $Em->checkFinancialYear($grn->date_created);
 
