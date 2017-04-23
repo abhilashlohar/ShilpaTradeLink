@@ -532,18 +532,20 @@ class InventoryVouchersController extends AppController
 			}
 			
 		}
-		//pr($InventoryVoucherRows); exit;
+		//pr($InventoryVoucherRows); 
 		
-		/*$Items=$this->InventoryVouchers->Items->find()->matching(
+		/* $Items=$this->InventoryVouchers->Items->find()->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
 						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
 					}
-				);*/
-		$items = $this->InventoryVouchers->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC'])->matching(
+				); */
+		$Items = $this->InventoryVouchers->Items->find()->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC'])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
 						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
 					}
 				);
+				
+		//pr($Items->toArray()); exit;		
 		$this->set(compact('display_items','invoice_id','q_item_id','InventoryVoucherRows','Items','InventoryVoucher','selected_seials','q_qty','q_sno','is_in_made','q_ItemSerialNumbers','JobCardRowsData'));
     }
 
