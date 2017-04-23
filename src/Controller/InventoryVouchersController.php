@@ -532,13 +532,7 @@ class InventoryVouchersController extends AppController
 			}
 			
 		}
-		//pr($InventoryVoucherRows); 
-		
-		/* $Items=$this->InventoryVouchers->Items->find()->matching(
-					'ItemCompanies', function ($q) use($st_company_id) {
-						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
-					}
-				); */
+	
 		$Items = $this->InventoryVouchers->Items->find()->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC'])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
 						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
