@@ -8,6 +8,12 @@
 	}
 }
 </style>
+<style type="text/css" media="print">
+@page {
+    size: auto;   /* auto is the initial value */
+    margin: 0 5px 0 20px;  /* this affects the margin in the printer settings */
+}
+</style>
 <a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
 
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 55%;font-size: 14px;" class="maindiv">	
