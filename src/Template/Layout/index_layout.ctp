@@ -49,8 +49,8 @@
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/jquery-tags-input/jquery.tagsinput.css'); ?>
 
-<?php echo $this->Html->css('/assets/global/plugins/typeahead/typeahead.css'); ?>
-<?php echo $this->Html->css('/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css'); ?>
+<?php //echo $this->Html->css('/assets/global/plugins/typeahead/typeahead.css'); ?>
+<?php //echo $this->Html->css('/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap-summernote/summernote.css'); ?>
 <!-- END PAGE LEVEL STYLES -->
@@ -646,13 +646,13 @@ select
 
 <?php echo $this->Html->script('/assets/global/plugins/datatables/media/js/jquery.dataTables.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js'); ?>
+<?php //echo $this->Html->script('/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js'); ?>
 
-<?php echo $this->Html->script('/assets/global/scripts/metronic.js'); ?>
-<?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js'); ?>
+<?php //echo $this->Html->script('/assets/global/scripts/metronic.js'); ?>
+<?php ///echo $this->Html->script('/assets/admin/layout/scripts/layout.js'); ?>
 
-<?php echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js'); ?>
-<?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js'); ?>
+<?php //echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js'); ?>
+<?php //echo $this->Html->script('/assets/admin/layout/scripts/demo.js'); ?>
 <?php echo $this->Html->script('/assets/admin/pages/scripts/form-icheck.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.pulsate.min.js'); ?>
 <?php echo $this->Html->script('/assets/admin/pages/scripts/table-managed.js'); ?>
@@ -662,7 +662,7 @@ select
 <?php echo $this->Html->script('/assets/global/plugins/jquery-validation/js/additional-methods.min.js'); ?>
 <?php echo $this->Html->script('/assets/admin/pages/scripts/form-validation.js'); ?>
 <?php echo $this->Html->script('/assets/admin/pages/scripts/ui-general.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
+<?php //echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
 
 
 <!-- BEGIN PAGE LEVEL PLUGINS -->
@@ -671,14 +671,14 @@ select
 <?php echo $this->Html->script('/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.input-ip-address-control-1.0.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-pwstrength/pwstrength-bootstrap.min.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'); ?>
+<?php //echo $this->Html->script('/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery-tags-input/jquery.tagsinput.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/typeahead/handlebars.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/typeahead/typeahead.bundle.min.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js'); ?>
+<?php //echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
+<?php //echo $this->Html->script('/assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js'); ?>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
