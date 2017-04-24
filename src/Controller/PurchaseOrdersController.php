@@ -24,10 +24,30 @@ class PurchaseOrdersController extends AppController
         $this->paginate = [
             'contain' => ['Companies', 'Vendors']
         ];
-		$pull_request=$this->request->query('pull-request');
 		
+		$pull_request=$this->request->query('pull-request');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		
+		$where=[];
+		$purchase_no=$this->request->query('purchase_no');
+		$file=$this->request->query('file');
+		$vendor=$this->request->query('vendor');
+		$total=$this->request->query('total');
+		$this->set(compact('purchase_no','vendor','total','file'));
+		if(!empty($purchase_no)){
+			$where['po2 LIKE']=$purchase_no;
+		}
+		if(!empty($file)){
+			$where['po3 LIKE']='%'.$file.'%';
+		}
+		if(!empty($total)){
+			$where['total LIKE']=$total;
+		}
+		if(!empty($vendor)){
+			$where['Vendors.company_name LIKE']='%'.$vendor.'%';
+		}
+		
 		
 		if($status==null or $status=='Pending'){
 			$having=['total_rows >' => 0];
@@ -44,6 +64,7 @@ class PurchaseOrdersController extends AppController
 				->group(['PurchaseOrders.id'])
 				->autoFields(true)
 				->having($having)
+				->where($where)
 				->where(['company_id'=>$st_company_id])
 				->order(['PurchaseOrders.id' => 'DESC'])
 			);

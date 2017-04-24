@@ -1,11 +1,9 @@
-<?php $d=sizeof($InventoryVoucherRows);
-//echo $d; exit;
-?>
 <style>
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
 	vertical-align: top !important;
 }
 </style>
+
 <div class="row">
 	<div class="col-md-12" style="background-color:#FFF;">
 		<div class="row">
@@ -56,16 +54,18 @@
 						</tr>
 					</thead>
 					<tbody id="maintbody">
-					<?php $d=sizeof($InventoryVoucherRows);
+					<?php 
 					
 					foreach($InventoryVoucherRows as $InventoryVoucherRow){ ?>
+					
+
 					<tr class="main" >
 							<td>
 								<?php 
 								$item_option=[];
-								foreach($Items as $Item){
-									$item_option[]=['text' =>$Item->name, 'value' => $Item->id, 'serial_number_enable' => (int)$Item->serial_number_enable];
-								}
+									foreach($Items as $Item){
+										$item_option[]=['text' =>$Item->name, 'value' => $Item->id, 'serial_number_enable' => (int)$Item->serial_number_enable];
+									} 
 								echo $this->Form->input('q', ['empty'=>'Select','options' => $item_option,'label' => false,'class' => 'form-control input-sm select_item item_id','value'=>$InventoryVoucherRow->item_id]); ?>
 							</td>
 							<td>
@@ -305,7 +305,7 @@ $(document).ready(function() {
 			<td>
 				<?php 
 				$item_option=[];
-				foreach($Items as $Item){
+				foreach($Items as $Item){ 
 					$item_option[]=['text' =>$Item->name, 'value' => $Item->id, 'serial_number_enable' => (int)$Item->serial_number_enable];
 				}
 				echo $this->Form->input('q', ['empty'=>'Select','options' => $item_option,'label' => false,'class' => 'form-control input-sm select_item item_id']); ?>

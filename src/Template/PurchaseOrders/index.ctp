@@ -43,7 +43,40 @@
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
-				
+			<form method="GET" >
+				<input type="hidden" name="inventory_voucher" value="<?php echo @$inventory_voucher; ?>">
+				<table class="table table-condensed">
+					<thead>
+						<tr>
+							<th>Purchase No</th>
+							<th>Party </th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td>
+								<div class="row">
+
+									<div class="col-md-5">
+										<div class="input-group" style="" id="pnf_text">
+											<span class="input-group-addon">PO-</span><input type="text" name="purchase_no" class="form-control input-sm" placeholder="Purchase No" value="<?php echo @$purchase_no; ?>">
+										</div>
+									</div>
+									<div class="col-md-5">
+										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
+									</div>
+									<div class="col-md-2"></div>
+								</div>
+							</td>
+							<td><input type="text" name="vendor" class="form-control input-sm" placeholder="Party" value="<?php echo @$vendor; ?>"></td>
+							
+							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
 				<?php $page_no=$this->Paginator->current('Purchase Orders'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered table-striped table-hover">
 						<thead>
