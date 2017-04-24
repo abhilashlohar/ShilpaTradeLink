@@ -168,7 +168,7 @@
 						<label class="checkbox-inline">
 							<?php 
 							if(in_array(10,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
-							echo $this->Form->input('user_rights.10.page_id', ['label' => 'Edit','class' => 'form-control input-sm','type'=>'checkbox','value'=>10,$checked_status]); ?>
+							echo $this->Form->input('user_rights.10.page_id', ['label' => 'View','class' => 'form-control input-sm','type'=>'checkbox','value'=>10,$checked_status]); ?>
 						</label>
 					</div>
 					<div style="border-bottom: 1px solid #eee;" ></div>
@@ -220,8 +220,51 @@
 						</label>
 						</div>
 					</div>
-				
+		</div></br>
+		<div class="col-md-12">
+				<div class="col-md-3">
+					<div class="titletext">Stock-Report</div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(36,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.36.page_id', ['label' => 'View','class' => 'form-control input-sm','type'=>'checkbox','value'=>36,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext">Balance-Sheet</div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(37,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.37.page_id', ['label' => 'View','class' => 'form-control input-sm','type'=>'checkbox','value'=>37,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext">Profit Loss Statement</div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(38,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.17.page_id', ['label' => 'View','class' => 'form-control input-sm','type'=>'checkbox','value'=>17,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext">Material Indent Report</div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(39,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.19.page_id', ['label' => 'View','class' => 'form-control input-sm','type'=>'checkbox','value'=>19,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div style="border-bottom: 1px solid #eee;" ></div>
 		</div>
+		
 		<br/>
 		<?= $this->Form->button(__('Update'),['class'=>'btn btn-primary']) ?>
 		<?= $this->Form->end() ?>

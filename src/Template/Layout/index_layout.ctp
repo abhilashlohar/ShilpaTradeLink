@@ -390,7 +390,7 @@ select
 					</ul>
 				</li>
 				<?php } ?>
-				<?php if(in_array(10,$allowed_pages)){ ?>
+				<?php if(in_array(9,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-gift"></i>
@@ -401,7 +401,10 @@ select
 						<?php if(in_array(9,$allowed_pages)){
 						echo '<li>'.$this->Html->link( 'Create', '/Invoices?inventory_voucher=true' ).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link( 'View', '/InventoryVouchers' ); ?></li>
+						<?php if(in_array(10,$allowed_pages)){
+						echo '<li>'.$this->Html->link( 'View', '/InventoryVouchers' ).'</li>';
+						} ?>
+						
 					</ul>
 				</li>
 				<?php } ?>
@@ -581,12 +584,20 @@ select
 								} ?>
 							</ul>
 						</li>
+						<?php if(in_array(36,$allowed_pages)){?>
 						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Item Report','/Item-Ledgers/Stock-Report',array('escape'=>false)); ?></li>	
+						<?php } ?>
+						<?php if(in_array(37,$allowed_pages)){?>
 						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Balance Sheet','/ledger-Accounts/Balance-Sheet',array('escape'=>false)); ?></li>
+						<?php } ?>
+						<?php if(in_array(38,$allowed_pages)){?>
 						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Profit & Loss Statement','/ledger-Accounts/Profit-Loss-Statement',array('escape'=>false)); ?></li>
+						<?php } ?>
 						<li><?php $today =date('d-m-Y');
 						echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Daily Report',array('controller'=>'Ledgers','action'=>'index','From'=>$today,'To'=>$today),array('escape'=>false)); ?></li>
+						<?php if(in_array(39,$allowed_pages)){?>
 						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Material Indent Report','/Item-Ledgers/material-indent-report',array('escape'=>false)); ?></li>
+						<?php } ?>
 						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Account Statement','/Ledgers/Account-Statement',array('escape'=>false)); ?></li>	
 					</ul>
 				</li>
