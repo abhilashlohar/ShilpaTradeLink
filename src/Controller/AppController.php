@@ -57,12 +57,13 @@ class AppController extends Controller
 		$controller = $this->request->params['controller'];
 		$action = $this->request->params['action']; 
 		if (in_array($controller, ['Logins']) and in_array($action, ['index'])) {
-		}else{
+		}else{ 
 			$st_login_id = $session->read('st_login_id');
 			$st_company_id = $session->read('st_company_id');
 			$st_year_id =  $session->read('st_year_id');
 			if(empty($st_login_id)){
-				return $this->redirect("/login");
+				return $this->redirect('/logins'); exit;
+				//return $this->redirect(['controller'=>'Homes','action'>'logins']); 
 			}else{
 				$this->loadModel('Logins');
 				$login=$this->Logins->get($st_login_id);
