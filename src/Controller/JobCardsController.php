@@ -27,6 +27,49 @@ class JobCardsController extends AppController
 			$where['status']='Closed';
 		}
 		$inventory_voucher_status=$this->request->query('inventory_voucher');
+		
+		$where1=[];
+		$jc_no=$this->request->query('jc_no');
+		$so_no=$this->request->query('so_no');
+		$jc_file_no=$this->request->query('jc_file_no');
+		$so_file_no=$this->request->query('so_file_no');
+		$Required_From=$this->request->query('Required_From');
+		$Required_To=$this->request->query('Required_To');
+		$Created_From=$this->request->query('Created_From');
+		$Created_To=$this->request->query('Created_To');
+		
+		$this->set(compact('jc_no','so_no','jc_file_no','so_file_no','Required_From','Required_To','Created_From','Created_To'));
+		if(!empty($jc_no)){
+			$where1['jc2 LIKE']='%'.$jc_no.'%';
+		}
+		if(!empty($so_no)){
+			$where1['SalesOrders.so2 LIKE']='%'.$so_no.'%';
+		}
+		
+		if(!empty($jc_file_no)){
+			$where1['jc3 LIKE']='%'.$jc_file_no.'%';
+		}
+		
+		if(!empty($so_file_no)){
+			$where1['SalesOrders.so3 LIKE']='%'.$so_file_no.'%';
+		}
+		
+		if(!empty($Required_From)){
+			$Required_From=date("Y-m-d",strtotime($this->request->query('Required_From')));
+			$where1['JobCards.date_created >=']=$Required_From;
+		}
+		if(!empty($Required_To)){
+			$Required_To=date("Y-m-d",strtotime($this->request->query('Required_To')));
+			$where1['JobCards.date_created <=']=$Required_To;
+		}
+		if(!empty($Created_From)){
+			$Created_From=date("Y-m-d",strtotime($this->request->query('Created_From')));
+			$where1['JobCards.date_created >=']=$Created_From;
+		}
+		if(!empty($Created_To)){
+			$Created_To=date("Y-m-d",strtotime($this->request->query('Created_To')));
+			$where1['JobCards.date_created <=']=$Created_To;
+		}
 		//pr($inventory_voucher_status); exit;
         $this->paginate = [
             'contain' => ['SalesOrders']
@@ -34,7 +77,7 @@ class JobCardsController extends AppController
 		if($inventory_voucher_status=='true'){
 			$jobCards = $this->paginate($this->JobCards->find()->where(['status' => 'Pending','JobCards.company_id'=>$st_company_id]));
 		}else{
-			$jobCards = $this->paginate($this->JobCards->find()->where($where)->where(['JobCards.company_id'=>$st_company_id])->order(['JobCards.id' => 'DESC']));
+			$jobCards = $this->paginate($this->JobCards->find()->where($where)->where($where1)->where(['JobCards.company_id'=>$st_company_id])->order(['JobCards.id' => 'DESC']));
 		}
         $this->set(compact('jobCards','status'));
         $this->set('_serialize', ['jobCards']);

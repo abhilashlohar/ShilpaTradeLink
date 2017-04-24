@@ -105,8 +105,9 @@
 							<td><?php echo date("d-m-Y",strtotime($salesOrder->created_on)); ?></td>
 							<td><?= h($salesOrder->customer_po_no) ?></td>
 							<td class="actions">
+							<?php if(in_array(22,$allowed_pages)){ ?>
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $salesOrder->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
-								
+							<?php } ?>
 								<?php if($copy_request=="copy"){
 									echo $this->Html->link('<i class="fa fa-repeat "></i>  Copy','/SalesOrders/Add?copy='.$salesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>

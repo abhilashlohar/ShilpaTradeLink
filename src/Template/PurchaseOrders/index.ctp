@@ -103,7 +103,9 @@
 							<td align="right"><?= $this->Number->format($purchaseOrder->total) ?></td>
 						
 							<td class="actions">
+							<?php if(in_array(31,$allowed_pages)){ ?>
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $purchaseOrder->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
+							<?php } ?>
 								<?php if($pull_request=="true"){
 									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into GRN','/Grns/AddNew?purchase-order='.$purchaseOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>

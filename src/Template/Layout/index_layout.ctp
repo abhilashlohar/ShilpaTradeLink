@@ -319,7 +319,7 @@ select
 				<!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
 				
 				<li><?php echo $this->Html->link('<i class="icon-home"></i> Dashboard','/Dashboard',array('escape'=>false)); ?></li>
-				
+				<?php if(in_array(21,$allowed_pages) || in_array(2,$allowed_pages) || in_array(1,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="icon-docs"></i>
@@ -330,9 +330,14 @@ select
 						<?php if(in_array(1,$allowed_pages)){
 						echo '<li>'.$this->Html->link( 'Create', '/Quotations/add' ).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link( 'View', '/Quotations' ); ?></li>
+						<?php if(in_array(21,$allowed_pages) || in_array(2,$allowed_pages)){
+						echo '<li>'.$this->Html->link( 'View', '/Quotations' ).'</li>';
+						} ?>
+						
 					</ul>
 				</li>
+				<?php } ?>
+				<?php if(in_array(3,$allowed_pages) || in_array(22,$allowed_pages) || in_array(4,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="icon-basket"></i>
@@ -343,9 +348,13 @@ select
 						<?php if(in_array(3,$allowed_pages)){
 						echo '<li>'.$this->Html->link( 'Create', '/Sales-Orders/add' ).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link( 'View', '/Sales-Orders' ); ?></li>
+						<?php if(in_array(22,$allowed_pages) || in_array(4,$allowed_pages)){
+						echo '<li>'.$this->Html->link( 'View', '/Sales-Orders' ).'</li>';
+						} ?>
 					</ul>
 				</li>
+				<?php } ?>
+				<?php if(in_array(5,$allowed_pages) || in_array(24,$allowed_pages) || in_array(6,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="icon-handbag"></i>
@@ -356,9 +365,13 @@ select
 						<?php if(in_array(5,$allowed_pages)){
 						echo '<li>'.$this->Html->link( 'Create', '/Job-Cards/Pending-Salesorder-For-Jobcard' ).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link( 'View', '/Job-Cards' ); ?></li>
+						<?php if(in_array(24,$allowed_pages) || in_array(6,$allowed_pages)){
+						echo '<li>'.$this->Html->link( 'View', '/Job-Cards' ).'</li>';
+						} ?>
 					</ul>
 				</li>
+				<?php } ?>
+				<?php if(in_array(7,$allowed_pages) || in_array(23,$allowed_pages) || in_array(8,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-shopping-cart"></i>
@@ -369,10 +382,15 @@ select
 						<?php if(in_array(7,$allowed_pages)){
 						echo '<li>'.$this->Html->link( 'Create', '/SalesOrders/index?pull-request=true' ).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link( 'View', '/Invoices' ); ?></li>
+						<?php if(in_array(23,$allowed_pages) || in_array(8,$allowed_pages)){
+						echo '<li>'.$this->Html->link( 'View', '/Invoices' ).'</li>';
+						} ?>
+						<li><?php //echo $this->Html->link( 'View', '/Invoices' ); ?></li>
 						
 					</ul>
 				</li>
+				<?php } ?>
+				<?php if(in_array(10,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-gift"></i>
@@ -386,6 +404,8 @@ select
 						<li><?php echo $this->Html->link( 'View', '/InventoryVouchers' ); ?></li>
 					</ul>
 				</li>
+				<?php } ?>
+				<?php if(in_array(11,$allowed_pages) || in_array(12,$allowed_pages) || in_array(28,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
@@ -396,11 +416,15 @@ select
 						<?php if(in_array(11,$allowed_pages)){
 						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/Challans/Add',array('escape'=>false)).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Challans',array('escape'=>false)); ?></li>
+						<?php if(in_array(12,$allowed_pages) || in_array(28,$allowed_pages)){
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> View','/Challans/',array('escape'=>false)).'</li>';
+						} ?>
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> Pending Challan','/Challans/PendingChallanForCreditNote',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
+				<?php } ?>
 				<li><?php echo $this->Html->link('<i class="icon-home"></i> Material Indents','/MaterialIndents',array('escape'=>false)); ?></li>
+				<?php if(in_array(13,$allowed_pages) || in_array(14,$allowed_pages) || in_array(31,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
@@ -411,9 +435,13 @@ select
 						<?php if(in_array(13,$allowed_pages)){
 						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/MaterialIndents/AddNew?pull-request=true',array('escape'=>false)).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Purchase-Orders',array('escape'=>false)); ?></li>
+						<?php if(in_array(14,$allowed_pages) || in_array(31,$allowed_pages)){
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> View','/Purchase-Orders/',array('escape'=>false)).'</li>';
+						} ?>
 					</ul>
 				</li>
+				<?php } ?>
+				<?php if(in_array(15,$allowed_pages) || in_array(16,$allowed_pages) || in_array(35,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
@@ -424,9 +452,13 @@ select
 						<?php if(in_array(15,$allowed_pages)){
 						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/PurchaseOrders/index?pull-request=true',array('escape'=>false)).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Grns',array('escape'=>false)); ?></li>
+						<?php if(in_array(16,$allowed_pages) || in_array(35,$allowed_pages)){
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> View','/Grns/',array('escape'=>false)).'</li>';
+						} ?>
 					</ul>
 				</li>
+				<?php } ?>
+				<?php if(in_array(10,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
@@ -440,7 +472,7 @@ select
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/InvoiceBookings/',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
-
+				<?php } ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
