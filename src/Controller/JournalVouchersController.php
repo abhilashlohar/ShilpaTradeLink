@@ -140,12 +140,27 @@ class JournalVouchersController extends AppController
 		else{
 			$Errorledgers='true';
 		}
-		
-		
-			
 		$companies = $this->JournalVouchers->Companies->find('all');
+		
+		$ReceivedFroms_selected='yes';
+		if(sizeof($where)>0){
+			$receivedFroms = $this->JournalVouchers->ReceivedFroms->find('list',
+				['keyField' => function ($row) {
+					return $row['id'];
+				},
+				'valueField' => function ($row) {
+					if(!empty($row['alias'])){
+						return  $row['name'] . ' (' . $row['alias'] . ')';
+					}else{
+						return $row['name'];
+					}
+					
+				}])->where(['ReceivedFroms.id IN' => $where]);
+		}else{
+			$ReceivedFroms_selected='no';
+		}
         
-        $this->set(compact('journalVoucher', 'ledgers','companies','Errorledgers','financial_year','JournalVoucherLedger'));
+        $this->set(compact('journalVoucher', 'ledgers','companies','Errorledgers','financial_year','JournalVoucherLedger','receivedFroms','ReceivedFroms_selected'));
         $this->set('_serialize', ['journalVoucher']);
     }
 
@@ -257,4 +272,14 @@ class JournalVouchersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	function checkRefNumberUnique($received_from_id,$i){
+		$reference_no=$this->request->query['ref_rows'][$received_from_id][$i]['ref_no'];
+		$ReferenceBalances=$this->JournalVouchers->ReferenceBalances->find()->where(['ledger_account_id'=>$received_from_id,'reference_no'=>$reference_no]);
+		if($ReferenceBalances->count()==0){
+			echo 'true';
+		}else{
+			echo 'false';
+		}
+		exit;
+	}
 }
