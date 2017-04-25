@@ -58,6 +58,12 @@ class JournalVouchersTable extends Table
 			'foreignKey' => 'created_by',
 			'propertyName' => 'creator',
 		]);
+		$this->belongsTo('ReceivedFroms', [
+			'className' => 'LedgerAccounts',
+            'foreignKey' => 'received_from_id',
+            'propertyName' => 'ReceivedFrom',
+        ]);
+		
     }
 
     /**

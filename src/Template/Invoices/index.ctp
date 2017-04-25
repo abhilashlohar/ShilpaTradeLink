@@ -118,8 +118,9 @@
 								 { 
 								echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $invoice->id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); 
 								 }
+								if( in_array(33,$allowed_pages)){
 								echo $this->Html->link('<i class="fa fa-minus-circle"></i> ',['action' => '#'],array('escape'=>false,'class'=>'btn btn-xs red tooltips close_btn','data-original-title'=>'Close','role'=>'button','invoice_id'=>$invoice->id));
-
+								}
 								}?>
 								<?php
 								if($invoice->inventory_voucher_status=='Pending' && $inventory_voucher=="true"){
