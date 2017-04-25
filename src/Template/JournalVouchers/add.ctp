@@ -36,30 +36,7 @@
 					</div>
 				</div>
 			</div>
-			<table class="table tableitm" id="main_tb">
-				<thead>
-					<tr>
-						<th width="400">Ledger Account</th>
-						<th width="200">Debit/Credit</th>
-						<th width="200">Amount</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody id="main_tbody">
-				
-				</tbody>
-				<tfoot>
-					<tr>
-						<td><?php echo $this->Form->textarea('narration', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Narration']); ?></td>
-						
-						<td id="drAmount"><label>Total Dr</label><?php echo $this->Form->input('debitamount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
-					
-						<td align="left" id="crAmount" align="right"><label>Total Cr</label><?php echo $this->Form->input('creditamount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
-						
-						
-					</tr>
-				</tfoot>
-			</table>
+
 			
 			
 				

@@ -126,8 +126,79 @@ class UserRightsController extends AppController
 						])
 						->execute();
 			}
+			if($user_rights[68]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 69
+						])
+						->execute();
+			}
+			if($user_rights[74]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 75
+						])
+						->execute();
+			}
+			if($user_rights[76]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 77
+						])
+						->execute();
+			}
+			if($user_rights[78]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 79
+						])
+						->execute();
+			}
+			if($user_rights[80]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 81
+						])
+						->execute();
+			}
+			if($user_rights[82]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 83
+						])
+						->execute();
+			}
+			if($user_rights[84]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 85
+						])
+						->execute();
+			}
+			if($user_rights[86]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 87
+						])
+						->execute();
+			}
 			
-			//exit;
 			$this->Flash->success(__('User Rights has been Updated.'));
         }
 		$UserRights=$this->UserRights->find()->where(['login_id'=>$login_id]);

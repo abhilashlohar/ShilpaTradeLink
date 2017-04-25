@@ -232,7 +232,7 @@
 		</div>
 		<div class="col-md-12">
 				<div class="col-md-3">
-					<div class="titletext">Stock-Report</div>
+					<div class="titletext"><b>Stock-Report</b></div>
 						<div class="checkbox-list">
 							<label class="checkbox-inline">
 								<?php 
@@ -242,7 +242,7 @@
 						</div>
 				</div>
 				<div class="col-md-3">
-					<div class="titletext">Balance-Sheet</div>
+					<div class="titletext"><b>Balance-Sheet</b></div>
 						<div class="checkbox-list">
 							<label class="checkbox-inline">
 								<?php 
@@ -252,7 +252,7 @@
 						</div>
 				</div>
 				<div class="col-md-3">
-					<div class="titletext">Profit Loss Statement</div>
+					<div class="titletext"><b>Profit Loss Statement</b></div>
 						<div class="checkbox-list">
 							<label class="checkbox-inline">
 								<?php 
@@ -262,7 +262,7 @@
 						</div>
 				</div>
 				<div class="col-md-3">
-					<div class="titletext">Material Indent Report</div>
+					<div class="titletext"><b>Material Indent Report</b></div>
 						<div class="checkbox-list">
 							<label class="checkbox-inline">
 								<?php 
@@ -272,7 +272,7 @@
 						</div>
 				</div>
 				<div class="col-md-3">
-					<div class="titletext">Account-Statement</div>
+					<div class="titletext"><b>Account-Statement</b></div>
 						<div class="checkbox-list">
 							<label class="checkbox-inline">
 								<?php 
@@ -282,7 +282,7 @@
 						</div>
 				</div>
 				<div class="col-md-3">
-					<div class="titletext">Daily Report</div>
+					<div class="titletext"><b>Daily Report</b></div>
 						<div class="checkbox-list">
 							<label class="checkbox-inline">
 								<?php 
@@ -302,7 +302,7 @@
 		</div>			
 		<div class="col-md-12">
 				<div class="col-md-3">
-					<div class="titletext">Customer</div>
+					<div class="titletext"><b>Customer</b></div>
 						<div class="checkbox-list">
 							<label class="checkbox-inline">
 								<?php 
@@ -342,7 +342,7 @@
 						</div>
 				</div>
 				<div class="col-md-3">
-					<div class="titletext">Employee</div>
+					<div class="titletext"><b>Employee</b></div>
 						<div class="checkbox-list">
 							<label class="checkbox-inline">
 								<?php 
@@ -382,7 +382,7 @@
 						</div>
 				</div>
 				<div class="col-md-3">
-					<div class="titletext">Items</div>
+					<div class="titletext"><b>Items</b></div>
 						<div class="checkbox-list">
 							<label class="checkbox-inline">
 								<?php 
@@ -421,9 +421,586 @@
 							</label>
 						</div>
 				</div>
-			<div style="border-bottom: 1px solid #eee;" ></div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Supplier</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(54,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.54.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>54,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(55,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.55.page_id', ['label' => 'View','class' => 'form-control input-sm','type'=>'checkbox','value'=>55,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext">&nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(56,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.56.page_id', ['label' => 'Edit','class' => 'form-control input-sm','type'=>'checkbox','value'=>56,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(57,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.57.page_id', ['label' => 'Edit Company','class' => 'form-control input-sm','type'=>'checkbox','value'=>57,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Company</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(58,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.58.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>58,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(59,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.59.page_id', ['label' => 'View','class' => 'form-control input-sm','type'=>'checkbox','value'=>59,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext">&nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(60,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.60.page_id', ['label' => 'Edit','class' => 'form-control input-sm','type'=>'checkbox','value'=>60,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div style="border-bottom: 1px solid #eee;" ></div>
+				</div>
+			<div class="col-md-12">
+				<div class="col-md-3">
+					<div class="titletext"><b>Item Categories</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(61,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.61.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>61,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Item Group</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(62,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.62.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>62,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Item Sub-Group</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(63,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.63.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>63,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Unit</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(64,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.64.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>64,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Customer Groups</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(65,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.65.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>65,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Customer Segments</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(66,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.66.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>66,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>SaleTaxes</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(67,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.67.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>67,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Filenames</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(68,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.68.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>68,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Transporters</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(70,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.70.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>70,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Districts</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(71,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.71.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>71,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Designations</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(72,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.72.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>72,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Departments</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(73,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.73.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>73,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Ledger Accounts</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(74,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.74.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>74,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Account References</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(76,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.76.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>76,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Opening Balance</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(78,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.78.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>78,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Items Opening Balance</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(80,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.80.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>80,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Terms Conditions</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(82,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.82.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>82,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Item Price Factor</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(84,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.84.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>84,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Quotation Close Reasons</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(86,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.86.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>86,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Leave Types</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(88,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.88.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>88,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
 		</div>
-		
+		<div class="col-md-12">
+			<div class="col-md-5"></div>
+			<div class="col-md-2" style="text-align:center;">
+				<div class="titletext"><b><u>Voucher</u></b></div>
+			</div>
+			<div style="border-bottom: 1px solid #eee;" ></div>
+		</div>		
+		<div class="col-md-12">
+				<div class="col-md-3">
+					<div class="titletext"><b>Voucher References</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(118,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.118.page_id', ['label' => 'List','class' => 'form-control input-sm','type'=>'checkbox','value'=>118,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(119,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.119.page_id', ['label' => 'Edit','class' => 'form-control input-sm','type'=>'checkbox','value'=>119,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div style="border-bottom: 1px solid #eee;" ></div>
+		</div>
+		<div class="col-md-12">
+				<div class="col-md-3">
+					<div class="titletext"><b>Payment</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(90,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.90.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>90,$checked_status]); ?>
+							</label>
+						</div>
+				</div><div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(91,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.91.page_id', ['label' => 'Edit','class' => 'form-control input-sm','type'=>'checkbox','value'=>91,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(92,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.92.page_id', ['label' => 'View','class' => 'form-control input-sm','type'=>'checkbox','value'=>92,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(93,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.93.page_id', ['label' => 'List','class' => 'form-control input-sm','type'=>'checkbox','value'=>93,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Receipts</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(94,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.94.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>94,$checked_status]); ?>
+							</label>
+						</div>
+				</div><div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(95,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.95.page_id', ['label' => 'Edit','class' => 'form-control input-sm','type'=>'checkbox','value'=>95,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(96,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.96.page_id', ['label' => 'View','class' => 'form-control input-sm','type'=>'checkbox','value'=>96,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(97,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.97.page_id', ['label' => 'List','class' => 'form-control input-sm','type'=>'checkbox','value'=>97,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Petty Cash Vouchers</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(98,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.98.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>98,$checked_status]); ?>
+							</label>
+						</div>
+				</div><div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(99,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.99.page_id', ['label' => 'Edit','class' => 'form-control input-sm','type'=>'checkbox','value'=>99,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(100,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.100.page_id', ['label' => 'View','class' => 'form-control input-sm','type'=>'checkbox','value'=>100,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(101,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.101.page_id', ['label' => 'List','class' => 'form-control input-sm','type'=>'checkbox','value'=>101,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Contra Vouchers</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(102,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.102.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>102,$checked_status]); ?>
+							</label>
+						</div>
+				</div><div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(103,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.103.page_id', ['label' => 'Edit','class' => 'form-control input-sm','type'=>'checkbox','value'=>103,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(104,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.104.page_id', ['label' => 'View','class' => 'form-control input-sm','type'=>'checkbox','value'=>104,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(105,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.105.page_id', ['label' => 'List','class' => 'form-control input-sm','type'=>'checkbox','value'=>105,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>CreditNotes</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(106,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.106.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>106,$checked_status]); ?>
+							</label>
+						</div>
+				</div><div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(107,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.107.page_id', ['label' => 'Edit','class' => 'form-control input-sm','type'=>'checkbox','value'=>107,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(108,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.108.page_id', ['label' => 'View','class' => 'form-control input-sm','type'=>'checkbox','value'=>108,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(109,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.109.page_id', ['label' => 'List','class' => 'form-control input-sm','type'=>'checkbox','value'=>109,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Debit Notes</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(110,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.110.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>110,$checked_status]); ?>
+							</label>
+						</div>
+				</div><div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(111,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.111.page_id', ['label' => 'Edit','class' => 'form-control input-sm','type'=>'checkbox','value'=>111,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(112,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.112.page_id', ['label' => 'View','class' => 'form-control input-sm','type'=>'checkbox','value'=>112,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(113,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.113.page_id', ['label' => 'List','class' => 'form-control input-sm','type'=>'checkbox','value'=>113,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"><b>Journal Vouchers</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(114,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.114.page_id', ['label' => 'Add','class' => 'form-control input-sm','type'=>'checkbox','value'=>114,$checked_status]); ?>
+							</label>
+						</div>
+				</div><div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(115,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.115.page_id', ['label' => 'Edit','class' => 'form-control input-sm','type'=>'checkbox','value'=>115,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(116,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.116.page_id', ['label' => 'View','class' => 'form-control input-sm','type'=>'checkbox','value'=>116,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div class="col-md-3">
+					<div class="titletext"> &nbsp </div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(117,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.117.page_id', ['label' => 'List','class' => 'form-control input-sm','type'=>'checkbox','value'=>117,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+				<div style="border-bottom: 1px solid #eee;" ></div>
+		</div>
 		<br/>
 		<?= $this->Form->button(__('Update'),['class'=>'btn btn-primary']) ?>
 		<?= $this->Form->end() ?>
