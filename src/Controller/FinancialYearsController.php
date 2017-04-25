@@ -192,7 +192,7 @@ class FinancialYearsController extends AppController
 			$session = $this->request->session();
 			$st_company_id = $session->read('st_company_id');
 		
-			if(!empty($financialYear_id)){
+			if(!empty($financialYear_id)){ 
 			$this->request->allowMethod(['post', 'delete']);
 			$this->request->session()->write('st_year_id',$financialYear_id);
 			return $this->redirect("/Dashboard");

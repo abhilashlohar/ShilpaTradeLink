@@ -180,13 +180,16 @@ select
 													<li><?php if(in_array(19,$allowed_pages)){
 													echo $this->Html->link(' Logins','/Logins/Add',array('escape'=>false));
 													} ?></li>
-													
 													<li class="divider"></li>
 													<li><?php echo $this->Html->link('Customer Groups','/Customer-Groups',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('Customers Segments','/customer-segs',array('escape'=>false)); ?></li>
 													<li class="divider"></li>
+													<?php if(in_array(42,$allowed_pages)){?>
 													<li><?php echo $this->Html->link( 'Add new customer', '/Customers/add' ); ?></li>
+													<?php } ?>
+													<?php if(in_array(43,$allowed_pages) || in_array(44,$allowed_pages)){?>
 													<li><?php echo $this->Html->link( 'List customers', '/Customers' ); ?></li>
+													<?php } ?>
 													<li class="divider"></li>
 													<li><?php echo $this->Html->link('Transporters','/transporters',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('Terms&Conditions','/Terms-Conditions',array('escape'=>false)); ?></li>
@@ -201,7 +204,9 @@ select
 													<li><?php echo $this->Html->link('Item Sub-Groups','/Item-Sub-Groups',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link( 'Units','/units',array('escape'=>false)); ?></li>
 													<li class="divider"></li>
+													<?php if(in_array(50,$allowed_pages)){?>
 													<li><?php echo $this->Html->link( 'Add New Item', '/Items/add' ); ?></li>
+													<?php } ?>
 													<li><?php echo $this->Html->link('List Items', '/Items' ); ?></li>
 													<li class="divider"></li>
 													<li><?php echo $this->Html->link('Sale-Taxes','/SaleTaxes',array('escape'=>false)); ?></li>
@@ -213,8 +218,12 @@ select
 													<li><?php echo $this->Html->link(' Add New Supplier','/Vendors/Add',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('List Suppliers','/Vendors',array('escape'=>false)); ?></li>
 													<li class="divider"></li>
+													<?php if(in_array(46,$allowed_pages)){?>
 													<li><?php echo $this->Html->link(' Add New  Employee','/employees/Add',array('escape'=>false)); ?></li>
+													<?php } ?>
+													<?php if(in_array(47,$allowed_pages)){?>
 													<li><?php echo $this->Html->link('List Employees','/employees',array('escape'=>false)); ?></li>
+													<?php } ?>
 													<li class="divider"></li>
 													<li><?php echo $this->Html->link(' Add New Company','/Companies/add',array('escape'=>false)); ?></li>
 													<li><?php echo $this->Html->link('List Companies','/Companies',array('escape'=>false)); ?></li>
@@ -593,12 +602,16 @@ select
 						<?php if(in_array(38,$allowed_pages)){?>
 						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Profit & Loss Statement','/ledger-Accounts/Profit-Loss-Statement',array('escape'=>false)); ?></li>
 						<?php } ?>
+						<?php if(in_array(41,$allowed_pages)){?>
 						<li><?php $today =date('d-m-Y');
 						echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Daily Report',array('controller'=>'Ledgers','action'=>'index','From'=>$today,'To'=>$today),array('escape'=>false)); ?></li>
+						<?php } ?>
 						<?php if(in_array(39,$allowed_pages)){?>
 						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Material Indent Report','/Item-Ledgers/material-indent-report',array('escape'=>false)); ?></li>
 						<?php } ?>
+						<?php if(in_array(40,$allowed_pages)){?>
 						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Account Statement','/Ledgers/Account-Statement',array('escape'=>false)); ?></li>	
+						<?php } ?>
 					</ul>
 				</li>
 			</ul>

@@ -50,8 +50,12 @@
 						<td><?= h($customer->tin_no) ?></td>
 						<td><?= h($customer->gst_no) ?></td>
 						<td class="actions">
+							<?php if(in_array(43,$allowed_pages)){?>
 						 	<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $customer->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
+							<?php } ?>
+							<?php if(in_array(44,$allowed_pages)){?>
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $customer->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
+							
 							 <?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
 								['action' => 'delete', $customer->id], 
 								[
@@ -61,7 +65,10 @@
 									'confirm' => __('Are you sure ?', $customer->id)
 								]
 							) ?>
+							<?php } ?>
+							<?php if(in_array(45,$allowed_pages)){?>
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'EditCompany', $customer->id],array('escape'=>false,'class'=>'btn btn-xs green tooltips','data-original-title'=>'EditCompany')); ?>
+							<?php } ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>
