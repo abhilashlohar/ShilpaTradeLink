@@ -300,11 +300,13 @@ $(document).ready(function() {
 	// end ledger onload
 	
 	$('input.group').die().live('click',function(){
-		check_all_for_group();
+		var sel=$(this);
+		check_all_for_group(sel);
 	});
 	
 	$('input.first_subgroup').die().live('click',function(){
-		check_all_for_first_sub_group();
+		var sel2=$(this);
+		check_all_for_first_sub_group(sel2);
 		var group_id=$(this).attr('group_id');
 		
 		var all_element=$('.first_subgroup[group_id='+group_id+']').length;
@@ -319,7 +321,8 @@ $(document).ready(function() {
 	});
 	
 	$('input.second_subgroup').die().live('click',function(){
-		check_all_for_second_sub_group();
+		var sel3=$(this);
+		check_all_for_second_sub_group(sel3);
 		var first_group_id=$(this).attr('first_group_id');
 		
 		var group_id=$(this).attr('group_id');
@@ -382,10 +385,9 @@ $(document).ready(function() {
 	});
 
 	
-	function check_all_for_group(){
-		$(".group").each(function(){
-			var group_id=$(this).attr('group_id');
-			if(this.checked){
+	function check_all_for_group(sel){
+			var group_id=sel.attr('group_id'); 
+			if(sel.is(':checked')){ 
 				$('.first_subgroup[group_id='+group_id+']').attr('checked','checked');
 				$('.second_subgroup[group_id='+group_id+']').attr('checked','checked');
 				$('.ledger[group_id='+group_id+']').attr('checked','checked');
@@ -396,13 +398,12 @@ $(document).ready(function() {
 				$('.ledger[group_id='+group_id+']').removeAttr('checked');
 				$.uniform.update(); 
 			}
-		})
+		
 	}
 	
-	function check_all_for_first_sub_group(){
-		$(".first_subgroup").each(function(){
-			var first_group_id=$(this).attr('first_group_id');
-			if(this.checked){
+	function check_all_for_first_sub_group(sel2){
+			var first_group_id=sel2.attr('first_group_id');
+			if(sel2.is(':checked')){
 				$('.second_subgroup[first_group_id='+first_group_id+']').attr('checked','checked');
 				$('.ledger[first_group_id='+first_group_id+']').attr('checked','checked');
 				$.uniform.update(); 
@@ -411,20 +412,17 @@ $(document).ready(function() {
 				$('.ledger[first_group_id='+first_group_id+']').removeAttr('checked');
 				$.uniform.update(); 
 			}
-		})
 	}
 	
-	function check_all_for_second_sub_group(){
-		$(".second_subgroup").each(function(){
-			var second_subgrop_id=$(this).attr('second_subgrop_id');
-			if(this.checked){
+	function check_all_for_second_sub_group(sel3){
+			var second_subgrop_id=sel3.attr('second_subgrop_id');
+			if(sel3.is(':checked')){
 				$('.ledger[second_subgrop_id='+second_subgrop_id+']').attr('checked','checked');
 				$.uniform.update(); 
 			}else{
 				$('.ledger[second_subgrop_id='+second_subgrop_id+']').removeAttr('checked');
 				$.uniform.update(); 
 			}
-		})
 	}
 	
 	

@@ -1,3 +1,12 @@
+<style>
+table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table > thead > tr > td, table > tbody > tr > td, table > tfoot > tr > td{
+	vertical-align: top !important;
+	border-bottom:solid 1px #CCC;
+}
+.help-block-error{
+	font-size: 10px;
+}
+</style>
 <?php 
 if($sales_order->customer->tin_no==''){?>
 	<div class="modal fade in"  ></div>
@@ -401,39 +410,45 @@ $('.closetin').on("click",function() {
 						</div>
 					</div>
 				</div>
+			</div>
+			
+			<?php $ref_types=['New Reference'=>'New Ref','Against Reference'=>'Agst Ref','Advance Reference'=>'Advance']; ?>
+				
 				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group">
-						<?php echo $this->Form->button('<i class="fa fa-plus"></i> New Ref', ['label' => false,'class' => 'btn btn-primary new_ref','type'=>'button']); ?>
-						<?php echo $this->Form->button('<i class="fa fa-plus"></i> Agst Ref', ['label' => false,'class' => 'btn btn-primary agst_ref','type'=>'button']); ?>
-						<?php echo $this->Form->button('<i class="fa fa-plus"></i> Advance', ['label' => false,'class' => 'btn btn-primary adv_ref','type'=>'button']); ?>
-						</div>
-					</div>
-				  </div>
-				  <div class="row">
-					<div class="col-md-12">
-						<table class="table table-bordered" id="main_table" style="text-align:center;">
+					<div class="col-md-8">
+					<table width="100%" class="main_ref_table">
 						<thead>
-						<tr>
-						<td>Ref. Type</td>
-						<td>Ref. No.</td>
-						<td>Amount</td>
-						<td></td>
-						</tr>
+							<tr>
+								<th width="25%">Ref Type</th>
+								<th width="40%">Ref No.</th>
+								<th width="30%">Amount</th>
+								<th width="5%"></th>
+							</tr>
 						</thead>
 						<tbody>
+							<tr>
+								<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type']); ?></td>
+								<td class="ref_no"></td>
+								<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount']); ?></td>
+								<td><a class="btn btn-xs btn-default deleterefrow" href="#" role="button"><i class="fa fa-times"></i></a></td>
+							</tr>
 						</tbody>
-						</table>
+						<tfoot>
+							<tr>
+								<td align="center" style="vertical-align: middle !important;">On Account</td>
+								<td></td>
+								<td><?php echo $this->Form->input('on_account', ['label' => false,'class' => 'form-control input-sm on_account','placeholder'=>'Amount','readonly']); ?></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td colspan="2"><a class="btn btn-xs btn-default addrefrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
+								<td><input type="text" class="form-control input-sm" placeholder="total" readonly></td>
+								<td></td>
+							</tr>
+						</tfoot>
+					</table>
 					</div>
-				  </div>
-				<table width="100%">
-					<tr>
-						<td width="100%" align="center" valign="top" id="pending_invoice_container"></td>
-						<td></td>
-						
-					</tr>
-				</table>
-		</div>
+				</div>
 		<?php echo $this->Form->input('process_status', ['type' => 'hidden','value' => @$process_status]); ?>
 		<?php echo $this->Form->input('sales_order_id', ['type' => 'hidden','value' => @$sales_order_id]); ?>
 		
@@ -454,36 +469,9 @@ $('.closetin').on("click",function() {
 		
 	</div>
 	<?php } ?>
-	<table class="table table-bordered" id="new_ref" style="display:none;">
-			<tbody>
-			<tr>
-			<td>New Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'New Reference']) ?></td>
-			<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control distinctreference','label'=>false,'id'=>'reference_no_2']) ?></td>
-			<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
-			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
-			</tr>
-			</tbody>
-		</table>
-		<table class="table table-bordered" id="agst_ref" style="display:none;">
-		<tbody>
-			<tr class="against_references_no">
-			<td>Agst Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Against Reference']) ?><?= $this->Form->hidden('reference_no[]',['type'=>'text','class'=>'form-control ','label'=>false,'id'=>'reference_no_2']) ?></td>
-			<td id="against_references_no"></td>
-			<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
-			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
-			</tr>
-			</tbody>
-		</table>
-		<table class="table table-bordered" id="adv_ref" style="display:none;">
-		<tbody>
-			<tr>
-			<td>Adv Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Advance Reference']) ?></td>
-			<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control distinctreference','label'=>false,'id'=>'reference_no_2']) ?></td>
-			<td><?= $this->Form->input('credit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
-			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
-			</tr>
-			</tbody>
-		</table>
+	
+		
+</div>
 </div>
 <style>
 .table thead tr th {
@@ -515,132 +503,6 @@ $('.closetin').on("click",function() {
 
 <script>
 $(document).ready(function() {
-	
-$( document ).on( 'keyup', 'input[name="credit[]"]', function() { 
-			var credit=parseFloat($(this).val());
-			var amount=$(this).closest('tr').find('select[name="against_references_no"] option:selected').attr('amount');
-			amount=parseFloat(amount);
-
-			if(amount<credit)
-			{
-				$(this).val(amount);
-			}	
-	});
-	
-	$('select[name="against_references_no"]').live("change",function() {
-		var against_references_no=$(this).val();
-		var amount=eval($('option:selected',this).attr('amount'));
-		
-		$(this).closest('tr').find('input[name="reference_no[]"]').val(against_references_no);
-		$(this).closest('tr').find('input[name="credit[]"]').val(amount);
-	});
-	$('input[name="amount"],[name^=credit]').live("blur",function() {
-		var val=$(this).val();
-		$(this).val(parseFloat($(this).val()).toFixed(2));
-	});
-	
-	/////////////////////////////////////////////////
-	var received_from_id='<?php echo $c_LedgerAccount->id; ?>';
-		
-		var url="<?php echo $this->Url->build(['controller'=>'PaymentVouchers','action'=>'fetchReferenceNo']); ?>";
-		url=url+'/'+received_from_id,
-		$.ajax({
-			url: url,
-			type: 'GET',
-			dataType: 'text'
-		}).done(function(response) {
-			$("#main_table tbody").find('tr.against_references_no').remove();
-			if(!response)
-			{
-				$('#agst_ref').remove();
-				
-			}
-			$('#against_references_no').html(response);
-		});
-	//////////////////////////////////////////////////
-	
-	$( document ).on( 'click', '.new_ref', function() {
-		var new_line=$('#new_ref tbody').html();
-		$("#main_table tbody").append(new_line);
-		var i=1;
-		var len=$("[name^=reference_no]").length;
-		
-		$("[name^=reference_no]").each(function () {
-			
-			$(this).attr('id','reference_no_'+i);
-			
-			$(this).rules("add", {
-				required: true,
-				noSpace: true,
-				notEqualToGroup: ['.distinctreference']
-			});
-			i++;
-		});
-	});
-	
-	$( document ).on( 'click', '.agst_ref', function() {
-		var new_line=$('#agst_ref tbody').html();
-		$("#main_table tbody").append(new_line);
-		var i=1;
-		var len=$("[name^=reference_no]").length;
-		
-		$("[name^=reference_no]").each(function () {
-			
-			$(this).attr('id','reference_no_'+i);
-			
-			$(this).rules("add", {
-				required: true,
-				noSpace: true,
-				notEqualToGroup: ['.distinctreference']
-			});
-			i++;
-		});
-	});
-	
-	$( document ).on( 'click', '.adv_ref', function() {
-		var new_line=$('#adv_ref tbody').html();
-		$("#main_table tbody").append(new_line);
-		var i=1;
-		var len=$("[name^=reference_no]").length;
-		
-		$("[name^=reference_no]").each(function () {
-			
-			$(this).attr('id','reference_no_'+i);
-			
-			$(this).rules("add", {
-				required: true,
-				noSpace: true,
-				notEqualToGroup: ['.distinctreference']
-			});
-			i++;
-		});
-	});
-	
-	$( document ).on( 'click', '.remove_row', function() {
-		
-		var current_obj=$(this).closest("#main_table tr");
-		
-		var old_amount=$(this).closest("#main_table tr").find('input[name="old_amount[]"]').val();
-		
-		
-		current_obj.closest("#main_table tr").remove();
-			var i=1;
-			var len=$("[name^=reference_no]").length;
-
-			$("[name^=reference_no]").each(function () {
-				
-				$(this).attr('id','reference_no_'+i);
-				$(this).rules("add", {
-					required: true,
-					noSpace: true,
-					notEqualToGroup: ['.distinctreference']
-			});
-			i++;
-		});
-		
-		
-	});
-
 	jQuery.validator.addMethod("noSpace", function(value, element) { 
 	  return value.indexOf(" ") < 0 && value != ""; 
 	}, "No space please and don't leave it empty");
@@ -677,7 +539,6 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
-		ignore: "textarea:hidden,:hidden",
 		rules: {
 			company_id:{
 				required: true,
@@ -716,20 +577,6 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 				required: true,
 				max : 1,
 			},
-			'reference_no[]':{
-					required: true,
-					noSpace: true,
-					notEqualToGroup: ['.distinctreference'],
-					remote : {
-                    url: '<?php echo $this->Url->build(['controller'=>'Ledgers','action'=>'check_reference_no']); ?>',
-                    type: "get",
-                    data:
-                        {
-                            ledger_account_id: '<?php echo $c_LedgerAccount->id; ?>'
-                        },
-					},
-				},
-			
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
@@ -743,9 +590,6 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 			service: {
 				required: "Please select  at least 2 types of Service",
 				minlength: jQuery.validator.format("Please select  at least {0} types of Service")
-			},
-			'reference_no[]': {
-				remote: "Reference no. is alredy taken."
 			},
 		},
 
@@ -791,26 +635,10 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 		},
 
 		submitHandler: function (form) {
-			put_code_description()
-			var amount=parseFloat($('input[name="grand_total"]').val());
-				var credit=0;
-				$('input[name="credit[]"]').each(function () {
-					credit=credit+parseFloat($(this).val());
-				});
-				credit=credit.toFixed(2);
-				if(amount==credit)
-				{
-					success3.show();
-					error3.hide();
-					form[0].submit();
-				}
-				else
-				{
-					$("#add_submit").removeAttr("disabled");
-					alert("Amount mismatch.");
-				}
-				
-				// submit the form
+			put_code_description();
+			success3.show();
+			error3.hide();
+			form[0].submit();
 		}
 
 	});
@@ -1104,7 +932,7 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 		
 		var	new_due_payment=grand_total+old_due_payment1;
 		$('input[name="new_due_payment"]').val(new_due_payment.toFixed(2));
-		
+		do_ref_total();
 	}
 	<?php } ?>
 	
@@ -1212,6 +1040,112 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 		});
 	}
 	
+	
+	
+	$('.addrefrow').live("click",function() {
+		add_ref_row();
+	});
+	
+	function add_ref_row(){
+		var tr=$("#sample_ref table.ref_table tbody tr").clone();
+		$("table.main_ref_table tbody").append(tr);
+		rename_ref_rows();
+	}
+	rename_ref_rows();
+	function rename_ref_rows(){
+		var i=0;
+		$("table.main_ref_table tbody tr").each(function(){
+			$(this).find("td:nth-child(1) select").attr({name:"ref_rows["+i+"][ref_type]", id:"ref_rows-"+i+"-ref_type"}).rules("add", "required");
+			var is_select=$(this).find("td:nth-child(2) select").length;
+			var is_input=$(this).find("td:nth-child(2) input").length;
+			
+			if(is_select){
+				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"}).rules("add", "required");
+			}else if(is_input){
+				var url='<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'checkRefNumberUnique']); ?>';
+				url=url+'/<?php echo $c_LedgerAccount->id; ?>/'+i;
+				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no", class:"form-control input-sm ref_number"}).rules('add', {
+							required: true,
+							noSpace: true,
+							notEqualToGroup: ['.ref_number'],
+							remote: {
+								url: url,
+							},
+							messages: {
+								remote: "Not an unique."
+							}
+						});
+			}
+			
+			$(this).find("td:nth-child(3) input").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
+			i++;
+		});
+		
+		var is_tot_input=$("table.main_ref_table tfoot tr:eq(1) td:eq(1) input").length;
+		if(is_tot_input){
+			$("table.main_ref_table tfoot tr:eq(1) td:eq(1) input").attr({name:"ref_rows_total", id:"ref_rows_total"}).rules('add', { equalTo: "#grand-total" });
+		}
+	}
+	
+	$('.deleterefrow').live("click",function() {
+		$(this).closest("tr").remove();
+		do_ref_total();
+	});
+	
+	$('.ref_type').live("change",function() {
+		var current_obj=$(this);
+		
+		var ref_type=$(this).find('option:selected').val();
+		if(ref_type=="Against Reference"){
+			var url="<?php echo $this->Url->build(['controller'=>'Invoices','action'=>'fetchRefNumbers']); ?>";
+			url=url,
+			$.ajax({
+				url: url+'/<?php echo $c_LedgerAccount->id; ?>',
+				type: 'GET',
+			}).done(function(response) {
+				current_obj.closest('tr').find('td:eq(1)').html(response);
+				rename_ref_rows();
+			});
+		}else if(ref_type=="New Reference" || ref_type=="Advance Reference"){
+			current_obj.closest('tr').find('td:eq(1)').html('<input type="text" class="form-control input-sm" placeholder="Ref No." >');
+			rename_ref_rows();
+		}else{
+			current_obj.closest('tr').find('td:eq(1)').html('');
+		}
+	});
+	
+	$('.ref_list').live("change",function() {
+		var current_obj=$(this);
+		var due_amount=$(this).find('option:selected').attr('due_amount');
+		$(this).closest('tr').find('td:eq(2) input').val(due_amount);
+		do_ref_total();
+	});
+	
+	$('.ref_amount_textbox').live("keyup",function() {
+		do_ref_total();
+	});
+	
+	function do_ref_total(){
+		var main_amount=parseFloat($('input[name="grand_total"]').val());
+		if(!main_amount){ main_amount=0; }
+		
+		var total_ref=0;
+		$("table.main_ref_table tbody tr").each(function(){
+			var am=parseFloat($(this).find('td:nth-child(3) input').val());
+			if(!am){ am=0; }
+			total_ref=total_ref+am;
+		});
+		
+		var on_acc=main_amount-total_ref; 
+		if(on_acc>=0){
+			$("table.main_ref_table tfoot tr:nth-child(1) td:nth-child(3) input").val(on_acc.toFixed(2));
+			total_ref=total_ref+on_acc;
+		}else{
+			$("table.main_ref_table tfoot tr:nth-child(1) td:nth-child(3) input").val(0);
+		}
+		$("table.main_ref_table tfoot tr:nth-child(2) td:nth-child(2) input").val(total_ref.toFixed(2));
+	}
+	
 });
 </script>
 	 
@@ -1255,3 +1189,16 @@ $( document ).on( 'keyup', 'input[name="credit[]"]', function() {
 </div>
 <?php } ?>
 
+<?php $ref_types=['New Reference'=>'New Ref','Against Reference'=>'Agst Ref','Advance Reference'=>'Advance']; ?>
+<div id="sample_ref" style="display:none;">
+	<table width="100%" class="ref_table">
+		<tbody>
+			<tr>
+				<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type']); ?></td>
+				<td class="ref_no"></td>
+				<td><?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount']); ?></td>
+				<td><a class="btn btn-xs btn-default deleterefrow" href="#" role="button"><i class="fa fa-times"></i></a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
