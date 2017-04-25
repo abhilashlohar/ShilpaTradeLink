@@ -10,7 +10,6 @@ use App\Controller\AppController;
  */
 class JobCardsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -27,6 +26,49 @@ class JobCardsController extends AppController
 			$where['status']='Closed';
 		}
 		$inventory_voucher_status=$this->request->query('inventory_voucher');
+		
+		$where1=[];
+		$jc_no=$this->request->query('jc_no');
+		$so_no=$this->request->query('so_no');
+		$jc_file_no=$this->request->query('jc_file_no');
+		$so_file_no=$this->request->query('so_file_no');
+		$Required_From=$this->request->query('Required_From');
+		$Required_To=$this->request->query('Required_To');
+		$Created_From=$this->request->query('Created_From');
+		$Created_To=$this->request->query('Created_To');
+		
+		$this->set(compact('jc_no','so_no','jc_file_no','so_file_no','Required_From','Required_To','Created_From','Created_To'));
+		if(!empty($jc_no)){
+			$where1['jc2 LIKE']='%'.$jc_no.'%';
+		}
+		if(!empty($so_no)){
+			$where1['SalesOrders.so2 LIKE']='%'.$so_no.'%';
+		}
+		
+		if(!empty($jc_file_no)){
+			$where1['jc3 LIKE']='%'.$jc_file_no.'%';
+		}
+		
+		if(!empty($so_file_no)){
+			$where1['SalesOrders.so3 LIKE']='%'.$so_file_no.'%';
+		}
+		
+		if(!empty($Required_From)){
+			$Required_From=date("Y-m-d",strtotime($this->request->query('Required_From')));
+			$where1['JobCards.date_created >=']=$Required_From;
+		}
+		if(!empty($Required_To)){
+			$Required_To=date("Y-m-d",strtotime($this->request->query('Required_To')));
+			$where1['JobCards.date_created <=']=$Required_To;
+		}
+		if(!empty($Created_From)){
+			$Created_From=date("Y-m-d",strtotime($this->request->query('Created_From')));
+			$where1['JobCards.date_created >=']=$Created_From;
+		}
+		if(!empty($Created_To)){
+			$Created_To=date("Y-m-d",strtotime($this->request->query('Created_To')));
+			$where1['JobCards.date_created <=']=$Created_To;
+		}
 		//pr($inventory_voucher_status); exit;
         $this->paginate = [
             'contain' => ['SalesOrders']
@@ -34,7 +76,7 @@ class JobCardsController extends AppController
 		if($inventory_voucher_status=='true'){
 			$jobCards = $this->paginate($this->JobCards->find()->where(['status' => 'Pending','JobCards.company_id'=>$st_company_id]));
 		}else{
-			$jobCards = $this->paginate($this->JobCards->find()->where($where)->where(['JobCards.company_id'=>$st_company_id])->order(['JobCards.id' => 'DESC']));
+			$jobCards = $this->paginate($this->JobCards->find()->where($where)->where($where1)->where(['JobCards.company_id'=>$st_company_id])->order(['JobCards.id' => 'DESC']));
 		}
         $this->set(compact('jobCards','status'));
         $this->set('_serialize', ['jobCards']);
@@ -142,44 +184,53 @@ class JobCardsController extends AppController
 					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
 				},'JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
         ]);
+		$closed_month=$this->viewVars['closed_month'];
 		
+		if(!in_array(date("m-Y",strtotime($jobCard->created_on)),$closed_month))
+		{
 	
-		$Em = new FinancialYearsController;
-	    $financial_year_data = $Em->checkFinancialYear($jobCard->created_on);
+			$Em = new FinancialYearsController;
+			$financial_year_data = $Em->checkFinancialYear($jobCard->created_on);
+					
+			if ($this->request->is(['patch', 'post', 'put'])) {
+				$jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
+				$jobCard->required_date=date("Y-m-d",strtotime($jobCard->required_date)); 
+				$jobCard->created_by=$s_employee_id; 
+				$jobCard->company_id=$st_company_id;
+				$jobCard->customer_po_no=$jobCard->customer_po_no;
 				
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
-			$jobCard->required_date=date("Y-m-d",strtotime($jobCard->required_date)); 
-			$jobCard->created_by=$s_employee_id; 
-			$jobCard->company_id=$st_company_id;
-			$jobCard->customer_po_no=$jobCard->customer_po_no;
-			
-			$jobCard->created_on=date("Y-m-d");
-			$jobCard->sales_order_id=$jobCard->sales_order->id;
-			foreach($jobCard->job_card_rows as $job_card_row){
-					$job_card_row->sales_order_id=$jobCard->sales_order_id;
-				}
-			
-            if ($this->JobCards->save($jobCard)) {
-				$query = $this->JobCards->SalesOrders->query();
-					$query->update()
-						->set(['job_card_status' => 'Converted'])
-						->where(['id' => $jobCard->sales_order_id])
-						->execute();
-                $this->Flash->success(__('The job card has been saved.'));
-				return $this->redirect(['action' => 'view/'.$jobCard->id]);
-            } else { 
-                $this->Flash->error(__('The job card could not be saved. Please, try again.'));
-            }
-        }
-		
-		$items = $this->JobCards->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC'])->matching(
-					'ItemCompanies', function ($q) use($st_company_id) {
-						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
+				$jobCard->created_on=date("Y-m-d");
+				$jobCard->sales_order_id=$jobCard->sales_order->id;
+				foreach($jobCard->job_card_rows as $job_card_row){
+						$job_card_row->sales_order_id=$jobCard->sales_order_id;
 					}
-				);
-        $this->set(compact('jobCard', 'salesOrders', 'companies','items','financial_year_data'));
-        $this->set('_serialize', ['jobCard']);
+				
+				if ($this->JobCards->save($jobCard)) {
+					$query = $this->JobCards->SalesOrders->query();
+						$query->update()
+							->set(['job_card_status' => 'Converted'])
+							->where(['id' => $jobCard->sales_order_id])
+							->execute();
+					$this->Flash->success(__('The job card has been saved.'));
+					return $this->redirect(['action' => 'view/'.$jobCard->id]);
+				} else { 
+					$this->Flash->error(__('The job card could not be saved. Please, try again.'));
+				}
+			}
+			
+			$items = $this->JobCards->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC'])->matching(
+						'ItemCompanies', function ($q) use($st_company_id) {
+							return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
+						}
+					);
+			$this->set(compact('jobCard', 'salesOrders', 'companies','items','financial_year_data'));
+			$this->set('_serialize', ['jobCard']);
+		}
+		else
+		{
+			$this->Flash->error(__('This month is locked.'));
+			return $this->redirect(['action' => 'index']);
+		}
     }
 
     /**

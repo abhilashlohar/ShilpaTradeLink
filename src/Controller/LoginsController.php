@@ -102,11 +102,12 @@ class LoginsController extends AppController
 		
 		$login=$this->Logins->get($st_login_id);
 		
-		if(!empty($company_id)){
+		if(!empty($company_id)){ 
 			$this->request->allowMethod(['post', 'delete']);
 			$this->request->session()->write('st_company_id',$company_id);
 			
-			return $this->redirect(['controller'=>'Financial-Years','action' => 'selectCompanyYear']);
+			return $this->redirect(['controller'=>'FinancialYears','action' => 'selectCompanyYear']);
+			
 		}
 		$Employee=$this->Logins->Employees->get($login->employee_id, [
 						'contain' => ['Companies']

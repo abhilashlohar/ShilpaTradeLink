@@ -188,7 +188,6 @@ class FinancialYearsController extends AppController
 	
 	public function selectCompanyYear($financialYear_id=null)
     {
-		
 			$this->viewBuilder()->layout('login_layout');
 			$session = $this->request->session();
 			$st_company_id = $session->read('st_company_id');
@@ -283,5 +282,6 @@ class FinancialYearsController extends AppController
 			}
 		}
     }
+	
 
 }
