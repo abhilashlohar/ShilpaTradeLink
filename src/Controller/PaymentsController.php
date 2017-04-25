@@ -49,6 +49,7 @@ class PaymentsController extends AppController
 				->autoFields(true);
 			
 		}]));
+		
 
         $this->set(compact('payments'));
         $this->set('_serialize', ['payments']);
