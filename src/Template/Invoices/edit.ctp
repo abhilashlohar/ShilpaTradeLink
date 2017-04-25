@@ -1134,7 +1134,7 @@ $(document).ready(function() {
 	});
 	
 	$('.ref_amount_textbox').live("keyup",function() {
-		do_ref_total();
+		do_ref_total(); 
 	});
 	
 	function do_ref_total(){
@@ -1143,9 +1143,10 @@ $(document).ready(function() {
 		
 		var total_ref=0;
 		$("table.main_ref_table tbody tr").each(function(){
-			var am=parseFloat($(this).find('td:nth-child(3) input').val());
+			var am=parseFloat($(this).find('td:nth-child(3) input:eq(1)').val());
 			if(!am){ am=0; }
 			total_ref=total_ref+am;
+			 
 		});
 		
 		var on_acc=main_amount-total_ref; 
