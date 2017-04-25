@@ -10,7 +10,6 @@ use App\Controller\AppController;
  */
 class JobCardsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -142,44 +141,53 @@ class JobCardsController extends AppController
 					return $q->where(['SalesOrderRows.source_type != ' => 'Purchessed','Items.source !='=>'Purchessed']);
 				},'JobCardRows'=>['Items']]],'Creator', 'Companies','Customers']
         ]);
+		$closed_month=$this->viewVars['closed_month'];
 		
+		if(!in_array(date("m-Y",strtotime($jobCard->created_on)),$closed_month))
+		{
 	
-		$Em = new FinancialYearsController;
-	    $financial_year_data = $Em->checkFinancialYear($jobCard->created_on);
+			$Em = new FinancialYearsController;
+			$financial_year_data = $Em->checkFinancialYear($jobCard->created_on);
+					
+			if ($this->request->is(['patch', 'post', 'put'])) {
+				$jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
+				$jobCard->required_date=date("Y-m-d",strtotime($jobCard->required_date)); 
+				$jobCard->created_by=$s_employee_id; 
+				$jobCard->company_id=$st_company_id;
+				$jobCard->customer_po_no=$jobCard->customer_po_no;
 				
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $jobCard = $this->JobCards->patchEntity($jobCard, $this->request->data);
-			$jobCard->required_date=date("Y-m-d",strtotime($jobCard->required_date)); 
-			$jobCard->created_by=$s_employee_id; 
-			$jobCard->company_id=$st_company_id;
-			$jobCard->customer_po_no=$jobCard->customer_po_no;
-			
-			$jobCard->created_on=date("Y-m-d");
-			$jobCard->sales_order_id=$jobCard->sales_order->id;
-			foreach($jobCard->job_card_rows as $job_card_row){
-					$job_card_row->sales_order_id=$jobCard->sales_order_id;
-				}
-			
-            if ($this->JobCards->save($jobCard)) {
-				$query = $this->JobCards->SalesOrders->query();
-					$query->update()
-						->set(['job_card_status' => 'Converted'])
-						->where(['id' => $jobCard->sales_order_id])
-						->execute();
-                $this->Flash->success(__('The job card has been saved.'));
-				return $this->redirect(['action' => 'view/'.$jobCard->id]);
-            } else { 
-                $this->Flash->error(__('The job card could not be saved. Please, try again.'));
-            }
-        }
-		
-		$items = $this->JobCards->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC'])->matching(
-					'ItemCompanies', function ($q) use($st_company_id) {
-						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
+				$jobCard->created_on=date("Y-m-d");
+				$jobCard->sales_order_id=$jobCard->sales_order->id;
+				foreach($jobCard->job_card_rows as $job_card_row){
+						$job_card_row->sales_order_id=$jobCard->sales_order_id;
 					}
-				);
-        $this->set(compact('jobCard', 'salesOrders', 'companies','items','financial_year_data'));
-        $this->set('_serialize', ['jobCard']);
+				
+				if ($this->JobCards->save($jobCard)) {
+					$query = $this->JobCards->SalesOrders->query();
+						$query->update()
+							->set(['job_card_status' => 'Converted'])
+							->where(['id' => $jobCard->sales_order_id])
+							->execute();
+					$this->Flash->success(__('The job card has been saved.'));
+					return $this->redirect(['action' => 'view/'.$jobCard->id]);
+				} else { 
+					$this->Flash->error(__('The job card could not be saved. Please, try again.'));
+				}
+			}
+			
+			$items = $this->JobCards->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC'])->matching(
+						'ItemCompanies', function ($q) use($st_company_id) {
+							return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
+						}
+					);
+			$this->set(compact('jobCard', 'salesOrders', 'companies','items','financial_year_data'));
+			$this->set('_serialize', ['jobCard']);
+		}
+		else
+		{
+			$this->Flash->error(__('This month is locked.'));
+			return $this->redirect(['action' => 'index']);
+		}
     }
 
     /**

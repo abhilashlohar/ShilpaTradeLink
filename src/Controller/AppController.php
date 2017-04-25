@@ -87,6 +87,23 @@ class AppController extends Controller
 				
 				
 			}
+			////// Financial Year Or Month Closed /////////////
+			$this->loadModel('FinancialYears');
+			$this->loadModel('FinancialMonths');
+			$FinancialClose = $this->FinancialYears->find()->where(['company_id'=>$st_company_id])->contain(['FinancialMonths' => function($q){
+				return $q->where(['status' => 'Closed']);
+			}
+			])->toArray();
+			foreach($FinancialClose as $financial_closes)
+			{
+				foreach($financial_closes->financial_months as $financial_months)
+				{
+					$closed_month[]=$financial_months->month;
+				}
+			}
+			$this->set(compact('closed_month'));
+			
+			////////////////////////////////////////////
 		}
 		if(!empty($st_login_id)){
 			$this->loadModel('UserRights');
@@ -106,7 +123,6 @@ class AppController extends Controller
 			$this -> render('/Error/not_allow'); 
 		}
 		
-		
     }
 
     /**
@@ -123,4 +139,5 @@ class AppController extends Controller
             $this->set('_serialize', true);
         }
     }
+	   
 }

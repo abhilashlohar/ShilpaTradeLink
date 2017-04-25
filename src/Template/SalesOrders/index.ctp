@@ -114,9 +114,13 @@
 								<?php if($job_card=="true"){
 									echo $this->Html->link('<i class="fa fa-repeat "></i>  Create Job Card','/JobCards/Add?Sales-Order='.$salesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
-								<?php if($status!='Converted Into Invoice' and in_array(4,$allowed_pages) and $pull_request!="true" && $copy_request!="copy" && $job_card!="true"){ ?> 
+								<?php if($status!='Converted Into Invoice' and in_array(4,$allowed_pages) and $pull_request!="true" && $copy_request!="copy" && $job_card!="true"){ 
+								
+								 if(!in_array(date("m-Y",strtotime($salesOrder->created_on)),$closed_month))
+								 { 
+								?> 
 									<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $salesOrder->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
-								<?php } ?>
+								<?php } } ?>
 								
 								<?php if($pull_request=="true"){
 									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Invoice','/Invoices/Add?sales-order='.$salesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));

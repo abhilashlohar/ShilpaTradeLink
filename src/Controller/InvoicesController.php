@@ -687,7 +687,10 @@ class InvoicesController extends AppController
 						return $q
 						->where(['CustomerAddress.default_address' => 1]);}],'Employees','SaleTaxes']
         ]);
+		$closed_month=$this->viewVars['closed_month'];
 		
+		if(!in_array(date("m-Y",strtotime($invoice->date_created)),$closed_month))
+		{
 		//pr($invoice->sales_order->toArray()); exit;
 		
 		$c_LedgerAccount=$this->Invoices->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Customers','source_id'=>$invoice->customer->id])->first();
@@ -1066,6 +1069,12 @@ class InvoicesController extends AppController
 		$employees = $this->Invoices->Employees->find('list');
         $this->set(compact('invoice_id','ReferenceDetails','ReferenceBalances','invoice', 'customers', 'companies', 'salesOrders','old_due_payment','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoices','serial_no','ItemSerialNumber','SelectItemSerialNumber','ItemSerialNumber2','financial_year_data','ledger_account_details','ledger_account_details_for_fright','sale_tax_ledger_accounts','c_LedgerAccount'));
         $this->set('_serialize', ['invoice']);
+		}
+		else
+		{
+			$this->Flash->error(__('This month is locked.'));
+			return $this->redirect(['action' => 'index']);
+		}
     }
 
     /**
