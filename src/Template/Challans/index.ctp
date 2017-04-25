@@ -90,7 +90,9 @@
                 <td><?= $this->Number->format($challan->total) ?></td>
                
 				<td class="actions">
+								<?php if(in_array(28,$allowed_pages)){  ?>
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $challan->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
+								<?php } ?>
 								<?php if(in_array(12,$allowed_pages)){  ?>
 								<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $challan->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 								<?php } ?>

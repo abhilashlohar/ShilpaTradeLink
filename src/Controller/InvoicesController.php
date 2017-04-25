@@ -654,8 +654,8 @@ class InvoicesController extends AppController
 			return $q->where(['AccountFirstSubgroups.id'=>$account_first_subgroup_id_for_fright]);
 		}]])->where(['LedgerAccounts.company_id'=>$st_company_id])->order(['LedgerAccounts.name' => 'ASC']);
 		
-		$item_serial_no=$this->Invoices->ItemSerialNumbers->find('list', ['limit' => 200]);
-		$employees = $this->Invoices->Employees->find('list', ['limit' => 200]);
+		$item_serial_no=$this->Invoices->ItemSerialNumbers->find('list');
+		$employees = $this->Invoices->Employees->find('list');
         $this->set(compact('invoice', 'customers', 'companies', 'salesOrders','items','transporters','termsConditions','serviceTaxs','exciseDuty','SaleTaxes','employees','dueInvoicespay','creditlimit','old_due_payment','item_serial_no','ledger_account_details','ledger_account_details_for_fright','sale_tax_ledger_accounts','c_LedgerAccount'));
         $this->set('_serialize', ['invoice']);
     }

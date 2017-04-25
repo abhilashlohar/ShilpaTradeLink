@@ -11,6 +11,9 @@
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
 	vertical-align: top !important;
 }
+#main_tb thead th {
+	font-size:10px;
+}
 </style>
 <?php 
 $this->Form->templates([
@@ -91,14 +94,14 @@ $this->Form->templates([
 				</div>
 				
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Supplier Invoice Date. <span class="required" aria-required="true">*</span></label>
 								<?php echo $this->Form->input('supplier_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Supplier Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d','value' => date("d-m-Y",strtotime($invoiceBooking->supplier_date))]); ?>
 							
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('invoice_no', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Invoice NO']); ?>
@@ -106,7 +109,7 @@ $this->Form->templates([
 							<? ?>
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Purchase Account <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('purchase_ledger_account', ['options' => $ledger_account_details,'label' => false,'class' => 'form-control input-sm']); ?>
@@ -114,7 +117,15 @@ $this->Form->templates([
 							<br/>
 							<? ?>
 						</div>
-					</div>	
+					</div>
+					<div class="col-md-3">
+						<div class="form-group" id="ledger_account_for_vat">
+							<label class="control-label">Ledger Account for VAT<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('ledger_account_for_vat', ['options' => $ledger_account_vat,'label' => false,'class' => 'form-control input-sm']); ?>
+							<br/>
+							<? ?>
+						</div>
+					</div>					
 				</div>
 				<div style="overflow: auto;">
 				<table class="table tableitm" id="main_tb">
@@ -124,12 +135,13 @@ $this->Form->templates([
 						<th style="white-space: nowrap;">Items</th>
 						<th width="100">Unit Rate From PO</th>
 						<th width="100">Quantity</th>
+						<th width="100">Misc</th>
 						<th width="100">Amount</th>
 						<th width="100">Discount</th>
 						<th width="100">P & F</th>
 						<th width="100">Excise Duty</th>
 						<th width="100">CST</th>
-						<th width="100">Misc</th>
+						<th width="100">Others</th>
 						<th width="100">Total</th>
 						<th width="100">Rate to be post</th>
 					</tr>
@@ -144,17 +156,21 @@ $this->Form->templates([
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value' => @$invoice_booking_row->item->id,'popup_id'=>$q]); ?>
 							</td>
 							
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.unit_rate_from_po',['value'=>$invoice_booking_row->unit_rate_from_po,'type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox']); ?></td>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.unit_rate_from_po',['value'=>$invoice_booking_row->unit_rate_from_po,'type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox','readonly']); ?></td>
 							
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.quantity',['label' => false,'class' => 'form-control input-sm','type'=>'text','value'=>$invoice_booking_row->quantity,'readonly']); ?></td>
 							
+							
+							<td align="center">
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.misc',['type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox','value'=>$invoice_booking_row->misc]); ?>
+							</td>
+							
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.amount',['label' => false,'class' => 'form-control input-sm row_textbox','type'=>'text','readonly']); ?></td>
-								
+							
 							<td>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.discount',['value'=>$invoice_booking_row->discount,'label'=>false,'type'=>'text','class'=>'form-control input-sm row_textbox']); ?>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.discount_per',['label'=>false,'type'=>'checkbox','class'=>'per_check']); ?>
 							<span class="check_text">In Amount</span>
-							
 							</td>
 								
 							<td>
@@ -175,10 +191,7 @@ $this->Form->templates([
 							<span class="check_text">In Amount</span>
 							</td>
 							
-							<td>
-							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.misc',['value'=>$invoice_booking_row->misc,'label'=>false,'type'=>'text','class'=>'form-control input-sm row_textbox']); ?>
-							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.misc_per',['label'=>false,'type'=>'checkbox','class'=>'add_check']); ?>
-							<span class="add_check_text">To be add</span>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.other_charges',['type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox','value'=>$invoice_booking_row->other_charges]); ?>
 							</td>
 							
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.total',['label' => false,'class' => 'form-control input-sm row_textbox','type'=>'text','readonly']); ?></td>
@@ -189,7 +202,7 @@ $this->Form->templates([
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$invoice_booking_row->id; ?>'>
 							<td colspan="11">
-							<?php echo $this->Text->autoParagraph(h($invoice_booking_row->description)); ?>
+							<?php echo $this->Text->autoParagraph(($invoice_booking_row->description)); ?>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.description',['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value'=>$invoice_booking_row->description]); ?>
 							</td>
 							<td></td>
@@ -200,7 +213,13 @@ $this->Form->templates([
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="10" align="right"><b>Total</b></td>
+						<td colspan="5" align="right"><b>Total</b></td>
+						<td><?php echo $this->Form->input('total_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						<td><?php echo $this->Form->input('total_discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						<td><?php echo $this->Form->input('total_pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm']); ?></td>
+						<td><?php echo $this->Form->input('total_ex', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						<td><?php echo $this->Form->input('total_saletax', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						<td><?php echo $this->Form->input('total_other_charges', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
 						<td><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','readonly']); ?></td>
 						<td></td>
 					</tr>
@@ -363,24 +382,59 @@ $this->Form->templates([
 <script>
 $(document).ready(function() {
 	//--------- FORM VALIDATION
+	$('input[name="total_pnf"]').die().live("keyup",function() {
+		totalpnf=parseFloat($(this).val());
+		var total=0;
+		$("#main_tb tbody tr.tr1").each(function(){
+			var amout=parseFloat($(this).find("td:nth-child(6) input").val());
+			
+			var discount=parseFloat($(this).find("td:nth-child(7) input").val());
+			if(!discount){ discount=0; }
+			if($(this).find('td:nth-child(7) input[type="checkbox"]').is(':checked')==true){
+				var amount_after_discount=amout*(100-discount)/100;
+			}else{
+				var amount_after_discount=amout-discount;
+			}
+			total=total+amount_after_discount;
+		});
+		
+		$("#main_tb tbody tr.tr1").each(function(){
+			var amout=parseFloat($(this).find("td:nth-child(6) input").val());
+			
+			var discount=parseFloat($(this).find("td:nth-child(7) input").val());
+			if(!discount){ discount=0; }
+			if($(this).find('td:nth-child(7) input[type="checkbox"]').is(':checked')==true){
+				var amount_after_discount=amout*(100-discount)/100;
+			}else{
+				var amount_after_discount=amout-discount;
+			}
+			var pnf=(amount_after_discount/total)*totalpnf;
+			$(this).find("td:nth-child(8) input").val(pnf.toFixed(5))
+		});
+	});
+	
 	
 	var purchase_ledger_account=$('select[name="purchase_ledger_account"]').val();
 	if(purchase_ledger_account=="35"){
-		$('#main_tb thead th:eq(8)').text('CST');
+		$('#main_tb thead th:eq(9)').text('CST');
 		$('input[name="cst_vat"]').val('CST');
+		$('#ledger_account_for_vat').hide();
 	}else{
-		$('#main_tb thead th:eq(8)').text('VAT');
+		$('#main_tb thead th:eq(9)').text('VAT');
 		$('input[name="cst_vat"]').val('VAT');
+		$('#ledger_account_for_vat').show();
 	}
 
 	$('select[name="purchase_ledger_account"]').die().live("change",function() {
 		var purchase_ledger_account=$(this).val();
 		if(purchase_ledger_account=="35"){
-			$('#main_tb thead th:eq(8)').text('CST');
+			$('#main_tb thead th:eq(9)').text('CST');
 			$('input[name="cst_vat"]').val('CST');
+			$('#ledger_account_for_vat').hide();
 		}else{
-			$('#main_tb thead th:eq(8)').text('VAT');
+			$('#main_tb thead th:eq(9)').text('VAT');
 			$('input[name="cst_vat"]').val('VAT');
+			$('#ledger_account_for_vat').show();
 		}
 		calculate_total();
     });
@@ -404,78 +458,96 @@ $(document).ready(function() {
     });
 	
    calculate_total();
-	$('#main_tb input').die().live("keyup",function() { 
+	$('#main_tb input:not(input[name="total_pnf"])').die().live("keyup",function() { 
 		calculate_total();
     });
 	function calculate_total(){
-		var row_total=0;
-		$("#main_tb tbody tr.tr1").each(function(){
+		 var total_amount=0; var total_misc=0; var total_discount=0; 
+		var total_pnf=0; var total_ex=0; var total_cst=0; var total_other=0; var total_row_amount=0; 
+		$("#main_tb tbody tr.tr1").each(function(){ var row_total=0;
 			var urate=parseFloat($(this).find("td:nth-child(3) input").val());
 			var qty=parseFloat($(this).find("td:nth-child(4) input").val());
 			var amount=urate*qty;
-			$(this).find("td:nth-child(5) input").val(amount.toFixed(2));
+			row_total=row_total+amount;
+			
+			var misc=parseFloat($(this).find("td:nth-child(5) input").val());
+			if(!misc){ misc=0; }
+			var amount_after_misc=amount+misc;
+			row_total=row_total+misc;
+			total_amount=total_amount+amount_after_misc;
+			
+			$(this).find("td:nth-child(6) input").val(amount_after_misc.toFixed(2));
 		
-			var discount=parseFloat($(this).find("td:nth-child(6) input").val());
-			if($(this).find('td:nth-child(6) input[type="checkbox"]').is(':checked')==true){
-				var amount_after_discount=amount*(100-discount)/100;
-			}else{
-				var amount_after_discount=amount-discount;
-			}
-			
-			var pnf=parseFloat($(this).find("td:nth-child(7) input").val());
+			var discount=parseFloat($(this).find("td:nth-child(7) input").val());
+			if(!discount){ discount=0; }
 			if($(this).find('td:nth-child(7) input[type="checkbox"]').is(':checked')==true){
-				var amount_after_pnf=amount_after_discount*(100+pnf)/100;
+				var amount_after_discount=amount_after_misc*(100-discount)/100;
+				total_discount=total_discount+(amount_after_misc*discount/100);
+				row_total=row_total-(amount_after_misc*discount/100);
 			}else{
-			
-				var amount_after_pnf=amount_after_discount+pnf;
+				var amount_after_discount=amount_after_misc-discount;
+				total_discount=total_discount+discount;
+				row_total=row_total-discount;
 			}
 			
-			var ex=parseFloat($(this).find("td:nth-child(8) input").val());
+			
+			var pnf=parseFloat($(this).find("td:nth-child(8) input").val());
+			if(!pnf){ pnf=0; }
 			if($(this).find('td:nth-child(8) input[type="checkbox"]').is(':checked')==true){
-				var amount_after_ex=amount_after_pnf*(100+ex)/100;
+				var amount_after_pnf=amount_after_discount*(100+pnf)/100;
+				total_pnf=total_pnf+(amount_after_discount*pnf/100);
+				row_total=row_total+(amount_after_discount*pnf/100);
 			}else{
-				var amount_after_ex=amount_after_pnf+ex;
+				var amount_after_pnf=amount_after_discount+pnf;
+				total_pnf=total_pnf+pnf;
+				row_total=row_total+pnf;
 			}
+			var ex=parseFloat($(this).find("td:nth-child(9) input").val());
+			if(!ex){ ex=0; }
+			var amount_after_ex=amount_after_pnf*(100+ex)/100;
+			total_ex=total_ex+(amount_after_pnf*ex/100);
+			row_total=row_total+(amount_after_pnf*ex/100);
 			
+			var total_for_rate=amount_after_ex;
 			
-			var saletax=parseFloat($(this).find("td:nth-child(9) input").val());
-			if($(this).find('td:nth-child(9) input[type="checkbox"]').is(':checked')==true){
-				var amount_after_saletax=amount_after_ex*(100+saletax)/100;
-			}else{
-				var amount_after_saletax=amount_after_ex+saletax;
+			var vat_cst=$('select[name="purchase_ledger_account"]').val();
+			if(vat_cst==35){
+				var cst=parseFloat($(this).find("td:nth-child(10) input").val());
+				if(!cst){ cst=0; }
+				var amount_after_cst=amount_after_ex*(100+cst)/100;
+				total_cst=total_cst+(amount_after_ex*cst/100);
+				total_for_rate=total_for_rate+(amount_after_ex*cst/100);
+			}else if(vat_cst==538){
+				var cst=parseFloat($(this).find("td:nth-child(10) input").val());
+				if(!cst){ cst=0; }
+				var amount_after_cst=amount_after_ex*(100+cst)/100;
+				total_cst=total_cst+(amount_after_ex*cst/100);
+				total_for_rate=amount_after_ex;
 			}
+			row_total=row_total+(amount_after_ex*cst/100);
 			
-			var misc=parseFloat($(this).find("td:nth-child(10) input").val());
-			if($(this).find('td:nth-child(10) input[type="checkbox"]').is(':checked')==true){
-				var amount_after_misc=amount_after_saletax-misc;
-			}else{
-				var amount_after_misc=amount_after_saletax+misc;
-			}
+			var other=parseFloat($(this).find("td:nth-child(11) input").val());
+			if(!other){ other=0; }
+			var amount_after_other=amount_after_cst+misc;
+			row_total=row_total+other;
+			total_for_rate=total_for_rate+other;
+			total_other=total_other+other;
 			
-			if(cst_vat=="CST"){
-			
-			}else{
-				if($(this).find('td:nth-child(10) input[type="checkbox"]').is(':checked')==true){
-					var amount_after_misc_for_vat=amount_after_ex-misc;
-				}else{
-					var amount_after_misc_for_vat=amount_after_ex+misc;
-				}
-			}
+			$(this).find("td:nth-child(12) input").val(row_total.toFixed(2));
+			$(this).find("td:nth-child(13) input").val((total_for_rate/qty).toFixed(5));
 			
 			
-			$(this).find("td:nth-child(11) input").val(amount_after_misc.toFixed(2));
-			row_total=row_total+amount_after_misc;
-			
-			var cst_vat=$('input[name="cst_vat"]').val();
-			if(cst_vat=="CST"){
-				$(this).find("td:nth-child(12) input").val((amount_after_misc/qty).toFixed(5));
-			}else{
-				$(this).find("td:nth-child(12) input").val((amount_after_misc_for_vat/qty).toFixed(5));
-			}
+			total_row_amount=total_row_amount+row_total;
 			
 			
 		});
-		$('input[name="total"]').val(row_total.toFixed(2));
+		$('input[name="total_amount"]').val(total_amount.toFixed(2));
+		$('input[name="total_discount"]').val(total_discount.toFixed(2));
+		$('input[name="total_pnf"]').val(total_pnf.toFixed(2));
+		$('input[name="total_ex"]').val(total_ex.toFixed(2));
+		$('input[name="total_saletax"]').val(total_cst.toFixed(2));
+		$('input[name="total_other_charges"]').val(total_other.toFixed(2));
+		$('input[name="total"]').val(total_row_amount.toFixed(2));
 	}
    
    

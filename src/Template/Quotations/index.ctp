@@ -147,8 +147,9 @@ if(!empty($status)){
 							<td><?php echo date("d-m-Y",strtotime($quotation->closing_date)); ?></td>	
 							<?php } ?>
 							<td class="actions">
+							<?php if(in_array(21,$allowed_pages)){ ?>
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $quotation->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
-								 
+							<?php } ?>	 
 								<?php if($quotation->status=='Pending' and in_array(2,$allowed_pages) and $pull_request!="true" && $copy_request!="copy"){ ?>
 								<?php
 								 if(!in_array(date("m-Y",strtotime($quotation->created_on)),$closed_month))
@@ -172,10 +173,10 @@ if(!empty($status)){
 								} ?>
 								
 								<?php 
-								
+								if(in_array(30,$allowed_pages)){
 								if($quotation->status=='Pending' && $copy_request!="copy" && $pull_request!="true"){
 								echo $this->Html->link('<i class="fa fa-minus-circle"></i> ',['action' => '#'],array('escape'=>false,'class'=>'btn btn-xs red tooltips close_btn','data-original-title'=>'Close','role'=>'button','quote_id'=>$quotation->id));
-								} ?>
+								} }?>
 								<?php if($copy_request=="copy"){
 									echo $this->Html->link('<i class="fa fa-repeat"></i>  Copy','/Quotations/Add?copy='.$quotation->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
