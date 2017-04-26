@@ -38,15 +38,23 @@ class JournalVouchersTable extends Table
 		$this->belongsTo('VouchersReferences');
 		$this->belongsTo('FinancialYears');
 		$this->belongsTo('Ledgers');
+		$this->belongsTo('ReferenceBalances');
+        $this->belongsTo('ReferenceDetails');
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
 		
-		$this->belongsTo('LedgerAccounts',[
+		/* $this->belongsTo('LedgerAccounts',[
             'foreignKey' => 'ledger_account_id',
             'joinType' => 'INNER'
         ]);
+		 */
+		/* $this->belongsTo('ReceivedFroms', [
+			'className' => 'LedgerAccounts',
+            'foreignKey' => 'received_from_id',
+            'propertyName' => 'ReceivedFrom',
+        ]); */
 		//$this->belongsTo('JournalVoucherRows');
 		$this->hasMany('JournalVoucherRows', [
             'foreignKey' => 'journal_voucher_id',
@@ -78,9 +86,7 @@ class JournalVouchersTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 		
-		$validator
-            ->requirePresence('narration', 'create')
-            ->notEmpty('narration');
+		
      
         return $validator;
     }

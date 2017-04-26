@@ -44,7 +44,7 @@ class JournalVouchersController extends AppController
 		
 		$this->viewBuilder()->layout('index_layout');
         $journalVoucher = $this->JournalVouchers->get($id, [
-            'contain' => ['Companies','JournalVoucherRows'=>['LedgerAccounts'],'Companies','Creator']
+            'contain' => ['Companies','JournalVoucherRows'=>['ReceivedFroms'],'Companies','Creator']
         ]);
 
         $this->set('journalVoucher', $journalVoucher);
@@ -66,7 +66,8 @@ class JournalVouchersController extends AppController
 		$st_company_id = $session->read('st_company_id');
         $st_year_id = $session->read('st_year_id');
 		$financial_year = $this->JournalVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
-    
+		
+		
 		if ($this->request->is('post')) {
 			$last_ref_no=$this->JournalVouchers->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
 			if($last_ref_no){
@@ -80,29 +81,89 @@ class JournalVouchersController extends AppController
 			$journalVoucher->transaction_date=date("Y-m-d",strtotime($journalVoucher->transaction_date));
 			$journalVoucher->created_on=date("Y-m-d");
 			$journalVoucher->company_id=$st_company_id;
-			
+			//pr($journalVoucher);  exit;
 			if ($this->JournalVouchers->save($journalVoucher)) {
-			
-					foreach($journalVoucher->journal_voucher_rows as $journal_voucher_rows){
-					
+				foreach($journalVoucher->journal_voucher_rows as $journal_voucher_row){
 					$ledger = $this->JournalVouchers->Ledgers->newEntity();
-					$ledger->ledger_account_id = $journal_voucher_rows->ledger_account_id;
-					
-					if($journal_voucher_rows->cr_dr=='Dr'){
-						$ledger->debit = $journal_voucher_rows->amount;
+					$ledger->ledger_account_id = $journal_voucher_row->received_from_id;
+					if($journal_voucher_row->cr_dr=='Dr'){
+						$ledger->debit = $journal_voucher_row->amount;
 						$ledger->credit = 0;
 					}
 					else {
 						$ledger->debit = 0;
-						$ledger->credit = $journal_voucher_rows->amount;
+						$ledger->credit = $journal_voucher_row->amount;
 					}
 					$ledger->company_id=$st_company_id;
 					$ledger->voucher_id = $journalVoucher->id;
 					$ledger->voucher_source = 'Journal Voucher';
 					$ledger->transaction_date = $journalVoucher->created_on;
+					$ledger->transaction_date = $journalVoucher->created_on;
 					$ledger->company_id = $st_company_id;
-					//pr($ledger); exit;
 					$this->JournalVouchers->Ledgers->save($ledger);
+					if(sizeof(@$journalVoucher->ref_rows[$journal_voucher_row->received_from_id])>0){
+						foreach($journalVoucher->ref_rows[$journal_voucher_row->received_from_id] as $ref_row){
+							$ref_row=(object)$ref_row;
+							if($ref_row->ref_type=='New Reference' or $ref_row->ref_type=='Advance Reference'){
+								$query = $this->JournalVouchers->ReferenceBalances->query();
+								if($journal_voucher_row->cr_dr=="Dr"){
+									$query->insert(['ledger_account_id', 'reference_no', 'credit', 'debit'])
+									->values([
+										'ledger_account_id' => $journal_voucher_row->received_from_id,
+										'reference_no' => $ref_row->ref_no,
+										'credit' => 0,
+										'debit' => $ref_row->ref_amount
+									])
+									->execute();
+								}else{
+									$query->insert(['ledger_account_id', 'reference_no', 'credit', 'debit'])
+									->values([
+										'ledger_account_id' => $journal_voucher_row->received_from_id,
+										'reference_no' => $ref_row->ref_no,
+										'credit' => $ref_row->ref_amount,
+										'debit' => 0
+									])
+									->execute();
+								}
+								
+							}else{
+								$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->find()->where(['ledger_account_id'=>$journal_voucher_row->received_from_id,'reference_no'=>$ref_row->ref_no])->first();
+								$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->get($ReferenceBalance->id);
+								if($journal_voucher_row->cr_dr=="Dr"){
+									$ReferenceBalance->debit=$ReferenceBalance->debit+$ref_row->ref_amount;
+								}else{
+									$ReferenceBalance->credit=$ReferenceBalance->credit+$ref_row->ref_amount;
+								}
+								
+								$this->JournalVouchers->ReferenceBalances->save($ReferenceBalance);
+							}
+							$query = $this->JournalVouchers->ReferenceDetails->query();
+							if($journal_voucher_row->cr_dr=="Dr"){
+								$query->insert(['ledger_account_id', 'journal_voucher_id', 'reference_no', 'credit', 'debit', 'reference_type'])
+								->values([
+									'ledger_account_id' => $journal_voucher_row->received_from_id,
+									'journal_voucher_id' => $journalVoucher->id,
+									'reference_no' => $ref_row->ref_no,
+									'credit' => 0,
+									'debit' => $ref_row->ref_amount,
+									'reference_type' => $ref_row->ref_type
+								])
+								->execute();
+							}else{
+								$query->insert(['ledger_account_id', 'journal_voucher_id', 'reference_no', 'credit', 'debit', 'reference_type'])
+								->values([
+									'ledger_account_id' => $journal_voucher_row->received_from_id,
+									'journal_voucher_id' => $journalVoucher->id,
+									'reference_no' => $ref_row->ref_no,
+									'credit' => $ref_row->ref_amount,
+									'debit' => 0,
+									'reference_type' => $ref_row->ref_type
+								])
+								->execute();
+							}
+							
+						}
+					}
 					}
 					$this->Flash->success(__('The Journal-Voucher:'.str_pad($journalVoucher->voucher_no, 4, '0', STR_PAD_LEFT)).' has been genereted.');
 					return $this->redirect(['action' => 'view/'.$journalVoucher->id]);
@@ -123,23 +184,7 @@ class JournalVouchersController extends AppController
 		foreach($vouchersReferences->voucher_ledger_accounts as $data){
 			$where[]=$data->ledger_account_id;
 		}
-		if(sizeof($where)>0){
-			$ledgers = $this->JournalVouchers->LedgerAccounts->find('list',
-				['keyField' => function ($row) {
-					return $row['id'];
-				},
-				'valueField' => function ($row) {
-					if(!empty($row['alias'])){
-						return  $row['name'] . ' (' . $row['alias'] . ')';
-					}else{
-						return $row['name'];
-					}
-					
-				}])->where(['LedgerAccounts.id IN' => $where]);
-		}
-		else{
-			$Errorledgers='true';
-		}
+		
 		$companies = $this->JournalVouchers->Companies->find('all');
 		
 		$ReceivedFroms_selected='yes';
@@ -181,8 +226,24 @@ class JournalVouchersController extends AppController
 		$financial_year = $this->JournalVouchers->FinancialYears->find()->where(['id'=>$st_year_id])->first();
     
         $journalVoucher = $this->JournalVouchers->get($id, [
-            'contain' => ['Companies','JournalVoucherRows'=>['LedgerAccounts'],'Companies','Creator']
+            'contain' => ['Companies','JournalVoucherRows'=>['ReceivedFroms'],'Companies','Creator']
         ]);
+		
+		
+		$old_ref_rows=[];
+		$old_received_from_ids=[];
+		$old_reference_numbers=[];
+		
+		foreach($journalVoucher->journal_voucher_rows as $journal_voucher_row){
+			$ReferenceDetails=$this->JournalVouchers->ReferenceDetails->find()->where(['ledger_account_id'=>$journal_voucher_row->received_from_id,'journal_voucher_id'=>$journalVoucher->id]);
+			
+			foreach($ReferenceDetails as $ReferenceDetail){
+				$old_reference_numbers[$journal_voucher_row->received_from_id][]=$ReferenceDetail->reference_no;
+			}
+			$old_ref_rows[$journal_voucher_row->received_from_id]=$ReferenceDetails->toArray();
+			$old_received_from_ids[]=$journal_voucher_row->received_from_id;
+		}
+		
 
         $Em = new FinancialYearsController;
 	    $financial_year_data = $Em->checkFinancialYear($journalVoucher->transaction_date);
@@ -199,26 +260,114 @@ class JournalVouchersController extends AppController
             if ($this->JournalVouchers->save($journalVoucher)) {
 				
 				$this->JournalVouchers->Ledgers->deleteAll(['voucher_id' => $journalVoucher->id, 'voucher_source' => 'Journal Voucher']);
+				$total_cr=0; $total_dr=0;
 				
-				foreach($journalVoucher->journal_voucher_rows as $journal_voucher_rows){
-					$ledger = $this->JournalVouchers->Ledgers->newEntity();
-					$ledger->ledger_account_id = $journal_voucher_rows->ledger_account_id;
+				foreach($journalVoucher->journal_voucher_rows as $journal_voucher_row){
 					
-					if($journal_voucher_rows->cr_dr=='Dr'){
-						$ledger->debit = $journal_voucher_rows->amount;
+					$ledger = $this->JournalVouchers->Ledgers->newEntity();
+					$ledger->ledger_account_id = $journal_voucher_row->received_from_id;
+					if($journal_voucher_row->cr_dr=="Dr"){
+						$ledger->debit = $journal_voucher_row->amount;
 						$ledger->credit = 0;
-					}
-					else {
+						$total_dr=$total_dr+$journal_voucher_row->amount;
+					}else{
 						$ledger->debit = 0;
-						$ledger->credit = $journal_voucher_rows->amount;
+						$ledger->credit = $journal_voucher_row->amount;
+						$total_cr=$total_cr+$journal_voucher_row->amount;
 					}
 					$ledger->company_id=$st_company_id;
 					$ledger->voucher_id = $journalVoucher->id;
 					$ledger->voucher_source = 'Journal Voucher';
 					$ledger->transaction_date = $journalVoucher->created_on;
 					$ledger->company_id = $st_company_id;
-					//pr($ledger); exit;
 					$this->JournalVouchers->Ledgers->save($ledger);
+					if(sizeof(@$journalVoucher->ref_rows[$journal_voucher_row->received_from_id])>0){
+						foreach($journalVoucher->ref_rows[$journal_voucher_row->received_from_id] as $ref_row){
+						$ref_row=(object)$ref_row;
+						$ReferenceDetail=$this->JournalVouchers->ReferenceDetails->find()->where(['ledger_account_id'=>$journal_voucher_row->received_from_id,'reference_no'=>$ref_row->ref_no,'journal_voucher_id'=>$journalVoucher->id])->first();
+						
+						if($ReferenceDetail){
+								$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->find()->where(['ledger_account_id'=>$journal_voucher_row->received_from_id,'reference_no'=>$ref_row->ref_no])->first();
+								$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->get($ReferenceBalance->id);
+								if($journal_voucher_row->cr_dr=="Dr"){
+									$ReferenceBalance->debit=$ReferenceBalance->debit-$ref_row->ref_old_amount+$ref_row->ref_amount;
+								}else{
+									$ReferenceBalance->credit=$ReferenceBalance->credit-$ref_row->ref_old_amount+$ref_row->ref_amount;
+								}
+								$this->JournalVouchers->ReferenceBalances->save($ReferenceBalance);
+								$ReferenceDetail=$this->JournalVouchers->ReferenceDetails->find()->where(['ledger_account_id'=>$journal_voucher_row->received_from_id,'reference_no'=>$ref_row->ref_no,'journal_voucher_id'=>$journalVoucher->id])->first();
+								$ReferenceDetail=$this->JournalVouchers->ReferenceDetails->get($ReferenceDetail->id);
+								if($journal_voucher_row->cr_dr=="Dr"){
+									$ReferenceDetail->debit=$ReferenceDetail->debit-$ref_row->ref_old_amount+$ref_row->ref_amount;
+								}else{
+									$ReferenceDetail->credit=$ReferenceDetail->credit-$ref_row->ref_old_amount+$ref_row->ref_amount;
+								}
+								
+								$this->JournalVouchers->ReferenceDetails->save($ReferenceDetail);
+							}else{
+								if($ref_row->ref_type=='New Reference' or $ref_row->ref_type=='Advance Reference'){
+									$query = $this->JournalVouchers->ReferenceBalances->query();
+									if($journal_voucher_row->cr_dr=="Dr"){
+										$query->insert(['ledger_account_id', 'reference_no', 'credit', 'debit'])
+										->values([
+											'ledger_account_id' => $journal_voucher_row->received_from_id,
+											'reference_no' => $ref_row->ref_no,
+											'credit' => 0,
+											'debit' => $ref_row->ref_amount
+										])
+										->execute();
+									}else{
+										$query->insert(['ledger_account_id', 'reference_no', 'credit', 'debit'])
+										->values([
+											'ledger_account_id' => $journal_voucher_row->received_from_id,
+											'reference_no' => $ref_row->ref_no,
+											'credit' => $ref_row->ref_amount,
+											'debit' => 0
+										])
+										->execute();
+									}
+									
+								}else{
+									$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->find()->where(['ledger_account_id'=>$journal_voucher_row->received_from_id,'reference_no'=>$ref_row->ref_no])->first();
+									$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->get($ReferenceBalance->id);
+									if($journal_voucher_row->cr_dr=="Dr"){
+										$ReferenceBalance->debit=$ReferenceBalance->debit+$ref_row->ref_amount;
+									}else{
+										$ReferenceBalance->credit=$ReferenceBalance->credit+$ref_row->ref_amount;
+									}
+									
+									$this->JournalVouchers->ReferenceBalances->save($ReferenceBalance);
+								}
+								
+								$query = $this->JournalVouchers->ReferenceDetails->query();
+								if($journal_voucher_row->cr_dr=="Dr"){
+									$query->insert(['ledger_account_id', 'journal_voucher_id', 'reference_no', 'credit', 'debit', 'reference_type'])
+									->values([
+										'ledger_account_id' => $journal_voucher_row->received_from_id,
+										'journal_voucher_id' => $journalVoucher->id,
+										'reference_no' => $ref_row->ref_no,
+										'credit' => 0,
+										'debit' => $ref_row->ref_amount,
+										'reference_type' => $ref_row->ref_type
+									])
+									->execute();
+								}else{
+									$query->insert(['ledger_account_id', 'journal_voucher_id', 'reference_no', 'credit', 'debit', 'reference_type'])
+									->values([
+										'ledger_account_id' => $journal_voucher_row->received_from_id,
+										'journal_voucher_id' => $journalVoucher->id,
+										'reference_no' => $ref_row->ref_no,
+										'credit' => $ref_row->ref_amount,
+										'debit' => 0,
+										'reference_type' => $ref_row->ref_type
+									])
+									->execute();
+								}
+								
+							}
+						}
+					}
+					
 					}
 					return $this->redirect(['action' => 'view/'.$journalVoucher->id]);
 				} else {
@@ -236,7 +385,9 @@ class JournalVouchersController extends AppController
 			$where[]=$data->ledger_account_id;
 		}
 
-		$ledgers = $this->JournalVouchers->LedgerAccounts->find('list',
+		$ReceivedFroms_selected='yes';
+		if(sizeof($where)>0){
+			$receivedFroms = $this->JournalVouchers->ReceivedFroms->find('list',
 				['keyField' => function ($row) {
 					return $row['id'];
 				},
@@ -247,9 +398,14 @@ class JournalVouchersController extends AppController
 						return $row['name'];
 					}
 					
-				}])->where(['LedgerAccounts.id IN' => $where]);
+				}])->where(['ReceivedFroms.id IN' => $where]);
+		}else{
+			$ReceivedFroms_selected='no';
+		}
+				
+		
         $companies = $this->JournalVouchers->Companies->find('all');
-        $this->set(compact('journalVoucher', 'companies','ledgers','financial_year','financial_year_data'));
+        $this->set(compact('journalVoucher','receivedFroms','ReceivedFroms_selected', 'companies','ledgers','financial_year','financial_year_data','old_ref_rows'));
         $this->set('_serialize', ['journalVoucher']);
     }
 
@@ -272,6 +428,13 @@ class JournalVouchersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function fetchRefNumbers($received_from_id=null,$cr_dr=null){
+		$this->viewBuilder()->layout('');
+		$ReferenceBalances=$this->JournalVouchers->ReferenceBalances->find()->where(['ledger_account_id'=>$received_from_id]);
+		$this->set(compact('ReferenceBalances','cr_dr'));
+	}
+	
 	function checkRefNumberUnique($received_from_id,$i){
 		$reference_no=$this->request->query['ref_rows'][$received_from_id][$i]['ref_no'];
 		$ReferenceBalances=$this->JournalVouchers->ReferenceBalances->find()->where(['ledger_account_id'=>$received_from_id,'reference_no'=>$reference_no]);
@@ -281,5 +444,71 @@ class JournalVouchersController extends AppController
 			echo 'false';
 		}
 		exit;
+	}
+	function checkRefNumberUniqueEdit($received_from_id,$i,$is_old){
+		$reference_no=$this->request->query['ref_rows'][$received_from_id][$i]['ref_no'];
+		$ReferenceBalances=$this->JournalVouchers->ReferenceBalances->find()->where(['ledger_account_id'=>$received_from_id,'reference_no'=>$reference_no]);
+		if($ReferenceBalances->count()==1 && $is_old=="yes"){
+			echo 'true';
+		}elseif($ReferenceBalances->count()==0){
+			echo 'true';
+		}else{
+			echo 'false';
+		}
+		exit;
+	}
+	function deleteOneRefNumbers(){
+		$old_received_from_id=$this->request->query['old_received_from_id'];
+		$journal_voucher_id=$this->request->query['journal_voucher_id'];
+		$old_ref=$this->request->query['old_ref'];
+		$old_ref_type=$this->request->query['old_ref_type'];
+		
+		if($old_ref_type=="New Reference" || $old_ref_type=="Advance Reference"){
+			$this->JournalVouchers->ReferenceBalances->deleteAll(['ledger_account_id'=>$old_received_from_id,'reference_no'=>$old_ref]);
+			$this->JournalVouchers->ReferenceDetails->deleteAll(['ledger_account_id'=>$old_received_from_id,'reference_no'=>$old_ref]);
+		}elseif($old_ref_type=="Against Reference"){
+			$ReferenceDetail=$this->JournalVouchers->ReferenceDetails->find()->where(['ledger_account_id'=>$old_received_from_id,'journal_voucher_id'=>$journal_voucher_id,'reference_no'=>$old_ref])->first();
+			if(!empty($ReferenceDetail->credit)){
+				$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->find()->where(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no])->first();
+				$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->get($ReferenceBalance->id);
+				$ReferenceBalance->credit=$ReferenceBalance->credit-$ReferenceDetail->credit;
+				$this->JournalVouchers->ReferenceBalances->save($ReferenceBalance);
+			}elseif(!empty($ReferenceDetail->debit)){
+				$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->find()->where(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no])->first();
+				$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->get($ReferenceBalance->id);
+				$ReferenceBalance->debit=$ReferenceBalance->debit-$ReferenceDetail->debit;
+				$this->JournalVouchers->ReferenceBalances->save($ReferenceBalance);
+			}
+			$RDetail=$this->JournalVouchers->ReferenceDetails->get($ReferenceDetail->id);
+			$this->JournalVouchers->ReferenceDetails->delete($RDetail);
+		}
+		
+		exit;
+	}
+	
+	function deleteAllRefNumbers($old_received_from_id,$journal_voucher_id){
+		$ReferenceDetails=$this->JournalVouchers->ReferenceDetails->find()->where(['ledger_account_id'=>$old_received_from_id,'journal_voucher_id'=>$journal_voucher_id]);
+		foreach($ReferenceDetails as $ReferenceDetail){
+			if($ReferenceDetail->reference_type=="New Reference" || $ReferenceDetail->reference_type=="Advance Reference"){
+				$this->JournalVouchers->ReferenceBalances->deleteAll(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no]);
+				
+				$RDetail=$this->JournalVouchers->ReferenceDetails->get($ReferenceDetail->id);
+				$this->JournalVouchers->ReferenceDetails->delete($RDetail);
+			}elseif($ReferenceDetail->reference_type=="Against Reference"){
+				if(!empty($ReferenceDetail->credit)){
+					$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->find()->where(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no])->first();
+					$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->get($ReferenceBalance->id);
+					$ReferenceBalance->credit=$ReferenceBalance->credit-$ReferenceDetail->credit;
+					$this->JournalVouchers->ReferenceBalances->save($ReferenceBalance);
+				}elseif(!empty($ReferenceDetail->debit)){
+					$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->find()->where(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no])->first();
+					$ReferenceBalance=$this->JournalVouchers->ReferenceBalances->get($ReferenceBalance->id);
+					$ReferenceBalance->debit=$ReferenceBalance->debit-$ReferenceDetail->debit;
+					$this->JournalVouchers->ReferenceBalances->save($ReferenceBalance);
+				}
+				$RDetail=$this->JournalVouchers->ReferenceDetails->get($ReferenceDetail->id);
+				$this->JournalVouchers->ReferenceDetails->delete($RDetail);
+			}
+		}		exit;
 	}
 }

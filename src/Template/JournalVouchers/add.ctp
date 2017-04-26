@@ -51,10 +51,10 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 			</tbody>
 			<tfoot>
 				<td><a class="btn btn-xs btn-default addrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
-				<td id="receipt_amount" style="font-size: 14px;font-weight: bold;"></td>
-				<td></td>
+				<td id="receipt_amount_dr" width="80px"><label>Total Dr</label><?php echo $this->Form->input('debitamount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+				<td id="receipt_amount_cr" width="80px"><label>Total Cr</label><?php echo $this->Form->input('creditamount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
 				<td><button type="submit" class="btn btn-primary" >CREATE JOURNAL VOUCHER</button></td>
-				<td></td>
+				
 			</tfoot>
 		</table>
 		</div>
@@ -105,10 +105,21 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-				bank_cash_id:{
-					required: true,
+				debitamount:{
+					
 				},
+				creditamount:{
+					
+					equalTo: "#debitamount",
+					
+				}
 			},
+		messages: {
+			creditamount:{
+					equalTo: "Must be equal to Debit Amount",
+					
+				}
+		},
 
 		errorPlacement: function (error, element) { // render error placement for each input type
 			if (element.parent(".input-group").size() > 0) {
@@ -157,8 +168,17 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 	
+	$('input[name="payment_mode"]').die().live("click",function() {
+		var payment_mode=$(this).val();
+		
+		if(payment_mode=="Cheque"){
+			$("#chq_no").show();
+		}else{
+			$("#chq_no").hide();
+		}
+	});
 	
-	
+	add_row();
 	add_row();
 	function add_row(){
 		var tr=$("#sample_table tbody tr").clone();
@@ -169,19 +189,19 @@ $(document).ready(function() {
 	function rename_rows(){
 		var i=0;
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
-			$(this).find("td:eq(0) select.received_from").select2().attr({name:"journal_voucher_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"}).rules('add', {
+			$(this).find("td:eq(0) select.received_from").select2().attr({name:"journal_voucher_rows["+i+"][received_from_id]", id:"journal_voucher_rows-"+i+"-received_from_id"}).rules('add', {
 						required: true,
 						notEqualToGroup: ['.received_from'],
 						messages: {
 							notEqualToGroup: "Do not select same party again."
 						}
 					});
-			$(this).find("td:eq(1) input").attr({name:"journal_voucher_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"}).rules('add', {
+			$(this).find("td:eq(1) input").attr({name:"journal_voucher_rows["+i+"][amount]", id:"journal_voucher_rows-"+i+"-amount"}).rules('add', {
 						required: true,
 						min: 0.01,
 					});
-			$(this).find("td:eq(1) select").attr({name:"journal_voucher_rows["+i+"][cr_dr]", id:"quotation_rows-"+i+"-cr_dr"});
-			$(this).find("td:nth-child(4) textarea").attr({name:"journal_voucher_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"}).rules("add", "required");
+			$(this).find("td:eq(1) select").attr({name:"journal_voucher_rows["+i+"][cr_dr]", id:"journal_voucher_rows-"+i+"-cr_dr"});
+			$(this).find("td:nth-child(4) textarea").attr({name:"journal_voucher_rows["+i+"][narration]", id:"journal_voucher_rows-"+i+"-narration"}).rules("add", "required");
 			i++;
 		});
 	}
@@ -259,7 +279,7 @@ $(document).ready(function() {
 	});
 	
 	function load_ref_section(sel){
-		$(sel).closest("tr.main_tr").find("td:nth-child(3)").html("Loading..."); alert();
+		$(sel).closest("tr.main_tr").find("td:nth-child(3)").html("Loading..."); 
 		var sel2=$(sel).closest('tr.main_tr');
 		var received_from_id=$(sel).closest("tr.main_tr").find("td:nth-child(1) select").find('option:selected').val();
 		var url="<?php echo $this->Url->build(['controller'=>'LedgerAccounts','action'=>'checkBillToBillAccountingStatus']); ?>";
@@ -289,12 +309,12 @@ $(document).ready(function() {
 		var ref_type=$(this).find('option:selected').val();
 		var received_from_id=$(this).closest('tr.main_tr').find('td select:eq(0)').val();
 		if(ref_type=="Against Reference"){
-			var url="<?php echo $this->Url->build(['controller'=>'Payments','action'=>'fetchRefNumbers']); ?>";
+			var url="<?php echo $this->Url->build(['controller'=>'JournalVouchers','action'=>'fetchRefNumbers']); ?>";
 			url=url+'/'+received_from_id+'/'+cr_dr,
 			$.ajax({
 				url: url,
 				type: 'GET',
-			}).done(function(response) {
+			}).done(function(response) { 
 				current_obj.closest('tr').find('td:eq(1)').html(response);
 				rename_ref_rows(sel3,received_from_id);
 			});
@@ -361,10 +381,20 @@ $(document).ready(function() {
 				mian_amount_total_dr=mian_amount_total_dr+v;
 			}
 			
-			mian_amount_total=mian_amount_total_dr-mian_amount_total_cr;
-			$('#receipt_amount').text(mian_amount_total.toFixed(2));
+			//mian_amount_total=mian_amount_total_dr-mian_amount_total_cr;
+			$('#debitamount').val(mian_amount_total_dr.toFixed(2));
+		$('#creditamount').val(mian_amount_total_cr.toFixed(2));
+			
 		});
 	}
+	
+	$('.btn').live("click",function() {
+		var dr=$('#receipt_amount_dr').text()
+		var cr=$('#receipt_amount_cr').text()
+		
+	});
+	
+	
 	
 	
 	
@@ -377,10 +407,10 @@ $(document).ready(function() {
 			<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from']); ?></td>
 			<td>
 			<div class="row">
-				<div class="col-md-7" style="padding-right: 0;">
+				<div class="col-md-6" style="padding-right: 0;">
 					<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm mian_amount','placeholder'=>'Amount']); ?>
 				</div>
-				<div class="col-md-5"style="padding-left: 0;">
+				<div class="col-md-6"style="padding-left: 0;">
 					<select name="cr_dr" class="form-control input-sm cr_dr" >
 						<option value="Dr">Dr</option>
 						<option value="Cr">Cr</option>
