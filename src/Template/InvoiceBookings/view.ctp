@@ -8,6 +8,12 @@
 	}
 }
 </style>
+<style type="text/css" media="print">
+@page {
+    size: auto;   /* auto is the initial value */
+    margin: 0 5px 0 20px;  /* this affects the margin in the printer settings */
+}
+</style>
 <a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
 <div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 70%;font-size:14px;" class="maindiv">	
 	<table width="100%" class="divHeader">
@@ -82,7 +88,7 @@
 		</tr>
 	</thead>
 	<tbody>
-	<?php foreach ($invoiceBooking->invoice_booking_rows as $invoice_booking_row): ?>
+	<?php $total_sale_tax=0; foreach ($invoiceBooking->invoice_booking_rows as $invoice_booking_row): ?>
 		<tr>
 			<td><?= h(++$page_no) ?></td>
 			<td><?= $invoice_booking_row->item->name; ?></td>
@@ -90,11 +96,41 @@
 			<td align="right"><?= $invoice_booking_row->rate; ?></td>
 			<td align="right"><?= $invoice_booking_row->quantity*$invoice_booking_row->rate; ?></td>
 		</tr>
-		<?php endforeach; ?>
+		<?php $total_sale_tax=$total_sale_tax+$invoice_booking_row->sale_tax; endforeach; ?>
 	</tbody>
 	<tfoot>
 		<tr>
-		<td colspan="3"></td>
+		<td colspan="3">
+		<table>
+			<tr>
+				<?php if($invoiceBooking->purchase_ledger_account==538){ ?>
+				<td>ledger Account for VAT</td>
+				<td>
+					<?php if(empty($LedgerAccount->alias)){ ?>
+						: <?php echo $LedgerAccount->name; ?>
+					<?php }else{ ?>
+						: <?php echo $LedgerAccount->name; ?> (<?php echo $LedgerAccount->alias; ?>)
+					<?php } ?>
+				</td>
+				<?php } ?>
+			</tr>
+			<tr>
+				<?php if($invoiceBooking->purchase_ledger_account==538){ ?>
+				<td>VAT Amount</td>
+				<td>: <?php echo $total_sale_tax; ?></td>
+				<?php } ?>
+			</tr>
+			<tr>
+				<td colspan="2"><b>Reference Number:</b></td>
+			</tr>
+			<?php foreach($ReferenceDetails as $ReferenceDetail){ ?>
+			<tr>
+				<td><?php echo $ReferenceDetail->reference_no; ?></td>
+				<td>:<?php echo $ReferenceDetail->credit; ?></td>
+			</tr>
+			<?php } ?>
+		</table>
+		</td>
 		<td style="font-size:14px; font-weight:bold;"  align="right"> Total</td>
 		<td style="font-size:14px; font-weight:bold; "  align="right"><?= $invoiceBooking->total ?></td>
 		</tr>

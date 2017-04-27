@@ -26,6 +26,8 @@ class InvoiceBookingsController extends AppController
         ];
 		
 		$invoiceBookings = $this->paginate($this->InvoiceBookings->find()->where(['InvoiceBookings.company_id'=>$st_company_id])->order(['InvoiceBookings.id' => 'DESC']));
+		
+		
 
         $this->set(compact('invoiceBookings','status'));
         $this->set('_serialize', ['invoiceBookings']);
@@ -40,12 +42,24 @@ class InvoiceBookingsController extends AppController
      */
     public function view($id = null)
     {
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		
 		$this->viewBuilder()->layout('index_layout');
         $invoiceBooking = $this->InvoiceBookings->get($id, [
             'contain' => ['InvoiceBookingRows'=>['Items'],'Creator','Companies']
         ]);
-
+		if($invoiceBooking->ledger_account_for_vat>0){
+			$LedgerAccount=$this->InvoiceBookings->LedgerAccounts->get($invoiceBooking->ledger_account_for_vat);
+		}
+		
+		$c_LedgerAccount=$this->InvoiceBookings->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Vendors','source_id'=>$invoiceBooking->vendor_id])->first();
+		
+		$ReferenceDetails=$this->InvoiceBookings->ReferenceDetails->find()->where(['ledger_account_id'=>$c_LedgerAccount->id,'invoice_booking_id'=>$invoiceBooking->id]);
+		
+		
         $this->set('invoiceBooking', $invoiceBooking);
+		$this->set(compact('LedgerAccount', 'ReferenceDetails'));
         $this->set('_serialize', ['invoiceBooking']);
     }
 
