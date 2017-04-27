@@ -59,7 +59,7 @@ margin-bottom: 0;
 		</tr>
 	</table>
 	<br/>
-	<table width="100%">
+	<table width="100%" class="table" style="font-size:12px">
 		<tr>
 			<th><?= __('Paid to') ?></th>
 			<th><?= __('Amount') ?></th>
@@ -67,8 +67,8 @@ margin-bottom: 0;
 		</tr>
 		<?php $total_cr=0; $total_dr=0; foreach ($payment->payment_rows as $paymentRows): ?>
 		<tr>
-			<td><?= h($paymentRows->ReceivedFrom->name) ?></td>
-			<td><?= h($this->Number->format($paymentRows->amount,[ 'places' => 2])) ?> <?= h($paymentRows->cr_dr) ?></td>
+			<td style="white-space: nowrap;"><?= h($paymentRows->ReceivedFrom->name) ?></td>
+			<td style="white-space: nowrap;"><?= h($this->Number->format($paymentRows->amount,[ 'places' => 2])) ?> <?= h($paymentRows->cr_dr) ?></td>
 			<td><?= h($paymentRows->narration) ?></td>
 		</tr>
 		<?php if($paymentRows->cr_dr=="Cr"){
