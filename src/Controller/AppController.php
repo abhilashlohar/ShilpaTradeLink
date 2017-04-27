@@ -52,7 +52,7 @@ class AppController extends Controller
 		$db='default';
 		$conn = ConnectionManager::get($db);
 		$conn->begin();*/
-		
+		$closed_month=[];
 		
 		$controller = $this->request->params['controller'];
 		$action = $this->request->params['action']; 
