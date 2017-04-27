@@ -164,6 +164,7 @@ select
 		<!-- END LOGO -->
 		<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 			<ul class="nav navbar-nav">
+			<?php if(in_array(19,$allowed_pages)||in_array(65,$allowed_pages)||in_array(66,$allowed_pages)||in_array(42,$allowed_pages)||in_array(43,$allowed_pages)||in_array(19,$allowed_pages)||in_array(44,$allowed_pages)||in_array(70,$allowed_pages)||in_array(82,$allowed_pages)||in_array(71,$allowed_pages)||in_array(61,$allowed_pages)||in_array(62,$allowed_pages)||in_array(63,$allowed_pages)||in_array(64,$allowed_pages)||in_array(50,$allowed_pages)||in_array(52,$allowed_pages)||in_array(67,$allowed_pages)||in_array(68,$allowed_pages)||in_array(54,$allowed_pages)||in_array(56,$allowed_pages)||in_array(46,$allowed_pages)||in_array(47,$allowed_pages)||in_array(58,$allowed_pages)||in_array(59,$allowed_pages)||in_array(72,$allowed_pages)||in_array(73,$allowed_pages)||in_array(74,$allowed_pages)||in_array(76,$allowed_pages)||in_array(78,$allowed_pages)||in_array(80,$allowed_pages)||in_array(84,$allowed_pages)||in_array(86,$allowed_pages)||in_array(88,$allowed_pages)){?>
 				<li class="mega-menu-dropdown mega-menu-full">
 					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle">
 					Masters & Setup <i class="fa fa-angle-down"></i>
@@ -172,6 +173,7 @@ select
 						<li>
 							<!-- Content container to add padding -->
 							<div class="mega-menu-content ">
+							
 								<div class="row">
 									<div class="col-md-8">
 										<div class="row">
@@ -180,15 +182,15 @@ select
 													<li><?php if(in_array(19,$allowed_pages)){
 													echo $this->Html->link(' Logins','/Logins/Add',array('escape'=>false));
 													} ?></li>
-													<li class="divider"></li>
 													<?php if(in_array(65,$allowed_pages)){?>
+													<li class="divider"></li>
 													<li><?php echo $this->Html->link('Customer Groups','/Customer-Groups',array('escape'=>false)); ?></li>
 													<?php } ?>
 													<?php if(in_array(66,$allowed_pages)){?>
 													<li><?php echo $this->Html->link('Customers Segments','/customer-segs',array('escape'=>false)); ?></li>
 													<?php } ?>
-													<li class="divider"></li>
 													<?php if(in_array(42,$allowed_pages)){?>
+													<li class="divider"></li>
 													<li><?php echo $this->Html->link( 'Add new customer', '/Customers/add' ); ?></li>
 													<?php } ?>
 													<?php if(in_array(43,$allowed_pages) || in_array(44,$allowed_pages)){?>
@@ -221,15 +223,15 @@ select
 													<?php if(in_array(64,$allowed_pages)){?>
 													<li><?php echo $this->Html->link( 'Units','/units',array('escape'=>false)); ?></li>
 													<?php } ?>
-													<li class="divider"></li>
 													<?php if(in_array(50,$allowed_pages)){?>
+													<li class="divider"></li>
 													<li><?php echo $this->Html->link( 'Add New Item', '/Items/add' ); ?></li>
 													<?php } ?>
 													<?php if(in_array(52,$allowed_pages)){?>
 													<li><?php echo $this->Html->link('List Items', '/Items' ); ?></li>
 													<?php } ?>
-													<li class="divider"></li>
 													<?php if(in_array(67,$allowed_pages)){?>
+													<li class="divider"></li>
 													<li><?php echo $this->Html->link('Sale-Taxes','/SaleTaxes',array('escape'=>false)); ?></li>
 													<?php } ?>
 													<?php if(in_array(68,$allowed_pages)){?>
@@ -245,15 +247,15 @@ select
 													<?php if(in_array(56,$allowed_pages)){ ?>
 													<li><?php echo $this->Html->link('List Suppliers','/Vendors',array('escape'=>false)); ?></li>
 													<?php } ?>
-													<li class="divider"></li>
 													<?php if(in_array(46,$allowed_pages)){?>
+													<li class="divider"></li>
 													<li><?php echo $this->Html->link(' Add New  Employee','/employees/Add',array('escape'=>false)); ?></li>
 													<?php } ?>
 													<?php if(in_array(47,$allowed_pages)||in_array(48,$allowed_pages)){?>
 													<li><?php echo $this->Html->link('List Employees','/employees',array('escape'=>false)); ?></li>
 													<?php } ?>
-													<li class="divider"></li>
 													<?php if(in_array(58,$allowed_pages)){?>
+													<li class="divider"></li>
 													<li><?php echo $this->Html->link(' Add New Company','/Companies/add',array('escape'=>false)); ?></li>
 													<?php } ?>
 													<?php if(in_array(59,$allowed_pages)||in_array(60,$allowed_pages)){?>
@@ -310,10 +312,12 @@ select
 												</ul>
 										</div>
 								</div>
+							
 							</div>
 						</li>
 					</ul>
 				</li>
+			<?php } ?>	
 			</ul>
 		</div>
 		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -347,7 +351,6 @@ select
 						<li>
 							<?php 
 							echo $this->Html->link('<i class="fa fa-random"></i> Switch Company','/Logins/Switch-Company',array('escape'=>false)); ?>
-						
 						</li>
 						<li>
 							<?php 
@@ -547,6 +550,7 @@ select
 					</ul>
 				</li>
 				<?php } ?>
+				<?php if(in_array(118,$allowed_pages) ||in_array(119,$allowed_pages)||in_array(90,$allowed_pages)||in_array(91,$allowed_pages)|| in_array(92,$allowed_pages) ||in_array(93,$allowed_pages)||in_array(94,$allowed_pages)||in_array(95,$allowed_pages)|| in_array(96,$allowed_pages) ||in_array(97,$allowed_pages)||in_array(98,$allowed_pages)||in_array(99,$allowed_pages)|| in_array(100,$allowed_pages) ||in_array(101,$allowed_pages)||in_array(102,$allowed_pages)||in_array(103,$allowed_pages)|| in_array(104,$allowed_pages) ||in_array(105,$allowed_pages)||in_array(106,$allowed_pages)||in_array(107,$allowed_pages)|| in_array(108,$allowed_pages) ||in_array(109,$allowed_pages)||in_array(110,$allowed_pages)||in_array(111,$allowed_pages)|| in_array(112,$allowed_pages) ||in_array(113,$allowed_pages)||in_array(114,$allowed_pages)||in_array(115,$allowed_pages)|| in_array(116,$allowed_pages) ||in_array(117,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
@@ -680,6 +684,7 @@ select
 					</ul>
 					</ul>
 				</li>
+				<?php } ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-bar-chart-o"></i>

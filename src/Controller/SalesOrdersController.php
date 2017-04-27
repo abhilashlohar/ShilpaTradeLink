@@ -291,7 +291,6 @@ class SalesOrdersController extends AppController
 			
             $salesOrder = $this->SalesOrders->patchEntity($salesOrder, $this->request->data);
 			$last_so_no=$this->SalesOrders->find()->select(['so2'])->where(['company_id' => $st_company_id])->order(['so2' => 'DESC'])->first();
-			
 			$salesOrder->expected_delivery_date=date("Y-m-d",strtotime($salesOrder->expected_delivery_date)); 
 			$salesOrder->po_date=date("Y-m-d",strtotime($salesOrder->po_date)); 
 			$salesOrder->created_by=$s_employee_id; 

@@ -123,10 +123,9 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 			</tbody>
 			<tfoot>
 				<td><a class="btn btn-xs btn-default addrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
-				<td id="receipt_amount" style="font-size: 14px;font-weight: bold;"></td>
-				<td></td>
-				<td><button type="submit" class="btn btn-primary" >EDIT RECEIPT</button></td>
-				<td></td>
+				<td id="receipt_amount_dr" width="8%"><label>Total Dr</label><?php echo $this->Form->input('debitamount', ['type' => 'text','style'=>'width:65%;','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+				<td id="receipt_amount_cr" width="20%"><label>Total Cr</label><?php echo $this->Form->input('creditamount', ['type' => 'text','style'=>'width:50%;','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+				<td><button type="submit" class="btn btn-primary" >EDIT JOURNAL VOUCHER</button></td>
 			</tfoot>
 		</table>
 		</div>
@@ -176,10 +175,21 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-				bank_cash_id:{
-					required: true,
+				debitamount:{
+					
 				},
+				creditamount:{
+					
+					equalTo: "#debitamount",
+					
+				}
 			},
+		messages: {
+			creditamount:{
+					equalTo: "Must be equal to Debit Amount",
+					
+				}
+		},
 
 		errorPlacement: function (error, element) { // render error placement for each input type
 			if (element.parent(".input-group").size() > 0) {
@@ -459,8 +469,8 @@ $(document).ready(function() {
 				mian_amount_total_dr=mian_amount_total_dr+v;
 			}
 			
-			mian_amount_total=mian_amount_total_dr-mian_amount_total_cr;
-			$('#receipt_amount').text(mian_amount_total.toFixed(2));
+			$('#debitamount').val(mian_amount_total_dr.toFixed(2));
+			$('#creditamount').val(mian_amount_total_cr.toFixed(2));
 		});
 	}
 	

@@ -87,32 +87,8 @@ class ItemsController extends AppController
         if ($this->request->is('post')) {
             $item = $this->Items->patchEntity($item, $this->request->data);
 			if ($this->Items->save($item)) {
-				$item_id=$item->id;
-				//pr($item_id); exit;
-				$itemLedger = $this->Items->ItemLedgers->newEntity();
-					$itemLedger->item_id = $item_id;
-					$itemLedger->quantity = $item->ob_quantity;
-					$itemLedger->company_id = $st_company_id;
-					$itemLedger->source_model = 'Items';
-					$itemLedger->source_id =  $item_id;
-					$itemLedger->in_out = 'In';
-					$itemLedger->processed_on = date("Y-m-d");
-
-					$this->Items->ItemLedgers->save($itemLedger);
-					
-				if($item->serial_number_enable=="1"){
-					foreach($item->serial_numbers as $serial_number) {
-						$ItemSerialNumber = $this->Items->ItemSerialNumbers->newEntity();
-						$ItemSerialNumber->item_id = $item->id;
-						$ItemSerialNumber->serial_no = $serial_number[0];
-						$ItemSerialNumber->status = 'In';
-						$ItemSerialNumber->master_item_id = $item->id;
-						$this->Items->ItemSerialNumbers->save($ItemSerialNumber);
-					}
-				}
 				
-				
-                $this->Flash->success(__('The item has been saved.'));
+				 $this->Flash->success(__('The item has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             } else { 
@@ -200,6 +176,7 @@ class ItemsController extends AppController
 		$InvoiceRowsexists = $this->Items->InvoiceRows->exists(['item_id' => $id]);
 		if(!$QuotationRowsexists and !$SalesOrderRowsexists and !$InvoiceRowsexists){
 			$item = $this->Items->get($id);
+			//$this->Items->ItemLedgers->deleteAll(['source_id' => $id, 'source_model' => 'Items']);
 			if ($this->Items->delete($item)) {
 				$this->Flash->success(__('The item has been deleted.'));
 			} else {
@@ -221,15 +198,24 @@ class ItemsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		$st_year_id = $session->read('st_year_id');
+		$financial_year = $this->Items->FinancialYears->find()->where(['id'=>$st_year_id])->first();
 		
 		$ItemLedger = $this->Items->ItemLedgers->newEntity();
-		
 		$Items=$this->Items->find('list')->matching('ItemCompanies', function ($q) use($st_company_id) {
 			return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
+			 
 		});
 		
 		if ($this->request->is('post')) {
-			//pr($this->request->data); exit;
+			$item_id=$this->request->data['Item_id'];
+		
+			$ItemLedgersexists = $this->Items->ItemLedgers->exists(['source_model'=>'Items','item_id' => $item_id,'company_id'=>$st_company_id]);
+			if($ItemLedgersexists){
+			$this->Flash->error(__('The Item opening balance already created'));
+			return $this->redirect(['action' => 'openingBalance']);
+			}
+			
 			$ItemLedger->item_id = $this->request->data['Item_id'];
 			$ItemLedger->quantity = $this->request->data['quantity'];
 			$ItemLedger->rate = $this->request->data['rate'];
@@ -264,7 +250,7 @@ class ItemsController extends AppController
 			return $this->redirect(['action' => 'Opening-Balance']);
 		}
 		
-		$this->set(compact('Items','ItemLedger'));
+		$this->set(compact('Items','ItemLedger','financial_year'));
 		$this->set('_serialize', ['ItemLedger']);
 	}
 	
@@ -404,4 +390,21 @@ public function CheckCompany($company_id=null,$item_id=null)
 		}
 	}
 	
+	public function DeleteItemOpeningBalance($id = null)
+	{
+		$this->request->allowMethod(['post', 'delete']);
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$ItemLedger = $this->Items->ItemLedgers->get($id);
+		$ItemSerialexists = $this->Items->ItemSerialNumbers->exists(['status'=>'In','item_id' => $ItemLedger->item_id]);
+		if($ItemSerialexists){
+			$this->Items->ItemSerialNumbers->deleteAll(['item_id' => $ItemLedger->item_id,'status'=>'In','company_id'=>$st_company_id]); 
+		} 
+		if ($this->Items->ItemLedgers->delete($ItemLedger)) {
+			$this->Flash->success(__('The Opening Balance has been deleted.'));
+		} else {
+			$this->Flash->error(__('The Opening Balance could not be deleted. Please, try again.'));
+		}
+        return $this->redirect(['action' => 'openingBalanceView']);
+    }
 }

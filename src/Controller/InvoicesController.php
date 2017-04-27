@@ -86,31 +86,30 @@ class InvoicesController extends AppController
 			$invoices_data=$this->paginate($this->Invoices->find()->contain(['InvoiceRows'=>['Items'=>function ($q) {
 				return $q->where(['source !='=>'Purchessed']);
 				}]])->where(['company_id'=>$st_company_id,'inventory_voucher_status'=>'Pending'])->order(['Invoices.id' => 'DESC']));
-			
+				//pr($invoices_data); exit;
 				foreach($invoices_data as $invoice){
 					$sales_order_id=$invoice->sales_order_id;
 					$invoice_rows=$invoice->invoice_rows;
 						if(sizeof($invoice_rows)>0){
 							foreach($invoice_rows as $invoice_row)
-							{
+							{ 
 								$SalesOrderRow=$this->Invoices->SalesOrderRows->find()->where(['sales_order_id'=>$sales_order_id,'item_id'=>$invoice_row->item_id])->first();
 								if($invoice_row->item->source=='Purchessed/Manufactured'){ 
-								
 									if($SalesOrderRow->source_type=="Manufactured"){
 									$invoices[]=$invoice; 
 									}
 								}
 								elseif($invoice_row->item->source=='Assembled' or $invoice_row->item->source=='Manufactured'){
-								
 								$invoices[]=$invoice; 
 								}
 							}	
 						}
+						//$invoices = $this->paginate($invoices[]);
 					}
 			}else{
 			$invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
 		}
-		
+		//pr($invoices); exit;
 		$this->set(compact('invoices','status','inventory_voucher'));
         $this->set('_serialize', ['invoices']);
 		$this->set(compact('url'));

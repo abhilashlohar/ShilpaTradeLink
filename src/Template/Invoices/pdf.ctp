@@ -190,7 +190,7 @@ if($invoice->discount_type=='1'){ $discount_text='Discount @ '.$invoice->discoun
 
 if($invoice->exceise_duty>0){
 				$html.='<tr>
-				<td colspan="5" style="text-align:right;border-top: 1px solid #000;">'. $this->Text->autoParagraph(h($invoice->ed_description)) .'</td>
+				<td colspan="5" style="text-align:left;border-top: 1px solid #000;">'. $this->Text->autoParagraph(h($invoice->ed_description)) .'</td>
 				<td style="text-align:right;border-top: 1px solid #000;">'. $this->Number->format($invoice->exceise_duty,[ 'places' => 2]).'</td>
 </tr>';	}
 			

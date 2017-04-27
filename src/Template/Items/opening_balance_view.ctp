@@ -28,6 +28,7 @@
 					<th>Rate</th>
 					<th>Amout</th>
 					<th>Serial Number Enable</th>
+					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -40,6 +41,17 @@
 					<td><?= h($ItemLedger->rate) ?></td>
 					<td><?= h($ItemLedger->quantity*$ItemLedger->rate) ?></td>
 					<td><?= $ItemLedger->item->item_companies[0]->serial_number_enable ? 'Yes' : 'No'?></td>
+					<td>
+					<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+								['action' => 'DeleteItemOpeningBalance', $ItemLedger->id], 
+								[
+									'escape' => false,
+									'class'=>'btn btn-xs red tooltips','data-original-title'=>'Delete',
+									
+									'confirm' => __('Are you sure ?', $ItemLedger->id)
+								]
+							) ?>
+					</td>
 				</tr>
 			<?php } ?>
 			</tbody>

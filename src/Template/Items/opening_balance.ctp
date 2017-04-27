@@ -28,7 +28,7 @@
 			<div class="col-md-3">
 				<div class="form-group">
 					<label class="control-label">Date <span class="required" aria-required="true">*</span></label>
-					<?php echo $this->Form->input('date', ['label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Date','data-date-format' => 'dd-mm-yyyy']); ?>
+					<?php echo $this->Form->input('date', ['type' => 'text','label' => false,'class' => 'form-control input-sm ','data-date-format' => 'dd-mm-yyyy','value' =>date("d-m-Y",strtotime($financial_year->date_from)),'readonly']); ?>
 				</div>
 			</div>
 		</div>
@@ -153,7 +153,24 @@ $(document).ready(function() {
 	});
 	//--	 END OF VALIDATION
 	
+	$('input[name="quantity"],input[name="rate"]').die().live("blur",function() { 
+		var quantity=parseFloat($('input[name="quantity"]').val());
+		if(isNaN(quantity)) { var quantity = 0; }
+		var rate=parseFloat($('input[name="rate"]').val());
+		if(isNaN(rate)) { var rate = 0; }
+		var total=quantity*rate;
+		$('input[name="value"]').val(total.toFixed(2));
+    });
+	$('input[name="value"]').die().live("blur",function() { 
+		var quantity=parseFloat($('input[name="quantity"]').val());
+		if(isNaN(quantity)) { var quantity = 0; }
+		var value=parseFloat($('input[name="value"]').val());
+		if(isNaN(value)) { var value = 0; }
+		
+		var total=value/quantity;
 	
+		$('input[name="rate"]').val(total.toFixed(6));
+    });
 
 
 	$('input[name="serial_number_enable"]').die().live("change",function() {
