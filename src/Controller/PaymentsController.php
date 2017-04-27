@@ -46,9 +46,10 @@ class PaymentsController extends AppController
 					'total_dr' => $PaymentRows->func()->sum($totalDrCase)
 				])
 				->group('payment_id')
+				
 				->autoFields(true);
 			
-		}]));
+		}])->order(['voucher_no'=>'DESC']));
 		
 
         $this->set(compact('payments'));

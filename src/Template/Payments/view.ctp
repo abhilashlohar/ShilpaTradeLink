@@ -7,6 +7,9 @@
 		display:none;
 	}
 }
+p{
+margin-bottom: 0;
+}
 </style>
 <style type="text/css" media="print">
 @page {
@@ -87,14 +90,20 @@
 						<td style="font-size: 16px;font-weight: bold;">
 						Rs: <?= h($this->Number->format($total,[ 'places' => 2])) ?></td>
 					</tr>
-					<tr><td>Rupees<?php echo ucwords($this->NumberWords->convert_number_to_words($total)) ?> Only </td>
+					<tr>
+						<td style="font-size: 12px;">Rupees<?php echo ucwords($this->NumberWords->convert_number_to_words($total)) ?> Only </td>
 					</tr>
 					<tr>
-						<td>via <?= h($payment->payment_mode) ?> </td>
+						<td style="font-size: 12px;">
+						via <?= h($payment->payment_mode) ?> 
+						<?php if($payment->payment_mode=="Cheque"){
+							echo ' ('.$payment->cheque_no.')';
+						} ?>
+						</td>
 					</tr>
 				</table>
 			</td>
-		    <td align="left" valign="top">
+		    <td align="right" valign="top" width="35%">
 				<table style="margin-top:3px;">
 					<tr>
 					   <td width="15%" align="center"> 
