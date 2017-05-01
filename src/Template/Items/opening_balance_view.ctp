@@ -17,8 +17,19 @@
 		</div>
 	</div>
 	<div class="portlet-body form">
+		<form method="GET" >
+			<input type="hidden" name="pull-request" value="<?php echo @$pull_request; ?>">
+				<table class="table table-condensed" width="20%">
+					<tbody>
+						<tr>
+							<td width="20%"><input type="text" name="item" class="form-control input-sm" placeholder="Item Name" value="<?php echo @$item; ?>"></td>
+							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+							</tr>
+						</tbody>
+				</table>
+		</form>
 		<?php $page_no=$this->Paginator->current('ItemLedgers'); $page_no=($page_no-1)*20; ?>
-		<table class="table table-bordered table-striped">
+		<table class="table table-bordered table-striped" >
 			<thead>
 				<tr>
 					<th>Sr. No.</th>
