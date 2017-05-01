@@ -200,6 +200,7 @@ class UserRightsController extends AppController
 			}
 			
 			$this->Flash->success(__('User Rights has been Updated.'));
+			return $this->redirect(['action' => '/add/'.$login_id]);
         }
 		$UserRights=$this->UserRights->find()->where(['login_id'=>$login_id]);
 		$page_ids=array();
