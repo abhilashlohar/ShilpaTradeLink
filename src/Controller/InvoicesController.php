@@ -981,8 +981,8 @@ class InvoicesController extends AppController
 									'invoice_id' => $invoice->id,
 									'reference_no' => $ref_row->ref_no,
 									'credit' => $ref_row->ref_amount,
-									'debit' => $ref_row->ref_type,
-									'reference_type' => 0
+									'debit' => 0,
+									'reference_type' => $ref_row->ref_type
 								])
 								->execute();
 								
@@ -994,7 +994,7 @@ class InvoicesController extends AppController
                 $this->Flash->success(__('The invoice has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else { pr($invoice); exit;
+            } else { 
                 $this->Flash->error(__('The invoice could not be saved. Please, try again.'));
             }
         }

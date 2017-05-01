@@ -189,13 +189,8 @@ $(document).ready(function() {
 	function rename_rows(){
 		var i=0;
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
-			$(this).find("td:eq(0) select.received_from").select2().attr({name:"journal_voucher_rows["+i+"][received_from_id]", id:"journal_voucher_rows-"+i+"-received_from_id"}).rules('add', {
-						required: true,
-						notEqualToGroup: ['.received_from'],
-						messages: {
-							notEqualToGroup: "Do not select same party again."
-						}
-					});
+			$(this).find("td:eq(0) select.received_from").select2().attr({name:"journal_voucher_rows["+i+"][received_from_id]", id:"journal_voucher_rows-"+i+"-received_from_id"}).rules("add", "required");
+						
 			$(this).find("td:eq(1) input").attr({name:"journal_voucher_rows["+i+"][amount]", id:"journal_voucher_rows-"+i+"-amount"}).rules('add', {
 						required: true,
 						min: 0.01,
@@ -427,9 +422,9 @@ $(document).ready(function() {
 	<table width="100%" class="ref_table">
 		<thead>
 			<tr>
-				<th width="25%">Ref Type</th>
+				<th width="35%">Ref Type</th>
 				<th width="40%">Ref No.</th>
-				<th width="30%">Amount</th>
+				<th width="40%">Amount</th>
 				<th width="5%"></th>
 			</tr>
 		</thead>
@@ -450,8 +445,8 @@ $(document).ready(function() {
 			</tr>
 			<tr>
 				<td colspan="2"><a class="btn btn-xs btn-default addrefrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
-				<td><input type="text" class="form-control input-sm" placeholder="total" readonly></td>
-				<td></td>
+				<td colspan="2"><input type="text" class="form-control input-sm" placeholder="total" readonly></td>
+				
 			</tr>
 		</tfoot>
 	</table>

@@ -445,7 +445,16 @@ $(document).ready(function() {
 			$(this).find("table.ref_table tfoot tr:nth-child(2) td:nth-child(2) input").val(total_ref.toFixed(2));
 		});
 	}
-	$('.mian_amount').live("blur",function() {
+	
+	function convert_into_deciaml(){
+		$('.mian_amount').live("blur",function() { 
+		var v=parseFloat($(this).val());
+		if(!v){ v=0; }
+		$(this).val(v.toFixed(2));
+		});
+	}
+	
+	$('.mian_amount').live("blur",function() { 
 		var v=parseFloat($(this).val());
 		if(!v){ v=0; }
 		$(this).val(v.toFixed(2));
