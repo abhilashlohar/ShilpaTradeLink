@@ -83,29 +83,10 @@ class InvoicesController extends AppController
 		}
 		if($inventory_voucher=='true'){
 			$invoices=[];
-			$invoices_data=$this->paginate($this->Invoices->find()->contain(['InvoiceRows'=>['Items'=>function ($q) {
+			$invoices=$this->paginate($this->Invoices->find()->contain(['InvoiceRows'=>['Items'=>function ($q) {
 				return $q->where(['source !='=>'Purchessed']);
-				}]])->where(['company_id'=>$st_company_id,'inventory_voucher_status'=>'Pending'])->order(['Invoices.id' => 'DESC']));
-				//pr($invoices_data); exit;
-				foreach($invoices_data as $invoice){
-					$sales_order_id=$invoice->sales_order_id;
-					$invoice_rows=$invoice->invoice_rows;
-						if(sizeof($invoice_rows)>0){
-							foreach($invoice_rows as $invoice_row)
-							{ 
-								$SalesOrderRow=$this->Invoices->SalesOrderRows->find()->where(['sales_order_id'=>$sales_order_id,'item_id'=>$invoice_row->item_id])->first();
-								if($invoice_row->item->source=='Purchessed/Manufactured'){ 
-									if($SalesOrderRow->source_type=="Manufactured"){
-									$invoices[]=$invoice; 
-									}
-								}
-								elseif($invoice_row->item->source=='Assembled' or $invoice_row->item->source=='Manufactured'){
-								$invoices[]=$invoice; 
-								}
-							}	
-						}
-						//$invoices = $this->paginate($invoices[]);
-					}
+				}]])->where(['company_id'=>$st_company_id,'inventory_voucher_status'=>'Pending','inventory_voucher_create'=>'Yes'])->order(['Invoices.id' => 'DESC']));
+				
 			}else{
 			$invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
 		}
@@ -425,6 +406,26 @@ class InvoicesController extends AppController
 			}
 			
             if ($this->Invoices->save($invoice)) {
+				foreach($invoice->invoice_rows as $invoice_row){
+					$SalesOrderRow=$this->Invoices->SalesOrderRows->find()->where(['sales_order_id'=>$invoice->sales_order_id,'item_id'=>$invoice_row->item_id])->first();
+					$items_source=$this->Invoices->Items->get($invoice_row->item_id);
+						if($items_source->source=='Purchessed/Manufactured'){ 
+							if($SalesOrderRow->source_type=="Manufactured"){
+								$query = $this->Invoices->query();
+								$query->update()
+									->set(['inventory_voucher_create' => 'Yes'])
+									->where(['id' => $invoice->id])
+									->execute();
+							}
+						}
+						elseif($items_source->source=='Assembled' or $items_source->source=='Manufactured'){
+							$query = $this->Invoices->query();
+							$query->update()
+								->set(['inventory_voucher_create' => 'Yes'])
+								->where(['id' => $invoice->id])
+								->execute();
+						}
+				} 
 				
 				//GET CUSTOMER LEDGER-ACCOUNT-ID
 				$c_LedgerAccount=$this->Invoices->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Customers','source_id'=>$sales_order->customer->id])->first();
@@ -773,6 +774,37 @@ class InvoicesController extends AppController
 			
 			if ($this->Invoices->save($invoice)) {
 				
+				$flag=0;
+				foreach($invoice->invoice_rows as $invoice_row){
+					$SalesOrderRow=$this->Invoices->SalesOrderRows->find()->where(['sales_order_id'=>$invoice->sales_order_id,'item_id'=>$invoice_row->item_id])->first();
+					$items_source=$this->Invoices->Items->get($invoice_row->item_id);
+						if($items_source->source=='Purchessed/Manufactured'){ 
+							if($SalesOrderRow->source_type=="Manufactured"){
+								$query = $this->Invoices->query();
+								$query->update()
+									->set(['inventory_voucher_create' => 'Yes'])
+									->where(['id' => $invoice->id])
+									->execute();
+									$flag=1;
+							}
+						}
+						elseif($items_source->source=='Assembled' or $items_source->source=='Manufactured'){
+							$query = $this->Invoices->query();
+							$query->update()
+								->set(['inventory_voucher_create' => 'Yes'])
+								->where(['id' => $invoice->id])
+								->execute();
+								  $flag=1;
+						}
+						
+				}
+				if($flag==0){
+					$query = $this->Invoices->query();
+					$query->update()
+						->set(['inventory_voucher_create' => 'No'])
+						->where(['id' => $invoice->id])
+						->execute();
+				}
 				
 				if($invoice->invoice_breakups){
 					foreach($invoice->invoice_breakups as $invoice_breakup){

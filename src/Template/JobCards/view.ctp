@@ -72,7 +72,7 @@
 		<?php foreach ($jobCard->sales_order->sales_order_rows as $sales_order_row): ?>
 		<tr>
 			<td valign="top">
-			<b><?= $sales_order_row->item->name ?> ( <?= h($sales_order_row->quantity) ?> )</b>
+			<b><?= $sales_order_row->item->name ?> ( <?= h($sales_order_row->quantity) ?> )</b><br/>Remark:-(<?= h($sales_order_row->job_card_rows[0]['remark']) ?>)
 			</td>
 			<td>
 				<table width="100%">

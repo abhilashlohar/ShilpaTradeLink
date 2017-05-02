@@ -197,6 +197,7 @@ $(document).ready(function() {
 					});
 			$(this).find("td:eq(1) select").attr({name:"journal_voucher_rows["+i+"][cr_dr]", id:"journal_voucher_rows-"+i+"-cr_dr"});
 			$(this).find("td:nth-child(4) textarea").attr({name:"journal_voucher_rows["+i+"][narration]", id:"journal_voucher_rows-"+i+"-narration"}).rules("add", "required");
+			$(this).find("td:eq(0) select.received_from").attr('auto_inc',i)
 			i++;
 		});
 	}
@@ -222,36 +223,25 @@ $(document).ready(function() {
 	
 	function rename_ref_rows(sel,received_from_id){
 		var i=0;
+		var auto_inc=$(sel).closest('tr.main_tr').find('td:nth-child(1) select').attr('auto_inc');
 		$(sel).find("table.ref_table tbody tr").each(function(){
-			$(this).find("td:nth-child(1) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_type]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_type"}).rules("add", "required");
+			$(this).find("td:nth-child(1) select").attr({name:"ref_rows["+auto_inc+"]["+i+"][ref_type]", id:"ref_rows-"+auto_inc+"-"+i+"-ref_type"}).rules("add", "required");
 			var is_select=$(this).find("td:nth-child(2) select").length;
 			var is_input=$(this).find("td:nth-child(2) input").length;
 			
 			if(is_select){
-				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no"}).rules("add", "required");
-			}else if(is_input){
-				var url='<?php echo $this->Url->build(['controller'=>'JournalVouchers','action'=>'checkRefNumberUnique']); ?>';
-				url=url+'/'+received_from_id+'/'+i;
-				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no", class:"form-control input-sm ref_number-"+received_from_id}).rules('add', {
-														required: true,
-														noSpace: true,
-														notEqualToGroup: ['.ref_number-'+received_from_id],
-														remote: {
-															url: url,
-														},
-														messages: {
-															remote: "Not an unique."
-														}
-													});
+				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+auto_inc+"]["+i+"][ref_no]", id:"ref_rows-"+auto_inc+"-"+i+"-ref_no"}).rules("add", "required");
+			}else if(is_input){ alert(is_input);
+				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+auto_inc+"]["+i+"][ref_no]", id:"ref_rows-"+auto_inc+"-"+i+"-ref_no"}).rules("add", "required");
 			}
 			
-			$(this).find("td:nth-child(3) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_amount]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_amount"}).rules("add", "required");
+			$(this).find("td:nth-child(3) input").attr({name:"ref_rows["+auto_inc+"]["+i+"][ref_amount]", id:"ref_rows-"+auto_inc+"-"+i+"-ref_amount"}).rules("add", "required");
 			i++;
 		});
 		var amount_id=$(sel).find("td:nth-child(2) input").attr('id');
 		var is_tot_input=$(sel).find("table.ref_table tfoot tr:eq(1) td:eq(1) input").length;
 		if(is_tot_input){
-			$(sel).find("table.ref_table tfoot tr:eq(1) td:eq(1) input").attr({name:"ref_rows_total["+received_from_id+"]", id:"ref_rows_total-"+received_from_id}).rules('add', {
+			$(sel).find("table.ref_table tfoot tr:eq(1) td:eq(1) input").attr({name:"ref_rows_total["+auto_inc+"]", id:"ref_rows_total-"+auto_inc}).rules('add', {
 														equalTo: "#"+amount_id
 													});
 		}
@@ -395,7 +385,7 @@ $(document).ready(function() {
 <table id="sample_table" style="display:none;">
 	<tbody>
 		<tr class="main_tr">
-			<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from']); ?></td>
+			<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from','auto_inc'=>0]); ?></td>
 			<td>
 			<div class="row">
 				<div class="col-md-6" style="padding-right: 0;">

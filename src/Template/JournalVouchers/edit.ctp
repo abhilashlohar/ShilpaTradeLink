@@ -49,7 +49,8 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 			<tbody id="main_tbody">
 			<?php foreach($journalVoucher->journal_voucher_rows as $journal_voucher_rows){ ?> 
 				<tr class="main_tr" old_received_from_id="<?php echo $journal_voucher_rows->received_from_id; ?>">
-					<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from','value'=>$journal_voucher_rows->received_from_id]); ?></td>
+					<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from','value'=>$journal_voucher_rows->received_from_id]); ?>
+					<?php echo $this->Form->input('journal_voucher_row_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from','value'=>$journal_voucher_rows->id]); ?></td>
 					<td>
 					<div class="row">
 						<div class="col-md-7" style="padding-right: 0;">
@@ -73,12 +74,13 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 								</tr>
 							</thead>
 							<tbody>
-							<?php foreach($old_ref_rows[$journal_voucher_rows->received_from_id] as $old_ref_row){ ?>
+							<?php foreach($old_ref_rows[$journal_voucher_rows->id] as $old_ref_row){ ?>
 								<tr>
 									<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type','value'=>$old_ref_row->reference_type]); ?></td>
 									<td class="ref_no">
-									<?php if($old_ref_row->reference_type=="Against Reference"){
-										echo $this->requestAction('Payments/fetchRefNumbersEdit/'.$journal_voucher_rows->received_from_id.'/'.$old_ref_row->reference_no.'/'.$old_ref_row->debit.'/'.$old_ref_row->credit.'/'.$journal_voucher_rows->cr_dr);
+									<?php 
+									if($old_ref_row->reference_type=="Against Reference"){
+										echo $this->requestAction('JournalVouchers/fetchRefNumbersEdit/'.$journal_voucher_rows->id.'/'.$old_ref_row->reference_no.'/'.$old_ref_row->debit.'/'.$old_ref_row->credit.'/'.$journal_voucher_rows->cr_dr);
 									}else{
 										echo '<input type="text" class="form-control input-sm" placeholder="Ref No." value="'.$old_ref_row->reference_no.'" readonly="readonly" is_old="yes">';
 									}?>
@@ -262,13 +264,7 @@ $(document).ready(function() {
 	function rename_rows(){ 
 		var i=0;
 		$("#main_table tbody#main_tbody tr.main_tr").each(function(){
-			$(this).find("td:eq(0) select.received_from").select2().attr({name:"journal_voucher_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"}).rules('add', {
-						required: true,
-						notEqualToGroup: ['.received_from'],
-						messages: {
-							notEqualToGroup: "Do not select same party again."
-						}
-					});
+			$(this).find("td:eq(0) select.received_from").select2().attr({name:"journal_voucher_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"}).rules("add","required");
 			$(this).find("td:eq(1) input").attr({name:"journal_voucher_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"}).rules('add', {
 						required: true,
 						min: 0.01,
