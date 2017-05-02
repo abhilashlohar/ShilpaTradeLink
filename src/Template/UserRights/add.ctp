@@ -716,6 +716,27 @@ fieldset legend {
 							</label>
 						</div>
 				</div>
+                <div class="col-md-3">
+					<div class="titletext"><b>Financial Year</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(121,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.121.page_id', ['label' => 'Add','class' => '','type'=>'checkbox','value'=>121,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+                <div class="col-md-3">
+					<div class="titletext"><b>Financial Month</b></div>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+								<?php 
+								if(in_array(122,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+								echo $this->Form->input('user_rights.122.page_id', ['label' => 'Add','class' => '','type'=>'checkbox','value'=>122,$checked_status]); ?>
+							</label>
+						</div>
+				</div>
+                
                 </div>
                 </fieldset>
 		</div>

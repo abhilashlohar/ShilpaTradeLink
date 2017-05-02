@@ -117,12 +117,15 @@ class AppController extends Controller
 		}
 		
 		
-		$this->loadModel('pages');
-		$page=$this->pages->find()->where(['controller'=>$controller,'action'=>$action])->first();
+		$this->loadModel('Pages');
+		$page=$this->Pages->find()->where(['controller'=>$controller,'action'=>$action])->first();
 		if(!empty($page->id) and !in_array($page->id,$allowed_pages)){
 			$this->viewBuilder()->layout('index_layout');
 			$this -> render('/Error/not_allow'); 
 		}
+		
+		$pages=$this->Pages->find()->where(['master'=>1]);
+		$this->set(compact('pages'));
 		
     }
 
