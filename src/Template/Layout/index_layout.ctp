@@ -600,7 +600,7 @@ select
 						<li>
 							<a href="javascript:;">
 							<i class="icon-basket"></i>
-							<span class="title">PeetyCash Voucher</span>
+							<span class="title">PettyCash Voucher</span>
 							<span class="arrow "></span>
 							</a>
 							<ul class="sub-menu">

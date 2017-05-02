@@ -181,14 +181,12 @@ $this->Form->templates([
 							
 							<td>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.excise_duty',['value'=>$invoice_booking_row->excise_duty,'label'=>false,'type'=>'text','class'=>'form-control input-sm row_textbox']); ?>
-							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.excise_duty_per',['label'=>false,'type'=>'checkbox','class'=>'per_check']); ?>
-							<span class="check_text">In Amount</span>
+							<span class="check_text">In percentages</span>
 							</td>
 							
 							<td>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.sale_tax',['value'=>$invoice_booking_row->sale_tax,'label'=>false,'type'=>'text','class'=>'form-control input-sm row_textbox']); ?>
-							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.sale_tax_per',['label'=>false,'type'=>'checkbox','class'=>'per_check']); ?>
-							<span class="check_text">In Amount</span>
+							<span class="check_text">In percentages</span>
 							</td>
 							
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.other_charges',['type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox','value'=>$invoice_booking_row->other_charges]); ?>

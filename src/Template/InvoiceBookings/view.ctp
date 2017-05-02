@@ -96,48 +96,68 @@
 			<td align="right"><?= $invoice_booking_row->rate; ?></td>
 			<td align="right"><?= $invoice_booking_row->quantity*$invoice_booking_row->rate; ?></td>
 		</tr>
-		<?php $total_sale_tax=$total_sale_tax+$invoice_booking_row->sale_tax; endforeach; ?>
+		<?php 
+		$amount_after_misc=($invoice_booking_row->quantity*$invoice_booking_row->unit_rate_from_po)+$invoice_booking_row->misc;
+		if($invoice_booking_row->discount_per){
+			$amount_after_discount=$amount_after_misc*(100-$invoice_booking_row->discount)/100;
+		}else{
+			$amount_after_discount=$amount_after_misc-$invoice_booking_row->discount;
+		}
+		
+		if($invoice_booking_row->pnf_per){
+			$amount_after_pnf=$amount_after_discount*(100+$invoice_booking_row->pnf)/100;
+		}else{
+			$amount_after_pnf=$amount_after_discount+$invoice_booking_row->pnf;
+		}
+		
+		
+		$amount_after_excise=$amount_after_pnf*(100+$invoice_booking_row->excise_duty)/100;
+		
+		if($invoiceBooking->purchase_ledger_account==538){
+			$vat=$amount_after_excise*$invoice_booking_row->sale_tax/100;
+		}
+		
+		$total_sale_tax=$total_sale_tax+@$vat; 
+		
+		endforeach; ?>
 	</tbody>
 	<tfoot>
+		
+		<?php if($invoiceBooking->purchase_ledger_account==538){ ?>
 		<tr>
-		<td colspan="3">
-		<table>
-			<tr>
-				<?php if($invoiceBooking->purchase_ledger_account==538){ ?>
-				<td>ledger Account for VAT</td>
-				<td>
-					<?php if(empty($LedgerAccount->alias)){ ?>
+			<td colspan="3"></td>
+			<td style="font-size:14px;"  align="right"> VAT Amount
+				<?php if(empty($LedgerAccount->alias)){ ?>
 						: <?php echo $LedgerAccount->name; ?>
 					<?php }else{ ?>
 						: <?php echo $LedgerAccount->name; ?> (<?php echo $LedgerAccount->alias; ?>)
 					<?php } ?>
-				</td>
-				<?php } ?>
-			</tr>
-			<tr>
-				<?php if($invoiceBooking->purchase_ledger_account==538){ ?>
-				<td>VAT Amount</td>
-				<td>: <?php echo $total_sale_tax; ?></td>
-				<?php } ?>
-			</tr>
-			<tr>
-				<td colspan="2"><b>Reference Number:</b></td>
-			</tr>
-			<?php foreach($ReferenceDetails as $ReferenceDetail){ ?>
-			<tr>
-				<td><?php echo $ReferenceDetail->reference_no; ?></td>
-				<td>:<?php echo $ReferenceDetail->credit; ?></td>
-			</tr>
-			<?php } ?>
-		</table>
-		</td>
-		<td style="font-size:14px; font-weight:bold;"  align="right"> Total</td>
-		<td style="font-size:14px; font-weight:bold; "  align="right"><?= $invoiceBooking->total ?></td>
+			</td>
+			<td style="font-size:14px;"  align="right"><?= $total_sale_tax ?></td>
+		</tr>
+		<?php } ?>
+		<tr>
+			<td colspan="3"></td>
+			<td style="font-size:14px; font-weight:bold;"  align="right"> Total</td>
+			<td style="font-size:14px; font-weight:bold; "  align="right"><?= $invoiceBooking->total ?></td>
 		</tr>
 	</tfoot>
 </table>
 <table width="100%" class="divFooter">
 	<tr>
+		<td style="vertical-align: top !important;">
+			<table>
+				<tr>
+					<td colspan="2"><b>Reference Number:</b></td>
+				</tr>
+				<?php foreach($ReferenceDetails as $ReferenceDetail){ ?>
+				<tr>
+					<td><?php echo $ReferenceDetail->reference_no; ?></td>
+					<td>:<?php echo $ReferenceDetail->credit; ?></td>
+				</tr>
+				<?php } ?>
+			</table>
+		</td>
 		<td align="right">
 		<table>
 			<tr>

@@ -22,6 +22,7 @@ class ItemLedgersController extends AppController
 		$session = $this->request->session();
         $st_company_id = $session->read('st_company_id');
 		
+		
         $this->paginate = [
             'contain' => ['Items']
         ];
@@ -179,7 +180,7 @@ class ItemLedgersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $session = $this->request->session();
         $st_company_id = $session->read('st_company_id');
-
+		$item_name=$this->request->query('item_name');
        
 		$query = $this->ItemLedgers->find();
 		$totalInCase = $query->newExpr()
@@ -202,10 +203,12 @@ class ItemLedgersController extends AppController
 		->where(['company_id'=>$st_company_id])
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items']);
+		->contain(['Items'=>function($q) use($item_name){
+			return $q->where(['name LIKE'=>'%'.$item_name.'%']);
+		}]);
         $itemLedgers = $this->paginate($query);
 		
-        $this->set(compact('itemLedgers'));
+        $this->set(compact('itemLedgers', 'item_name'));
     }
 	
 	 public function materialindentreport(){
