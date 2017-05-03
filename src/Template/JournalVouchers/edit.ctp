@@ -13,9 +13,9 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 	font-size: 10px;
 }
 </style>
-<?php 
-//pr($journalVoucher->toArray()); exit;
-?>
+
+
+
 <?php $ref_types=['New Reference'=>'New Ref','Against Reference'=>'Agst Ref','Advance Reference'=>'Advance']; ?>
 <?php $cr_dr_options=['Dr'=>'Dr','Cr'=>'Cr']; ?>
 <div class="portlet light bordered">
@@ -50,7 +50,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 			<?php foreach($journalVoucher->journal_voucher_rows as $journal_voucher_rows){ ?> 
 				<tr class="main_tr" old_received_from_id="<?php echo $journal_voucher_rows->received_from_id; ?>">
 					<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from','value'=>$journal_voucher_rows->received_from_id]); ?>
-					<?php echo $this->Form->input('journal_voucher_row_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from','value'=>$journal_voucher_rows->id]); ?></td>
+					</td>
 					<td>
 					<div class="row">
 						<div class="col-md-7" style="padding-right: 0;">
@@ -74,13 +74,15 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 								</tr>
 							</thead>
 							<tbody>
-							<?php foreach($old_ref_rows[$journal_voucher_rows->id] as $old_ref_row){ ?>
+							<?php foreach($old_ref_rows[$journal_voucher_rows->auto_inc] as $old_ref_row){ 
+							//pr($old_ref_row); exit; ?>
+							
 								<tr>
 									<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type','value'=>$old_ref_row->reference_type]); ?></td>
 									<td class="ref_no">
-									<?php 
+									<?php
 									if($old_ref_row->reference_type=="Against Reference"){
-										echo $this->requestAction('JournalVouchers/fetchRefNumbersEdit/'.$journal_voucher_rows->id.'/'.$old_ref_row->reference_no.'/'.$old_ref_row->debit.'/'.$old_ref_row->credit.'/'.$journal_voucher_rows->cr_dr);
+										echo $this->requestAction('JournalVouchers/fetchRefNumbersEdit/'.$journal_voucher_rows->auto_inc.'/'.$old_ref_row->reference_no.'/'.$old_ref_row->debit.'/'.$old_ref_row->credit.'/'.$journal_voucher_rows->cr_dr.'/'.$journal_voucher_rows->received_from_id);
 									}else{
 										echo '<input type="text" class="form-control input-sm" placeholder="Ref No." value="'.$old_ref_row->reference_no.'" readonly="readonly" is_old="yes">';
 									}?>
@@ -271,12 +273,11 @@ $(document).ready(function() {
 					});
 			$(this).find("td:eq(1) select").attr({name:"journal_voucher_rows["+i+"][cr_dr]", id:"quotation_rows-"+i+"-cr_dr"});
 			$(this).find("td:nth-child(4) textarea").attr({name:"journal_voucher_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"}).rules("add", "required");
+			$(this).find("td:eq(0) select.received_from").attr('auto_inc',i)
 			i++;
 		});
 	}
-	$('.addrow').live("click",function() {
-		add_row();
-	});
+
 	$('.deleterow').live("click",function() {
 		var sel=$(this);
 		delete_all_ref_no(sel);
@@ -298,18 +299,20 @@ $(document).ready(function() {
 	
 	function rename_ref_rows(sel,received_from_id){
 		var i=0;
+		var auto_inc=$(sel).closest('tr.main_tr').find('td:nth-child(1) select').attr('auto_inc');
 		$(sel).find("table.ref_table tbody tr").each(function(){
-			$(this).find("td:nth-child(1) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_type]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_type"}).rules("add", "required");
+			$(this).find("td:nth-child(1) select").attr({name:"ref_rows["+auto_inc+"]["+i+"][ref_type]", id:"ref_rows-"+auto_inc+"-"+i+"-ref_type"}).rules("add", "required");
 			var is_select=$(this).find("td:nth-child(2) select").length;
 			var is_input=$(this).find("td:nth-child(2) input").length;
 			
 			if(is_select){
-				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no"}).rules("add", "required");
+				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+auto_inc+"]["+i+"][ref_no]", id:"ref_rows-"+auto_inc+"-"+i+"-ref_no"}).rules("add", "required");
 			}else if(is_input){
 				var url='<?php echo $this->Url->build(['controller'=>'JournalVouchers','action'=>'checkRefNumberUniqueEdit']); ?>';
 				var is_old=$(this).find("td:nth-child(2) input").attr('is_old');
-				url=url+'/'+received_from_id+'/'+i+'/'+is_old;
-				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no", class:"form-control input-sm ref_number-"+received_from_id}).rules('add', {
+				
+				url=url+'/'+received_from_id+'/'+i+'/'+is_old+'/'+auto_inc;
+				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+auto_inc+"]["+i+"][ref_no]", id:"ref_rows-"+auto_inc+"-"+i+"-ref_no", class:"form-control input-sm ref_number-"+received_from_id}).rules('add', {
 														required: true,
 														noSpace: true,
 														notEqualToGroup: ['.ref_number-'+received_from_id],
@@ -324,15 +327,15 @@ $(document).ready(function() {
 			
 			var is_ref_old_amount=$(this).find("td:nth-child(3) input:eq(0)").length;
 			if(is_ref_old_amount){
-				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_old_amount]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_old_amount"});
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"ref_rows["+auto_inc+"]["+i+"][ref_old_amount]", id:"ref_rows-"+auto_inc+"-"+i+"-ref_old_amount"});
 			}
-			$(this).find("td:nth-child(3) input:eq(1)").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_amount]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_amount"}).rules("add", "required");
+			$(this).find("td:nth-child(3) input:eq(1)").attr({name:"ref_rows["+auto_inc+"]["+i+"][ref_amount]", id:"ref_rows-"+auto_inc+"-"+i+"-ref_amount"}).rules("add", "required");
 			i++;
 		});
 		var amount_id=$(sel).find("td:nth-child(2) input").attr('id');
 		var is_tot_input=$(sel).find("table.ref_table tfoot tr:eq(1) td:eq(1) input").length;
 		if(is_tot_input){
-			$(sel).find("table.ref_table tfoot tr:eq(1) td:eq(1) input").attr({name:"ref_rows_total["+received_from_id+"]", id:"ref_rows_total-"+received_from_id}).rules('add', {
+			$(sel).find("table.ref_table tfoot tr:eq(1) td:eq(1) input").attr({name:"ref_rows_total["+auto_inc+"]", id:"ref_rows_total-"+auto_inc}).rules('add', {
 														equalTo: "#"+amount_id
 													});
 		}
@@ -491,8 +494,10 @@ $(document).ready(function() {
 	
 	function delete_all_ref_no(sel){
 		var old_received_from_id=sel.closest('tr').attr('old_received_from_id');
+		var auto_inc=$(sel).closest('tr.main_tr').find('td:nth-child(1) select').attr('auto_inc');
 		var url="<?php echo $this->Url->build(['controller'=>'JournalVouchers','action'=>'deleteAllRefNumbers']); ?>";
-		url=url+'/'+old_received_from_id+'/'+<?php echo $journalVoucher->id; ?>,
+		alert(auto_inc);
+		url=url+'/'+old_received_from_id+'/'+<?php echo $journalVoucher->id; ?>+'/'+auto_inc,
 		$.ajax({
 			url: url,
 			type: 'GET',
@@ -505,8 +510,10 @@ $(document).ready(function() {
 		var old_received_from_id=sel.closest('tr.main_tr').attr('old_received_from_id');
 		var old_ref=sel.closest('tr').find('a.deleterefrow').attr('old_ref');
 		var old_ref_type=sel.closest('tr').find('a.deleterefrow').attr('old_ref_type');
+		var auto_inc=$(sel).closest('tr.main_tr').find('td:nth-child(1) select').attr('auto_inc');
+
 		var url="<?php echo $this->Url->build(['controller'=>'JournalVouchers','action'=>'deleteOneRefNumbers']); ?>";
-		url=url+'?old_received_from_id='+old_received_from_id+'&journal_voucher_id=<?php echo $journalVoucher->id; ?>&old_ref='+old_ref+'&old_ref_type='+old_ref_type,
+		url=url+'?old_received_from_id='+old_received_from_id+'&journal_voucher_id=<?php echo $journalVoucher->id; ?>&old_ref='+old_ref+'&auto_inc='+auto_inc+'&old_ref_type='+old_ref_type,
 		$.ajax({
 			url: url,
 			type: 'GET',
@@ -544,7 +551,7 @@ $(document).ready(function() {
 <table id="sample_table" style="display:none;">
 	<tbody>
 		<tr class="main_tr">
-			<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from']); ?></td>
+			<td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from','auto_inc'=>0]); ?></td>
 			<td>
 			<div class="row">
 				<div class="col-md-7" style="padding-right: 0;">
