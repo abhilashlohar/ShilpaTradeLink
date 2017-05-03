@@ -15,3 +15,9 @@ In Customer-Edit changes courier_charge to transporter_id
 Add new field in journal_voucher_id in reference_details.
 change ledger_account_id to received_from_id in journal_voucher_rows.
 Add new field in journal_voucher_rows:-narration(varchar 100)
+
+
+--------Gopal(03/05/2017)------
+Add new field in journal_voucher_rows :-auto_inc(int)
+Add new field in reference_details :-auto_inc(int)
+Add new field in reference_balances :-auto_inc(int)
