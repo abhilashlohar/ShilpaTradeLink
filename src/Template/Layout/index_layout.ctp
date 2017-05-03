@@ -55,6 +55,7 @@
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap-summernote/summernote.css'); ?>
 <!-- END PAGE LEVEL STYLES -->
 <style media="print">
+
 	.hide_at_print {
 		display:none !important;
 	}
@@ -164,155 +165,49 @@ select
 		<!-- END LOGO -->
 		<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 			<ul class="nav navbar-nav">
-			<?php if(in_array(19,$allowed_pages)||in_array(65,$allowed_pages)||in_array(66,$allowed_pages)||in_array(42,$allowed_pages)||in_array(43,$allowed_pages)||in_array(19,$allowed_pages)||in_array(44,$allowed_pages)||in_array(70,$allowed_pages)||in_array(82,$allowed_pages)||in_array(71,$allowed_pages)||in_array(61,$allowed_pages)||in_array(62,$allowed_pages)||in_array(63,$allowed_pages)||in_array(64,$allowed_pages)||in_array(50,$allowed_pages)||in_array(52,$allowed_pages)||in_array(67,$allowed_pages)||in_array(68,$allowed_pages)||in_array(54,$allowed_pages)||in_array(56,$allowed_pages)||in_array(46,$allowed_pages)||in_array(47,$allowed_pages)||in_array(58,$allowed_pages)||in_array(59,$allowed_pages)||in_array(72,$allowed_pages)||in_array(73,$allowed_pages)||in_array(74,$allowed_pages)||in_array(76,$allowed_pages)||in_array(78,$allowed_pages)||in_array(80,$allowed_pages)||in_array(84,$allowed_pages)||in_array(86,$allowed_pages)||in_array(88,$allowed_pages)){?>
+
+
+			<?php if(in_array(19,$allowed_pages)||in_array(65,$allowed_pages)||in_array(66,$allowed_pages)||in_array(42,$allowed_pages)||in_array(43,$allowed_pages)||in_array(19,$allowed_pages)||in_array(44,$allowed_pages)||in_array(70,$allowed_pages)||in_array(82,$allowed_pages)||in_array(71,$allowed_pages)||in_array(61,$allowed_pages)||in_array(62,$allowed_pages)||in_array(63,$allowed_pages)||in_array(64,$allowed_pages)||in_array(50,$allowed_pages)||in_array(52,$allowed_pages)||in_array(67,$allowed_pages)||in_array(68,$allowed_pages)||in_array(54,$allowed_pages)||in_array(56,$allowed_pages)||in_array(46,$allowed_pages)||in_array(47,$allowed_pages)||in_array(58,$allowed_pages)||in_array(59,$allowed_pages)||in_array(72,$allowed_pages)||in_array(73,$allowed_pages)||in_array(74,$allowed_pages)||in_array(76,$allowed_pages)||in_array(78,$allowed_pages)||in_array(80,$allowed_pages)||in_array(84,$allowed_pages)||in_array(86,$allowed_pages)||in_array(88,$allowed_pages)||in_array(121,$allowed_pages)||in_array(122,$allowed_pages)){?>
 				<li class="mega-menu-dropdown mega-menu-full">
 					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle">
 					Masters & Setup <i class="fa fa-angle-down"></i>
 					</a>
-					<ul class="dropdown-menu">
+					<ul class="dropdown-menu"> 
 						<li>
 							<!-- Content container to add padding -->
 							<div class="mega-menu-content ">
-							
 								<div class="row">
-									<div class="col-md-8">
-										<div class="row">
-											<div class="col-md-4">
-												<ul class="mega-menu-submenu">
-													<li><?php if(in_array(19,$allowed_pages)){
-													echo $this->Html->link(' Logins','/Logins/Add',array('escape'=>false));
-													} ?></li>
-													<?php if(in_array(65,$allowed_pages)){?>
-													<li class="divider"></li>
-													<li><?php echo $this->Html->link('Customer Groups','/Customer-Groups',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(66,$allowed_pages)){?>
-													<li><?php echo $this->Html->link('Customers Segments','/customer-segs',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(42,$allowed_pages)){?>
-													<li class="divider"></li>
-													<li><?php echo $this->Html->link( 'Add new customer', '/Customers/add' ); ?></li>
-													<?php } ?>
-													<?php if(in_array(43,$allowed_pages) || in_array(44,$allowed_pages)){?>
-													<li><?php echo $this->Html->link( 'List customers', '/Customers' ); ?></li>
-													<?php } ?>
-													<?php if(in_array(70,$allowed_pages)){?>
-													<li class="divider"></li>
-													<li><?php echo $this->Html->link('Transporters','/transporters',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(82,$allowed_pages)){?>
-													<li><?php echo $this->Html->link('Terms&Conditions','/Terms-Conditions',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(71,$allowed_pages)){?>
-													<li><?php echo $this->Html->link('Districts','/Districts',array('escape'=>false)); ?></li>
-													<?php } ?>
-													
-												</ul>
-											</div>
-											<div class="col-md-4">
-												<ul class="mega-menu-submenu">
-													<?php if(in_array(61,$allowed_pages)){?>
-													<li><?php echo $this->Html->link('Item Categories','/Item-Categories',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(62,$allowed_pages)){?>
-													<li><?php echo $this->Html->link('Item Groups','/Item-Groups',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(63,$allowed_pages)){?>
-													<li><?php echo $this->Html->link('Item Sub-Groups','/Item-Sub-Groups',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(64,$allowed_pages)){?>
-													<li><?php echo $this->Html->link( 'Units','/units',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(50,$allowed_pages)){?>
-													<li class="divider"></li>
-													<li><?php echo $this->Html->link( 'Add New Item', '/Items/add' ); ?></li>
-													<?php } ?>
-													<?php if(in_array(52,$allowed_pages)){?>
-													<li><?php echo $this->Html->link('List Items', '/Items' ); ?></li>
-													<?php } ?>
-													<?php if(in_array(67,$allowed_pages)){?>
-													<li class="divider"></li>
-													<li><?php echo $this->Html->link('Sale-Taxes','/SaleTaxes',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(68,$allowed_pages)){?>
-													<li><?php echo $this->Html->link('Files','/Filenames',array('escape'=>false)); ?></li>
-													<?php } ?>
-												</ul>
-											</div>
-											<div class="col-md-4">
-												<ul class="mega-menu-submenu">
-												<?php if(in_array(54,$allowed_pages)){ ?>
-													<li><?php echo $this->Html->link(' Add New Supplier','/Vendors/Add',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(56,$allowed_pages)){ ?>
-													<li><?php echo $this->Html->link('List Suppliers','/Vendors',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(46,$allowed_pages)){?>
-													<li class="divider"></li>
-													<li><?php echo $this->Html->link(' Add New  Employee','/employees/Add',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(47,$allowed_pages)||in_array(48,$allowed_pages)){?>
-													<li><?php echo $this->Html->link('List Employees','/employees',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(58,$allowed_pages)){?>
-													<li class="divider"></li>
-													<li><?php echo $this->Html->link(' Add New Company','/Companies/add',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(59,$allowed_pages)||in_array(60,$allowed_pages)){?>
-													<li><?php echo $this->Html->link('List Companies','/Companies',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(72,$allowed_pages)){?>
-													<li class="divider"></li>
-													<li><?php echo $this->Html->link( 'Designations','/Designations',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(73,$allowed_pages)){?>
-													<li><?php echo $this->Html->link('Departments','/Departments',array('escape'=>false)); ?></li>
-													<?php } ?>
-													
-												</ul>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-4">
-												<ul class="mega-menu-submenu">
-													<?php if(in_array(74,$allowed_pages)){?>
-													<li><?php echo $this->Html->link(' Ledger Accounts','/ledgerAccounts',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(76,$allowed_pages)){?>
-													<li><?php echo $this->Html->link('Account References','/AccountReferences',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(78,$allowed_pages)){?>
-													<li><?php echo $this->Html->link('Opening Balance','/ledgers/opening-balance/',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(80,$allowed_pages)){?>
-													<li><?php echo $this->Html->link('Item Opening Balance','/Items/opening-balance/',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(84,$allowed_pages)){?>
-													<li><?php echo $this->Html->link('Item Price Factor','/Items/Cost/',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(86,$allowed_pages)){?>
-													<li><?php echo $this->Html->link( 'Quotation Close Reason','/QuotationCloseReasons',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<?php if(in_array(88,$allowed_pages)){?>
-													<li><?php echo $this->Html->link('Leave Types','/LeaveTypes',array('escape'=>false)); ?></li>
-													<?php } ?>
-													<li></li>
-												</ul>
-										</div>
-										<div class="col-md-4">
-												<ul class="mega-menu-submenu">
-													
-													<li><?php echo $this->Html->link(' Financial Year','/FinancialYears',array('escape'=>false)); ?></li>
-													
-													
-													<li><?php echo $this->Html->link('Financial Month','/FinancialMonths',array('escape'=>false)); ?></li>
-													
-													
-													<li></li>
-												</ul>
-										</div>
+                                
+									<?php
+                                      $x=0;
+                                    foreach($pages as $page){
+                                        
+                                         
+                                        $id=$page['id'];
+                                        if(in_array($id , $allowed_pages))
+                                        {	
+                                            $x++;
+                                            $controller=$page['controller'];
+                                            $action=$page['action'];
+                                            $name=$page['name'];
+                                            if($x==1){?><div class="col-md-3"><?php }
+                                                ?>
+                                                   <ul class="mega-menu-submenu">
+                                                       <li>
+                                                            <?php 
+                                                                
+                                                                    echo $this->Html->link($name,'/'.$controller.'/'.$action.'',array('escape'=>false));
+                                                                 
+                                                            ?>
+                                                        </li> 
+                                                    </ul>
+                                                <?php
+                                            if($x==6){?></div><?php $x=0; }
+                                        }
+                                     }
+                                    ?>                         
+                                   
 								</div>
-							
 							</div>
 						</li>
 					</ul>
