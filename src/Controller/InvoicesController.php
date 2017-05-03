@@ -86,7 +86,7 @@ class InvoicesController extends AppController
 			$invoices_data=$this->paginate($this->Invoices->find()->contain(['InvoiceRows'=>['Items'=>function ($q) {
 				return $q->where(['source !='=>'Purchessed']);
 				}]])->where(['company_id'=>$st_company_id,'inventory_voucher_status'=>'Pending'])->order(['Invoices.id' => 'DESC']));
-				//pr($invoices_data); exit;
+				
 				foreach($invoices_data as $invoice){
 					$sales_order_id=$invoice->sales_order_id;
 					$invoice_rows=$invoice->invoice_rows;
