@@ -482,7 +482,7 @@ class JournalVouchersController extends AppController
 	}
 	function checkRefNumberUniqueEdit($received_from_id,$i,$is_old,$auto_inc){
 		
-		$reference_no=$this->request->query['ref_rows'][$received_from_id][$i]['ref_no'];
+		$reference_no=$this->request->query['ref_rows'][$auto_inc][$i]['ref_no'];
 		$ReferenceBalances=$this->JournalVouchers->ReferenceBalances->find()->where(['ledger_account_id'=>$received_from_id,'reference_no'=>$reference_no]);
 		//$autow=$ReferenceBalances->count();
 		if($ReferenceBalances->count()==1 && $is_old=="yes"){

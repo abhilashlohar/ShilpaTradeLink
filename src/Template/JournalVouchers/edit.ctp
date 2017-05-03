@@ -306,11 +306,17 @@ $(document).ready(function() {
 			var is_input=$(this).find("td:nth-child(2) input").length;
 			
 			if(is_select){
-				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+auto_inc+"]["+i+"][ref_no]", id:"ref_rows-"+auto_inc+"-"+i+"-ref_no"}).rules("add", "required");
+				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+auto_inc+"]["+i+"][ref_no]", id:"ref_rows-"+auto_inc+"-"+i+"-ref_no", class:"form-control input-sm ref_list ref_number-"+received_from_id}).rules('add', {
+												required: true,
+												notEqualToGroup: ['.ref_number-'+received_from_id],
+												messages: {
+													notEqualToGroup: "Not an unique."
+												}
+											});
 			}else if(is_input){
 				var url='<?php echo $this->Url->build(['controller'=>'JournalVouchers','action'=>'checkRefNumberUniqueEdit']); ?>';
 				var is_old=$(this).find("td:nth-child(2) input").attr('is_old');
-				
+				if(!is_old){ is_old='No'; }
 				url=url+'/'+received_from_id+'/'+i+'/'+is_old+'/'+auto_inc;
 				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+auto_inc+"]["+i+"][ref_no]", id:"ref_rows-"+auto_inc+"-"+i+"-ref_no", class:"form-control input-sm ref_number-"+received_from_id}).rules('add', {
 														required: true,
