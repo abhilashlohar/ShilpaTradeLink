@@ -167,7 +167,16 @@ select
 			<ul class="nav navbar-nav">
 
 
-			<?php if(in_array(19,$allowed_pages)||in_array(65,$allowed_pages)||in_array(66,$allowed_pages)||in_array(42,$allowed_pages)||in_array(43,$allowed_pages)||in_array(19,$allowed_pages)||in_array(44,$allowed_pages)||in_array(70,$allowed_pages)||in_array(82,$allowed_pages)||in_array(71,$allowed_pages)||in_array(61,$allowed_pages)||in_array(62,$allowed_pages)||in_array(63,$allowed_pages)||in_array(64,$allowed_pages)||in_array(50,$allowed_pages)||in_array(52,$allowed_pages)||in_array(67,$allowed_pages)||in_array(68,$allowed_pages)||in_array(54,$allowed_pages)||in_array(56,$allowed_pages)||in_array(46,$allowed_pages)||in_array(47,$allowed_pages)||in_array(58,$allowed_pages)||in_array(59,$allowed_pages)||in_array(72,$allowed_pages)||in_array(73,$allowed_pages)||in_array(74,$allowed_pages)||in_array(76,$allowed_pages)||in_array(78,$allowed_pages)||in_array(80,$allowed_pages)||in_array(84,$allowed_pages)||in_array(86,$allowed_pages)||in_array(88,$allowed_pages)||in_array(121,$allowed_pages)||in_array(122,$allowed_pages)){?>
+			<?php 
+			 $toarray=array();
+			 foreach($pages as $page){
+				 $id=$page['id'];
+				 if(in_array($id , $allowed_pages))
+                 {
+					 $toarray[]=$id;
+				 }
+			 }
+ 			if(!empty($toarray)){?>
 				<li class="mega-menu-dropdown mega-menu-full">
 					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle">
 					Masters & Setup <i class="fa fa-angle-down"></i>
