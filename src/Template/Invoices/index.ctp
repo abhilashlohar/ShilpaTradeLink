@@ -6,6 +6,7 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Invoices</span> 
 			<?php if($inventory_voucher=="true"){ echo " :Select invoice to create it's inventory voucher"; } ?>
+			<?php if($sales_return=="true"){ echo " :Select invoice for sales return"; } ?>
 		</div>
 		<div class="actions">
 		<?php if($inventory_voucher!="true"){ ?>
@@ -125,6 +126,10 @@
 								<?php
 								if($inventory_voucher=="true"){
 								echo $this->Html->link('<i class="fa fa-repeat"></i>  Create Inventory Voucher','/Inventory-Vouchers/edit?invoice='.$invoice->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
+								
+								} ?><?php
+								if($sales_return=="true"){
+								echo $this->Html->link('<i class="fa fa-repeat"></i>  Sale Return','/SaleReturns/Add?invoice='.$invoice->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								
 								} ?>
 								

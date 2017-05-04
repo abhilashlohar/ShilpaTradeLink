@@ -238,7 +238,7 @@ $this->Form->templates([
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach($ReferenceDetails as $old_ref_row){ echo $old_ref_row->reference_type; ?>
+							<?php foreach($ReferenceDetails as $old_ref_row){  ?>
 								<tr>
 									<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type','value'=>$old_ref_row->reference_type]); ?></td>
 									<td class="ref_no">

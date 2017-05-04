@@ -41,9 +41,9 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 		<table width="100%" id="main_table">
 			<thead>
 				<th width="25%"><label class="control-label">Received From</label></th>
-				<th width="15%"><label class="control-label">Amount</label></th>
-				<th></th>
-				<th width="15%"><label class="control-label">Narration</label></th>
+				<th width="25%"><label class="control-label">Amount</label></th>
+				<th width="35%"></th>
+				<th width="5%"><label class="control-label">Narration</label></th>
 				<th width="3%"></th>
 			</thead>
 			<tbody id="main_tbody">
@@ -419,9 +419,9 @@ $(document).ready(function() {
 				</div>
 			</div>
 			</td>
-			<td></td>
+			<td ></td>
 			<td><?php echo $this->Form->input('narration', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Narration']); ?></td>
-			<td><a class="btn btn-xs btn-default deleterow" href="#" role="button"><i class="fa fa-times"></i></a></td>
+			<td ><a class="btn btn-xs btn-default deleterow" href="#" role="button"><i class="fa fa-times"></i></a></td>
 		</tr>
 	</tbody>
 </table>

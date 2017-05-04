@@ -24,7 +24,8 @@ class InvoicesController extends AppController
 		$url=parse_url($url,PHP_URL_QUERY);
 		$this->viewBuilder()->layout('index_layout');
 		$inventory_voucher=$this->request->query('inventory_voucher');
-		
+		$sales_return=$this->request->query('sales-return');
+		//pr($sales_return); exit;
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
@@ -89,8 +90,12 @@ class InvoicesController extends AppController
 		}else{
 			$invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
 		}
+		if($sales_return=='true'){
+			
+			$invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
+		}
 		//pr($invoices); exit;
-		$this->set(compact('invoices','status','inventory_voucher'));
+		$this->set(compact('invoices','status','inventory_voucher','sales_return'));
         $this->set('_serialize', ['invoices']);
 		$this->set(compact('url'));
     }

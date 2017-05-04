@@ -629,6 +629,21 @@ select
 						<?php } ?>
 					</ul>
 				</li>
+				<li>
+					<a href="javascript:;">
+					<i class="fa fa-puzzle-piece"></i>
+					<span class="title">Sale Return</span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<?php 
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/Invoices/index?sales-return=true',array('escape'=>false)).'</li>';
+						 ?>
+						<?php 
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> View','/SaleReturns/',array('escape'=>false)).'</li>';
+						?>
+					</ul>
+				</li>
 			</ul>
 			<!-- END SIDEBAR MENU -->
 		</div>
