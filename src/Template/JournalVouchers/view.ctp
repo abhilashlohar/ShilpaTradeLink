@@ -1,5 +1,25 @@
-<?php //pr($journalVoucher->journal_voucher_rows); exit; ?>
-<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 95%;font-size: 14px;" class="maindiv" >	
+<style>
+@media print{
+	.maindiv{
+		width:100% !important;
+	}	
+	.hidden-print{
+		display:none;
+	}
+}
+p{
+margin-bottom: 0;
+}
+</style>
+<style type="text/css" media="print">
+@page {
+    size: auto;   /* auto is the initial value */
+    margin: 0 5px 0 20px;  /* this affects the margin in the printer settings */
+}
+</style>
+<a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
+
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 65%;font-size: 14px;" class="maindiv">	
 
 <table width="100%" class="divHeader">
 			<tr>
@@ -10,7 +30,7 @@
 			</tr>
 			<tr>
 				<td width="50%" valign="bottom">
-				<div align="right" style="font-size: 28px;font-weight: bold;color: #0685a8;">JOURNAL VOUCHER</div>
+				<div align="right" style="font-size: 20px;font-weight: bold;color: #0685a8;">JOURNAL VOUCHER</div>
 				</td>
 				<td align="right" width="35%" style="font-size: 12px;">
 				<span><?= $this->Text->autoParagraph(h($journalVoucher->company->address)) ?></span>
@@ -47,40 +67,41 @@
 	</table>
 	
 	<div style="height:3px;" class="hdrmargin"></div>
-	<table class="table table-advance itmtbl itmtbl2">
-	<thead>
-	<tr>
-	<th>Ledger A/c</th>
-	<th>Dr</th>
-	<th>Cr</th>
-	</tr>
-	</thead>
+	<table class="table" style="font-size:12px">
+		<thead>
+			<tr>
+				<th>Ledger A/c</th>
+				<th style="text-align: right;">Dr</th>
+				<th style="text-align: right;">Cr</th>
+			</tr>
+		</thead>
 		<tfoot>
 			<?php $sr=0; $dr=0; $cr=0; foreach ($journalVoucher->journal_voucher_rows as $journal_voucher_row): $sr++; ?>
 			<tr>
 				<td><?= h($journal_voucher_row->ReceivedFrom->name) ?></td>
-				<td><?php if($journal_voucher_row->cr_dr=="Dr")
+				<td style="text-align: right;">
+				<?php if($journal_voucher_row->cr_dr=="Dr")
 					{ 
 					
 					$dr=$dr+$journal_voucher_row->amount;
 					echo $journal_voucher_row->amount ;
-					}else{ echo "-";}
-					?></td>
-				<td><?php if($journal_voucher_row->cr_dr=="Cr")
+					}else{ echo "-";} ?>
+				</td>
+				<td style="text-align: right;">
+				<?php if($journal_voucher_row->cr_dr=="Cr")
 					{
 					
 					$cr=$cr+$journal_voucher_row->amount;
 					echo $journal_voucher_row->amount;
-					}else{ echo "-";}
-					?></td>
-				
+					}else{ echo "-";} ?>
+				</td>
 			</tr>
 			<?php endforeach ?>
 			<tr>
 			<td align="right"><b>Total</b></td>
 			
-			<td> <?php echo $dr;?></td>
-			<td> <?php echo $cr;?></td>
+			<td style="text-align: right;"> <?php echo $dr;?></td>
+			<td style="text-align: right;"> <?php echo $cr;?></td>
 			</tr>
 		</tfoot>
 	</table>
