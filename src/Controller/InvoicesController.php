@@ -447,7 +447,8 @@ class InvoicesController extends AppController
 				if($ledger_grand>0)
 				{
 					$this->Invoices->Ledgers->save($ledger); 
-				} 
+				}
+				
 				//Ledger posting for Account Reference
 				$ledger_pnf=$invoice->total_after_pnf;
 				//$accountReferences=$this->Invoices->AccountReferences->get(1);
@@ -539,13 +540,10 @@ class InvoicesController extends AppController
 						$item_saletax=$saletax/$qty;
 						$fr_amount=$fright*$amount/$total_amt;
 						$item_fright=$fr_amount/$qty;
-						
-						
 						$SalesOrderRow = $this->Invoices->SalesOrderRows->get($sales_order_row_id);
 						$SalesOrderRow->processed_quantity=$SalesOrderRow->processed_quantity+$qty;
 						$this->Invoices->SalesOrderRows->save($SalesOrderRow);
 						$i++;
-						
 						//Insert in Item Ledger//
 						$itemLedger = $this->Invoices->ItemLedgers->newEntity();
 						$itemLedger->item_id = $item_id;
@@ -556,8 +554,6 @@ class InvoicesController extends AppController
 						$itemLedger->rate = $rate-$item_discount+$item_excise+$item_pf;
 						$itemLedger->company_id = $invoice->company_id;
 						$itemLedger->processed_on = date("Y-m-d");
-						
-						
 						$this->Invoices->ItemLedgers->save($itemLedger);
 						
 					}

@@ -36,7 +36,7 @@ class SaleReturnRowsTable extends Table
         $this->table('sale_return_rows');
         $this->displayField('id');
         $this->primaryKey('id');
-
+		$this->belongsTo('ItemSerialnumbers');
         $this->belongsTo('SaleReturns', [
             'foreignKey' => 'sale_return_id',
             'joinType' => 'INNER'
@@ -59,10 +59,7 @@ class SaleReturnRowsTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->requirePresence('description', 'create')
-            ->notEmpty('description');
-
+       
         $validator
             ->integer('quantity')
             ->requirePresence('quantity', 'create')
@@ -78,22 +75,8 @@ class SaleReturnRowsTable extends Table
             ->requirePresence('amount', 'create')
             ->notEmpty('amount');
 
-        $validator
-            ->integer('height')
-            ->requirePresence('height', 'create')
-            ->notEmpty('height');
-
-        $validator
-            ->requirePresence('inventory_voucher_status', 'create')
-            ->notEmpty('inventory_voucher_status');
-
-        $validator
-            ->requirePresence('item_serial_number', 'create')
-            ->notEmpty('item_serial_number');
-
-        $validator
-            ->requirePresence('inventory_voucher_applicable', 'create')
-            ->notEmpty('inventory_voucher_applicable');
+       
+        
 
         return $validator;
     }

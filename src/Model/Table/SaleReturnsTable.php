@@ -71,6 +71,8 @@ class SaleReturnsTable extends Table
 		$this->belongsTo('AccountReferences');
 		$this->belongsTo('AccountFirstSubgroups');
 		$this->belongsTo('AccountSecondSubgroups');
+		$this->belongsTo('ReferenceDetails');
+		$this->belongsTo('ReferenceBalances');
 
         $this->hasMany('SaleReturnRows', [
             'foreignKey' => 'sale_return_id'
@@ -89,180 +91,7 @@ class SaleReturnsTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->decimal('temp_limit')
-            ->allowEmpty('temp_limit');
-
-        $validator
-            ->requirePresence('customer_address', 'create')
-            ->notEmpty('customer_address');
-
-        $validator
-            ->requirePresence('lr_no', 'create')
-            ->notEmpty('lr_no');
-
-        $validator
-            ->allowEmpty('terms_conditions');
-
-        $validator
-            ->boolean('discount_type')
-            ->requirePresence('discount_type', 'create')
-            ->notEmpty('discount_type');
-
-        $validator
-            ->decimal('total')
-            ->requirePresence('total', 'create')
-            ->notEmpty('total');
-
-        $validator
-            ->decimal('pnf')
-            ->requirePresence('pnf', 'create')
-            ->notEmpty('pnf');
-
-        $validator
-            ->boolean('pnf_type')
-            ->requirePresence('pnf_type', 'create')
-            ->notEmpty('pnf_type');
-
-        $validator
-            ->decimal('pnf_per')
-            ->requirePresence('pnf_per', 'create')
-            ->notEmpty('pnf_per');
-
-        $validator
-            ->decimal('total_after_pnf')
-            ->requirePresence('total_after_pnf', 'create')
-            ->notEmpty('total_after_pnf');
-
-        $validator
-            ->decimal('sale_tax_per')
-            ->requirePresence('sale_tax_per', 'create')
-            ->notEmpty('sale_tax_per');
-
-        $validator
-            ->decimal('sale_tax_amount')
-            ->requirePresence('sale_tax_amount', 'create')
-            ->notEmpty('sale_tax_amount');
-
-        $validator
-            ->decimal('exceise_duty')
-            ->requirePresence('exceise_duty', 'create')
-            ->notEmpty('exceise_duty');
-
-        $validator
-            ->requirePresence('ed_description', 'create')
-            ->notEmpty('ed_description');
-
-        $validator
-            ->decimal('fright_amount')
-            ->requirePresence('fright_amount', 'create')
-            ->notEmpty('fright_amount');
-
-        $validator
-            ->requirePresence('fright_text', 'create')
-            ->notEmpty('fright_text');
-
-        $validator
-            ->decimal('grand_total')
-            ->requirePresence('grand_total', 'create')
-            ->notEmpty('grand_total');
-
-        $validator
-            ->decimal('due_payment')
-            ->requirePresence('due_payment', 'create')
-            ->notEmpty('due_payment');
-
-        $validator
-            ->date('date_created')
-            ->requirePresence('date_created', 'create')
-            ->notEmpty('date_created');
-
-        $validator
-            ->requirePresence('process_status', 'create')
-            ->notEmpty('process_status');
-
-        $validator
-            ->requirePresence('in1', 'create')
-            ->notEmpty('in1');
-
-        $validator
-            ->integer('in2')
-            ->requirePresence('in2', 'create')
-            ->notEmpty('in2');
-
-        $validator
-            ->requirePresence('in4', 'create')
-            ->notEmpty('in4');
-
-        $validator
-            ->requirePresence('in3', 'create')
-            ->notEmpty('in3');
-
-        $validator
-            ->requirePresence('customer_po_no', 'create')
-            ->notEmpty('customer_po_no');
-
-        $validator
-            ->date('po_date')
-            ->requirePresence('po_date', 'create')
-            ->notEmpty('po_date');
-
-        $validator
-            ->requirePresence('additional_note', 'create')
-            ->notEmpty('additional_note');
-
-        $validator
-            ->integer('created_by')
-            ->requirePresence('created_by', 'create')
-            ->notEmpty('created_by');
-
-        $validator
-            ->decimal('discount_per')
-            ->requirePresence('discount_per', 'create')
-            ->notEmpty('discount_per');
-
-        $validator
-            ->decimal('discount')
-            ->requirePresence('discount', 'create')
-            ->notEmpty('discount');
-
-        $validator
-            ->requirePresence('form47', 'create')
-            ->notEmpty('form47');
-
-        $validator
-            ->requirePresence('form49', 'create')
-            ->notEmpty('form49');
-
-        $validator
-            ->requirePresence('status', 'create')
-            ->notEmpty('status');
-
-        $validator
-            ->requirePresence('inventory_voucher_status', 'create')
-            ->notEmpty('inventory_voucher_status');
-
-        $validator
-            ->requirePresence('payment_mode', 'create')
-            ->notEmpty('payment_mode');
-
-        $validator
-            ->integer('fright_ledger_account')
-            ->requirePresence('fright_ledger_account', 'create')
-            ->notEmpty('fright_ledger_account');
-
-        $validator
-            ->integer('sales_ledger_account')
-            ->requirePresence('sales_ledger_account', 'create')
-            ->notEmpty('sales_ledger_account');
-
-        $validator
-            ->requirePresence('pdf_font_size', 'create')
-            ->notEmpty('pdf_font_size');
-
-        $validator
-            ->requirePresence('delivery_description', 'create')
-            ->notEmpty('delivery_description');
+        
 
         return $validator;
     }
@@ -282,7 +111,7 @@ class SaleReturnsTable extends Table
         $rules->add($rules->existsIn(['sales_order_id'], 'SalesOrders'));
         $rules->add($rules->existsIn(['employee_id'], 'Employees'));
         $rules->add($rules->existsIn(['transporter_id'], 'Transporters'));
-        $rules->add($rules->existsIn(['st_ledger_account_id'], 'StLedgerAccounts'));
+       // $rules->add($rules->existsIn(['st_ledger_account_id'], 'StLedgerAccounts'));
 
         return $rules;
     }
