@@ -65,7 +65,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 		<div style="overflow: auto;">
 		<table width="100%" id="main_table">
 			<thead>
-				<th width="25%"><label class="control-label">Received From</label></th>
+				<th width="25%"><label class="control-label">Paid To</label></th>
 				<th width="15%"><label class="control-label">Amount</label></th>
 				<th></th>
 				<th width="15%"><label class="control-label">Narration</label></th>
@@ -150,7 +150,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 				<td><a class="btn btn-xs btn-default addrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
 				<td id="receipt_amount" style="font-size: 14px;font-weight: bold;"></td>
 				<td></td>
-				<td><button type="submit" class="btn btn-primary" >EDIT RECEIPT</button></td>
+				<td><button type="submit" class="btn btn-primary" >EDIT PAYMENT VOUCHER</button></td>
 				<td></td>
 			</tfoot>
 		</table>
