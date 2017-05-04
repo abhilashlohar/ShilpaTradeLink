@@ -530,7 +530,8 @@ $(document).ready(function() {
 		var old_ref=sel.closest('tr').find('a.deleterefrow').attr('old_ref');
 		var old_ref_type=sel.closest('tr').find('a.deleterefrow').attr('old_ref_type');
 		var url="<?php echo $this->Url->build(['controller'=>'Payments','action'=>'deleteOneRefNumbers']); ?>";
-		url=url+'?old_received_from_id='+old_received_from_id+'&receipt_id=<?php echo $payment->id; ?>&old_ref='+old_ref+'&old_ref_type='+old_ref_type,
+		url=url+'?old_received_from_id='+old_received_from_id+'&payment_id=<?php echo $payment->id; ?>&old_ref='+old_ref+'&old_ref_type='+old_ref_type,
+		alert(url);
 		$.ajax({
 			url: url,
 			type: 'GET',

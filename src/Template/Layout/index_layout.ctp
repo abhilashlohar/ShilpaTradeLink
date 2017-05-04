@@ -196,9 +196,9 @@ select
                                         if(in_array($id , $allowed_pages))
                                         {	
                                             $x++;
-                                            $controller=$page['controller'];
-                                            $action=$page['action'];
-                                            $name=$page['name'];
+                                            $controller=$page->controller;
+                                            $action=$page->action;
+                                            $name=$page->name;
                                             if($x==1){?><div class="col-md-3"><?php }
                                                 ?>
                                                    <ul class="mega-menu-submenu">

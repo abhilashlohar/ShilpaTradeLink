@@ -596,7 +596,7 @@ class PaymentsController extends AppController
 	
 	function deleteOneRefNumbers(){
 		$old_received_from_id=$this->request->query['old_received_from_id'];
-		$receipt_id=$this->request->query['receipt_id'];
+		$payment_id=$this->request->query['payment_id'];
 		$old_ref=$this->request->query['old_ref'];
 		$old_ref_type=$this->request->query['old_ref_type'];
 		
@@ -604,7 +604,8 @@ class PaymentsController extends AppController
 			$this->Payments->ReferenceBalances->deleteAll(['ledger_account_id'=>$old_received_from_id,'reference_no'=>$old_ref]);
 			$this->Payments->ReferenceDetails->deleteAll(['ledger_account_id'=>$old_received_from_id,'reference_no'=>$old_ref]);
 		}elseif($old_ref_type=="Against Reference"){
-			$ReferenceDetail=$this->Payments->ReferenceDetails->find()->where(['ledger_account_id'=>$old_received_from_id,'receipt_id'=>$receipt_id,'reference_no'=>$old_ref])->first();
+			$ReferenceDetail=$this->Payments->ReferenceDetails->find()->where(['ledger_account_id'=>$old_received_from_id,'payment_id'=>$payment_id,'reference_no'=>$old_ref])->first();
+			
 			if(!empty($ReferenceDetail->credit)){
 				$ReferenceBalance=$this->Payments->ReferenceBalances->find()->where(['ledger_account_id' => $ReferenceDetail->ledger_account_id, 'reference_no' => $ReferenceDetail->reference_no])->first();
 				$ReferenceBalance=$this->Payments->ReferenceBalances->get($ReferenceBalance->id);
