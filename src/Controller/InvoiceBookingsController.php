@@ -111,8 +111,6 @@ class InvoiceBookingsController extends AppController
 			$v_LedgerAccount=$this->InvoiceBookings->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Vendors','source_id'=>$vendor_id])->first();
 			
 			$vendor_ledger_acc_id=$v_LedgerAccount->id;
-			
-			
 		}
 		$last_ib_no=$this->InvoiceBookings->find()->select(['ib2'])->where(['company_id' => $st_company_id])->order(['ib2' => 'DESC'])->first();
 		if($last_ib_no){

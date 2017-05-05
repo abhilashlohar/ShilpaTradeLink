@@ -92,7 +92,7 @@ class InvoicesController extends AppController
 		}
 		if($sales_return=='true'){
 			
-			$invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
+			$invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id,'sales_return_status'=>'No'])->order(['Invoices.id' => 'DESC']));
 		}
 		//pr($invoices); exit;
 		$this->set(compact('invoices','status','inventory_voucher','sales_return'));
