@@ -75,6 +75,7 @@ class SaleReturnsTable extends Table
 		$this->belongsTo('ReferenceBalances');
 		$this->belongsTo('Ledgers');
 		$this->belongsTo('ItemLedgers');
+		$this->belongsTo('ItemSerialNumbers');
 
         $this->hasMany('SaleReturnRows', [
             'foreignKey' => 'sale_return_id'

@@ -127,10 +127,11 @@
 								if($inventory_voucher=="true"){
 								echo $this->Html->link('<i class="fa fa-repeat"></i>  Create Inventory Voucher','/Inventory-Vouchers/edit?invoice='.$invoice->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								
-								} ?><?php
-								if($sales_return=="true"){
+								} ?><?php 
+								if($sales_return=="true" && $invoice->sale_return_status=='No'){
 								echo $this->Html->link('<i class="fa fa-repeat"></i>  Sale Return','/SaleReturns/Add?invoice='.$invoice->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
-								
+								}elseif($sales_return=="true" && $invoice->sale_return_status=='Yes'){
+									echo $this->Html->link('<i class="fa fa-repeat"></i> Edit Sale Return','/SaleReturns/Edit?invoice='.$invoice->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
 								
 							</td>
