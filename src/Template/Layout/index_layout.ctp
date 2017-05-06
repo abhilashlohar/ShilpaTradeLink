@@ -165,12 +165,11 @@ select
 		<!-- END LOGO -->
 		<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 			<ul class="nav navbar-nav">
-
-
-			<?php 
+			<?php
 			 $toarray=array();
+
 			 foreach($pages as $page){
-				 $id=$page['id'];
+				 $id=$page->id;
 				 if(in_array($id , $allowed_pages))
                  {
 					 $toarray[]=$id;
@@ -192,7 +191,7 @@ select
                                     foreach($pages as $page){
                                         
                                          
-                                        $id=$page['id'];
+                                        $id=$page->id;
                                         if(in_array($id , $allowed_pages))
                                         {	
                                             $x++;

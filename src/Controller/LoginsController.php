@@ -114,6 +114,17 @@ class LoginsController extends AppController
 		]);
 		$this->set(compact('st_login_id','Employee'));
 	}
-	
+
+	public function delete($id=null){
+			$this->request->allowMethod(['post', 'delete']);
+		$this->Logins->UserRights->deleteAll(['login_id' => $id]);
+		$login = $this->Logins->get($id);
+			if ($this->Logins->delete($login)) {
+				$this->Flash->success(__('The User Login  has been deleted.'));
+			} else {
+				$this->Flash->error(__('The User Login could not be deleted. Please, try again.'));
+			}
+			return $this->redirect(['controller'=>'Logins','action' => 'Add']);
+	}
 }
 

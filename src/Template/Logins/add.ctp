@@ -64,6 +64,14 @@
 						<?php if(in_array(20,$allowed_pages)){?>
 						<td><?= $this->Html->link(__('UserRights'), ['controller'=>'UserRights','action' => 'add', $Login->id]) ?></td> 
 						<?php } ?>
+						<td>	<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+                            								['action' => 'delete', $Login->id],
+                            								[
+                            									'escape' => false,
+                            									'class' => 'btn btn-xs btn-danger',
+                            									'confirm' => __('Are you sure ?', $Login->id)
+                            								]
+                            							) ?></td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>

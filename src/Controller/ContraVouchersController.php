@@ -11,11 +11,6 @@ use App\Controller\AppController;
 class ContraVouchersController extends AppController
 {
 
-    /**
-     * Index method
-     *
-     * @return \Cake\Network\Response|null
-     */
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
@@ -31,13 +26,7 @@ class ContraVouchersController extends AppController
         $this->set('_serialize', ['contraVouchers']);
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id Contra Voucher id.
-     * @return \Cake\Network\Response|null
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
+
     public function view($id = null)
     {
 		
@@ -49,12 +38,7 @@ class ContraVouchersController extends AppController
         $this->set('contraVoucher', $contraVoucher);
         $this->set('_serialize', ['contraVoucher']);
     }
- 
-    /**
-     * Add method
-     *
-     * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
-     */
+
     public function add()
     {
 		
