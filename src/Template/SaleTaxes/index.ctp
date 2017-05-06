@@ -139,7 +139,7 @@
 						<td><?php echo $saletax; ?></td>
 						<td class="actions">
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $saleTax->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
-							 <?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+							 <!--<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
 								['action' => 'delete', $saleTax->id], 
 								[
 									'escape' => false,
@@ -147,7 +147,7 @@
 									
 									'confirm' => __('Are you sure ?', $saleTax->id)
 								]
-							) ?>
+							) ?>-->
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'EditCompany', $saleTax->id],array('escape'=>false,'class'=>'btn btn-xs green tooltips','data-original-title'=>'EditCompany')); ?>
 						</td>
 					</tr>
