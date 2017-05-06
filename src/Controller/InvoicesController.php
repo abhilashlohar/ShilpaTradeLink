@@ -92,7 +92,7 @@ class InvoicesController extends AppController
 		}
 		if($sales_return=='true'){
 			
-			$invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id,'sales_return_status'=>'No'])->order(['Invoices.id' => 'DESC']));
+			$invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
 		}
 		//pr($invoices); exit;
 		$this->set(compact('invoices','status','inventory_voucher','sales_return'));
@@ -715,7 +715,6 @@ class InvoicesController extends AppController
 			}	
 		
 		foreach($invoice->invoice_rows as $invoice_row){
-			
 			if($invoice_row->item_serial_number){
 			@$ItemSerialNumber_In[$invoice_row->item_id]= explode(",",$invoice_row->item_serial_number);
 			$ItemSerialNumber[$invoice_row->item_id]=$this->Invoices->ItemSerialNumbers->find()->where(['item_id'=>$invoice_row->item_id,'status'=>'In','company_id'=>$st_company_id])->orWhere(['ItemSerialNumbers.invoice_id'=>$invoice->id,'item_id'=>$invoice_row->item_id,'status'=>'Out','company_id'=>$st_company_id])->toArray();
@@ -1186,22 +1185,14 @@ class InvoicesController extends AppController
 	function Cancel($id = null)
     {
         $invoice = $this->Invoices->get($id);
-		
 		$invoice->status='Cancel';
 		$sales_order_id=$invoice->sales_order_id;
-		
-		/* $results=$this->Invoices->ItemLedgers->find()->where(['ItemLedgers.source_id' => $id,'source_model' => 'Invoices'])->toArray(); */
-		
 		$this->Invoices->ItemLedgers->deleteAll(['ItemLedgers.source_id' => $id,'source_model' => 'Invoices']);
-		
 		 if ($this->Invoices->save($invoice)) {
-			 
-			 
             $this->Flash->success(__('The invoice has been Cancel.'));
         } else {
             $this->Flash->error(__('The invoice could not be Cancel. Please, try again.'));
         }
-
         return $this->redirect(['action' => 'index']);
     }
 	

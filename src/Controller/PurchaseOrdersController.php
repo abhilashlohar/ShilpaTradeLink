@@ -508,10 +508,20 @@ class PurchaseOrdersController extends AppController
 		
 		
 			if ($this->request->is(['patch', 'post', 'put'])) {
+				if(!empty($this->request->data['pdf_font_size'])){
+				$pdf_font_size=$this->request->data['pdf_font_size'];
+				$query = $this->PurchaseOrders->query();
+					$query->update()
+						->set(['pdf_font_size' => $pdf_font_size])
+						->where(['id' => $id])
+						->execute();
+			}
+			if(!empty($this->request->data['purchase_order_rows'])){
 				foreach($this->request->data['purchase_order_rows'] as $purchase_order_rows_id=>$value){
 					$purchaseOrderRow=$this->PurchaseOrders->PurchaseOrderRows->get($purchase_order_rows_id);
 					$purchaseOrderRow->height=$value["height"];
 					$this->PurchaseOrders->PurchaseOrderRows->save($purchaseOrderRow);
+				}
 			}
 			return $this->redirect(['action' => 'confirm/'.$id]);
         }

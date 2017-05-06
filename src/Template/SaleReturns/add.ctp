@@ -232,15 +232,15 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 					?> 
 					<b>Discount <label><?php echo $this->Form->input('discount_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'discount_per','Checked'=>$checked2]); ?></label>(in %)</b>
 						<div class="input-group col-md-2" style="display:none;" id="discount_text">
-						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value="<?php echo $invoice->discount_per; ?> "><span class="input-group-addon">%</span>
+						<input type="text" name="discount_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 readonly value="<?php echo $invoice->discount_per; ?> "><span class="input-group-addon">%</span>
 						</div>
 					</td>
 					<td><?php echo $this->Form->input('discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01,'value'=>$invoice->discount]); ?></td>
 				</tr>
 				
 				<tr style="background-color:#e6faf9;">
-					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'textarea','label' => false,'class' => 'form-control input-sm','value'=>$invoice->ed_description,'placeholder' => 'Excise-Duty Description','style'=>['text-align:left']]); ?> </b></td>
-					<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Excise-Duty','value'=>$invoice->exceise_duty]); ?></td>
+					<td align="right"><b><?php echo $this->Form->input('ed_description', ['type' => 'textarea','label' => false,'class' => 'form-control input-sm','readonly','value'=>$invoice->ed_description,'placeholder' => 'Excise-Duty Description','style'=>['text-align:left']]); ?> </b></td>
+					<td><?php echo $this->Form->input('exceise_duty', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','placeholder' => 'Excise-Duty','value'=>$invoice->exceise_duty]); ?></td>
 				</tr>
 				<tr>
 					<td align="right"><b>Total</b></td>
@@ -257,11 +257,11 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 					<b>P&F <label><?php echo $this->Form->input('pnf_type', ['type' => 'checkbox','label' => false,'class' => 'form-control input-sm','id'=>'pnfper','Checked'=>$checked2]); ?></label>(in %)</b>
 					<?php if($invoice->pnf_type=='1'){ ?>
 						<div class="input-group col-md-2"  id="pnf_text">
-							<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='<?= h($invoice->pnf_per) ?>'><span class="input-group-addon">%</span>
+							<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01  readonly value='<?= h($invoice->pnf_per) ?>'><span class="input-group-addon">%</span>
 						</div>
 					<?php }else{ ?>
 						<div class="input-group col-md-2"  id="pnf_text" style="display:none;">
-							<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 value='0'><span class="input-group-addon">%</span>
+							<input type="text" name="pnf_per" class="form-control input-sm" placeholder="5.5"  'step'=0.01 readonly value='0'><span class="input-group-addon">%</span>
 						</div>
 					<?php } ?>
 					
@@ -278,11 +278,11 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 				</tr>
 				<tr>
 					<td  align="left">
-					<?php echo $this->Form->input('fright_text', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','value'=>$invoice->fright_text,'placeholder'=>'Additional text for Fright Amount','style'=>['text-align:left']]); ?>
+					<?php echo $this->Form->input('fright_text', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','value'=>$invoice->fright_text,'placeholder'=>'Additional text for Fright Amount','readonly','style'=>['text-align:left']]); ?>
 					</td>
 					<td>
 					<?php echo $ledger_account_details_for_fright->name; ?>
-					<?php echo $this->Form->input('fright_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Fright Amount','value'=>$invoice->fright_amount]); ?></td>
+					<?php echo $this->Form->input('fright_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','placeholder' => 'Fright Amount','value'=>$invoice->fright_amount]); ?></td>
 				</tr>
 				<tr>
 					<td  align="right"><b>Grand Total </b></td>
@@ -520,7 +520,7 @@ function rename_rows(){
 			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
 			if(val){
 				$(this).find('td:nth-child(2) input').attr("name","sale_return_rows["+row_no+"][item_id]").attr("id","sale_return_rows-"+row_no+"-item_id").rules("add", "required");
-				$(this).find('td:nth-child(3) input').attr("name","sale_return_rows["+row_no+"][quantity]").attr("id","sale_return_rows-"+row_no+"-quantity").rules("add", "required");
+				$(this).find('td:nth-child(3) input').attr("name","sale_return_rows["+row_no+"][quantity]").attr("id","sale_return_rows-"+row_no+"-quantity").removeAttr("readonly").rules("add", "required");
 				$(this).find('td:nth-child(4) input').attr("name","sale_return_rows["+row_no+"][rate]").attr("id","sale_return_rows-"+row_no+"-rate").rules("add", "required");
 				$(this).find('td:nth-child(5) input').attr("name","sale_return_rows["+row_no+"][amount]").attr("id","sale_return_rows-"+row_no+"-amount").rules("add", "required");
 				$(this).css('background-color','#fffcda');
@@ -540,12 +540,10 @@ function rename_rows(){
 					$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				}
 			}else{
-				$(this).find('td:nth-child(2) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
-				$(this).find('td:nth-child(3) input').attr({ name:"q" }).rules( "remove", "required" );
+				$(this).find('td:nth-child(3) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(4) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(5) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).css('background-color','#FFF');
-				
 				var serial_l=$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(2) select').length;
 				if(serial_l>0){
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] select').attr({ name:"q", readonly:"readonly"}).select2().rules( "remove", "required" );
