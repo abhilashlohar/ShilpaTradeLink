@@ -439,7 +439,7 @@ select
 					</ul>
 				</li>
 				<?php } ?>
-				<?php if(in_array(10,$allowed_pages)){ ?>
+				<?php if(in_array(17,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
