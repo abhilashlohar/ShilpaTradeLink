@@ -9,8 +9,7 @@ fieldset {
 }
 
 .divhight{
-overflow: auto !important;
-height: 589px !important;
+
 }
 
 fieldset legend {
@@ -22,7 +21,7 @@ fieldset legend {
     box-shadow: 0 0 0 1px #ddd;
     margin-left: 10px;
 }</style>
-<div class="portlet light bordered divhight">
+<div class="portlet light bordered ">
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
@@ -32,6 +31,7 @@ fieldset legend {
 	<div class="portlet-body form">
 		<?= $this->Form->create($userRight) ?>
 		<div class="row ">
+		<div class="divhight">
 			<div class="col-md-12">
 				<div class="col-md-6">
                 	<fieldset>
@@ -1056,14 +1056,21 @@ fieldset legend {
 				</div>
 				</div>
                 </fieldset>
+			</div>
+			</div>
 		</div>
-        <div class="col-md-12">
-        <div align="center" style="width:100%; margin-top:10px">
-       	 <?= $this->Form->button(__('Update'),['class'=>'btn btn-primary']) ?>
-        </div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div align="center" style="width:100%; margin-top:10px">
+				 <?= $this->Form->button(__('Update'),['class'=>'btn btn-lg btn-primary']) ?>
+				</div>
+			</div>
         </div>
 		<?= $this->Form->end() ?>
 	</div>
+
+
 </div>
 <style>
 .titletext{
