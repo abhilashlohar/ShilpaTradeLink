@@ -21,9 +21,23 @@ if(!empty($copy))
 			<br/><span style=" font-size: 13px; ">Converting Quotation: <?= h(($quotation->qt1.'/QO-'.str_pad($quotation->qt2, 3, '0', STR_PAD_LEFT).'/'.$quotation->qt3.'/'.$quotation->qt4)) ?></span>
 			<?php } ?>
 		</div>
+
 		<div class="actions">
-			<?php echo $this->Html->link('<i class="icon-home"></i> Pull Quotation','/Quotations/index?pull-request=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
-		</div>
+		<div class="btn-group">
+                                                                        <button id="btnGroupVerticalDrop5" type="button" class="btn yellow dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                                                        Pull Quotation <i class="fa fa-angle-down"></i>
+                                                                        </button>
+                                                                        <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop5">
+                                                                            <li>
+                                                                               <?php echo $this->Html->link('Close Quotation','/Quotations/index?pull-request=true',array('escape'=>false)); ?>
+                                                                            </li>
+                                                                            <li>
+                                                                               <?php echo $this->Html->link(' Keep Open Quotation','/Quotations/index?pull-request=true',array('escape'=>false)); ?>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+        </div>
+
 		
 		<div class="actions">
 			<?php echo $this->Html->link('<i class="fa fa-files-o"></i> Copy Sales Order','/SalesOrders/index?copy-request=copy',array('escape'=>false,'class'=>'btn btn-xs green')); ?>
