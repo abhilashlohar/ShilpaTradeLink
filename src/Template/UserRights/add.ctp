@@ -221,6 +221,11 @@ fieldset legend {
 							if(in_array(16,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
 							echo $this->Form->input('user_rights.16.page_id', ['label' => 'Edit','class' => '','type'=>'checkbox','value'=>16,$checked_status]); ?>
 						</label>
+						<label class="checkbox-inline">
+                        							<?php
+                        							if(in_array(35,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+                        							echo $this->Form->input('user_rights.35.page_id', ['label' => 'View','class' => '','type'=>'checkbox','value'=>35,$checked_status]); ?>
+                        </label>
 					</div>
 					</fieldset>
 				</div>
@@ -238,6 +243,11 @@ fieldset legend {
 							if(in_array(18,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
 							echo $this->Form->input('user_rights.18.page_id', ['label' => 'Edit','class' => '','type'=>'checkbox','value'=>18,$checked_status]); ?>
 						</label>
+                        <label class="checkbox-inline">
+                        		<?php
+                        			if(in_array(124,$page_ids)){ $checked_status='checked'; }else{ $checked_status=''; }
+                        			echo $this->Form->input('user_rights.124.page_id', ['label' => 'View','class' => '','type'=>'checkbox','value'=>124,$checked_status]); ?>
+                        </label>
 						</div>
                         </fieldset>
 					</div>
