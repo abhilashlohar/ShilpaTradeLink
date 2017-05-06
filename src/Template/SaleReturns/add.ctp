@@ -189,9 +189,8 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 							</td>
 							<td>
 								<?php  
-								echo $this->Form->input('sale_return_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','max'=>$invoice_row->quantity,'value' => @$invoice_row->quantity]); 
+								echo $this->Form->input('sale_return_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','max'=>$invoice_row->quantity,'value'=>0]); 
 								?>
-								<span>Max: <?= h($invoice_row->quantity) ?></span>
 							</td>
 							<td>
 								<?php echo $this->Form->input('sale_return_rows.'.$q.'.rate', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','placeholder' => 'Rate','step'=>0.01,'value'=>$invoice_row->rate]); ?>
@@ -203,9 +202,11 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 								<?php echo @$invoice->sale_tax->tax_figure; ?>
 							</td>
 							<td>
+								<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$invoice_row->item_id]); ?></label>
 							</td>
 						</tr>
 						
+						<?php if($invoice_row->item->item_companies[0]->serial_number_enable==1){ ?>
 						<tr class="tr2" row_no="<?= h($q) ?>">
 							<?php $options1=[];
 								foreach($invoice_row->item->item_serial_numbers as $item_serial_number){
@@ -216,7 +217,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 							<td colspan="6">
 							<?php echo $this->Form->input('item_serial_numbers', ['label'=>false,'options' => $options1,'multiple' => 'multiple','class'=>'form-control select2me','style'=>'width:100%','readonly']);  ?></td>
 						</tr>
-					
+						<?php } ?>
 					<?php $q++; }  ?>
 				</tbody>
 			</table>
@@ -489,14 +490,40 @@ $(document).ready(function() {
 		}
 		calculate_total();
 	});
+	
+	$('input[name="discount_per"]').die().live("keyup",function() {
+		calculate_total();
+    });
+	$('input[name="discount"]').die().live("keyup",function() {
+		calculate_total();
+    });
+	$('input[name="pnf_per"]').die().live("keyup",function() {
+		calculate_total();
+    });
+	$('input[name="pnf"]').die().live("keyup",function() {
+		calculate_total();
+    });
+	$('input[name="exceise_duty"]').die().live("keyup",function() {
+		calculate_total();
+    });
+	$('input[name="fright_amount"]').die().live("keyup",function() {
+		calculate_total();
+    });
+	
+	$('.rename_check').die().live("click",function() {
+		rename_rows(); calculate_total();
+    });
 	rename_rows();
 function rename_rows(){
 		$("#main_tb tbody tr.tr1").each(function(){  //alert();
 			var row_no=$(this).attr('row_no');
+			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
+			if(val){
 				$(this).find('td:nth-child(2) input').attr("name","sale_return_rows["+row_no+"][item_id]").attr("id","sale_return_rows-"+row_no+"-item_id").rules("add", "required");
 				$(this).find('td:nth-child(3) input').attr("name","sale_return_rows["+row_no+"][quantity]").attr("id","sale_return_rows-"+row_no+"-quantity").rules("add", "required");
 				$(this).find('td:nth-child(4) input').attr("name","sale_return_rows["+row_no+"][rate]").attr("id","sale_return_rows-"+row_no+"-rate").rules("add", "required");
 				$(this).find('td:nth-child(5) input').attr("name","sale_return_rows["+row_no+"][amount]").attr("id","sale_return_rows-"+row_no+"-amount").rules("add", "required");
+				$(this).css('background-color','#fffcda');
 				var qty=$(this).find('td:nth-child(3) input[type="text"]').val();
 				var serial_l=$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(2) select').length;
 			
@@ -510,7 +537,21 @@ function rename_rows(){
 								minlength: "select serial number equal to quantity."
 							}
 					});
+					$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				}
+			}else{
+				$(this).find('td:nth-child(2) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
+				$(this).find('td:nth-child(3) input').attr({ name:"q" }).rules( "remove", "required" );
+				$(this).find('td:nth-child(4) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
+				$(this).find('td:nth-child(5) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
+				$(this).css('background-color','#FFF');
+				
+				var serial_l=$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(2) select').length;
+				if(serial_l>0){
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] select').attr({ name:"q", readonly:"readonly"}).select2().rules( "remove", "required" );
+				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#FFF');
+				}
+			}
 			
 				
 				
@@ -525,11 +566,14 @@ function rename_rows(){
 	function calculate_total(){
 		var total=0; var grand_total=0;
 		$("#main_tb tbody tr.tr1").each(function(){
+			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
+			if(val){
 			var qty=parseInt($(this).find("td:nth-child(3) input").val());
 			var Rate=parseFloat($(this).find("td:nth-child(4) input").val());
 			var Amount=qty*Rate;
 			$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
 			total=total+Amount;
+			}
 		});
 		if($("#discount_per").is(':checked')){
 			var discount_per=parseFloat($('input[name="discount_per"]').val());
