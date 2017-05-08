@@ -1,13 +1,13 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\ContraVouchersController;
+use App\Controller\ContraVoucherRowsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\ContraVouchersController Test Case
+ * App\Controller\ContraVoucherRowsController Test Case
  */
-class ContraVouchersControllerTest extends IntegrationTestCase
+class ContraVoucherRowsControllerTest extends IntegrationTestCase
 {
 
     /**
@@ -16,6 +16,7 @@ class ContraVouchersControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
+        'app.contra_voucher_rows',
         'app.contra_vouchers',
         'app.bank_cashes',
         'app.companies',
@@ -106,8 +107,7 @@ class ContraVouchersControllerTest extends IntegrationTestCase
         'app.customer_segs',
         'app.customer_companies',
         'app.item_used_by_companies',
-        'app.company_banks',
-        'app.contra_voucher_rows'
+        'app.company_banks'
     ];
 
     /**
