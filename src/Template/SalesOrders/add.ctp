@@ -29,10 +29,10 @@ if(!empty($copy))
                                                                         </button>
                                                                         <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop5">
                                                                             <li>
-                                                                               <?php echo $this->Html->link('Close Quotation','/Quotations/index?pull-request=true',array('escape'=>false)); ?>
+                                                                               <?php echo $this->Html->link(' Keep Open Quotation','/Quotations/index?pull-request=true',array('escape'=>false)); ?>
                                                                             </li>
                                                                             <li>
-                                                                               <?php echo $this->Html->link(' Keep Open Quotation','/Quotations/index?pull-request=true',array('escape'=>false)); ?>
+                                                                               <?php echo $this->Html->link('Close Quotation','/Quotations/index?pull-request=true',array('escape'=>false)); ?>
                                                                             </li>
                                                                         </ul>
                                                                     </div>
