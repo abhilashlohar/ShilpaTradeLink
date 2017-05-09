@@ -51,9 +51,24 @@ class PurchaseReturnsController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
         $purchaseReturn = $this->PurchaseReturns->newEntity();
+		$invoice_booking_id=@(int)$this->request->query('invoiceBooking');
+		$invoiceBooking = $this->PurchaseReturns->InvoiceBookings->get($invoice_booking_id, [
+            'contain' => ['InvoiceBookingRows' => ['Items'],'Grns'=>['Companies','Vendors','GrnRows'=>['Items'],'PurchaseOrders'=>['PurchaseOrderRows']]]
+        ]);
+		//pr($invoiceBookings); exit;
         if ($this->request->is('post')) {
-            $purchaseReturn = $this->PurchaseReturns->patchEntity($purchaseReturn, $this->request->data);
+			$purchaseReturn = $this->PurchaseReturns->patchEntity($purchaseReturn, $this->request->data);
+			$purchaseReturn->check=array_filter($purchaseReturn->check);
+					$i=0; 
+					foreach($purchaseReturn->check as $purchase_return_row){
+						pr($purchase_return_row);
+						$i++;
+					} exit;
+					
             if ($this->PurchaseReturns->save($purchaseReturn)) {
                 $this->Flash->success(__('The purchase return has been saved.'));
 
@@ -62,9 +77,11 @@ class PurchaseReturnsController extends AppController
                 $this->Flash->error(__('The purchase return could not be saved. Please, try again.'));
             }
         }
-        $invoiceBookings = $this->PurchaseReturns->InvoiceBookings->find('list', ['limit' => 200]);
+       // $invoiceBookings = $this->PurchaseReturns->InvoiceBookings->find('list', ['limit' => 200]);
+		$Em = new FinancialYearsController;
+	    $financial_year_data = $Em->checkFinancialYear($invoiceBooking->created_on);
         $companies = $this->PurchaseReturns->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('purchaseReturn', 'invoiceBookings', 'companies'));
+        $this->set(compact('purchaseReturn', 'invoiceBooking', 'companies','financial_year_data'));
         $this->set('_serialize', ['purchaseReturn']);
     }
 

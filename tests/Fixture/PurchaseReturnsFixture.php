@@ -42,7 +42,7 @@ class PurchaseReturnsFixture extends TestFixture
         [
             'id' => 1,
             'invoice_booking_id' => 1,
-            'created_on' => '2017-05-06',
+            'created_on' => '2017-05-09',
             'company_id' => 1,
             'created_by' => 1,
             'voucher_no' => 1

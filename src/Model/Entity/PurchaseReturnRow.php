@@ -7,6 +7,7 @@ use Cake\ORM\Entity;
  * PurchaseReturnRow Entity
  *
  * @property int $id
+ * @property int $purchase_return_id
  * @property int $item_id
  * @property int $quantity
  *

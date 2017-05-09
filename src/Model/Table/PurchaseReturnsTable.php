@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \Cake\ORM\Association\BelongsTo $InvoiceBookings
  * @property \Cake\ORM\Association\BelongsTo $Companies
+ * @property \Cake\ORM\Association\HasMany $PurchaseReturnRows
  *
  * @method \App\Model\Entity\PurchaseReturn get($primaryKey, $options = [])
  * @method \App\Model\Entity\PurchaseReturn newEntity($data = null, array $options = [])
@@ -44,6 +45,9 @@ class PurchaseReturnsTable extends Table
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
+        ]);
+        $this->hasMany('PurchaseReturnRows', [
+            'foreignKey' => 'purchase_return_id'
         ]);
     }
 
