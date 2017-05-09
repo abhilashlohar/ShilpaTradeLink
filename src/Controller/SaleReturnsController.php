@@ -67,6 +67,7 @@ class SaleReturnsController extends AppController
 						->where(['CustomerAddress.default_address' => 1]);}],'Employees','SaleTaxes']
         ]);
 		$c_LedgerAccount=$this->SaleReturns->LedgerAccounts->find()->where(['company_id'=>$st_company_id,'source_model'=>'Customers','source_id'=>$invoice->customer->id])->first();
+		//pr($invoice->customer->id); exit;
 		
 		$ReferenceDetails=$this->SaleReturns->ReferenceDetails->find()->where(['ledger_account_id'=>$c_LedgerAccount->id,'invoice_id'=>$invoice->id]);
 		
@@ -118,7 +119,7 @@ class SaleReturnsController extends AppController
 				$ledger_saletax=$invoice->sale_tax_amount;
 				$ledger = $this->SaleReturns->Ledgers->newEntity();
 				$ledger->ledger_account_id = $invoice->st_ledger_account_id;
-				$ledger->debit = $invoice->sale_tax_amount;
+				$ledger->debit = $saleReturn->sale_tax_amount;
 				$ledger->credit = 0;
 				$ledger->voucher_id = $saleReturn->id;
 				$ledger->company_id = $invoice->company_id;
@@ -295,6 +296,11 @@ class SaleReturnsController extends AppController
 					
 			}
 			
+			foreach($ref_rows as $ref_row){
+			$ref_row=(object)$ref_row;
+			pr($ref_row);
+			}
+			exit;
 			
 			
             if ($this->SaleReturns->save($saleReturn)) {
@@ -427,7 +433,7 @@ class SaleReturnsController extends AppController
 					if(sizeof(@$ref_rows)>0){
 						foreach($ref_rows as $ref_row){
 							$ref_row=(object)$ref_row;
-							//pr($ref_row);
+							pr($ref_row);
 							$ReferenceDetail=$this->SaleReturns->ReferenceDetails->find()->where(['ledger_account_id'=>$c_LedgerAccount->id,'reference_no'=>$ref_row->ref_no,'sale_return_id'=>$saleReturn->id])->first();
 							
 							if($ReferenceDetail){ //pr($ref_row->ref_old_amount); exit;
@@ -461,7 +467,7 @@ class SaleReturnsController extends AppController
 									$this->SaleReturns->ReferenceBalances->save($ReferenceBalance);
 								}
 								
-								$query = $this->Invoices->ReferenceDetails->query();
+								$query = $this->SaleReturns->ReferenceDetails->query();
 								$query->insert(['ledger_account_id', 'sale_return_id', 'reference_no', 'credit', 'debit', 'reference_type'])
 								->values([
 									'ledger_account_id' => $c_LedgerAccount->id,
@@ -481,7 +487,7 @@ class SaleReturnsController extends AppController
                 $this->Flash->success(__('The sale return has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else {
+            } else { //pr($saleReturn); exit;
                 $this->Flash->error(__('The sale return could not be saved. Please, try again.'));
             }
         }
