@@ -6,10 +6,55 @@
 			
 		</div>
 		
-	</div>
+	
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
+			<form method="GET" >
+				<input type="hidden" name="pull-request" value="<?php echo @$pull_request; ?>">
+				<input type="hidden" name="job-card" value="<?php echo @$job_card; ?>">
+				<table class="table table-condensed">
+					<tbody>
+						<tr>
+							<td>
+								<div class="row">
+									<div class="col-md-6">
+									<div class="input-group" >
+										<span class="input-group-addon">IB-No</span><input type="text" name="book_no" class="form-control input-sm" placeholder="Invoice Booking" value="<?php echo @$book_no; ?>">
+									</div></div>
+									<div class="col-md-6">
+
+											<input type="text" name="grn_no" class="form-control input-sm" placeholder="GRN No" value="<?php echo @$grn_no; ?>">
+
+									</div>
+									
+								</div>
+							</td>
+							<td>
+							<div class="row">
+									
+									<div class="col-md-12">
+
+									<input type="text" name="in_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$in_no; ?>">
+									</div>
+									</div>
+							</td>
+							<td>
+								<div class="row">
+									<div class="col-md-6">
+										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Book From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+									<div class="col-md-6">
+										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Book To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+								</div>
+							</td>
+							
+							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
 				<?php $page_no=$this->Paginator->current('Invoices'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
@@ -49,6 +94,9 @@
 						<?php endforeach; ?>
 					</tbody>
 				</table>
+				</div>
+				</div>
+				</div>
 				<div class="paginator">
 					<ul class="pagination">
 						<?= $this->Paginator->prev('< ' . __('previous')) ?>
@@ -59,6 +107,5 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
+	
 

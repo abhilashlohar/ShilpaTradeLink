@@ -19,13 +19,37 @@ class JournalVouchersController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
+
+		$where =[];
+		$From = $this->request->query('From');
+		$To = $this->request->query('To');
+		$vouch_no = $this->request->query('vouch_no');
+
+		$this->set(compact('vouch_no','From','To'));
+
+
+
+		if(!empty($vouch_no)){
+			$where['JournalVouchers.voucher_no LIKE']=$vouch_no;
+		}
+
+		if(!empty($From)){
+			$From=date("Y-m-d",strtotime($this->request->query('From')));
+			$where['JournalVouchers.transaction_date >=']=$From;
+		}
+
+		if(!empty($To)){
+			$To=date("Y-m-d",strtotime($this->request->query('To')));
+			$where['JournalVouchers.transaction_date >=']=$To;
+		}
+
 		$this->paginate = [
             'contain' => ['JournalVoucherRows']
         ];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
-       $journalVouchers = $this->paginate($this->JournalVouchers->find()->where(['company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
+       $journalVouchers = $this->paginate($this->JournalVouchers->find()->where($where)->where(['company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
 
         $this->set('journalVoucher');
 		$this->set(compact('journalVouchers'));

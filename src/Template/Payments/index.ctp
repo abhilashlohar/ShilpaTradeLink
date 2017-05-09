@@ -5,10 +5,40 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Payment Vouchers</span>
 		</div>
-	</div>
+	
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
+			<form method="GET" >
+			
+				<table class="table table-condensed">
+					<tbody>
+						<tr>
+						<td>
+								<div class="row">
+									<div class="col-md-6">
+										<input type="text" name="From" class="form-control input-sm date-picker" placeholder="Transaction From" value="<?php echo @$From; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+									<div class="col-md-6">
+										<input type="text" name="To" class="form-control input-sm date-picker" placeholder="Transaction To" value="<?php echo @$To; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+								</div>
+							</td>
+							
+							<td>
+								
+								<div class="row">
+                                									<div class="col-md-12">
+										<input type="text" name="vouch_no" class="form-control input-sm" placeholder="Voucher No" value="<?php echo @$vouch_no; ?>">
+								</div>
+								</div>
+							</td>
+							
+							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
 				<?php $page_no=$this->Paginator->current('Payments'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
@@ -37,6 +67,9 @@
 						<?php endforeach; ?>
 					</tbody>
 				</table>
+				</div>
+				</div>
+				</div>
 				<div class="paginator">
 					<ul class="pagination">
 						<?= $this->Paginator->prev('< ' . __('previous')) ?>
@@ -47,5 +80,4 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
+	

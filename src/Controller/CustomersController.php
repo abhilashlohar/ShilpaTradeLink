@@ -298,10 +298,9 @@ class CustomersController extends AppController
 	public function CheckCompany($company_id=null,$customer_id=null)
     {
 		$this->viewBuilder()->layout('index_layout');	
-		 $this->request->allowMethod(['post', 'delete']);
+		$this->request->allowMethod(['post', 'delete']);
 		
 		$customer_ledger= $this->Customers->LedgerAccounts->find()->where(['source_model' => 'Customers','source_id'=>$customer_id,'company_id'=>$company_id])->first();
-//pr($customer_ledger); exit;
 		$ledgerexist = $this->Customers->Ledgers->exists(['ledger_account_id' => $customer_ledger->id]);
 				
 		if(!$ledgerexist){
@@ -310,10 +309,7 @@ class CustomersController extends AppController
 			
 			$VoucherLedgerAccountsexist = $this->Customers->VoucherLedgerAccounts->exists(['ledger_account_id' => $customer_ledger->id]);
 			
-			/* $Voucherref = $this->Customers->VouchersReferences->find()->contain(['VoucherLedgerAccounts'])->where(['VouchersReferences.company_id'=>$company_id]);
-			$size=sizeof($Voucherref);
-			pr($size); exit; */
-			
+		
 			if($VoucherLedgerAccountsexist){
 				$Voucherref = $this->Customers->VouchersReferences->find()->contain(['VoucherLedgerAccounts'])->where(['VouchersReferences.company_id'=>$company_id]);
 				
@@ -332,7 +328,7 @@ class CustomersController extends AppController
 			return $this->redirect(['action' => 'EditCompany/'.$customer_id]);
 				
 		}else{
-			$this->Flash->error(__('Company Can not Deleted'));
+			$this->Flash->error(__('Customer can not be remove from the company, as some trasanctions have done. '));
 			return $this->redirect(['action' => 'EditCompany/'.$customer_id]);
 		}
 	}

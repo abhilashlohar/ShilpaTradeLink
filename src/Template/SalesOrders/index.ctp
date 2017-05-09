@@ -41,8 +41,7 @@
 				<?php echo $this->Html->link( '<i class="fa fa-file-excel-o"></i> Excel', '/SalesOrders/Export-Excel/'.$url_excel.'',['class' =>'btn  green tooltips','target'=>'_blank','escape'=>false,'data-original-title'=>'Download as excel']); ?>
 			<?php }?>
 			</div>
-		</div>
-	</div>
+		
 	<div class="portlet-body">
 		<div class="row">
 			<div class="col-md-12">
@@ -54,15 +53,15 @@
 						<tr>
 							<td>
 								<div class="row">
-									<div class="col-md-4">
+									<!--<div class="col-md-4">
 										<input type="text" name="company_alise" class="form-control input-sm" placeholder="Company" value="<?php echo @$company_alise; ?>">
-									</div>
-									<div class="col-md-4">
+									</div>-->
+									<div class="col-md-6">
 										<div class="input-group" id="pnf_text">
 											<span class="input-group-addon">SO-</span><input type="text" name="sales_order_no" class="form-control input-sm" placeholder="Sales Order No" value="<?php echo @$sales_order_no; ?>">
 										</div>
 									</div>
-									<div class="col-md-4">
+									<div class="col-md-6">
 										<input type="text" name="file" class="form-control input-sm" placeholder="File" value="<?php echo @$file; ?>">
 									</div>
 								</div>
@@ -139,6 +138,9 @@
 						<?php endforeach; ?>
 					</tbody>
 				</table>
+				</div>
+				</div>
+				</div>
 				<div class="paginator">
 					<ul class="pagination">
 						<?= $this->Paginator->prev('< ' . __('previous')) ?>
@@ -147,7 +149,5 @@
 					</ul>
 					<p><?= $this->Paginator->counter() ?></p>
 				</div>
-			</div>
-		</div>
-	</div>
+</div>
 </div>
