@@ -274,8 +274,12 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 				</tr>
 				<tr>
 					<td  align="right"><b>Sale Tax Amount </b></td>
+<<<<<<< HEAD
+					<td><?php echo $invoice->sale_tax_amount; ?></td>
+=======
 					<td><?php echo $this->Form->input('sale_tax_per', ['type' => 'hidden','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01,'value'=>$invoice->sale_tax_per]); ?>
 					<?php echo $this->Form->input('sale_tax_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01]); ?></td>
+>>>>>>> origin/master
 				</tr>
 				<tr>
 					<td  align="left">
@@ -541,7 +545,10 @@ function rename_rows(){
 					$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				}
 			}else{
+<<<<<<< HEAD
+=======
 				$(this).find('td:nth-child(2) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
+>>>>>>> origin/master
 				$(this).find('td:nth-child(3) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(4) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(5) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );

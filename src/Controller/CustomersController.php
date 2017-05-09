@@ -218,8 +218,8 @@ class CustomersController extends AppController
 		if(empty($id)){
 			echo ''; exit;
 		}
+
 		$defaultAddress = $this->Customers->CustomerAddress->find()->where(['customer_id' => $id,'default_address' => 1])->first();
-		//pr($defaultAddress); exit;
 		echo $defaultAddress->address; 
     }
 	
@@ -298,10 +298,11 @@ class CustomersController extends AppController
 	public function CheckCompany($company_id=null,$customer_id=null)
     {
 		$this->viewBuilder()->layout('index_layout');	
-		$this->request->allowMethod(['post', 'delete']);
+
+		 $this->request->allowMethod(['post', 'delete']);
 		
 		$customer_ledger= $this->Customers->LedgerAccounts->find()->where(['source_model' => 'Customers','source_id'=>$customer_id,'company_id'=>$company_id])->first();
-		
+
 		$ledgerexist = $this->Customers->Ledgers->exists(['ledger_account_id' => $customer_ledger->id]);
 				
 		if(!$ledgerexist){
@@ -310,7 +311,7 @@ class CustomersController extends AppController
 			
 			$VoucherLedgerAccountsexist = $this->Customers->VoucherLedgerAccounts->exists(['ledger_account_id' => $customer_ledger->id]);
 			
-		
+
 			if($VoucherLedgerAccountsexist){
 				$Voucherref = $this->Customers->VouchersReferences->find()->contain(['VoucherLedgerAccounts'])->where(['VouchersReferences.company_id'=>$company_id]);
 				

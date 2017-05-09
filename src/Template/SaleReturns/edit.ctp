@@ -217,8 +217,12 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 						<?php $options1=[]; $choosen=[];
 							if(sizeof(@$ItemSerialNumber[@$invoice_row->item_id])>0){
 								foreach($ItemSerialNumber[@$invoice_row->item_id] as $item_serial_number){
+<<<<<<< HEAD
+									if($item_serial_number->status=="In"){
+=======
 									//pr($item_serial_number);
 									if($item_serial_number->status=="In" && $item_serial_number->sale_return_id==$saleReturn->id){
+>>>>>>> origin/master
 										$choosen[]=$item_serial_number->id;
 									}
 									$options1[]=['text' =>$item_serial_number->serial_no, 'value' => $item_serial_number->id];
@@ -290,8 +294,12 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 				</tr>
 				<tr>
 					<td  align="right"><b>Sale Tax Amount </b></td>
+<<<<<<< HEAD
+					<td><?php echo $invoice->sale_tax_amount; ?></td>
+=======
 					<td><?php echo $this->Form->input('sale_tax_per', ['type' => 'hidden','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01,'value'=>$invoice->sale_tax_per]); ?>
 					<?php echo $this->Form->input('sale_tax_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','step'=>0.01]); ?></td>
+>>>>>>> origin/master
 				</tr>
 				<tr>
 					<td  align="left">
@@ -683,7 +691,11 @@ function rename_rows(){
 			var is_input=$(this).find("td:nth-child(2) input").length;
 			
 			if(is_select){
+<<<<<<< HEAD
+				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"}).rules("add", "required");
+=======
 				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"}).rules("add", "required"); 
+>>>>>>> origin/master
 			}else if(is_input){ 
 				var url='<?php echo $this->Url->build(['controller'=>'SaleReturns','action'=>'checkRefNumberUnique']); ?>';
 				url=url+'/<?php echo $c_LedgerAccount->id; ?>/'+i;
@@ -698,6 +710,11 @@ function rename_rows(){
 								remote: "Not an unique."
 							}
 						});
+<<<<<<< HEAD
+			}
+					$(this).find("td:nth-child(3) input").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
+			i++;
+=======
 				}
 				var is_ref_old_amount=$(this).find("td:nth-child(3) input:eq(0)").length;
 				if(is_ref_old_amount){
@@ -705,6 +722,7 @@ function rename_rows(){
 				}
 				$(this).find("td:nth-child(3) input:eq(1)").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
 				i++;
+>>>>>>> origin/master
 		});
 		
 		var is_tot_input=$("table.main_ref_table tfoot tr:eq(1) td:eq(1) input").length;

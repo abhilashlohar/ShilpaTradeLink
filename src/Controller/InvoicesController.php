@@ -86,7 +86,11 @@ class InvoicesController extends AppController
 			$invoices=[];
 			$invoices=$this->paginate($this->Invoices->find()->contain(['InvoiceRows'=>['Items'=>function ($q) {
 				return $q->where(['source !='=>'Purchessed']);
+<<<<<<< HEAD
+				}]])->where(['company_id'=>$st_company_id,'inventory_voucher_status'=>'Pending','inventory_voucher_create'=>'Yes'])->order(['Invoices.id' => 'DESC']));
+=======
 				}]])->where($where)->where(['company_id'=>$st_company_id,'inventory_voucher_status'=>'Pending','inventory_voucher_create'=>'Yes'])->order(['Invoices.id' => 'DESC']));
+>>>>>>> origin/master
 		}else{
 			$invoices = $this->paginate($this->Invoices->find()->where($where)->where(['company_id'=>$st_company_id])->order(['Invoices.id' => 'DESC']));
 		}
@@ -978,9 +982,15 @@ class InvoicesController extends AppController
 								$ReferenceBalance=$this->Invoices->ReferenceBalances->find()->where(['ledger_account_id'=>$c_LedgerAccount->id,'reference_no'=>$ref_row->ref_no])->first();
 								$ReferenceBalance=$this->Invoices->ReferenceBalances->get($ReferenceBalance->id);
 								$ReferenceBalance->debit=$ReferenceBalance->debit-$ref_row->ref_old_amount+$ref_row->ref_amount;
+<<<<<<< HEAD
 								
 								$this->Invoices->ReferenceBalances->save($ReferenceBalance);
 								
+=======
+								
+								$this->Invoices->ReferenceBalances->save($ReferenceBalance);
+								
+>>>>>>> origin/master
 								$ReferenceDetail=$this->Invoices->ReferenceDetails->find()->where(['ledger_account_id'=>$c_LedgerAccount->id,'reference_no'=>$ref_row->ref_no,'invoice_id'=>$invoice->id])->first();
 								$ReferenceDetail=$this->Invoices->ReferenceDetails->get($ReferenceDetail->id);
 								$ReferenceDetail->debit=$ReferenceDetail->debit-$ref_row->ref_old_amount+$ref_row->ref_amount;
