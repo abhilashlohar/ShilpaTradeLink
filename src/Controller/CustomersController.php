@@ -295,11 +295,12 @@ class CustomersController extends AppController
 
 	}
 	
-	public function CheckCompany($company_id=null,$customer_id=null)
+	public function CheckCompany($company_id=null,$customer_id=null,$todo=null)
     {
 		$this->viewBuilder()->layout('index_layout');	
-		 $this->request->allowMethod(['post', 'delete']);
+		$this->request->allowMethod(['post', 'delete']);
 		
+		echo $todo; exit;
 		$customer_ledger= $this->Customers->LedgerAccounts->find()->where(['source_model' => 'Customers','source_id'=>$customer_id,'company_id'=>$company_id])->first();
 		$ledgerexist = $this->Customers->Ledgers->exists(['ledger_account_id' => $customer_ledger->id]);
 				
