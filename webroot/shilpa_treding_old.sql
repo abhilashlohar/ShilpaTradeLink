@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 09, 2017 at 06:44 AM
+-- Generation Time: May 06, 2017 at 12:50 PM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -2016,7 +2016,7 @@ INSERT INTO `invoices` (`id`, `temp_limit`, `customer_id`, `customer_address`, `
 (10, '0.00', 40, 'Pali-Marwar-306401\r\nRajastahn', '45505 dt. 06.04.2017', NULL, 1, '56712.25', '0.00', 0, '0.00', '56712.25', '5.50', 2, '3119.17', '2599.75', 'Add: Reimbursement of Excise duty, so paid vide Invoice No. 4109V/17 dt. 25.03.2017 of M/s Remi Elektrotechnik Limited, Vasai', '0.00', 'Freight "PAID"  bais', '59831.42', '59831.42', '2017-04-11', 25, 'Pulled From Sales-Order', 1, 'STL', 10, '17-18', 'BE-3370', '4600015892', '2017-03-21', 'Direct for payment within 15 days', 4, 8, 2, '7.50', '4387.50', '', '', '', 'Pending', '', 106, 37, 488, '16px', '', 'Yes', 'No', 0),
 (11, '0.00', 42, 'Rajasthan State Highway 9, \r\nSripati Nagar, Dabok, Udaipur-313201\r\nRajasthan \r\n', '-', NULL, 1, '28767.50', '0.00', 0, '0.00', '28767.50', '5.50', 2, '1582.21', '0.00', '', '0.00', 'Hand Delivery ', '30349.71', '30349.71', '2017-04-11', 25, 'Pulled From Sales-Order', 32, 'STL', 11, '17-18', 'BE-3102', '7420001469/MES ', '2017-03-29', 'Direct for payment within 30 days', 4, 8, 29, '7.50', '2332.50', '', '', '', 'Pending', '', 106, 37, 488, '16px', '', 'No', 'No', 0),
 (12, '0.00', 18, 'Chanderia Smelter Complex (CPP)\r\nPO Putholi\r\nDt. Chittorgarh', '-', NULL, 1, '6955.00', '0.00', 0, '0.00', '6955.00', '5.50', 2, '382.52', '0.00', '', '0.00', 'Freight "PAID DOOR DELIVERY" basis', '7337.52', '7337.52', '2017-04-11', 25, 'Pulled From Sales-Order', 15, 'STL', 12, '17-18', 'BE-3079', '4100086596', '2017-01-20', 'Direct for payment within 30 days', 11, 8, 7, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 488, '16px', '', 'No', 'No', 0),
-(13, '0.00', 1, 'Dariba Smelter Complex\r\nRajpura Dariba Mines\r\nDist.: Rajsamand (Raj.)\r\nPin no- 313211', '-', NULL, 1, '98034.00', '0.00', 0, '0.00', '98034.00', '5.50', 2, '5391.87', '7784.00', 'Add: reimbursement of Excise duty, so paid vide invoice No. 107204 dt. 22.03.2017 of M/s SPX Flow Technology (India) Private Limited, Ahemdabad', '0.00', '', '103425.87', '103425.87', '2017-04-11', 25, 'Pulled From Sales-Order', 13, 'STL', 13, '17-18', 'BE-3146', '2000037157/4100085926', '2016-12-13', 'Direct for payment within 30 days', 11, 8, 16, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 488, '16px', '', 'Yes', 'Yes', 4),
+(13, '0.00', 1, 'Dariba Smelter Complex\r\nRajpura Dariba Mines\r\nDist.: Rajsamand (Raj.)\r\nPin no- 313211', '-', NULL, 1, '98034.00', '0.00', 0, '0.00', '98034.00', '5.50', 2, '5391.87', '7784.00', 'Add: reimbursement of Excise duty, so paid vide invoice No. 107204 dt. 22.03.2017 of M/s SPX Flow Technology (India) Private Limited, Ahemdabad', '0.00', '', '103425.87', '103425.87', '2017-04-11', 25, 'Pulled From Sales-Order', 13, 'STL', 13, '17-18', 'BE-3146', '2000037157/4100085926', '2016-12-13', 'Direct for payment within 30 days', 11, 8, 16, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 488, '16px', '', 'Yes', 'No', 0),
 (14, '0.00', 72, 'SP-4/3, RIICO Industrial Area,\r\nVill.: Keshwana, Teh.: KOTPUTLI-303108,\r\nDistt: Jaipur (Raj.) ', '13553 dt. 20.03.2017', NULL, 1, '7500.00', '0.00', 0, '0.00', '7500.00', '5.50', 2, '412.50', '0.00', '', '0.00', 'Freight "TO-PAY'' basis', '7912.50', '7912.50', '2017-04-11', 25, 'Pulled From Sales-Order', 37, 'STL', 14, '17-18', 'BE-3299', 'Verbal confirmation by Mr. Naveen Kumar ', '2017-03-15', 'Direct for payment within 07 days', 15, 8, 1, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 488, '16px', '', 'No', 'No', 0),
 (15, '0.00', 129, 'SP3-10 to 11, RIICO Industrial Area, Teh.: Kotputli, Keshwana Rajpoot, Distt: Jaipur (Raj.)', '-', NULL, 1, '12350.00', '0.00', 0, '0.00', '12350.00', '5.50', 2, '679.25', '0.00', '', '0.00', 'Freight "TO-PAY" basis', '13029.25', '13029.25', '2017-04-11', 25, 'Pulled From Sales-Order', 36, 'STL', 15, '17-18', 'BE-2945', '471/16-17 ', '2016-07-23', 'Direct for payment against documents recevie', 15, 8, 1, '5.00', '650.00', '', '', '', 'Pending', '', 106, 37, 488, '16px', '', 'No', 'No', 0),
 (16, '0.00', 53, 'Udaisagar Road,\r\nUdaipur-313003', 'Hand delivery', NULL, 1, '24500.00', '0.00', 0, '0.00', '24500.00', '5.50', 2, '1347.50', '0.00', '', '0.00', '', '25847.50', '25847.50', '2017-04-11', 25, 'Pulled From Sales-Order', 38, 'STL', 16, '17-18', 'BE-3342', '4501500290', '2017-04-04', 'Direct for payment within 15 days', 15, 8, 29, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 488, '16px', '', 'No', 'No', 0),
@@ -2045,15 +2045,15 @@ INSERT INTO `invoices` (`id`, `temp_limit`, `customer_id`, `customer_address`, `
 (39, '0.00', 127, 'E-1 RIICO Industrial Area,\r\nLalsot\r\nDausa -303511', '-', NULL, 1, '8750.00', '0.00', 0, '0.00', '8750.00', '5.50', 2, '481.25', '0.00', '', '0.00', 'Hand Delivery', '9231.25', '9231.25', '2017-04-17', 27, 'Pulled From Sales-Order', 64, 'FMSL', 6, '17-18', 'BE-32471', 'Verbal order by Mr. Deepak on', '2017-04-06', 'Full payment received by NEFT', 15, 8, 29, '0.00', '0.00', '', '', '', 'Pending', '', 317, 311, 505, '16px', 'Hand Delivery', 'No', 'No', 0),
 (40, '0.00', 26, 'Unit-Kotputli Cement Works\r\nVillage - Mohanpura\r\nTeh - Kotputli\r\nDist. jaipur-303108', '-', NULL, 1, '7250.00', '0.00', 0, '0.00', '7250.00', '5.50', 2, '398.75', '0.00', '', '100.00', '"FREIGHT PAID DOOR DELIVERY" basis', '7748.75', '7748.75', '2017-04-21', 25, 'Pulled From Sales-Order', 56, 'STL', 34, '17-18', 'BE-2814', 'GK/GKG/7100537993', '2017-04-08', 'Direct for payment within 30 days after receipt of material.', 15, 8, 6, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 488, '16px', '"FREIGHT PAID DOOR DELIVERY" basis', 'No', 'Yes', 7),
 (41, '0.00', 134, 'Mayur Nagar,\r\nLodha-327001\r\nBanswara (Raj.)', '63773 dated 22.04.2017', NULL, 1, '4750.00', '0.00', 0, '0.00', '4750.00', '14.50', 1, '688.75', '0.00', '', '0.00', 'Freight "TO-PAY" basis', '5438.75', '5438.75', '2017-04-21', 25, 'Pulled From Sales-Order', 33, 'STL', 35, '17-18', 'BE-2598', 'SPA/31700011', '2017-04-03', 'Direct for payment within 30 days', 11, 8, 12, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 487, '16px', 'Freight "TO-PAY" basis', 'No', 'No', 0),
-(42, '0.00', 5, '(Formerly Indo Zinc Ltd)\r\n(A Subsidiary of The India Cements Ltd)\r\nPost Wajwana\r\nBanswara -327025', '-', NULL, 1, '2304.00', '0.00', 0, '0.00', '2304.00', '5.50', 2, '126.72', '0.00', '', '150.00', 'Re-imburesment of freight charge ', '2580.72', '2580.72', '2017-04-22', 25, 'Pulled From Sales-Order', 65, 'STL', 36, '17-18', 'BE-2977', 'PO /BSW / 66', '2017-04-18', 'Direct for payment within 30 days', 11, 8, 6, '10.00', '256.00', '', '', '', 'Pending', '', 106, 37, 488, '16px', '"FREIGHT PAID DOOR DELIVERY" basis', 'No', 'Yes', 5),
-(43, '0.00', 17, 'Rajpura Dariba Mines\r\nDariba Smelter Complex \r\nP.O. Dariba Mines\r\nRajsamand', '-', NULL, 1, '106926.30', '0.00', 0, '0.00', '106926.30', '14.50', 1, '15504.31', '0.00', '', '0.00', 'Authorised Vehicle ', '122430.61', '122430.61', '2017-04-25', 25, 'Pulled From Sales-Order', 67, 'STL', 37, '17-18', 'BE-3253', '2000039196/4100087355', '2017-03-09', 'Direct for payment with in 30 days', 11, 8, 29, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 487, '16px', 'Authorised Vehicle', 'No', 'Yes', 2),
+(42, '0.00', 5, '(Formerly Indo Zinc Ltd)\r\n(A Subsidiary of The India Cements Ltd)\r\nPost Wajwana\r\nBanswara -327025', '-', NULL, 1, '2304.00', '0.00', 0, '0.00', '2304.00', '5.50', 2, '126.72', '0.00', '', '150.00', 'Re-imburesment of freight charge ', '2580.72', '2580.72', '2017-04-22', 25, 'Pulled From Sales-Order', 65, 'STL', 36, '17-18', 'BE-2977', 'PO /BSW / 66', '2017-04-18', 'Direct for payment within 30 days', 11, 8, 6, '10.00', '256.00', '', '', '', 'Pending', '', 106, 37, 488, '16px', '"FREIGHT PAID DOOR DELIVERY" basis', 'No', 'No', 0),
+(43, '0.00', 17, 'Rajpura Dariba Mines\r\nDariba Smelter Complex \r\nP.O. Dariba Mines\r\nRajsamand', '-', NULL, 1, '106926.30', '0.00', 0, '0.00', '106926.30', '14.50', 1, '15504.31', '0.00', '', '0.00', 'Authorised Vehicle ', '122430.61', '122430.61', '2017-04-25', 25, 'Pulled From Sales-Order', 67, 'STL', 37, '17-18', 'BE-3253', '2000039196/4100087355', '2017-03-09', 'Direct for payment with in 30 days', 11, 8, 29, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 487, '16px', 'Authorised Vehicle', 'No', 'No', 0),
 (44, '0.00', 17, 'Rajpura Dariba Mines\r\nDariba Smelter Complex \r\nP.O. Dariba Mines\r\nRajsamand', '1499 dated 21.04.2017', NULL, 1, '99504.00', '0.00', 0, '0.00', '99504.00', '0.00', 3, '0.00', '6894.00', 'Add: Reimbursement of Excise duty, so paid vide Invoice No. 42  dt. 21.04.2017 of M/s Darling Pumps Pvt. Ltd., Indore for\r\nAdd: Reimbursement of CST so paid vide Invoice No. 42 dated 21.04.2017 against ''C'' Form for\r\n(Rs. 5094/-+Rs.1800/-=6894/-)\r\n\r\n\r\n', '0.00', 'Freight "PAID" basis', '99504.00', '99504.00', '2017-04-26', 25, 'Pulled From Sales-Order', 69, 'STL', 38, '17-18', 'BE-3374', '2000039942/4100087899', '2017-04-08', 'Direct for payment within 30 days', 11, 8, 18, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 489, '16px', 'Freight "PAID" basis, Udaipur', 'No', 'Yes', 5),
 (45, '0.00', 12, 'Sindesar Khurd Mine\r\nP.O. Dariba\r\nRajsamand', '-', NULL, 1, '53888.00', '0.00', 0, '0.00', '53888.00', '5.50', 2, '2963.84', '0.00', '', '0.00', 'Love Kush Enterprises', '56851.84', '56851.84', '2017-04-26', 25, 'Pulled From Sales-Order', 29, 'STL', 39, '17-18', 'BE-3359', '2000038628/4100086965', '2017-02-11', 'Direct for payment within 30 days', 11, 8, 16, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 488, '16px', '', 'No', 'No', 0),
 (46, '0.00', 8, 'Unit Of - DCM Shriram Industries Limited\r\nShriram Nagar, Kota-324004', '12084 dated 28.04.2017', NULL, 1, '7900.00', '0.00', 0, '0.00', '7900.00', '14.50', 1, '1145.50', '0.00', '', '0.00', 'Freight "TO-PAY" basis', '9045.50', '9045.50', '2017-04-28', 25, 'Pulled From Sales-Order', 78, 'STL', 40, '17-18', 'BE-2932', 'OSC/4100009747', '2017-04-17', 'Direct for payment advance received ', 15, 8, 15, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 487, '16px', 'Frieght "TO PAY" Basis', 'No', 'No', 0),
 (47, '0.00', 80, '7-8 KM Stone, Bhiwadi-\r\nAlwar Road, Khijuriwas (PO), \r\nAlwar (Dist), Bhiwadi, \r\nRajasthan 301018', '363-116018 dated 29.04.2017', NULL, 1, '30525.00', '0.00', 0, '0.00', '30525.00', '14.50', 1, '4426.13', '0.00', '', '0.00', 'Freight "TO-PAY" basis', '34951.13', '34951.13', '2017-04-28', 25, 'Pulled From Sales-Order', 87, 'STL', 41, '17-18', 'BE-3383', '4500716258', '2017-03-22', 'Direct for payment against Invoice ', 15, 8, 1, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 487, '16px', 'Freight "TO-PAY'' basis', 'No', 'No', 0),
 (48, '0.00', 66, '(Unit- Mandpam)\r\nPB No. 13\r\nBhilwara-311001', '10111721 dated 20.04.2017', NULL, 1, '82699.75', '1653.99', 1, '2.00', '84353.74', '5.50', 2, '4639.46', '2599.75', 'Add: Reimbursement of Excise duty, so paid vide Invoice No. 0156V/18 dated 19.04.2017of M/s remi Elektrotechnik Limited, Vasai', '0.00', 'Freight "TO-PAY" basis', '88993.20', '88993.20', '2017-04-29', 25, 'Pulled From Sales-Order', 41, 'STL', 42, '17-18', 'BE-3320', '151700094', '2017-04-10', 'Direct for payment within 15 days', 15, 8, 7, '10.00', '8900.00', '', '', '', 'Pending', '', 106, 37, 488, '16px', 'Freight "TO-PAY" basis', 'Yes', 'No', 0),
 (49, '0.00', 51, 'Sp 2-4, RIICO Industrial Area,\r\nDelhi-Jaipur Highway,\r\nNeemrana, Teh. Behror,\r\nDistt- Alwar-301705', '-', NULL, 1, '54975.75', '0.00', 0, '0.00', '54975.75', '5.50', 2, '3023.67', '675.75', 'Add: Reimbursement of Excise duty, so paid vide Invoice No. 3887V/17 dated 08.03.2017 of M/s Remi Elektrotechnik Limited, Vasai', '1500.00', '"FREIGHT PAID DOOR DELIVERY"  basis', '59499.42', '59499.42', '2017-05-01', 25, 'Pulled From Sales-Order', 80, 'STL', 43, '17-18', 'BE-3353', '4700010834', '2017-01-17', 'Direct for payment within 30 days', 15, 8, 3, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 488, '16px', '"FREIGHT PAID DOOR DELIVERY" basis', 'Yes', 'No', 0),
-(50, '0.00', 110, '(Khushkhera Cement Grinding Project)\r\nPlot No. SP3-II, A-1, \r\nRIICO Industrial Area\r\nBhiwadi, Taluka-Tijara,\r\nKhushkhera-301707\r\nDistt: Alwar (Raj.)', '363-116043 dated 03.05.2017', NULL, 1, '3000.00', '0.00', 0, '0.00', '3000.00', '14.50', 1, '435.00', '0.00', '', '0.00', 'Freight "PAID " basis', '3435.00', '3435.00', '2017-05-01', 25, 'Pulled From Sales-Order', 85, 'STL', 44, '17-18', 'BE-3031', '428132', '2017-04-19', 'Direct for payment within 30 days', 11, 8, 1, '20.00', '750.00', '', '', '', 'Pending', '', 106, 37, 487, '16px', 'Freight "PAID" basis', 'No', 'Yes', 3),
+(50, '0.00', 110, '(Khushkhera Cement Grinding Project)\r\nPlot No. SP3-II, A-1, \r\nRIICO Industrial Area\r\nBhiwadi, Taluka-Tijara,\r\nKhushkhera-301707\r\nDistt: Alwar (Raj.)', '363-116043 dated 03.05.2017', NULL, 1, '3000.00', '0.00', 0, '0.00', '3000.00', '14.50', 1, '435.00', '0.00', '', '0.00', 'Freight "PAID " basis', '3435.00', '3435.00', '2017-05-01', 25, 'Pulled From Sales-Order', 85, 'STL', 44, '17-18', 'BE-3031', '428132', '2017-04-19', 'Direct for payment within 30 days', 11, 8, 1, '20.00', '750.00', '', '', '', 'Pending', '', 106, 37, 487, '16px', 'Freight "PAID" basis', 'No', 'No', 0),
 (51, '0.00', 114, '(Unit-Shree Mega Power)\r\nBangur Nagar, Beawar-305901 \r\nDistt: Ajmer (Raj.)', '10112069 dated 01.05.2017', NULL, 1, '21920.00', '0.00', 0, '0.00', '21920.00', '14.50', 1, '3178.40', '0.00', '', '0.00', 'Freight "PAID" basis', '25098.40', '25098.40', '2017-05-01', 25, 'Pulled From Sales-Order', 22, 'STL', 45, '17-18', 'BE-3385', '421611', '2017-03-20', 'Direct for payment within 30 days', 11, 8, 7, '20.00', '5480.00', '', '', '', 'Pending', '', 106, 37, 487, '16px', 'Freight "PAID" basis', 'No', 'Yes', 4),
 (52, '0.00', 26, 'Unit-Kotputli Cement Works\r\nVillage - Mohanpura\r\nTeh - Kotputli\r\nDist. jaipur-303108', 'B4000462870 dated 22.04.2017', NULL, 1, '46000.00', '0.00', 0, '0.00', '46000.00', '0.00', 3, '0.00', '3000.00', 'Add: Reimbursement of Excise duty, so paid vide Invoice No. 43 dt. 21.04.2017 of M/s Darling Pumps Pvt. Ltd., Indore\r\nAdd: Reimbursement of CST so paid vide Invoice No. 43 dt. 21.04.2017 against ''C'' Form \r\n(Rs.=2217/- + Rs.=783/-)', '0.00', '', '46000.00', '46000.00', '2017-05-02', 25, 'Pulled From Sales-Order', 50, 'STL', 46, '17-18', 'BE-3377', 'GK/GKC/7100538001', '2017-04-11', 'Direct for payment within 15 days after receipt of material ', 15, 8, 27, '0.00', '0.00', '', '', '', 'Pending', '', 106, 37, 489, '16px', 'Freight "TO-PAY" Basis ', 'No', 'No', 0),
 (53, '0.00', 30, 'Village -Khapradig ,Teh :-Simga\r\nBhatapara ,Baloda Bazar Raipur -493332\r\nChattisgarh', 'N6000423217 dated 03.05.2017', NULL, 1, '37800.00', '0.00', 0, '0.00', '37800.00', '2.00', 4, '756.00', '0.00', '', '0.00', '', '38556.00', '38556.00', '2017-05-02', 25, 'Pulled From Sales-Order', 35, 'STL', 47, '17-18', 'BE-3241', '426576', '2017-04-07', 'Direct for payment within 30 days', 11, 8, 27, '20.00', '9450.00', '', '-', '', 'Pending', '', 106, 37, 490, '16px', '"FREIGHT PAID" basis', 'No', 'No', 0),
@@ -2198,24 +2198,24 @@ INSERT INTO `invoice_rows` (`id`, `invoice_id`, `item_id`, `description`, `quant
 (203, 53, 621, '<p>PUMPSPAR4545 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Mechanical Seal &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; T3SFP 20/56</p>', 1, '13250.00', '13250.00', 0, 'Pending', '', '', 0),
 (204, 53, 612, '<p>PUMPSPAR4546&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Mechanical Seal &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; T3ST 45/42</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 2, '8500.00', '17000.00', 0, 'Pending', '', '', 0),
 (208, 51, 600, '<p>Your item code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; PUMPOILS0040</p><p><span style="font-weight: bold; text-decoration: underline;">"TUSHACO" Gear Pumps</span>&nbsp;</p><p>Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RT 40 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p>Capacity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 40 LPM</p><p>Pressure&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 8 kg/cm2</p><p>Sr. No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;: &nbsp; &nbsp; &nbsp; &nbsp;1641727/2090,2093,2098,2099</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p></p>', 4, '6850.00', '27400.00', 0, 'Pending', '58,61,66,67', '', 0),
-(209, 50, 1148, '<p><span style="font-weight: bold;">Your item code : PUMPGEAR0096</span></p><p><span style="font-weight: bold; text-decoration: underline;">"TUSHACO" Gear Pump</span></p><p>Model&nbsp; &nbsp; :&nbsp; &nbsp; RT 10</p><p>Flow&nbsp; &nbsp; :&nbsp; &nbsp; 10 LPM</p><p>Pressure&nbsp; &nbsp; :&nbsp; &nbsp; 6 Kg/cm2</p><p>Sr. No. : &nbsp;1641727/2100</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 1, '3750.00', '3750.00', 0, 'Pending', '68', '', 1),
+(209, 50, 1148, '<p><span style="font-weight: bold;">Your item code : PUMPGEAR0096</span></p><p><span style="font-weight: bold; text-decoration: underline;">"TUSHACO" Gear Pump</span></p><p>Model&nbsp; &nbsp; :&nbsp; &nbsp; RT 10</p><p>Flow&nbsp; &nbsp; :&nbsp; &nbsp; 10 LPM</p><p>Pressure&nbsp; &nbsp; :&nbsp; &nbsp; 6 Kg/cm2</p><p>Sr. No. : &nbsp;1641727/2100</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 1, '3750.00', '3750.00', 0, 'Pending', '68', '', 0),
 (211, 49, 1112, '<p><span style="font-weight: bold;">You Item Code : 6016076</span></p><p></p><p><span style="font-weight: bold; text-decoration: underline;">"JOHNSON" Centrifugal Pump Set</span></p><p>Model &nbsp; &nbsp;: &nbsp; &nbsp;CCR 25 160 R6 M2 L3 (Impeller Dai-157 mm)</p><p>Head &nbsp; &nbsp;: &nbsp; &nbsp;30 mtrs.</p><p>Capacity &nbsp; &nbsp;: &nbsp; &nbsp;4-5 m<span style="vertical-align: super;">3</span>/hr</p><p>Sealing &nbsp; &nbsp;: &nbsp; &nbsp;Mechanical Seal</p><p>Suc* Dis. &nbsp; &nbsp;: &nbsp; &nbsp;25*25 mm</p><p>With "REMI" 3 HP/2900 RPM Foot Mounted Motor, Coupling L-95,&nbsp;</p><p>Coupling Guard, Fasteners dully assembled on MS Base frame&nbsp;</p><p></p><p></p><p>Pump Sr. No.: &nbsp;D111086003</p><p>Motor Sr. No: 16/10/D/1688</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p></p>', 1, '54300.00', '54300.00', 0, 'Pending', '', '', 0),
 (212, 48, 806, '<p><span style="font-weight: bold;">Your item code : ENELPTHE0583</span></p><p><span style="font-weight: bold; text-decoration: underline;">"JOHNSON" Self Priming Pump Sets</span></p><p>Model : KGEN 16-6 G1 (with SS Impeller)</p><p>Flow : 30 m3/hr</p><p>Head : 35 Mtrs.</p><p>Sealing : Mechanical Seal</p><p>with "REMI" 7.5 HP/2900 RPM Motor, Coupling L-100, Coupling Guard,Fasteners dully assembled on MS Baseframe.</p><p>Pump Sr. No.: C111152013, C1111152022</p><p>Motor Sr. No. : 16/07/D-1584, 16/07/D-1585</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 2, '44500.00', '89000.00', 0, 'Pending', '', '', 0),
 (213, 47, 982, '<p><span style="font-weight: bold; text-decoration: underline;">"POSITIVE" Dosing Pumps</span></p><p>Model&nbsp;&nbsp; &nbsp; :&nbsp; &nbsp; ED 01</p><p>Capacity&nbsp; &nbsp; :&nbsp; &nbsp; 6 to 0 LPH</p><p>Pressure&nbsp; &nbsp; :&nbsp; &nbsp; 0 to 4 Kg/cm2</p><p>Sr. No.&nbsp; &nbsp; :&nbsp; &nbsp; 16741/03/2017, 16742/03/2017</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 2, '15262.50', '30525.00', 0, 'Pending', '', '', 0),
 (214, 46, 982, '<p><span style="font-weight: bold;">Your Item Code : 4000000541</span></p><p><span style="font-weight: bold; text-decoration: underline;">"POSITIVE" Dosing Pump</span></p><p>Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;ED 01&nbsp;</p><p>Capacity&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;0 to 6 LPH&nbsp;</p><p>Pressure&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;4 Kg/cm<span style="vertical-align: super;">2</span></p><p><span style="vertical-align: super;">Suc*Dis&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;1/4" * 1/4"</span></p><p><span style="vertical-align: super;">Drive&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;Single Phase 230 V, 50 Hz</span></p><p><span style="vertical-align: super;">Sr. No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp; &nbsp; 16750/03/2017</span></p><p><span style="vertical-align: super;"><br></span></p><p><span style="vertical-align: super;"><br></span></p><p><span style="vertical-align: super;"><br></span></p><p><span style="vertical-align: super;"><br></span></p><p><span style="vertical-align: super;"><br></span></p><p><span style="vertical-align: super;"><br></span></p><p><span style="vertical-align: super;"><br></span></p><p><span style="vertical-align: super;"><br></span></p><p><span style="vertical-align: super;"><br></span></p><p><span style="vertical-align: super;"><br></span></p><p><span style="vertical-align: super;"><br></span></p><p><span style="vertical-align: super;"><br></span></p><p><span style="vertical-align: super;"><br></span></p><p><span style="vertical-align: super;"><br></span></p>', 1, '7900.00', '7900.00', 0, 'Pending', '', '', 0),
 (215, 45, 1128, '<p><span style="font-weight: bold;">Your item code :&nbsp;</span><span style="line-height: 1.42857143; font-weight: bold;">766156747100</span></p><p><span style="font-weight: bold; text-decoration: underline;">Spares for "JOHNSON" Pump</span></p><p>Name of Spares : Mechaincal Seal</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; For Pump Model CCR 25 125 R6 S2 L3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</p>', 2, '26944.00', '53888.00', 0, 'Pending', '', '', 0),
 (216, 44, 931, '<p><span style="font-weight: bold;">Your item code : 766842027100</span></p><p><span style="font-weight: bold; text-decoration: underline;">"DARLING" Submersible Pumps</span></p><p>Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; S 630</p><p>Head&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;0 to 32 Mtrs.</p><p>Sr. No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; SD 170893 to SD 170898</p><p>with 5 Mtrs. Cable</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 6, '15435.00', '92610.00', 0, 'Pending', '11,12,13,14,15,16', '', 3),
-(217, 43, 978, '<p><span style="font-weight: bold; text-decoration: underline;">Spares for "ANTICO" Pump</span></p><p><span style="font-weight: bold;">Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; EXP 160 CT</span></p><p><span style="font-weight: bold;">Item code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Part No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Description</span></p><p>760842711010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 73900040&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Stationary Part</p>', 3, '5624.00', '16872.00', 0, 'Pending', '', '', 2),
-(218, 43, 979, '<p>760842863010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 73500041&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Rotary Unit</p>', 2, '5989.40', '11978.80', 0, 'Pending', '', '', 2),
-(219, 43, 830, '<p>760842210010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 70800001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Deflector</p>', 2, '136.90', '273.80', 0, 'Pending', '', '', 2),
-(220, 43, 835, '<p>760842300010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 70410010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Adapter Flange</p>', 2, '342.25', '684.50', 0, 'Pending', '', '', 2),
-(221, 43, 1174, '<p>760842300020&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 70422921&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Locating Flange</p>', 4, '1625.70', '6502.80', 0, 'Pending', '', '', 2),
-(222, 43, 1160, '<p>76084260010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 70211602&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Back Plate</p>', 4, '2909.10', '11636.40', 0, 'Pending', '', '', 2),
-(223, 43, 1211, '<p>760842752010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 75210506&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Shaft</p>', 2, '6845.00', '13690.00', 0, 'Pending', '', '', 2),
-(224, 43, 674, '<p>760842775010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 73312901&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Shaft Sleeve</p>', 4, '7215.00', '28860.00', 0, 'Pending', '', '', 2),
-(225, 43, 1213, '<p>760842007010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 70111604&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Adopter</p>', 2, '2909.10', '5818.20', 0, 'Pending', '', '', 2),
-(226, 43, 1215, '<p>760842389010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 70110507&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Bearing Housing</p>', 2, '5304.90', '10609.80', 0, 'Pending', '', '', 2),
-(227, 42, 1225, '<p><span style="font-weight: bold; text-decoration: underline;">Spares for "JOHNSON" Pump</span></p><p>Name of Spares &nbsp; : &nbsp; Split Gland</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;For Johnson Pump Model CN 100 400 G1 S2 L3</p><p>Part No. &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp; &nbsp;1140&nbsp;</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 2, '1280.00', '2560.00', 0, 'Pending', '', '', 1),
+(217, 43, 978, '<p><span style="font-weight: bold; text-decoration: underline;">Spares for "ANTICO" Pump</span></p><p><span style="font-weight: bold;">Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; EXP 160 CT</span></p><p><span style="font-weight: bold;">Item code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Part No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Description</span></p><p>760842711010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 73900040&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Stationary Part</p>', 3, '5624.00', '16872.00', 0, 'Pending', '', '', 0),
+(218, 43, 979, '<p>760842863010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 73500041&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Rotary Unit</p>', 2, '5989.40', '11978.80', 0, 'Pending', '', '', 0),
+(219, 43, 830, '<p>760842210010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 70800001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Deflector</p>', 2, '136.90', '273.80', 0, 'Pending', '', '', 0),
+(220, 43, 835, '<p>760842300010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 70410010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Adapter Flange</p>', 2, '342.25', '684.50', 0, 'Pending', '', '', 0),
+(221, 43, 1174, '<p>760842300020&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 70422921&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Locating Flange</p>', 4, '1625.70', '6502.80', 0, 'Pending', '', '', 0),
+(222, 43, 1160, '<p>76084260010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 70211602&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Back Plate</p>', 4, '2909.10', '11636.40', 0, 'Pending', '', '', 0),
+(223, 43, 1211, '<p>760842752010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 75210506&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Shaft</p>', 2, '6845.00', '13690.00', 0, 'Pending', '', '', 0),
+(224, 43, 674, '<p>760842775010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 73312901&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Shaft Sleeve</p>', 4, '7215.00', '28860.00', 0, 'Pending', '', '', 0),
+(225, 43, 1213, '<p>760842007010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 70111604&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Adopter</p>', 2, '2909.10', '5818.20', 0, 'Pending', '', '', 0),
+(226, 43, 1215, '<p>760842389010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 70110507&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Bearing Housing</p>', 2, '5304.90', '10609.80', 0, 'Pending', '', '', 0),
+(227, 42, 1225, '<p><span style="font-weight: bold; text-decoration: underline;">Spares for "JOHNSON" Pump</span></p><p>Name of Spares &nbsp; : &nbsp; Split Gland</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;For Johnson Pump Model CN 100 400 G1 S2 L3</p><p>Part No. &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp; &nbsp;1140&nbsp;</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 2, '1280.00', '2560.00', 0, 'Pending', '', '', 0),
 (229, 41, 872, '<p><span style="font-weight: bold;">Your item code : GBOLOILG0032</span></p><p><span style="font-weight: bold;">SILICON OIL (100 ml Bottle)</span></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 50, '95.00', '4750.00', 0, 'Pending', '', '', 0),
 (230, 40, 756, '<p>Your item code : 40151503K267</p><p><span style="font-weight: bold; text-decoration: underline;">Spares for "JOHNSON" Pump</span></p><p>Name of Spares : Mechanical Seal</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;For Pump Model KGEN 12-6 G1</p><p>Part No. : 0380&nbsp;<br></p><p><span style="font-weight: bold; text-decoration: underline;"><br></span></p>', 5, '1450.00', '7250.00', 0, 'Pending', '', '', 2),
 (231, 33, 935, '<p><span style="font-weight: bold;">Your Item Code: PUMPOTHR0371</span></p><p><span style="font-weight: bold; text-decoration: underline;">"DARLING" Submersible Pumps</span></p><p>Pump Model : LJ 15 LN</p><p>Head : 10 Meters</p><p>Flow : 375 LPM</p><p>Power: 1.5 HP / 2980 RPM 3 Phase</p><p>Outlet : 50 MM</p><p>Pump with 10 Meters Cables</p><p>Sr. No.: JC-173498, JC-173499</p>', 2, '34475.00', '68950.00', 0, 'Pending', '', '', 0),
@@ -2248,7 +2248,7 @@ INSERT INTO `invoice_rows` (`id`, `invoice_id`, `item_id`, `description`, `quant
 (259, 17, 803, '<p></p><p></p><span style="font-weight: bold; text-decoration: underline;">"JOHNSON" Pump Set</span><p></p><p>Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; KGEN 12 5 G1</p><p>Head&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 19 Mtrs.</p><p>Flow&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 30 m3/hr</p><p>Sealing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;Mechanical Seal&nbsp;</p><p>with "BBL" IE3 3 HP/2900 Motor, Coupling L-95, Coupling Guard, Fasteners dully assembled on MS Baseframe</p><p>Pump Sr. No. :C111625002</p><p>Motor Sr. No. :&nbsp;N1719022<br><br><br></p><p></p><p></p>', 1, '16700.00', '16700.00', 0, 'Pending', '', '', 0),
 (260, 15, 1189, '<p><span style="font-weight: bold; text-decoration: underline;">Spares for "JOHNSON" Pump</span></p><p>Name of Spares : Impeller</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For Pump Model CCR 50-200 R6A S2 L6</p><p> </p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p>&nbsp;<br></p>', 2, '6500.00', '13000.00', 0, 'Pending', '', '', 0),
 (261, 14, 645, '<p><span style="font-weight: bold; text-decoration: underline;">"DARLING" Submersible Pump</span></p><p>Model&nbsp; &nbsp; :&nbsp; &nbsp; WW 101</p><p>Recd. Power&nbsp; &nbsp; :&nbsp; &nbsp; 1 HP/2900 RPM</p><p>Sr. No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp; &nbsp; WD 160569</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 1, '7500.00', '7500.00', 0, 'Pending', '', '', 0),
-(262, 13, 941, '<p>Your item code&nbsp; &nbsp; :&nbsp; &nbsp; 766168027010</p><p><span style="font-weight: bold; text-decoration: underline;">"JOHNSON" Centrifugal Pump Set</span></p><p>Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; CCR 125-315 R1A S2 L3 (Impeller Dia-284 mm)</p><p>Head&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 20 Mtrs.</p><p>Flow&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 225 m3/hr</p><p>Recomd Power&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 30 HP/1500 RPM</p><p>with MS Base Frame, Coupling T7C1PB, Fasteners etc.</p><p>Pump Sr. No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp; &nbsp;C111627001</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 1, '90250.00', '90250.00', 0, 'Pending', '', '', 1),
+(262, 13, 941, '<p>Your item code&nbsp; &nbsp; :&nbsp; &nbsp; 766168027010</p><p><span style="font-weight: bold; text-decoration: underline;">"JOHNSON" Centrifugal Pump Set</span></p><p>Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; CCR 125-315 R1A S2 L3 (Impeller Dia-284 mm)</p><p>Head&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 20 Mtrs.</p><p>Flow&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 225 m3/hr</p><p>Recomd Power&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 30 HP/1500 RPM</p><p>with MS Base Frame, Coupling T7C1PB, Fasteners etc.</p><p>Pump Sr. No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp; &nbsp;C111627001</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 1, '90250.00', '90250.00', 0, 'Pending', '', '', 0),
 (265, 12, 951, '<p><span style="font-weight: bold; text-decoration: underline;">Spares for "JOHNSON" Pump</span>&nbsp;</p><p>Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; CCR 50-200 R6A S2 L6</p><p><span style="font-weight: bold;">Item code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Part No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Description</span></p><p>766141589020&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 2650&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Lock Nut&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>', 2, '227.50', '455.00', 0, 'Pending', '', '', 0),
 (266, 12, 953, '<p>766141775030&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 1100&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; Shaft Sleeve&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>', 2, '3250.00', '6500.00', 0, 'Pending', '', '', 0),
 (267, 11, 645, '<p>Your item code : A0703126776</p><p><span style="font-weight: bold; text-decoration: underline;">"DARLING" Submersible Pump Set</span></p><p>Model&nbsp; &nbsp; :&nbsp; &nbsp; WW 101</p><p>Sr. No.:&nbsp; &nbsp; :&nbsp; &nbsp;WD-160569</p><p>with 5 Mtrs. Cable &amp; Control Penal</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>', 1, '31100.00', '31100.00', 0, 'Pending', '', '', 0),
@@ -5132,13 +5132,9 @@ INSERT INTO `item_ledgers` (`id`, `item_id`, `quantity`, `rate`, `source_model`,
 (722, 978, 2, '5624.00000', 'Sale Return', 1, 'In', '2017-05-05', 25, '', 0),
 (723, 979, 1, '5989.40000', 'Sale Return', 1, 'In', '2017-05-05', 25, '', 0),
 (724, 627, 1, '13301.25000', 'Sale Return', 2, 'In', '2017-05-06', 25, '', 0),
+(725, 600, 2, '5480.00000', 'Sale Return', 4, 'In', '2017-05-06', 25, '', 0),
 (727, 1219, 1, '27040.00000', 'Sale Return', 6, 'In', '2017-05-06', 25, '', 0),
-(732, 756, 2, '1450.00000', 'Sale Return', 7, 'In', '2017-05-06', 25, '', 0),
-(733, 978, 2, '5624.00000', 'Sale Return', 1, 'In', '2017-05-07', 25, '', 0),
-(734, 978, 2, '5624.00000', 'Sale Return', 2, 'In', '2017-05-07', 25, '', 0),
-(735, 1148, 1, '3000.00000', 'Sale Return', 3, 'In', '2017-05-07', 25, '', 0),
-(739, 941, 1, '98034.00000', 'Sale Return', 4, 'In', '2017-05-07', 25, '', 0),
-(740, 1225, 1, '1152.00000', 'Sale Return', 5, 'In', '2017-05-07', 25, '', 0);
+(732, 756, 2, '1450.00000', 'Sale Return', 7, 'In', '2017-05-06', 25, '', 0);
 
 -- --------------------------------------------------------
 
@@ -5203,7 +5199,7 @@ INSERT INTO `item_serial_numbers` (`id`, `item_id`, `serial_no`, `status`, `grn_
 (65, 600, '1641727/2097', 'In', 26, 0, 0, 0, 0, 0, 25, 0),
 (66, 600, '1641727/2098', 'In', 26, 51, 0, 0, 0, 0, 25, 4),
 (67, 600, '1641727/2099', 'Out', 26, 51, 0, 0, 0, 0, 25, 0),
-(68, 1148, '1641727/2100', 'In', 26, 50, 0, 0, 0, 0, 25, 3),
+(68, 1148, '1641727/2100', 'Out', 26, 50, 0, 0, 0, 0, 25, 0),
 (69, 1148, '1641727/2101', 'In', 26, 0, 0, 0, 0, 0, 25, 0),
 (70, 1148, '1641727/2102', 'In', 26, 0, 0, 0, 0, 0, 25, 0),
 (71, 1148, '1641727/2103', 'In', 26, 0, 0, 0, 0, 0, 25, 0),
@@ -6082,16 +6078,113 @@ INSERT INTO `ledgers` (`id`, `transaction_date`, `ledger_account_id`, `debit`, `
 (1001, '2017-05-05', 53, '60112.50', '0.00', 58, 'Invoice', 25, NULL),
 (1002, '2017-05-05', 37, '0.00', '52500.00', 58, 'Invoice', 25, NULL),
 (1003, '2017-05-05', 487, '0.00', '7612.50', 58, 'Invoice', 25, NULL),
-(1142, '0000-00-00', 396, '0.00', '3000.00', 3, 'Sale Return', 25, NULL),
-(1143, '0000-00-00', 37, '3000.00', '0.00', 3, 'Sale Return', 25, NULL),
-(1144, '0000-00-00', 487, '435.00', '0.00', 3, 'Sale Return', 25, NULL),
-(1154, '0000-00-00', 23, '0.00', '103425.87', 4, 'Sale Return', 25, NULL),
-(1155, '0000-00-00', 37, '98034.00', '0.00', 4, 'Sale Return', 25, NULL),
-(1156, '0000-00-00', 488, '5391.87', '0.00', 4, 'Sale Return', 25, NULL),
-(1157, '0000-00-00', 28, '0.00', '1365.36', 5, 'Sale Return', 25, NULL),
-(1158, '0000-00-00', 37, '1152.00', '0.00', 5, 'Sale Return', 25, NULL),
-(1159, '0000-00-00', 488, '63.36', '0.00', 5, 'Sale Return', 25, NULL),
-(1160, '0000-00-00', 106, '150.00', '0.00', 5, 'Sale Return', 25, NULL);
+(1004, '0000-00-00', 53, '0.00', '52500.00', 4, 'Sale Return', 25, NULL),
+(1005, '0000-00-00', 37, '52500.00', '0.00', 4, 'Sale Return', 25, NULL),
+(1006, '0000-00-00', 487, '7612.50', '0.00', 4, 'Sale Return', 25, NULL),
+(1010, '0000-00-00', 53, '0.00', '52500.00', 6, 'Sale Return', 25, NULL),
+(1011, '0000-00-00', 37, '52500.00', '0.00', 6, 'Sale Return', 25, NULL),
+(1012, '0000-00-00', 487, '7612.50', '0.00', 6, 'Sale Return', 25, NULL),
+(1016, '0000-00-00', 53, '0.00', '52500.00', 8, 'Sale Return', 25, NULL),
+(1017, '0000-00-00', 37, '52500.00', '0.00', 8, 'Sale Return', 25, NULL),
+(1018, '0000-00-00', 487, '7612.50', '0.00', 8, 'Sale Return', 25, NULL),
+(1019, '0000-00-00', 53, '0.00', '52500.00', 9, 'Sale Return', 25, NULL),
+(1020, '0000-00-00', 37, '52500.00', '0.00', 9, 'Sale Return', 25, NULL),
+(1021, '0000-00-00', 487, '7612.50', '0.00', 9, 'Sale Return', 25, NULL),
+(1022, '0000-00-00', 53, '0.00', '52500.00', 10, 'Sale Return', 25, NULL),
+(1023, '0000-00-00', 37, '52500.00', '0.00', 10, 'Sale Return', 25, NULL),
+(1024, '0000-00-00', 487, '7612.50', '0.00', 10, 'Sale Return', 25, NULL),
+(1025, '0000-00-00', 53, '0.00', '52500.00', 11, 'Sale Return', 25, NULL),
+(1026, '0000-00-00', 37, '52500.00', '0.00', 11, 'Sale Return', 25, NULL),
+(1027, '0000-00-00', 487, '7612.50', '0.00', 11, 'Sale Return', 25, NULL),
+(1028, '0000-00-00', 53, '0.00', '52500.00', 12, 'Sale Return', 25, NULL),
+(1029, '0000-00-00', 37, '52500.00', '0.00', 12, 'Sale Return', 25, NULL),
+(1030, '0000-00-00', 487, '7612.50', '0.00', 12, 'Sale Return', 25, NULL),
+(1031, '0000-00-00', 53, '0.00', '52500.00', 13, 'Sale Return', 25, NULL),
+(1032, '0000-00-00', 37, '52500.00', '0.00', 13, 'Sale Return', 25, NULL),
+(1033, '0000-00-00', 487, '7612.50', '0.00', 13, 'Sale Return', 25, NULL),
+(1034, '0000-00-00', 53, '0.00', '52500.00', 14, 'Sale Return', 25, NULL),
+(1035, '0000-00-00', 37, '52500.00', '0.00', 14, 'Sale Return', 25, NULL),
+(1036, '0000-00-00', 487, '7612.50', '0.00', 14, 'Sale Return', 25, NULL),
+(1037, '0000-00-00', 53, '0.00', '52500.00', 15, 'Sale Return', 25, NULL),
+(1038, '0000-00-00', 37, '52500.00', '0.00', 15, 'Sale Return', 25, NULL),
+(1039, '0000-00-00', 487, '7612.50', '0.00', 15, 'Sale Return', 25, NULL),
+(1040, '0000-00-00', 53, '0.00', '52500.00', 16, 'Sale Return', 25, NULL),
+(1041, '0000-00-00', 37, '52500.00', '0.00', 16, 'Sale Return', 25, NULL),
+(1042, '0000-00-00', 487, '7612.50', '0.00', 16, 'Sale Return', 25, NULL),
+(1043, '0000-00-00', 53, '0.00', '52500.00', 17, 'Sale Return', 25, NULL),
+(1044, '0000-00-00', 37, '52500.00', '0.00', 17, 'Sale Return', 25, NULL),
+(1045, '0000-00-00', 487, '7612.50', '0.00', 17, 'Sale Return', 25, NULL),
+(1046, '0000-00-00', 53, '0.00', '52500.00', 18, 'Sale Return', 25, NULL),
+(1047, '0000-00-00', 37, '52500.00', '0.00', 18, 'Sale Return', 25, NULL),
+(1048, '0000-00-00', 487, '7612.50', '0.00', 18, 'Sale Return', 25, NULL),
+(1049, '0000-00-00', 53, '0.00', '52500.00', 19, 'Sale Return', 25, NULL),
+(1050, '0000-00-00', 37, '52500.00', '0.00', 19, 'Sale Return', 25, NULL),
+(1051, '0000-00-00', 487, '7612.50', '0.00', 19, 'Sale Return', 25, NULL),
+(1052, '0000-00-00', 53, '0.00', '52500.00', 20, 'Sale Return', 25, NULL),
+(1053, '0000-00-00', 37, '52500.00', '0.00', 20, 'Sale Return', 25, NULL),
+(1054, '0000-00-00', 487, '7612.50', '0.00', 20, 'Sale Return', 25, NULL),
+(1055, '0000-00-00', 53, '0.00', '52500.00', 21, 'Sale Return', 25, NULL),
+(1056, '0000-00-00', 37, '52500.00', '0.00', 21, 'Sale Return', 25, NULL),
+(1057, '0000-00-00', 487, '7612.50', '0.00', 21, 'Sale Return', 25, NULL),
+(1058, '0000-00-00', 23, '0.00', '3236.62', 22, 'Sale Return', 25, NULL),
+(1059, '0000-00-00', 37, '3237.50', '0.00', 22, 'Sale Return', 25, NULL),
+(1060, '0000-00-00', 487, '469.44', '0.00', 22, 'Sale Return', 25, NULL),
+(1061, '0000-00-00', 106, '0.00', '0.00', 22, 'Sale Return', 25, NULL),
+(1062, '0000-00-00', 23, '0.00', '3236.62', 23, 'Sale Return', 25, NULL),
+(1063, '0000-00-00', 37, '3237.50', '0.00', 23, 'Sale Return', 25, NULL),
+(1064, '0000-00-00', 487, '469.44', '0.00', 23, 'Sale Return', 25, NULL),
+(1065, '0000-00-00', 106, '0.00', '0.00', 23, 'Sale Return', 25, NULL),
+(1066, '0000-00-00', 23, '0.00', '3236.62', 24, 'Sale Return', 25, NULL),
+(1067, '0000-00-00', 37, '3237.50', '0.00', 24, 'Sale Return', 25, NULL),
+(1068, '0000-00-00', 487, '469.44', '0.00', 24, 'Sale Return', 25, NULL),
+(1069, '0000-00-00', 106, '0.00', '0.00', 24, 'Sale Return', 25, NULL),
+(1070, '0000-00-00', 23, '0.00', '3239.19', 25, 'Sale Return', 25, NULL),
+(1071, '0000-00-00', 37, '3237.50', '0.00', 25, 'Sale Return', 25, NULL),
+(1072, '0000-00-00', 487, '469.44', '0.00', 25, 'Sale Return', 25, NULL),
+(1073, '0000-00-00', 106, '0.00', '0.00', 25, 'Sale Return', 25, NULL),
+(1074, '0000-00-00', 23, '0.00', '3239.19', 26, 'Sale Return', 25, NULL),
+(1075, '0000-00-00', 37, '3237.50', '0.00', 26, 'Sale Return', 25, NULL),
+(1076, '0000-00-00', 487, '469.44', '0.00', 26, 'Sale Return', 25, NULL),
+(1077, '0000-00-00', 106, '0.00', '0.00', 26, 'Sale Return', 25, NULL),
+(1078, '0000-00-00', 23, '0.00', '3239.19', 27, 'Sale Return', 25, NULL),
+(1079, '0000-00-00', 37, '3237.50', '0.00', 27, 'Sale Return', 25, NULL),
+(1080, '0000-00-00', 487, '469.44', '0.00', 27, 'Sale Return', 25, NULL),
+(1081, '0000-00-00', 106, '0.00', '0.00', 27, 'Sale Return', 25, NULL),
+(1082, '0000-00-00', 23, '0.00', '3239.19', 28, 'Sale Return', 25, NULL),
+(1083, '0000-00-00', 37, '3237.50', '0.00', 28, 'Sale Return', 25, NULL),
+(1084, '0000-00-00', 487, '469.44', '0.00', 28, 'Sale Return', 25, NULL),
+(1085, '0000-00-00', 106, '0.00', '0.00', 28, 'Sale Return', 25, NULL),
+(1086, '0000-00-00', 23, '0.00', '3239.19', 29, 'Sale Return', 25, NULL),
+(1087, '0000-00-00', 37, '3237.50', '0.00', 29, 'Sale Return', 25, NULL),
+(1088, '0000-00-00', 487, '469.44', '0.00', 29, 'Sale Return', 25, NULL),
+(1089, '0000-00-00', 106, '0.00', '0.00', 29, 'Sale Return', 25, NULL),
+(1090, '0000-00-00', 23, '0.00', '3239.19', 30, 'Sale Return', 25, NULL),
+(1091, '0000-00-00', 37, '3237.50', '0.00', 30, 'Sale Return', 25, NULL),
+(1092, '0000-00-00', 487, '469.44', '0.00', 30, 'Sale Return', 25, NULL),
+(1093, '0000-00-00', 106, '0.00', '0.00', 30, 'Sale Return', 25, NULL),
+(1094, '0000-00-00', 53, '0.00', '17246.69', 1, 'Sale Return', 25, NULL),
+(1095, '0000-00-00', 37, '106926.30', '0.00', 1, 'Sale Return', 25, NULL),
+(1096, '0000-00-00', 487, '15504.31', '0.00', 1, 'Sale Return', 25, NULL),
+(1097, '0000-00-00', 106, '0.00', '0.00', 1, 'Sale Return', 25, NULL),
+(1098, '0000-00-00', 592, '0.00', '13324.07', 2, 'Sale Return', 25, NULL),
+(1099, '0000-00-00', 37, '13314.07', '0.00', 2, 'Sale Return', 25, NULL),
+(1100, '0000-00-00', 106, '10.00', '0.00', 2, 'Sale Return', 25, NULL),
+(1101, '0000-00-00', 429, '0.00', '11071.61', 3, 'Sale Return', 25, NULL),
+(1102, '0000-00-00', 37, '11070.61', '0.00', 3, 'Sale Return', 25, NULL),
+(1103, '0000-00-00', 487, '3178.40', '0.00', 3, 'Sale Return', 25, NULL),
+(1104, '0000-00-00', 106, '1.00', '0.00', 3, 'Sale Return', 25, NULL),
+(1105, '0000-00-00', 429, '0.00', '11071.61', 4, 'Sale Return', 25, NULL),
+(1106, '0000-00-00', 37, '11070.61', '0.00', 4, 'Sale Return', 25, NULL),
+(1107, '0000-00-00', 487, '3178.40', '0.00', 4, 'Sale Return', 25, NULL),
+(1108, '0000-00-00', 106, '1.00', '0.00', 4, 'Sale Return', 25, NULL),
+(1112, '0000-00-00', 58, '0.00', '27311.40', 6, 'Sale Return', 25, NULL),
+(1113, '0000-00-00', 37, '27310.40', '0.00', 6, 'Sale Return', 25, NULL),
+(1114, '0000-00-00', 487, '3920.80', '0.00', 6, 'Sale Return', 25, NULL),
+(1115, '0000-00-00', 106, '1.00', '0.00', 6, 'Sale Return', 25, NULL),
+(1132, '0000-00-00', 62, '0.00', '3000.00', 7, 'Sale Return', 25, NULL),
+(1133, '0000-00-00', 37, '2900.00', '0.00', 7, 'Sale Return', 25, NULL),
+(1134, '0000-00-00', 488, '398.75', '0.00', 7, 'Sale Return', 25, NULL),
+(1135, '0000-00-00', 106, '100.00', '0.00', 7, 'Sale Return', 25, NULL);
 
 -- --------------------------------------------------------
 
@@ -8044,7 +8137,7 @@ INSERT INTO `reference_balances` (`id`, `ledger_account_id`, `reference_no`, `cr
 (196, 387, 'i026', '0.00', '11878.67', 0),
 (197, 381, 'i027', '0.00', '89016.68', 0),
 (198, 64, 'i028', '0.00', '195469.74', 0),
-(199, 53, 'i029', '0.00', '122430.61', 0),
+(199, 53, 'i029', '17246.69', '122430.61', 0),
 (200, 372, 'i030', '0.00', '2848.50', 0),
 (201, 461, 'i031', '0.00', '18736.80', 0),
 (202, 58, 'i032', '0.00', '30960.80', 0),
@@ -8056,9 +8149,9 @@ INSERT INTO `reference_balances` (`id`, `ledger_account_id`, `reference_no`, `cr
 (208, 545, 'i004', '0.00', '59618.05', 0),
 (209, 513, 'i005', '22682.50', '22682.50', 0),
 (210, 513, 'i006', '9231.25', '9231.25', 0),
-(211, 62, 'i034', '0.00', '7748.75', 0),
+(211, 62, 'i034', '4550.00', '7748.75', 0),
 (212, 546, 'i035', '0.00', '5438.75', 0),
-(213, 28, 'i036', '1000.00', '2580.72', 0),
+(213, 28, 'i036', '0.00', '2580.72', 0),
 (214, 394, 'i003', '0.00', '27308.25', 0),
 (215, 53, 'i037', '0.00', '122430.61', 0),
 (221, 475, '7', '8923.00', '0.00', 0),
@@ -8078,7 +8171,7 @@ INSERT INTO `reference_balances` (`id`, `ledger_account_id`, `reference_no`, `cr
 (236, 446, 'KBL', '0.00', '24884.20', 0),
 (237, 552, '123', '33763.00', '0.00', 0),
 (238, 92, 'i043', '0.00', '59499.42', 0),
-(239, 396, 'i044', '3000.00', '3435.00', 0),
+(239, 396, 'i044', '0.00', '3435.00', 0),
 (240, 429, 'i045', '0.00', '25098.40', 0),
 (241, 62, 'i046', '0.00', '46000.00', 0),
 (242, 64, 'i047', '0.00', '38556.00', 0),
@@ -8100,9 +8193,8 @@ INSERT INTO `reference_balances` (`id`, `ledger_account_id`, `reference_no`, `cr
 (260, 529, '2612', '22100.00', '0.00', 0),
 (261, 458, 'V468', '50000.00', '150504.09', 0),
 (262, 53, 'i052', '0.00', '60112.50', 0),
-(268, 53, 'wqfrwq', '11248.00', '0.00', 0),
-(269, 53, 'wqfrwq', '11248.00', '0.00', 0),
-(272, 28, 'qwerty1', '365.36', '0.00', 0);
+(266, 592, 'dsvgvb', '13324.07', '0.00', 0),
+(267, 429, 'efwwef', '11071.61', '0.00', 0);
 
 -- --------------------------------------------------------
 
@@ -8387,11 +8479,10 @@ INSERT INTO `reference_details` (`id`, `ledger_account_id`, `receipt_id`, `payme
 (301, 73, 33, 0, 0, 'V524', '52441.68', '0.00', 'Against Reference', 0, 0, 0, 0, 0),
 (302, 23, 10, 0, 0, 'R069', '94052.50', '0.00', 'Against Reference', 0, 0, 0, 0, 0),
 (303, 53, 0, 0, 58, 'i052', '0.00', '60112.50', 'New Reference', 0, 0, 0, 0, 0),
-(312, 53, 0, 0, 0, 'wqfrwq', '11248.00', '0.00', 'New Reference', 0, 0, 0, 0, 1),
-(313, 53, 0, 0, 0, 'wqfrwq', '11248.00', '0.00', 'New Reference', 0, 0, 0, 0, 2),
-(314, 396, 0, 0, 0, 'i044', '3000.00', '0.00', 'Against Reference', 0, 0, 0, 0, 3),
-(317, 28, 0, 0, 0, 'i036', '1000.00', '0.00', 'Against Reference', 0, 0, 0, 0, 5),
-(318, 28, 0, 0, 0, 'qwerty1', '365.36', '0.00', 'New Reference', 0, 0, 0, 0, 5);
+(306, 53, 0, 0, 0, 'i029', '17246.69', '0.00', 'Against Reference', 0, 0, 0, 0, 1),
+(307, 592, 0, 0, 0, 'dsvgvb', '13324.07', '0.00', 'New Reference', 0, 0, 0, 0, 2),
+(308, 429, 0, 0, 0, 'efwwef', '11071.61', '0.00', 'New Reference', 0, 0, 0, 0, 4),
+(311, 62, 0, 0, 0, 'i034', '4550.00', '0.00', 'Against Reference', 0, 0, 0, 0, 7);
 
 -- --------------------------------------------------------
 
@@ -8855,11 +8946,13 @@ CREATE TABLE `sale_returns` (
 --
 
 INSERT INTO `sale_returns` (`id`, `temp_limit`, `customer_id`, `customer_address`, `lr_no`, `terms_conditions`, `discount_type`, `total`, `pnf`, `pnf_type`, `pnf_per`, `total_after_pnf`, `sale_tax_per`, `sale_tax_id`, `sale_tax_amount`, `exceise_duty`, `ed_description`, `fright_amount`, `fright_text`, `grand_total`, `due_payment`, `date_created`, `company_id`, `process_status`, `sales_order_id`, `in1`, `in2`, `in4`, `in3`, `customer_po_no`, `po_date`, `additional_note`, `employee_id`, `created_by`, `transporter_id`, `discount_per`, `discount`, `form47`, `form49`, `status`, `inventory_voucher_status`, `payment_mode`, `fright_ledger_account`, `sales_ledger_account`, `st_ledger_account_id`, `pdf_font_size`, `delivery_description`) VALUES
-(1, '0.00', 17, '', '', NULL, 1, '11248.00', '0.00', 1, '0.00', '11248.00', '0.00', 0, '0.00', '0.00', '', '0.00', 'Authorised Vehicle ', '11248.00', '0.00', '0000-00-00', 0, '', 0, 'STL', 0, '', '', '', '0000-00-00', '', 0, 0, 0, '0.00', '0.00', '', '', '', 'Pending', '', 0, 0, 0, '16px', ''),
-(2, '0.00', 17, '', '', NULL, 1, '11248.00', '0.00', 1, '0.00', '11248.00', '0.00', 0, '0.00', '0.00', '', '0.00', 'Authorised Vehicle ', '11248.00', '0.00', '0000-00-00', 0, '', 0, 'STL', 0, '', '', '', '0000-00-00', '', 0, 0, 0, '0.00', '0.00', '', '', '', 'Pending', '', 0, 0, 0, '16px', ''),
-(3, '0.00', 110, '', '', NULL, 1, '3000.00', '0.00', 1, '0.00', '3000.00', '0.00', 0, '0.00', '0.00', '', '0.00', 'Freight "PAID " basis', '3000.00', '0.00', '0000-00-00', 0, '', 0, 'STL', 0, '', '', '', '0000-00-00', '', 0, 0, 0, '20.00', '750.00', '', '', '', 'Pending', '', 0, 0, 0, '16px', ''),
-(4, '0.00', 1, '', '', NULL, 1, '98034.00', '0.00', 1, '0.00', '98034.00', '5.50', 0, '5391.87', '7784.00', 'Add: reimbursement of Excise duty, so paid vide invoice No. 107204 dt. 22.03.2017 of M/s SPX Flow Technology (India) Private Limited, Ahemdabad', '0.00', '', '103425.87', '0.00', '0000-00-00', 0, '', 0, 'STL', 0, '', '', '', '0000-00-00', '', 0, 0, 0, '0.00', '0.00', '', '', '', 'Pending', '', 0, 0, 0, '16px', ''),
-(5, '0.00', 5, '', '', NULL, 1, '1152.00', '0.00', 1, '0.00', '1152.00', '5.50', 0, '63.36', '0.00', '', '150.00', 'Re-imburesment of freight charge ', '1365.36', '0.00', '0000-00-00', 0, '', 0, 'STL', 0, '', '', '', '0000-00-00', '', 0, 0, 0, '10.00', '128.00', '', '', '', 'Pending', '', 0, 0, 0, '16px', '');
+(1, '0.00', 17, '', '', NULL, 1, '17066.03', '170.66', 1, '1.00', '17236.69', '0.00', 0, '0.00', '1.00', '', '10.00', 'Authorised Vehicle ', '17246.69', '0.00', '0000-00-00', 0, '', 0, 'STL', 0, '', '', '', '0000-00-00', '', 0, 0, 0, '1.00', '172.37', '', '', '', 'Pending', '', 0, 0, 0, '16px', ''),
+(2, '0.00', 139, '', '', NULL, 1, '13182.25', '131.82', 1, '1.00', '13314.07', '0.00', 0, '0.00', '1401.25', 'Add: Reimbursement of Excise duty, so paid vide Invoice No. 0101700114 dt. 21.04.2017 of M/s Tushaco Pumps Pvt. Ltd.,\r\nAdd: Reimbursement of CST so paid vide Invoice 0101700114 dt. 21.04.2017 against ''C'' Form\r\n(Rs. 1187.50/-+Rs. 213.75/-)', '10.00', '', '13324.07', '0.00', '0000-00-00', 0, '', 0, 'STL', 0, '', '', '', '0000-00-00', '', 0, 0, 0, '1.00', '119.00', '', '', '', 'Pending', '', 0, 0, 0, '16px', ''),
+(3, '0.00', 114, '', '', NULL, 1, '10961.00', '109.61', 1, '1.00', '11070.61', '0.00', 0, '0.00', '1.00', '', '1.00', 'Freight "PAID" basis', '11071.61', '0.00', '0000-00-00', 0, '', 0, 'STL', 0, '', '', '', '0000-00-00', '', 0, 0, 0, '20.00', '2740.00', '', '', '', 'Pending', '', 0, 0, 0, '16px', ''),
+(4, '0.00', 114, '', '', NULL, 1, '10961.00', '109.61', 1, '1.00', '11070.61', '0.00', 0, '0.00', '1.00', '', '1.00', 'Freight "PAID" basis', '11071.61', '0.00', '0000-00-00', 0, '', 0, 'STL', 0, '', '', '', '0000-00-00', '', 0, 0, 0, '20.00', '2740.00', '', '', '', 'Pending', '', 0, 0, 0, '16px', ''),
+(5, '0.00', 17, '', '', NULL, 1, '52735.95', '527.36', 1, '1.00', '53263.31', '0.00', 0, '0.00', '6894.00', 'Add: Reimbursement of Excise duty, so paid vide Invoice No. 42  dt. 21.04.2017 of M/s Darling Pumps Pvt. Ltd., Indore for\r\nAdd: Reimbursement of CST so paid vide Invoice No. 42 dated 21.04.2017 against ''C'' Form for\r\n(Rs. 5094/-+Rs.1800/-=6894/-)\r\n\r\n\r\n', '1.00', 'Freight "PAID" basis', '53264.31', '0.00', '0000-00-00', 0, '', 0, 'STL', 0, '', '', '', '0000-00-00', '', 0, 0, 0, '1.00', '463.05', '', '', '', 'Pending', '', 0, 0, 0, '16px', ''),
+(6, '0.00', 22, '', '', NULL, 1, '27040.00', '270.40', 1, '1.00', '27310.40', '0.00', 0, '0.00', '2200.00', 'Add: Reimbursement of Excise duty, so paid vide Invoice No. 0101602632 dt. 21.03.2017 of M/s Tushaco Pumps Pvt. Ltd., Nani Daman', '1.00', '"FREIGHT PAID DOOR DELIVERY" basis', '27311.40', '0.00', '0000-00-00', 0, '', 0, 'STL', 0, '', '', '', '0000-00-00', '', 0, 0, 0, '10.00', '2760.00', '', '', '', 'Pending', '', 0, 0, 0, '16px', ''),
+(7, '0.00', 26, '', '', NULL, 1, '2900.00', '0.00', 1, '0.00', '2900.00', '0.00', 0, '0.00', '0.00', '', '100.00', '"FREIGHT PAID DOOR DELIVERY" basis', '3000.00', '0.00', '0000-00-00', 0, '', 0, 'STL', 0, '', '', '', '0000-00-00', '', 0, 0, 0, '0.00', '0.00', '', '', '', 'Pending', '', 0, 0, 0, '16px', '');
 
 -- --------------------------------------------------------
 
@@ -8887,13 +8980,19 @@ CREATE TABLE `sale_return_rows` (
 
 INSERT INTO `sale_return_rows` (`id`, `sale_return_id`, `item_id`, `description`, `quantity`, `rate`, `amount`, `height`, `inventory_voucher_status`, `item_serial_number`, `inventory_voucher_applicable`) VALUES
 (1, 1, 978, '', 2, '5624.00', '11248.00', 0, 'Pending', '', ''),
-(2, 2, 978, '', 2, '5624.00', '11248.00', 0, 'Pending', '', ''),
-(3, 3, 1148, '', 1, '3750.00', '3750.00', 0, 'Pending', '68', ''),
-(4, 4, 941, '', 1, '90250.00', '90250.00', 0, 'Pending', '', ''),
-(5, 4, 941, '', 1, '90250.00', '90250.00', 0, 'Pending', '', ''),
-(6, 4, 941, '', 1, '90250.00', '90250.00', 0, 'Pending', '', ''),
-(7, 4, 941, '', 1, '90250.00', '90250.00', 0, 'Pending', '', ''),
-(8, 5, 1225, '', 1, '1280.00', '1280.00', 0, 'Pending', '', '');
+(2, 1, 979, '', 1, '5989.40', '5989.40', 0, 'Pending', '', ''),
+(3, 2, 627, '', 1, '11900.00', '11900.00', 0, 'Pending', '', ''),
+(4, 3, 600, '', 2, '6850.00', '13700.00', 0, 'Pending', '61,66', ''),
+(5, 4, 600, '', 2, '6850.00', '13700.00', 0, 'Pending', '61,66', ''),
+(6, 5, 931, '', 3, '15435.00', '46305.00', 0, 'Pending', '11,12,13', ''),
+(7, 5, 931, '', 3, '15435.00', '46305.00', 0, 'Pending', '', ''),
+(8, 6, 1219, '', 1, '27600.00', '27600.00', 0, 'Pending', '', ''),
+(9, 7, 756, '', 1, '1450.00', '1450.00', 0, 'Pending', '', ''),
+(10, 7, 756, '', 2, '1450.00', '2900.00', 0, 'Pending', '', ''),
+(11, 7, 756, '', 2, '1450.00', '2900.00', 0, 'Pending', '', ''),
+(12, 7, 756, '', 2, '1450.00', '2900.00', 0, 'Pending', '', ''),
+(13, 7, 756, '', 2, '1450.00', '2900.00', 0, 'Pending', '', ''),
+(14, 7, 756, '', 2, '1450.00', '2900.00', 0, 'Pending', '', '');
 
 -- --------------------------------------------------------
 
@@ -11111,7 +11210,7 @@ ALTER TABLE `item_groups`
 -- AUTO_INCREMENT for table `item_ledgers`
 --
 ALTER TABLE `item_ledgers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=741;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=733;
 --
 -- AUTO_INCREMENT for table `item_serial_numbers`
 --
@@ -11151,7 +11250,7 @@ ALTER TABLE `leave_types`
 -- AUTO_INCREMENT for table `ledgers`
 --
 ALTER TABLE `ledgers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1161;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1136;
 --
 -- AUTO_INCREMENT for table `ledger_accounts`
 --
@@ -11241,12 +11340,12 @@ ALTER TABLE `receipt_vouchers`
 -- AUTO_INCREMENT for table `reference_balances`
 --
 ALTER TABLE `reference_balances`
-  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=273;
+  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=268;
 --
 -- AUTO_INCREMENT for table `reference_details`
 --
 ALTER TABLE `reference_details`
-  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=319;
+  MODIFY `id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=312;
 --
 -- AUTO_INCREMENT for table `sales_orders`
 --
@@ -11261,12 +11360,12 @@ ALTER TABLE `sales_order_rows`
 -- AUTO_INCREMENT for table `sale_returns`
 --
 ALTER TABLE `sale_returns`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `sale_return_rows`
 --
 ALTER TABLE `sale_return_rows`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `sale_taxes`
 --
