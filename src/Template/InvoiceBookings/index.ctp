@@ -23,9 +23,9 @@
 										<span class="input-group-addon">IB-No</span><input type="text" name="book_no" class="form-control input-sm" placeholder="Invoice Booking" value="<?php echo @$book_no; ?>">
 									</div></div>
 									<div class="col-md-6">
-										<div class="input-group" >
-											<span class="input-group-addon">GRN-</span><input type="text" name="grn_no" class="form-control input-sm" placeholder="GRN No" value="<?php echo @$grn_no; ?>">
-										</div>
+
+											<input type="text" name="grn_no" class="form-control input-sm" placeholder="GRN No" value="<?php echo @$grn_no; ?>">
+
 									</div>
 									
 								</div>
@@ -34,9 +34,9 @@
 							<div class="row">
 									
 									<div class="col-md-12">
-									<div class="input-group" >
-									<span class="input-group-addon">IN</span><input type="text" name="in_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$in_no; ?>">
-									</div></div>
+
+									<input type="text" name="in_no" class="form-control input-sm" placeholder="Invoice No" value="<?php echo @$in_no; ?>">
+									</div>
 									</div>
 							</td>
 							<td>
@@ -91,6 +91,9 @@
 						<?php endforeach; ?>
 					</tbody>
 				</table>
+				</div>
+				</div>
+				</div>
 				<div class="paginator">
 					<ul class="pagination">
 						<?= $this->Paginator->prev('< ' . __('previous')) ?>
@@ -101,6 +104,5 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
+	
 
