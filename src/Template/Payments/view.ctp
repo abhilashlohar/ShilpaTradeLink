@@ -91,7 +91,7 @@ margin-bottom: 0;
 						Rs: <?= h($this->Number->format($total,[ 'places' => 2])) ?></td>
 					</tr>
 					<tr>
-						<td style="font-size: 12px;">Rupees<?php echo ucwords($this->NumberWords->convert_number_to_words($total)) ?> Only </td>
+						<td style="font-size: 12px;">Rupees <?php echo ucwords($this->NumberWords->convert_number_to_words($total)) ?> Only </td>
 					</tr>
 					<tr>
 						<td style="font-size: 12px;">
