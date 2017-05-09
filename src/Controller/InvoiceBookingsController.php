@@ -175,7 +175,6 @@ class InvoiceBookingsController extends AppController
 				$i++;
 				}
 				if(!empty($grn_id)){
-					//$grn = $this->InvoiceBookings->Grns->get($grn_id);
 					$grn = $this->InvoiceBookings->Grns->get($grn_id, [
 								'contain' => ['GrnRows'=>['Items'],'Companies','Vendors','PurchaseOrders'=>['PurchaseOrderRows']]
 							]);

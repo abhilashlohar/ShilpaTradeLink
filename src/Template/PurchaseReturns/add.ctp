@@ -28,7 +28,7 @@ $this->Form->templates([
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-globe font-blue-steel"></i>
-			<span class="caption-subject font-blue-steel uppercase">Edit Invoice Booking</span>
+			<span class="caption-subject font-blue-steel uppercase">Add Purchase Return</span>
 		</div>
 		
 	</div>
@@ -52,8 +52,7 @@ $this->Form->templates([
 						<div class="form-group">
 							<label class="control-label">Supplier </label>
 							<br/>
-							<?php echo $this->Form->input('vendor_ledger_id', ['label' => false,'class' => 'form-control input-sm','type' =>'hidden','value'=>@$vendor_ledger_acc_id]); ?>
-							<?php echo @$invoiceBooking->grn->vendor->company_name; ?>
+							<?php  echo @$invoiceBooking->grn->vendor->company_name; ?>
 						</div>
 					</div>
 					<div class="col-md-3" >
@@ -72,44 +71,15 @@ $this->Form->templates([
 									</div>
 								</div>
 				</div><br/>
-				<div class="row" style="display:none;">
-						<div class="form-group">
-							<label class="control-label">Invoice Booking No. <span class="required" aria-required="true">*</span></label>
-							<div class="row">
-								<div class="col-md-3">
-									<?php echo $this->Form->input('ib1', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
-								</div>
-								<div class="col-md-3">
-									<?php echo $this->Form->input('ib2', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
-								</div>
-								<div class="col-md-3">
-									<?php echo $this->Form->input('ib3', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'File', 'readonly']); ?>
-								</div>
-								<div class="col-md-3">
-									<?php echo $this->Form->input('ib4', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
-								</div>
-								<?php echo $this->Form->input('grn_id', ['label' => false,'class' => 'form-control input-sm','readonly']); ?>
-							</div>
-						</div>
-				</div>
-				
-				<div class="row">
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Supplier Invoice Date. <span class="required" aria-required="true">*</span></label>
-								<?php echo $this->Form->input('supplier_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Supplier Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d','value' => date("d-m-Y",strtotime($invoiceBooking->supplier_date))]); ?>
-							
-						</div>
-					</div>
-										
-				</div>
-				<div style="overflow: auto;">
+			<div style="overflow: auto;">
+			<input type="text"  name="checked_row_length" id="checked_row_length" style="height: 0px;padding: 0;border: none;" value="" />
 				<table class="table tableitm" id="main_tb">
 				<thead>
 					<tr>
 						<th width="5%">Sr.No. </th>
 						<th >Items</th>
 						<th align="center" width="10%">Quantity</th>
+						<th align="center" width="10%">Ammount</th>
 						<th  width="4%"></th>
 						
 					</tr>
@@ -123,6 +93,7 @@ $this->Form->templates([
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value' => @$invoice_booking_row->item->id]); ?>
 							</td>
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.quantity',['label' => false,'class' => 'form-control input-sm','type'=>'text','value'=>$invoice_booking_row->quantity,'max'=>$invoice_booking_row->quantity]); ?></td>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.ib_ammount',['label' => false,'class' => 'form-control input-sm','type'=>'text','value'=>$invoice_booking_row->total]); ?><<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.total',['label' => false,'class' => 'form-control input-sm','type'=>'text','value'=>$invoice_booking_row->total]); ?></td>
 							<td>
 								<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$invoice_booking_row->item->id]); ?></label>
 							</td>
@@ -169,13 +140,16 @@ $(document).ready(function() {
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
-			
+			checked_row_length: {
+				required: true,
+				min : 1,
+			},
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes
-			service: {
-				required: "Please select  at least 2 types of Service",
-				minlength: jQuery.validator.format("Please select  at least {0} types of Service")
+			checked_row_length: {
+				required : "Please select atleast one row.",
+				min: "Please select atleast one row."
 			},
 		},
 
@@ -219,6 +193,7 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			rename_rows();
 			success3.show();
 			error3.hide();
 			form[0].submit();
@@ -230,19 +205,25 @@ $(document).ready(function() {
     });	
 	rename_rows();
 	function rename_rows(){
+		var i=0;
 		$("#main_tb tbody tr.tr1").each(function(){  //alert();
 			var row_no=$(this).attr('row_no');
-			var val=$(this).find('td:nth-child(4) input[type="checkbox"]:checked').val();
+			var val=$(this).find('td:nth-child(5) input[type="checkbox"]:checked').val();
 			if(val){
+				i++;
 				$(this).find('td:nth-child(2) input').attr("name","purchase_return_rows["+row_no+"][item_id]").attr("id","purchase_return_rows-"+row_no+"-item_id").rules("add", "required");
 				$(this).find('td:nth-child(3) input').attr("name","purchase_return_rows["+row_no+"][quantity]").attr("id","purchase_return_rows-"+row_no+"-quantity").removeAttr("readonly").rules("add", "required");
+				$(this).find('td:nth-child(4) input').attr("name","purchase_return_rows["+row_no+"][total]").attr("id","purchase_return_rows-"+row_no+"-total").rules("add", "required");
 				$(this).css('background-color','#fffcda');
 			}else{
 				$(this).find('td:nth-child(2) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(3) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(3) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
+				$(this).find('td:nth-child(4) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
 				$(this).css('background-color','#FFF');
-			}
+			} 
+			$('input[name="checked_row_length"]').val(i);
+			//$("#checked_row_length").val(i);
 		});
 	}
 

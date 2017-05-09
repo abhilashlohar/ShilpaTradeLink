@@ -54,6 +54,7 @@ class PurchaseReturnsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		$s_employee_id=$this->viewVars['s_employee_id'];
         $purchaseReturn = $this->PurchaseReturns->newEntity();
 		$invoice_booking_id=@(int)$this->request->query('invoiceBooking');
 		$invoiceBooking = $this->PurchaseReturns->InvoiceBookings->get($invoice_booking_id, [
@@ -62,18 +63,33 @@ class PurchaseReturnsController extends AppController
 		//pr($invoiceBookings); exit;
         if ($this->request->is('post')) {
 			$purchaseReturn = $this->PurchaseReturns->patchEntity($purchaseReturn, $this->request->data);
-			$purchaseReturn->check=array_filter($purchaseReturn->check);
-					$i=0; 
-					foreach($purchaseReturn->check as $purchase_return_row){
-						pr($purchase_return_row);
-						$i++;
-					} exit;
-					
-            if ($this->PurchaseReturns->save($purchaseReturn)) {
+			$purchaseReturn->company_id=$st_company_id;
+			$purchaseReturn->created_on= date("Y-m-d");
+			$purchaseReturn->created_by=$s_employee_id;
+			$last_pr_no=$this->PurchaseReturns->find()->select(['voucher_no'])->where(['company_id' => $st_company_id])->order(['voucher_no' => 'DESC'])->first();
+			if($last_pr_no){
+				$purchaseReturn->voucher_no=$last_pr_no->voucher_no+1;
+			}else{
+				$purchaseReturn->voucher_no=1;
+			}
+	//pr($purchaseReturn); exit;
+		    if ($this->PurchaseReturns->save($purchaseReturn)) {   
+				foreach($purchaseReturn->purchase_return_rows as $purchase_return_row){	
+				$results=$this->PurchaseReturns->ItemLedgers->find()->where(['ItemLedgers.item_id' => $purchase_return_row->item_id,'ItemLedgers.in_out' => 'In','rate_updated' => 'Yes','company_id' => $st_company_id])->first();
+				$itemLedger = $this->PurchaseReturns->ItemLedgers->newEntity();
+				$itemLedger->item_id = $purchase_return_row->item_id;
+				$itemLedger->source_model = 'Purchase Return';
+				$itemLedger->source_id = $purchaseReturn->id;
+				$itemLedger->in_out = 'Out';
+				$itemLedger->rate = $results->rate;
+				$itemLedger->company_id = $invoiceBooking->company_id;
+				$itemLedger->processed_on = date("Y-m-d");
+				$this->PurchaseReturns->ItemLedgers->save($itemLedger);
+				}
                 $this->Flash->success(__('The purchase return has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            } else {
+            } else { pr($purchaseReturn); exit;
                 $this->Flash->error(__('The purchase return could not be saved. Please, try again.'));
             }
         }

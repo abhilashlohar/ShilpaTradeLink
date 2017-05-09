@@ -389,6 +389,7 @@ $(document).ready(function() {
 		focusInvalid: true, // do not focus the last invalid input
 		rules: {
 			
+			
 		},
 
 		messages: { // custom messages for radio buttons and checkboxes

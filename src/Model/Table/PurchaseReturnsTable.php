@@ -37,7 +37,7 @@ class PurchaseReturnsTable extends Table
         $this->table('purchase_returns');
         $this->displayField('id');
         $this->primaryKey('id');
-
+		$this->belongsTo('ItemLedgers');
         $this->belongsTo('InvoiceBookings', [
             'foreignKey' => 'invoice_booking_id',
             'joinType' => 'INNER'
@@ -62,23 +62,7 @@ class PurchaseReturnsTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
-
-        $validator
-            ->date('created_on')
-            ->requirePresence('created_on', 'create')
-            ->notEmpty('created_on');
-
-        $validator
-            ->integer('created_by')
-            ->requirePresence('created_by', 'create')
-            ->notEmpty('created_by');
-
-        $validator
-            ->integer('voucher_no')
-            ->requirePresence('voucher_no', 'create')
-            ->notEmpty('voucher_no');
-
-        return $validator;
+		return $validator;
     }
 
     /**
@@ -90,7 +74,7 @@ class PurchaseReturnsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['invoice_booking_id'], 'InvoiceBookings'));
+      //  $rules->add($rules->existsIn(['invoice_booking_id'], 'InvoiceBookings'));
         $rules->add($rules->existsIn(['company_id'], 'Companies'));
 
         return $rules;
