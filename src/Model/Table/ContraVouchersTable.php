@@ -38,6 +38,7 @@ class ContraVouchersTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
 
+<<<<<<< HEAD
         $this->belongsTo('VouchersReferences');
         $this->belongsTo('FinancialYears');
         $this->belongsTo('ReferenceBalances');
@@ -61,10 +62,17 @@ class ContraVouchersTable extends Table
             'propertyName' => 'creator',
         ]);
         
+=======
+        $this->belongsTo('BankCashes', [
+            'foreignKey' => 'bank_cash_id',
+            'joinType' => 'INNER'
+        ]);
+>>>>>>> origin/master
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
+<<<<<<< HEAD
         
         $this->hasMany('ContraVoucherRows', [
             'foreignKey' => 'contra_voucher_id',
@@ -72,6 +80,11 @@ class ContraVouchersTable extends Table
         ]);
 
 
+=======
+        $this->hasMany('ContraVoucherRows', [
+            'foreignKey' => 'contra_voucher_id'
+        ]);
+>>>>>>> origin/master
     }
 
     /**
@@ -86,12 +99,31 @@ class ContraVouchersTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
+<<<<<<< HEAD
+=======
         $validator
             ->integer('voucher_no')
             ->requirePresence('voucher_no', 'create')
             ->notEmpty('voucher_no');
 
         $validator
+            ->integer('created_by')
+            ->requirePresence('created_by', 'create')
+            ->notEmpty('created_by');
+
+        $validator
+            ->date('created_on')
+            ->requirePresence('created_on', 'create')
+            ->notEmpty('created_on');
+
+>>>>>>> origin/master
+        $validator
+            ->integer('voucher_no')
+            ->requirePresence('voucher_no', 'create')
+            ->notEmpty('voucher_no');
+
+        $validator
+<<<<<<< HEAD
             ->integer('created_by')
             ->requirePresence('created_by', 'create')
             ->notEmpty('created_by');
@@ -108,6 +140,21 @@ class ContraVouchersTable extends Table
       
 
 
+=======
+            ->date('transaction_date')
+            ->requirePresence('transaction_date', 'create')
+            ->notEmpty('transaction_date');
+
+        $validator
+            ->integer('edited_by')
+            ->requirePresence('edited_by', 'create')
+            ->notEmpty('edited_by');
+
+        $validator
+            ->date('edited_on')
+            ->requirePresence('edited_on', 'create')
+            ->notEmpty('edited_on');
+>>>>>>> origin/master
 
         $validator
             ->requirePresence('cheque_no', 'create')

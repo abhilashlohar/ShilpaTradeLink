@@ -18,6 +18,7 @@ class ContraVouchersController extends AppController
      */
     public function index()
     {
+<<<<<<< HEAD
         $this->viewBuilder()->layout('index_layout');
         
         $session = $this->request->session();
@@ -49,6 +50,12 @@ class ContraVouchersController extends AppController
             
         }])->order(['voucher_no'=>'DESC']));
         
+=======
+        $this->paginate = [
+            'contain' => ['BankCashes', 'Companies']
+        ];
+        $contraVouchers = $this->paginate($this->ContraVouchers);
+>>>>>>> origin/master
 
         $this->set(compact('contravouchers'));
         $this->set('_serialize', ['ContraVouchers']);
@@ -63,14 +70,23 @@ class ContraVouchersController extends AppController
      */
     public function view($id = null)
     {
+<<<<<<< HEAD
         $this->viewBuilder()->layout('index_layout');
         $contraVoucher = $this->ContraVouchers->get($id, [
             'contain' => ['BankCashes', 'Companies', 'ContraVoucherRows' => ['ReceivedFroms'], 'Creator']
+=======
+        $contraVoucher = $this->ContraVouchers->get($id, [
+            'contain' => ['BankCashes', 'Companies', 'ContraVoucherRows']
+>>>>>>> origin/master
         ]);
 
         $this->set('ContraVouchers', $contraVoucher);
         $this->set('_serialize', ['ContraVouchers']);
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     /**
      * Add method
      *
@@ -78,6 +94,7 @@ class ContraVouchersController extends AppController
      */
     public function add()
     {
+<<<<<<< HEAD
 
         $this->viewBuilder()->layout('index_layout');
         
@@ -272,6 +289,22 @@ class ContraVouchersController extends AppController
             $ReceivedFroms_selected='no';
         }
         $this->set(compact('contraVoucher', 'bankCashes', 'receivedFroms', 'financial_year', 'BankCashes_selected', 'ReceivedFroms_selected'));
+=======
+        $contraVoucher = $this->ContraVouchers->newEntity();
+        if ($this->request->is('post')) {
+            $contraVoucher = $this->ContraVouchers->patchEntity($contraVoucher, $this->request->data);
+            if ($this->ContraVouchers->save($contraVoucher)) {
+                $this->Flash->success(__('The contra voucher has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The contra voucher could not be saved. Please, try again.'));
+            }
+        }
+        $bankCashes = $this->ContraVouchers->BankCashes->find('list', ['limit' => 200]);
+        $companies = $this->ContraVouchers->Companies->find('list', ['limit' => 200]);
+        $this->set(compact('contraVoucher', 'bankCashes', 'companies'));
+>>>>>>> origin/master
         $this->set('_serialize', ['contraVoucher']);
 
     }
@@ -285,6 +318,7 @@ class ContraVouchersController extends AppController
      */
     public function edit($id = null)
     {
+<<<<<<< HEAD
 
         $this->viewBuilder()->layout('index_layout');
         $s_employee_id=$this->viewVars['s_employee_id'];
@@ -295,6 +329,10 @@ class ContraVouchersController extends AppController
         
         $contraVoucher = $this->ContraVouchers->get($id, [
             'contain' => ['ContraVoucherRows']
+=======
+        $contraVoucher = $this->ContraVouchers->get($id, [
+            'contain' => []
+>>>>>>> origin/master
         ]);
         $old_ref_rows=[];
         $old_received_from_ids=[];
@@ -311,6 +349,7 @@ class ContraVouchersController extends AppController
         }
         if($this->request->is(['patch', 'post', 'put'])) {
             $contraVoucher = $this->ContraVouchers->patchEntity($contraVoucher, $this->request->data);
+<<<<<<< HEAD
             $contraVoucher->company_id=$st_company_id;
             
             
@@ -511,6 +550,19 @@ class ContraVouchersController extends AppController
         }
         
         $this->set(compact('contraVoucher', 'bankCashes', 'receivedFroms', 'financial_year', 'BankCashes_selected', 'ReceivedFroms_selected', 'old_ref_rows'));
+=======
+            if ($this->ContraVouchers->save($contraVoucher)) {
+                $this->Flash->success(__('The contra voucher has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('The contra voucher could not be saved. Please, try again.'));
+            }
+        }
+        $bankCashes = $this->ContraVouchers->BankCashes->find('list', ['limit' => 200]);
+        $companies = $this->ContraVouchers->Companies->find('list', ['limit' => 200]);
+        $this->set(compact('contraVoucher', 'bankCashes', 'companies'));
+>>>>>>> origin/master
         $this->set('_serialize', ['contraVoucher']);
 
     }

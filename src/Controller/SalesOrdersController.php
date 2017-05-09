@@ -29,7 +29,7 @@ class SalesOrdersController extends AppController
 		$job_card=$this->request->query('job-card');
 		
 		$where=[];
-		$company_alise=$this->request->query('company_alise');
+//		$company_alise=$this->request->query('company_alise');
 		$sales_order_no=$this->request->query('sales_order_no');
 		$file=$this->request->query('file');
 		$customer=$this->request->query('customer');
@@ -37,10 +37,10 @@ class SalesOrdersController extends AppController
 		$From=$this->request->query('From');
 		$To=$this->request->query('To');
 		$pull_request=$this->request->query('pull-request');
-		$this->set(compact('sales_order_no','customer','po_no','product','From','To','company_alise','file','pull_request'));
-		if(!empty($company_alise)){
-			$where['so1 LIKE']='%'.$company_alise.'%';
-		}
+		$this->set(compact('sales_order_no','customer','po_no','product','From','To','file','pull_request'));
+//		if(!empty($company_alise)){
+//			$where['so1 LIKE']='%'.$company_alise.'%';
+//		}
 		if(!empty($sales_order_no)){
 			$where['so2 LIKE']='%'.$sales_order_no.'%';
 		}
@@ -55,11 +55,11 @@ class SalesOrdersController extends AppController
 		}
 		if(!empty($From)){
 			$From=date("Y-m-d",strtotime($this->request->query('From')));
-			$where['date >=']=$From;
+			$where['SalesOrders.created_on >=']=$From;
 		}
 		if(!empty($To)){
 			$To=date("Y-m-d",strtotime($this->request->query('To')));
-			$where['date <=']=$To;
+			$where['SalesOrders.created_on <=']=$To;
 		}
         $this->paginate = [
             'contain' => ['Customers','Employees','Categories', 'Companies']

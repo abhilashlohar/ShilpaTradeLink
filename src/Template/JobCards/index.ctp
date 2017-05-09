@@ -25,7 +25,11 @@
 	<form method="GET" >
 				<input type="hidden">
 				<table class="table table-condensed">
+<<<<<<< HEAD
 					<thead>
+=======
+				<!--	<thead>
+>>>>>>> origin/master
 						<tr>
 							<th>JobCard No</th>
 							<th>SalesOrder No </th>
@@ -33,7 +37,11 @@
 							<th>Created Date </th>
 							<th></th>
 						</tr>
+<<<<<<< HEAD
 					</thead>
+=======
+					</thead>-->
+>>>>>>> origin/master
 					<tbody>
 					
 						<tr>
@@ -63,6 +71,7 @@
 									<div class="col-md-2"></div>
 								</div>
 							</td>
+<<<<<<< HEAD
 							<td><div class="row">
 									<div class="col-md-6">
 										<input type="text" name="Required_From" class="form-control input-sm date-picker" placeholder="From" value="<?php echo @$Required_From; ?>" data-date-format="dd-mm-yyyy" >
@@ -81,6 +90,27 @@
 									</div>
 								</div>
 							</td>
+=======
+							<td>
+								<div class="row">
+									<div class="col-md-6">
+										<input type="text" name="Created_From" class="form-control input-sm date-picker" placeholder="Created From" value="<?php echo @$Created_From; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+									<div class="col-md-6">
+										<input type="text" name="Created_To" class="form-control input-sm date-picker" placeholder="Created To" value="<?php echo @$Created_To; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+								</div>
+							</td>
+							<td><div class="row">
+									<div class="col-md-6">
+										<input type="text" name="Required_From" class="form-control input-sm date-picker" placeholder="Required From" value="<?php echo @$Required_From; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+									<div class="col-md-6">
+										<input type="text" name="Required_To" class="form-control input-sm date-picker" placeholder="Required To" value="<?php echo @$Required_To; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+								</div></td>
+							
+>>>>>>> origin/master
 							
 							<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
 						</tr>
@@ -94,8 +124,8 @@
 					<td style="font-size:120%;">Sr.No.</td>
 					<td style="font-size:120%;">Job Card No.</td>
 					<td style="font-size:120%;">Sales Order</td>
-					<td style="font-size:120%;">Required Date</td>
 					<td style="font-size:120%;">Created Date</td>
+					<td style="font-size:120%;">Required Date</td>
 					<td style="font-size:120%;">Action</td>
 				</tr>
 				<tbody>

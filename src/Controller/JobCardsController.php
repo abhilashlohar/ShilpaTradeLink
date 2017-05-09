@@ -55,6 +55,7 @@ class JobCardsController extends AppController
 		
 		if(!empty($Required_From)){
 			$Required_From=date("Y-m-d",strtotime($this->request->query('Required_From')));
+<<<<<<< HEAD
 			$where1['JobCards.date_created >=']=$Required_From;
 		}
 		if(!empty($Required_To)){
@@ -68,6 +69,21 @@ class JobCardsController extends AppController
 		if(!empty($Created_To)){
 			$Created_To=date("Y-m-d",strtotime($this->request->query('Created_To')));
 			$where1['JobCards.date_created <=']=$Created_To;
+=======
+			$where1['JobCards.required_date >=']=$Required_From;
+		}
+		if(!empty($Required_To)){
+			$Required_To=date("Y-m-d",strtotime($this->request->query('Required_To')));
+			$where1['JobCards.required_date <=']=$Required_To;
+		}
+		if(!empty($Created_From)){
+			$Created_From=date("Y-m-d",strtotime($this->request->query('Created_From')));
+			$where1['JobCards.created_on >=']=$Created_From;
+		}
+		if(!empty($Created_To)){
+			$Created_To=date("Y-m-d",strtotime($this->request->query('Created_To')));
+			$where1['JobCards.created_on <=']=$Created_To;
+>>>>>>> origin/master
 		}
 		//pr($inventory_voucher_status); exit;
         $this->paginate = [
@@ -257,7 +273,37 @@ class JobCardsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-		
+
+		//start filter
+		$where=[];
+		$so_no=$this->request->query('so_no');
+		$cust_name=$this->request->query('cust_name');
+		$Po_Date_From=$this->request->query('Po_Date_From');
+		$Po_Date_To=$this->request->query('Po_Date_To');
+		$po_no=$this->request->query('po_no');
+		$this->set(compact('so_no','cust_name','so_date','po_no','Po_Date_From','Po_Date_To'));
+		if(!empty($so_no)){
+			$where['SalesOrders.so2 LIKE']=$so_no;
+}
+		if(!empty($cust_name)){
+			$where['Customers.customer_name LIKE']='%'.$cust_name.'%';
+		}
+
+		if(!empty($Po_Date_From)){
+			$Po_Date_From=date("Y-m-d",strtotime($this->request->query('Po_Date_From')));
+			$where['SalesOrders.po_date >=']=$Po_Date_From;
+		}
+
+		if(!empty($Po_Date_To)){
+			$Po_Date_To=date("Y-m-d",strtotime($this->request->query('Po_Date_To')));
+			$where['SalesOrders.po_date <=']=$Po_Date_To;
+		}
+
+		if(!empty($po_no)){
+			$where['SalesOrders.customer_po_no LIKE']='%'.$po_no.'%';
+		}
+		//end filter
+
 		$this->paginate = [
             'contain' => ['Customers','JobCards','SalesOrderRows'=>['Items'=>function ($q){
 				return $q->where(['Items.source'=>'Purchessed/Manufactured']);
@@ -275,6 +321,7 @@ class JobCardsController extends AppController
 					->group(['SalesOrders.id'])
 					->autoFields(true)
 					->having(['total_rows >' => 0])
+					->where($where)
 					->where(['job_card_status'=>'Pending'])
 					->where(['SalesOrders.company_id'=>$st_company_id])
 					->order(['SalesOrders.id' => 'DESC'])

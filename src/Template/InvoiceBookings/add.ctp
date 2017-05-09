@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+=======
+<?php  
+$item_po_info=[];
+foreach($grn->purchase_order->purchase_order_rows as $purchase_order_row){
+	$item_po_info[$purchase_order_row->item_id]=$purchase_order_row;
+} 
+?>
+>>>>>>> origin/master
 <style>
 .row_textbox{
 	width: 100px;
@@ -162,7 +171,11 @@
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value' => @$grn_rows->item->id,'popup_id'=>$q]); ?>
 							</td>
 							
+<<<<<<< HEAD
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.unit_rate_from_po',['value'=>$grn->purchase_order->purchase_order_rows[$q]->rate,'type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox','readonly']); ?></td>
+=======
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.unit_rate_from_po',['value'=>$item_po_info[$grn_rows->item->id]->rate,'type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox','readonly']); ?></td>
+>>>>>>> origin/master
 							
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.quantity',['label' => false,'class' => 'form-control input-sm ', 'value'=>$grn_rows->quantity,'readonly','type'=>'text','style'=>'width:50px;']); ?></td>
 							
