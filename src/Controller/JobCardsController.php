@@ -262,10 +262,10 @@ class JobCardsController extends AppController
 		$where=[];
 		$so_no=$this->request->query('so_no');
 		$cust_name=$this->request->query('cust_name');
-		$po_date_from=$this->request->query('Po_Date_From');
-		$po_date_to=$this->request->query('Po_Date_To');
+		$Po_Date_From=$this->request->query('Po_Date_From');
+		$Po_Date_To=$this->request->query('Po_Date_To');
 		$po_no=$this->request->query('po_no');
-		$this->set(compact('so_no','cust_name','so_date','po_no'));
+		$this->set(compact('so_no','cust_name','so_date','po_no','Po_Date_From','Po_Date_To'));
 		if(!empty($so_no)){
 			$where['SalesOrders.so2 LIKE']=$so_no;
 }
@@ -273,14 +273,14 @@ class JobCardsController extends AppController
 			$where['Customers.customer_name LIKE']='%'.$cust_name.'%';
 		}
 
-		if(!empty($po_date_from)){
-			$po_date_from=date("Y-m-d",strtotime($this->request->query('Po_Date_From')));
-			$where['SalesOrders.po_date >=']=$po_date_from;
+		if(!empty($Po_Date_From)){
+			$Po_Date_From=date("Y-m-d",strtotime($this->request->query('Po_Date_From')));
+			$where['SalesOrders.po_date >=']=$Po_Date_From;
 		}
 
-		if(!empty($po_date_to)){
-			$po_date_to=date("Y-m-d",strtotime($this->request->query('Po_Date_To')));
-			$where['SalesOrders.po_date <=']=$po_date_to;
+		if(!empty($Po_Date_To)){
+			$Po_Date_To=date("Y-m-d",strtotime($this->request->query('Po_Date_To')));
+			$where['SalesOrders.po_date <=']=$Po_Date_To;
 		}
 
 		if(!empty($po_no)){

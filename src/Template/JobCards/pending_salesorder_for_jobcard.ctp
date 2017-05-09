@@ -32,7 +32,7 @@
 								<div class="row">
 									<div class="col-md-12">
 										<div class="input-group" >
-											<span class="input-group-addon">Customer</span><input type="text" name="cust_name" class="form-control input-sm" placeholder="Customer" value="<?php echo @$cust_name; ?>">
+											<input type="text" name="cust_name" class="form-control input-sm" placeholder="Customer" value="<?php echo @$cust_name; ?>">
 										</div>
 									</div>
 								
