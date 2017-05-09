@@ -22,12 +22,8 @@ if(!empty($copy))
 			<?php } ?>
 		</div>
 
-		<div class="actions">
 
-			<?php echo $this->Html->link('<i class="icon-home"></i> Pull/Close Quotation','/Quotations/index?pull-request=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
-		</div>
-
-
+<div class="actions">
 		<div class="btn-group">
 				<button id="btnGroupVerticalDrop5" type="button" class="btn yellow dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 				Pull Quotation <i class="fa fa-angle-down"></i>
