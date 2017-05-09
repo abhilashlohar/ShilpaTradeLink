@@ -7,17 +7,20 @@ use Cake\ORM\Entity;
  * ContraVoucher Entity
  *
  * @property int $id
- * @property \Cake\I18n\Time $created_on
- * @property \Cake\I18n\Time $transaction_date
- * @property int $cash_bank_from
- * @property string $payment_mode
- * @property int $cash_bank_to
- * @property string $narration
- * @property float $amount
- * @property int $company_id
+ * @property int $voucher_no
+ * @property int $bank_cash_id
  * @property int $created_by
+ * @property \Cake\I18n\Time $created_on
+ * @property string $payment_mode
+ * @property int $company_id
+ * @property \Cake\I18n\Time $transaction_date
+ * @property int $edited_by
+ * @property \Cake\I18n\Time $edited_on
+ * @property string $cheque_no
  *
+ * @property \App\Model\Entity\BankCash $bank_cash
  * @property \App\Model\Entity\Company $company
+ * @property \App\Model\Entity\ContraVoucherRow[] $contra_voucher_rows
  */
 class ContraVoucher extends Entity
 {

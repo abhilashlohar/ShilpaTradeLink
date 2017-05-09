@@ -44,6 +44,8 @@
 		</div>
 	</div>
 	<div class="portlet-body">
+          <input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search3"  style="width: 20%;" >
+            <br></br>
 		<div class="row">
 			<div class="col-md-12">
 				<table class="table table-bordered table-striped table-hover" id="main_tble">
@@ -107,7 +109,22 @@ var $rows = $('#main_tble tbody tr');
 		}else{
 			$rows.show();
 		}
-	});	
-});
+	});
+	//////SearchModule
+
+	$('#search3').on('keyup',function() {
+
+    		var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+    		var v = $(this).val();
+    		if(v){
+    			$rows.show().filter(function() {
+    				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+    				return !~text.indexOf(val);
+    			}).hide();
+    		}else{
+    			$rows.show();
+    		}
+    	});
+ });
 </script>
 

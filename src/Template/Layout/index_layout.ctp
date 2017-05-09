@@ -165,12 +165,11 @@ select
 		<!-- END LOGO -->
 		<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 			<ul class="nav navbar-nav">
-
-
-			<?php 
+			<?php
 			 $toarray=array();
+
 			 foreach($pages as $page){
-				 $id=$page['id'];
+				 $id=$page->id;
 				 if(in_array($id , $allowed_pages))
                  {
 					 $toarray[]=$id;
@@ -192,7 +191,7 @@ select
                                     foreach($pages as $page){
                                         
                                          
-                                        $id=$page['id'];
+                                        $id=$page->id;
                                         if(in_array($id , $allowed_pages))
                                         {	
                                             $x++;
@@ -439,7 +438,7 @@ select
 					</ul>
 				</li>
 				<?php } ?>
-				<?php if(in_array(10,$allowed_pages)){ ?>
+				<?php if(in_array(17,$allowed_pages) || in_array(18,$allowed_pages) || in_array(123,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
@@ -450,7 +449,9 @@ select
 						<?php if(in_array(17,$allowed_pages)){
 						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/Grns/index?pull-request=true',array('escape'=>false)).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/InvoiceBookings/',array('escape'=>false)); ?></li>
+						<?php if(in_array(18,$allowed_pages) || in_array(123,$allowed_pages)){
+                        echo '<li>'.$this->Html->link('<i class="icon-home"></i> View','/InvoiceBookings/',array('escape'=>false)).'</li>';
+                        } ?>
 					</ul>
 				</li>
 				<?php } ?>

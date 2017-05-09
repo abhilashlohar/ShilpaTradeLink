@@ -17,8 +17,6 @@
 						<th width="10%">Action</th>
 						<th width="10%">Freeze</th>
 						<th width="10%">Serial Number</th>
-
-						
 					</tr>
 				</thead>
 				<tbody>

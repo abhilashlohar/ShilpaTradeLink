@@ -243,7 +243,7 @@ class PaymentsController extends AppController
 		}else{
 			$BankCashes_selected='no';
 		}
-			
+		//pr($bankCashes->toArray())	; exit;
 		
 		$vr=$this->Payments->VouchersReferences->find()->where(['company_id'=>$st_company_id,'module'=>'Payment Voucher','sub_entity'=>'Paid To'])->first();
 		$ReceiptVouchersReceivedFrom=$vr->id;

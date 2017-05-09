@@ -81,7 +81,9 @@ class EmployeesTable extends Table
 		$this->belongsTo('Invoices');
 		$this->belongsTo('VoucherLedgerAccounts');
 		$this->belongsTo('VouchersReferences');
-		
+        $this->belongsTo('Logins');
+//        $this->belongsTo('UserRights');
+
 		$this->hasMany('EmployeeCompanies', [
             'foreignKey' => 'employee_id'
         ]);

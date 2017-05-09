@@ -16,6 +16,7 @@
 	<div class="portlet-body form">
 		<!-- BEGIN FORM-->
 		<div class="row ">
+
 		<div class="col-md-12">
 		<?= $this->Form->create($accountGroup) ?>
 			<div class="form-body">
@@ -47,6 +48,8 @@
 		</div>
 	</div>
 	<div class="portlet-body">
+           <input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search2"  style="width: 20%;" >
+        <br/><br/>
 		<div class="row">
 			<div class="col-md-12">
 				
@@ -109,7 +112,22 @@ var $rows = $('#main_tble tbody tr');
 		}else{
 			$rows.show();
 		}
-	});	
+	});
+	/// for second search
+
+	$('#search2').on('keyup',function() {
+
+    		var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+    		var v = $(this).val();
+    		if(v){
+    			$rows.show().filter(function() {
+    				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+    				return !~text.indexOf(val);
+    			}).hide();
+    		}else{
+    			$rows.show();
+    		}
+    	});
 });
 </script>
 

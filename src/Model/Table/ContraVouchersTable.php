@@ -9,7 +9,9 @@ use Cake\Validation\Validator;
 /**
  * ContraVouchers Model
  *
+ * @property \Cake\ORM\Association\BelongsTo $BankCashes
  * @property \Cake\ORM\Association\BelongsTo $Companies
+ * @property \Cake\ORM\Association\HasMany $ContraVoucherRows
  *
  * @method \App\Model\Entity\ContraVoucher get($primaryKey, $options = [])
  * @method \App\Model\Entity\ContraVoucher newEntity($data = null, array $options = [])
@@ -35,29 +37,18 @@ class ContraVouchersTable extends Table
         $this->table('contra_vouchers');
         $this->displayField('id');
         $this->primaryKey('id');
-		$this->belongsTo('VouchersReferences');
-		$this->belongsTo('FinancialYears');
-		$this->belongsTo('Ledgers');
+
+        $this->belongsTo('BankCashes', [
+            'foreignKey' => 'bank_cash_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
-		$this->belongsTo('CashBankFroms', [
-			'className' => 'LedgerAccounts',
-            'foreignKey' => 'cash_bank_from',
-            'propertyName' => 'CashBankFroms',
+        $this->hasMany('ContraVoucherRows', [
+            'foreignKey' => 'contra_voucher_id'
         ]);
-		$this->belongsTo('CashBankTos', [
-			'className' => 'LedgerAccounts',
-            'foreignKey' => 'cash_bank_to',
-            'propertyName' => 'CashBankTos',
-        ]);
-		$this->belongsTo('Creator', [
-			'className' => 'Employees',
-			'foreignKey' => 'created_by',
-			'propertyName' => 'creator',
-		]);
-		 
     }
 
     /**
@@ -72,28 +63,44 @@ class ContraVouchersTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        
+        $validator
+            ->integer('voucher_no')
+            ->requirePresence('voucher_no', 'create')
+            ->notEmpty('voucher_no');
+
+        $validator
+            ->integer('created_by')
+            ->requirePresence('created_by', 'create')
+            ->notEmpty('created_by');
+
+        $validator
+            ->date('created_on')
+            ->requirePresence('created_on', 'create')
+            ->notEmpty('created_on');
+
         $validator
             ->requirePresence('payment_mode', 'create')
             ->notEmpty('payment_mode');
 
         $validator
-            ->requirePresence('narration', 'create')
-            ->notEmpty('narration');
+            ->date('transaction_date')
+            ->requirePresence('transaction_date', 'create')
+            ->notEmpty('transaction_date');
 
         $validator
-            ->decimal('amount')
-            ->requirePresence('amount', 'create')
-            ->notEmpty('amount');
+            ->integer('edited_by')
+            ->requirePresence('edited_by', 'create')
+            ->notEmpty('edited_by');
 
         $validator
-            ->requirePresence('cash_bank_from', 'create')
-            ->notEmpty('cash_bank_from');
-		
-		$validator
-            ->requirePresence('cash_bank_to', 'create')
-            ->notEmpty('cash_bank_to');
-       
+            ->date('edited_on')
+            ->requirePresence('edited_on', 'create')
+            ->notEmpty('edited_on');
+
+        $validator
+            ->requirePresence('cheque_no', 'create')
+            ->notEmpty('cheque_no');
+
         return $validator;
     }
 
@@ -106,6 +113,7 @@ class ContraVouchersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->existsIn(['bank_cash_id'], 'BankCashes'));
         $rules->add($rules->existsIn(['company_id'], 'Companies'));
 
         return $rules;

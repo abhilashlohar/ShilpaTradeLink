@@ -115,17 +115,21 @@ class AppController extends Controller
 			}
 			$this->set(compact('allowed_pages'));
 		}
-		
-		
+
 		$this->loadModel('Pages');
+		$pages=$this->Pages->find()->where(['master'=>1]);
+		$this->set(compact('pages'));
+
 		$page=$this->Pages->find()->where(['controller'=>$controller,'action'=>$action])->first();
+
 		if(!empty($page->id) and !in_array($page->id,$allowed_pages)){
+			$pages=[];
+			$this->set(compact('pages'));
 			$this->viewBuilder()->layout('index_layout');
 			$this -> render('/Error/not_allow'); 
 		}
-		
-		$pages=$this->Pages->find()->where(['master'=>1]);
-		$this->set(compact('pages'));
+
+
 		
     }
 

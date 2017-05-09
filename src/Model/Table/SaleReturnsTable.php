@@ -73,6 +73,9 @@ class SaleReturnsTable extends Table
 		$this->belongsTo('AccountSecondSubgroups');
 		$this->belongsTo('ReferenceDetails');
 		$this->belongsTo('ReferenceBalances');
+		$this->belongsTo('Ledgers');
+		$this->belongsTo('ItemLedgers');
+		$this->belongsTo('ItemSerialNumbers');
 
         $this->hasMany('SaleReturnRows', [
             'foreignKey' => 'sale_return_id'
@@ -111,7 +114,6 @@ class SaleReturnsTable extends Table
         $rules->add($rules->existsIn(['sales_order_id'], 'SalesOrders'));
         $rules->add($rules->existsIn(['employee_id'], 'Employees'));
         $rules->add($rules->existsIn(['transporter_id'], 'Transporters'));
-       // $rules->add($rules->existsIn(['st_ledger_account_id'], 'StLedgerAccounts'));
 
         return $rules;
     }
