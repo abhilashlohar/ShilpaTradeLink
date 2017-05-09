@@ -295,15 +295,7 @@ class SaleReturnsController extends AppController
 				}
 					
 			}
-			
-			foreach($ref_rows as $ref_row){
-			$ref_row=(object)$ref_row;
-			pr($ref_row);
-			}
-			exit;
-			
-			
-            if ($this->SaleReturns->save($saleReturn)) {
+			if ($this->SaleReturns->save($saleReturn)) {
 				
 				$this->SaleReturns->Ledgers->deleteAll(['voucher_id' => $saleReturn->id, 'voucher_source' => 'Sale Return']);
 				$this->SaleReturns->ItemLedgers->deleteAll(['source_id' => $saleReturn->id, 'source_model' => 'Sale Return','company_id'=>$st_company_id]);

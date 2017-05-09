@@ -21,3 +21,7 @@ Add new field in journal_voucher_rows:-narration(varchar 100)
 Add new field in journal_voucher_rows :-auto_inc(int)
 Add new field in reference_details :-auto_inc(int)
 Add new field in reference_balances :-auto_inc(int)
+
+--------Gopal(08/05/2017)(Sales Return)------
+Add new field in Invoice sale_return_status(Varchar)(default->No).
+Add new field in Invoice sale_return_id(Int).
