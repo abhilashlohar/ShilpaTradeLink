@@ -38,7 +38,7 @@
 								<?php if(in_array(18,$allowed_pages)){ ?>
 								<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $invoiceBooking->id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 								<?php } ?>
-								<?php if(in_array(124,$allowed_pages)){ ?>
+								<?php if(in_array(123,$allowed_pages)){ ?>
                                 <?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'view', $invoiceBooking->id,],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
                                 <?php } ?>
 							</td>
