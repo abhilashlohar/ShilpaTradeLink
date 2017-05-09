@@ -22,6 +22,12 @@ class ReceiptsController extends AppController
 		
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+<<<<<<< HEAD
+        $this->paginate = [
+            'contain' => []
+        ];
+        $receipts = $this->paginate($this->Receipts->find()->where(['company_id'=>$st_company_id])->contain(['ReceiptRows'=>function($q){
+=======
 
 		$where =[];
 		$From = $this->request->query('From');
@@ -50,6 +56,7 @@ class ReceiptsController extends AppController
             'contain' => []
         ];
         $receipts = $this->paginate($this->Receipts->find()->where($where)->where(['company_id'=>$st_company_id])->contain(['ReceiptRows'=>function($q){
+>>>>>>> origin/master
 			$ReceiptRows = $this->Receipts->ReceiptRows->find();
 			$totalCrCase = $ReceiptRows->newExpr()
 				->addCase(

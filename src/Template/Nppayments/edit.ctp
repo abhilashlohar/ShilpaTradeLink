@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <style>
 table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table > thead > tr > td, table > tbody > tr > td, table > tfoot > tr > td{
     vertical-align: top !important;
@@ -20,16 +19,16 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
     <div class="portlet-title">
         <div class="caption" >
             <i class="icon-globe font-blue-steel"></i>
-            <span class="caption-subject font-blue-steel uppercase">Edit Payment</span>
+            <span class="caption-subject font-blue-steel uppercase">Edit Non Print Payment</span>
         </div>
     </div>
     <div class="portlet-body form">
-    <?= $this->Form->create($contraVoucher,['id'=>'form_sample_3']) ?>
+    <?= $this->Form->create($nppayment,['id'=>'form_sample_3']) ?>
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
                     <label class="control-label">Transaction Date<span class="required" aria-required="true">*</span></label>
-                    <?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y",strtotime($contraVoucher->transaction_date)),'data-date-start-date' => date("d-m-Y",strtotime($financial_year->date_from)),'data-date-end-date' => date("d-m-Y",strtotime($financial_year->date_to))]); ?>
+                    <?php echo $this->Form->input('transaction_date', ['type' => 'text','label' => false,'class' => 'form-control input-sm date-picker','data-date-format' => 'dd-mm-yyyy','value' => date("d-m-Y",strtotime($nppayment->transaction_date)),'data-date-start-date' => date("d-m-Y",strtotime($financial_year->date_from)),'data-date-end-date' => date("d-m-Y",strtotime($financial_year->date_to))]); ?>
                 </div>
             </div>
             <div class="col-md-3">
@@ -73,16 +72,16 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
                 <th width="3%"></th>
             </thead>
             <tbody id="main_tbody">
-            <?php foreach($contraVoucher->contra_voucher_rows as $contra_voucher_row){ ?> 
-                <tr class="main_tr" old_received_from_id="<?php echo $contra_voucher_row->received_from_id; ?>">
-                    <td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from','value'=>$contra_voucher_row->received_from_id]); ?></td>
+            <?php foreach($nppayment->nppayment_rows as $nppayment_row){ ?> 
+                <tr class="main_tr" old_received_from_id="<?php echo $nppayment_row->received_from_id; ?>">
+                    <td><?php echo $this->Form->input('received_from_id', ['empty'=>'--Select-','options'=>$receivedFroms,'label' => false,'class' => 'form-control input-sm received_from','value'=>$nppayment_row->received_from_id]); ?></td>
                     <td>
                     <div class="row">
                         <div class="col-md-7" style="padding-right: 0;">
-                            <?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm mian_amount','placeholder'=>'Amount','value'=>$contra_voucher_row->amount]); ?>
+                            <?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm mian_amount','placeholder'=>'Amount','value'=>$nppayment_row->amount]); ?>
                         </div>
                         <div class="col-md-5"style="padding-left: 0;">
-                            <?php echo $this->Form->input('cr_dr', ['label' => false,'options'=>$cr_dr_options,'class' => 'form-control input-sm cr_dr','value'=>$contra_voucher_row->cr_dr]); ?>
+                            <?php echo $this->Form->input('cr_dr', ['label' => false,'options'=>$cr_dr_options,'class' => 'form-control input-sm cr_dr','value'=>$nppayment_row->cr_dr]); ?>
                         </div>
                     </div>
                     </td>
@@ -99,22 +98,19 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
                                 </tr>
                             </thead>
                             <tbody>
-
-                            <?php
-                       
-                             foreach($old_ref_rows[$contra_voucher_row->received_from_id] as $old_ref_row){ ?>
+                            <?php foreach($old_ref_rows[$nppayment_row->received_from_id] as $old_ref_row){ ?>
                                 <tr>
                                     <td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type','value'=>$old_ref_row->reference_type]); ?></td>
                                     <td class="ref_no">
                                     <?php if($old_ref_row->reference_type=="Against Reference"){
-                                        echo $this->requestAction('Payments/fetchRefNumbersEdit/'.$contra_voucher_row_row->received_from_id.'/'.$old_ref_row->reference_no.'/'.$old_ref_row->debit.'/'.$old_ref_row->credit.'/'.$contra_voucher_row->cr_dr);
+                                        echo $this->requestAction('Payments/fetchRefNumbersEdit/'.$nppayment_row->received_from_id.'/'.$old_ref_row->reference_no.'/'.$old_ref_row->debit.'/'.$old_ref_row->credit.'/'.$nppayment_row->cr_dr);
                                     }else{
                                         echo '<input type="text" class="form-control input-sm" placeholder="Ref No." value="'.$old_ref_row->reference_no.'" readonly="readonly" is_old="yes">';
                                     }?>
                                     </td>
                                     <td>
                                     <?php 
-                                    if($contra_voucher_row->cr_dr=="Dr"){
+                                    if($nppayment_row->cr_dr=="Dr"){
                                         echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'hidden','value'=>$old_ref_row->debit]);
                                         echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount','value'=>$old_ref_row->debit]);
                                     }else{
@@ -145,7 +141,7 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
                         </div>
                         
                     </td>
-                    <td><?php echo $this->Form->input('narration', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Narration','value'=>$contra_voucher_row->narration]); ?></td>
+                    <td><?php echo $this->Form->input('narration', ['type'=>'textarea','label' => false,'class' => 'form-control input-sm','placeholder'=>'Narration','value'=>$nppayment_row->narration]); ?></td>
                     <td><a class="btn btn-xs btn-default deleterow" href="#" role="button"><i class="fa fa-times"></i></a></td>
                 </tr>
             <?php } ?>
@@ -292,19 +288,19 @@ $(document).ready(function() {
     function rename_rows(){ 
         var i=0;
         $("#main_table tbody#main_tbody tr.main_tr").each(function(){
-            $(this).find("td:eq(0) select.received_from").select2().attr({name:"payment_rows["+i+"][received_from_id]", id:"quotation_rows-"+i+"-received_from_id"}).rules('add', {
+            $(this).find("td:eq(0) select.received_from").select2().attr({name:"nppayment_rows["+i+"][received_from_id]", id:"nppayment_rows-"+i+"-received_from_id"}).rules('add', {
                         required: true,
                         notEqualToGroup: ['.received_from'],
                         messages: {
                             notEqualToGroup: "Do not select same party again."
                         }
                     });
-            $(this).find("td:eq(1) input").attr({name:"payment_rows["+i+"][amount]", id:"quotation_rows-"+i+"-amount"}).rules('add', {
+            $(this).find("td:eq(1) input").attr({name:"nppayment_rows["+i+"][amount]", id:"nppayment_rows-"+i+"-amount"}).rules('add', {
                         required: true,
                         min: 0.01,
                     });
-            $(this).find("td:eq(1) select").attr({name:"payment_rows["+i+"][cr_dr]", id:"quotation_rows-"+i+"-cr_dr"});
-            $(this).find("td:nth-child(4) textarea").attr({name:"payment_rows["+i+"][narration]", id:"quotation_rows-"+i+"-narration"}).rules("add", "required");
+            $(this).find("td:eq(1) select").attr({name:"nppayment_rows["+i+"][cr_dr]", id:"nppayment_rows-"+i+"-cr_dr"});
+            $(this).find("td:nth-child(4) textarea").attr({name:"nppayment_rows["+i+"][narration]", id:"nppayment_rows-"+i+"-narration"}).rules("add", "required");
             i++;
         });
     }
@@ -341,20 +337,20 @@ $(document).ready(function() {
             if(is_select){
                 $(this).find("td:nth-child(2) select").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no"}).rules("add", "required");
             }else if(is_input){
-                var url='<?php echo $this->Url->build(['controller'=>'Payments','action'=>'checkRefNumberUniqueEdit']); ?>';
+                var url='<?php echo $this->Url->build(['controller'=>'Nppayments','action'=>'checkRefNumberUniqueEdit']); ?>';
                 var is_old=$(this).find("td:nth-child(2) input").attr('is_old');
                 url=url+'/'+received_from_id+'/'+i+'/'+is_old;
                 $(this).find("td:nth-child(2) input").attr({name:"ref_rows["+received_from_id+"]["+i+"][ref_no]", id:"ref_rows-"+received_from_id+"-"+i+"-ref_no", class:"form-control input-sm ref_number-"+received_from_id}).rules('add', {
-                                                        required: true,
-                                                        noSpace: true,
-                                                        notEqualToGroup: ['.ref_number-'+received_from_id],
-                                                        remote: {
-                                                            url: url,
-                                                        },
-                                                        messages: {
-                                                            remote: "Not an unique."
-                                                        }
-                                                    });
+                    required: true,
+                    noSpace: true,
+                    notEqualToGroup: ['.ref_number-'+received_from_id],
+                    remote: {
+                        url: url,
+                    },
+                    messages: {
+                        remote: "Not an unique."
+                    }
+                });
             }
             
             var is_ref_old_amount=$(this).find("td:nth-child(3) input:eq(0)").length;
@@ -420,7 +416,7 @@ $(document).ready(function() {
         var ref_type=$(this).find('option:selected').val();
         var received_from_id=$(this).closest('tr.main_tr').find('td select:eq(0)').val();
         if(ref_type=="Against Reference"){
-            var url="<?php echo $this->Url->build(['controller'=>'Payments','action'=>'fetchRefNumbers']); ?>";
+            var url="<?php echo $this->Url->build(['controller'=>'Nppayments','action'=>'fetchRefNumbers']); ?>";
             url=url+'/'+received_from_id+'/'+cr_dr,
             $.ajax({
                 url: url,
@@ -519,7 +515,7 @@ $(document).ready(function() {
     function delete_all_ref_no(sel){
         var old_received_from_id=sel.closest('tr').attr('old_received_from_id');
         var url="<?php echo $this->Url->build(['controller'=>'Payments','action'=>'deleteAllRefNumbers']); ?>";
-        url=url+'/'+old_received_from_id+'/'+<?php echo $contraVoucher->id; ?>,
+        url=url+'/'+old_received_from_id+'/'+<?php echo $nppayment->id; ?>,
         $.ajax({
             url: url,
             type: 'GET',
@@ -533,7 +529,7 @@ $(document).ready(function() {
         var old_ref=sel.closest('tr').find('a.deleterefrow').attr('old_ref');
         var old_ref_type=sel.closest('tr').find('a.deleterefrow').attr('old_ref_type');
         var url="<?php echo $this->Url->build(['controller'=>'Payments','action'=>'deleteOneRefNumbers']); ?>";
-        url=url+'?old_received_from_id='+old_received_from_id+'&payment_id=<?php echo $contraVoucher->id; ?>&old_ref='+old_ref+'&old_ref_type='+old_ref_type,
+        url=url+'?old_received_from_id='+old_received_from_id+'&nppayment_id=<?php echo $nppayment->id; ?>&old_ref='+old_ref+'&old_ref_type='+old_ref_type,
         $.ajax({
             url: url,
             type: 'GET',
@@ -627,41 +623,4 @@ $(document).ready(function() {
         </tfoot>
     </table>
     </div>
-=======
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $contraVoucher->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $contraVoucher->id)]
-            )
-        ?></li>
-        <li><?= $this->Html->link(__('List Contra Vouchers'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Companies'), ['controller' => 'Companies', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Company'), ['controller' => 'Companies', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Contra Voucher Rows'), ['controller' => 'ContraVoucherRows', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Contra Voucher Row'), ['controller' => 'ContraVoucherRows', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="contraVouchers form large-9 medium-8 columns content">
-    <?= $this->Form->create($contraVoucher) ?>
-    <fieldset>
-        <legend><?= __('Edit Contra Voucher') ?></legend>
-        <?php
-            echo $this->Form->input('voucher_no');
-            echo $this->Form->input('bank_cash_id');
-            echo $this->Form->input('created_by');
-            echo $this->Form->input('created_on');
-            echo $this->Form->input('payment_mode');
-            echo $this->Form->input('company_id', ['options' => $companies]);
-            echo $this->Form->input('transaction_date');
-            echo $this->Form->input('edited_by');
-            echo $this->Form->input('edited_on');
-            echo $this->Form->input('cheque_no');
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
->>>>>>> origin/master
 </div>

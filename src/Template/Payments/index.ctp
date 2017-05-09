@@ -5,6 +5,12 @@
 			<i class="icon-globe font-blue-steel"></i>
 			<span class="caption-subject font-blue-steel uppercase">Payment Vouchers</span>
 		</div>
+<<<<<<< HEAD
+	</div>
+	<div class="portlet-body">
+		<div class="row">
+			<div class="col-md-12">
+=======
 	
 	<div class="portlet-body">
 		<div class="row">
@@ -39,6 +45,7 @@
 					</tbody>
 				</table>
 				</form>
+>>>>>>> origin/master
 				<?php $page_no=$this->Paginator->current('Payments'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
@@ -67,9 +74,12 @@
 						<?php endforeach; ?>
 					</tbody>
 				</table>
+<<<<<<< HEAD
+=======
 				</div>
 				</div>
 				</div>
+>>>>>>> origin/master
 				<div class="paginator">
 					<ul class="pagination">
 						<?= $this->Paginator->prev('< ' . __('previous')) ?>
@@ -80,4 +90,9 @@
 				</div>
 			</div>
 		</div>
+<<<<<<< HEAD
+	</div>
+</div>
+=======
 	
+>>>>>>> origin/master

@@ -22,6 +22,22 @@ if(!empty($copy))
 			<?php } ?>
 		</div>
 
+<<<<<<< HEAD
+		<div class="actions">
+		<div class="btn-group">
+                                                                        <button id="btnGroupVerticalDrop5" type="button" class="btn yellow dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                                                        Pull Quotation <i class="fa fa-angle-down"></i>
+                                                                        </button>
+                                                                        <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop5">
+                                                                            <li>
+                                                                               <?php echo $this->Html->link(' Keep Open Quotation','/Quotations/index?pull-request=true',array('escape'=>false)); ?>
+                                                                            </li>
+                                                                            <li>
+                                                                               <?php echo $this->Html->link('Close Quotation','/Quotations/index?pull-request=true',array('escape'=>false)); ?>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+=======
 
 <div class="actions">
 		<div class="btn-group">
@@ -37,6 +53,7 @@ if(!empty($copy))
 					</li>
 				</ul>
 				</div>
+>>>>>>> origin/master
         </div>
 
 		
@@ -786,7 +803,11 @@ $(document).ready(function() {
 	function put_code_description(){
 			var i=0;
 			$("#main_tb tbody#main_tbody tr.tr2").each(function(){
+<<<<<<< HEAD
+				var row_no=$(this).attr('row_no');		
+=======
 				var row_no=$(this).attr('row_no');
+>>>>>>> origin/master
 				var code=$(this).find('div#summer'+i).code();
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').find('td:nth-child(1) textarea').val(code);
 			i++; });

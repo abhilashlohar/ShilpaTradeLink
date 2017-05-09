@@ -55,6 +55,21 @@ class JobCardsController extends AppController
 		
 		if(!empty($Required_From)){
 			$Required_From=date("Y-m-d",strtotime($this->request->query('Required_From')));
+<<<<<<< HEAD
+			$where1['JobCards.date_created >=']=$Required_From;
+		}
+		if(!empty($Required_To)){
+			$Required_To=date("Y-m-d",strtotime($this->request->query('Required_To')));
+			$where1['JobCards.date_created <=']=$Required_To;
+		}
+		if(!empty($Created_From)){
+			$Created_From=date("Y-m-d",strtotime($this->request->query('Created_From')));
+			$where1['JobCards.date_created >=']=$Created_From;
+		}
+		if(!empty($Created_To)){
+			$Created_To=date("Y-m-d",strtotime($this->request->query('Created_To')));
+			$where1['JobCards.date_created <=']=$Created_To;
+=======
 			$where1['JobCards.required_date >=']=$Required_From;
 		}
 		if(!empty($Required_To)){
@@ -68,6 +83,7 @@ class JobCardsController extends AppController
 		if(!empty($Created_To)){
 			$Created_To=date("Y-m-d",strtotime($this->request->query('Created_To')));
 			$where1['JobCards.created_on <=']=$Created_To;
+>>>>>>> origin/master
 		}
 		//pr($inventory_voucher_status); exit;
         $this->paginate = [

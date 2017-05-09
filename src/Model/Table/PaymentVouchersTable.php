@@ -59,10 +59,7 @@ class PaymentVouchersTable extends Table
 			'foreignKey' => 'created_by',
 			'propertyName' => 'creator',
 		]);
-		$this->hasMany('PaymentBreakups', [
-            'foreignKey' => 'payment_voucher_id',
-			'saveStrategy' => 'replace'
-        ]);
+		
 		
 	}
 
