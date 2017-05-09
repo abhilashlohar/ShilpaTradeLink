@@ -1,13 +1,13 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\ContraVouchersController;
+use App\Controller\PurchaseReturnRowsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\ContraVouchersController Test Case
+ * App\Controller\PurchaseReturnRowsController Test Case
  */
-class ContraVouchersControllerTest extends IntegrationTestCase
+class PurchaseReturnRowsControllerTest extends IntegrationTestCase
 {
 
     /**
@@ -16,8 +16,14 @@ class ContraVouchersControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.contra_vouchers',
-        'app.bank_cashes',
+        'app.purchase_return_rows',
+        'app.items',
+        'app.item_categories',
+        'app.item_groups',
+        'app.item_sub_groups',
+        'app.units',
+        'app.sources',
+        'app.item_sources',
         'app.companies',
         'app.company_groups',
         'app.customers',
@@ -36,16 +42,6 @@ class ContraVouchersControllerTest extends IntegrationTestCase
         'app.invoices',
         'app.customer_groups',
         'app.item_ledgers',
-        'app.items',
-        'app.item_categories',
-        'app.item_groups',
-        'app.item_sub_groups',
-        'app.units',
-        'app.sources',
-        'app.item_sources',
-        'app.item_companies',
-        'app.invoice_rows',
-        'app.item_serialnumbers',
         'app.grns',
         'app.purchase_order_rows',
         'app.purchase_orders',
@@ -79,6 +75,8 @@ class ContraVouchersControllerTest extends IntegrationTestCase
         'app.job_cards',
         'app.inventory_voucher_rows',
         'app.inventory_vouchers',
+        'app.invoice_rows',
+        'app.item_serialnumbers',
         'app.item_serial_numbers',
         'app.material_indent_rows',
         'app.material_indents',
@@ -96,6 +94,7 @@ class ContraVouchersControllerTest extends IntegrationTestCase
         'app.sale_returns',
         'app.sale_return_rows',
         'app.received_froms',
+        'app.bank_cashes',
         'app.receipt_breakups',
         'app.payment_vouchers',
         'app.paid_tos',
@@ -107,7 +106,7 @@ class ContraVouchersControllerTest extends IntegrationTestCase
         'app.customer_companies',
         'app.item_used_by_companies',
         'app.company_banks',
-        'app.contra_voucher_rows'
+        'app.item_companies'
     ];
 
     /**

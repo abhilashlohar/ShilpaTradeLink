@@ -1,13 +1,13 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\ContraVouchersController;
+use App\Controller\PurchaseReturnsController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\ContraVouchersController Test Case
+ * App\Controller\PurchaseReturnsController Test Case
  */
-class ContraVouchersControllerTest extends IntegrationTestCase
+class PurchaseReturnsControllerTest extends IntegrationTestCase
 {
 
     /**
@@ -16,8 +16,18 @@ class ContraVouchersControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.contra_vouchers',
-        'app.bank_cashes',
+        'app.purchase_returns',
+        'app.invoice_bookings',
+        'app.grns',
+        'app.purchase_order_rows',
+        'app.purchase_orders',
+        'app.items',
+        'app.item_categories',
+        'app.item_groups',
+        'app.item_sub_groups',
+        'app.units',
+        'app.sources',
+        'app.item_sources',
         'app.companies',
         'app.company_groups',
         'app.customers',
@@ -36,26 +46,10 @@ class ContraVouchersControllerTest extends IntegrationTestCase
         'app.invoices',
         'app.customer_groups',
         'app.item_ledgers',
-        'app.items',
-        'app.item_categories',
-        'app.item_groups',
-        'app.item_sub_groups',
-        'app.units',
-        'app.sources',
-        'app.item_sources',
-        'app.item_companies',
-        'app.invoice_rows',
-        'app.item_serialnumbers',
-        'app.grns',
-        'app.purchase_order_rows',
-        'app.purchase_orders',
-        'app.filenames',
+        'app.inventory_vouchers',
+        'app.sales_order_rows',
         'app.sales_orders',
-        'app.carrier',
-        'app.customer_address',
-        'app.districts',
-        'app.transporters',
-        'app.courier',
+        'app.filenames',
         'app.quotations',
         'app.employees',
         'app.departments',
@@ -71,31 +65,32 @@ class ContraVouchersControllerTest extends IntegrationTestCase
         'app.quotation_close_reasons',
         'app.quotation_rows',
         'app.customer_contacts',
+        'app.carrier',
+        'app.customer_address',
+        'app.districts',
+        'app.transporters',
+        'app.courier',
         'app.tax_details',
-        'app.sales_order_rows',
         'app.sale_taxes',
         'app.sale_tax_companies',
-        'app.job_card_rows',
         'app.job_cards',
+        'app.job_card_rows',
         'app.inventory_voucher_rows',
-        'app.inventory_vouchers',
+        'app.invoice_rows',
+        'app.item_serialnumbers',
         'app.item_serial_numbers',
-        'app.material_indent_rows',
-        'app.material_indents',
         'app.vendors',
         'app.vendor_contact_persons',
         'app.vendor_companies',
-        'app.grn_rows',
-        'app.invoice_bookings',
-        'app.invoice_booking_rows',
-        'app.account_references',
-        'app.reference_balances',
         'app.challans',
         'app.challan_rows',
+        'app.reference_balances',
         'app.invoice_breakups',
+        'app.account_references',
         'app.sale_returns',
         'app.sale_return_rows',
         'app.received_froms',
+        'app.bank_cashes',
         'app.receipt_breakups',
         'app.payment_vouchers',
         'app.paid_tos',
@@ -107,7 +102,11 @@ class ContraVouchersControllerTest extends IntegrationTestCase
         'app.customer_companies',
         'app.item_used_by_companies',
         'app.company_banks',
-        'app.contra_voucher_rows'
+        'app.item_companies',
+        'app.material_indent_rows',
+        'app.material_indents',
+        'app.grn_rows',
+        'app.invoice_booking_rows'
     ];
 
     /**
