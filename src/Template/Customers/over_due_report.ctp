@@ -18,13 +18,14 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($customers as $customer){ 
-					//pr($customer->ledger_account_id); exit;
+					<?php foreach ($LedgerAccounts as $LedgerAccount){ 
+					//pr($customer->id); exit;
 					$due=0;
 					$total_credit=0;
 					$total_debit=0;
 						foreach($ReferenceDetails as $ReferenceDetail){
-							if($ReferenceDetail->ledger_account_id==$customer->ledger_account_id){
+							//pr($ReferenceDetail->ledger_account_id); 
+							if($ReferenceDetail->ledger_account_id==$LedgerAccount->id){
 								if($ReferenceDetail->credit==0){
 								$total_debit+=$ReferenceDetail->debit;
 								}else{
@@ -36,7 +37,7 @@
 						} ?>
 					<tr>
 						<td><?= h(++$page_no) ?></td>
-						<td><?= h($customer->customer_name) ?></td>
+						<td><?= h($LedgerAccount->name) ?></td>
 						<td>
 						<?=$this->Number->format($due,[ 'places' => 2]);
 						 ?>

@@ -39,7 +39,7 @@ class VendorsTable extends Table
         $this->primaryKey('id');
 		
 		$this->hasOne('LedgerAccounts');
-		
+		$this->belongsTo('Ledgers');
         $this->belongsTo('ItemGroups', [
             'foreignKey' => 'item_group_id',
             'joinType' => 'INNER'
@@ -68,11 +68,18 @@ class VendorsTable extends Table
             'foreignKey' => 'account_second_subgroup_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->hasMany('VendorCompanies', [
+            'foreignKey' => 'vendor_id'
+        ]);
+		
 		$this->belongsToMany('Companies', [
             'foreignKey' => 'vendor_id',
             'targetForeignKey' => 'company_id',
             'joinTable' => 'vendor_companies'
         ]);
+		$this->belongsTo('VoucherLedgerAccounts');
+		$this->belongsTo('VouchersReferences');
     }
 
     /**
@@ -98,11 +105,7 @@ class VendorsTable extends Table
         $validator
             ->requirePresence('tin_no', 'create')
             ->notEmpty('tin_no');
-
-        $validator
-            ->requirePresence('ecc_no', 'create')
-            ->notEmpty('ecc_no');
-
+      
         $validator
             ->requirePresence('pan_no', 'create')
             ->notEmpty('pan_no');

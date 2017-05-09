@@ -1,4 +1,25 @@
- <?php 
+<style>
+.row_textbox{
+	width: 100px;
+}
+.check_text{
+	font-size:9px;
+}
+.add_check_text{
+	font-size:9px;
+}	
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+	vertical-align: top !important;
+}
+#main_tb thead th {
+	font-size:10px;
+}
+</style>
+<?php 
+$this->Form->templates([
+				'inputContainer' => '{{content}}'
+			]);
+			
     if($financial_year_data['Response'] == "Close" ){
  			echo "Financial Year Closed"; 
 
@@ -73,14 +94,14 @@
 				</div>
 				
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Supplier Invoice Date. <span class="required" aria-required="true">*</span></label>
 								<?php echo $this->Form->input('supplier_date', ['type'=>'text','label' => false,'class' => 'form-control input-sm date-picker','placeholder'=>'Supplier Date','data-date-format'=>'dd-mm-yyyy','data-date-start-date' => '-60d','data-date-end-date' => '0d','value' => date("d-m-Y",strtotime($invoiceBooking->supplier_date))]); ?>
 							
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="form-group">
 							<label class="control-label">Invoice No. <span class="required" aria-required="true">*</span></label>
 							<?php echo $this->Form->input('invoice_no', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Invoice NO']); ?>
@@ -88,166 +109,172 @@
 							<? ?>
 						</div>
 					</div>
-						
+					<div class="col-md-3">
+						<div class="form-group">
+							<label class="control-label">Purchase Account <span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('purchase_ledger_account', ['options' => $ledger_account_details,'label' => false,'class' => 'form-control input-sm']); ?>
+							<?php echo $this->Form->input('cst_vat', ['label' => false,'type' => 'hidden']); ?>
+							<br/>
+							<? ?>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group" id="ledger_account_for_vat">
+							<label class="control-label">Ledger Account for VAT<span class="required" aria-required="true">*</span></label>
+							<?php echo $this->Form->input('ledger_account_for_vat', ['options' => $ledger_account_vat,'label' => false,'class' => 'form-control input-sm']); ?>
+							<br/>
+							<? ?>
+						</div>
+					</div>					
 				</div>
-				
+				<div style="overflow: auto;">
 				<table class="table tableitm" id="main_tb">
 				<thead>
 					<tr>
 						<th width="50">Sr.No. </th>
-						<th width="170">Items</th>
+						<th style="white-space: nowrap;">Items</th>
 						<th width="100">Unit Rate From PO</th>
-						<th width="70">Discount</th>
-						<th  width="70">P & F</th>
-						<th  width="100">Excise Duty</th>
-						<th  width="70" >CST</th>
-						<th>Quantity</th>
-						<th>Rate</th>
-						<th>Amount</th>
+						<th width="100">Quantity</th>
+						<th width="100">Misc</th>
+						<th width="100">Amount</th>
+						<th width="100">Discount</th>
+						<th width="100">P & F</th>
+						<th width="100">Excise Duty</th>
+						<th width="100">CST</th>
+						<th width="100">Others</th>
+						<th width="100">Total</th>
+						<th width="100">Rate to be post</th>
 					</tr>
 				</thead>
-<tbody>
+				<tbody>
 					<?php
 					$q=0; foreach ($invoiceBooking->invoice_booking_rows as $invoice_booking_row): ?>
 						<tr class="tr1" row_no='<?php echo @$invoice_booking_row->id; ?>'>
 							<td rowspan="2"><?php echo ++$q; --$q; ?></td>
-							<td><?php echo $invoice_booking_row->item->name; ?>
+							
+							<td style="white-space: nowrap;"><?php echo $invoice_booking_row->item->name; ?>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value' => @$invoice_booking_row->item->id,'popup_id'=>$q]); ?>
 							</td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.unit_rate_from_po',['value'=>$invoice_booking_row->unit_rate_from_po,'type'=>'hidden']);
-								echo $invoice_booking_row->unit_rate_from_po;  ?></td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.discount',['value'=>$invoice_booking_row->discount,'type'=>'hidden']);
-								echo $invoice_booking_row->discount;  ?></td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.pnf',['value'=> $invoice_booking_row->pnf,'type'=>'hidden']); 
-									echo  $invoice_booking_row->pnf;   ?></td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.excise_duty',['value'=>$invoice_booking_row->excise_duty,'type'=>'hidden']);
-								echo $this->Number->format($invoice_booking_row->excise_duty,[ 'places' => 2]);  ?></td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.sale_tax',['value'=>$invoice_booking_row->sale_tax,'type'=>'hidden']);
-								echo  $invoice_booking_row->sale_tax;   ?></td>
+							
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.unit_rate_from_po',['value'=>$invoice_booking_row->unit_rate_from_po,'type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox','readonly']); ?></td>
+							
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.quantity',['label' => false,'class' => 'form-control input-sm','type'=>'text','value'=>$invoice_booking_row->quantity,'readonly']); ?></td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.rate',['label' => false,'class' => 'form-control input-sm','value'=>$invoice_booking_row->rate,'type'=>'text']); ?></td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.amount',['label' => false,'class' => 'form-control input-sm','type'=>'text']); ?></td>
-
+							
+							
+							<td align="center">
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.misc',['type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox','value'=>$invoice_booking_row->misc]); ?>
+							</td>
+							
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.amount',['label' => false,'class' => 'form-control input-sm row_textbox','type'=>'text','readonly']); ?></td>
+							
+							<td>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.discount',['value'=>$invoice_booking_row->discount,'label'=>false,'type'=>'text','class'=>'form-control input-sm row_textbox']); ?>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.discount_per',['label'=>false,'type'=>'checkbox','class'=>'per_check']); ?>
+							<span class="check_text">In Amount</span>
+							</td>
+								
+							<td>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.pnf',['value'=> $invoice_booking_row->pnf,'label'=>false,'type'=>'text','class'=>'form-control input-sm row_textbox']); ?>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.pnf_per',['label'=>false,'type'=>'checkbox','class'=>'per_check']); ?>
+							<span class="check_text">In Amount</span>
+							</td>
+							
+							<td>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.excise_duty',['value'=>$invoice_booking_row->excise_duty,'label'=>false,'type'=>'text','class'=>'form-control input-sm row_textbox']); ?>
+							<span class="check_text">In percentages</span>
+							</td>
+							
+							<td>
+							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.sale_tax',['value'=>$invoice_booking_row->sale_tax,'label'=>false,'type'=>'text','class'=>'form-control input-sm row_textbox']); ?>
+							<span class="check_text">In percentages</span>
+							</td>
+							
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.other_charges',['type'=>'text','label'=>false,'class'=>'form-control input-sm row_textbox','value'=>$invoice_booking_row->other_charges]); ?>
+							</td>
+							
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.total',['label' => false,'class' => 'form-control input-sm row_textbox','type'=>'text','readonly']); ?></td>
+							
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.rate',['label' => false,'class' => 'form-control input-sm row_textbox','value'=>$invoice_booking_row->rate,'type'=>'text','readonly']); ?></td>
+							
 							
 						</tr>
 						<tr class="tr2" row_no='<?php echo @$invoice_booking_row->id; ?>'>
-							<td colspan="9">
-							<?php echo $this->Text->autoParagraph(h($invoice_booking_row->description)); ?>
+							<td colspan="11">
+							<?php echo $this->Text->autoParagraph(($invoice_booking_row->description)); ?>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.description',['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value'=>$invoice_booking_row->description]); ?>
 							</td>
-							
+							<td></td>
 						</tr>
-					
 
 					<?php $q++;  endforeach; ?>
 				
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="9" align="right"><b>Total</b></td>
-						<td><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total']); ?></td>
+						<td colspan="5" align="right"><b>Total</b></td>
+						<td><?php echo $this->Form->input('total_amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						<td><?php echo $this->Form->input('total_discount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						<td><?php echo $this->Form->input('total_pnf', ['type' => 'text','label' => false,'class' => 'form-control input-sm']); ?></td>
+						<td><?php echo $this->Form->input('total_ex', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						<td><?php echo $this->Form->input('total_saletax', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						<td><?php echo $this->Form->input('total_other_charges', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly']); ?></td>
+						<td><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','readonly']); ?></td>
 						<td></td>
 					</tr>
 				</tfoot>
 			</table>
+			</div>
+			
+			<?php $ref_types=['New Reference'=>'New Ref','Against Reference'=>'Agst Ref','Advance Reference'=>'Advance']; ?>
 			<div class="row">
-					<div class="col-md-12">
-						<div class="form-group">
-						<?php echo $this->Form->button('<i class="fa fa-plus"></i> New Ref', ['label' => false,'class' => 'btn btn-primary new_ref','type'=>'button']); ?>
-						<?php echo $this->Form->button('<i class="fa fa-plus"></i> Agst Ref', ['label' => false,'class' => 'btn btn-primary agst_ref','type'=>'button']); ?>
-						<?php echo $this->Form->button('<i class="fa fa-plus"></i> Advance', ['label' => false,'class' => 'btn btn-primary adv_ref','type'=>'button']); ?>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<table class="table table-bordered" id="main_table" style="text-align:center;">
+					<div class="col-md-8">
+					<table width="100%" class="main_ref_table">
 						<thead>
-						<tr>
-						<td>Ref. Type</td>
-						<td>Ref. No.</td>
-						<td>Amount</td>
-						<td></td>
-						</tr>
+							<tr>
+								<th width="25%">Ref Type</th>
+								<th width="40%">Ref No.</th>
+								<th width="30%">Amount</th>
+								<th width="5%"></th>
+							</tr>
 						</thead>
 						<tbody>
-						<?php
-						$ref_no=0;
-						
-						if(!empty($ReferenceBalances))
-						{
-							pr($ReferenceBalances);
-							foreach($ReferenceBalances as $ReferenceBalancee=>$key)
-							{
-								foreach($key as $ReferenceBalance)
-								{ 
-									$ReferenceBalance_amount=$ReferenceBalance->debit-$ReferenceBalance->credit;
-									
-									if($ReferenceBalance_amount>0)
-									{ 
-										$itemGroups[]=['text'=>$ReferenceBalance->reference_no, 'value' =>$ReferenceBalance->reference_no,  'amount' => $ReferenceBalance_amount];
-									}
-								}
-							}
-						}
-						foreach($ReferenceDetails as $ReferenceDetail)
-						{				
-							$ref_no++;
-							if($ReferenceDetail->reference_type=='New Reference')
-							{
-								
-							?>
-							<tr>
-							<td>New Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'New Reference']) ?></td>
-							<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control distinctreference','label'=>false,'id'=>'reference_no_'+$ref_no,'value'=>$ReferenceDetail->reference_no,'readonly']) ?></td>
-							<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false,'value'=>$ReferenceDetail->credit]) ?>
-							<?= $this->Form->hidden('old_amount[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>$ReferenceDetail->debit]) ?></td>
-							<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
-							</tr>
-							<?php
-							} 
-							else if($ReferenceDetail->reference_type=='Against Reference')
-							{ 
-						
-								$key=0;
-								foreach($itemGroups as $itemGroup)
-								{
-									if($itemGroup['value']==$ReferenceDetail->reference_no)
-									{
-										//pr($ReferenceDetail->debit);
-										 $itemGroups[$key]['amount']=$ReferenceDetail->debit;
-									}
-									$key++;
-								}
-							?>
-							<tr class="against_references_no">
-							<td>Agst Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Against Reference']) ?><?= $this->Form->hidden('reference_no[]',['type'=>'text','class'=>'form-control ','label'=>false,'id'=>'reference_no_'+$ref_no,'value'=>$ReferenceDetail->reference_no]) ?></td>
-							<td id="against_references_no">
-							<?php echo $this->Form->input('against_references_no', ['empty'=>'--Select-','label' => false,'options' =>$itemGroups,'class' => 'form-control input-sm','value'=>$ReferenceDetail->reference_no,'readonly']); ?>
-							</td>
-							<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>$ReferenceDetail->debit]) ?>
-							<?= $this->Form->hidden('old_amount[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>$ReferenceDetail->debit]) ?></td></td>
-							<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
-							</tr>
-							<?php
-							} 
-							else if($ReferenceDetail->reference_type=='Advance Reference')
-							{ ?>
-							<tr>
-							<td>Adv Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Advance Reference']) ?></td>
-							<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control distinctreference','label'=>false,'id'=>'reference_no_'+$ref_no,'value'=>$ReferenceDetail->reference_no,'readonly']) ?></td>
-							<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>$ReferenceDetail->debit]) ?>
-							<?= $this->Form->hidden('old_amount[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>$ReferenceDetail->debit]) ?></td></td>
-							<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
-							</tr>
-							<?php
-							}
-						}
-						?>
+							<?php foreach($ReferenceDetails as $old_ref_row){  ?>
+								<tr>
+									<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type','value'=>$old_ref_row->reference_type]); ?></td>
+									<td class="ref_no">
+									<?php if($old_ref_row->reference_type=="Against Reference"){
+										echo $this->requestAction('InvoiceBookings/fetchRefNumbersEdit/'.$v_LedgerAccount->id.'/'.$old_ref_row->reference_no.'/'.$old_ref_row->credit);
+									}else{
+										echo '<input type="text" class="form-control input-sm" placeholder="Ref No." value="'.$old_ref_row->reference_no.'" readonly="readonly" is_old="yes">';
+									}?>
+									</td>
+									<td>
+									<?php 
+											echo $this->Form->input('old_amount', ['label' => false,'class' => '','type'=>'hidden','value'=>$old_ref_row->credit]);
+											echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount','value'=>$old_ref_row->credit]);
+																
+									?>
+									</td>
+									<td><a class="btn btn-xs btn-default deleterefrow" href="#" role="button" old_ref="<?php echo $old_ref_row->reference_no; ?>" old_ref_type="<?php echo $old_ref_row->reference_type; ?>"><i class="fa fa-times"></i></a></td>
+								</tr>
+							<?php } ?>
 						</tbody>
-						</table>
+						<tfoot>
+							<tr>
+								<td align="center" style="vertical-align: middle !important;">On Account</td>
+								<td></td>
+								<td><?php echo $this->Form->input('on_account', ['label' => false,'class' => 'form-control input-sm on_account','placeholder'=>'Amount','readonly']); ?></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td colspan="2"><a class="btn btn-xs btn-default addrefrow" href="#" role="button"><i class="fa fa-plus"></i> Add row</a></td>
+								<td><input type="text" class="form-control input-sm" placeholder="total" readonly></td>
+								<td></td>
+							</tr>
+						</tfoot>
+					</table>
 					</div>
-				  </div>
+				</div>
 		</div>
 		<div class="form-actions">
 			<div class="row">
@@ -260,38 +287,7 @@
 	</div>	
 		<?= $this->Form->end() ?>
 </div>	
-		<table class="table table-bordered" id="new_ref" style="display:none;">
-			<tbody>
-			<tr>
-			<td>New Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'New Reference']) ?></td>
-			<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control distinctreference','label'=>false,'id'=>'reference_no_2']) ?></td>
-			<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
-			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
-			</tr>
-			</tbody>
-		</table>
-		<table class="table table-bordered" id="agst_ref" style="display:none;">
-			<tbody>
-			<tr class="against_references_no">
-			<td>Agst Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Against Reference']) ?><?= $this->Form->hidden('reference_no[]',['type'=>'text','class'=>'form-control ','label'=>false,'id'=>'reference_no_2']) ?></td>
-			<td id="against_references_no">
-			<?php echo $this->Form->input('against_references_no', ['empty'=>'--Select-','label' => false,'options' =>$itemGroups,'class' => 'form-control input-sm']); ?>
-			</td>
-			<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
-			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
-			</tr>
-			</tbody>
-		</table>
-		<table class="table table-bordered" id="adv_ref" style="display:none;">
-		<tbody>
-			<tr>
-			<td>Adv Ref<?= $this->Form->hidden('reference_type[]',['class'=>'','label'=>false, 'value'=>'Advance Reference']) ?></td>
-			<td><?= $this->Form->input('reference_no[]',['type'=>'text','class'=>'form-control distinctreference','label'=>false,'id'=>'reference_no_2']) ?></td>
-			<td><?= $this->Form->input('debit[]',['type'=>'text','class'=>'form-control ','label'=>false, 'value'=>0]) ?></td>
-			<td><?= $this->Form->button(__('<i class="fa fa-trash-o"></i>'),['type'=>'button','class'=>'btn btn-danger btn-sm remove_row','label'=>false]) ?></td>
-			</tr>
-			</tbody>
-		</table>				
+						
 
 <style>
 .table thead tr th {
@@ -307,185 +303,176 @@
 <script>
 $(document).ready(function() {
 	//--------- FORM VALIDATION
+	$('input[name="total_pnf"]').die().live("keyup",function() {
+		totalpnf=parseFloat($(this).val());
+		var total=0;
+		$("#main_tb tbody tr.tr1").each(function(){
+			var amout=parseFloat($(this).find("td:nth-child(6) input").val());
+			
+			var discount=parseFloat($(this).find("td:nth-child(7) input").val());
+			if(!discount){ discount=0; }
+			if($(this).find('td:nth-child(7) input[type="checkbox"]').is(':checked')==true){
+				var amount_after_discount=amout*(100-discount)/100;
+			}else{
+				var amount_after_discount=amout-discount;
+			}
+			total=total+amount_after_discount;
+		});
+		
+		$("#main_tb tbody tr.tr1").each(function(){
+			var amout=parseFloat($(this).find("td:nth-child(6) input").val());
+			
+			var discount=parseFloat($(this).find("td:nth-child(7) input").val());
+			if(!discount){ discount=0; }
+			if($(this).find('td:nth-child(7) input[type="checkbox"]').is(':checked')==true){
+				var amount_after_discount=amout*(100-discount)/100;
+			}else{
+				var amount_after_discount=amout-discount;
+			}
+			var pnf=(amount_after_discount/total)*totalpnf;
+			$(this).find("td:nth-child(8) input").val(pnf.toFixed(5))
+		});
+	});
+	
+	
+	var purchase_ledger_account=$('select[name="purchase_ledger_account"]').val();
+	if(purchase_ledger_account=="35"){
+		$('#main_tb thead th:eq(9)').text('CST');
+		$('input[name="cst_vat"]').val('CST');
+		$('#ledger_account_for_vat').hide();
+	}else{
+		$('#main_tb thead th:eq(9)').text('VAT');
+		$('input[name="cst_vat"]').val('VAT');
+		$('#ledger_account_for_vat').show();
+	}
+
+	$('select[name="purchase_ledger_account"]').die().live("change",function() {
+		var purchase_ledger_account=$(this).val();
+		if(purchase_ledger_account=="35"){
+			$('#main_tb thead th:eq(9)').text('CST');
+			$('input[name="cst_vat"]').val('CST');
+			$('#ledger_account_for_vat').hide();
+		}else{
+			$('#main_tb thead th:eq(9)').text('VAT');
+			$('input[name="cst_vat"]').val('VAT');
+			$('#ledger_account_for_vat').show();
+		}
+		calculate_total();
+    });
+   
+	$('.per_check').die().live("click",function() {
+		if($(this).is(':checked')==true){
+			$(this).closest('td').find('span.check_text').text('In percentages');
+		}else{
+			$(this).closest('td').find('span.check_text').text('In amount');
+		}
+		calculate_total();
+    });
+	
+	$('.add_check').die().live("click",function() {
+		if($(this).is(':checked')==true){
+			$(this).closest('td').find('span.add_check_text').text('To be subtract');
+		}else{
+			$(this).closest('td').find('span.add_check_text').text('To be add');
+		}
+		calculate_total();
+    });
+	
    calculate_total();
-	$('#main_tb input').die().live("keyup","blur",function() { 
+	$('#main_tb input:not(input[name="total_pnf"])').die().live("keyup",function() { 
 		calculate_total();
     });
 	function calculate_total(){
-		var total=0;
-		$("#main_tb tbody tr.tr1").each(function(){
-			var unit=$(this).find("td:nth-child(8) input").val();
-			var Rate=$(this).find("td:nth-child(9) input").val();
-			var Amount=unit*Rate;
-			$(this).find("td:nth-child(10) input").val(Amount.toFixed(2));
-			total=total+Amount;
-		});
-		$('input[name="total"]').val(total.toFixed(2));
-	}
-			$( document ).on( 'keyup', 'input[name="debit[]"]', function() {
-			var debit=parseFloat($(this).val());
-			var amount=$(this).closest('tr').find('select[name="against_references_no"] option:selected').attr('amount');
-			amount=parseFloat(amount);
-
-			if(amount<debit)
-			{
-				$(this).val(amount);
+		 var total_amount=0; var total_misc=0; var total_discount=0; 
+		var total_pnf=0; var total_ex=0; var total_cst=0; var total_other=0; var total_row_amount=0; 
+		$("#main_tb tbody tr.tr1").each(function(){ var row_total=0;
+			var urate=parseFloat($(this).find("td:nth-child(3) input").val());
+			var qty=parseFloat($(this).find("td:nth-child(4) input").val());
+			var amount=urate*qty;
+			row_total=row_total+amount;
+			
+			var misc=parseFloat($(this).find("td:nth-child(5) input").val());
+			if(!misc){ misc=0; }
+			var amount_after_misc=amount+misc;
+			row_total=row_total+misc;
+			total_amount=total_amount+amount_after_misc;
+			
+			$(this).find("td:nth-child(6) input").val(amount_after_misc.toFixed(2));
+		
+			var discount=parseFloat($(this).find("td:nth-child(7) input").val());
+			if(!discount){ discount=0; }
+			if($(this).find('td:nth-child(7) input[type="checkbox"]').is(':checked')==true){
+				var amount_after_discount=amount_after_misc*(100-discount)/100;
+				total_discount=total_discount+(amount_after_misc*discount/100);
+				row_total=row_total-(amount_after_misc*discount/100);
+			}else{
+				var amount_after_discount=amount_after_misc-discount;
+				total_discount=total_discount+discount;
+				row_total=row_total-discount;
 			}
-				
-	});
-	
-	$('select[name="against_references_no"]').live("change",function() {
-		var against_references_no=$(this).val();
-		var amount=eval($('option:selected',this).attr('amount'));
-		
-		$(this).closest('tr').find('input[name="reference_no[]"]').val(against_references_no);
-		$(this).closest('tr').find('input[name="debit[]"]').val(amount);
-	});
-	var received_from_id=$(this).find('input[name="vendor_ledger_id"]').val();
-	//alert(received_from_id);
-	<?php
-	if(empty($ReferenceBalances) || empty($itemGroups))
-	{
-		?>
 			
-			//var received_from_id=$('select[name="received_from_id"] option:selected').val();
 			
-			var url="<?php echo $this->Url->build(['controller'=>'ReceiptVouchers','action'=>'fetchReferenceNo']); ?>";
-			url=url+'/'+received_from_id,
-			alert(url);
-			$.ajax({
-				url: url,
-				type: 'GET',
-				dataType: 'text'
-			}).done(function(response) { 
-				
-				$("#main_table tbody").find('tr.against_references_no').remove();
-				
-				$('#against_references_no').html(response);
-			});
+			var pnf=parseFloat($(this).find("td:nth-child(8) input").val());
+			if(!pnf){ pnf=0; }
+			if($(this).find('td:nth-child(8) input[type="checkbox"]').is(':checked')==true){
+				var amount_after_pnf=amount_after_discount*(100+pnf)/100;
+				total_pnf=total_pnf+(amount_after_discount*pnf/100);
+				row_total=row_total+(amount_after_discount*pnf/100);
+			}else{
+				var amount_after_pnf=amount_after_discount+pnf;
+				total_pnf=total_pnf+pnf;
+				row_total=row_total+pnf;
+			}
+			var ex=parseFloat($(this).find("td:nth-child(9) input").val());
+			if(!ex){ ex=0; }
+			var amount_after_ex=amount_after_pnf*(100+ex)/100;
+			total_ex=total_ex+(amount_after_pnf*ex/100);
+			row_total=row_total+(amount_after_pnf*ex/100);
 			
-		<?php
+			var total_for_rate=amount_after_ex;
+			
+			var vat_cst=$('select[name="purchase_ledger_account"]').val();
+			if(vat_cst==35){
+				var cst=parseFloat($(this).find("td:nth-child(10) input").val());
+				if(!cst){ cst=0; }
+				var amount_after_cst=amount_after_ex*(100+cst)/100;
+				total_cst=total_cst+(amount_after_ex*cst/100);
+				total_for_rate=total_for_rate+(amount_after_ex*cst/100);
+			}else if(vat_cst==538){
+				var cst=parseFloat($(this).find("td:nth-child(10) input").val());
+				if(!cst){ cst=0; }
+				var amount_after_cst=amount_after_ex*(100+cst)/100;
+				total_cst=total_cst+(amount_after_ex*cst/100);
+				total_for_rate=amount_after_ex;
+			}
+			row_total=row_total+(amount_after_ex*cst/100);
+			
+			var other=parseFloat($(this).find("td:nth-child(11) input").val());
+			if(!other){ other=0; }
+			var amount_after_other=amount_after_cst+misc;
+			row_total=row_total+other;
+			total_for_rate=total_for_rate+other;
+			total_other=total_other+other;
+			
+			$(this).find("td:nth-child(12) input").val(row_total.toFixed(2));
+			$(this).find("td:nth-child(13) input").val((total_for_rate/qty).toFixed(5));
+			
+			
+			total_row_amount=total_row_amount+row_total;
+			
+			
+		});
+		$('input[name="total_amount"]').val(total_amount.toFixed(2));
+		$('input[name="total_discount"]').val(total_discount.toFixed(2));
+		$('input[name="total_pnf"]').val(total_pnf.toFixed(2));
+		$('input[name="total_ex"]').val(total_ex.toFixed(2));
+		$('input[name="total_saletax"]').val(total_cst.toFixed(2));
+		$('input[name="total_other_charges"]').val(total_other.toFixed(2));
+		$('input[name="total"]').val(total_row_amount.toFixed(2));
 	}
-	?>
-	$('input[name="amount"],[name^=debit]').live("blur",function() {
-		var val=$(this).val();
-		$(this).val(parseFloat($(this).val()).toFixed(2));
-	});
-		$( document ).on( 'click', '.new_ref', function() {
-		var new_line=$('#new_ref tbody').html();
-		$("#main_table tbody").append(new_line);
-		var i=1;
-		var len=$("[name^=reference_no]").length;
-		
-		$("[name^=reference_no]").each(function () {
-			
-			$(this).attr('id','reference_no_'+i);
-			
-			$(this).rules("add", {
-				required: true,
-				noSpace: true,
-				notEqualToGroup: ['.distinctreference']
-			});
-			i++;
-		});
-	});
-	$( document ).on( 'click', '.agst_ref', function() {
-		var new_line=$('#agst_ref tbody').html();
-		$("#main_table tbody").append(new_line);
-		var i=1;
-		var len=$("[name^=reference_no]").length;
-		
-		$("[name^=reference_no]").each(function () {
-			
-			$(this).attr('id','reference_no_'+i);
-			
-			$(this).rules("add", {
-				required: true,
-				noSpace: true,
-				notEqualToGroup: ['.distinctreference']
-			});
-			i++;
-		});
-	});
-	$( document ).on( 'click', '.adv_ref', function() {
-		var new_line=$('#adv_ref tbody').html();
-		$("#main_table tbody").append(new_line);
-		var i=1;
-		var len=$("[name^=reference_no]").length;
-		
-		$("[name^=reference_no]").each(function () {
-			
-			$(this).attr('id','reference_no_'+i);
-			
-			$(this).rules("add", {
-				required: true,
-				noSpace: true,
-				notEqualToGroup: ['.distinctreference']
-			});
-			i++;
-		});
-	});
-	
-	$( document ).on( 'click', '.remove_row', function() {
-		
-		var current_obj=$(this).closest("#main_table tr");
-		
-		var old_amount=$(this).closest("#main_table tr").find('input[name="old_amount[]"]').val();
-		
-		if(old_amount)
-		{
-			var reference_type=$(this).closest("#main_table tr").find('input[name="reference_type[]"]').val();
-			var reference_no=$(this).closest("#main_table tr").find('input[name="reference_no[]"]').val();
-			var ledger_account_id=$('input[name="vendor_ledger_id"]').val();
-			
-			
-			var invoice_booking_id='<?php echo $invoice_booking_id; ?>';
-			
-			var url="<?php echo $this->Url->build(['controller'=>'InvoiceBookings','action'=>'deleteReceiptRow']); ?>";
-			url=url+'/'+reference_type+'/'+old_amount+'/'+ledger_account_id+'/'+invoice_booking_id+'/'+reference_no,
-			
-			$.ajax({
-				url: url,
-				type: 'GET',
-				dataType: 'text'
-			}).done(function(response) {
-				alert(response);
-				current_obj.remove();
-				var i=1;
-				var len=$("[name^=reference_no]").length;
-				
-				$("[name^=reference_no]").each(function () {
-					
-					$(this).attr('id','reference_no_'+i);
-					$(this).rules("add", {
-						required: true,
-						noSpace: true,
-						notEqualToGroup: ['.distinctreference']
-					});
-					i++;
-				});
-			});
-		}
-		else
-		{
-			current_obj.closest("#main_table tr").remove();
-				var i=1;
-				var len=$("[name^=reference_no]").length;
-				
-				$("[name^=reference_no]").each(function () {
-					
-					$(this).attr('id','reference_no_'+i);
-					$(this).rules("add", {
-						required: true,
-						noSpace: true,
-						notEqualToGroup: ['.distinctreference']
-					});
-					i++;
-				});
-		}
-		
-	});
-		////////////////  Validation  ////////////////////////
+   
+  
+	////////////////  Validation  ////////////////////////
 	
 	jQuery.validator.addMethod("noSpace", function(value, element) { 
 	  return value.indexOf(" ") < 0 && value != ""; 
@@ -531,19 +518,7 @@ $(document).ready(function() {
 			cheque_no :{
 				required: true,
 			},
-			'reference_no[]':{
-					required: true,
-					noSpace: true,
-					notEqualToGroup: ['.distinctreference'],
-					remote : {
-                    url: '<?php echo $this->Url->build(['controller'=>'Ledgers','action'=>'check_reference_no']); ?>',
-                    type: "get",
-                    data:
-                        { 
-                            ledger_account_id: function(){return $('input[name=vendor_ledger_id]').val();}
-                        },
-					},
-				}
+		
 		},
 		messages: {
 			'reference_no[]': {
@@ -591,24 +566,10 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
-			var amount=parseFloat($('input[name="total"]').val());
-		
-				var debit=0;
-				$("[name^=debit]").each(function () {
-					debit=debit+parseFloat($(this).val());
-				});
+			success3.show();
+			error3.hide();
+			form[0].submit();
 				
-				if(amount==debit)
-				{
-					success3.show();
-					error3.hide();
-					form[0].submit();
-				}
-				else
-				{
-					$("#add_submit").removeAttr("disabled");
-					alert("Amount mismatch.");
-				}
 				
 			
 			// // submit the form
@@ -616,10 +577,156 @@ $(document).ready(function() {
 
 	});
 	
+	$('.addrefrow').live("click",function() { 
+		add_ref_row();
+	});
+	
+	function add_ref_row(){
+		var tr=$("#sample_ref table.ref_table tbody tr").clone();
+		$("table.main_ref_table tbody").append(tr);
+		rename_ref_rows();
+	}
+	rename_ref_rows();
+	function rename_ref_rows(){
+		var i=0;
+		$("table.main_ref_table tbody tr").each(function(){
+			$(this).find("td:nth-child(1) select").attr({name:"ref_rows["+i+"][ref_type]", id:"ref_rows-"+i+"-ref_type"}).rules("add", "required");
+			var is_select=$(this).find("td:nth-child(2) select").length;
+			var is_input=$(this).find("td:nth-child(2) input").length;
+			
+			if(is_select){
+				$(this).find("td:nth-child(2) select").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no"}).rules("add", "required");
+			}else if(is_input){
+				var url='<?php echo $this->Url->build(['controller'=>'InvoiceBookings','action'=>'checkRefNumberUnique']); ?>';
+				url=url+'/<?php echo $v_LedgerAccount->id; ?>/'+i;
+				$(this).find("td:nth-child(2) input").attr({name:"ref_rows["+i+"][ref_no]", id:"ref_rows-"+i+"-ref_no", class:"form-control input-sm ref_number"}).rules('add', {
+							required: true,
+							noSpace: true,
+							notEqualToGroup: ['.ref_number'],
+							remote: {
+								url: url,
+							},
+							messages: {
+								remote: "Not an unique."
+							}
+						});
+			}
+			var is_ref_old_amount=$(this).find("td:nth-child(3) input:eq(0)").length;
+			if(is_ref_old_amount){
+				$(this).find("td:nth-child(3) input:eq(0)").attr({name:"ref_rows["+i+"][ref_old_amount]", id:"ref_rows-"+i+"-ref_old_amount"});
+				$(this).find("td:nth-child(3) input:eq(1)").attr({name:"ref_rows["+i+"][ref_amount]", id:"ref_rows-"+i+"-ref_amount"}).rules("add", "required");
+			}
+			
+			i++;
+		});
+		
+		var is_tot_input=$("table.main_ref_table tfoot tr:eq(1) td:eq(1) input").length;
+		if(is_tot_input){
+			$("table.main_ref_table tfoot tr:eq(1) td:eq(1) input").attr({name:"ref_rows_total", id:"ref_rows_total"}).rules('add', { equalTo: "#grand-total" });
+		}
+	}
+	
+	$('.deleterefrow').live("click",function() {
+		$(this).closest("tr").remove();
+		do_ref_total();
+		var sel=$(this);
+		delete_one_ref_no(sel);
+	});
+	
+	$('.ref_type').live("change",function() {
+		var current_obj=$(this);
+		var ref_type=$(this).find('option:selected').val();
+		if(ref_type=="Against Reference"){
+			var url="<?php echo $this->Url->build(['controller'=>'InvoiceBookings','action'=>'fetchRefNumbers']); ?>";
+			url=url,
+			$.ajax({
+				url: url+'/<?php echo $v_LedgerAccount->id; ?>',
+				type: 'GET',
+			}).done(function(response) {
+				current_obj.closest('tr').find('td:eq(1)').html(response);
+				rename_ref_rows();
+			});
+		}else if(ref_type=="New Reference" || ref_type=="Advance Reference"){
+			current_obj.closest('tr').find('td:eq(1)').html('<input type="text" class="form-control input-sm" placeholder="Ref No." >');
+			rename_ref_rows();
+		}else{
+			current_obj.closest('tr').find('td:eq(1)').html('');
+		}
+	});
+	
+	$('.ref_list').live("change",function() {
+		var current_obj=$(this);
+		var due_amount=$(this).find('option:selected').attr('due_amount');
+		$(this).closest('tr').find('td:eq(2) input').val(due_amount);
+		do_ref_total();
+		delete_one_ref_no(sel);
+	});
+	
+	$('.ref_amount_textbox').live("keyup",function() {
+		do_ref_total(); 
+	});
+	do_ref_total();
+	function do_ref_total(){
+		var main_amount=parseFloat($('input[name="total"]').val());
+		if(!main_amount){ main_amount=0; }
+		
+		var total_ref=0;
+		$("table.main_ref_table tbody tr").each(function(){
+			var am=parseFloat($(this).find('td:nth-child(3) input:eq(1)').val());
+			if(!am){ am=0; }
+			total_ref=total_ref+am;
+			 
+		});
+		
+		var on_acc=main_amount-total_ref; 
+		if(on_acc>=0){
+			$("table.main_ref_table tfoot tr:nth-child(1) td:nth-child(3) input").val(on_acc.toFixed(2));
+			total_ref=total_ref+on_acc;
+		}else{
+			$("table.main_ref_table tfoot tr:nth-child(1) td:nth-child(3) input").val(0);
+		}
+		$("table.main_ref_table tfoot tr:nth-child(2) td:nth-child(2) input").val(total_ref.toFixed(2));
+	}
+	
+	$('.ref_type').live("change",function() {
+		var sel=$(this);
+		delete_one_ref_no(sel);
+	});
+	
+	function delete_one_ref_no(sel){
+		var old_received_from_id='<?php echo $v_LedgerAccount->id; ?>';
+		var old_ref=sel.closest('tr').find('a.deleterefrow').attr('old_ref');
+		var old_ref_type=sel.closest('tr').find('a.deleterefrow').attr('old_ref_type');
+		var url="<?php echo $this->Url->build(['controller'=>'InvoiceBookings','action'=>'deleteOneRefNumbers']); ?>";
+		url=url+'?old_received_from_id='+old_received_from_id+'&invoice_booking_id=<?php echo $invoiceBooking->id; ?>&old_ref='+old_ref+'&old_ref_type='+old_ref_type;
+		
+		$.ajax({
+			url: url,
+			type: 'GET',
+		}).done(function(response) {
+		});
+	}
+	
 
 
 });
 
 </script>
+
+<?php $ref_types=['New Reference'=>'New Ref','Against Reference'=>'Agst Ref','Advance Reference'=>'Advance']; ?>
+<div id="sample_ref" style="display:none;">
+	<table width="100%" class="ref_table">
+		<tbody>
+			<tr>
+				<td><?php echo $this->Form->input('ref_types', ['empty'=>'--Select-','options'=>$ref_types,'label' => false,'class' => 'form-control input-sm ref_type']); ?></td>
+				<td class="ref_no"></td>
+				<td><?php echo $this->Form->input('amount', ['type' =>'hidden','class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount']); ?>
+				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm ref_amount_textbox','placeholder'=>'Amount']); ?>
+				</td>
+				<td><a class="btn btn-xs btn-default deleterefrow" href="#" role="button"><i class="fa fa-times"></i></a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 
 <?php } ?>

@@ -24,10 +24,30 @@ class PurchaseOrdersController extends AppController
         $this->paginate = [
             'contain' => ['Companies', 'Vendors']
         ];
-		$pull_request=$this->request->query('pull-request');
 		
+		$pull_request=$this->request->query('pull-request');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		
+		$where=[];
+		$purchase_no=$this->request->query('purchase_no');
+		$file=$this->request->query('file');
+		$vendor=$this->request->query('vendor');
+		$total=$this->request->query('total');
+		$this->set(compact('purchase_no','vendor','total','file'));
+		if(!empty($purchase_no)){
+			$where['po2 LIKE']=$purchase_no;
+		}
+		if(!empty($file)){
+			$where['po3 LIKE']='%'.$file.'%';
+		}
+		if(!empty($total)){
+			$where['total LIKE']=$total;
+		}
+		if(!empty($vendor)){
+			$where['Vendors.company_name LIKE']='%'.$vendor.'%';
+		}
+		
 		
 		if($status==null or $status=='Pending'){
 			$having=['total_rows >' => 0];
@@ -44,6 +64,7 @@ class PurchaseOrdersController extends AppController
 				->group(['PurchaseOrders.id'])
 				->autoFields(true)
 				->having($having)
+				->where($where)
 				->where(['company_id'=>$st_company_id])
 				->order(['PurchaseOrders.id' => 'DESC'])
 			);
@@ -81,11 +102,13 @@ class PurchaseOrdersController extends AppController
 	
     public function add($to_be_send=null)
     {
-		$to_be_send=json_decode($to_be_send);
-		$to_be_send2=[];
-		foreach($to_be_send as $item_id=>$qty){
-			$Item=$this->PurchaseOrders->Items->get($item_id);
-			$to_be_send2[$item_id]=['qty'=>$qty,'item_name'=>$Item->name];
+		if($to_be_send){
+			$to_be_send=json_decode($to_be_send);
+			$to_be_send2=[];
+			foreach($to_be_send as $item_id=>$qty){
+				$Item=$this->PurchaseOrders->Items->get($item_id);
+				$to_be_send2[$item_id]=['qty'=>$qty,'item_name'=>$Item->name];
+			}
 		}
 		
 		$this->viewBuilder()->layout('index_layout');
@@ -152,7 +175,7 @@ class PurchaseOrdersController extends AppController
 
 			if ($this->PurchaseOrders->save($purchaseOrder)) {
 				
-							foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
+			foreach($purchaseOrder->purchase_order_rows as $purchase_order_row){
 
 				if($purchase_order_row->pull_status=="PULLED_FROM_MI"){
 					$query = $this->PurchaseOrders->MaterialIndentRows->find()
@@ -213,16 +236,40 @@ class PurchaseOrdersController extends AppController
 			'keyField' => function ($row) {
 				return $row['file1'] . '-' . $row['file2'];
 			}])->where(['file1' => 'BE']);
-        $vendor = $this->PurchaseOrders->Vendors->find()->order(['Vendors.company_name' => 'ASC']);
-		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
-		$customers = $this->PurchaseOrders->Customers->find('all')->order(['Customers.customer_name' => 'ASC']);
-		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC'])->matching(
-					'ItemCompanies', function ($q) use($st_company_id) {
-						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+        //$vendor = $this->PurchaseOrders->Vendors->find()->order(['Vendors.company_name' => 'ASC']);
+		$vendor = $this->PurchaseOrders->Vendors->find('all')->order(['Vendors.company_name' => 'ASC'])->matching('VendorCompanies', function ($q) use($st_company_id) {
+						return $q->where(['VendorCompanies.company_id' => $st_company_id]);
 					}
 				);
+		 $customers = $this->PurchaseOrders->Customers->find('all')->order(['Customers.customer_name' => 'ASC'])->matching('CustomerCompanies', function ($q) use($st_company_id) {
+						return $q->where(['CustomerCompanies.company_id' => $st_company_id]);
+					}
+				);
+		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all')->where(['SaleTaxes.freeze'=>0])->matching(
+					'SaleTaxCompanies', function ($q) use($st_company_id) {
+						return $q->where(['SaleTaxCompanies.company_id' => $st_company_id]);
+					} 
+				);
+		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC'])->matching(
+					'ItemCompanies', function ($q) use($st_company_id) {
+						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
+					}
+				);
+			
+		$st_LedgerAccounts=$this->PurchaseOrders->SaleTaxes->SaleTaxCompanies->find('all')->where(['freeze'=>0,'company_id'=>$st_company_id]);
+//pr($st_LedgerAccounts->toArray()); exit;
+		$sale_tax_ledger_accounts=[];
+		$sale_tax_ledger_accounts1=[];
+			foreach($st_LedgerAccounts as $st_LedgerAccount){
+				$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find()->where(['id'=>$st_LedgerAccount->sale_taxe_id])->first();
+				$sale_tax_ledger_accounts[$st_LedgerAccount->sale_taxe_id]=$SaleTaxes->invoice_description;
+				$sale_tax_ledger_accounts1[$st_LedgerAccount->sale_taxe_id]=$SaleTaxes->tax_figure;
+				
+			}
+//pr($sale_tax_ledger_accounts); exit;
+
 		$transporters = $this->PurchaseOrders->Transporters->find('list')->order(['Transporters.transporter_name' => 'ASC']);
-        $this->set(compact('purchaseOrder', 'materialIndents','Company', 'vendor','filenames','items','SaleTaxes','transporters','customers','chkdate','to_be_send2'));
+        $this->set(compact('purchaseOrder', 'materialIndents','Company', 'vendor','filenames','items','SaleTaxes','transporters','customers','chkdate','to_be_send2','sale_tax_ledger_accounts','sale_tax_ledger_accounts1'));
         $this->set('_serialize', ['purchaseOrder']);
     }
 
@@ -258,11 +305,12 @@ class PurchaseOrdersController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $purchaseOrder = $this->PurchaseOrders->patchEntity($purchaseOrder, $this->request->data);
+			
 			$purchaseOrder->date_created=date("Y-m-d",strtotime($purchaseOrder->date_created));
 			$purchaseOrder->delivery_date=date("Y-m-d",strtotime($purchaseOrder->delivery_date));
 			$purchaseOrder->company_id=$st_company_id;
 			
-			
+			//pr($purchaseOrder); exit;
 			foreach($purchaseOrder_old->purchase_order_rows as $purchase_order_row){
 				if($purchase_order_row->pull_status=="PULLED_FROM_MI"){
 					$query = $this->PurchaseOrders->MaterialIndentRows->find()
@@ -382,17 +430,41 @@ class PurchaseOrdersController extends AppController
 			'keyField' => function ($row) {
 				return $row['file1'] . '-' . $row['file2'];
 			}])->where(['file1' => 'BE']);
-		$vendor = $this->PurchaseOrders->Vendors->find()->order(['Vendors.company_name' => 'ASC']);
-		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
-		$customers = $this->PurchaseOrders->Customers->find('all')->order(['Customers.customer_name' => 'ASC']);
-		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->matching(
-					'ItemCompanies', function ($q) use($st_company_id) {
-						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+		//$vendor = $this->PurchaseOrders->Vendors->find()->order(['Vendors.company_name' => 'ASC']);
+		//$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all')->where(['freeze'=>0]);
+		
+		$st_LedgerAccounts=$this->PurchaseOrders->LedgerAccounts->find()->where(['source_model'=>'SaleTaxes','company_id'=>$st_company_id]);	
+		$sale_tax_ledger_accounts=[];
+		$sale_tax_ledger_accounts1=[];
+			foreach($st_LedgerAccounts as $st_LedgerAccount){
+				$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find()->where(['id'=>$st_LedgerAccount->source_id])->first();
+				$sale_tax_ledger_accounts[$st_LedgerAccount->source_id]=$SaleTaxes->invoice_description;
+				$sale_tax_ledger_accounts1[$st_LedgerAccount->source_id]=$SaleTaxes->tax_figure;
+				
+			}
+		$vendor = $this->PurchaseOrders->Vendors->find('all')->order(['Vendors.company_name' => 'ASC'])->matching('VendorCompanies', function ($q) use($st_company_id) {
+						return $q->where(['VendorCompanies.company_id' => $st_company_id]);
 					}
 				);
+		 $customers = $this->PurchaseOrders->Customers->find('all')->order(['Customers.customer_name' => 'ASC'])->matching('CustomerCompanies', function ($q) use($st_company_id) {
+						return $q->where(['CustomerCompanies.company_id' => $st_company_id]);
+					}
+				);
+		$SaleTaxes = $this->PurchaseOrders->SaleTaxes->find('all')->where(['SaleTaxes.freeze'=>0])->matching(
+					'SaleTaxCompanies', function ($q) use($st_company_id) {
+						return $q->where(['SaleTaxCompanies.company_id' => $st_company_id]);
+					} 
+				);
+		$items = $this->PurchaseOrders->PurchaseOrderRows->Items->find('list')->where(['source IN'=>['Purchessed','Purchessed/Manufactured']])->order(['Items.name' => 'ASC'])->matching(
+					'ItemCompanies', function ($q) use($st_company_id) {
+						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
+					}
+				);
+		//$customers = $this->PurchaseOrders->Customers->find('all')->order(['Customers.customer_name' => 'ASC']);
+		
 		$transporters = $this->PurchaseOrders->Transporters->find('list')->order(['Transporters.transporter_name' => 'ASC']);
        
-        $this->set(compact('purchaseOrder', 'Company', 'vendor','filenames','customers','SaleTaxes','transporters','items','financial_year_data'));
+        $this->set(compact('purchaseOrder', 'Company', 'vendor','filenames','customers','SaleTaxes','transporters','items','financial_year_data','sale_tax_ledger_accounts','sale_tax_ledger_accounts1'));
         $this->set('_serialize', ['purchaseOrder']);
     }
 
@@ -436,10 +508,20 @@ class PurchaseOrdersController extends AppController
 		
 		
 			if ($this->request->is(['patch', 'post', 'put'])) {
+				if(!empty($this->request->data['pdf_font_size'])){
+				$pdf_font_size=$this->request->data['pdf_font_size'];
+				$query = $this->PurchaseOrders->query();
+					$query->update()
+						->set(['pdf_font_size' => $pdf_font_size])
+						->where(['id' => $id])
+						->execute();
+			}
+			if(!empty($this->request->data['purchase_order_rows'])){
 				foreach($this->request->data['purchase_order_rows'] as $purchase_order_rows_id=>$value){
 					$purchaseOrderRow=$this->PurchaseOrders->PurchaseOrderRows->get($purchase_order_rows_id);
 					$purchaseOrderRow->height=$value["height"];
 					$this->PurchaseOrders->PurchaseOrderRows->save($purchaseOrderRow);
+				}
 			}
 			return $this->redirect(['action' => 'confirm/'.$id]);
         }

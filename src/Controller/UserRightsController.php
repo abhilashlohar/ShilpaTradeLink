@@ -77,9 +77,130 @@ class UserRightsController extends AppController
 							'page_id' => $data["page_id"]
 						])
 						->execute();
+					
 				}
+			} 
+			
+			if($user_rights[21]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 25
+						])
+						->execute();
 			}
+			if($user_rights[22]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 26
+						])
+						->execute();
+			}
+			if($user_rights[23]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 27
+						])
+						->execute();
+			}
+			if($user_rights[28]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 29
+						])
+						->execute();
+			}
+			if($user_rights[31]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 32
+						])
+						->execute();
+			}
+			if($user_rights[68]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 69
+						])
+						->execute();
+			}
+			if($user_rights[74]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 75
+						])
+						->execute();
+			}
+			if($user_rights[76]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 77
+						])
+						->execute();
+			}
+			if($user_rights[78]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 79
+						])
+						->execute();
+			}
+			if($user_rights[80]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 81
+						])
+						->execute();
+			}
+			if($user_rights[82]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 83
+						])
+						->execute();
+			}
+			if($user_rights[84]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 85
+						])
+						->execute();
+			}
+			if($user_rights[86]['page_id']>0){
+				$query = $this->UserRights->query();
+					$query->insert(['login_id', 'page_id'])
+						->values([
+							'login_id' => $login_id,
+							'page_id' => 87
+						])
+						->execute();
+			}
+			
 			$this->Flash->success(__('User Rights has been Updated.'));
+			return $this->redirect(['action' => '/add/'.$login_id]);
         }
 		$UserRights=$this->UserRights->find()->where(['login_id'=>$login_id]);
 		$page_ids=array();

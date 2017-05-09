@@ -1,15 +1,40 @@
+<style>
+@media print{
+	.maindiv{
+		width:100% !important;
+	}	
+	.hidden-print{
+		display:none;
+	}
+}
+p{
+margin-bottom: 0;
+}
+.intrnl_tbl tr td, .intrnl_tbl tr th{
+	border:solid; white !important;
+        border-width:0 0 0 0 !important;
+        border-bottom-style: none;
+
+}
+</style>
+<style type="text/css" media="print">
+@page {
+    size: auto;   /* auto is the initial value */
+    margin: 0 5px 0 20px;  /* this affects the margin in the printer settings */
+}
+</style>
 <a class="btn  blue hidden-print margin-bottom-5 pull-right" onclick="javascript:window.print();">Print <i class="fa fa-print"></i></a>
 
-<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 80%;font-size:14px;">
+<div style="border:solid 1px #c7c7c7;background-color: #FFF;padding: 10px;margin: auto;width: 80%;font-size:12px;" class="maindiv">
 <table width="100%">
 	<tr>
 		<td width="40%"><?php echo $this->Html->image('/logos/'.$jobCard->company->logo, ['width' => '35%']); ?></td>
-		<td valign="bottom" width="20%" align="center" style="font-size:26px;font-weight: bold;color: #0685a8;">JOB CARD</td>
+		<td valign="middle" width="20%" align="center" style="font-size:22px;font-weight: bold;color: #0685a8;">JOB CARD</td>
 		<td align="right" width="50%" style="font-size: 14px;">
-		<span style="font-size: 20px;"><?= h($jobCard->company->name) ?></span><br/>
-		<span style="font-size: 15px;"><?= $this->Text->autoParagraph(h($jobCard->company->address)) ?></span>
-		<span style="font-size: 15px;"> <i class="fa fa-phone" aria-hidden="true"></i> <?= h($jobCard->company->landline_no) ?></span> |
-		<span style="font-size: 15px;"><?= h($jobCard->company->mobile_no) ?></span>
+		<span style="font-size: 16px;"><?= h($jobCard->company->name) ?></span><br/>
+		<span style="font-size: 13px;"><?= $this->Text->autoParagraph(h($jobCard->company->address)) ?></span>
+		<span style="font-size: 13px;"> <i class="fa fa-phone" aria-hidden="true"></i> <?= h($jobCard->company->landline_no) ?></span> |
+		<span style="font-size: 13px;"><?= h($jobCard->company->mobile_no) ?></span>
 		</td>
 	</tr>
 </table>
@@ -58,28 +83,21 @@
 <div class="portlet-body form">
 <table class="table table-bordered table-condensed">
 	<thead> 
-		<th width="30%"></th>
-		<th>
-			<table width="97%" align="center">
-				<tr>
-					<td>Item</td>
-					<td width="5%">Quantity</td>
-				</tr>
-			</table>
-		</th>
+		<th width="30%">Production</th>
+		<th>Consumption</th>
 	</thead>
 	<tbody>
 		<?php foreach ($jobCard->sales_order->sales_order_rows as $sales_order_row): ?>
 		<tr>
 			<td valign="top">
-			<b><?= $sales_order_row->item->name ?> ( <?= h($sales_order_row->quantity) ?> )</b>
+			<b><?= $sales_order_row->item->name ?> ( <?= h($sales_order_row->quantity) ?> )</b><br/>Remark:-(<?= h($sales_order_row->job_card_rows[0]['remark']) ?>)
 			</td>
 			<td>
-				<table width="100%">
+				<table class="intrnl_tbl">
 					<?php foreach($sales_order_row->job_card_rows as $job_card_row): ?> 
 					<tr>
 						<td><?= $job_card_row->item->name?></td>
-						<td width="5%"><?= $job_card_row->quantity?></td>
+						<td width="5%" align="right"><?= $job_card_row->quantity?></td>
 					</tr>
 					<?php endforeach; ?>
 				</table>
@@ -88,20 +106,20 @@
 		<?php endforeach; ?>
 	</tbody>
 </table>
-</br>
+
 <table width="96%">
 	<tr>
 		<td align="right">
-		<table>
+		<table >
 			<tr>
 			    <td align="center">
-				<span style="font-size:17px;">For</span> <span style="font-size: 17px;font-weight: bold;"><?= h($jobCard->company->name)?><br/></span>
+				<span style="font-size:14px;">For</span> <span style="font-size: 14px;font-weight: bold;"><?= h($jobCard->company->name)?><br/></span>
 				<?php 
 				 echo $this->Html->Image('/signatures/'.$jobCard->creator->signature,['height'=>'50px','style'=>'height:50px;']); 
 				 ?></br>
-				<span style="font-size: 15px;font-weight: bold;">Authorised Signatory</span>
+				<span style="font-size: 14px;font-weight: bold;">Authorised Signatory</span>
 				</br>
-				<span style="font-size:15px;"><?= h($jobCard->creator->name) ?></span><br/>
+				<span style="font-size:14px;"><?= h($jobCard->creator->name) ?></span><br/>
 				</td>
 			</tr>
 		</table>

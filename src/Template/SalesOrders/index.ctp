@@ -105,8 +105,9 @@
 							<td><?php echo date("d-m-Y",strtotime($salesOrder->created_on)); ?></td>
 							<td><?= h($salesOrder->customer_po_no) ?></td>
 							<td class="actions">
+							<?php if(in_array(22,$allowed_pages)){ ?>
 								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'confirm', $salesOrder->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View as PDF')); ?>
-								
+							<?php } ?>
 								<?php if($copy_request=="copy"){
 									echo $this->Html->link('<i class="fa fa-repeat "></i>  Copy','/SalesOrders/Add?copy='.$salesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
@@ -114,9 +115,13 @@
 								<?php if($job_card=="true"){
 									echo $this->Html->link('<i class="fa fa-repeat "></i>  Create Job Card','/JobCards/Add?Sales-Order='.$salesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));
 								} ?>
-								<?php if($status!='Converted Into Invoice' and in_array(4,$allowed_pages) and $pull_request!="true" && $copy_request!="copy" && $job_card!="true"){ ?> 
+								<?php if($status!='Converted Into Invoice' and in_array(4,$allowed_pages) and $pull_request!="true" && $copy_request!="copy" && $job_card!="true"){ 
+								
+								 if(!in_array(date("m-Y",strtotime($salesOrder->created_on)),$closed_month))
+								 { 
+								?> 
 									<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $salesOrder->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
-								<?php } ?>
+								<?php } } ?>
 								
 								<?php if($pull_request=="true"){
 									echo $this->Html->link('<i class="fa fa-repeat"></i>  Convert Into Invoice','/Invoices/Add?sales-order='.$salesOrder->id,array('escape'=>false,'class'=>'btn btn-xs default blue-stripe'));

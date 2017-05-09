@@ -14,6 +14,7 @@ class LoginsTable extends Table
             'foreignKey' => 'employee_id',
             'joinType' => 'INNER'
         ]);
+		$this->belongsTo('UserRights');
 		
     }
 	

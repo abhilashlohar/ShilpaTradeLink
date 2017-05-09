@@ -130,7 +130,7 @@ $html .= '
 				<table width="100%">
 					
 					<tr>
-						<td>
+						<td style="font-size:'. h(($quotation->pdf_font_size)) .';">
 							<span>'. h(($quotation->customer->customer_name)) .'</span>
 							'.$this->Text->autoParagraph(h($quotation->customer_address)) .'</span>
 							
@@ -138,15 +138,15 @@ $html .= '
 					</tr>
 				</table>
 			</td>
-			<td valign="top" width="50%">
-				<table>
+			<td style="font-size:'. h(($quotation->pdf_font_size)) .';" valign="top" width="60%">
+				<table width="100%">
 					<tr>
-						<td>Date</td>
+						<td >Date</td>
 						<td>: '. h($quotation->created_on->format("d-m-Y")) .'</td>
 					</tr>
 					<tr>
-						<td>Ref no</td>
-						<td>: '. h(($quotation->qt1.'/QT-'.str_pad($quotation->qt2, 3, '0', STR_PAD_LEFT).'/'.$quotation->qt3.'/'.$quotation->qt4)) .'</td>
+						<td >Ref no</td>
+						<td >: '. h(($quotation->qt1.'/QT-'.str_pad($quotation->qt2, 3, '0', STR_PAD_LEFT).'/'.$quotation->qt3.'/'.$quotation->qt4)) .'</td>
 					</tr>
 				</table>
 			</td>
@@ -158,10 +158,10 @@ $html .= '
 			<td >
 				<table width="100%">
 					<tr>
-						<td><br/>
+						<td style="font-size:'. h(($quotation->pdf_font_size)) .';"><br/>
 							<table>
 								<tr>
-									<td valign="top" width="10%">Kind Attn.<br/></td>
+									<td valign="top" width="10%" >Kind Attn.<br/></td>
 									<td valign="top" width="2%">:</td>
 									<td>'. h(($quotation->customer_for_attention)) .'<br/></td>
 								</tr>
@@ -187,10 +187,10 @@ $html .= '
 	<br/>
 	<table>
 		<tr>
-				<td>Dear Sir,<br/><br/></td>
+				<td style="font-size:'. h(($quotation->pdf_font_size)) .';">Dear Sir,<br/><br/></td>
 		</tr>
 		<tr>
-			<td>'. $this->Text->autoParagraph(h($quotation->text)) .'</td>
+			<td style="font-size:'. h(($quotation->pdf_font_size)) .';">'. $this->Text->autoParagraph(h($quotation->text)) .'</td>
 		</tr>
 	</table>
 ';
@@ -214,12 +214,12 @@ $html.='<br/>
 $sr=0; foreach ($quotation->quotation_rows as $quotationRows): $sr++; 
 $html.='
 	<tr>
-		<td style="padding-top:8px;padding-bottom:5px;" valign="top" align="center" class="main">'. h($sr) .'</td>
-		<td style="padding-top:8px;padding-bottom:5px;" valign="top" width="100%" class="main">'. $quotationRows->description .'<div style="height:'.$quotationRows->height.'"></div></td>
-		<td style="padding-top:8px;padding-bottom:5px;" align="center" valign="top"class="main">'. h($quotationRows->item->unit->name) .'</td>
-		<td style="padding-top:8px;padding-bottom:5px;" align="center" valign="top" class="main">'. h($quotationRows->quantity) .'</td>
-		<td style="padding-top:8px;padding-bottom:5px;" align="right" valign="top"class="main">'. $this->Number->format($quotationRows->rate,[ 'places' => 2]).'</td>
-		<td style="padding-top:8px;padding-bottom:5px;" align="right" valign="top" class="main">'. $this->Number->format($quotationRows->amount,[ 'places' => 2]) .'</td>
+		<td style="font-size:'. h(($quotation->pdf_font_size)) .';" style="padding-top:8px;padding-bottom:5px;" valign="top" align="center" class="main">'. h($sr) .'</td>
+		<td style="font-size:'. h(($quotation->pdf_font_size)) .';" style="padding-top:8px;padding-bottom:5px; font-size:16px;" valign="top" width="100%" class="main">'. $quotationRows->description .'<div style="height:'.$quotationRows->height.'"></div></td>
+		<td style="font-size:'. h(($quotation->pdf_font_size)) .';" style="padding-top:8px;padding-bottom:5px;" align="center" valign="top"class="main">'. h($quotationRows->item->unit->name) .'</td>
+		<td style="font-size:'. h(($quotation->pdf_font_size)) .';" style="padding-top:8px;padding-bottom:5px;" align="center" valign="top" class="main">'. h($quotationRows->quantity) .'</td>
+		<td style="font-size:'. h(($quotation->pdf_font_size)) .';" style="padding-top:8px;padding-bottom:5px;" align="right" valign="top"class="main">'. $this->Number->format($quotationRows->rate,[ 'places' => 2]).'</td>
+		<td style="font-size:'. h(($quotation->pdf_font_size)) .';" style="padding-top:8px;padding-bottom:5px;" align="right" valign="top" class="main">'. $this->Number->format($quotationRows->amount,[ 'places' => 2]) .'</td>
 	</tr>';
 endforeach;
 
@@ -241,7 +241,7 @@ if(!empty($quotation->additional_note)){
 	</div><br/>';
 }
 $html.='
-<br/><div class="">
+<br/><div class="" style="font-size:'. h(($quotation->pdf_font_size)) .';">
 	
 		<b><u>Commercial Terms & Conditions:</u></b><br/>
 		'. $quotation->terms_conditions .'

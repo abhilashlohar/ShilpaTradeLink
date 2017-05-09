@@ -1,3 +1,9 @@
+<style> 
+.checkbox {
+    margin-top:0px !important;
+    margin-bottom:0px !important;
+}
+</style>
 <?php //pr($material_report); exit; ?>
 <div class="portlet light bordered">
 	<div class="portlet-title">
@@ -11,37 +17,38 @@
 				<div class="col-md-12">
 				
 				<?php $page_no=$this->Paginator->current('ItemLedgers'); $page_no=($page_no-1)*20; ?>
-				<table class="table tableitm" id="main_tb">
+				<table class="table table-bordered "  id="main_tb">
 					<thead>
 						<tr>
-							<th>Sr. No.</th>
+							<th width="3%">Sr. No.</th>
 							<th>Item Name</th>
-							<th>Current Stock</th>
-							<th>Sales Order </th>
-							<th>Job card  </th>
-							<th>Suggested Indent</th>
-							<th></th>
+							<th width="13%"  >Current Stock</th>
+							<th width="10%">Sales Order </th>
+							<th width="10%">Job card  </th>
+							<th width="15%">Suggested Indent</th>
+							<th width="10%">Action</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody  >
 						<?php $i=0; foreach($material_report as $data){
-		$i++;
+							$i++;
 							$item_name=$data['item_name'];
 							$item_id=$data['item_id'];
 							$Current_Stock=$data['Current_Stock'];
 							$sales_order=$data['sales_order'];
 							$job_card_qty=$data['job_card_qty'];
+						
 
 						?>
 						<tr class="tr1" row_no='<?php echo @$i; ?>'>
-						<td><?php echo $i; ?> </td>
+						<td ><?php echo $i; ?> </td>
 						<td><?php echo $item_name; ?></td>
-						<td><?php echo $Current_Stock; ?></td>
-						<td><?php echo @$sales_order; ?></td>
-						<td><?php echo $job_card_qty; ?></td>
-						<td><?php echo $Current_Stock-@$sales_order-$job_card_qty; ?></td>
+						<td style="text-align:center; valign:top" valign="top"><?php echo $Current_Stock; ?></td>
+						<td style="text-align:center"><?php echo @$sales_order; ?></td>
+						<td style="text-align:center"><?php echo $job_card_qty; ?></td>
+						<td style="text-align:center"><?php echo $Current_Stock-@$sales_order-$job_card_qty; ?></td>
 
-						<td><label><?php echo $this->Form->input('check[]', ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$item_id,'hiddenField'=>false]);  ?>
+						<td ><label ><?php echo $this->Form->input('check[]', ['label' => false,'type'=>'checkbox','class'=>'rename_check','style'=>' ','value' => @$item_id,'hiddenField'=>false]);  ?>
 
 						
 						<?php echo $this->Form->input('suggestindent.'.$item_id, ['label' => false,'type'=>'hidden','value' => @abs($Current_Stock-@$sales_order-$job_card_qty)]); ?>
@@ -71,7 +78,6 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 
 <script>
-
 $(document).ready(function() {
 	$('.rename_check').die().live("click",function() {
  		rename_rows();
@@ -84,12 +90,8 @@ $(document).ready(function() {
 				$(this).css('background-color','#fffcda');
  			}else{
  				$(this).css('background-color','#FFF');
-				
 			}
 		});
 	}	
-		
-		//rename_rows();
-    
 });		
 </script>

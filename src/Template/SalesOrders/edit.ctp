@@ -139,13 +139,15 @@
 					$q=0; foreach ($salesOrder->sales_order_rows as $sales_order_rows): 
 					if(@$item_ar[$sales_order_rows->item_id]==$sales_order_rows->quantity){
 						$disable_class="disabledbutton";
-					}else{ $disable_class=""; } ?>
+					}else{ $disable_class=""; } 
+					
+					?>
 					<tr class="tr1 <?php echo $disable_class; ?> main_tr" row_no='<?php echo @$sales_order_rows->id; ?>'>
 						<td rowspan="2"><?= h($q) ?></td>
 						<td>						
 							<div class="row">
 								<div class="col-md-10 padding-right-decrease">
-									<?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_box','value' => @$sales_order_rows->item->id,'popup_id'=>$q]); ?>
+									<?php echo $this->Form->input('sales_order_rows.'.$q.'.item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_box item_id','value' => @$sales_order_rows->item->id,'popup_id'=>$q]); ?>
 								</div>
 								<div class="col-md-1 padding-left-decrease">
 									<a href="#" class="btn btn-default btn-sm popup_btn" role="button" popup_id="<?php echo $q; ?>"> <i class="fa fa-info-circle"></i> </a>
@@ -165,6 +167,9 @@
 							</div>
 							<?php echo $this->Form->input('sales_order_rows.'.$q.'.height', ['type' => 'hidden','value' => @$sales_order_rows->height]); ?>
 							<?php echo $this->Form->input('sales_order_rows.'.$q.'.processed_quantity', ['type' => 'hidden','value'=>$sales_order_rows->processed_quantity]); ?>
+							
+							<?php echo $this->Form->input('sales_order_rows.'.$q.'.source_type', ['type' => 'hidden','value'=>$sales_order_rows->source_type]); ?>
+							
 							<?php 
 							$job_card_row_ids=[];
 							$inventory_voucher_row_ids=[];
@@ -172,14 +177,12 @@
 								$job_card_row_ids[]=$job_card_row->id;
 							}
 							
-							
 							$job_card_row_ids=implode(',',$job_card_row_ids); 
 							?> 
-							
+							<?php //pr($job_card_row_ids); ?>
 							<?php echo $this->Form->input('sales_order_rows.'.$q.'.job_card_row_ids', ['type' => 'hidden','value'=>$job_card_row_ids]); ?>
 							
 							
-							<?php echo $this->Form->input('sales_order_rows.'.$q.'.source_type', ['type' => 'hidden','value'=>$sales_order_rows->source_type]); ?>
 							
 						</td>
 						
@@ -382,7 +385,7 @@
 			<td>
 			<div class="row">
 					<div class="col-md-10 padding-right-decrease">
-						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_box','placeholder' => 'Item']); ?>
+						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_box item_id','placeholder' => 'Item']); ?>
 					</div>
 					<div class="col-md-1 padding-left-decrease">
 						<a href="#" class="btn btn-default btn-sm popup_btn" role="button"> <i class="fa fa-info-circle"></i> </a>
@@ -436,6 +439,30 @@
 
 <script>
 $(document).ready(function() {
+	
+	jQuery.validator.addMethod("notEqualToGroup", function (value, element, options) {
+		// get all the elements passed here with the same class
+		var elems = $(element).parents('form').find(options[0]);
+		// the value of the current element
+		var valueToCompare = value;
+		// count
+		var matchesFound = 0;
+		// loop each element and compare its value with the current value
+		// and increase the count every time we find one
+		jQuery.each(elems, function () {
+			thisVal = $(this).val();
+			if (thisVal == valueToCompare) {
+				matchesFound++;
+			}
+		});
+		// count should be either 0 or 1 max
+		if (this.optional(element) || matchesFound <= 1) {
+			//elems.removeClass('error');
+			return true;
+		} else {
+			//elems.addClass('error');
+		}
+	}, jQuery.format(""))
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -662,9 +689,24 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			$(this).find('span.help-block-error').remove();
 			$(this).find("td:nth-child(1)").html(++i); i--;
-			$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
+			//$(this).find("td:nth-child(2) select").attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id",popup_id:i}).select2().rules("add", "required");
+			$(this).find("td:nth-child(2) select").select2().attr({name:"sales_order_rows["+i+"][item_id]", id:"sales_order_rows-"+i+"-item_id",popup_id:i}).rules('add', {
+						required: true,
+						notEqualToGroup: ['.item_id'],
+						messages: {
+							notEqualToGroup: "Do not select same Item again."
+						}
+					});
+			
+			//var hl=$(this).find("td:nth-child(2) input[type=hidden]:eq(0)").length();
+			//alert(hl);
+			//var serial_l=$('td:nth-child(2) input[type=hidden] :eq(3)').length;
+			//alert(serial_l);
 			$(this).find("td:nth-child(2) input[type=hidden]:eq(0)").attr({name:"sales_order_rows["+i+"][height]", id:"sales_order_rows-"+i+"-height"});
 			$(this).find("td:nth-child(2) input[type=hidden]:eq(1)").attr({name:"sales_order_rows["+i+"][processed_quantity]", id:"sales_order_rows-"+i+"-processed_quantity"});
+			$(this).find("td:nth-child(2) input[type=hidden]:eq(2)").attr({name:"sales_order_rows["+i+"][source_type]", id:"sales_order_rows-"+i+"-source_type"});
+			$(this).find("td:nth-child(2) input[type=hidden]:eq(3)").attr({name:"sales_order_rows["+i+"][job_card_row_ids]", id:"sales_order_rows-"+i+"-job_card_row_ids"});
+			
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);
 			$(this).find("td:nth-child(2) div.modal-body").attr("popup_ajax_id",i);
@@ -690,15 +732,13 @@ $(document).ready(function() {
 		
 		var i=0;
 		$("#main_tb tbody tr.tr2").each(function(){
-		var htm=$(this).find('td:nth-child(1)').find('div.note-editable').html();
-			
+			var row_no=$(this).attr('row_no');
+			var htm=$(this).find('td:nth-child(1)').find('div.note-editable').html();
 			if(!htm){ htm=""; }
 			$(this).find('td:nth-child(1)').html('');
 			$(this).find('td:nth-child(1)').append('<div id=summer'+i+'>'+htm+'</div>');
 			$(this).find('td:nth-child(1)').find('div#summer'+i).summernote();
-			$(this).find('td.main:nth-child(1)').append('<textarea name="sales_order_rows['+i+'][description]"style="display:none;"></textarea>');
-
-
+			$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<textarea name="sales_order_rows['+i+'][description]" style="display:none;"></textarea>');
 		i++; });
 		calculate_total();
 	}

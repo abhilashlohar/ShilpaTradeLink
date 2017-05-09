@@ -24,7 +24,7 @@ class PettyCashReceiptVouchersController extends AppController
         ];
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-        $pettyCashReceiptVouchers = $this->paginate($this->PettyCashReceiptVouchers->find()->where(['company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
+        $pettyCashReceiptVouchers = $this->paginate($this->PettyCashReceiptVouchers->find()->where(['PettyCashReceiptVouchers.company_id'=>$st_company_id])->order(['transaction_date' => 'DESC']));
 		$this->set(compact('pettyCashReceiptVouchers'));
         $this->set('_serialize', ['pettyCashReceiptVouchers']);
     }

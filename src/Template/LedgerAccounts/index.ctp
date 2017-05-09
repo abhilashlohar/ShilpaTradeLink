@@ -47,67 +47,68 @@
 	</div>
 	<div class="portlet-body form">
 		<!-- BEGIN FORM-->
+		<br/>
+		<input type="text" class="form-control input-sm pull-right" placeholder="Search..." id="search2"  style="width: 20%;" >
 		<div class="row ">
-		
-		<div class="col-md-12">
-		<div class="table-scrollable">
-		 <?php $page_no=$this->Paginator->current('LedgerAccounts'); $page_no=($page_no-1)*20; ?>
-			<table class="table table-bordered table-striped table-hover" id="main_tble">
-				 <thead>
-					<tr>
-						<th>Sr. No.</th>
-						<th>Account Category</th>
-						<th>Account Group</th>
-						<th>Account First Subgroup </th>
-						<th>Account Second Subgroup </th>	
-						<th>Ledger Account </th>	
-						<th width="80">Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php $i=0;foreach ($ledgerAccounts as $ledgerAccount): $i++; 
-					$secondsubgroup=$ledgerAccount->account_second_subgroup->name;
-					$firstsubgroup=$ledgerAccount->account_second_subgroup->account_first_subgroup->name;
-					$group=$ledgerAccount->account_second_subgroup->account_first_subgroup->account_group->name;
-					$category=$ledgerAccount->account_second_subgroup->account_first_subgroup->account_group->account_category->name;
-					?>
-					<tr>
-						<td><?= h(++$page_no) ?></td>
-						<td><?= h($category) ?></td>
-						<td><?= h($group) ?></td>
-						<td><?= h($firstsubgroup) ?></td>
-						<td><?= h($secondsubgroup) ?></td>
-						<td>
-							<?= h($ledgerAccount->name) ?> 
-							<?php if(!empty($ledgerAccount->alias)){ ?>  (<?= h($ledgerAccount->alias) ?>)<?php } ?>
-						</td>
-						<td>
-						<?php if($ledgerAccount->source_model == 'Customers'){
-							echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'customers','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); }
-						if($ledgerAccount->source_model == 'SaleTax'){
-							echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'SaleTaxes','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); }
-						if($ledgerAccount->source_model == 'Employees'){
-							echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'Employees','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); }
-						if($ledgerAccount->source_model == 'Vendors'){
-							echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'Vendors','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); }
-						if($ledgerAccount->source_model == 'Ledger Account'){
-						echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'LedgerAccounts','action' => 'Edit', $ledgerAccount->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));
-						} ?>
-						<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
-								['action' => 'delete', $ledgerAccount->id], 
-								[
-									'escape' => false,
-									'class' => 'btn btn-xs btn-danger',
-									'confirm' => __('Are you sure ?', $ledgerAccount->id)
-								]
-							) ?></td>
-					</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
+			<div class="col-md-12">
+				<div class="table-scrollable">
+				 <?php $page_no=$this->Paginator->current('LedgerAccounts'); $page_no=($page_no-1)*20; ?>
+					<table class="table table-bordered table-striped table-hover" id="main_tble">
+						 <thead>
+							<tr>
+								<th>Sr. No.</th>
+								<th>Account Category</th>
+								<th>Account Group</th>
+								<th>Account First Subgroup </th>
+								<th>Account Second Subgroup </th>	
+								<th>Ledger Account </th>	
+								<th width="80">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php $i=0;foreach ($ledgerAccounts as $ledgerAccount): $i++; 
+							$secondsubgroup=$ledgerAccount->account_second_subgroup->name;
+							$firstsubgroup=$ledgerAccount->account_second_subgroup->account_first_subgroup->name;
+							$group=$ledgerAccount->account_second_subgroup->account_first_subgroup->account_group->name;
+							$category=$ledgerAccount->account_second_subgroup->account_first_subgroup->account_group->account_category->name;
+							?>
+							<tr>
+								<td><?= h(++$page_no) ?></td>
+								<td><?= h($category) ?></td>
+								<td><?= h($group) ?></td>
+								<td><?= h($firstsubgroup) ?></td>
+								<td><?= h($secondsubgroup) ?></td>
+								<td>
+									<?= h($ledgerAccount->name) ?> 
+									<?php if(!empty($ledgerAccount->alias)){ ?>  (<?= h($ledgerAccount->alias) ?>)<?php } ?>
+								</td>
+								<td>
+								<?php if($ledgerAccount->source_model == 'Customers'){
+									echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'customers','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); }
+								if($ledgerAccount->source_model == 'SaleTax'){
+									echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'SaleTaxes','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); }
+								if($ledgerAccount->source_model == 'Employees'){
+									echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'Employees','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); }
+								if($ledgerAccount->source_model == 'Vendors'){
+									echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'Vendors','action' => 'Edit', $ledgerAccount->source_id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); }
+								if($ledgerAccount->source_model == 'Ledger Account'){
+								echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['controller'=>'LedgerAccounts','action' => 'Edit', $ledgerAccount->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit'));
+								} ?>
+								<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+										['action' => 'delete', $ledgerAccount->id], 
+										[
+											'escape' => false,
+											'class' => 'btn btn-xs btn-danger',
+											'confirm' => __('Are you sure ?', $ledgerAccount->id)
+										]
+									) ?></td>
+							</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+				
 			</div>
-			
-		</div>
 		
 		
 		<!-- END FORM-->
@@ -121,6 +122,19 @@ var $rows = $('#main_tble tbody tr');
 	$('#search').on('change',function() {
 		var val = $.trim($(this).find('option:selected').text()).replace(/ +/g, ' ').toLowerCase();
 		var v = $(this).find('option:selected').val();
+		if(v){
+			$rows.show().filter(function() {
+				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+				return !~text.indexOf(val);
+			}).hide();
+		}else{
+			$rows.show();
+		}
+	});
+	
+	$('#search2').on('keyup',function() {
+		var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+		var v = $(this).val();
 		if(v){
 			$rows.show().filter(function() {
 				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();

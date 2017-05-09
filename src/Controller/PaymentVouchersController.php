@@ -285,7 +285,7 @@ class PaymentVouchersController extends AppController
 
         $Em = new FinancialYearsController;
 	    $financial_year_data = $Em->checkFinancialYear($paymentVoucher->transaction_date);
-
+	    
 
 		$check_date= $paymentVoucher->transaction_date;
 		$payment_voucher_id=$id;

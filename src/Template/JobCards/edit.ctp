@@ -130,7 +130,7 @@
 												
 												<td>
 												<?php echo $this->Form->input('job_card_rows['.$p.'][sales_order_row_id]',['class' => 'form-control input-sm','type'=>'hidden','label'=>false,'value'=>$job_card_row->sales_order_row_id]); ?>
-												<?php echo $this->Form->input('job_card_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm ','label'=>false,'value'=>$job_card_row->item_id]); ?>
+												<?php echo $this->Form->input('job_card_rows['.$p.'][item_id]',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm item_id ','label'=>false,'value'=>$job_card_row->item_id]); ?>
 												</td>
 												<td><?php echo $this->Form->input('job_card_rows['.$p.'][quantity]',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'value'=>$job_card_row->quantity]); ?></td>
 												<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
@@ -162,6 +162,31 @@
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <script>
 $(document).ready(function() {
+	
+	jQuery.validator.addMethod("notEqualToGroup", function (value, element, options) {
+		// get all the elements passed here with the same class
+		var elems = $(element).parents('form').find(options[0]);
+		// the value of the current element
+		var valueToCompare = value;
+		// count
+		var matchesFound = 0;
+		// loop each element and compare its value with the current value
+		// and increase the count every time we find one
+		jQuery.each(elems, function () {
+			thisVal = $(this).val();
+			if (thisVal == valueToCompare) {
+				matchesFound++;
+			}
+		});
+		// count should be either 0 or 1 max
+		if (this.optional(element) || matchesFound <= 1) {
+			//elems.removeClass('error');
+			return true;
+		} else {
+			//elems.addClass('error');
+		}
+	}, jQuery.format(""))
+	
 var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
 	var success3 = $('.alert-success', form3);
@@ -296,7 +321,14 @@ var form3 = $('#form_sample_3');
 				 sr++;
 				$(this).find('td:nth-child(1)').html(sr);
 				$(this).find('td:nth-child(2) input[type="hidden"]').attr({name:"job_card_rows["+i+"][sales_order_row_id]", id:"job_card_rows-"+i+"-sales_order_row_id"}).val(sales_order_row_id);
-				$(this).find("td:nth-child(2) select").attr({name:"job_card_rows["+i+"][item_id]", id:"job_card_rows-"+i+"-item_id"}).select2();
+				
+				$(this).find("td:nth-child(2) select").select2().attr({name:"job_card_rows["+i+"][item_id]", id:"job_card_rows-"+i+"-item_id"}).addClass("item_name-"+sales_order_row_id).rules('add', {
+						required: true,
+						notEqualToGroup: ['.item_name-'+sales_order_row_id],
+						messages: {
+							notEqualToGroup: "Do not select same Item again."
+						}
+					});
 				$(this).find("td:nth-child(3) input").attr({name:"job_card_rows["+i+"][quantity]", id:"job_card_rows-"+i+"-quantity"});
 
 				i++;
@@ -323,7 +355,7 @@ var form3 = $('#form_sample_3');
 			<td>0</td>
 			<td>
 			<?php echo $this->Form->input('sales_order_row_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
-			<?php echo $this->Form->input('item_id',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm','label'=>false,'required']); ?>
+			<?php echo $this->Form->input('item_id',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm item_id','label'=>false,'required']); ?>
 			</td>
 			<td><?php echo $this->Form->input('quantity',['class' => 'form-control input-sm','label'=>false,'placeholder'=>'Quantity','required']); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
@@ -339,7 +371,7 @@ var form3 = $('#form_sample_3');
 			<td>0</td>
 			<td>
 			<?php echo $this->Form->input('sales_order_row_id',['class' => 'form-control input-sm','type'=>'hidden','label'=>false]); ?>
-			<?php echo $this->Form->input('item_id',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm','label'=>false,'required']); ?>
+			<?php echo $this->Form->input('item_id',['empty'=>'--Select--','options'=>$items,'class' => 'form-control input-sm item_id','label'=>false,'required']); ?>
 			</td>
 			<td><?php echo $this->Form->input('quantity',['class' => 'form-control input-sm','placeholder'=>'Quantity','label'=>false,'required']); ?></td>
 			<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>

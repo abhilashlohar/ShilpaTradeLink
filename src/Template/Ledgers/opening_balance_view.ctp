@@ -12,7 +12,23 @@
 			
 		</div>
 <?php $page_no=$this->Paginator->current('Ledgers'); $page_no=($page_no-1)*20; ?>
-	<table class="table table-bordered table-striped table-hover">
+	<div class="portlet-body">
+		<div class="row">
+			<div class="col-md-12">
+			<form method="GET" >
+			<table width="30%">
+				<tbody>
+					<tr>
+						<td><input type="text" name="ledger_name" class="form-control input-sm" placeholder="Ledger Account" value="<?php echo @$ledger_name; ?>"></td>
+						<td><button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+					</tr>
+				</tbody>
+			</table>
+			</form>
+			</div>
+		</div>
+	
+	<table class="table table-bordered ">
 		<tbody>
 				<tr>
 				<td >Sr.No.</td>
@@ -48,6 +64,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+	</div>
     <div class="paginator">
         <ul class="pagination">
             <?= $this->Paginator->prev('< ' . __('previous')) ?>

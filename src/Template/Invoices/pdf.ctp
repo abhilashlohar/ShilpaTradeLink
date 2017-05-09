@@ -60,6 +60,7 @@ $html = '
 	.avoid_break{
 		page-break-inside: avoid;
 	}
+
 	</style>
 <body>
   <div id="header" ><br/>	
@@ -103,7 +104,7 @@ $html.='
 				$html.='
 					<table  valign="center" width="100%" style="margin-top: 0px;" class="table2">
 						<tr>
-							<td width="50%">
+							<td width="50%" style="font-size:'. h(($invoice->pdf_font_size)) .';">
 								
 								<span><b>'. h($invoice->customer->customer_name) .'</b></span><br/>
 								<div style="height:5px;"></div>
@@ -111,27 +112,32 @@ $html.='
 								<span>TIN : '. h($invoice->customer->tin_no) .'</span><br/>
 								<span>PAN : '. h($invoice->customer->pan_no) .'</span>
 							</td>
-							<td width="50%" valign="top" align="right">
+							<td  width="50%" valign="top" align="right" >
 								<table width="100%">
 									<tr>
-										<td width="55" valign="top" style="vertical-align: top;">Invoice No.</td>
-										<td width="25" valign="top">:</td>
-										<td  valign="top">'. h(($invoice->in1." / IN-".str_pad($invoice->in2, 3, "0", STR_PAD_LEFT)." / ".$invoice->in3." / ".$invoice->in4)) .'</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" width="55" valign="top" style="vertical-align: top;">Invoice No.</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" width="25" valign="top">:</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top">'. h(($invoice->in1." / IN-".str_pad($invoice->in2, 3, "0", STR_PAD_LEFT)." / ".$invoice->in3." / ".$invoice->in4)) .'</td>
 									</tr>
 									<tr>
-										<td valign="top" style="vertical-align: top;">Date</td>
-										<td valign="top">:</td>
-										<td valign="top">'. h(date("d-m-Y",strtotime($invoice->date_created))) .'</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top" style="vertical-align: top;">Date</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top">:</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top">'. h(date("d-m-Y",strtotime($invoice->date_created))) .'</td>
 									</tr>
 									<tr>
-										<td valign="top" style="vertical-align: top;">LR No.</td>
-										<td valign="top">:</td>
-										<td valign="top" style="vertical-align: top;">'. h($invoice->lr_no) .'</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top" style="vertical-align: top;">LR No.</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top">:</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top" style="vertical-align: top;">'. h($invoice->lr_no) .'</td>
 									</tr>
 									<tr>
-										<td valign="top" style="vertical-align: top;">Carrier</td>
-										<td valign="top">:</td>
-										<td valign="top">'. h($invoice->transporter->transporter_name) .'</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top" style="vertical-align: top;">Carrier</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top">:</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top">'. h($invoice->transporter->transporter_name) .'</td>
+									</tr>
+									<tr>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top" style="vertical-align: top;"></td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top">:</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" valign="top">'. h($invoice->delivery_description) .'</td>
 									</tr>
 								</table>
 							</td>
@@ -141,7 +147,7 @@ $html.='
 			$html.='</td>
 		</tr>
 		<tr>
-			<td colspan=6 style="border-top:1px solid #000;">
+			<td style="font-size:'. h(($invoice->pdf_font_size)) .'; border-top:1px solid #000;" colspan=6>
 			Your Purchase Order No.'. h($invoice->customer_po_no) .' dated '. h(date("d-m-Y",strtotime($invoice->po_date))) .'
 			</td>
 		</tr>
@@ -161,13 +167,14 @@ $html.='
 $sr=0; foreach ($invoice->invoice_rows as $invoiceRows): $sr++; 
 $html.='
 	<tr class="odd">
-		<td style="padding-top:8px;padding-bottom:5px;" valign="top" align="center" width="5%">'. h($sr) .'</td>
-		<td style="padding-top:8px;padding-bottom:5px;" valign="top" width="100%">'.$invoiceRows->description .'<div style="height:'.$invoiceRows->height.'"></div></td>
-		<td style="padding-top:8px;padding-bottom:5px;" valign="top" align="center">'. h($invoiceRows->item->unit->name) .'</td>
-		<td style="padding-top:8px;padding-bottom:5px;" valign="top" align="center">'. h($invoiceRows->quantity) .'</td>
-		<td style="padding-top:8px;padding-bottom:5px;" align="right" valign="top">'. $this->Number->format($invoiceRows->rate,[ 'places' => 2]) .'</td>
-		<td style="padding-top:8px;padding-bottom:5px;" align="right" valign="top">'. $this->Number->format($invoiceRows->amount,[ 'places' => 2]) .'</td>
+		<td style="font-size:'. h(($invoice->pdf_font_size)) .';" style="padding-top:8px;padding-bottom:5px;" valign="top" align="center" width="5%">'. h($sr) .'</td>
+		<td style="font-size:'. h(($invoice->pdf_font_size)) .';" style="padding-top:8px;padding-bottom:5px;" valign="top" width="100%">'.$invoiceRows->description .'<div style="height:'.$invoiceRows->height.'"></div></td>
+		<td style="font-size:'. h(($invoice->pdf_font_size)) .';" style="padding-top:8px;padding-bottom:5px;" valign="top" align="center">'. h($invoiceRows->item->unit->name) .'</td>
+		<td style="font-size:'. h(($invoice->pdf_font_size)) .';" style="padding-top:8px;padding-bottom:5px;" valign="top" align="center">'. h($invoiceRows->quantity) .'</td>
+		<td style="font-size:'. h(($invoice->pdf_font_size)) .';" style="padding-top:8px;padding-bottom:5px;" align="right" valign="top">'. $this->Number->format($invoiceRows->rate,[ 'places' => 2]) .'</td>
+		<td style="font-size:'. h(($invoice->pdf_font_size)) .';" style="padding-top:8px;padding-bottom:5px;" align="right" valign="top">'. $this->Number->format($invoiceRows->amount,[ 'places' => 2]) .'</td>
 	</tr>';
+	
 endforeach; 
 	$html.='<tbody>';
 if($invoice->discount_type=='1'){ $discount_text='Discount @ '.$invoice->discount_per.'%'; }else{ $discount_text='Discount'; }
@@ -183,7 +190,7 @@ if($invoice->discount_type=='1'){ $discount_text='Discount @ '.$invoice->discoun
 
 if($invoice->exceise_duty>0){
 				$html.='<tr>
-				<td colspan="5" style="text-align:right;border-top: 1px solid #000;">'. $this->Text->autoParagraph(h($invoice->ed_description)) .'</td>
+				<td colspan="5" style="text-align:left;border-top: 1px solid #000;">'. $this->Text->autoParagraph(h($invoice->ed_description)) .'</td>
 				<td style="text-align:right;border-top: 1px solid #000;">'. $this->Number->format($invoice->exceise_duty,[ 'places' => 2]).'</td>
 </tr>';	}
 			
@@ -229,24 +236,24 @@ $html .= '<div id="footer" class="avoid_break">';
 <table width="100%" class="table_rows" >
 	<tbody>
 			<tr>
-				<td rowspan="'.$temp.'" width="40%">
+				<td  rowspan="'.$temp.'" width="40%">
 					<b style="font-size:13px;"><u>Our Bank Details</u></b>
 					<table width="100%" class="table2">
 						<tr>
-							<td width="30%" style="white-space: nowrap;">Bank Name</td>
-							<td style="white-space: nowrap;">: '.h($invoice->company->company_banks[0]->bank_name).'</td>
+							<td  width="30%" style="white-space: nowrap;">Bank Name</td>
+							<td  style="white-space: nowrap;">: '.h($invoice->company->company_banks[0]->bank_name).'</td>
 						</tr>
 						<tr>
-							<td>Branch</td>
-							<td style="white-space: nowrap;">: '.h($invoice->company->company_banks[0]->branch).'</td>
+							<td  >Branch</td>
+							<td  style="white-space: nowrap;">: '.h($invoice->company->company_banks[0]->branch).'</td>
 						</tr>
 						<tr>
-							<td style="white-space: nowrap;">Account No</td>
-							<td style="white-space: nowrap;">: '.h($invoice->company->company_banks[0]->account_no).'</td>
+							<td  style="white-space: nowrap;">Account No</td>
+							<td  style="white-space: nowrap;">: '.h($invoice->company->company_banks[0]->account_no).'</td>
 						</tr>
 						<tr>
-							<td style="white-space: nowrap;">IFSC Code</td>
-							<td style="white-space: nowrap;">: '.h($invoice->company->company_banks[0]->ifsc_code).'</td>
+							<td  style="white-space: nowrap;">IFSC Code</td>
+							<td  style="white-space: nowrap;">: '.h($invoice->company->company_banks[0]->ifsc_code).'</td>
 						</tr>
 					</table>
 				</td>
@@ -369,32 +376,32 @@ $html .= '<div id="footer" class="avoid_break">';
 			}
 			
 			$html.='<tr>
-				<td colspan="3">
+				<td colspan="3" >
 					<table width="100%" class="table2">
 						<tr>
-							<td >
+							<td  >
 								<table>
 									<tr>
-										<td >Interest @15% per annum shall be charged if not paid  <br/>with in agreed terms. <br/> Invoice is Subject to Udaipur jurisdiction</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';" >Interest @15% per annum shall be charged if not paid  <br/>with in agreed terms. <br/> Invoice is Subject to Udaipur jurisdiction</td>
 									</tr>
 								</table>
 								<table>
 									<tr>
-										<td>TIN</td>
-										<td>: '. h($invoice->company->tin_no) .'</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';">TIN</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';">: '. h($invoice->company->tin_no) .'</td>
 									</tr>
 									<tr width="30">
-										<td>PAN</td>
-										<td>: '. h($invoice->company->pan_no) .'</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';">PAN</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';">: '. h($invoice->company->pan_no) .'</td>
 									</tr>
 									<tr>
-										<td>CIN</td>
-										<td>: '. h($invoice->company->cin_no) .'</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';">CIN</td>
+										<td style="font-size:'. h(($invoice->pdf_font_size)) .';">: '. h($invoice->company->cin_no) .'</td>
 									</tr>
 								</table>
 							</td>
 							<td align="right" >
-								<div align="center">
+								<div align="center" style="font-size:'. h(($invoice->pdf_font_size)) .';">
 									<span>For <b>'. h($invoice->company->name) .'</b></span><br/>
 									<img src='.ROOT . DS  . 'webroot' . DS  .'signatures/'.$invoice->creator->signature.' height="50px" style="height:50px;"/>
 									<br/>

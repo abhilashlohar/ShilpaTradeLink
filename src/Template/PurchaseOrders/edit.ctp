@@ -95,35 +95,44 @@
 								<th width="70"></th>
 							</tr>
 						</thead>
-						<tbody>
-							<?php $q=1; foreach ($purchaseOrder->purchase_order_rows as $purchase_order_rows): ?>
+						<tbody id="main_tbody">
+							<?php $q=0; foreach ($purchaseOrder->purchase_order_rows as $purchase_order_rows): ?>
 							<tr class="tr1" row_no='<?php echo @$purchase_order_rows->id; ?>'>
 									<td rowspan="2"><?= h($q) ?></td>
 									<?php if($purchase_order_rows->pull_status =='Direct'){ ?>
 									<td>
-									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.processed_quantity', ['type' => 'hidden','value'=>@$purchase_order_rows->processed_quantity]);?>	
-									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm','placeholder' => 'Item','value'=>$purchase_order_rows->item_id]); ?>
-									<?php echo $this->Form->input('purchase_order_rows.'.$q.'.material_indent_id', ['label' => false,'type'=>'hidden','value'=>$purchase_order_rows['material_indent_id']]);  ?>
+									
+									<?php 
+									echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['options' => $items,'label' => false,'class' => 'form-control input-sm item_id','placeholder' => 'Item','value'=>$purchase_order_rows->item_id]); 
+									echo $this->Form->input('purchase_order_rows.'.$q.'.processed_quantity', ['label' => false,'type' => 'hidden','value'=>@$purchase_order_rows->processed_quantity]);
+									?>
 									</td>
 									<?php } else { ?>
 									<td>
 									<?php 
-									echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm','type'=>'hidden','placeholder' => 'Item','value'=>$purchase_order_rows->item_id]);
+									echo $this->Form->input('purchase_order_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm item_id','type'=>'hidden','placeholder' => 'Item','value'=>$purchase_order_rows->item_id]);
+									echo $this->Form->input('purchase_order_rows.'.$q.'.processed_quantity', ['label' => false,'type' => 'hidden','value'=>@$purchase_order_rows->processed_quantity]);
 									echo $this->Form->input('purchase_order_rows.'.$q.'.pull_status', ['label' => false,'type'=>'hidden','value'=>'PULLED_FROM_MI']); 
+									
 									echo $purchase_order_rows->item->name; ?><br/>
 									<span class="label label-sm label-warning ">Pulled from MI</span>
 									</td>
 									<?php }  ?>
-									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$purchase_order_rows->quantity]); ?></td>
+									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.quantity', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity','value'=>$purchase_order_rows->quantity]); 
+										
+									?></td>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.rate', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate','step'=>"0.01",'value'=>$purchase_order_rows->rate]); ?></td>
 									<td><?php echo $this->Form->input('purchase_order_rows.'.$q.'.amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value'=>$purchase_order_rows->amount]); ?></td>
 									
 									<td><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 								</tr>
-								<tr class="tr2" row_no='<?php echo @$purchase_order_rows->id; ?>'>
-									<td colspan="6"><?php echo $this->Form->textarea('purchase_order_rows.'.$q.'.description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'5','value'=>$purchase_order_rows->description,'required']); ?></td>
+								<tr class="tr2 preimp" row_no='<?php echo @$purchase_order_rows->id; ?>'>
+									<td colspan="6">
+									<div class="note-editable" id="summer<?php echo $q; ?>" ><?php echo $purchase_order_rows->description; ?></div>
+									</td>
 									<td></td>
 								</tr>
+							
 						<?php $q++; endforeach; ?>
 							
 						</tbody>
@@ -166,15 +175,14 @@
 							<label class="control-label">Sale Tax <span class="required" aria-required="true">*</span></label>
 							<?php 
 							$options=[];
-							
-							foreach($SaleTaxes as $SaleTaxe){ 
-							
-								$options[]=['text' => (string)$SaleTaxe->tax_figure.'%', 'value' => $SaleTaxe->tax_figure, 'description' => $SaleTaxe->invoice_description];
+							foreach($sale_tax_ledger_accounts as $key=>$SaleTaxe){
+								$tax_figure=$sale_tax_ledger_accounts1[$key];
+								$options[]=['text' => (string)$tax_figure.'%', 'value' => $tax_figure, 'description' => $SaleTaxe];
 							}
 							echo $this->Form->input('sale_tax_per', ['options'=>$options,'label' => false,'class' => 'form-control input-sm select2me','id'=>'saletax']);
 							?>
 							
-							<?php echo $this->Form->input('sale_tax_description', ['type'=>'hidden','label' => false,'class' => 'form-control input-sm ', 'placeholder'=>'Sale Tax Description', 'value'=>$purchaseOrder->sale_tax_description]);
+							<?php echo $this->Form->input('sale_tax_description', ['type'=>'text','label' => false,'class' => 'form-control input-sm ', 'placeholder'=>'Sale Tax Description', 'value'=>$purchaseOrder->sale_tax_description]);
 							?>
 							</div>
 							
@@ -270,6 +278,29 @@
 
 <script>
 $(document).ready(function() {
+		jQuery.validator.addMethod("notEqualToGroup", function (value, element, options) {
+		// get all the elements passed here with the same class
+		var elems = $(element).parents('form').find(options[0]);
+		// the value of the current element
+		var valueToCompare = value;
+		// count
+		var matchesFound = 0;
+		// loop each element and compare its value with the current value
+		// and increase the count every time we find one
+		jQuery.each(elems, function () {
+			thisVal = $(this).val();
+			if (thisVal == valueToCompare) {
+				matchesFound++;
+			}
+		});
+		// count should be either 0 or 1 max
+		if (this.optional(element) || matchesFound <= 1) {
+			//elems.removeClass('error');
+			return true;
+		} else {
+			//elems.addClass('error');
+		}
+	}, jQuery.format(""))
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -326,6 +357,7 @@ $(document).ready(function() {
 		},
 
 		invalidHandler: function (event, validator) { //display error alert on form submit   
+			put_code_description();
 			success3.hide();
 			error3.show();
 			Metronic.scrollTo(error3, -200);
@@ -347,6 +379,7 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			put_code_description();
 			success3.show();
 				error3.hide();
 				form[0].submit(); // submit the form
@@ -389,9 +422,9 @@ $(document).ready(function() {
 	
 	function add_row(){
 		var tr1=$("#sample_tb tbody tr.tr1").clone();
-		$("#main_tb tbody").append(tr1);
+		$("#main_tb tbody#main_tbody").append(tr1);
 		var tr2=$("#sample_tb tbody tr.tr2").clone();
-		$("#main_tb tbody").append(tr2);
+		$("#main_tb tbody#main_tbody").append(tr2);
 		
 		var w=0; var r=0;
 		$("#main_tb tbody tr").each(function(){
@@ -399,6 +432,7 @@ $(document).ready(function() {
 			r++;
 			if(r==2){ w++; r=0; }
 		});
+
 		rename_rows();
 		calculate_total();
 	}
@@ -420,31 +454,47 @@ $(document).ready(function() {
 	function rename_rows(){
 	var i=0;
 		$("#main_tb tbody tr.tr1").each(function(){
-			
 			$(this).find("td:nth-child(1)").html(++i); i--;
 			var len=$(this).find("td:nth-child(2) select").length;
 			if(len>0){
-				$(this).find("td:nth-child(2) select").select2().attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"}).rules("add", "required");
+				
+				$(this).find("td:nth-child(2) select").select2().attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id",popup_id:i}).rules('add', {
+						required: true,
+						notEqualToGroup: ['.item_id'],
+						messages: {
+							notEqualToGroup: "Do not select same Item again."
+						}
+					});
+				$(this).find("td:nth-child(2) input[type='hidden']").attr({name:"purchase_order_rows["+i+"][processed_quantity]", id:"purchase_order_rows-"+i+"-processed_quantity"}).rules("add", "required");
+					
 			}else{
-				$(this).find("td:nth-child(2) input").attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"}).rules("add", "required");
-				$(this).find("td:nth-child(2) input:eq(1)").attr({name:"purchase_order_rows["+i+"][pull_status]", id:"purchase_order_rows-"+i+"-pull_status"}).rules("add", "required");
+				$(this).find("td:nth-child(2) input:eq(0)").attr({name:"purchase_order_rows["+i+"][item_id]", id:"purchase_order_rows-"+i+"-item_id"}).rules("add", "required");
+				
+				$(this).find("td:nth-child(2) input:eq(1)").attr({name:"purchase_order_rows["+i+"][processed_quantity]", id:"purchase_order_rows-"+i+"-processed_quantity"}).rules("add", "required");
+				
+				$(this).find("td:nth-child(2) input:eq(2)").attr({name:"purchase_order_rows["+i+"][pull_status]", id:"purchase_order_rows-"+i+"-pull_status"}).rules("add", "required");
+				
+				
 			}
 			
 			$(this).find("td:nth-child(3) input").attr({name:"purchase_order_rows["+i+"][quantity]", id:"purchase_order_rows-"+i+"-quantity"}).rules("add", "required");
 			$(this).find("td:nth-child(4) input").attr({name:"purchase_order_rows["+i+"][rate]", id:"purchase_order_rows-"+i+"-rate"}).rules("add", "required");
 			$(this).find("td:nth-child(5) input").attr("name","purchase_order_rows["+i+"][amount]");
 			i++;
+			
 		});
 		var i=0;
-		
 		$("#main_tb tbody tr.tr2").each(function(){
-			
-			$(this).find("td:nth-child(1) textarea").attr({name:"purchase_order_rows["+i+"][description]", id:"purchase_order_rows-"+i+"-description"}).rules("add", "required");
-			i++;
-		});
-		
-			
+			var row_no=$(this).attr('row_no');
+			var htm=$(this).find('td:nth-child(1)').find('div.note-editable').html();
+			if(!htm){ htm=""; }
+			$(this).find('td:nth-child(1)').html('');
+			$(this).find('td:nth-child(1)').append('<div id=summer'+i+'>'+htm+'</div>');
+			$(this).find('td:nth-child(1)').find('div#summer'+i).summernote();
+			$('#main_tb tbody tr.tr2[row_no="'+row_no+'"] td:nth-child(1)').append('<textarea name="purchase_order_rows['+i+'][description]" style="display:none;"></textarea>');
+		i++; });
 	}
+		
 		$('#main_tb input').die().live("keyup","blur",function() { 
 		calculate_total();
     });
@@ -460,6 +510,15 @@ $(document).ready(function() {
 		});
 		$('input[name="total"]').val(total.toFixed(2));
 		
+	}
+	
+	function put_code_description(){
+		var i=0;
+		$("#main_tb tbody tr.tr2").each(function(){
+			var row_no=$(this).attr('row_no');	
+			var code=$(this).find('div#summer'+i).code();
+			$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').find('td:nth-child(1) textarea').val(code);
+		i++; });
 	}
 	
 	$('select[name=sale_tax_per]').die().live("change",function() { 
@@ -479,7 +538,7 @@ $(document).ready(function() {
 	<tbody>
 		<tr class="tr1">
 			<td rowspan="2" width="10">0</td>
-			<td><?php echo $this->Form->input('q', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm']); ?></td>
+			<td><?php echo $this->Form->input('q', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_id']); ?></td>
 			<td width="100"><?php echo $this->Form->input('q', ['label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Quantity']); ?></td>
 			<td width="130"><?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Rate']); ?></td>
 			<td width="130"><?php echo $this->Form->input('q', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>

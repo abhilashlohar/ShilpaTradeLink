@@ -37,7 +37,7 @@
 						<th width="10%">Customer Seg</th>
 						<th width="10%">Tin No</th>
 						<th width="10%">Gst No</th>
-						<th width="10%">Actions</th>
+						<th width="13%">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -50,9 +50,13 @@
 						<td><?= h($customer->tin_no) ?></td>
 						<td><?= h($customer->gst_no) ?></td>
 						<td class="actions">
+							<?php if(in_array(43,$allowed_pages)){?>
 						 	<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $customer->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
+							<?php } ?>
+							<?php if(in_array(44,$allowed_pages)){?>
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $customer->id],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
-							 <?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+							
+							 <!--<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
 								['action' => 'delete', $customer->id], 
 								[
 									'escape' => false,
@@ -60,7 +64,11 @@
 									
 									'confirm' => __('Are you sure ?', $customer->id)
 								]
-							) ?>
+							) ?>!-->
+							<?php } ?>
+							<?php if(in_array(45,$allowed_pages)){?>
+							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'EditCompany', $customer->id],array('escape'=>false,'class'=>'btn btn-xs green tooltips','data-original-title'=>'EditCompany')); ?>
+							<?php } ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>

@@ -105,8 +105,8 @@ class QuotationsController extends AppController
 		
 		$companies = $this->Quotations->Companies->find('list');
 		
-		$closeReasons = $this->Quotations->QuotationCloseReasons->find('all',['limit' => 200]);
-        $this->set(compact('quotations','status','copy_request','companies','closeReasons'));
+		$closeReasons = $this->Quotations->QuotationCloseReasons->find('all');
+        $this->set(compact('quotations','status','copy_request','companies','closeReasons','closed_month'));
         $this->set('_serialize', ['quotations']);
 		$this->set(compact('url'));
 	}
@@ -216,10 +216,22 @@ class QuotationsController extends AppController
 		->select(['revision' => $query->func()->max('Quotations.revision')])->first();
 		$revision=$max->revision;
 		if ($this->request->is(['patch', 'post', 'put'])) {
-            foreach($this->request->data['quotation_rows'] as $quotation_row_id=>$value){
-				$quotationRow=$this->Quotations->QuotationRows->get($quotation_row_id);
-				$quotationRow->height=$value["height"];
-				$this->Quotations->QuotationRows->save($quotationRow);
+			
+			if(!empty($this->request->data['pdf_font_size'])){
+				$pdf_font_size=$this->request->data['pdf_font_size'];
+				$query = $this->Quotations->query();
+					$query->update()
+						->set(['pdf_font_size' => $pdf_font_size])
+						->where(['id' => $id])
+						->execute();
+			}
+			
+			if(!empty($this->request->data['quotation_rows'])){
+				foreach($this->request->data['quotation_rows'] as $quotation_row_id=>$value){
+					$quotationRow=$this->Quotations->QuotationRows->get($quotation_row_id);
+					$quotationRow->height=$value["height"];
+					$this->Quotations->QuotationRows->save($quotationRow);
+			}
 			}
 			return $this->redirect(['action' => 'confirm/'.$id]);
         }
@@ -373,12 +385,19 @@ class QuotationsController extends AppController
 						return $q->where(['CustomerCompanies.company_id' => $st_company_id]);
 					}
 				);
-		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1])->order(['Employees.name' => 'ASC']);
+		//$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1])->order(['Employees.name' => 'ASC']);
+		
+		$employees = $this->Quotations->Employees->find('list')->where(['dipartment_id' => 1])->order(['Employees.name' => 'ASC'])->matching(
+					'EmployeeCompanies', function ($q) use($st_company_id) {
+						return $q->where(['EmployeeCompanies.company_id' => $st_company_id]);
+					}
+				);
+		
 		$ItemGroups = $this->Quotations->ItemGroups->find('list')->order(['ItemGroups.name' => 'ASC']);
 		
 		$items = $this->Quotations->Items->find('list')->order(['Items.name' => 'ASC'])->matching(
 					'ItemCompanies', function ($q) use($st_company_id) {
-						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+						return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
 					}
 				);
 		$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);
@@ -401,51 +420,64 @@ class QuotationsController extends AppController
             'contain' => ['QuotationRows']
         ]);
 		
-		$s_employee_id=$this->viewVars['s_employee_id'];
-		$session = $this->request->session();
-		$st_company_id = $session->read('st_company_id');
-		$Company = $this->Quotations->Companies->get($st_company_id);
+		$closed_month=$this->viewVars['closed_month'];
 		
-        if ($this->request->is(['patch', 'post', 'put'])) {
-        	$this->request->data["finalisation_date"]=date("Y-m-d",strtotime($this->request->data["finalisation_date"]));
-            $quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
-			$quotation->created_by=$s_employee_id;
-			$quotation->created_on=date("Y-m-d",strtotime($quotation->created_on));
-			$quotation->finalisation_date=date("Y-m-d",strtotime($quotation->finalisation_date));
-			$quotation->company_id=$st_company_id;
-			//$quotation->company_id=$st_company_id;
-            if ($this->Quotations->save($quotation)) {
-				
-				
-                $this->Flash->success(__('The quotation has been saved.'));
+		if(!in_array(date("m-Y",strtotime($quotation->created_on)),$closed_month))
+		{ 
+		
+			$s_employee_id=$this->viewVars['s_employee_id'];
+			$session = $this->request->session();
+			$st_company_id = $session->read('st_company_id');
+			$Company = $this->Quotations->Companies->get($st_company_id);
+			
+			if ($this->request->is(['patch', 'post', 'put'])) {
+				$this->request->data["finalisation_date"]=date("Y-m-d",strtotime($this->request->data["finalisation_date"]));
+				$quotation = $this->Quotations->patchEntity($quotation, $this->request->data);
+				$quotation->created_by=$s_employee_id;
+				$quotation->created_on=date("Y-m-d",strtotime($quotation->created_on));
+				$quotation->finalisation_date=date("Y-m-d",strtotime($quotation->finalisation_date));
+				$quotation->company_id=$st_company_id;
+				//$quotation->company_id=$st_company_id;
+				if ($this->Quotations->save($quotation)) {
+					
+					
+					$this->Flash->success(__('The quotation has been saved.'));
 
-                return $this->redirect(['action' => 'confirm/'.$quotation->id]);
-            } else {
-                $this->Flash->error(__('The quotation could not be saved. Please, try again.'));
-            }
-        }
-		$Filenames = $this->Quotations->Filenames->find()->where(['customer_id' => $quotation->customer_id]);
-        
-		$companies = $this->Quotations->Companies->find('all',['limit' => 200]);
-		
-		$customers = $this->Quotations->Customers->find('all')->contain(['Filenames'])->order(['Customers.customer_name' => 'ASC'])->matching(
-					'CustomerCompanies', function ($q) use($st_company_id) {
-						return $q->where(['CustomerCompanies.company_id' => $st_company_id]);
-					}
-				);
-		$employees = $this->Quotations->Employees->find('list', ['limit' => 200])->where(['dipartment_id' => 1])->order(['Employees.name' => 'ASC']);
-		$ItemGroups = $this->Quotations->ItemGroups->find('list')->order(['ItemGroups.name' => 'ASC']);
-		
-		
-		$items = $this->Quotations->Items->find('list')->order(['Items.name' => 'ASC'])->matching(
-					'ItemCompanies', function ($q) use($st_company_id) {
-						return $q->where(['ItemCompanies.company_id' => $st_company_id]);
-					}
-				);
-		$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);
-		
-        $this->set(compact('quotation', 'customers','companies','employees','ItemGroups','items','termsConditions','Filenames'));
-        $this->set('_serialize', ['quotation']);
+					return $this->redirect(['action' => 'confirm/'.$quotation->id]);
+				} else {
+					$this->Flash->error(__('The quotation could not be saved. Please, try again.'));
+				}
+			}
+			$Filenames = $this->Quotations->Filenames->find()->where(['customer_id' => $quotation->customer_id]);
+			
+			$companies = $this->Quotations->Companies->find('all',['limit' => 200]);
+			
+			$customers = $this->Quotations->Customers->find('all')->contain(['Filenames'])->order(['Customers.customer_name' => 'ASC'])->matching(
+						'CustomerCompanies', function ($q) use($st_company_id) {
+							return $q->where(['CustomerCompanies.company_id' => $st_company_id]);
+						}
+					);
+			$employees = $this->Quotations->Employees->find('list')->where(['dipartment_id' => 1])->order(['Employees.name' => 'ASC'])->matching(
+						'EmployeeCompanies', function ($q) use($st_company_id) {
+							return $q->where(['EmployeeCompanies.company_id' => $st_company_id]);
+						}
+					);
+			$ItemGroups = $this->Quotations->ItemGroups->find('list')->order(['ItemGroups.name' => 'ASC']);
+			$items = $this->Quotations->Items->find('list')->order(['Items.name' => 'ASC'])->matching(
+						'ItemCompanies', function ($q) use($st_company_id) {
+							return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
+						}
+					);
+			$termsConditions = $this->Quotations->TermsConditions->find('all',['limit' => 200]);
+			
+			$this->set(compact('quotation', 'customers','companies','employees','ItemGroups','items','termsConditions','Filenames'));
+			$this->set('_serialize', ['quotation']);
+		}
+		else
+		{
+			$this->Flash->error(__('This month is locked.'));
+			return $this->redirect(['action' => 'index']);
+		}
     }
 
     /**

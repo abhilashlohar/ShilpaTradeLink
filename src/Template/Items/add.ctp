@@ -271,33 +271,6 @@ $('select[name="item_group_id"]').die().live("change",function() {
 	});
 });
 
-$('input[name="serial_number_enable"]').die().live("change",function() {
-	add_sr_textbox();
-		
-   });
-		
-   function add_sr_textbox(){
-	   var serial_number=$('input[name=serial_number_enable]:checked').val(); 
-	   var quantity=$('input[name="ob_quantity"]').val();
-	   
-		if(serial_number=='1'){ 
-			var p=1;
-			var r=0;
-			$('#itm_srl_num').find('input.sr_no').remove();
-			for (i = 0; i < quantity; i++) {
-			$('#itm_srl_num').append('<input type="text" class="sr_no" name="serial_numbers['+r+'][]" placeholder="'+p+' serial number" id="sr_no'+r+'" />');
-			//$('#itm_srl_num').rules('add', {required: true});
-			$('#itm_srl_num').find('input#sr_no'+r).rules('add', {required: true});
-			p++;
-			r++;
-			}
-		}
-		else if(serial_number=='0'){ 
-			$('#itm_srl_num').find('input.sr_no').remove();
-			
-		}
-	   
-   }
    $('input[name="ob_quantity"]').die().live("keyup",function() {
 	  $('#itm_srl_num').find('input.sr_no').remove();
 		add_sr_textbox();

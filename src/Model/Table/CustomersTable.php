@@ -122,7 +122,9 @@ class CustomersTable extends Table
         ]);
 		$this->belongsTo('ReceiptVouchers');
 		$this->belongsTo('ReferenceDetails');
-		//$this->belongsTo('Companies');
+		$this->belongsTo('Ledgers');
+		$this->belongsTo('VoucherLedgerAccounts');
+		$this->belongsTo('VouchersReferences');
 		
 		$this->belongsToMany('Companies', [
             'foreignKey' => 'customer_id',

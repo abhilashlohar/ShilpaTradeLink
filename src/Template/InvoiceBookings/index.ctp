@@ -15,6 +15,7 @@
 					<thead>
 						<tr>
 							<th>Sr. No.</th>
+							<th>Invoice Booking No.</th>
 							<th>GRN No.</th>
 							<th>Invoice No.</th>
 							<th>Invoice Booked On</th>
@@ -28,14 +29,18 @@
 					?>
 						<tr>
 							<td><?= h(++$page_no) ?></td>
+							<td><?php echo $invoiceBooking->ib1.'/IB-'.str_pad($invoiceBooking->ib2, 3, '0', STR_PAD_LEFT).'/'.$invoiceBooking->ib3.'/'.$invoiceBooking->ib4; ?></td>
 							<td><?= h(($invoiceBooking->grn->grn1.'/GRN-'.str_pad($invoiceBooking->grn->grn2, 3, '0', STR_PAD_LEFT).'/'.$invoiceBooking->grn->grn3.'/'.$invoiceBooking->grn->grn4)) ?></td>
+							
 							<td><?= h($invoiceBooking->invoice_no) ?></td>
 							<td><?php echo date("d-m-Y",strtotime($invoiceBooking->created_on)) ?></td>
 							<td class="actions">
-								<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $invoiceBooking->id],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
 								<?php if(in_array(18,$allowed_pages)){ ?>
 								<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $invoiceBooking->id,],array('escape'=>false,'class'=>'btn btn-xs blue tooltips','data-original-title'=>'Edit')); ?>
 								<?php } ?>
+								<?php if(in_array(123,$allowed_pages)){ ?>
+                                <?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $invoiceBooking->id,],array('escape'=>false,'target'=>'_blank','class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
+                                <?php } ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

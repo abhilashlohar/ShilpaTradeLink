@@ -29,7 +29,7 @@ $min_qty=0; foreach($item->item_serial_numbers as $item_serial_number){
 					<div class="col-md-4">
 						<div class="form-group">
 							<label class="control-label">Alias </label>
-							<?php echo $this->Form->input('alias', ['label' => false,'class' => 'form-control input-sm firstupercase','placeholder'=>'Alias']); ?>
+							<?php echo $this->Form->input('alias', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Alias']); ?>
 						</div>
 					</div>
 					<div class="col-md-4">

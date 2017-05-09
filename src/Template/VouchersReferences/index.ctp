@@ -28,7 +28,9 @@
 							<td><?= h($vouchersReference->description) ?></td>
 							
 							<td class="actions">
+							<?php if(in_array(119,$allowed_pages)){ ?>
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $vouchersReference->id],array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
+							<?php } ?>
 							</td>
 							
 						</tr>

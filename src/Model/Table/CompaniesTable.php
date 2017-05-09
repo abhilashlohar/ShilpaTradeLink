@@ -62,6 +62,27 @@ class CompaniesTable extends Table
             'foreignKey' => 'company_id',
 			'saveStrategy' => 'replace'
         ]);
+
+		
+		
+		
+		$this->belongsToMany('Employees', [
+            'foreignKey' => 'company_id',
+            'targetForeignKey' => 'employee_id',
+            'joinTable' => 'employee_companies'
+        ]);
+		
+		$this->belongsToMany('Customers', [
+            'foreignKey' => 'company_id',
+            'targetForeignKey' => 'custome_id',
+            'joinTable' => 'customer_companies'
+        ]);
+
+		$this->belongsToMany('Vendors', [
+            'foreignKey' => 'company_id',
+            'targetForeignKey' => 'vendor_id',
+            'joinTable' => 'vendor_companies'
+        ]);
     }
 
     /**

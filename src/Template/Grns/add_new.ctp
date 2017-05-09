@@ -112,7 +112,7 @@
 							</tr>
 							<tr class="tr2" row_no='<?php echo @$purchase_order_rows->id; ?>'>
 								<td colspan="3">
-									<?php echo $this->Text->autoParagraph(h($purchase_order_rows->description)); ?>
+									<?php echo $this->Text->autoParagraph($purchase_order_rows->description); ?>
 								</td>
 								
 							</tr>

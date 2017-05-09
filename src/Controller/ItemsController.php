@@ -87,32 +87,8 @@ class ItemsController extends AppController
         if ($this->request->is('post')) {
             $item = $this->Items->patchEntity($item, $this->request->data);
 			if ($this->Items->save($item)) {
-				$item_id=$item->id;
-				//pr($item_id); exit;
-				$itemLedger = $this->Items->ItemLedgers->newEntity();
-					$itemLedger->item_id = $item_id;
-					$itemLedger->quantity = $item->ob_quantity;
-					$itemLedger->company_id = $st_company_id;
-					$itemLedger->source_model = 'Items';
-					$itemLedger->source_id =  $item_id;
-					$itemLedger->in_out = 'In';
-					$itemLedger->processed_on = date("Y-m-d");
-
-					$this->Items->ItemLedgers->save($itemLedger);
-					
-				if($item->serial_number_enable=="1"){
-					foreach($item->serial_numbers as $serial_number) {
-						$ItemSerialNumber = $this->Items->ItemSerialNumbers->newEntity();
-						$ItemSerialNumber->item_id = $item->id;
-						$ItemSerialNumber->serial_no = $serial_number[0];
-						$ItemSerialNumber->status = 'In';
-						$ItemSerialNumber->master_item_id = $item->id;
-						$this->Items->ItemSerialNumbers->save($ItemSerialNumber);
-					}
-				}
 				
-				
-                $this->Flash->success(__('The item has been saved.'));
+				 $this->Flash->success(__('The item has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             } else { 
@@ -149,7 +125,6 @@ class ItemsController extends AppController
 	
         if ($this->request->is(['patch', 'post', 'put'])) {
             $item = $this->Items->patchEntity($item, $this->request->data);
-			//pr($item->ob_quantity); exit;
 			$item->ob_quantity=$item->ob_quantity;
             if ($this->Items->save($item)) {
 				$item_id=$item->id;
@@ -201,6 +176,7 @@ class ItemsController extends AppController
 		$InvoiceRowsexists = $this->Items->InvoiceRows->exists(['item_id' => $id]);
 		if(!$QuotationRowsexists and !$SalesOrderRowsexists and !$InvoiceRowsexists){
 			$item = $this->Items->get($id);
+			//$this->Items->ItemLedgers->deleteAll(['source_id' => $id, 'source_model' => 'Items']);
 			if ($this->Items->delete($item)) {
 				$this->Flash->success(__('The item has been deleted.'));
 			} else {
@@ -222,15 +198,24 @@ class ItemsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		$st_year_id = $session->read('st_year_id');
+		$financial_year = $this->Items->FinancialYears->find()->where(['id'=>$st_year_id])->first();
 		
 		$ItemLedger = $this->Items->ItemLedgers->newEntity();
-		
 		$Items=$this->Items->find('list')->matching('ItemCompanies', function ($q) use($st_company_id) {
-			return $q->where(['ItemCompanies.company_id' => $st_company_id]);
+			return $q->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
+			 
 		});
 		
 		if ($this->request->is('post')) {
-			//pr($this->request->data); exit;
+			$item_id=$this->request->data['Item_id'];
+		
+			$ItemLedgersexists = $this->Items->ItemLedgers->exists(['source_model'=>'Items','item_id' => $item_id,'company_id'=>$st_company_id]);
+			if($ItemLedgersexists){
+			$this->Flash->error(__('The Item opening balance already created'));
+			return $this->redirect(['action' => 'openingBalance']);
+			}
+			
 			$ItemLedger->item_id = $this->request->data['Item_id'];
 			$ItemLedger->quantity = $this->request->data['quantity'];
 			$ItemLedger->rate = $this->request->data['rate'];
@@ -265,7 +250,7 @@ class ItemsController extends AppController
 			return $this->redirect(['action' => 'Opening-Balance']);
 		}
 		
-		$this->set(compact('Items','ItemLedger'));
+		$this->set(compact('Items','ItemLedger','financial_year'));
 		$this->set('_serialize', ['ItemLedger']);
 	}
 	
@@ -274,7 +259,16 @@ class ItemsController extends AppController
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
 		
-		$ItemLedgers=$this->Items->ItemLedgers->find()->where(['source_model'=>'Items','quantity >'=>0,'company_id'=>$st_company_id])->order(['ItemLedgers.processed_on'])->contain(['Items'=>['ItemCompanies'=>function($q) use($st_company_id){
+		$where=[];
+		$item=$this->request->query('item');
+		//pr($item); exit;
+		$this->set(compact('item'));
+		
+		if(!empty($item)){
+			$where['Items.name LIKE']='%'.$item.'%';
+		}
+		
+		$ItemLedgers=$this->Items->ItemLedgers->find()->where($where)->where(['source_model'=>'Items','quantity >'=>0,'company_id'=>$st_company_id])->order(['ItemLedgers.processed_on'])->contain(['Items'=>['ItemCompanies'=>function($q) use($st_company_id){
 			return $q->where(['ItemCompanies.company_id'=>$st_company_id]);
 		}]]);
 		
@@ -318,4 +312,108 @@ class ItemsController extends AppController
 		});
 		$this->set(compact('Items'));
 	}
+
+	public function EditCompany($item_id=null)
+    {
+		$this->viewBuilder()->layout('index_layout');	
+		$Companies = $this->Items->Companies->find();
+		$Company_array=[];
+		$Company_array1=[];
+		$Company_array2=[];
+		$Company_array3=[];
+		foreach($Companies as $Company){
+			$Company_exist= $this->Items->ItemCompanies->exists(['item_id' => $item_id,'company_id'=>$Company->id]);
+			if($Company_exist){
+				$item_data= $this->Items->ItemCompanies->find()->where(['item_id' => $item_id,'company_id'=>$Company->id])->first();
+				$Company_array[$Company->id]='Yes';
+				$Company_array1[$Company->id]=$Company->name;
+				$Company_array2[$Company->id]=$item_data->freeze;
+				$Company_array3[$Company->id]=$item_data->serial_number_enable;
+
+			}else{
+
+				$Company_array[$Company->id]='No';
+				$Company_array1[$Company->id]=$Company->name;
+				$Company_array2[$Company->id]=1;
+				$Company_array3[$Company->id]=0;
+			}
+
+		} 
+		$item_data= $this->Items->get($item_id);
+		$this->set(compact('item_data','Companies','customer_Company','Company_array','item_id','Company_array1','Company_array2','Company_array3'));
+
+	}
+	public function ItemFreeze($company_id=null,$item_id=null,$freeze=null)
+	{
+		$query2 = $this->Items->ItemCompanies->query();
+		$query2->update()
+			->set(['freeze' => $freeze])
+			->where(['item_id' => $item_id,'company_id'=>$company_id])
+			->execute();
+
+		return $this->redirect(['action' => 'EditCompany/'.$item_id]);
+	}
+
+public function SerialNumberEnabled($company_id=null,$item_id=null,$item_serial_no=null)
+	{
+		$query2 = $this->Items->ItemCompanies->query();
+		$query2->update()
+			->set(['serial_number_enable' => $item_serial_no])
+			->where(['item_id' => $item_id,'company_id'=>$company_id])
+			->execute();
+
+		return $this->redirect(['action' => 'EditCompany/'.$item_id]);
+	}
+
+public function AddCompany($company_id=null,$item_id=null)
+    {
+		$this->viewBuilder()->layout('index_layout');	
+		
+
+		$ItemCompany = $this->Items->ItemCompanies->newEntity();
+		$ItemCompany->company_id=$company_id;
+		$ItemCompany->item_id=$item_id;
+		$ItemCompany->freeze=0;
+		$ItemCompany->serial_number_enable=1;
+		
+		//pr($ItemCompany); exit;
+		$this->Items->ItemCompanies->save($ItemCompany);
+		
+		return $this->redirect(['action' => 'EditCompany/'.$item_id]);
+	}
+public function CheckCompany($company_id=null,$item_id=null)
+    {
+		$this->viewBuilder()->layout('index_layout');	
+		$this->request->allowMethod(['post', 'delete']);
+		
+		$ledgerexist = $this->Items->ItemLedgers->exists(['item_id' => $item_id,'company_id' => $company_id]);
+		
+		if(!$ledgerexist){
+			$item_Company_dlt= $this->Items->ItemCompanies->find()->where(['ItemCompanies.item_id'=>$item_id,'company_id'=>$company_id])->first();
+			$this->Items->ItemCompanies->delete($item_Company_dlt);
+			$this->Flash->success(__('Company Deleted Successfully'));
+			return $this->redirect(['action' => 'EditCompany/'.$item_id]);
+		}else{
+			$this->Flash->error(__('Company Can not Deleted'));
+			return $this->redirect(['action' => 'EditCompany/'.$item_id]);
+		}
+	}
+	
+	public function DeleteItemOpeningBalance($id = null)
+	{
+		$this->request->allowMethod(['post', 'delete']);
+		$session = $this->request->session();
+		$st_company_id = $session->read('st_company_id');
+		$ItemLedger = $this->Items->ItemLedgers->get($id);
+		$ItemSerialexists = $this->Items->ItemSerialNumbers->exists(['status'=>'In','item_id' => $ItemLedger->item_id]);
+		if($ItemSerialexists){
+			$this->Items->ItemSerialNumbers->deleteAll(['item_id' => $ItemLedger->item_id,'status'=>'In','company_id'=>$st_company_id]); 
+		} 
+		if ($this->Items->ItemLedgers->delete($ItemLedger)) {
+			$this->Flash->success(__('The Opening Balance has been deleted.'));
+		} else {
+			$this->Flash->error(__('The Opening Balance could not be deleted. Please, try again.'));
+		}
+        return $this->redirect(['action' => 'openingBalanceView']);
+    }
 }

@@ -49,12 +49,13 @@
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/jquery-tags-input/jquery.tagsinput.css'); ?>
 
-<?php echo $this->Html->css('/assets/global/plugins/typeahead/typeahead.css'); ?>
-<?php echo $this->Html->css('/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css'); ?>
+<?php //echo $this->Html->css('/assets/global/plugins/typeahead/typeahead.css'); ?>
+<?php //echo $this->Html->css('/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css'); ?>
 <?php echo $this->Html->css('/assets/global/plugins/bootstrap-summernote/summernote.css'); ?>
 <!-- END PAGE LEVEL STYLES -->
 <style media="print">
+
 	.hide_at_print {
 		display:none !important;
 	}
@@ -164,85 +165,62 @@ select
 		<!-- END LOGO -->
 		<div class="hor-menu hor-menu-light hidden-sm hidden-xs">
 			<ul class="nav navbar-nav">
+			<?php
+			 $toarray=array();
+
+			 foreach($pages as $page){
+				 $id=$page->id;
+				 if(in_array($id , $allowed_pages))
+                 {
+					 $toarray[]=$id;
+				 }
+			 }
+ 			if(!empty($toarray)){?>
 				<li class="mega-menu-dropdown mega-menu-full">
 					<a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle">
 					Masters & Setup <i class="fa fa-angle-down"></i>
 					</a>
-					<ul class="dropdown-menu">
+					<ul class="dropdown-menu"> 
 						<li>
 							<!-- Content container to add padding -->
 							<div class="mega-menu-content ">
 								<div class="row">
-									<div class="col-md-8">
-										<div class="row">
-											<div class="col-md-4">
-												<ul class="mega-menu-submenu">
-													<li><?php if(in_array(19,$allowed_pages)){
-													echo $this->Html->link(' Logins','/Logins/Add',array('escape'=>false));
-													} ?></li>
-													
-													<li class="divider"></li>
-													<li><?php echo $this->Html->link('Customer Groups','/Customer-Groups',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link('Customers Segments','/customer-segs',array('escape'=>false)); ?></li>
-													<li class="divider"></li>
-													<li><?php echo $this->Html->link( 'Add new customer', '/Customers/add' ); ?></li>
-													<li><?php echo $this->Html->link( 'List customers', '/Customers' ); ?></li>
-													<li class="divider"></li>
-													<li><?php echo $this->Html->link('Transporters','/transporters',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link('Terms&Conditions','/Terms-Conditions',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link('Districts','/Districts',array('escape'=>false)); ?></li>
-													
-												</ul>
-											</div>
-											<div class="col-md-4">
-												<ul class="mega-menu-submenu">
-													<li><?php echo $this->Html->link('Item Categories','/Item-Categories',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link('Item Groups','/Item-Groups',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link('Item Sub-Groups','/Item-Sub-Groups',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link( 'Units','/units',array('escape'=>false)); ?></li>
-													<li class="divider"></li>
-													<li><?php echo $this->Html->link( 'Add New Item', '/Items/add' ); ?></li>
-													<li><?php echo $this->Html->link('List Items', '/Items' ); ?></li>
-													<li class="divider"></li>
-													<li><?php echo $this->Html->link('Sale-Taxes','/SaleTaxes',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link('Files','/Filenames',array('escape'=>false)); ?></li>
-												</ul>
-											</div>
-											<div class="col-md-4">
-												<ul class="mega-menu-submenu">
-													<li><?php echo $this->Html->link(' Add New Supplier','/Vendors/Add',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link('List Suppliers','/Vendors',array('escape'=>false)); ?></li>
-													<li class="divider"></li>
-													<li><?php echo $this->Html->link(' Add New  Employee','/employees/Add',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link('List Employees','/employees',array('escape'=>false)); ?></li>
-													<li class="divider"></li>
-													<li><?php echo $this->Html->link(' Add New Company','/Companies/add',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link('List Companies','/Companies',array('escape'=>false)); ?></li>
-													<li class="divider"></li>
-													<li><?php echo $this->Html->link( 'Designations','/Designations',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link('Departments','/Departments',array('escape'=>false)); ?></li>
-													
-												</ul>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-4">
-												<ul class="mega-menu-submenu">
-													<li><?php echo $this->Html->link(' Ledger Accounts','/ledgerAccounts',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link('Account References','/AccountReferences',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link('Opening Balance','/ledgers/opening-balance/',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link('Item Opening Balance','/Items/opening-balance/',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link('Item Price Factor','/Items/Cost/',array('escape'=>false)); ?></li>
-													<li><?php echo $this->Html->link( 'Quotation Close Reason','/QuotationCloseReasons',array('escape'=>false)); ?></li>	
-													<li><?php echo $this->Html->link('Leave Types','/LeaveTypes',array('escape'=>false)); ?></li>
-													<li></li>
-												</ul>
-										</div>
+                                
+									<?php
+                                      $x=0;
+                                    foreach($pages as $page){
+                                        
+                                         
+                                        $id=$page->id;
+                                        if(in_array($id , $allowed_pages))
+                                        {	
+                                            $x++;
+                                            $controller=$page->controller;
+                                            $action=$page->action;
+                                            $name=$page->name;
+                                            if($x==1){?><div class="col-md-3"><?php }
+                                                ?>
+                                                   <ul class="mega-menu-submenu">
+                                                       <li>
+                                                            <?php 
+                                                                
+                                                                    echo $this->Html->link($name,'/'.$controller.'/'.$action.'',array('escape'=>false));
+                                                                 
+                                                            ?>
+                                                        </li> 
+                                                    </ul>
+                                                <?php
+                                            if($x==6){?></div><?php $x=0; }
+                                        }
+                                     }
+                                    ?>                         
+                                   
 								</div>
 							</div>
 						</li>
 					</ul>
 				</li>
+			<?php } ?>	
 			</ul>
 		</div>
 		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -276,7 +254,6 @@ select
 						<li>
 							<?php 
 							echo $this->Html->link('<i class="fa fa-random"></i> Switch Company','/Logins/Switch-Company',array('escape'=>false)); ?>
-						
 						</li>
 						<li>
 							<?php 
@@ -319,7 +296,7 @@ select
 				<!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
 				
 				<li><?php echo $this->Html->link('<i class="icon-home"></i> Dashboard','/Dashboard',array('escape'=>false)); ?></li>
-				
+				<?php if(in_array(21,$allowed_pages) || in_array(2,$allowed_pages) || in_array(1,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="icon-docs"></i>
@@ -330,9 +307,14 @@ select
 						<?php if(in_array(1,$allowed_pages)){
 						echo '<li>'.$this->Html->link( 'Create', '/Quotations/add' ).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link( 'View', '/Quotations' ); ?></li>
+						<?php if(in_array(21,$allowed_pages) || in_array(2,$allowed_pages)){
+						echo '<li>'.$this->Html->link( 'View', '/Quotations' ).'</li>';
+						} ?>
+						
 					</ul>
 				</li>
+				<?php } ?>
+				<?php if(in_array(3,$allowed_pages) || in_array(22,$allowed_pages) || in_array(4,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="icon-basket"></i>
@@ -343,9 +325,13 @@ select
 						<?php if(in_array(3,$allowed_pages)){
 						echo '<li>'.$this->Html->link( 'Create', '/Sales-Orders/add' ).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link( 'View', '/Sales-Orders' ); ?></li>
+						<?php if(in_array(22,$allowed_pages) || in_array(4,$allowed_pages)){
+						echo '<li>'.$this->Html->link( 'View', '/Sales-Orders' ).'</li>';
+						} ?>
 					</ul>
 				</li>
+				<?php } ?>
+				<?php if(in_array(5,$allowed_pages) || in_array(24,$allowed_pages) || in_array(6,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="icon-handbag"></i>
@@ -356,9 +342,13 @@ select
 						<?php if(in_array(5,$allowed_pages)){
 						echo '<li>'.$this->Html->link( 'Create', '/Job-Cards/Pending-Salesorder-For-Jobcard' ).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link( 'View', '/Job-Cards' ); ?></li>
+						<?php if(in_array(24,$allowed_pages) || in_array(6,$allowed_pages)){
+						echo '<li>'.$this->Html->link( 'View', '/Job-Cards' ).'</li>';
+						} ?>
 					</ul>
 				</li>
+				<?php } ?>
+				<?php if(in_array(7,$allowed_pages) || in_array(23,$allowed_pages) || in_array(8,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-shopping-cart"></i>
@@ -369,10 +359,15 @@ select
 						<?php if(in_array(7,$allowed_pages)){
 						echo '<li>'.$this->Html->link( 'Create', '/SalesOrders/index?pull-request=true' ).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link( 'View', '/Invoices' ); ?></li>
+						<?php if(in_array(23,$allowed_pages) || in_array(8,$allowed_pages)){
+						echo '<li>'.$this->Html->link( 'View', '/Invoices' ).'</li>';
+						} ?>
+						<li><?php //echo $this->Html->link( 'View', '/Invoices' ); ?></li>
 						
 					</ul>
 				</li>
+				<?php } ?>
+				<?php if(in_array(9,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-gift"></i>
@@ -383,9 +378,14 @@ select
 						<?php if(in_array(9,$allowed_pages)){
 						echo '<li>'.$this->Html->link( 'Create', '/Invoices?inventory_voucher=true' ).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link( 'View', '/InventoryVouchers' ); ?></li>
+						<?php if(in_array(10,$allowed_pages)){
+						echo '<li>'.$this->Html->link( 'View', '/InventoryVouchers' ).'</li>';
+						} ?>
+						
 					</ul>
 				</li>
+				<?php } ?>
+				<?php if(in_array(11,$allowed_pages) || in_array(12,$allowed_pages) || in_array(28,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
@@ -396,11 +396,15 @@ select
 						<?php if(in_array(11,$allowed_pages)){
 						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/Challans/Add',array('escape'=>false)).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Challans',array('escape'=>false)); ?></li>
+						<?php if(in_array(12,$allowed_pages) || in_array(28,$allowed_pages)){
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> View','/Challans/',array('escape'=>false)).'</li>';
+						} ?>
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> Pending Challan','/Challans/PendingChallanForCreditNote',array('escape'=>false)); ?></li>
 					</ul>
 				</li>
+				<?php } ?>
 				<li><?php echo $this->Html->link('<i class="icon-home"></i> Material Indents','/MaterialIndents',array('escape'=>false)); ?></li>
+				<?php if(in_array(13,$allowed_pages) || in_array(14,$allowed_pages) || in_array(31,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
@@ -411,9 +415,13 @@ select
 						<?php if(in_array(13,$allowed_pages)){
 						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/MaterialIndents/AddNew?pull-request=true',array('escape'=>false)).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Purchase-Orders',array('escape'=>false)); ?></li>
+						<?php if(in_array(14,$allowed_pages) || in_array(31,$allowed_pages)){
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> View','/Purchase-Orders/',array('escape'=>false)).'</li>';
+						} ?>
 					</ul>
 				</li>
+				<?php } ?>
+				<?php if(in_array(15,$allowed_pages) || in_array(16,$allowed_pages) || in_array(35,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
@@ -424,9 +432,13 @@ select
 						<?php if(in_array(15,$allowed_pages)){
 						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/PurchaseOrders/index?pull-request=true',array('escape'=>false)).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/Grns',array('escape'=>false)); ?></li>
+						<?php if(in_array(16,$allowed_pages) || in_array(35,$allowed_pages)){
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> View','/Grns/',array('escape'=>false)).'</li>';
+						} ?>
 					</ul>
 				</li>
+				<?php } ?>
+				<?php if(in_array(17,$allowed_pages) || in_array(18,$allowed_pages) || in_array(123,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
@@ -437,10 +449,13 @@ select
 						<?php if(in_array(17,$allowed_pages)){
 						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/Grns/index?pull-request=true',array('escape'=>false)).'</li>';
 						} ?>
-						<li><?php echo $this->Html->link('<i class="icon-home"></i> View','/InvoiceBookings/',array('escape'=>false)); ?></li>
+						<?php if(in_array(18,$allowed_pages) || in_array(123,$allowed_pages)){
+                        echo '<li>'.$this->Html->link('<i class="icon-home"></i> View','/InvoiceBookings/',array('escape'=>false)).'</li>';
+                        } ?>
 					</ul>
 				</li>
-
+				<?php } ?>
+				<?php if(in_array(118,$allowed_pages) ||in_array(119,$allowed_pages)||in_array(90,$allowed_pages)||in_array(91,$allowed_pages)|| in_array(92,$allowed_pages) ||in_array(93,$allowed_pages)||in_array(94,$allowed_pages)||in_array(95,$allowed_pages)|| in_array(96,$allowed_pages) ||in_array(97,$allowed_pages)||in_array(98,$allowed_pages)||in_array(99,$allowed_pages)|| in_array(100,$allowed_pages) ||in_array(101,$allowed_pages)||in_array(102,$allowed_pages)||in_array(103,$allowed_pages)|| in_array(104,$allowed_pages) ||in_array(105,$allowed_pages)||in_array(106,$allowed_pages)||in_array(107,$allowed_pages)|| in_array(108,$allowed_pages) ||in_array(109,$allowed_pages)||in_array(110,$allowed_pages)||in_array(111,$allowed_pages)|| in_array(112,$allowed_pages) ||in_array(113,$allowed_pages)||in_array(114,$allowed_pages)||in_array(115,$allowed_pages)|| in_array(116,$allowed_pages) ||in_array(117,$allowed_pages)){ ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-puzzle-piece"></i>
@@ -449,7 +464,10 @@ select
 					</a>
 					<ul class="sub-menu">
 						<ul class="page-sidebar-menu page-sidebar-menu-hover-submenu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+						<?php if(in_array(118,$allowed_pages) ||in_array(119,$allowed_pages)){ ?>
 						<li><?php echo $this->Html->link('<i class="icon-home"></i> Voucher Refrences','/VouchersReferences',array('escape'=>false)); ?></li>
+						<?php } ?>
+						<?php if(in_array(90,$allowed_pages)||in_array(91,$allowed_pages)|| in_array(92,$allowed_pages) ||in_array(93,$allowed_pages)){ ?>
 						<li>
 							<a href="javascript:;">
 							<i class="icon-basket"></i>
@@ -457,10 +475,34 @@ select
 							<span class="arrow "></span>
 							</a>
 							<ul class="sub-menu">
-								<li><?php echo $this->Html->link( 'Add', '/PaymentVouchers/add' ); ?></li>
-								<li><?php echo $this->Html->link( 'View', '/PaymentVouchers' ); ?></li>
+							<?php if(in_array(90,$allowed_pages)){ ?>
+								<li><?php echo $this->Html->link( 'Add', '/Payments/add' ); ?></li>
+							<?php } ?>
+							<?php if(in_array(91,$allowed_pages)|| in_array(92,$allowed_pages) ||in_array(93,$allowed_pages)){ ?>
+								<li><?php echo $this->Html->link( 'View', '/Payments' ); ?></li>
+							<?php } ?>
 							</ul>
 						</li>
+
+						<li>
+							<a href="javascript:;">
+							<i class="icon-basket"></i>
+							<span class="title">Non Print Payment Voucher</span>
+							<span class="arrow "></span>
+							</a>
+							<ul class="sub-menu">
+							<?php if(in_array(90,$allowed_pages)){ ?>
+								<li><?php echo $this->Html->link( 'Add', '/Nppayments/add' ); ?></li>
+							<?php } ?>
+							<?php if(in_array(91,$allowed_pages)|| in_array(92,$allowed_pages) ||in_array(93,$allowed_pages)){ ?>
+								<li><?php echo $this->Html->link( 'View', '/Nppayments' ); ?></li>
+							<?php } ?>
+							</ul>
+						</li>
+
+
+						<?php } ?>
+						<?php if(in_array(94,$allowed_pages)||in_array(95,$allowed_pages)|| in_array(96,$allowed_pages) ||in_array(97,$allowed_pages)){ ?>
 						<li>
 							<a href="javascript:;">
 							<i class="icon-basket"></i>
@@ -468,21 +510,33 @@ select
 							<span class="arrow "></span>
 							</a>
 							<ul class="sub-menu">
-								<li><?php echo $this->Html->link( 'Add', '/ReceiptVouchers/add' ); ?></li>
-								<li><?php echo $this->Html->link( 'View', '/ReceiptVouchers' ); ?></li>
+							<?php if(in_array(94,$allowed_pages)){ ?>
+								<li><?php echo $this->Html->link( 'Add', '/Receipts/add' ); ?></li>
+							<?php } ?>
+							<?php if(in_array(95,$allowed_pages)|| in_array(96,$allowed_pages) ||in_array(97,$allowed_pages)){ ?>
+								<li><?php echo $this->Html->link( 'View', '/Receipts' ); ?></li>
+							<?php } ?>
 							</ul>
 						</li>
+						<?php } ?>
+						<?php if(in_array(98,$allowed_pages)||in_array(99,$allowed_pages)|| in_array(100,$allowed_pages) ||in_array(101,$allowed_pages)){ ?>
 						<li>
 							<a href="javascript:;">
 							<i class="icon-basket"></i>
-							<span class="title">PeetyCash Voucher</span>
+							<span class="title">PettyCash Voucher</span>
 							<span class="arrow "></span>
 							</a>
 							<ul class="sub-menu">
+							<?php if(in_array(98,$allowed_pages)){ ?>
 								<li><?php echo $this->Html->link( 'Add', '/PettyCashReceiptVouchers/add' ); ?></li>
+							<?php } ?>
+							<?php if(in_array(99,$allowed_pages)|| in_array(100,$allowed_pages) ||in_array(101,$allowed_pages)){ ?>
 								<li><?php echo $this->Html->link( 'View', '/PettyCashReceiptVouchers' ); ?></li>
+							<?php } ?>
 							</ul>
 						</li>
+						<?php } ?>
+						<?php if(in_array(102,$allowed_pages)||in_array(103,$allowed_pages)|| in_array(104,$allowed_pages) ||in_array(105,$allowed_pages)){ ?>
 						<li>
 							<a href="javascript:;">
 							<i class="icon-basket"></i>
@@ -490,10 +544,16 @@ select
 							<span class="arrow "></span>
 							</a>
 							<ul class="sub-menu">
+							<?php if(in_array(102,$allowed_pages)){ ?>
 								<li><?php echo $this->Html->link( 'Add', '/ContraVouchers/add' ); ?></li>
+							<?php } ?>
+							<?php if(in_array(103,$allowed_pages)|| in_array(104,$allowed_pages) ||in_array(105,$allowed_pages)){ ?>
 								<li><?php echo $this->Html->link( 'View', '/ContraVouchers' ); ?></li>
+							<?php } ?>
 							</ul>
 						</li>
+						<?php } ?>
+						<?php if(in_array(106,$allowed_pages)||in_array(107,$allowed_pages)|| in_array(108,$allowed_pages) ||in_array(109,$allowed_pages)){ ?>
 						<li>
 							<a href="javascript:;">
 							<i class="icon-basket"></i>
@@ -501,10 +561,16 @@ select
 							<span class="arrow "></span>
 							</a>
 							<ul class="sub-menu">
+							<?php if(in_array(106,$allowed_pages)){ ?>
 								<li><?php echo $this->Html->link( 'Add', '/CreditNotes/add' ); ?></li>
+							<?php } ?>
+							<?php if(in_array(107,$allowed_pages)|| in_array(108,$allowed_pages) ||in_array(109,$allowed_pages)){ ?>
 								<li><?php echo $this->Html->link( 'View', '/CreditNotes' ); ?></li>
+							<?php } ?>
 							</ul>
 						</li>
+						<?php } ?>
+						<?php if(in_array(110,$allowed_pages)||in_array(111,$allowed_pages)|| in_array(112,$allowed_pages) ||in_array(113,$allowed_pages)){ ?>
 						<li>
 							<a href="javascript:;">
 							<i class="icon-basket"></i>
@@ -512,10 +578,16 @@ select
 							<span class="arrow "></span>
 							</a>
 							<ul class="sub-menu">
+							<?php if(in_array(110,$allowed_pages)){ ?>
 								<li><?php echo $this->Html->link( 'Add', '/DebitNotes/add' ); ?></li>
+							<?php } ?>
+							<?php if(in_array(111,$allowed_pages)|| in_array(112,$allowed_pages) ||in_array(113,$allowed_pages)){ ?>
 								<li><?php echo $this->Html->link( 'View', '/DebitNotes' ); ?></li>
+							<?php } ?>
 							</ul>
 						</li>
+						<?php } ?>
+						<?php if(in_array(114,$allowed_pages)||in_array(115,$allowed_pages)|| in_array(116,$allowed_pages) ||in_array(117,$allowed_pages)){ ?>
 						<li>
 							<a href="javascript:;">
 							<i class="icon-basket"></i>
@@ -523,13 +595,19 @@ select
 							<span class="arrow "></span>
 							</a>
 							<ul class="sub-menu">
+							<?php if(in_array(114,$allowed_pages)){ ?>
 								<li><?php echo $this->Html->link( 'Add', '/JournalVouchers/add' ); ?></li>
+							<?php } ?>
+							<?php if(in_array(115,$allowed_pages)|| in_array(116,$allowed_pages) ||in_array(117,$allowed_pages)){ ?>
 								<li><?php echo $this->Html->link( 'View', '/JournalVouchers' ); ?></li>
+							<?php } ?>
 							</ul>
 						</li>
+						<?php } ?>
 					</ul>
 					</ul>
 				</li>
+				<?php } ?>
 				<li>
 					<a href="javascript:;">
 					<i class="fa fa-bar-chart-o"></i>
@@ -549,13 +627,40 @@ select
 								} ?>
 							</ul>
 						</li>
+						<?php if(in_array(36,$allowed_pages)){?>
 						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Item Report','/Item-Ledgers/Stock-Report',array('escape'=>false)); ?></li>	
+						<?php } ?>
+						<?php if(in_array(37,$allowed_pages)){?>
 						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Balance Sheet','/ledger-Accounts/Balance-Sheet',array('escape'=>false)); ?></li>
+						<?php } ?>
+						<?php if(in_array(38,$allowed_pages)){?>
 						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Profit & Loss Statement','/ledger-Accounts/Profit-Loss-Statement',array('escape'=>false)); ?></li>
+						<?php } ?>
+						<?php if(in_array(41,$allowed_pages)){?>
 						<li><?php $today =date('d-m-Y');
 						echo $this->Html->link('<i class="fa fa-puzzle-piece"></i> Daily Report',array('controller'=>'Ledgers','action'=>'index','From'=>$today,'To'=>$today),array('escape'=>false)); ?></li>
+						<?php } ?>
+						<?php if(in_array(39,$allowed_pages)){?>
 						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Material Indent Report','/Item-Ledgers/material-indent-report',array('escape'=>false)); ?></li>
+						<?php } ?>
+						<?php if(in_array(40,$allowed_pages)){?>
 						<li><?php echo $this->Html->link('<i class="fa fa-truck"></i> Account Statement','/Ledgers/Account-Statement',array('escape'=>false)); ?></li>	
+						<?php } ?>
+					</ul>
+				</li>
+				<li>
+					<a href="javascript:;">
+					<i class="fa fa-puzzle-piece"></i>
+					<span class="title">Sale Return</span>
+					<span class="arrow "></span>
+					</a>
+					<ul class="sub-menu">
+						<?php 
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> Create','/Invoices/index?sales-return=true',array('escape'=>false)).'</li>';
+						 ?>
+						<?php 
+						echo '<li>'.$this->Html->link('<i class="icon-home"></i> View','/SaleReturns/',array('escape'=>false)).'</li>';
+						?>
 					</ul>
 				</li>
 			</ul>
@@ -646,13 +751,13 @@ select
 
 <?php echo $this->Html->script('/assets/global/plugins/datatables/media/js/jquery.dataTables.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js'); ?>
+<?php //echo $this->Html->script('/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js'); ?>
 
-<?php echo $this->Html->script('/assets/global/scripts/metronic.js'); ?>
-<?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js'); ?>
+<?php //echo $this->Html->script('/assets/global/scripts/metronic.js'); ?>
+<?php ///echo $this->Html->script('/assets/admin/layout/scripts/layout.js'); ?>
 
-<?php echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js'); ?>
-<?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js'); ?>
+<?php //echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js'); ?>
+<?php //echo $this->Html->script('/assets/admin/layout/scripts/demo.js'); ?>
 <?php echo $this->Html->script('/assets/admin/pages/scripts/form-icheck.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.pulsate.min.js'); ?>
 <?php echo $this->Html->script('/assets/admin/pages/scripts/table-managed.js'); ?>
@@ -662,7 +767,7 @@ select
 <?php echo $this->Html->script('/assets/global/plugins/jquery-validation/js/additional-methods.min.js'); ?>
 <?php echo $this->Html->script('/assets/admin/pages/scripts/form-validation.js'); ?>
 <?php echo $this->Html->script('/assets/admin/pages/scripts/ui-general.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
+<?php //echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
 
 
 <!-- BEGIN PAGE LEVEL PLUGINS -->
@@ -671,14 +776,14 @@ select
 <?php echo $this->Html->script('/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery.input-ip-address-control-1.0.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-pwstrength/pwstrength-bootstrap.min.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'); ?>
+<?php //echo $this->Html->script('/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery-tags-input/jquery.tagsinput.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/typeahead/handlebars.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/typeahead/typeahead.bundle.min.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js'); ?>
+<?php //echo $this->Html->script('/assets/global/plugins/icheck/icheck.min.js'); ?>
+<?php //echo $this->Html->script('/assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js'); ?>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->

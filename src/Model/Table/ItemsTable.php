@@ -88,6 +88,7 @@ class ItemsTable extends Table
 		$this->hasMany('ItemSerialNumbers', [
             'foreignKey' => 'item_id'
         ]);
+		$this->belongsTo('FinancialYears');
     }
 
     /**
@@ -111,10 +112,7 @@ class ItemsTable extends Table
             ->requirePresence('freeze', 'create')
             ->notEmpty('freeze');
 
-        $validator
-            ->integer('serial_number_enable')
-            ->requirePresence('serial_number_enable', 'create')
-            ->notEmpty('serial_number_enable');
+        
 
         $validator
             ->integer('minimum_quantity')

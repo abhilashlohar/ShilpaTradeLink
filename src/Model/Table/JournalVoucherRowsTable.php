@@ -41,9 +41,14 @@ class JournalVoucherRowsTable extends Table
             'foreignKey' => 'journal_voucher_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('LedgerAccounts', [
+         $this->belongsTo('LedgerAccounts', [
             'foreignKey' => 'ledger_account_id',
             'joinType' => 'INNER'
+        ]);
+		$this->belongsTo('ReceivedFroms', [
+			'className' => 'LedgerAccounts',
+            'foreignKey' => 'received_from_id',
+            'propertyName' => 'ReceivedFrom',
         ]);
     }
 
@@ -59,10 +64,6 @@ class JournalVoucherRowsTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->integer('amount')
-            ->requirePresence('amount', 'create')
-            ->notEmpty('amount');
 
         return $validator;
     }
@@ -77,7 +78,8 @@ class JournalVoucherRowsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['journal_voucher_id'], 'JournalVouchers'));
-        $rules->add($rules->existsIn(['ledger_account_id'], 'LedgerAccounts'));
+		$rules->add($rules->existsIn(['received_from_id'], 'ReceivedFroms'));
+       // $rules->add($rules->existsIn(['ledger_account_id'], 'LedgerAccounts'));
 
         return $rules;
     }

@@ -52,17 +52,18 @@ class AppController extends Controller
 		$db='default';
 		$conn = ConnectionManager::get($db);
 		$conn->begin();*/
-		
+		$closed_month=[];
 		
 		$controller = $this->request->params['controller'];
 		$action = $this->request->params['action']; 
 		if (in_array($controller, ['Logins']) and in_array($action, ['index'])) {
-		}else{
+		}else{ 
 			$st_login_id = $session->read('st_login_id');
 			$st_company_id = $session->read('st_company_id');
 			$st_year_id =  $session->read('st_year_id');
 			if(empty($st_login_id)){
-				return $this->redirect("/login");
+				return $this->redirect('/logins'); exit;
+				//return $this->redirect(['controller'=>'Homes','action'>'logins']); 
 			}else{
 				$this->loadModel('Logins');
 				$login=$this->Logins->get($st_login_id);
@@ -87,6 +88,23 @@ class AppController extends Controller
 				
 				
 			}
+			////// Financial Year Or Month Closed /////////////
+			$this->loadModel('FinancialYears');
+			$this->loadModel('FinancialMonths');
+			$FinancialClose = $this->FinancialYears->find()->where(['company_id'=>$st_company_id])->contain(['FinancialMonths' => function($q){
+				return $q->where(['status' => 'Closed']);
+			}
+			])->toArray();
+			foreach($FinancialClose as $financial_closes)
+			{
+				foreach($financial_closes->financial_months as $financial_months)
+				{
+					$closed_month[]=$financial_months->month;
+				}
+			}
+			$this->set(compact('closed_month'));
+			
+			////////////////////////////////////////////
 		}
 		if(!empty($st_login_id)){
 			$this->loadModel('UserRights');
@@ -97,15 +115,21 @@ class AppController extends Controller
 			}
 			$this->set(compact('allowed_pages'));
 		}
-		
-		
-		$this->loadModel('pages');
-		$page=$this->pages->find()->where(['controller'=>$controller,'action'=>$action])->first();
+
+		$this->loadModel('Pages');
+		$pages=$this->Pages->find()->where(['master'=>1]);
+		$this->set(compact('pages'));
+
+		$page=$this->Pages->find()->where(['controller'=>$controller,'action'=>$action])->first();
+
 		if(!empty($page->id) and !in_array($page->id,$allowed_pages)){
+			$pages=[];
+			$this->set(compact('pages'));
 			$this->viewBuilder()->layout('index_layout');
 			$this -> render('/Error/not_allow'); 
 		}
-		
+
+
 		
     }
 
@@ -123,4 +147,5 @@ class AppController extends Controller
             $this->set('_serialize', true);
         }
     }
+	   
 }

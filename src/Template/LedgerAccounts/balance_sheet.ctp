@@ -60,11 +60,10 @@
 					</div>
 					<div class="col-md-6">
 						<div align="center"><h4>Assets</h4></div>
-						<table class="table table-condensed">
+						<table class="table table-condensed table-hover">
 							<tbody>
 							<?php $Total_Assets=0; $Total_Dr=0; $Total_Cr=0;
 							foreach($Ledgers_Assets as $Ledger){ 
-							
 							?>
 								<tr>
 									<td>
@@ -77,7 +76,7 @@
 										?></td>
 									<?php } else { ?>
 											
-										<td style=" text-align: right; "><?= h(abs($Ledger->total_debit-$Ledger->total_credit)); echo " Cr" ;
+										<td style="text-align: right;" width="100px" ><?= h(abs($Ledger->total_debit-$Ledger->total_credit)); echo " Cr" ;
 										$Total_Cr+=$Ledger->total_debit-$Ledger->total_credit; 
 										?></td>
 									<?php } ?>
@@ -87,9 +86,9 @@
 								<tr>
 								<th>Total Assets</th>
 									<?php  if($Total_Dr>$Total_Cr){ $Total_Assets=abs($Total_Dr)-abs($Total_Cr);  ?>
-										<th style=" text-align: right; "><?= h($Total_Assets ); ?> Dr</th>
+										<th style=" text-align: right;" width="200px"><?= h($Total_Assets ); ?> Dr</th>
 									<?php } else if($Total_Dr<$Total_Cr){ $Total_Assets=abs($Total_Dr)-abs($Total_Cr); ?>
-										<th style=" text-align: right; "><?= h(abs($Total_Assets)); ?>Cr</th>
+										<th style=" text-align: right;" width="200px"><?= h(abs($Total_Assets)); ?>Cr</th>
 									<?php } else { ?>
 									<th style=" text-align: right; "><?php echo "0" ?></th>
 									<?php } ?>

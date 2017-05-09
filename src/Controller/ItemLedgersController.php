@@ -22,6 +22,7 @@ class ItemLedgersController extends AppController
 		$session = $this->request->session();
         $st_company_id = $session->read('st_company_id');
 		
+		
         $this->paginate = [
             'contain' => ['Items']
         ];
@@ -179,7 +180,7 @@ class ItemLedgersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $session = $this->request->session();
         $st_company_id = $session->read('st_company_id');
-
+		$item_name=$this->request->query('item_name');
        
 		$query = $this->ItemLedgers->find();
 		$totalInCase = $query->newExpr()
@@ -202,14 +203,18 @@ class ItemLedgersController extends AppController
 		->where(['company_id'=>$st_company_id])
 		->group('item_id')
 		->autoFields(true)
-		->contain(['Items']);
+		->contain(['Items'=>function($q) use($item_name){
+			return $q->where(['name LIKE'=>'%'.$item_name.'%']);
+		}]);
         $itemLedgers = $this->paginate($query);
 		
-        $this->set(compact('itemLedgers'));
+        $this->set(compact('itemLedgers', 'item_name'));
     }
 	
 	 public function materialindentreport(){
 		$this->viewBuilder()->layout('index_layout'); 
+		$session = $this->request->session();
+        $st_company_id = $session->read('st_company_id');
 		//$Items = $this->ItemLedgers->Items->find()->where(['source'=>'Purchessed/Manufactured'])->orWhere(['source'=>'Purchessed']); 
 		/* $material_items_for_purchase=[];
 		$material_items_for_purchase[]=array('item_name'=>'Kgn212','item_id'=>'144','quantity'=>'25','company_id'=>'25','employee_name'=>'Gopal','company_name'=>'STL','material_indent_id'=>'2');
@@ -238,23 +243,28 @@ class ItemLedgersController extends AppController
 			->leftJoinWith('SalesOrderRows', function ($q) {
 				return $q->where(['SalesOrderRows.processed_quantity < SalesOrderRows.quantity']);
 			})
+			->where(['company_id'=>$st_company_id])
 			->group(['SalesOrders.id'])
 			->autoFields(true)
 			->having(['total_rows >' => 0])
 			->contain(['SalesOrderRows'])
 			->toArray();
-			//pr($salesOrders); 
-			$sales=array();
+			//pr($salesOrders); exit; 
+			
+			$sales=[];
 			foreach($salesOrders as $data){
-				
-				$item_id=$data['sales_order_rows'][0]['item_id'];
-				$quantity=$data['sales_order_rows'][0]['quantity'];
-				$processed_quantity=$data['sales_order_rows'][0]['processed_quantity'];
+				foreach($data->sales_order_rows as $row){ 
+				//pr($row->quantity);
+				$item_id=$row->item_id;
+				$quantity=$row->quantity;
+				$processed_quantity=$row->processed_quantity;
 				$Sales_Order_stock=$quantity-$processed_quantity;
-				$sales[$item_id]=$Sales_Order_stock;
+				$sales[$row->item_id]=@$sales[$row->item_id]+$Sales_Order_stock;
+				}
+				//$sales[$item_id]=@$sales[$item_id]+$Sales_Order_stock;
 			}
-		
-		$JobCards=$this->ItemLedgers->JobCards->find()->where(['status'=>'Pending'])->contain(['JobCardRows']);
+			//pr($sales);exit;
+		$JobCards=$this->ItemLedgers->JobCards->find()->where(['status'=>'Pending','company_id'=>$st_company_id])->contain(['JobCardRows']);
 		
 		$job_card_items=[];
 		foreach($JobCards as $JobCard){
@@ -284,18 +294,21 @@ class ItemLedgersController extends AppController
 				])
 				->group('item_id')
 				->autoFields(true)
-				->contain(['Items' => function($q){
-					return $q->where(['Items.source'=>'Purchessed/Manufactured'])->orWhere(['Items.source'=>'Purchessed']);
+				->contain(['Items' => function($q) use($st_company_id){
+					return $q->where(['Items.source'=>'Purchessed/Manufactured'])->orWhere(['Items.source'=>'Purchessed'])->contain(['ItemCompanies'=>function($p) use($st_company_id){
+						return $p->where(['ItemCompanies.company_id' => $st_company_id,'ItemCompanies.freeze' => 0]);
+					}]);
 				}]);
-				
+				//pr($ItemLedgers->toArray()); exit;
 		foreach ($ItemLedgers as $itemLedger){
+			if($itemLedger->company_id==$st_company_id){
 			$item_name=$itemLedger->item->name;
 			$item_id=$itemLedger->item->id;
 			$Current_Stock=$itemLedger->total_in-$itemLedger->total_out;
 			
 			
 			$material_report[]=array('item_name'=>$item_name,'item_id'=>$item_id,'Current_Stock'=>$Current_Stock,'sales_order'=>@$sales[$item_id],'job_card_qty'=>@$job_card_items[$item_id]);
-			
+			}
 		} 
 			
 		$this->set(compact('material_report','mit'));

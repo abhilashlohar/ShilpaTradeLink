@@ -53,10 +53,12 @@
 						<td><?= h($employee->mobile) ?></td>
 						<td><?= h($employee->email) ?></td>
 						<td class="actions">
-							
+							<?php if(in_array(47,$allowed_pages)){?>
 							<?php echo $this->Html->link('<i class="fa fa-search"></i>',['action' => 'view', $employee->id],array('escape'=>false,'class'=>'btn btn-xs yellow tooltips','data-original-title'=>'View')); ?>
+							<?php } ?>
+							<?php if(in_array(48,$allowed_pages)){?>
 							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'edit', $employee->id],array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
-							<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
+							<!--<?= $this->Form->postLink('<i class="fa fa-trash"></i> ',
 								['action' => 'delete', $employee->id], 
 								[
 									'escape' => false,
@@ -64,6 +66,10 @@
 									'confirm' => __('Are you sure ?', $employee->id)
 								]
 							) ?>
+							<?php } ?>-->
+							<?php if(in_array(49,$allowed_pages)){?>
+							<?php echo $this->Html->link('<i class="fa fa-pencil-square-o"></i>',['action' => 'EditCompany', $employee->id],array('escape'=>false,'class'=>'btn btn-xs green tooltips','data-original-title'=>'EditCompany')); ?>
+							<?php } ?>
 						</td>
 					</tr>
 					<?php endforeach; ?>

@@ -176,7 +176,7 @@
 							<td>
 								<div class="row">
 									<div class="col-md-11 padding-right-decrease">
-										<?php echo $this->Form->input('quotation_rows['.$q.'][item_id]', ['options' => $items,'label' => false,'class' => 'form-control input-sm item_box','value' => $quotation_row->item_id,'required','popup_id'=>$q]); ?>
+										<?php echo $this->Form->input('quotation_rows['.$q.'][item_id]', ['options' => $items,'label' => false,'class' => 'form-control input-sm item_box item_id','value' => $quotation_row->item_id,'required','popup_id'=>$q]); ?>
 									</div>
 									<div class="col-md-1 padding-left-decrease">
 										<a href="#" class="btn btn-default btn-sm popup_btn" role="button" popup_id="<?php echo $q; ?>"> <i class="fa fa-info-circle"></i> </a>
@@ -266,12 +266,12 @@
 
 <table id="sample_tb" style="display:none;">
 	<tbody >
-		<tr class="tr1 preimp">
+		<tr class="tr1 preimp maintr">
 			<td rowspan="2" width="10">0</td>
 			<td>
 				<div class="row">
 					<div class="col-md-11 padding-right-decrease">
-						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_box','placeholder' => 'Item']); ?>
+						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm item_box item_id','placeholder' => 'Item']); ?>
 					</div>
 					<div class="col-md-1 padding-left-decrease">
 						<a href="#" class="btn btn-default btn-sm popup_btn" role="button"> <i class="fa fa-info-circle"></i> </a>
@@ -295,7 +295,7 @@
 			<td width="130"><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
 			<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 		</tr>
-		<tr class="tr2 preimp">
+		<tr class="tr2 preimp maintr">
 			<td colspan="4" class="main"><?php echo $this->Form->textarea('description', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','style'=>['display:none'],'rows'=>'1']); ?>
 			<div contenteditable="true" id="editor"></div>
 			</td>
@@ -323,6 +323,29 @@ $( "#sortable" ).disableSelection();
 <script>
 $(document).ready(function() {
 	
+	jQuery.validator.addMethod("notEqualToGroup", function (value, element, options) {
+		// get all the elements passed here with the same class
+		var elems = $(element).parents('form').find(options[0]);
+		// the value of the current element
+		var valueToCompare = value;
+		// count
+		var matchesFound = 0;
+		// loop each element and compare its value with the current value
+		// and increase the count every time we find one
+		jQuery.each(elems, function () {
+			thisVal = $(this).val();
+			if (thisVal == valueToCompare) {
+				matchesFound++;
+			}
+		});
+		// count should be either 0 or 1 max
+		if (this.optional(element) || matchesFound <= 1) {
+			//elems.removeClass('error');
+			return true;
+		} else {
+			//elems.addClass('error');
+		}
+	}, jQuery.format(""))
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -476,7 +499,15 @@ $(document).ready(function() {
 		$("#main_tb tbody tr.tr1").each(function(){
 			$(this).find('span.help-block-error').remove();
 			$(this).find("td:nth-child(1)").html(++i); i--;
-			$(this).find("td:nth-child(2) select.item_box").select2().attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).rules("add", "required");
+			//$(this).find("td:nth-child(2) select.item_box").select2().attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).rules("add", "required");
+			$(this).find("td:nth-child(2) select.item_box").select2().attr({name:"quotation_rows["+i+"][item_id]", id:"quotation_rows-"+i+"-item_id",popup_id:i}).rules('add', {
+						required: true,
+						notEqualToGroup: ['.item_id'],
+						messages: {
+							notEqualToGroup: "Do not select same Item again."
+						}
+					});
+			
 			$(this).find("td:nth-child(2) input[type=hidden]:eq(0)").attr({name:"quotation_rows["+i+"][height]", id:"quotation_rows-"+i+"-height"});
 			$(this).find("td:nth-child(2) a.popup_btn").attr("popup_id",i);
 			$(this).find("td:nth-child(2) div.modal").attr("popup_div_id",i);

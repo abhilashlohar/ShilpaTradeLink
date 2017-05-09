@@ -108,9 +108,10 @@ class LedgersController extends AppController
         $ledger = $this->Ledgers->get($id, [
             'contain' => ['LedgerAccounts']
         ]);
+
 		
 		$ReferenceBalance=$this->Ledgers->ReferenceBalances->find()->where(['ledger_account_id'=>$ledger->ledger_account_id,'reference_no'=>$ledger->ref_no])->first();
-		
+		//pr($ReferenceBalance); exit;
 		$ref_bal_diff=abs($ReferenceBalance->credit-$ReferenceBalance->debit);
 		$ledger_diff=abs($ledger->credit-$ledger->debit);
 		
@@ -310,9 +311,16 @@ class LedgersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
+		$ledger_name=$this->request->query('ledger_name');
 		
-		$OpeningBalanceViews = $this->paginate($this->Ledgers->find()->contain(['LedgerAccounts'])->where(['Ledgers.company_id'=>$st_company_id,'Ledgers.voucher_source'=>'Opening Balance']));
-		$this->set(compact('OpeningBalanceViews'));
+		$OpeningBalanceViews = $this->paginate($this->Ledgers->find()
+		->contain(['LedgerAccounts'=>function($q) use($ledger_name){
+			return $q->where(['LedgerAccounts.name LIKE'=>'%'.$ledger_name.'%']);
+		}])
+		->where(['Ledgers.company_id'=>$st_company_id,'Ledgers.voucher_source'=>'Opening Balance']));
+		$this->set(compact('OpeningBalanceViews', 'ledger_name'));
 	}
+	
+	
 	
 }

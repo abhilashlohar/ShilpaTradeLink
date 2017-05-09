@@ -16,20 +16,23 @@ class LoginsController extends AppController
 	   $number=2;
 	   $login = $this->Logins->newEntity();
 	   if ($this->request->is('post')) 
-		{
+		{ 
 			$username=$this->request->data["username"];
 			$password=$this->request->data["password"];
 			$query = $this->Logins->findAllByUsernameAndPassword($username, $password);
 			$number = $query->count(); 
+			
 			foreach ($query as $row) {
 				$login_id=$row["id"];
 				$employee_id=$row["employee_id"];
 			}
+			
 			if($number==1 && !empty($login_id)){
 				$this->request->session()->write('st_login_id',$login_id);
 				$Employee=$this->Logins->Employees->get($employee_id, [
 					'contain' => ['Companies']
 				]);
+				
 				$count=0;
 				foreach($Employee->companies as $company){
 					$count++;
@@ -99,17 +102,29 @@ class LoginsController extends AppController
 		
 		$login=$this->Logins->get($st_login_id);
 		
-		if(!empty($company_id)){
+		if(!empty($company_id)){ 
 			$this->request->allowMethod(['post', 'delete']);
 			$this->request->session()->write('st_company_id',$company_id);
 			
-			return $this->redirect(['controller'=>'Financial-Years','action' => 'selectCompanyYear']);
+			return $this->redirect(['controller'=>'FinancialYears','action' => 'selectCompanyYear']);
+			
 		}
 		$Employee=$this->Logins->Employees->get($login->employee_id, [
 						'contain' => ['Companies']
 		]);
 		$this->set(compact('st_login_id','Employee'));
 	}
-	
+
+	public function delete($id=null){
+			$this->request->allowMethod(['post', 'delete']);
+		$this->Logins->UserRights->deleteAll(['login_id' => $id]);
+		$login = $this->Logins->get($id);
+			if ($this->Logins->delete($login)) {
+				$this->Flash->success(__('The User Login  has been deleted.'));
+			} else {
+				$this->Flash->error(__('The User Login could not be deleted. Please, try again.'));
+			}
+			return $this->redirect(['controller'=>'Logins','action' => 'Add']);
+	}
 }
 

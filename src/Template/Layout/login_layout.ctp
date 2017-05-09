@@ -78,19 +78,7 @@ select
 <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/jquery-migrate.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap/js/bootstrap.min.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/jquery.blockui.min.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/uniform/jquery.uniform.min.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/jquery.cokie.min.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
-<!-- END CORE PLUGINS -->
-<!-- BEGIN PAGE LEVEL PLUGINS -->
-<?php echo $this->Html->script('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'); ?>
-<?php echo $this->Html->script('/assets/global/plugins/select2/select2.min.js'); ?>
-<!-- END PAGE LEVEL PLUGINS -->
-<!-- BEGIN PAGE LEVEL SCRIPTS -->
-<?php echo $this->Html->script('/assets/global/scripts/metronic.js'); ?>
-<?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js'); ?>
-<?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js'); ?>
+
 <?php echo $this->Html->script('/assets/admin/pages/scripts/login.js'); ?>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>

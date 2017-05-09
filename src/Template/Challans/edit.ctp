@@ -181,12 +181,12 @@
 				<tbody>
 				<?php 	$q=1; foreach ($challan->challan_rows as $challan_rows): ?>
 
-					<tr class="tr1">
+					<tr class="tr1" row_no='<?php echo @$challan_rows->id; ?>'>
 						<td rowspan="2" width="10"><?php echo $q; ?></td>
 						<td>
 							<div class="row">
 								<div class="col-md-11">
-									<?php echo $this->Form->input('challan_rows['.$q.'][item_id]', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me','placeholder' => 'Item','value'=>$challan_rows->item_id]); ?>
+									<?php echo $this->Form->input('challan_rows['.$q.'][item_id]', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2me item_id','placeholder' => 'Item','value'=>$challan_rows->item_id]); ?>
 								</div>
 							</div>
 						</td>
@@ -195,14 +195,14 @@
 						<td width="130"><?php echo $this->Form->input('challan_rows['.$q.'][amount]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount','value'=>$challan_rows->amount]); ?></td>
 						<td  width="70"><a class="btn btn-xs btn-default addrow" href="#" role='button'><i class="fa fa-plus"></i></a><a class="btn btn-xs btn-default deleterow" href="#" role='button'><i class="fa fa-times"></i></a></td>
 					</tr>
-					<tr class="tr2">
+					<tr class="tr2" row_no='<?php echo @$challan_rows->id; ?>'>
 						<td colspan="4"><?php echo $this->Form->textarea('challan_rows['.$q.'][description]', ['label' => false,'class' => 'form-control input-sm autoExpand','placeholder' => 'Description','rows'=>'1','value'=>$challan_rows->description]); ?></td>
 						<td></td>
 					</tr>
 					<?php $q++; endforeach ?>
 				</tbody>
 				<tfoot>
-					<tr>
+					<tr >
 						<td colspan="4" align="right"><b>Total</b></td>
 						<td><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total']); ?></td>
 						<td></td>
@@ -254,7 +254,7 @@
 			<td>
 				<div class="row">
 					<div class="col-md-11 padding-right-decrease" id="item_div">
-						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen item_box','placeholder' => 'Item']); ?>
+						<?php echo $this->Form->input('item_id', ['empty'=>'Select','options' => $items,'label' => false,'class' => 'form-control input-sm select2-offscreen item_box item_id','placeholder' => 'Item']); ?>
 					</div>
 					<div class="col-md-1 padding-left-decrease">
 						
@@ -289,6 +289,29 @@
 
 <script>
 $(document).ready(function() {
+	jQuery.validator.addMethod("notEqualToGroup", function (value, element, options) {
+		// get all the elements passed here with the same class
+		var elems = $(element).parents('form').find(options[0]);
+		// the value of the current element
+		var valueToCompare = value;
+		// count
+		var matchesFound = 0;
+		// loop each element and compare its value with the current value
+		// and increase the count every time we find one
+		jQuery.each(elems, function () {
+			thisVal = $(this).val();
+			if (thisVal == valueToCompare) {
+				matchesFound++;
+			}
+		});
+		// count should be either 0 or 1 max
+		if (this.optional(element) || matchesFound <= 1) {
+			//elems.removeClass('error');
+			return true;
+		} else {
+			//elems.addClass('error');
+		}
+	}, jQuery.format(""))
 	//--------- FORM VALIDATION
 	var form3 = $('#form_sample_3');
 	var error3 = $('.alert-danger', form3);
@@ -409,9 +432,10 @@ $(document).ready(function() {
 	var terms_conditions=$("#terms_conditions").text();
 	$('textarea[name="terms_conditions"]').val(terms_conditions);
 	
-	$('.deleterow').die().live("click",function() {
+	$('.deleterow').die().live("click",function() { 
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
+			
 			if(l>2){
 				var row_no=$(this).closest("tr").attr("row_no");
 				var del="tr[row_no="+row_no+"]";
@@ -435,12 +459,19 @@ $(document).ready(function() {
 			if(r==2){ w++; r=0; }
 		});
 		rename_rows();
-	}
-	function rename_rows(){
+		}
+	function rename_rows(){  
 	var i=0;
-			$("#main_tb tbody tr.tr1").each(function(){
+			$("#main_tb tbody tr.tr1").each(function(){ 
 				$(this).find("td:nth-child(1)").html(++i); --i;
-				$(this).find("td:nth-child(2) select").select2().attr({name:"challan_rows["+i+"][item_id]", id:"challan_rows-"+i+"-item_id"}).rules("add", "required");
+				$(this).find("td:nth-child(2) select").select2().attr({name:"challan_rows["+i+"][item_id]", id:"challan_rows-"+i+"-item_id",popup_id:i}).rules('add', {
+							required: true,
+							notEqualToGroup: ['.item_id'],
+							messages: {
+								notEqualToGroup: "Do not select same Item again."
+							}
+						});
+				
 				$(this).find("td:nth-child(3) input").attr({name:"challan_rows["+i+"][quantity]", id:"challan_rows-"+i+"-quantity"}).rules('add', {
 						required: true,
 						digits: true,
