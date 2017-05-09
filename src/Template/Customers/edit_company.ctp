@@ -28,7 +28,7 @@
 						<td class="actions">
 						 	<?php if($Company_array =='Yes') { ?>
 							 <?= $this->Form->postLink('Added ',
-								['action' => 'CheckCompany', $key,$customer_id],
+								['action' => 'CheckCompany', $key,$customer_id,'remove'],
 								[
 									'escape' => false,
 									'class'=>' red tooltips','data-original-title'=>'Click To Remove'
@@ -37,7 +37,7 @@
 							) ?>
 							<?php  } else { ?>
 							<?= $this->Form->postLink(' Removed ',
-								['action' => 'AddCompany', $key,$customer_id],
+								['action' => 'AddCompany', $key,$customer_id,'add'],
 								[
 									'escape' => false,
 									'class'=>' blue tooltips','data-original-title'=>'Click To Add'
