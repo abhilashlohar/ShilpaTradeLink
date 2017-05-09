@@ -78,6 +78,7 @@ $this->Form->templates([
 					<tr>
 						<th width="5%">Sr.No. </th>
 						<th >Items</th>
+						<th  width="4%"></th>
 						<th align="center" width="10%">Quantity</th>
 						<th align="center" width="10%">Ammount</th>
 						<th  width="4%"></th>
@@ -92,7 +93,9 @@ $this->Form->templates([
 							<td style="white-space: nowrap;"><?php echo $invoice_booking_row->item->name; ?>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.item_id', ['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value' => @$invoice_booking_row->item->id]); ?>
 							</td>
-							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.quantity',['label' => false,'class' => 'form-control input-sm','type'=>'text','value'=>$invoice_booking_row->quantity,'max'=>$invoice_booking_row->quantity]); ?></td>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.ib_ammount',['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value'=>$invoice_booking_row->total]); ?>
+							</td>
+							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.quantity',['label' => false,'class' => 'form-control input-sm quantity','type'=>'text','value'=>$invoice_booking_row->quantity,'max'=>$invoice_booking_row->quantity]); ?></td>
 							<td><?php echo $this->Form->input('invoice_booking_rows.'.$q.'.ib_ammount',['label' => false,'class' => 'form-control input-sm','type'=>'hidden','value'=>$invoice_booking_row->total]); ?>
 							<?php echo $this->Form->input('invoice_booking_rows.'.$q.'.total',['label' => false,'class' => 'form-control input-sm','type'=>'text','value'=>$invoice_booking_row->total]); ?></td>
 							<td>
@@ -202,32 +205,53 @@ $(document).ready(function() {
 	});	
 
 	$('.rename_check').die().live("click",function() {
-		rename_rows(); 
+		rename_rows();    calculate_total();
     });	
+	$('.quantity').die().live("keyup",function() {
+		var qty =$(this).val();
+			rename_rows(); 
+    });
 	rename_rows();
 	function rename_rows(){
 		var i=0;
 		$("#main_tb tbody tr.tr1").each(function(){  //alert();
 			var row_no=$(this).attr('row_no');
-			var val=$(this).find('td:nth-child(5) input[type="checkbox"]:checked').val();
+			var val=$(this).find('td:nth-child(6) input[type="checkbox"]:checked').val();
 			if(val){
 				i++;
 				$(this).find('td:nth-child(2) input').attr("name","purchase_return_rows["+row_no+"][item_id]").attr("id","purchase_return_rows-"+row_no+"-item_id").rules("add", "required");
-				$(this).find('td:nth-child(3) input').attr("name","purchase_return_rows["+row_no+"][quantity]").attr("id","purchase_return_rows-"+row_no+"-quantity").removeAttr("readonly").rules("add", "required");
-				$(this).find('td:nth-child(4) input').attr("name","purchase_return_rows["+row_no+"][total]").attr("id","purchase_return_rows-"+row_no+"-total").rules("add", "required");
+				$(this).find('td:nth-child(3) input').attr("name","purchase_return_rows["+row_no+"][ib_ammount]").attr("id","purchase_return_rows-"+row_no+"-ib_ammount").removeAttr("readonly").rules("add", "required");
+				$(this).find('td:nth-child(4) input').attr("name","purchase_return_rows["+row_no+"][quantity]").attr("id","purchase_return_rows-"+row_no+"-quantity").removeAttr("readonly").rules("add", "required");
+				$(this).find('td:nth-child(5) input').attr("name","purchase_return_rows["+row_no+"][total]").attr("id","purchase_return_rows-"+row_no+"-total").rules("add", "required");
 				$(this).css('background-color','#fffcda');
 			}else{
 				$(this).find('td:nth-child(2) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(3) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(3) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(4) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
+				$(this).find('td:nth-child(5) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
 				$(this).css('background-color','#FFF');
 			} 
 			$('input[name="checked_row_length"]').val(i);
-			//$("#checked_row_length").val(i);
+			
 		});
 	}
-
+	
+	function calculate_total(){
+		$("#main_tb tbody tr.tr1").each(function(){  
+			var val=$(this).find('td:nth-child(6) input[type="checkbox"]:checked').val();
+			if(val){
+				var qty=parseInt($(this).find("td:nth-child(3) input").val());
+				
+				var Rate=parseFloat($(this).find("td:nth-child(4) input").val());
+				var Amount=Rate/qty;
+				alert(qty);alert(Rate);
+				//alert(qty);
+				$(this).find("td:nth-child(5) td:eq(1) input").val(Amount.toFixed(2));
+					//alert(val);
+				}
+		});
+	}
 });
 
 </script>
