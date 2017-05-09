@@ -49,6 +49,7 @@ class PurchaseOrdersController extends AppController
 		}
 		
 		
+		
 		if($status==null or $status=='Pending'){
 			$having=['total_rows >' => 0];
 		}elseif($status=='Converted-Into-GRN'){
