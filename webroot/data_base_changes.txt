@@ -26,3 +26,5 @@ Add new field in reference_balances :-auto_inc(int)
 Add new field in Invoice sale_return_status(Varchar)(default->No).
 Add new field in Invoice sale_return_id(Int).
 Add new field in Invoice_rows sale_return_quantity(Int).
+Add new field in reference_details sale_return_id(Int).
+Add new field in item_serial_numbers sale_return_id(Int).
