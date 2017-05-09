@@ -22,9 +22,7 @@ class PaymentsController extends AppController
 		
 		$session = $this->request->session();
 		$st_company_id = $session->read('st_company_id');
-<<<<<<< HEAD
-        $this->paginate = [
-=======
+
 
 		$where =[];
 		$From = $this->request->query('From');
@@ -51,16 +49,12 @@ class PaymentsController extends AppController
 
 
 		$this->paginate = [
->>>>>>> origin/master
             'contain' => []
         ];
 		
 		
-<<<<<<< HEAD
-		$payments = $this->paginate($this->Payments->find()->where(['company_id'=>$st_company_id])->contain(['PaymentRows'=>function($q){
-=======
+
 		$payments = $this->paginate($this->Payments->find()->where($where)->where(['company_id'=>$st_company_id])->contain(['PaymentRows'=>function($q){
->>>>>>> origin/master
 			$PaymentRows = $this->Payments->PaymentRows->find();
 			$totalCrCase = $PaymentRows->newExpr()
 				->addCase(

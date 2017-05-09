@@ -481,7 +481,6 @@ select
 							<?php if(in_array(91,$allowed_pages)|| in_array(92,$allowed_pages) ||in_array(93,$allowed_pages)){ ?>
 								<li><?php echo $this->Html->link( 'View', '/Payments' ); ?></li>
 							<?php } ?>
-<<<<<<< HEAD
 							</ul>
 						</li>
 
@@ -500,12 +499,6 @@ select
 							<?php } ?>
 							</ul>
 						</li>
-
-
-=======
-							</ul>
-						</li>
->>>>>>> origin/master
 						<?php } ?>
 						<?php if(in_array(94,$allowed_pages)||in_array(95,$allowed_pages)|| in_array(96,$allowed_pages) ||in_array(97,$allowed_pages)){ ?>
 						<li>
