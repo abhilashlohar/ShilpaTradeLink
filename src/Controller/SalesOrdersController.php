@@ -55,11 +55,11 @@ class SalesOrdersController extends AppController
 		}
 		if(!empty($From)){
 			$From=date("Y-m-d",strtotime($this->request->query('From')));
-			$where['date >=']=$From;
+			$where['SalesOrders.created_on >=']=$From;
 		}
 		if(!empty($To)){
 			$To=date("Y-m-d",strtotime($this->request->query('To')));
-			$where['date <=']=$To;
+			$where['SalesOrders.created_on <=']=$To;
 		}
         $this->paginate = [
             'contain' => ['Customers','Employees','Categories', 'Companies']
