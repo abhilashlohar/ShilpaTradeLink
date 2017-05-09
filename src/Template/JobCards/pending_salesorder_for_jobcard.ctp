@@ -10,6 +10,57 @@
 <div class="portlet-body">
 	<div class="row">
 		<div class="col-md-12">
+		<form method="GET" >
+		<input type="hidden">
+				<table class="table table-condensed">
+				
+					<tbody>
+					
+						<tr>
+							<td>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="input-group" >
+											<span class="input-group-addon">SO-</span><input type="text" name="so_no" class="form-control input-sm" placeholder="SO No" value="<?php echo @$so_no; ?>">
+										</div>
+									</div>
+									
+								
+								</div>
+							</td>
+							<td>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="input-group" >
+											<span class="input-group-addon">Customer</span><input type="text" name="cust_name" class="form-control input-sm" placeholder="Customer" value="<?php echo @$cust_name; ?>">
+										</div>
+									</div>
+								
+									
+								</div>
+							</td>
+							<td><div class="row">
+									<div class="col-md-6">
+										<input type="text" name="Po_Date_From" class="form-control input-sm date-picker" placeholder="PO Date From" value="<?php echo @$Po_Date_From; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+									<div class="col-md-6">
+										<input type="text" name="Po_Date_To" class="form-control input-sm date-picker" placeholder="PO Date To" value="<?php echo @$Po_Date_To; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+								</div></td>
+							<td>
+								<div class="row">
+									<div class="col-md-12">
+										<input type="text" name="po_no" class="form-control input-sm" placeholder="PO No" value="<?php echo @$po_no; ?>" data-date-format="dd-mm-yyyy" >
+									</div>
+								
+								</div>
+							</td>
+							
+							<td><button type="submit" name="save" class="btn btn-primary btn-sm"><i class="fa fa-filter"></i> Filter</button></td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
 			<?php $page_no=$this->Paginator->current('JobCards'); $page_no=($page_no-1)*20; ?>	 
 			<table class="table table-bordered table-striped ">
 				<thead>
@@ -17,7 +68,7 @@
 					<td style="font-size:120%;">Sr.No.</td>
 					<td style="font-size:120%;">Sales Order</td>
 					<td style="font-size:120%;">Customer</td>
-					<td style="font-size:120%;">Date</td>
+					<td style="font-size:120%;">PO Date</td>
 					<td style="font-size:120%;">PO No.</td>
 					<td style="font-size:120%;">Action</td>
 				</tr>
