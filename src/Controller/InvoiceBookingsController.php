@@ -22,43 +22,14 @@ class InvoiceBookingsController extends AppController
         $session = $this->request->session();
         $st_company_id = $session->read('st_company_id');
 
-        $where = [];
-        $book_no = $this->request->query('book_no');
-        $grn_no = $this->request->query('grn_no');
-        $in_no = $this->request->query('in_no');
-        $From = $this->request->query('From');
-        $To = $this->request->query('To');
 
-        $this->set(compact('book_no', 'grn_no', 'in_no', 'From', 'To'));
-
-        if(!empty($book_no)){
-            $where['InvoiceBookings.ib2 LIKE']=$book_no;
-        }
-
-        if(!empty($grn_no)){
-            $where['Grns.grn2 LIKE']='%'.$grn_no.'%';
-        }
-
-        if(!empty($in_no)){
-            $where['InvoiceBookings.invoice_no LIKE']='%'.$in_no.'%';
-        }
-
-        if(!empty($From)){
-            $From=date("Y-m-d",strtotime($this->request->query('From')));
-            $where['InvoiceBookings.created_on >=']=$From;
-        }
-
-        if(!empty($To)){
-            $To=date("Y-m-d",strtotime($this->request->query('To')));
-            $where['InvoiceBookings.created_on <=']=$To;
-        }
 
 
         $this->paginate = [
             'contain' => ['Grns']
         ];
 
-        $invoiceBookings = $this->paginate($this->InvoiceBookings->find()->where($where)->where(['InvoiceBookings.company_id' => $st_company_id])->order(['InvoiceBookings.id' => 'DESC']));
+        $invoiceBookings = $this->paginate($this->InvoiceBookings->find()->where(['InvoiceBookings.company_id' => $st_company_id])->order(['InvoiceBookings.id' => 'DESC']));
 
 
         $this->set(compact('invoiceBookings', 'status'));
