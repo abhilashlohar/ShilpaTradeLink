@@ -3,13 +3,13 @@
 	vertical-align: top !important;
 }
 </style>
-<?php 
+<?php
 if(!empty($copy))
 {
-	
+
 		$salesOrder->po_date=date(("d-m-Y"),strtotime($salesOrder->po_date));
 		$salesOrder->expected_delivery_date=date(("d-m-Y"),strtotime($salesOrder->expected_delivery_date	));
-	
+
 }
 ?>
 <div class="portlet light bordered">
@@ -22,9 +22,9 @@ if(!empty($copy))
 			<?php } ?>
 		</div>
 		<div class="actions">
-			<?php echo $this->Html->link('<i class="icon-home"></i> Pull Quotation','/Quotations/index?pull-request=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
+			<?php echo $this->Html->link('<i class="icon-home"></i> Pull/Close Quotation','/Quotations/index?pull-request=true',array('escape'=>false,'class'=>'btn btn-xs blue')); ?>
 		</div>
-		
+
 		<div class="actions">
 			<?php echo $this->Html->link('<i class="fa fa-files-o"></i> Copy Sales Order','/SalesOrders/index?copy-request=copy',array('escape'=>false,'class'=>'btn btn-xs green')); ?>
 		</div>
@@ -45,7 +45,7 @@ if(!empty($copy))
 						</div>
 					<span style="color: red;"><?php if($chkdate == 'Not Found'){  ?>
 					You are not in Current Financial Year
-				<?php } ?></span>	
+				<?php } ?></span>
 					</div>
 				</div>
 			</div><br/>
@@ -54,7 +54,7 @@ if(!empty($copy))
 					<div class="form-group">
 						<label class="col-md-3 control-label">Customer</label>
 						<div class="col-md-9">
-						
+
 							<?php
 							$options=array();
 							foreach($customers as $customer){
@@ -63,7 +63,7 @@ if(!empty($copy))
 								}else{
 									$merge=$customer->customer_name.'	('.$customer->alias.')';
 								}
-								
+
 								$options[]=['text' =>$merge, 'value' => $customer->id, 'contact_person' => $customer->contact_person, 'employee_id' => $customer->employee_id, 'transporter_id' => $customer->transporter_id, 'documents_courier_id' => @$customer->customer_address[0]->transporter_id, 'dispatch_address' => @$customer->customer_address[0]->address];
 							}
 							echo $this->Form->input('customer_id', ['empty' => "--Select--",'label' => false,'options' => $options,'class' => 'form-control input-sm select2me','value' => @$quotation->customer_id]); ?>
@@ -81,11 +81,11 @@ if(!empty($copy))
 							$options=array();
 							foreach($Filenames as $Filenames){
 								$merge=$Filenames->file1.'-'.$Filenames->file2.'' ;
-								
+
 								$options[]=['text' =>$merge, 'value' => $merge];
 							}
 							echo $this->Form->input('so3', ['options'=>$options,'label' => false,'class' => 'form-control input-sm select2me']); ?>
-						
+
 						</div>
 						<div class="col-md-3">
 							<?php echo $this->Form->input('so4', ['label' => false,'value'=>substr($s_year_from, -2).'-'.substr($s_year_to, -2),'class' => 'form-control input-sm','readonly']); ?>
@@ -147,8 +147,8 @@ if(!empty($copy))
 					</tr>
 				</thead>
 				<tbody id="main_tbody">
-					<?php 
-					if(!empty($process_status) || !empty($quotation)) 
+					<?php
+					if(!empty($process_status) || !empty($quotation))
 					{
 					if(!empty($quotation->quotation_rows)){
 					$q=0; foreach ($quotation->quotation_rows as $quotation_rows): ?>
@@ -166,7 +166,7 @@ if(!empty($copy))
 											<div class="modal-dialog">
 												<div class="modal-content">
 													<div class="modal-body" popup_ajax_id="<?php echo $q; ?>">
-														
+
 													</div>
 													<div class="modal-footer">
 														<button type="button" class="btn default closebtn">Close</button>
@@ -180,14 +180,14 @@ if(!empty($copy))
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$quotation_rows->quantity]); ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Rate','min'=>'0.01','value' => @$quotation_rows->rate,'r_popup_id'=>$q]); ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$quotation_rows->amount]); ?></td>
-							<td><?php 
+							<td><?php
 							$options=['Yes'=>'Yes','No'=>'No'];
 							echo $this->Form->input('sales_order_rows.'.$q.'.excise_duty', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?></td>
 							<td>
 							<?php $options=[];
-							foreach($SaleTaxes as $SaleTaxe){ 
+							foreach($SaleTaxes as $SaleTaxe){
 								$options[]=['text' => (string) $SaleTaxe->tax_figure, 'value' => $SaleTaxe->id, 'description' => $SaleTaxe->quote_description];
-							} 
+							}
 							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
 							//echo $this->Form->input('sales_order_rows.'.$q.'.
 							//', ['type'=>'text','label' => false]); ?>
@@ -216,7 +216,7 @@ if(!empty($copy))
 											<div class="modal-dialog">
 												<div class="modal-content">
 													<div class="modal-body" popup_ajax_id="<?php echo $q; ?>">
-														
+
 													</div>
 													<div class="modal-footer">
 														<button type="button" class="btn default closebtn">Close</button>
@@ -226,19 +226,19 @@ if(!empty($copy))
 										</div>
 									</div>
 							</div>
-							
+
 							</td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.quantity', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Quantity','value' => @$sales_order_rows->quantity]); ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.rate', ['type'=>'text','label' => false,'class' => 'form-control input-sm quantity','placeholder'=>'Rate','value' => @$sales_order_rows->rate,'r_popup_id'=>$q]); ?></td>
 							<td><?php echo $this->Form->input('sales_order_rows.'.$q.'.amount', ['type'=>'text','label' => false,'class' => 'form-control input-sm','placeholder'=>'Amount','value' => @$sales_order_rows->amount]); ?></td>
-							<td><?php 
+							<td><?php
 							$options=['Yes'=>'Yes','No'=>'No'];
 							echo $this->Form->input('sales_order_rows.'.$q.'.excise_duty', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?></td>
 							<td>
 							<?php $options=[];
-							foreach($SaleTaxes as $SaleTaxe){ 
+							foreach($SaleTaxes as $SaleTaxe){
 								$options[]=['text' => (string) $SaleTaxe->tax_figure, 'value' => $SaleTaxe->id, 'description' => $SaleTaxe->quote_description];
-							} 
+							}
 							echo $this->Form->input('sales_order_rows.'.$q.'.sale_tax_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
 							?>
 							</td>
@@ -263,8 +263,8 @@ if(!empty($copy))
 					</td>
 					<td><?php echo $this->Form->input('discount', ['type' => 'number','label' => false,'class' => 'form-control input-sm','placeholder' => 'Discount','step'=>0.01]); ?></td>
 				</tr>
-				
-				
+
+
 				<tr>
 					<td align="right"><b>Total</b></td>
 					<td width="20%"><?php echo $this->Form->input('total', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Total','value' => 0,'step'=>0.01,'readonly']); ?></td>
@@ -285,8 +285,8 @@ if(!empty($copy))
 
 			</table>
 
-			
-			
+
+
 			<div class="row">
 				<div class="col-md-4">
 					<div class="form-group">
@@ -338,11 +338,11 @@ if(!empty($copy))
 						<?php echo $this->Form->input('dispatch_address', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Address','value' => @$quotation->customer_address]); ?>
 					</div>
 				</div>
-				
-				
+
+
 			</div>
 			<div class="row">
-				
+
 				<div class="col-md-4">
 					<div class="form-group">
 						<div class="radio-list" data-error-container="#road_permit_required_error">
@@ -378,11 +378,11 @@ if(!empty($copy))
 					<label class="btn btn-danger"> You are not in Current Financial Year </label>
 				<?php } else { ?>
 					<button type="submit" class="btn btn-primary" >ADD SALES ORDER</button>
-				<?php } ?>	
+				<?php } ?>
 					</div>
 			</div>
 		</div>
-		
+
 		<?= $this->Form->end() ?>
 	</div>
 </div>
@@ -415,7 +415,7 @@ if(!empty($copy))
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-body" >
-										
+
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn default closebtn">Close</button>
@@ -430,14 +430,14 @@ if(!empty($copy))
 			<td width="100"><?php echo $this->Form->input('rate[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm quantity','placeholder' => 'Rate','step'=>"0.01"]); ?>
 			</td>
 			<td width="100"><?php echo $this->Form->input('amount[]', ['type' => 'text','label' => false,'class' => 'form-control input-sm','placeholder' => 'Amount']); ?></td>
-			<td width="100"><?php 
+			<td width="100"><?php
 			$options=['Yes'=>'Yes','No'=>'No'];
 			echo $this->Form->input('excise_duty', ['options'=>$options,'label' => false,'class' => 'form-control input-sm']); ?></td>
 			<td width="100">
 			<?php $options=[];
-							foreach($SaleTaxes as $SaleTaxe){ 
+							foreach($SaleTaxes as $SaleTaxe){
 								$options[]=['text' => (string) $SaleTaxe->tax_figure, 'value' => $SaleTaxe->id, 'description' => $SaleTaxe->quote_description];
-							} 
+							}
 							echo $this->Form->input('sale_tax_id', ['options'=>$options,'label' => false,'class' => 'form-control input-sm change_des']);
 			?>
 			</td>
@@ -487,7 +487,7 @@ $(document).ready(function() {
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
-		
+
 		rules: {
 			company_id:{
 				required: true,
@@ -520,19 +520,19 @@ $(document).ready(function() {
 				  required: true,
 			},
 			transporter_id:{
-				required: true,	
+				required: true,
 			},
 			documents_courier_id:{
-				required: true,	
+				required: true,
 			},
 			expected_delivery_date:{
-				required: true,	
+				required: true,
 			},
 			delivery_description:{
-				required: true,	
+				required: true,
 			},
 			dispatch_name:{
-				required: true,	
+				required: true,
 			},
 			dispatch_mobile:{
 				required: true,
@@ -565,22 +565,22 @@ $(document).ready(function() {
 		errorPlacement: function (error, element) { // render error placement for each input type
 			if (element.parent(".input-group").size() > 0) {
 				error.insertAfter(element.parent(".input-group"));
-			} else if (element.attr("data-error-container")) { 
+			} else if (element.attr("data-error-container")) {
 				error.appendTo(element.attr("data-error-container"));
-			} else if (element.parents('.radio-list').size() > 0) { 
+			} else if (element.parents('.radio-list').size() > 0) {
 				error.appendTo(element.parents('.radio-list').attr("data-error-container"));
-			} else if (element.parents('.radio-inline').size() > 0) { 
+			} else if (element.parents('.radio-inline').size() > 0) {
 				error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
 			} else if (element.parents('.checkbox-list').size() > 0) {
 				error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
-			} else if (element.parents('.checkbox-inline').size() > 0) { 
+			} else if (element.parents('.checkbox-inline').size() > 0) {
 				error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
 			} else {
 				error.insertAfter(element); // for other inputs, just perform default behavior
 			}
 		},
 
-		invalidHandler: function (event, validator) { //display error alert on form submit   
+		invalidHandler: function (event, validator) { //display error alert on form submit
 			put_code_description();
 			success3.hide();
 			error3.show();
@@ -611,69 +611,69 @@ $(document).ready(function() {
 
 	});
 	//--	 END OF VALIDATION
-	
-	
+
+
 	$("#pnfper").on('click',function(){
-		
+
 		if($(this).is(':checked')){
 			$("#pnf_text").show();
 			$('input[name="pnf"]').attr('readonly','readonly');
 			$('input[name="pnf_per"]').val(0);
-			
+
 		}else{
 			$("#pnf_text").hide();
 			$('input[name="pnf"]').removeAttr('readonly');
 			$('input[name="pnf"]').val(0);
 			$('input[name="pnfper"]').val(0);
-			
+
 		}
 				calculate_total();
 	})
-	
+
 	$("#discount_per").on('click',function(){
 		if($(this).is(':checked')){
 			$("#discount_text").show();
 			$('input[name="discount"]').attr('readonly','readonly');
-			
-			
+
+
 		}else{
 			$("#discount_text").hide();
 			$('input[name="discount"]').removeAttr('readonly');
 			$('input[name="discount_per"]').val(0);
 			$('input[name="discount"]').val(0);
-			
+
 		}
 		calculate_total();
 	})
-	
-	
 
-	
-	<?php if($process_status=="New" ){ ?> add_row(); 
+
+
+
+	<?php if($process_status=="New" ){ ?> add_row();
 	$("#main_tb tbody tr.tr1").each(function(){
 		var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
 		$(this).closest("td").find('input').val(description);
 	});
 	<?php } ?>
-	
-    $('.addrow').die().live("click",function() { 
+
+    $('.addrow').die().live("click",function() {
 		add_row();
     });
-	
-	$('.change_des').die().live("change",function() { 
+
+	$('.change_des').die().live("change",function() {
 		var description=$(this).find('option:selected').attr("description");
 		$(this).closest("td").find('input:eq(0)').val(description);
 		var ledger_account_id=$(this).find('option:selected').attr("ledger_account_id");
 		$(this).closest("td").find('input:eq(1)').val(ledger_account_id);
     });
-	
-	
+
+
 	$("#main_tb tbody tr.tr1").each(function(){
 		var description=$(this).find("td:nth-child(7) select option:selected").attr("description");
 		$(this).find("td:nth-child(7) input").val(description);
 	});
-	
-	
+
+
 	$('.deleterow').die().live("click",function() {
 		var l=$(this).closest("table tbody").find("tr").length;
 		if (confirm("Are you sure to remove row ?") == true) {
@@ -684,15 +684,15 @@ $(document).ready(function() {
 				rename_rows();
 				calculate_total();
 			}
-		} 
+		}
     });
-	
+
 	function add_row(){
 		var tr1=$("#sample_tb tbody tr.tr1").clone();
 		$("#main_tb tbody#main_tbody").append(tr1);
 		var tr2=$("#sample_tb tbody tr.tr2").clone();
 		$("#main_tb tbody#main_tbody").append(tr2);
-		
+
 		var w=0; var r=0;
 		$("#main_tb tbody#main_tbody tr.maintr").each(function(){
 			$(this).attr("row_no",w);
@@ -704,7 +704,7 @@ $(document).ready(function() {
 	rename_rows();
 	function rename_rows(){
 		var i=0;
-		
+
 		$("#main_tb tbody tr.tr1").each(function(){
 		    $(this).find('span.help-block-error').remove();
 			$(this).find("td:nth-child(1)").html(++i); --i;
@@ -728,7 +728,7 @@ $(document).ready(function() {
 						}
 					});
 				//$(this).find("td:nth-child(3)").append('<span for="sales_order_rows-'+i+'-quantity" class="help-block help-block-error" style="display:none;"></span>');
-					
+
 			$(this).find("td:nth-child(4) input").attr({name:"sales_order_rows["+i+"][rate]", id:"sales_order_rows-"+i+"-rate",r_popup_id:i}).rules('add', {
 						required: true,
 						number: true,
@@ -744,19 +744,19 @@ $(document).ready(function() {
 			var ledger_account_id=$(this).find("td:nth-child(7) select option:selected").attr("ledger_account_id");
 			$(this).find("td:nth-child(7) input:eq( 1 )").val(ledger_account_id);
 		i++; });
-		
+
 		var i=0;
 		$("#main_tb tbody tr.tr2").each(function(){
 			var htm=$(this).find('td:nth-child(1)').find('div.note-editable').html();
-			
+
 			if(!htm){ htm=""; }
 			$(this).find('td:nth-child(1)').html('');
 			$(this).find('td:nth-child(1)').append('<div id=summer'+i+'>'+htm+'</div>');
 			$(this).find('td:nth-child(1)').find('div#summer'+i).summernote();
 			$(this).find('td.main:nth-child(1)').append('<textarea name="sales_order_rows['+i+'][description]"style="display:none;"></textarea>');
 		i++; });
-		
-		
+
+
 
 		$("select.item_box").each(function(){
 			var popup_id=$(this).attr('popup_id');
@@ -770,19 +770,19 @@ $(document).ready(function() {
 	function put_code_description(){
 			var i=0;
 			$("#main_tb tbody#main_tbody tr.tr2").each(function(){
-				var row_no=$(this).attr('row_no');		
+				var row_no=$(this).attr('row_no');
 				var code=$(this).find('div#summer'+i).code();
 				$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').find('td:nth-child(1) textarea').val(code);
 			i++; });
 		}
-	
-	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() { 
+
+	$('#main_tb input,#tbl2 input').die().live("keyup","blur",function() {
 		calculate_total();
     });
 	$('#main_tb select').die().live("change",function() {
 		calculate_total();
     });
-	
+
 	function calculate_total(){
 		var total=0; var grand_total=0;
 		$("#main_tb tbody tr.tr1").each(function(){
@@ -792,8 +792,8 @@ $(document).ready(function() {
 			$(this).find("td:nth-child(5) input").val(Amount.toFixed(2));
 			total=total+Amount;
 		});
-		
-		
+
+
 		if($("#discount_per").is(':checked')){
 			var discount_per=parseFloat($('input[name="discount_per"]').val());
 			var discount_amount=(total*discount_per)/100;
@@ -804,9 +804,9 @@ $(document).ready(function() {
 			if(isNaN(discount_amount)) { var discount_amount = 0; }
 		}
 		total=total-discount_amount
-		
+
 		$('input[name="total"]').val(total.toFixed(2));
-		
+
 		if($("#pnfper").is(':checked')){
 			var pnf_per=parseFloat($('input[name="pnf_per"]').val());
 			var pnf_amount=(total*pnf_per)/100;
@@ -819,35 +819,35 @@ $(document).ready(function() {
 		var total_after_pnf=total+pnf_amount;
 		if(isNaN(total_after_pnf)) { var total_after_pnf = 0; }
 		$('input[name="total_after_pnf"]').val(total_after_pnf.toFixed(2));
-		
+
 		var sale_tax_per=parseFloat($('input[name="sale_tax_per"]').val());
 		var sale_tax=(total_after_pnf*sale_tax_per)/100;
 		if(isNaN(sale_tax)) { var sale_tax = 0; }
 		$('input[name="sale_tax_amount"]').val(sale_tax.toFixed(2));
-		
 
-		
+
+
 	}
-	
-	$('.select_address').on("click",function() { 
+
+	$('.select_address').on("click",function() {
 		open_address();
     });
-	
-		
-	$('.closebtn').live("click",function() { 
+
+
+	$('.closebtn').live("click",function() {
 		$(".modal").hide();
     });
-	
-	$('.closebtn').on("click",function() { 
+
+	$('.closebtn').on("click",function() {
 		$("#myModal12").hide();
     });
 	$('.popup_btn').live("click",function() {
 		var popup_id=$(this).attr('popup_id');
 		$("div[popup_div_id="+popup_id+"]").show();
     });
-	
-	
-	
+
+
+
 	function open_address(){
 		var customer_id=$('select[name="customer_id"]').val();
 		$("#result_ajax").html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
@@ -860,17 +860,17 @@ $(document).ready(function() {
 			$("#result_ajax").html(response);
 		});
 	}
-	
-	$('.insert_address').die().live("click",function() { 
+
+	$('.insert_address').die().live("click",function() {
 		var addr=$(this).text();
 		$('textarea[name="customer_address"]').val(addr);
 		$("#myModal12").hide();
     });
-	
 
 
-	
-	  
+
+
+
 	$('select[name="customer_id"]').on("change",function() {
 		var customer_id=$('select[name="customer_id"] option:selected').val();
 		var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'defaultAddress']); ?>";
@@ -880,8 +880,8 @@ $(document).ready(function() {
 		}).done(function(response) {
 			$('textarea[name="customer_address"]').val(response);
 		});
-		
-		
+
+
 		$("#so3_div").html('Loading...');
 		var url="<?php echo $this->Url->build(['controller'=>'Filenames','action'=>'listFilename']); ?>";
 		url=url+'/'+customer_id+'/so',
@@ -891,41 +891,41 @@ $(document).ready(function() {
 			$("#so3_div").html(response);
 			$('select[name="qt3"]').attr('name','so3').select2();
 		});
-		
-		
-		
+
+
+
 		var employee_id=$('select[name="customer_id"] option:selected').attr("employee_id");
 		$("select[name=employee_id]").val(employee_id).select2();
-		
+
 		var transporter_id=$('select[name="customer_id"] option:selected').attr("transporter_id");
 		$("select[name=transporter_id]").val(transporter_id).select2();
-		
+
 		var documents_courier_id=$('select[name="customer_id"] option:selected').attr("documents_courier_id");
 		$("select[name=documents_courier_id]").val(documents_courier_id).select2();
-		
+
 		var dispatch_address=$('select[name="customer_id"] option:selected').attr("dispatch_address");
 		$("textarea[name=dispatch_address]").val(dispatch_address);
-		
-    });
-	
 
-	
-	
-	
+    });
+
+
+
+
+
 	$('select[name="company_id"]').on("change",function() {
 		var alias=$('select[name="company_id"] option:selected').attr("alias");
 		$('input[name="so1"]').val(alias);
     });
-	
-	$('.select_term_condition').die().live("click",function() { 
+
+	$('.select_term_condition').die().live("click",function() {
 		var addr=$(this).text();
 		$("#myModal2").show();
     });
-	
-	$('.closebtn2').on("click",function() { 
+
+	$('.closebtn2').on("click",function() {
 		$("#myModal2").hide();
     });
-	
+
 	$('.insert_tc').die().live("click",function() {
 		$('#terms_conditions').html("");
 		var inc=0;
@@ -942,7 +942,7 @@ $(document).ready(function() {
 		$('textarea[name="terms_conditions"]').val(terms_conditions);
 		$("#myModal2").hide();
     });
-	
+
 		$("select.item_box").die().live("change",function(){
 		var popup_id=$(this).attr('popup_id');
 		var item_id=$(this).val();
@@ -955,15 +955,15 @@ $(document).ready(function() {
 			last_three_rates_onload(popup_id,item_id);
 		}
 	});
-	
-	$("select.item_box").die().live("change",function(){ 
+
+	$("select.item_box").die().live("change",function(){
 		var popup_id=$(this).attr('popup_id');
 		var item_id=$(this).val();
 		last_three_rates(popup_id,item_id);
 	})
-	
+
 	function last_three_rates_onload(popup_id,item_id){
-		
+
 			var customer_id=$('select[name="customer_id"]').val();
 			//$('.modal[popup_div_id='+popup_id+']').show();
 			$('div[popup_ajax_id='+popup_id+']').html('<div align="center"><?php echo $this->Html->image('/img/wait.gif', ['alt' => 'wait']); ?> Loading</div>');
@@ -1013,7 +1013,7 @@ $(document).ready(function() {
 								min: "Rate Can't be 0 "
 							}
 						});
-						
+
 					}
 					$('div[popup_ajax_id='+popup_id+']').html(response.html);
 				});
@@ -1022,16 +1022,16 @@ $(document).ready(function() {
 				$(".item_box[popup_id="+popup_id+"]").val('').select2();
 			}
 	}
-	
-	
+
+
 });
 </script>
-	 
+
 <div id="myModal12" class="modal fade in" tabindex="-1"  style="display: none; padding-right: 12px;"><div class="modal-backdrop fade in" ></div>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-body" id="result_ajax">
-				
+
 			</div>
 			<div class="modal-footer">
 				<button class="btn default closebtn">Close</button>
@@ -1049,7 +1049,7 @@ $(document).ready(function() {
 			<div class="modal-body">
 				<p>
 					<label>Select Quotation Ref. No.</label>
-					<?php 
+					<?php
 					$options=array();
 					foreach($quotationlists as $quotationdata){
 						$options[]=['text' => h(($quotationdata->qt1.'/QT-'.str_pad($quotationdata->id, 3, '0', STR_PAD_LEFT).'/'.$quotationdata->qt3.'/'.$quotationdata->qt4)), 'value' => $quotationdata->id];
@@ -1073,7 +1073,7 @@ $(document).ready(function() {
 			<h4>Commercial Terms & Conditions</h4>
 			<table class="table table-hover tabl_tc">
 			<?php foreach ($termsConditions as $termsCondition): ?>
-				 
+
 				 <tr>
 					<td width="10"><label><?php echo $this->Form->input('dummy', ['type' => 'checkbox','label' => false,'class' => '']); ?></label></td>
 					<td><p><?= h($termsCondition->text_line) ?></p></td>
