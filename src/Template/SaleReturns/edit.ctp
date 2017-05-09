@@ -199,16 +199,19 @@ table > thead > tr > th, table > tbody > tr > th, table > tfoot > tr > th, table
 								<?php echo $this->Form->input('sale_return_rows.'.$q.'.amount', ['type' => 'text','label' => false,'class' => 'form-control input-sm','readonly','placeholder' => 'Amount','step'=>0.01]); ?>
 							</td>
 							<td>
-								<?php echo @$invoice->sale_tax->tax_figure; ?>
+								<?php echo @$invoice_row->sale_return_quantity; ?>
 							</td>
-							<?php 
-							if($invoice->sale_return_quantity>0){ $checked2="Checked";
-									 } 
-								else{	$checked2="";
-									 } 
+							<?php $checked2="";
+							if($invoice_row->sale_return_quantity > 0)
+							{
+								$checked2='Checked';
+							}else{	
+								$checked2="";
+							} 
 							?> 
 							<td>
-								<label><?php echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$invoice_row->item_id,'Checked'=>$checked2]); ?></label>
+								<label><?php 
+								echo $this->Form->input('check.'.$q, ['label' => false,'type'=>'checkbox','class'=>'rename_check','value' => @$invoice_row->item_id,$checked2]); ?></label>
 							</td>
 						</tr>
 						
@@ -468,7 +471,6 @@ $(document).ready(function() {
 		},
 
 		invalidHandler: function (event, validator) { //display error alert on form submit   
-			put_code_description();
 			success3.hide();
 			error3.show();
 			//Metronic.scrollTo(error3, -200);
@@ -562,10 +564,13 @@ $(document).ready(function() {
     });
 	rename_rows();
 function rename_rows(){
-		$("#main_tb tbody tr.tr1").each(function(){  //alert();
-			var row_no=$(this).attr('row_no');
+		var i=1; 
+		var row_no=0;
+		$("#main_tb tbody tr.tr1").each(function(){  
+			
 			var val=$(this).find('td:nth-child(7) input[type="checkbox"]:checked').val();
 			if(val){
+				$(this).find("td:nth-child(1)").html(i); 
 				$(this).find('td:nth-child(2) input').attr("name","sale_return_rows["+row_no+"][item_id]").attr("id","sale_return_rows-"+row_no+"-item_id").rules("add", "required");
 				$(this).find('td:nth-child(3) input').attr("name","sale_return_rows["+row_no+"][quantity]").attr("id","sale_return_rows-"+row_no+"-quantity").removeAttr("readonly").rules("add", "required");
 				$(this).find('td:nth-child(4) input').attr("name","sale_return_rows["+row_no+"][rate]").attr("id","sale_return_rows-"+row_no+"-rate").rules("add", "required");
@@ -587,6 +592,7 @@ function rename_rows(){
 					$('#main_tb tbody tr.tr2[row_no="'+row_no+'"]').css('background-color','#fffcda');
 				}
 			}else{
+				$(this).find("td:nth-child(1)").html(i); 
 				$(this).find('td:nth-child(3) input').attr({ name:"q" , readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(4) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
 				$(this).find('td:nth-child(5) input').attr({ name:"q", readonly:"readonly"}).rules( "remove", "required" );
@@ -598,7 +604,7 @@ function rename_rows(){
 				}
 			}
 			
-				
+			i++;	
 				
 		});
 	}
@@ -760,9 +766,10 @@ function rename_rows(){
 		
 		var total_ref=0;
 		$("table.main_ref_table tbody tr").each(function(){
-			var am=parseFloat($(this).find('td:nth-child(3) input').val());
+			var am=parseFloat($(this).find('td:nth-child(3) input:eq(1)').val());
 			if(!am){ am=0; }
 			total_ref=total_ref+am;
+			 
 		});
 		
 		var on_acc=main_amount-total_ref; 

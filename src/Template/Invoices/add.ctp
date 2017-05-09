@@ -839,7 +839,6 @@ $(document).ready(function() {
 			var unique=list.filter(function(itm,i,a){
 				return i==a.indexOf(itm);
 			});
-
 			$("#checked_row_length").val(unique.length);
 			
 		});
